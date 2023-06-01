@@ -1,5 +1,4 @@
 object Versions {
-
     const val appCompat = "1.6.1"
     const val kotlin = "1.5.0"
     const val coreKtx = "1.8.0"

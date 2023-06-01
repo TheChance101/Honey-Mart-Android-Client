@@ -13,4 +13,14 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "HoneyMart"
-include(":app")
+include(":user")
+include(":admin")
+include(":owner")
+include(":data")
+include(":design_system")
+include(":user:ui")
+include(":user:domain")
+include(":owner:ui")
+include(":owner:domain")
+include(":admin:domain")
+include(":admin:ui")
