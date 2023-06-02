@@ -13,6 +13,7 @@
             android:id="@+id/action_marketsFragment_to_categoriesFragment"
             app:destination="@id/categoriesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="org.the_chance.ui.category.CategoriesFragment"
@@ -22,9 +23,11 @@
             android:id="@+id/action_categoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/productsFragment"
         android:name="org.the_chance.ui.product.ProductsFragment"
         android:label="fragment_products"
         tools:layout="@layout/fragment_products" />
+
 </navigation>
