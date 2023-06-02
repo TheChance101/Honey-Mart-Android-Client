@@ -10,4 +10,13 @@ object Versions {
     const val okHttpInterceptor = "5.0.0-alpha.11"
     const val retrofit = "2.9.0"
     const val coroutines = "1.6.4"
+    const val gson = "2.10.1"
+    const val androidNavigationFragment = "2.5.3"
+    const val androidNavigationUi = "2.5.3"
+    const val glide = "4.15.1"
+    const val liveData = "2.6.1"
+    const val activity = "1.3.1"
+    const val fragment = "1.3.6"
+    const val hilt = "2.44"
+
 }
