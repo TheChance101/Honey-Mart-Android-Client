@@ -7,8 +7,7 @@ import org.the_chance.ui.databinding.FragmentProductsBinding
 
 class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment: Int
-        get() = R.layout.fragment_products
+    override val layoutIdFragment = R.layout.fragment_products
     override val viewModel: ViewModel
         get() = TODO("Not yet implemented")
 }
