@@ -1,10 +1,14 @@
 package org.the_chance.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
@@ -28,7 +32,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.viewModel, viewModel)
+//            setVariable(BR.viewModel, viewModel)
             return root
         }
     }
@@ -43,6 +47,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     protected fun log(value: Any) {
         Log.e(TAG, value.toString())
     }
-
 }
+
 
