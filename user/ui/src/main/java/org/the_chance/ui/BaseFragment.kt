@@ -44,3 +44,5 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         Log.e(TAG, value.toString())
     }
 
+}
+
