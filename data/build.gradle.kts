@@ -35,6 +35,11 @@ android {
 
 dependencies {
     implementation (Dependencies.coreKtx)
+    implementation (Dependencies.okHttpInterceptor)
+    implementation (Dependencies.retrofit)
+    implementation (Dependencies.retrofitConverter)
+    implementation (Dependencies.coroutines)
+    implementation (Dependencies.gson)
     testImplementation (Dependencies.junit)
     androidTestImplementation (Dependencies.androidJunit)
     androidTestImplementation (Dependencies.espresso)

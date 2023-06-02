@@ -6,4 +6,9 @@ object Dependencies {
     val junit by lazy { "junit:junit:${Versions.jUnit}" }
     val espresso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }
     val androidJunit by lazy { "androidx.test.ext:junit:${Versions.androidJunit}" }
+    val okHttpInterceptor by lazy { "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpInterceptor}" }
+    val retrofit by lazy { "com.squareup.retrofit2:retrofit:${Versions.retrofit}" }
+    val retrofitConverter by lazy { "com.squareup.retrofit2:converter-gson:$Versions.retrofit" }
+    val coroutines by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}" }
+    val gson by lazy {  "com.google.code.gson:gson:2.10.1" }
 }
