@@ -2,7 +2,7 @@ package data.remote.models
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductDTO(
+data class ProductDto(
     @SerializedName("id")
     val id: Long,
     @SerializedName("name")

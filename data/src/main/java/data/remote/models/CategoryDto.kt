@@ -11,11 +11,3 @@ data class CategoryDto(
     val categoryName: String
 )
 
-data class MarketWithCategories(
-    @SerializedName("marketId")
-    val marketId: Long,
-    @SerializedName("marketName")
-    val marketName: String,
-    @SerializedName("categories")
-    val categories: List<CategoryDto>
-)
