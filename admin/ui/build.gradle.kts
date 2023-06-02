@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+    implementation (project(":design_system"))
+    implementation (project(":admin:domain"))
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.materialDesign)
