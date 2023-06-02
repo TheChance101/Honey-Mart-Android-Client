@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.admin"
-    compileSdk = 33
+    namespace = "org.the_chance.admin"
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        applicationId = "com.example.admin"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = "org.the_chance.admin"
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
+        versionCode = ConfigData.versionCode
+        versionName = ConfigData.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

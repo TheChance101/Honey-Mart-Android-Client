@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "org.the_chance.owner"
-    compileSdk = 33
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
         applicationId = "org.the_chance.owner"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
+        versionCode = ConfigData.versionCode
+        versionName = ConfigData.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

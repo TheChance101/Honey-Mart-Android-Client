@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "org.the_chance.ui"
-    compileSdk = 33
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
