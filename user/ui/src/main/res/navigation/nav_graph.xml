@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/marketsFragment"
         android:name="org.the_chance.ui.market.MarketsFragment"
-        android:label="MarketsFragment" >
+        android:label="MarketsFragment"
+        tools:layout="@layout/fragment_markets">
         <action
             android:id="@+id/action_marketsFragment_to_categoriesFragment"
             app:destination="@id/categoriesFragment" />
