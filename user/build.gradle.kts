@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "org.the_chance.honeymart"
+    namespace = "org.the_chance.user"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        applicationId = "org.the_chance.honeymart"
+        applicationId = "org.the_chance.user"
         minSdk = ConfigData.minSdkVersion
         targetSdk = ConfigData.targetSdkVersion
         versionCode = ConfigData.versionCode

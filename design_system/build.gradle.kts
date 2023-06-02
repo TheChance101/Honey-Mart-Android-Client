@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.design_system"
-    compileSdk = 33
+    namespace = "org.the_chance.design_system"
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
