@@ -31,11 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
-    implementation (project(":design_system"))
-    implementation (project(":user:domain"))
+    implementation(project(":design_system"))
+    implementation(project(":user:domain"))
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.materialDesign)
@@ -43,4 +46,19 @@ dependencies {
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.androidJunit)
     androidTestImplementation(Dependencies.espresso)
+
+
+    // Navigation dependency
+    implementation(Dependencies.androidNavigationFragment)
+    implementation(Dependencies.androidNavigationUi)
+
+    // Glide dependency
+    implementation(Dependencies.glide)
+
+    // LiveData dependency
+    implementation(Dependencies.liveData)
+    implementation(Dependencies.activity)
+    implementation(Dependencies.fragment)
+
 }
+
