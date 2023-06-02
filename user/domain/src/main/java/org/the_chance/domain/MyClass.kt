@@ -1,3 +1,5 @@
 package org.the_chance.domain
 
-class MyClass
+
+open class MyClass {
+}
