@@ -43,13 +43,14 @@ android {
 
 dependencies {
     implementation(project("ui"))
+    implementation(Dependencies.coreKtx)
     implementation(Dependencies.hilt)
     kapt(Dependencies.hiltCompiler)
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.androidJunit)
     androidTestImplementation(Dependencies.espresso)
-}
-
-kapt {
-    correctErrorTypes = true
+    // LiveData dependency
+    implementation(Dependencies.liveData)
+    implementation(Dependencies.activity)
+    implementation(Dependencies.fragment)
 }
