@@ -14,20 +14,31 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category_product"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_medium"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_small"
-            android:layout_margin="@dimen/spacing_medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_category_product" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_product"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:clipToPadding="false"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.046"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/recycler_category_product"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.264"
-            tools:listitem="@layout/item_category_product" />
+            tools:listitem="@layout/item_products" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
