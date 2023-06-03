@@ -14,7 +14,7 @@
         android:theme="@style/Theme.HoneyMart"
         tools:targetApi="31">
         <activity
-            android:name="org.the_chance.ui.MainActivity"
+            android:name="org.the_chance.honeymart.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
