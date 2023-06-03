@@ -1,6 +1,5 @@
 package org.the_chance.ui.market
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.ui.BaseFragment
@@ -14,8 +13,8 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override val viewModel: MarketViewModel by viewModels()
 
     override fun setup() {
-        super.setup()
-        Log.e(TAG, "setup: ")
+        val adapter = MarketAdapter(viewModel)
+        binding.recycleViewMarkets.adapter = adapter
     }
 
 }
