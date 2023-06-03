@@ -1,4 +1,4 @@
-package data.remote.models
+package org.the_chance.data.source.remote.models
 
 import com.google.gson.annotations.SerializedName
 

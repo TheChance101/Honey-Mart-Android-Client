@@ -1,9 +1,9 @@
-package data.remote
+package org.the_chance.data.source.remote.network
 
-import data.remote.models.BaseResponse
-import data.remote.models.MarketDto
-import data.remote.models.MarketWithCategoriesDto
-import data.remote.models.ProductDto
+import org.the_chance.data.source.remote.models.BaseResponse
+import org.the_chance.data.source.remote.models.MarketDto
+import org.the_chance.data.source.remote.models.MarketWithCategoriesDto
+import org.the_chance.data.source.remote.models.ProductDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
