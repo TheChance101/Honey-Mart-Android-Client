@@ -1,5 +1,6 @@
 package data.remote.network
 
+import data.remote.HoneyMartService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -32,6 +33,9 @@ object HoneyMartApi {
     fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
+
+    fun createApiService(retrofit: Retrofit): HoneyMartService =
+        retrofit.create(HoneyMartService::class.java)
 
 
 }
