@@ -40,7 +40,6 @@
             android:id="@+id/tv_market_name"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
