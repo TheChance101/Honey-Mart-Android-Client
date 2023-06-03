@@ -1,7 +1,7 @@
-package org.the_chance.ui.market
+package org.the_chance.ui.category
 
 import org.the_chance.ui.BaseViewModel
 
-class MarketViewModel : BaseViewModel() {
+class CategoryViewModel : BaseViewModel() {
     override val TAG: String = this::class.java.simpleName
 }
