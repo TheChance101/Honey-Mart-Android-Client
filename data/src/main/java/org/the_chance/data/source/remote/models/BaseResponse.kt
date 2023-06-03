@@ -1,4 +1,4 @@
-package data.remote.models
+package org.the_chance.data.source.remote.models
 
 data class BaseResponse<T>(
     val value: T,

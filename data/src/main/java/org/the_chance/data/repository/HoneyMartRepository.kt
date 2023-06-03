@@ -1,6 +1,6 @@
-package data.remote.repository
+package org.the_chance.data.repository
 
-import data.remote.models.MarketDto
+import org.the_chance.data.source.remote.models.MarketDto
 import kotlinx.coroutines.flow.Flow
 
 interface HoneyMartRepository {

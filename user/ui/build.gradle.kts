@@ -39,6 +39,8 @@ android {
 dependencies {
     implementation(project(":design_system"))
     implementation(project(":user:domain"))
+    
+    implementation(Dependencies.hilt)
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.materialDesign)
