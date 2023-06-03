@@ -47,6 +47,7 @@ dependencies {
     androidTestImplementation(Dependencies.androidJunit)
     androidTestImplementation(Dependencies.espresso)
 
+    implementation(Dependencies.dataBinding)
 
     // Navigation dependency
     implementation(Dependencies.androidNavigationFragment)

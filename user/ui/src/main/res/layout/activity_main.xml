@@ -13,7 +13,7 @@
         tools:context="org.the_chance.ui.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container"
+            android:id="@+id/fragment_host"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="org.the_chance.ui.market.MarketsFragment"
