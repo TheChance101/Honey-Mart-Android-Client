@@ -13,7 +13,7 @@
         tools:context=".org.the_chance.user.ui.product.productFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_event"
+            android:id="@+id/recycler_category_product"
             android:layout_width="64dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
