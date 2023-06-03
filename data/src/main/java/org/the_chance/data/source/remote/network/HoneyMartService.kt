@@ -18,7 +18,7 @@ interface HoneyMartService {
     suspend fun getMarkets(): Response<BaseResponse<List<MarketDto>>>
 
     @POST("/markets")
-    suspend fun addMarket(@Body marketName: String)
+    suspend fun addMarket(@Body marketName: String): Response<BaseResponse<MarketDto>>
 
     @DELETE("/markets/{id}")
     suspend fun deleteMarket(@Path("id") marketId: Long)
