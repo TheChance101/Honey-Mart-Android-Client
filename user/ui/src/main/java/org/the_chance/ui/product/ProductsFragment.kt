@@ -13,18 +13,16 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     override val viewModel: ProductViewModel by viewModels()
 
     override fun setup() {
-        initiateProductAdapter()
+        initiateProductsAdapter()
         initiateCategoryProductAdapter()
     }
-
-    private fun initiateProductAdapter(){
-        val adapter = ProductAdapter(viewModel)
-
-    }
-
     private fun initiateCategoryProductAdapter(){
         val adapter = CategoryProductAdapter(viewModel)
         binding.recyclerCategoryProduct.adapter = adapter
+    }
+    private fun initiateProductsAdapter(){
+        val productAdapter = ProductAdapter(viewModel)
+        binding.recyclerProduct.adapter = productAdapter
     }
 
 }
