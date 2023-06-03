@@ -6,6 +6,12 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="org.the_chance.ui.market.uistate.MarketUiState" />
+        <variable
+            name="listener"
+            type="org.the_chance.ui.market.MarketInteractionListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -14,6 +20,7 @@
         android:layout_marginHorizontal="4dp"
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="@dimen/radius_medium"
+        android:onClick="@{()-> listener.onClickMarket(item.id)}"
         app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/market"
+                android:src="@drawable/ic_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +59,7 @@
                 android:maxLines="1"
                 android:textColor="#fafafa"
                 android:textSize="20dp"
+                android:text="@{item.name}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
