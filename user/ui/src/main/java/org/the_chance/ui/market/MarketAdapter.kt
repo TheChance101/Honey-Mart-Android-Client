@@ -12,4 +12,5 @@ class MarketAdapter(private val listener: MarketInteractionListener) {
 
 interface MarketInteractionListener: BaseInteractionListener{
 
+    fun onClickProduct(id: Int)
 }
