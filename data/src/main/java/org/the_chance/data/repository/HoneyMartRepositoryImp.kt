@@ -3,11 +3,12 @@ package org.the_chance.data.repository
 import org.the_chance.data.source.remote.models.MarketDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.the_chance.data.source.remote.network.HoneyMartService
+import javax.inject.Inject
 
-class HoneyMartRepositoryImp (
-    private val honeyMartApi:
+class HoneyMartRepositoryImp @Inject constructor (
+    private val honeyMartService: HoneyMartService
 ) : HoneyMartRepository {
-    private val honeyMartService = HoneyMartApi.honeyMartService
     override fun getAllMart(): Flow<List<MarketDto>> = flow {
         val response = honeyMartService.getMarkets()
         emit(response.body()!!.value)

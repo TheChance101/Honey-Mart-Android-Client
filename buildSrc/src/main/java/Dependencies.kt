@@ -19,6 +19,5 @@ object Dependencies {
     val dataBinding by lazy{"androidx.databinding:databinding-runtime:${Versions.dataBinding}"}
     val fragment by lazy{ "androidx.fragment:fragment-ktx:${Versions.fragment}"}
     val hilt by lazy{ "com.google.dagger:hilt-android:${Versions.hilt}"}
+    val hiltCompiler by lazy{ "com.google.dagger:hilt-android-compiler:${Versions.hilt}"}
 }
-
-
