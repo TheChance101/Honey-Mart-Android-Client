@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="org.the_chance.ui.category.CategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,8 +18,13 @@
             android:id="@+id/recycler_categories"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/spacing_semi_medium"
+            android:paddingVertical="@dimen/spacing_small"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="3"
+            tools:listitem="@layout/item_category" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
