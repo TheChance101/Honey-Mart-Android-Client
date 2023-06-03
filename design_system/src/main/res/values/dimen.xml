@@ -4,9 +4,11 @@
 
     <dimen name="spacing_small">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_semi_medium">12dp</dimen>
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_xlarge">32dp</dimen>
+    <dimen name="spacing_semi_x_xlarge">36</dimen>
     <dimen name="spacing_x_xlarge">40dp</dimen>
     <dimen name="spacing_double_large">48dp</dimen>
     <dimen name="spacing_double_xlarge">64dp</dimen>
