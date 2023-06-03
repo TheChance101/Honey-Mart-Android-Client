@@ -23,7 +23,6 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            app:items="@{viewModel.marketUiState.markets}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="5"
             tools:listitem="@layout/item_market"/>

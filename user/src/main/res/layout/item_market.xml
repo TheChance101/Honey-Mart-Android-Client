@@ -8,10 +8,10 @@
 
         <variable
             name="item"
-            type="org.the_chance.ui.market.uistate.MarketUiState" />
+            type="org.the_chance.honeymart.ui.feature.market.uistate.MarketUiState" />
         <variable
             name="listener"
-            type="org.the_chance.ui.market.MarketInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.market.MarketInteractionListener" />
     </data>
 
     <androidx.cardview.widget.CardView

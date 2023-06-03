@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.the_chance.honeymart.ui.base.BaseDiffUtil
@@ -29,8 +30,8 @@ abstract class BaseAdapter<T>(
 
     open fun bind(holder: ItemViewHolder, position: Int) {
         holder.binding.apply {
-//            setVariable(BR.item, items[position])
-//            setVariable(BR.listener, listener)
+            setVariable(BR.item, items[position])
+            setVariable(BR.listener, listener)
         }
     }
 

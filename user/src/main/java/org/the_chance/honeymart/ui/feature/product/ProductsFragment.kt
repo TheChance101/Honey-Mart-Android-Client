@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.ui.product.CategoryProductAdapter
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductsBinding
 

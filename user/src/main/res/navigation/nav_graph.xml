@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/marketsFragment"
-        android:name="org.the_chance.ui.market.MarketsFragment"
+        android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
         android:label="MarketsFragment"
         tools:layout="@layout/fragment_markets">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="org.the_chance.ui.category.CategoriesFragment"
+        android:name="org.the_chance.honeymart.ui.feature.category.CategoriesFragment"
         android:label="fragment_categories"
         tools:layout="@layout/fragment_categories" >
         <action

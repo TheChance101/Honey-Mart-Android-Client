@@ -2,6 +2,7 @@ package org.the_chance.honeymart.data.repository
 
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketWithCategoriesDto
+import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import javax.inject.Inject
 

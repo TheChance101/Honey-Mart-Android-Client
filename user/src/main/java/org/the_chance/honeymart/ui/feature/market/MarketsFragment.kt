@@ -1,10 +1,11 @@
-package org.the_chance.ui.market
+package org.the_chance.honeymart.ui.feature.market
 
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.ui.R
-import org.the_chance.ui.databinding.FragmentMarketsBinding
+import org.the_chance.ui.market.MarketViewModel
+import org.the_chance.user.R
+import org.the_chance.user.databinding.FragmentMarketsBinding
 
 @AndroidEntryPoint
 class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {

@@ -1,6 +1,6 @@
-package org.the_chance.ui.market.uistate
+package org.the_chance.honeymart.ui.feature.market.uistate
 
-import org.the_chance.domain.model.Market
+import org.the_chance.honeymart.domain.model.Market
 
 
 data class MarketsUiState(

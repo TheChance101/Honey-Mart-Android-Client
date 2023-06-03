@@ -1,8 +1,8 @@
-package org.the_chance.domain.usecase
+package org.the_chance.honeymart.domain.usecase
 
-import org.the_chance.data.repository.HoneyMartRepository
-import org.the_chance.domain.model.Product
-import org.the_chance.domain.model.asProduct
+import org.the_chance.honeymart.data.repository.HoneyMartRepository
+import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.asProduct
 import javax.inject.Inject
 
 class GetAllProductsUseCase @Inject constructor(
