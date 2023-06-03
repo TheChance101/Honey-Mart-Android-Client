@@ -8,10 +8,6 @@ class CategoryAdapter(
     listener: CategoryInteractionListener
 ) : BaseAdapter<CategoryUiState>(listener) {
     override val layoutID = R.layout.item_category
-
-
-
-
 }
 
 interface CategoryInteractionListener : BaseInteractionListener{
