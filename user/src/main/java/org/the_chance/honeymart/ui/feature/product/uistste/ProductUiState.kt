@@ -8,7 +8,7 @@ data class ProductsUiState(
 )
 
 data class ProductUiState(
-    val id: Long = 0,
+    val id: Long = 0L,
     val price: Double = 0.0,
     val name: String = "",
     val quantity: String = "",
@@ -16,7 +16,7 @@ data class ProductUiState(
 )
 
 data class CategoryUiState(
-    val categoryId: Long = 0,
+    val categoryId: Long = 0L,
     val imageId: Int = 0,
     val categoryName: String = ""
 )

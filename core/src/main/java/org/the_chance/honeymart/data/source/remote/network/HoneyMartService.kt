@@ -41,17 +41,17 @@ interface HoneyMartService {
     @PUT("/category")
     suspend fun updateCategory(@Body id: Long, @Body name: String)
 
-    @GET("/Products")
+    @GET("/products")
     suspend fun getProducts(): Response<BaseResponse<List<ProductDto>>>
 
-    @POST("/Product")
+    @POST("/product")
     suspend fun addProduct(
         @Body name: String,
         @Body quantity: String,
         @Body price: Double
     )
 
-    @PUT("/Product/{id}")
+    @PUT("/product/{id}")
     suspend fun updateProduct(
         @Path("id") productId: Long,
         @Body name: String,
@@ -59,7 +59,7 @@ interface HoneyMartService {
         @Body price: Double
     )
 
-    @DELETE("/Product/{id}")
+    @DELETE("/product/{id}")
     suspend fun deleteProduct(@Path("id") productId: Long)
 
 

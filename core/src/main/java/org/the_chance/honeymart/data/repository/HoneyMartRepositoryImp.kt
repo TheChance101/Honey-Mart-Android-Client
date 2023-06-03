@@ -12,6 +12,10 @@ import javax.inject.Inject
         return honeyMartService.getMarkets().body()?.value
     }
 
+    override suspend fun getAllProducts(): List<ProductDto>? {
+        return honeyMartService.getProducts().body()?.value
+    }
+
     override suspend fun getAllCategories(id: Long): MarketWithCategoriesDto {
         return honeyMartService.getMarketCategories(id).body()?.value!!
     }
