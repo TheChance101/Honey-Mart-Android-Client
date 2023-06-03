@@ -1,18 +1,29 @@
-package data.remote.network
+package org.the_chance.data.di
 
-import data.remote.HoneyMartService
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import org.the_chance.data.source.remote.network.HoneyMartService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-object HoneyMartApi {
+
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
     private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
 
+    @Singleton
+    @Provides
     fun provideRetrofit(
         client: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -21,21 +32,29 @@ object HoneyMartApi {
             .build()
     }
 
+
+    @Singleton
+    @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 
+    @Singleton
+    @Provides
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
         }.build()
 
+    @Singleton
+    @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
 
+    @Singleton
+    @Provides
     fun createApiService(retrofit: Retrofit): HoneyMartService =
         retrofit.create(HoneyMartService::class.java)
-
 
 }
