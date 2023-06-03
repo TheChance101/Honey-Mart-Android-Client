@@ -9,8 +9,8 @@ import javax.inject.Inject
 class GetAllMarketUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
 ) {
-    suspend operator fun invoke(): List<Market>? {
-       return honeyMartRepository.getAllMarket()?.map { it.asMarket() }
+    suspend operator fun invoke(): List<Market> {
+        return honeyMartRepository.getAllMarket()?.map { it.asMarket() } ?: emptyList()
     }
 
 }
