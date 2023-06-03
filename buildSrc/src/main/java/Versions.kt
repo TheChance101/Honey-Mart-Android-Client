@@ -16,6 +16,7 @@ object Versions {
     const val glide = "4.15.1"
     const val liveData = "2.6.1"
     const val activity = "1.3.1"
+    const val dataBinding ="7.1.0"
     const val fragment = "1.3.6"
     const val hilt = "2.44"
 

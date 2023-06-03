@@ -16,6 +16,7 @@ object Dependencies {
     val glide by lazy{ "com.github.bumptech.glide:glide:${Versions.glide}"}
     val liveData by lazy{ "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.liveData}"}
     val activity by lazy{ "androidx.activity:activity-ktx:${Versions.activity}"}
+    val dataBinding by lazy{"androidx.databinding:databinding-runtime:${Versions.dataBinding}"}
     val fragment by lazy{ "androidx.fragment:fragment-ktx:${Versions.fragment}"}
     val hilt by lazy{ "com.google.dagger:hilt-android:${Versions.hilt}"}
 }
