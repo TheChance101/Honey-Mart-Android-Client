@@ -1,8 +1,7 @@
 package org.the_chance.ui.category
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.ui.BaseFragment
 import org.the_chance.ui.R
 import org.the_chance.ui.databinding.FragmentCategoriesBinding
