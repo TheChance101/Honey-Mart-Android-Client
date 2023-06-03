@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 
+
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     abstract val TAG: String
@@ -32,7 +33,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
-//            setVariable(BR.viewModel, viewModel)
+            setVariable(BR.viewModel,viewModel)
             return root
         }
     }

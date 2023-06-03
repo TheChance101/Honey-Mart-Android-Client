@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 
@@ -54,7 +55,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun createApiService(retrofit: Retrofit): HoneyMartService =
+    fun provideHoneyMartService(retrofit: Retrofit): HoneyMartService =
         retrofit.create(HoneyMartService::class.java)
 
 }
