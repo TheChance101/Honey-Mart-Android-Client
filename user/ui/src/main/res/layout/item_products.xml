@@ -47,9 +47,10 @@
                 android:src="@drawable/ic_heart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/text_product_background"
-                android:layout_marginStart="@dimen/spacing_normal"
+                app:contentPadding="@dimen/spacing_small"
+                android:background="@drawable/product_background"
                 android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
               />
 
             <TextView
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextStyleProductPrice"
-                android:background="@drawable/text_product_background"
+                android:background="@drawable/product_background"
                 android:text="3000$"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
