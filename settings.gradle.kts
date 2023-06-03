@@ -16,11 +16,6 @@ rootProject.name = "HoneyMart"
 include(":user")
 include(":admin")
 include(":owner")
-include(":data")
+include(":core")
 include(":design_system")
-include(":user:ui")
-include(":user:domain")
-include(":owner:ui")
-include(":owner:domain")
-include(":admin:domain")
-include(":admin:ui")
+

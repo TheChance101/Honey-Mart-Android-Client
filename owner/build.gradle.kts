@@ -36,7 +36,12 @@ android {
 }
 
 dependencies {
-    implementation(project("ui"))
+    implementation(project(":design_system"))
+    implementation(project(":core"))
+    implementation(Dependencies.coreKtx)
+    implementation(Dependencies.appCompat)
+    implementation(Dependencies.materialDesign)
+    implementation(Dependencies.constraintLayout)
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.androidJunit)
     androidTestImplementation(Dependencies.espresso)

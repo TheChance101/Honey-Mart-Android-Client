@@ -42,15 +42,27 @@ android {
 }
 
 dependencies {
-    implementation(project("ui"))
+    implementation(project(":design_system"))
+    implementation(project(":core"))
     implementation(Dependencies.coreKtx)
-    implementation(Dependencies.hilt)
-    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.appCompat)
+    implementation(Dependencies.materialDesign)
+    implementation(Dependencies.constraintLayout)
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.androidJunit)
     androidTestImplementation(Dependencies.espresso)
+    implementation(Dependencies.dataBinding)
+    // Navigation dependency
+    implementation(Dependencies.androidNavigationFragment)
+    implementation(Dependencies.androidNavigationUi)
+    // Glide dependency
+    implementation(Dependencies.glide)
+    //Hilt dependency
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hilt)
     // LiveData dependency
     implementation(Dependencies.liveData)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
+
 }
