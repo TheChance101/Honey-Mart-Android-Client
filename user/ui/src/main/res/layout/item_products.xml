@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/product_background"
-                android:text="3000$"
+                android:text="@string/product_price"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +67,7 @@
                 style="@style/TextStyleProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Product Name"
+                android:text="@string/product_name"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/text_product_description"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -77,7 +77,7 @@
                 style="@style/TextStyleProductDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Product Description"
+                android:text="@string/product_description"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
