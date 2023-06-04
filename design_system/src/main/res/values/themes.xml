@@ -23,7 +23,7 @@
         <item name="android:paddingVertical" tools:targetApi="o">@dimen/spacing_large</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/spacing_massive</item>
         <item name="backgroundColor">@color/primary_100</item>
-        <item name="android:textColor">@color/white_50</item>
+        <item name="android:textColor">@color/white</item>
         <item name="fontFamily">@font/poppins_medium</item>
         <item name="android:textSize">@dimen/text_body1</item>
     </style>
@@ -39,7 +39,7 @@
     <!-- Button Icon Style -->
     <style name="Theme.HoneyMart.Button.Icon">
         <item name="icon">@drawable/icon_category</item>
-        <item name="drawableTint">@color/white_50</item>
+        <item name="drawableTint">@color/white</item>
         <item name="android:drawablePadding">@dimen/spacing_medium</item>
     </style>
 
@@ -113,6 +113,25 @@
     <!-- Icon Category Style-->
     <style name="Theme.HoneyMart.CategoryIcon">
         <item name="srcCompat">@drawable/icon_category</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- Image Style-->
+    <style name="Theme.HoneyMart.Image">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!-- Market Image Style-->
+    <style name="Theme.HoneyMart.Image.MarketImage">
+        <item name="srcCompat">@drawable/image_test</item>
+        <item name="android:foreground">@color/black_55</item>
+    </style>
+
+    <!-- Market Text Style -->
+    <style name="Theme.HoneyMart.Text.H2.TextMarket">
+        <item name="android:textColor">@color/white</item>
+        <item name="maxLines">2</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
