@@ -14,9 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "HoneyMart"
 include(
-    BuildModules.USER_APP,
-    BuildModules.ADMIN_APP,
-    BuildModules.OWNER_APP,
-    BuildModules.CORE,
-    BuildModules.DESIGN_SYSTEM
+    ":user",
+    ":admin",
+    ":owner",
+    ":core",
+    ":design_system"
 )
