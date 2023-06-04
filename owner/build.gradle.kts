@@ -1,25 +1,27 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id(Plugins.ANDROID_APPLICATION)
+    kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
     namespace = "org.the_chance.owner"
-    compileSdk = ConfigData.compileSdkVersion
+    compileSdk = ConfigData.COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId = "org.the_chance.owner"
-        minSdk = ConfigData.minSdkVersion
-        targetSdk = ConfigData.targetSdkVersion
-        versionCode = ConfigData.versionCode
-        versionName = ConfigData.versionName
+        minSdk = ConfigData.MIN_SDK_VERSION
+        targetSdk = ConfigData.TARGET_SDK_VERSION
+        versionCode = ConfigData.VERSION_CODE
+        versionName = ConfigData.VERSION_NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName(BuildType.RELEASE) {
+            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -27,22 +29,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
 }
 
 dependencies {
-    implementation(project(":design_system"))
-    implementation(project(":core"))
-    implementation(Dependencies.coreKtx)
-    implementation(Dependencies.appCompat)
-    implementation(Dependencies.materialDesign)
-    implementation(Dependencies.constraintLayout)
-    testImplementation(Dependencies.junit)
-    androidTestImplementation(Dependencies.androidJunit)
-    androidTestImplementation(Dependencies.espresso)
+    implementation(project(BuildModules.DESIGN_SYSTEM))
+    implementation(project(BuildModules.CORE))
+    Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.testDependencies.forEach { testImplementation(it) }
+    Dependencies.navigationDependencies.forEach { implementation(it) }
+    Dependencies.hiltDependencies.forEach { implementation(it) }
+    Dependencies.liveDataDependencies.forEach { implementation(it) }
+    implementation(Dependencies.glide)
 }
