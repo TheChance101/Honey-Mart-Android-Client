@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="zero">0dp</dimen>
-
-    <dimen name="spacing_small_6">6dp</dimen>
-    <dimen name="spacing_normal_12">12dp</dimen>
-
+    <dimen name="spacing_extra_small">2dp</dimen>
     <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
-    <dimen name="spacing_semi_medium">12dp</dimen>
-    <dimen name="spacing_medium">16dp</dimen>
-    <dimen name="spacing_large">24dp</dimen>
-    <dimen name="spacing_xlarge">32dp</dimen>
-    <dimen name="spacing_semi_x_xlarge">36</dimen>
-    <dimen name="spacing_x_xlarge">40dp</dimen>
-    <dimen name="spacing_double_large">48dp</dimen>
-    <dimen name="spacing_double_xlarge">64dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">12dp</dimen>
+    <dimen name="spacing_xlarge">16dp</dimen>
+    <dimen name="spacing_xxlarge">18dp</dimen>
+    <dimen name="spacing_huge">20dp</dimen>
+    <dimen name="spacing_massive">24dp</dimen>
+    <dimen name="spacing_giant">32dp</dimen>
+    <dimen name="spacing_mammoth">40dp</dimen>
+    <dimen name="spacing_monstrous">48dp</dimen>
+    <dimen name="spacing_tremendous">46dp</dimen>
+    <dimen name="spacing_colossal">64dp</dimen>
 
-    <dimen name="font_size_title">16sp</dimen>
-    <dimen name="font_size_body">14sp</dimen>
-    <dimen name="font_size_sub_body">18sp</dimen>
-    <dimen name="font_size_label">12sp</dimen>
-    <dimen name="font_size_title_medium">20sp</dimen>
-    <dimen name="font_size_title_large">24sp</dimen>
+    <dimen name="text_heading">24sp</dimen>
+    <dimen name="text_subtitle">20sp</dimen>
+    <dimen name="text_body1">18sp</dimen>
+    <dimen name="text_body2">16sp</dimen>
+    <dimen name="text_caption">14sp</dimen>
+    <dimen name="text_secondary">12sp</dimen>
 
-    <dimen name="radius_normal">8dp</dimen>
-    <dimen name="radius_medium">16dp</dimen>
-    
-    <dimen name="small_icon_size">16dp</dimen>
-    <dimen name="medium_icons_size">24dp</dimen>
-    <dimen name="large_icons">32dp</dimen>
+    <dimen name="radius_small">16dp</dimen>
+
+    <dimen name="stroke_zero">0dp</dimen>
+    <dimen name="stroke_normal">1dp</dimen>
+
 </resources>

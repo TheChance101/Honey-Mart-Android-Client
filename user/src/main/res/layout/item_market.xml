@@ -20,7 +20,6 @@
         android:layout_marginHorizontal="4dp"
         android:layout_marginBottom="8dp"
         android:onClick="@{()-> listener.onClickMarket(item.id)}"
-        app:cardCornerRadius="@dimen/radius_medium"
         app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +57,6 @@
                 android:maxLines="1"
                 android:text="@{item.name}"
                 android:textColor="#fafafa"
-                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

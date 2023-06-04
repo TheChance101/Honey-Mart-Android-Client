@@ -9,8 +9,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="256dp"
         android:layout_height="200dp"
-        android:layout_marginBottom="@dimen/spacing_normal"
-        app:cardCornerRadius="@dimen/radius_medium">
+       >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_bedside_table"
+                android:src="@drawable/icon_category"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,17 +42,13 @@
                 android:id="@+id/image_favourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:background="@drawable/product_background"
-                android:src="@drawable/ic_heart"
+                android:src="@drawable/icon_favorite"
                 app:contentPadding="@dimen/spacing_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_price"
-                style="@style/TextStyleProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/product_background"
@@ -64,7 +59,6 @@
 
             <TextView
                 android:id="@+id/text_products_name"
-                style="@style/TextStyleProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/product_name"
@@ -74,7 +68,6 @@
 
             <TextView
                 android:id="@+id/text_product_description"
-                style="@style/TextStyleProductDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/product_description"

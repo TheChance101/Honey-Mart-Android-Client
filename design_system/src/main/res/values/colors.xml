@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <color name="black">#121212</color>
-        <color name="black_87">#DE121212</color>
-        <color name="black_60">#99121212</color>
-        <color name="white">#FFFFFFFF</color>
-        <color name="white_100">#ECECEC</color>
+    <color name="primary_100">#FEBC33</color>
+    <color name="primary_200">#E79C00</color>
 
-        <color name="primary">#FEBC33</color>
-        <color name="on_primary">#E79C00</color>
+    <color name="success">#00E82D</color>
+    <color name="error">#FF4E33</color>
 
-        <color name="success">#00E82D</color>
-        <color name="error">#FF4E33</color>
+    <color name="black">#121212</color>
+    <color name="black_8">#14121212</color>
+    <color name="black_16">#29121212</color>
+    <color name="black_37">#5E121212</color>
+    <color name="black_60">#99121212</color>
+    <color name="black_87">#DE121212</color>
 
-        <color name="tertiary_87">#DE000000</color>
-        <color name="tertiary_60">#99000000</color>
-        <color name="tertiary_38">#61000000</color>
-        <color name="tertiary_10">#1A000000</color>
-
-        <color name="tertiary_dark_87">#DEFFFFFF</color>
-        <color name="tertiary_dark_60">#99FFFFFF</color>
-        <color name="tertiary_dark_38">#61FFFFFF</color>
-        <color name="tertiary_dark_10">#1AFFFFFF</color>
-
-        <color name="background">@color/white</color>
-        <color name="card">#FAFAFA</color>
-
-        <color name="background_dark">#232323</color>
-        <color name="card_dark">#363636</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_100">#ECECEC</color>
+    <color name="white_200">#E1E1E1</color>
+    <color name="white_300">#FAFAFA</color>
 </resources>
