@@ -13,10 +13,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "HoneyMart"
-include(
-    ":user",
-    ":admin",
-    ":owner",
-    ":core",
-    ":design_system"
-)
+include(":user")
+include(":admin")
+include(":owner")
+include(":core")
+include(":design_system")
+

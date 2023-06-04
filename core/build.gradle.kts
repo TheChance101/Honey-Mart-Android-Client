@@ -1,43 +1,54 @@
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
-    kotlin(Plugins.KOTLIN_ANDROID)
-    kotlin(Plugins.KOTLIN_KAPT)
-    id(Plugins.HILT_LIBRARY)
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "org.the_chance.data"
-    compileSdk = ConfigData.COMPILE_SDK_VERSION
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        minSdk = ConfigData.MIN_SDK_VERSION
-        targetSdk = ConfigData.TARGET_SDK_VERSION
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
-        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
-        //consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName(BuildType.RELEASE) {
-            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
-        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    Dependencies.hiltDependencies.forEach { implementation(it) }
-    Dependencies.retrofitDependencies.forEach { implementation(it) }
-    implementation(Dependencies.coroutines)
-    Dependencies.testDependencies.forEach { testImplementation(it) }
+    implementation(Dependencies.hilt)
+    kapt(Dependencies.hiltCompiler)
+    implementation (Dependencies.coreKtx)
+    implementation (Dependencies.okHttpInterceptor)
+    implementation (Dependencies.retrofit)
+    implementation (Dependencies.retrofitConverter)
+    implementation (Dependencies.gson)
+    implementation (Dependencies.coroutines)
+    testImplementation (Dependencies.junit)
+    androidTestImplementation (Dependencies.androidJunit)
+    androidTestImplementation (Dependencies.espresso)
 }
+
 kapt {
     correctErrorTypes = true
 }
