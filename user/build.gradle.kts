@@ -1,40 +1,37 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    id(Plugins.ANDROID_APPLICATION)
+    kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
     namespace = "org.the_chance.user"
-    compileSdk = ConfigData.compileSdkVersion
+    compileSdk = ConfigData.COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId = "org.the_chance.user"
-        minSdk = ConfigData.minSdkVersion
-        targetSdk = ConfigData.targetSdkVersion
-        versionCode = ConfigData.versionCode
-        versionName = ConfigData.versionName
+        minSdk = ConfigData.MIN_SDK_VERSION
+        targetSdk = ConfigData.TARGET_SDK_VERSION
+        versionCode = ConfigData.VERSION_CODE
+        versionName = ConfigData.VERSION_NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        getByName(BuildType.RELEASE) {
+            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
     buildFeatures {
         dataBinding = true
@@ -42,27 +39,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":design_system"))
-    implementation(project(":core"))
-    implementation(Dependencies.coreKtx)
-    implementation(Dependencies.appCompat)
-    implementation(Dependencies.materialDesign)
-    implementation(Dependencies.constraintLayout)
-    testImplementation(Dependencies.junit)
-    androidTestImplementation(Dependencies.androidJunit)
-    androidTestImplementation(Dependencies.espresso)
-    implementation(Dependencies.dataBinding)
-    // Navigation dependency
-    implementation(Dependencies.androidNavigationFragment)
-    implementation(Dependencies.androidNavigationUi)
-    // Glide dependency
+    implementation(project(BuildModules.DESIGN_SYSTEM))
+    implementation(project(BuildModules.CORE))
+    Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.testDependencies.forEach { testImplementation(it) }
+    Dependencies.navigationDependencies.forEach { implementation(it) }
+    Dependencies.hiltDependencies.forEach { implementation(it) }
+    Dependencies.liveDataDependencies.forEach { implementation(it) }
     implementation(Dependencies.glide)
-    //Hilt dependency
-    kapt(Dependencies.hiltCompiler)
-    implementation(Dependencies.hilt)
-    // LiveData dependency
-    implementation(Dependencies.liveData)
-    implementation(Dependencies.activity)
-    implementation(Dependencies.fragment)
-
 }
