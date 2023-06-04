@@ -16,7 +16,7 @@
             android:id="@+id/fragment_host"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="org.the_chance.ui.product.ProductsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

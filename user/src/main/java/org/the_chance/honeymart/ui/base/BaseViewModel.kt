@@ -22,7 +22,6 @@ abstract class BaseViewModel : ViewModel() {
             try {
                 val result = function().map(transform)
                 onSuccess(result)
-                Log.e("gh", "markt_result:$result")
             } catch (e: Throwable) {
                 onError()
             }

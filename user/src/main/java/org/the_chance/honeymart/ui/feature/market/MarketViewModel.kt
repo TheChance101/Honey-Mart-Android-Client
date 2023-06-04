@@ -18,16 +18,16 @@ class MarketViewModel @Inject constructor(
 
     override val TAG: String = "TAG"
 
-    private val _marketUiState = MutableStateFlow(MarketsUiState())
-    val marketUiState: StateFlow<MarketsUiState> = _marketUiState
+    private val _uiState = MutableStateFlow(MarketsUiState())
+    val uiState: StateFlow<MarketsUiState> = this._uiState
+
 
     init {
         getAllMarkets()
     }
 
     private fun getAllMarkets() {
-        _marketUiState.update { it.copy(isLoading = true) }
-
+        _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllMarket() },
             transform = { market -> market.asMarketsUiState() },
@@ -37,7 +37,7 @@ class MarketViewModel @Inject constructor(
 
 
     private fun onError() {
-        _marketUiState.update {
+        this._uiState.update {
             it.copy(
                 isLoading = false,
                 isError = true,
@@ -46,9 +46,9 @@ class MarketViewModel @Inject constructor(
     }
 
     private fun onSuccess(
-        markets: List<MarketUiState>
+        markets: List<MarketUiState>,
     ) {
-        _marketUiState.update {
+        this._uiState.update {
             it.copy(
                 isLoading = false,
                 isError = false,
