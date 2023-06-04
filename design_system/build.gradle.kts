@@ -1,35 +1,39 @@
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
-    kotlin(Plugins.KOTLIN_ANDROID)
+    id("com.android.library")
+    kotlin("android")
 }
 
 android {
     namespace = "org.the_chance.design_system"
-    compileSdk = ConfigData.COMPILE_SDK_VERSION
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        minSdk = ConfigData.MIN_SDK_VERSION
-        targetSdk = ConfigData.TARGET_SDK_VERSION
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
-        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
-        //consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName(BuildType.RELEASE) {
-            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
-        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    Dependencies.uiDependencies.forEach { implementation(it) }
+    implementation(Dependencies.appCompat)
+    implementation(Dependencies.materialDesign)
 }
