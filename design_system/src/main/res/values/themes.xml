@@ -50,7 +50,6 @@
         <item name="android:textColor">@color/primary_100</item>
     </style>
 
-
     <!-- Text Styles -->
     <style name="Theme.HoneyMart.Text">
         <item name="android:textColor">@color/black_87</item>
@@ -116,6 +115,5 @@
         <item name="srcCompat">@drawable/icon_category</item>
         <item name="android:layout_gravity">center</item>
     </style>
-
 
 </resources>
