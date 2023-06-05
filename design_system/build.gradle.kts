@@ -34,6 +34,5 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.appCompat)
-    implementation(Dependencies.materialDesign)
+    Dependencies.uiDependencies.forEach { implementation(it) }
 }

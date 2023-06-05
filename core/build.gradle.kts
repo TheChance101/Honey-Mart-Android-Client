@@ -36,17 +36,18 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.hilt)
+    implementation(Dependencies.hiltDependency)
     kapt(Dependencies.hiltCompiler)
-    implementation (Dependencies.coreKtx)
-    implementation (Dependencies.okHttpInterceptor)
-    implementation (Dependencies.retrofit)
-    implementation (Dependencies.retrofitConverter)
-    implementation (Dependencies.gson)
-    implementation (Dependencies.coroutines)
-    testImplementation (Dependencies.junit)
-    androidTestImplementation (Dependencies.androidJunit)
-    androidTestImplementation (Dependencies.espresso)
+    implementation(Dependencies.coreKtx)
+    /*    implementation (Dependencies.okHttpInterceptor)
+        implementation (Dependencies.retrofit)
+        implementation (Dependencies.retrofitConverter)
+        implementation (Dependencies.gson)*/
+
+    Dependencies.retrofitDependencies.forEach { implementation(it) }
+    implementation(Dependencies.coroutinesDependency)
+    testImplementation(Dependencies.junitDependency)
+    Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
 }
 
 kapt {
