@@ -1,4 +1,4 @@
-package org.the_chance.ui.product.uistste
+package org.the_chance.honeymart.ui.feature.product.uistste
 
 data class ProductsUiState(
     val isLoading: Boolean = true,

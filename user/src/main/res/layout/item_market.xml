@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
@@ -8,8 +7,7 @@
 
         <variable
             name="item"
-            type="org.the_chance.honeymart.ui.feature.market.uistate.MarketUiState" />
-
+            type="org.the_chance.honeymart.ui.feature.market.MarketUiState" />
         <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.market.MarketInteractionListener" />

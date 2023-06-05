@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.the_chance.ui.category.CategoryViewModel" />
+            type="org.the_chance.honeymart.ui.feature.category.CategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

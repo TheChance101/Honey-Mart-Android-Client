@@ -1,4 +1,4 @@
-package org.the_chance.ui.category.uistate
+package org.the_chance.honeymart.ui.feature.category.uistate
 
 data class CategoriesUiState(
     val id: Long = 0L,
