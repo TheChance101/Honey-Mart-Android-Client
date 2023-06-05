@@ -5,15 +5,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.product.uistste.ProductsUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val getAllProducts: GetAllProductsUseCase
-) : BaseViewModel(), ProductInteractionListener,
+    private val getAllProducts: GetAllProductsUseCase,
+) : BaseViewModel<ProductsUiState>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
-
-
 
     init {
         viewModelScope.launch {
