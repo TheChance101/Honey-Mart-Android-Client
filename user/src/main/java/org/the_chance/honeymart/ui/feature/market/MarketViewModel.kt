@@ -1,6 +1,5 @@
-package org.the_chance.ui.market
+package org.the_chance.honeymart.ui.feature.market
 
-//import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.market.MarketInteractionListener
 import org.the_chance.honeymart.ui.feature.market.uistate.MarketsUiState
 import org.the_chance.honeymart.ui.feature.market.uistate.asMarketsUiState
 import javax.inject.Inject

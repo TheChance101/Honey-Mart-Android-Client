@@ -6,23 +6,29 @@
     <data>
         <variable
             name="viewModel"
-            type="org.the_chance.ui.market.MarketViewModel" />
+            type="org.the_chance.honeymart.ui.feature.market.MarketViewModel" />
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".market.MarketsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_view_markets"
+            android:id="@+id/recycler_markets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:clipToPadding="false"
-            android:padding="@dimen/spacing_semi_medium"
+            android:padding="@dimen/spacing_large"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_market"/>
+            tools:listitem="@layout/item_market"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
