@@ -36,10 +36,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":design_system"))
-    implementation(project(":core"))
+    implementation(project(BuildModules.DESIGN_SYSTEM))
+    implementation(project(BuildModules.CORE))
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
-
 }
