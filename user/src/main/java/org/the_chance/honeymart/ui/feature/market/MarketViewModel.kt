@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.market.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.market.uistate.MarketsUiState
 import org.the_chance.honeymart.ui.feature.market.uistate.asMarketsUiState
 import javax.inject.Inject
@@ -16,35 +17,45 @@ import javax.inject.Inject
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketUseCase,
 ) : BaseViewModel(), MarketInteractionListener {
+
     override val TAG: String = "TAG"
 
-    private val _marketUiState = MutableStateFlow(MarketsUiState())
-    val marketUiState: StateFlow<MarketsUiState> = _marketUiState
+    private val _uiState = MutableStateFlow(MarketsUiState())
+    val uiState: StateFlow<MarketsUiState> = this._uiState
+
 
     init {
         getAllMarkets()
     }
 
     private fun getAllMarkets() {
-        _marketUiState.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            try {
-                val markets = getAllMarket().map { it.asMarketsUiState() }
-                _marketUiState.update {
-                    it.copy(
-                        markets = markets,
-                        isLoading = false,
-                        isError = false,
-                    )
-                }
-            } catch (e: Throwable) {
-                _marketUiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = true,
-                    )
-                }
-            }
+        _uiState.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllMarket() },
+            transform = { market -> market.asMarketsUiState() },
+            this::onSuccess, ::onError
+        )
+    }
+
+
+    private fun onError() {
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = true,
+            )
+        }
+    }
+
+    private fun onSuccess(
+        markets: List<MarketUiState>,
+    ) {
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                markets = markets
+            )
         }
     }
 
