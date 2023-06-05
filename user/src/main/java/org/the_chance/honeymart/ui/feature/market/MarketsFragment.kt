@@ -14,7 +14,7 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
 
     override fun setup() {
         val adapter = MarketAdapter(viewModel)
-        binding.recycleViewMarkets.adapter = adapter
+        binding.recyclerMarkets.adapter = adapter
     }
 
 }

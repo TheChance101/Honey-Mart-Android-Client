@@ -11,37 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_small"
-        android:layout_marginVertical="@dimen/spacing_semi_medium"
+        android:layout_marginVertical="@dimen/spacing_large"
         app:layout_constraintDimensionRatio="1:1">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/category_container"
+            style="@style/Theme.HoneyMart.Card.CategoryCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_category"
+                style="@style/Theme.HoneyMart.CategoryIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/spacing_xlarge"
-                app:srcCompat="@drawable/ic_bedside_table" />
+                android:layout_margin="@dimen/spacing_giant" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
+            style="@style/Theme.HoneyMart.Text.H5.CategoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:ellipsize="end"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center"
-            android:maxLines="2"
-            android:textColor="@color/black_60"
+            android:layout_marginTop="@dimen/spacing_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"

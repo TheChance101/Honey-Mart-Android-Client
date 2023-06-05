@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="56dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
-        app:cardCornerRadius="@dimen/spacing_medium">
+        android:layout_margin="@dimen/spacing_medium"
+        app:layout_constraintDimensionRatio="1:1">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="56dp"
-            android:layout_height="match_parent">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/category_container"
+            style="@style/Theme.HoneyMart.Card.CategoryCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_category_product"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:padding="@dimen/spacing_small"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_bedside_table"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView_category_product"
-                android:layout_width="56dp"
+                android:id="@+id/image_category"
+                style="@style/Theme.HoneyMart.CategoryIcon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/spacing_small"
-                android:text="@string/table"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_category_product" />
+                android:layout_margin="@dimen/spacing_large" />
+        </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_category"
+            style="@style/Theme.HoneyMart.Text.H6.TextCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category_container"
+            tool:text="Category" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
