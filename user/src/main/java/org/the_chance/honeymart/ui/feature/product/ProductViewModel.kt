@@ -40,7 +40,7 @@ class ProductViewModel @Inject constructor(
             { getAllProducts(1) },
             { Product -> Product.asProductUiState() },
             ::onSuccessGetProducts,
-            ::onErrorGetProducts
+            ::onError
         )
     }
 
@@ -53,16 +53,6 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-
-    private fun onErrorGetProducts() {
-        this._uiState.update {
-            it.copy(
-                isLoading = false,
-                isError = false
-            )
-        }
-    }
-
     private fun onSuccess(categories: List<CategoryUiState>) {
         _uiState.update {
             it.copy(
