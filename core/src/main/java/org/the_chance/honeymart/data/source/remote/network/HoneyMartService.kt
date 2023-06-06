@@ -62,6 +62,8 @@ interface HoneyMartService {
 
     @DELETE("/product/{id}")
     suspend fun deleteProduct(@Path("id") productId: Long)
-
+    @GET("/category/{id}")
+    suspend fun getAllCategoryProducts(@Path("id") categoryId : Long)
+    : Response<BaseResponse<List<ProductDto>>>
 
 }
