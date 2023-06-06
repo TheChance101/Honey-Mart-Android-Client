@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.data.source.remote.network
 
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketWithCategoriesDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
@@ -27,7 +28,7 @@ interface HoneyMartService {
     suspend fun updateMarket(@Path("id") marketId: Long)
 
     @GET("/markets/{id}/categories")
-    suspend fun getMarketCategories(@Path("id") marketId: Long): Response<BaseResponse<MarketWithCategoriesDto>>
+    suspend fun getMarketCategories(@Path("id") marketId: Long): Response<BaseResponse<List<CategoryDto>>>
 
     @GET("/marketsWithCategories")
     suspend fun getAllMarketsWithTheirCategories(): Response<BaseResponse<List<MarketWithCategoriesDto>>>

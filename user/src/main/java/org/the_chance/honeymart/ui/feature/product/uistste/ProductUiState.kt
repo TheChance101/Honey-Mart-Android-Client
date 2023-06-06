@@ -1,5 +1,7 @@
 package org.the_chance.honeymart.ui.feature.product.uistste
 
+import org.the_chance.honeymart.domain.model.Category
+
 data class ProductsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
@@ -20,3 +22,11 @@ data class CategoryUiState(
     val imageId: Int = 0,
     val categoryName: String = ""
 )
+
+fun Category.asCategoryUiState(): CategoryUiState {
+    return CategoryUiState(
+        categoryId = id,
+        imageId = imageId,
+        categoryName = name
+    )
+}

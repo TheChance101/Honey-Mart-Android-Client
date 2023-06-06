@@ -1,12 +1,13 @@
 package org.the_chance.honeymart.data.repository
 
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketWithCategoriesDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import javax.inject.Inject
 
- class HoneyMartRepositoryImp @Inject constructor (
+class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService
 ) : HoneyMartRepository {
     override suspend fun getAllMarket(): List<MarketDto>? {
@@ -17,8 +18,9 @@ import javax.inject.Inject
         return honeyMartService.getProducts().body()?.value
     }
 
-    override suspend fun getAllCategories(id: Long): MarketWithCategoriesDto {
-        return honeyMartService.getMarketCategories(id).body()?.value!!
+    override suspend fun getAllCategoriesByMarketId(id: Long): List<CategoryDto>? {
+        return honeyMartService.getMarketCategories(id).body()?.value
     }
+
 
 }

@@ -5,6 +5,9 @@
 
     <data>
 
+            <variable
+                name="viewModel"
+                type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +23,7 @@
             android:paddingStart="@dimen/spacing_medium"
             android:clipToPadding="false"
             android:orientation="vertical"
+            app:items="@{viewModel.uiState.categoryList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
