@@ -4,38 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <data>
-    </data>
+    <data></data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.the_chance.honeymart.ui.MainActivity">
-        <LinearLayout
-            android:id="@+id/header"
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@color/primary_100"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_300"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/honey_mart_logo"
                 android:layout_gravity="start|bottom"
                 android:layout_margin="@dimen/spacing_xlarge"
-                />
-        </LinearLayout>
+                app:srcCompat="@drawable/honey_mart_logo" />
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
-            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
