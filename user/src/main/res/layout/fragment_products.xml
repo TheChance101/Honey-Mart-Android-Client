@@ -35,6 +35,7 @@
             android:id="@+id/recycler_product"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:items="@{viewModel.uiState.productList}"
             android:paddingVertical="@dimen/spacing_large"
             android:paddingEnd="@dimen/spacing_small"
             android:clipToPadding="false"
