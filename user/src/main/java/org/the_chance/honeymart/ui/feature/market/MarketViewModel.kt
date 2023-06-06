@@ -1,26 +1,17 @@
 package org.the_chance.honeymart.ui.feature.market
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.market.uistate.MarketUiState
-import org.the_chance.honeymart.ui.feature.market.uistate.MarketsUiState
-import org.the_chance.honeymart.ui.feature.market.uistate.asMarketsUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketUseCase,
-) : BaseViewModel(), MarketInteractionListener {
+) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = "TAG"
-
-    private val _uiState = MutableStateFlow(MarketsUiState())
-    val uiState: StateFlow<MarketsUiState> = this._uiState
-
 
     init {
         getAllMarkets()
@@ -30,8 +21,9 @@ class MarketViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllMarket() },
-            transform = { market -> market.asMarketsUiState() },
-            this::onSuccess, ::onError
+            { market -> market.asMarketsUiState() },
+            ::onSuccess,
+            ::onError
         )
     }
 
@@ -45,10 +37,8 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    private fun onSuccess(
-        markets: List<MarketUiState>,
-    ) {
-        this._uiState.update {
+    private fun onSuccess(markets: List<MarketUiState>) {
+        _uiState.update {
             it.copy(
                 isLoading = false,
                 isError = false,
