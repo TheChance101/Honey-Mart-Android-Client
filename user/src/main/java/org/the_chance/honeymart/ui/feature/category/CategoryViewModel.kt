@@ -1,38 +1,53 @@
 package org.the_chance.honeymart.ui.feature.category
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.ui.category.uistate.CategoryUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val getMarketsAllCategories: GetMarketAllCategoriesUseCase,
-) : BaseViewModel<CategoryUiState>(CategoryUiState()), CategoryInteractionListener {
+    private val getAllCategories: GetMarketAllCategoriesUseCase,
+    val id: Long,
+) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
 
     init {
-        getAllCategories()
-        Log.e("TAG", "CategoryViewModel: ")
+        getAllCategory(id)
     }
 
-    private fun getAllCategories() {
-        viewModelScope.launch {
-            try {
-                val result = getMarketsAllCategories(0)
-                Log.e(TAG, "getAllCategories: $result ")
-            } catch (e: Throwable) {
-                Log.e(TAG, "getAllCategories error: ${e.message}")
-            }
+    private fun getAllCategory(id: Long) {
+        _uiState.update {it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllCategories(id)},
+            { category -> category.asCategoriesUiState() },
+            ::onSuccess,
+            ::onError
+        )
+    }
+
+    private fun onSuccess(categories: List<CategoryUiState>){
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                categories = categories
+            )
+        }
+    }
+
+    private fun onError(){
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = true
+            )
         }
     }
 
     override fun onCategoryClicked(id: Long) {
-        TODO("Not yet implemented")
+        //navigate to category details
     }
 }
