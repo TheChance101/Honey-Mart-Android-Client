@@ -2,6 +2,7 @@ interface BuildType {
     companion object {
         const val RELEASE = "release"
     }
+
     val isMinifyEnabled: Boolean
 }
 

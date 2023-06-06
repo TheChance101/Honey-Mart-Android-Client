@@ -20,18 +20,15 @@ android {
     buildTypes {
         getByName(BuildType.RELEASE) {
             isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
 }
 

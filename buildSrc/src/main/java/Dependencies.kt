@@ -8,7 +8,7 @@ object Dependencies {
             "androidx.constraintlayout:constraintlayout:${DependencyVersions.CONSTRAINT_LAYOUT}"
         )
     }
-    val coreKtx by lazy { "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}" }
+    val coreKtxDependency  by lazy { "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}" }
     val dataBindingDependency by lazy { "androidx.databinding:databinding-runtime:${DependencyVersions.DATA_BINDING}" }
 
     // Test Dependencies

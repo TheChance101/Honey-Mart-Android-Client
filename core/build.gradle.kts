@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "org.the_chance.data"
+    namespace = "org.the_chance.core"
     compileSdk = ConfigData.COMPILE_SDK_VERSION
 
     defaultConfig {
@@ -20,25 +20,22 @@ android {
     buildTypes {
         getByName(BuildType.RELEASE) {
             isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
 }
 
 dependencies {
     implementation(Dependencies.hiltDependency)
     kapt(Dependencies.hiltCompiler)
-    implementation(Dependencies.coreKtx)
+    implementation(Dependencies.coreKtxDependency)
     Dependencies.retrofitDependencies.forEach { implementation(it) }
     implementation(Dependencies.coroutinesDependency)
     testImplementation(Dependencies.junitDependency)

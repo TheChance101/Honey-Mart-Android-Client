@@ -22,19 +22,15 @@ android {
     buildTypes {
         getByName(BuildType.RELEASE) {
             isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
+        targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
-
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
     buildFeatures {
         dataBinding = true
@@ -48,13 +44,9 @@ dependencies {
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(Dependencies.dataBindingDependency)
-    // Navigation dependency
     Dependencies.navigationDependencies.forEach { implementation(it) }
-    // Glide dependency
     implementation(Dependencies.glideDependency)
-    //Hilt dependency
     kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.hiltDependency)
-    // LiveData dependency
     Dependencies.liveDataDependencies.forEach { implementation(it) }
 }
