@@ -9,6 +9,7 @@ class GetMarketAllCategoriesUseCase @Inject constructor(
     private val honeyMarketRepository : HoneyMartRepository
 ){
      suspend operator fun invoke(id: Long): List<Category> {
-         return honeyMarketRepository.getAllCategoriesByMarketId(id)?.map { it.asCategory() } ?: emptyList()
+         return honeyMarketRepository
+             .getAllCategoriesByMarketId(id)?.map { it.asCategory() } ?: emptyList()
      }
 }
