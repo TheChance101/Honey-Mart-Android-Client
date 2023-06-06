@@ -10,4 +10,5 @@ interface HoneyMartRepository {
     suspend fun getAllMarket(): List<MarketDto>?
     suspend fun getAllProducts(): List<ProductDto>?
     suspend fun getAllCategoriesByMarketId(id: Long): List<CategoryDto>?
+    suspend fun getAllCategoryProduct(id:Long):List<ProductDto>?
 }

@@ -22,5 +22,9 @@ class HoneyMartRepositoryImp @Inject constructor(
         return honeyMartService.getMarketCategories(id).body()?.value
     }
 
+    override suspend fun getAllCategoryProduct(id: Long): List<ProductDto>?{
+        return honeyMartService.getAllCategoryProducts(id).body()?.value
+    }
+
 
 }
