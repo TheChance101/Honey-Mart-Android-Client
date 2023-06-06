@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketWithCategoriesDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
@@ -17,7 +18,7 @@ import javax.inject.Inject
         return honeyMartService.getProducts().body()?.value
     }
 
-    override suspend fun getAllCategories(id: Long): MarketWithCategoriesDto {
+    override suspend fun getAllCategories(id: Long): List<CategoryDto> {
         return honeyMartService.getMarketCategories(id).body()?.value!!
     }
 

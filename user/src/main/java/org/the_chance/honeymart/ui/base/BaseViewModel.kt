@@ -31,10 +31,8 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
         viewModelScope.launch(dispatcher) {
             try {
                 val result = function().map(transform)
-                Log.e("TAG", "tryToExecute:$result ")
                 onSuccess(result)
             } catch (e: Throwable) {
-                Log.e("TAG", "tryToExecute error: ${e.message}")
                 onError()
             }
         }

@@ -5,6 +5,12 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.product.CategoryUiState" />
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.product.CategoryProductInteractionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +39,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
             style="@style/Theme.HoneyMart.Text.H6.TextCategory"
+            android:text="@{item.categoryName}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
