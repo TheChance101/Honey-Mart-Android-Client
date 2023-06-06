@@ -1,4 +1,4 @@
-package org.the_chance.ui.category
+package org.the_chance.honeymart.ui.feature.category
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -6,14 +6,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener
+import org.the_chance.ui.category.uistate.CategoryUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getMarketsAllCategories: GetMarketAllCategoriesUseCase,
-) : BaseViewModel(), CategoryInteractionListener {
+) : BaseViewModel<CategoryUiState>(CategoryUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
+
 
     init {
         getAllCategories()
