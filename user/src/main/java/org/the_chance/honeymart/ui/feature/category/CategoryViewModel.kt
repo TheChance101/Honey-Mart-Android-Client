@@ -9,13 +9,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetMarketAllCategoriesUseCase,
-    val id: Long,
+  //  val id: Long,
 ) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
 
     init {
-        getAllCategory(id)
+        getAllCategory(0)
     }
 
     private fun getAllCategory(id: Long) {
