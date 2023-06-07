@@ -43,10 +43,13 @@ dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
-    implementation(Dependencies.dataBindingDependency)
+    //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
+    //Glide
     implementation(Dependencies.glideDependency)
+    //Hilt
     kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.hiltDependency)
+    //LiveData
     Dependencies.liveDataDependencies.forEach { implementation(it) }
 }
