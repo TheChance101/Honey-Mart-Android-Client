@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.market.MarketViewModel" />
