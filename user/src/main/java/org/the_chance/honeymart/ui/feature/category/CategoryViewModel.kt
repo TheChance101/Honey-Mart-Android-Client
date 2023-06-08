@@ -9,26 +9,22 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetMarketAllCategoriesUseCase,
-  //  val id: Long,
+    //  val id: Long,
 ) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
 
-    init {
-        getAllCategory(1)
-    }
-
-    private fun getAllCategory(id: Long) {
-        _uiState.update {it.copy(isLoading = true) }
+    fun getAllCategory(id: Long) {
+        _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCategories(id)},
+            { getAllCategories(id) },
             { category -> category.asCategoriesUiState() },
             ::onSuccess,
             ::onError
         )
     }
 
-    private fun onSuccess(categories: List<CategoryUiState>){
+    private fun onSuccess(categories: List<CategoryUiState>) {
         this._uiState.update {
             it.copy(
                 isLoading = false,
@@ -38,7 +34,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun onError(){
+    private fun onError() {
         this._uiState.update {
             it.copy(
                 isLoading = false,

@@ -28,9 +28,18 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
 
         binding.recyclerMarkets
-            .addOnScrollListenerWithAppbarColor(requireContext(),this,appBarLayout)
+            .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-
+//        navigateToCategory(MarketUiState())
     }
+
+
+//    private fun navigateToCategory(marketsId: MarketUiState) {
+//        viewModel.onClickMarket(marketsId.id.toLong())
+//        val action =
+//            MarketsFragmentDirections
+//                .actionMarketsFragmentToCategoriesFragment(marketsId)
+//        findNavController().navigate(action)
+//    }
 }

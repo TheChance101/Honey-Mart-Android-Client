@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/categoriesFragment">
+    app:startDestination="@id/marketsFragment">
 
     <fragment
         android:id="@+id/marketsFragment"
@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_categoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
+        <argument
+            android:name="MarketId"
+            app:argType="Long" />
     </fragment>
 
     <fragment

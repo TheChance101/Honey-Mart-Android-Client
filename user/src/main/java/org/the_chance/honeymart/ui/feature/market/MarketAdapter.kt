@@ -10,5 +10,5 @@ class MarketAdapter(listener: MarketInteractionListener) : BaseAdapter<MarketUiS
 }
 
 interface MarketInteractionListener: BaseInteractionListener{
-    fun onClickMarket(id: Int)
+    fun onClickMarket(id: Long)
 }

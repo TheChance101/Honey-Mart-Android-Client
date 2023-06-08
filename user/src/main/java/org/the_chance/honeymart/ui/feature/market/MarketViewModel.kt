@@ -47,11 +47,10 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    override fun onClickMarket(id: Int) {
+    override fun onClickMarket(id: Long) {
         // navigate to market detail
+        _uiState.value.markets[id.toInt()]
     }
-
-
 }
 
 
