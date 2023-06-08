@@ -10,6 +10,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.util.addOnScrollListenerWithAppbarColor
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentMarketsBinding
 
@@ -28,7 +29,9 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         imageLogoScrolled = requireView().findViewById(R.id.image_logo_scro*//*ll)*/
 
         appBarLayout = requireActivity().findViewById(R.id.appBarLayout)
-        binding.recyclerMarkets.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+
+/*        binding.recyclerMarkets.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val offset = recyclerView.computeVerticalScrollOffset()
@@ -39,8 +42,12 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
                         alpha)
                     appBarLayout.setBackgroundColor(newColor)
                 }
-            })
-        binding.recyclerMarkets.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            })*/
+
+        binding.recyclerMarkets.addOnScrollListenerWithAppbarColor(requireContext(), appBarLayout)
+
+
+/*        binding.recyclerMarkets.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
@@ -53,7 +60,8 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
                     imageLogoScrolled.visibility = View.VISIBLE
                 }
             }
-        })
+        })*/
+
     }
 
     private fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
