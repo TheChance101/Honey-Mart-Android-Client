@@ -16,7 +16,7 @@ import retrofit2.http.Path
 interface HoneyMartService {
 
     @GET("/markets")
-    suspend fun getMarkets(): Response<BaseResponse<List<MarketDto>>>
+    suspend fun getAllMarkets(): Response<BaseResponse<List<MarketDto>>>
 
     @POST("/markets")
     suspend fun addMarket(@Body marketName: String): Response<BaseResponse<MarketDto>>
@@ -28,7 +28,7 @@ interface HoneyMartService {
     suspend fun updateMarket(@Path("id") marketId: Long)
 
     @GET("/markets/{id}/categories")
-    suspend fun getMarketCategories(@Path("id") marketId: Long): Response<BaseResponse<List<CategoryDto>>>
+    suspend fun getAllCategoriesByMarketId(@Path("id") marketId: Long): Response<BaseResponse<List<CategoryDto>>>
 
     @GET("/marketsWithCategories")
     suspend fun getAllMarketsWithTheirCategories(): Response<BaseResponse<List<MarketWithCategoriesDto>>>
@@ -43,7 +43,7 @@ interface HoneyMartService {
     suspend fun updateCategory(@Body id: Long, @Body name: String)
 
     @GET("/products")
-    suspend fun getProducts(): Response<BaseResponse<List<ProductDto>>>
+    suspend fun getAllProducts(): Response<BaseResponse<List<ProductDto>>>
 
     @POST("/product")
     suspend fun addProduct(
@@ -63,7 +63,7 @@ interface HoneyMartService {
     @DELETE("/product/{id}")
     suspend fun deleteProduct(@Path("id") productId: Long)
     @GET("/category/{id}")
-    suspend fun getAllCategoryProducts(@Path("id") categoryId : Long)
+    suspend fun getAllProductsByCategoryId(@Path("id") categoryId : Long)
     : Response<BaseResponse<List<ProductDto>>>
 
 }

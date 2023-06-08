@@ -10,7 +10,7 @@ class GetAllMarketUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
 ) {
     suspend operator fun invoke(): List<Market> {
-        return honeyMartRepository.getAllMarket()?.map { it.asMarket() } ?: emptyList()
+        return honeyMartRepository.getAllMarkets()?.map { it.asMarket() } ?: emptyList()
     }
 
 }
