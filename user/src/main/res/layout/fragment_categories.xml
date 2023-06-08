@@ -18,6 +18,7 @@
             android:id="@+id/recycler_categories"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:items="@{viewModel.uiState.categories}"
             android:paddingHorizontal="@dimen/spacing_large"
             android:paddingVertical="@dimen/spacing_small"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
