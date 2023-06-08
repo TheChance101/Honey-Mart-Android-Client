@@ -13,6 +13,6 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
 }
 
 @BindingAdapter("showIfTrue")
-fun showfTrue(view: View, condition: Boolean) {
+fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
