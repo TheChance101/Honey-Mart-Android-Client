@@ -19,11 +19,14 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     private lateinit var imageLogoDefault: ShapeableImageView
     private lateinit var imageLogoScrolled: ShapeableImageView
     override fun setup() {
+
         val adapter = MarketAdapter(viewModel)
         binding.recyclerMarkets.adapter = adapter
+
         appBarLayout = requireActivity().findViewById(R.id.appBarLayout)
         imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
+
         binding.recyclerMarkets
             .addOnScrollListenerWithAppbarColor(requireContext(),this,appBarLayout)
         binding.recyclerMarkets
