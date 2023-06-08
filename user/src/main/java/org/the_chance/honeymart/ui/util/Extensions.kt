@@ -9,7 +9,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayout: AppBarLayout) {
-    val threshold = context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_medium)
+    val threshold =
+        context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_medium)
 
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -25,7 +26,11 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayo
         }
     })
 }
-fun RecyclerView.addOnScrollListenerWithImageVisibility(imageDefault: ShapeableImageView, imageScrolled: ShapeableImageView) {
+
+fun RecyclerView.addOnScrollListenerWithImageVisibility(
+    imageDefault: ShapeableImageView,
+    imageScrolled: ShapeableImageView
+) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -48,6 +53,7 @@ fun RecyclerView.addOnScrollListenerWithImageVisibility(imageDefault: ShapeableI
         }
     })
 }
+
 private fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
     val r = (Color.red(color1) * (1 - ratio) + Color.red(color2) * ratio).toInt()
     val g = (Color.green(color1) * (1 - ratio) + Color.green(color2) * ratio).toInt()
