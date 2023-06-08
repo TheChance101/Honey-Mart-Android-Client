@@ -2,9 +2,11 @@ package org.the_chance.honeymart.ui.util
 
 import android.content.Context
 import android.graphics.Color
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.imageview.ShapeableImageView
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayout: AppBarLayout) {
     val threshold = context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_medium)
@@ -23,7 +25,22 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayo
         }
     })
 }
-
+fun RecyclerView.addOnScrollListenerWithImageVisibility(imageDefault: ShapeableImageView, imageScrolled: ShapeableImageView) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                // Scrolling has ended or is settling
+                imageDefault.visibility = View.VISIBLE
+                imageScrolled.visibility = View.GONE
+            } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                // Scrolling is in progress
+                imageDefault.visibility = View.GONE
+                imageScrolled.visibility = View.VISIBLE
+            }
+        }
+    })
+}
 private fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
     val r = (Color.red(color1) * (1 - ratio) + Color.red(color2) * ratio).toInt()
     val g = (Color.green(color1) * (1 - ratio) + Color.green(color2) * ratio).toInt()

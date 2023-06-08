@@ -27,7 +27,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_margin="@dimen/spacing_xlarge"
+                android:visibility="gone"
                 app:srcCompat="@drawable/honey_mart_logo" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_logo_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_margin="@dimen/spacing_xlarge"
+                android:visibility="gone"
+                app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
         </com.google.android.material.appbar.AppBarLayout>
 
 
