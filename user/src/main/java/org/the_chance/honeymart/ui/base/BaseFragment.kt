@@ -71,18 +71,19 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         Log.e(TAG, value.toString())
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     protected fun setupScrollListenerForRecyclerView(
         recyclerView: RecyclerView,
     ) {
         appBarLayout = requireActivity().findViewById(R.id.appBarLayout)
         imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
-        recyclerView.addOnScrollListenerWithAppbarColor(
-            requireContext(),
-            this,
-            appBarLayout
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            recyclerView.addOnScrollListenerWithAppbarColor(
+                requireContext(),
+                this,
+                appBarLayout
+            )
+        }
         recyclerView.addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
     }
 

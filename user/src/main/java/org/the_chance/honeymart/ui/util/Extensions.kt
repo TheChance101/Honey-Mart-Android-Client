@@ -1,10 +1,11 @@
 package org.the_chance.honeymart.ui.util
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
-import android.os.Build
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import org.the_chance.design_system.R
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
     context: Context,
     fragment: Fragment,
@@ -32,11 +32,34 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
                 ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
-            appBarLayout.setBackgroundColor(newCollorScrolled)
-            window.statusBarColor = newCollorScrolled
-
+/*            appBarLayout.setBackgroundColor(newCollorScrolled)
+            window.statusBarColor = newCollorScrolled*/
+            animateBackgroundColor(appBarLayout, newCollorScrolled)
+            animateStatusBarColor(window, newCollorScrolled)
         }
     })
+}
+
+private fun animateBackgroundColor(appBarLayout: AppBarLayout, newColor: Int) {
+    val currentColor = (appBarLayout.background as? ColorDrawable)?.color ?: 0
+    val colorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), currentColor, newColor)
+    colorAnimator.duration = 50
+    colorAnimator.addUpdateListener { animator ->
+        val animatedValue = animator.animatedValue as Int
+        appBarLayout.setBackgroundColor(animatedValue)
+    }
+    colorAnimator.start()
+}
+
+private fun animateStatusBarColor(window: Window, newColor: Int) {
+    val currentColor = window.statusBarColor
+    val colorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), currentColor, newColor)
+    colorAnimator.duration = 50
+    colorAnimator.addUpdateListener { animator ->
+        val animatedValue = animator.animatedValue as Int
+        window.statusBarColor = animatedValue
+    }
+    colorAnimator.start()
 }
 
 
