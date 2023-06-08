@@ -33,13 +33,16 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.hiltDependency)
-    kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.coreKtxDependency)
-    Dependencies.retrofitDependencies.forEach { implementation(it) }
-    implementation(Dependencies.coroutinesDependency)
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    //retrofit
+    Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Coroutine
+    implementation(Dependencies.coroutinesDependency)
+    //Hilt
+    implementation(Dependencies.hiltDependency)
+    kapt(Dependencies.hiltCompiler)
 }
 
 kapt {
