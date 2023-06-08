@@ -1,10 +1,14 @@
 package org.the_chance.honeymart.ui.base
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
@@ -29,6 +33,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     private lateinit var imageLogoScrolled: ShapeableImageView
     protected val binding get() = _binding
 
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,6 +45,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
             layoutIdFragment,
             container, false
         )
+        val window = requireActivity().window
+        window.decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        )
+        window.statusBarColor =
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
+
 
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -59,6 +71,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         Log.e(TAG, value.toString())
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     protected fun setupScrollListenerForRecyclerView(
         recyclerView: RecyclerView,
     ) {

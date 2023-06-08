@@ -13,6 +13,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import org.the_chance.design_system.R
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
     context: Context,
     fragment: Fragment,
@@ -20,9 +21,7 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
 ) {
     val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_medium)
     val window: Window = fragment.requireActivity().window
-
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -33,13 +32,9 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
                 ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
-
-
             appBarLayout.setBackgroundColor(newCollorScrolled)
             window.statusBarColor = newCollorScrolled
-            window.decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            )
+
         }
     })
 }
