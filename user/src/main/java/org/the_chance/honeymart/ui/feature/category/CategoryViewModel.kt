@@ -15,7 +15,7 @@ class CategoryViewModel @Inject constructor(
 
 
     init {
-        getAllCategory(0)
+        getAllCategory(1)
     }
 
     private fun getAllCategory(id: Long) {
