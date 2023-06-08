@@ -1,11 +1,6 @@
 package org.the_chance.honeymart.ui.feature.market
 
-import android.graphics.Color
-import android.view.View
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,21 +26,6 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
         binding.recyclerMarkets.addOnScrollListenerWithAppbarColor(requireContext(), appBarLayout)
         binding.recyclerMarkets.addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-
-        /*        binding.recyclerMarkets.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                            // Scrolling has ended or is settling
-                            imageLogoDefault.visibility = View.VISIBLE
-                            imageLogoScrolled.visibility = View.INVISIBLE
-                        } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                            // Scrolling is in progress
-                            imageLogoDefault.visibility = View.INVISIBLE
-                            imageLogoScrolled.visibility = View.VISIBLE
-                        }
-                    }
-                })*/
 
     }
 }

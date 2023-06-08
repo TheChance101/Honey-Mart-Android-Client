@@ -29,15 +29,22 @@ fun RecyclerView.addOnScrollListenerWithImageVisibility(imageDefault: ShapeableI
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                // Scrolling has ended or is settling
-                imageDefault.visibility = View.VISIBLE
-                imageScrolled.visibility = View.GONE
-            } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+
+
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 // Scrolling is in progress
                 imageDefault.visibility = View.GONE
                 imageScrolled.visibility = View.VISIBLE
+            } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                // Scrolling has stopped
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // Reached the top of the RecyclerView
+                    imageDefault.visibility = View.VISIBLE
+                    imageScrolled.visibility = View.GONE
+                }
             }
+
+
         }
     })
 }
