@@ -3,14 +3,21 @@ package org.the_chance.honeymart.ui.util
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import android.view.Window
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 
-fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayout: AppBarLayout) {
+fun RecyclerView.addOnScrollListenerWithAppbarColor(
+    context: Context, fragment: Fragment,
+    appBarLayout: AppBarLayout,
+) {
     val threshold =
         context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_medium)
+    val window: Window = fragment.requireActivity().window
+
 
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -23,8 +30,18 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(context: Context, appBarLayo
                 alpha
             )
             appBarLayout.setBackgroundColor(newColor)
+            val statusBarColor = interpolateColor(
+                ContextCompat.getColor(context, org.the_chance.design_system.R.color.white_300),
+                ContextCompat.getColor(context, org.the_chance.design_system.R.color.primary_100),
+                alpha
+            )
+            setStatusBarColor(window, statusBarColor)
         }
     })
+}
+
+private fun setStatusBarColor(window: Window, color: Int) {
+    window.statusBarColor = color
 }
 
 fun RecyclerView.addOnScrollListenerWithImageVisibility(
