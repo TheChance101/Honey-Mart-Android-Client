@@ -1,8 +1,10 @@
 package org.the_chance.honeymart.ui.util
 
 import android.content.Context
+import android.os.Build
 import android.view.View
 import android.view.Window
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -20,20 +22,24 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
     val window: Window = fragment.requireActivity().window
 
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
             val offset = recyclerView.computeVerticalScrollOffset()
             val alpha = (offset.toFloat() / threshold).coerceIn(0f, 1f)
-            val newColor = interpolateColor(
+            val newCollorScrolled = interpolateColor(
                 ContextCompat.getColor(context, R.color.white_300),
                 ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
 
-            appBarLayout.setBackgroundColor(newColor)
-            window.statusBarColor = newColor
 
+            appBarLayout.setBackgroundColor(newCollorScrolled)
+            window.statusBarColor = newCollorScrolled
+            window.decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            )
         }
     })
 }
