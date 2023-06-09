@@ -18,7 +18,7 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_marginVertical="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,8 +31,8 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/Theme.HoneyMart.Image.ProductImage"
-                />
+                style="@style/Theme.HoneyMart.Image.ProductImage" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
                 android:layout_width="wrap_content"
@@ -42,8 +42,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="@dimen/spacing_medium"
-                tool:text="3000$"
-                />
+                tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"

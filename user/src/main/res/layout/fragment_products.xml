@@ -15,16 +15,9 @@
         android:layout_height="match_parent"
         tools:context=".org.the_chance.user.ui.product.productFragment">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_line"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -34,7 +27,7 @@
             app:items="@{viewModel.uiState.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guide_line"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_product"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry"
@@ -45,8 +38,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/spacing_large"
-            android:paddingEnd="@dimen/spacing_small"
+            android:paddingVertical="@dimen/spacing_huge"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
             app:items="@{viewModel.uiState.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
