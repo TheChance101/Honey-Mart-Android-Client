@@ -17,7 +17,7 @@ class CategoryViewModel @Inject constructor(
 
 
     init {
-        getAllCategory(1)
+        getAllCategory(1) // should be replaced by marketId in args we get from savedStateHandle
     }
 
     private fun getAllCategory(marketId: Long) {

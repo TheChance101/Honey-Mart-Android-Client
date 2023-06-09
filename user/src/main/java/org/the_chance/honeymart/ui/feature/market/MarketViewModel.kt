@@ -13,7 +13,6 @@ import javax.inject.Inject
 class MarketViewModel @Inject constructor(
     private val getMarkets: GetAllMarketsUseCase,
 ) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
-
     override val TAG: String = "TAG"
 
     init {
@@ -29,7 +28,6 @@ class MarketViewModel @Inject constructor(
             ::onError,
         )
     }
-
 
     private fun onError() {
         this._uiState.update {
@@ -49,11 +47,6 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    override fun onClickMarket(id: Int) {
-        // navigate to market detail
-    }
-
+    override fun onClickMarket(id: Int) {}
 
 }
-
-

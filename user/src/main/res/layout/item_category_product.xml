@@ -41,7 +41,7 @@ gd        <variable
             style="@style/Theme.HoneyMart.Text.H6.TextCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.name}"
+            android:text="@{item.categoryName}"
             android:layout_marginTop="@dimen/spacing_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

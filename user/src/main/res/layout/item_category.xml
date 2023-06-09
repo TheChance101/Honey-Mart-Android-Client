@@ -25,7 +25,7 @@
             style="@style/Theme.HoneyMart.Card.CategoryCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()-> listener.onCategoryClicked(item.id)}"
+            android:onClick="@{()-> listener.onCategoryClicked(item.categoryId)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:text="@{item.name}"
+            android:text="@{item.categoryName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"

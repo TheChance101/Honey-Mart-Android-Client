@@ -2,48 +2,52 @@ package org.the_chance.honeymart.ui.feature.product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllCategoryProductsUseCase
-import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.asCategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honeymart.ui.feature.uistate.asCategoriesUiState
 import org.the_chance.honeymart.ui.feature.uistate.asProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val getAllProducts: GetAllCategoryProductsUseCase,
-    private val getMarketAllCategories: GetMarketAllCategoriesUseCase,
-) : BaseViewModel<ProductsUiState>(ProductsUiState()), ProductInteractionListener,
+    private val getProductsInCategory: GetAllProductsByCategoryUseCase,
+    private val getCategoriesInMarket: GetAllCategoriesInMarketUseCase,
+) : BaseViewModel<ProductsUiState>(ProductsUiState()),
+    ProductInteractionListener,
     CategoryProductInteractionListener {
+    override val TAG: String = this::class.simpleName.toString()
+
 
     init {
-        getCategoriesByMarketId()
-        getProductsByCategoryId()
+        getAllCategoriesInMarket(1) // should be replaced by marketId in args we get from savedStateHandle
+        getAllProductsInCategory(1) // should be replaced by categoryId un args we get from savedStateHandle
     }
 
-    private fun getCategoriesByMarketId() {
+    private fun getAllCategoriesInMarket(marketId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(1) },
-            { Category -> Category.asCategoryUiState() },
-            ::onSuccess,
-            ::onError
+            { getCategoriesInMarket(marketId) },
+            { Category -> Category.asCategoriesUiState() },
+            ::onGetCategoriesSuccess,
+            ::onGetCategorisError
         )
     }
 
-    private fun getProductsByCategoryId() {
+    private fun getAllProductsInCategory(categoryId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(1) },
-            { Product -> Product.asProductUiState() },
-            ::onSuccessGetProducts,
-            ::onError
+            { getProductsInCategory(categoryId) },
+            { product -> product.asProductUiState() },
+            ::onGetProductsSuccess,
+            ::onGetProductsError
         )
     }
 
-    private fun onSuccessGetProducts(products: List<ProductUiState>) {
+    private fun onGetProductsSuccess(products: List<ProductUiState>) {
         _uiState.update {
             it.copy(
                 isLoading = false,
@@ -52,17 +56,17 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-    private fun onSuccess(categories: List<CategoryUiState>) {
+
+    private fun onGetCategoriesSuccess(categories: List<CategoryUiState>) {
         _uiState.update {
             it.copy(
                 isLoading = false,
-                isError = false,
                 categoryList = categories
             )
         }
     }
 
-    private fun onError() {
+    private fun onGetCategorisError() {
         this._uiState.update {
             it.copy(
                 isLoading = false,
@@ -70,13 +74,16 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-    override val TAG: String = this::class.simpleName.toString()
 
-    override fun onClickCategoryProduct(id: Int) {
-
+    private fun onGetProductsError() {
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = true,
+            )
+        }
     }
 
-    override fun onClickProduct(id: Int) {
-
-    }
+    override fun onClickCategoryProduct(id: Int) {}
+    override fun onClickProduct(id: Int) {}
 }
