@@ -32,10 +32,12 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
                 ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
-/*            appBarLayout.setBackgroundColor(newCollorScrolled)
-            window.statusBarColor = newCollorScrolled*/
-            animateBackgroundColor(appBarLayout, newCollorScrolled)
-            animateStatusBarColor(window, newCollorScrolled)
+            appBarLayout.setBackgroundColor(newCollorScrolled)
+            window.statusBarColor = newCollorScrolled
+
+            // this animate toolbar
+/*            animateBackgroundColor(appBarLayout, newCollorScrolled)
+            animateStatusBarColor(window, newCollorScrolled)*/
         }
     })
 }
@@ -43,7 +45,7 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
 private fun animateBackgroundColor(appBarLayout: AppBarLayout, newColor: Int) {
     val currentColor = (appBarLayout.background as? ColorDrawable)?.color ?: 0
     val colorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), currentColor, newColor)
-    colorAnimator.duration = 50
+    colorAnimator.duration = 10
     colorAnimator.addUpdateListener { animator ->
         val animatedValue = animator.animatedValue as Int
         appBarLayout.setBackgroundColor(animatedValue)
@@ -54,7 +56,7 @@ private fun animateBackgroundColor(appBarLayout: AppBarLayout, newColor: Int) {
 private fun animateStatusBarColor(window: Window, newColor: Int) {
     val currentColor = window.statusBarColor
     val colorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), currentColor, newColor)
-    colorAnimator.duration = 50
+    colorAnimator.duration = 10
     colorAnimator.addUpdateListener { animator ->
         val animatedValue = animator.animatedValue as Int
         window.statusBarColor = animatedValue
