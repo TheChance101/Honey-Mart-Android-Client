@@ -17,6 +17,7 @@ data class MarketUiState(
 
 fun Market.asMarketsUiState(): MarketUiState {
     return MarketUiState(
-        name = name
+        name = name,
+        id = id.toLong()
     )
 }

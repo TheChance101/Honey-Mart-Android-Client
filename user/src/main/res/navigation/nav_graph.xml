@@ -24,7 +24,7 @@
             android:id="@+id/action_categoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
         <argument
-            android:name="MarketId"
+            android:name="marketId"
             app:argType="long" />
     </fragment>
 
@@ -32,6 +32,13 @@
         android:id="@+id/productsFragment"
         android:name="org.the_chance.honeymart.ui.feature.product.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+        <argument
+            android:name="productMarketId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

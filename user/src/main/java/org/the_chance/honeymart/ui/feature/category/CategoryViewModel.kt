@@ -1,9 +1,12 @@
 package org.the_chance.honeymart.ui.feature.category
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,6 +16,9 @@ class CategoryViewModel @Inject constructor(
 ) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
+    private val _uiCategoryState = MutableLiveData<EventHandler<Long>>()
+    val uiCategoryState: LiveData<EventHandler<Long>>
+        get() = _uiCategoryState
 
     fun getAllCategory(id: Long) {
         _uiState.update { it.copy(isLoading = true) }
@@ -44,6 +50,6 @@ class CategoryViewModel @Inject constructor(
     }
 
     override fun onCategoryClicked(id: Long) {
-        //navigate to category details
+        _uiCategoryState.postValue(EventHandler(id))
     }
 }

@@ -14,7 +14,7 @@ class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketUseCase,
 ) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
 
-    override val TAG: String = "TAG"
+    override val TAG: String = this::class.java.simpleName
 
     private val _uiMarketState = MutableLiveData<EventHandler<Long>>()
     val uiMarketState: LiveData<EventHandler<Long>>

@@ -18,6 +18,7 @@ data class CategoryUiState(
 
 fun Category.asCategoriesUiState(): CategoryUiState {
     return CategoryUiState(
+        id = id,
         name = name,
         imageId = imageId
     )

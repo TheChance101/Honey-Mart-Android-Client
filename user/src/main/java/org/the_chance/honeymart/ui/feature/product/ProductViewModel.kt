@@ -19,25 +19,23 @@ class ProductViewModel @Inject constructor(
 ) : BaseViewModel<ProductsUiState>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
-    init {
-        getCategoriesByMarketId()
-        getProductsByCategoryId()
-    }
+    override val TAG: String = this::class.simpleName.toString()
 
-    private fun getCategoriesByMarketId() {
+
+    fun getCategoriesByMarketId(marketId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(1) },
+            { getMarketAllCategories(marketId) },
             { Category -> Category.asCategoryUiState() },
             ::onSuccess,
             ::onError
         )
     }
 
-    private fun getProductsByCategoryId() {
+    fun getProductsByCategoryId(categoryId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(1) },
+            { getAllProducts(categoryId) },
             { Product -> Product.asProductUiState() },
             ::onSuccessGetProducts,
             ::onError
@@ -53,6 +51,7 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
+
     private fun onSuccess(categories: List<CategoryUiState>) {
         _uiState.update {
             it.copy(
@@ -71,7 +70,6 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-    override val TAG: String = this::class.simpleName.toString()
 
     override fun onClickCategoryProduct(id: Int) {
 

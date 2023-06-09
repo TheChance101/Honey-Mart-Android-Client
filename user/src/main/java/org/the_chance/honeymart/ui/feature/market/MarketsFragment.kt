@@ -14,7 +14,7 @@ import org.the_chance.user.databinding.FragmentMarketsBinding
 
 @AndroidEntryPoint
 class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
-    override val TAG: String = "TAG"
+    override val TAG: String = this::class.java.simpleName
     override val layoutIdFragment = R.layout.fragment_markets
     override val viewModel: MarketViewModel by viewModels()
     private lateinit var appBarLayout: AppBarLayout
@@ -34,15 +34,19 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
 
+        observeOnMarket()
+    }
+
+    private fun observeOnMarket() {
         viewModel.uiMarketState.observe(this, EventObserve { marketId ->
             navigateToCategory(marketId)
+            log(marketId)
         })
     }
 
-
-    private fun navigateToCategory(marketsId: Long) {
+    private fun navigateToCategory(marketId: Long) {
         val action = MarketsFragmentDirections
-            .actionMarketsFragmentToCategoriesFragment(marketsId)
+            .actionMarketsFragmentToCategoriesFragment(marketId)
         findNavController().navigate(action)
     }
 }

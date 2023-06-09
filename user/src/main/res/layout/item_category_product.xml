@@ -4,12 +4,14 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
-gd        <variable
-            name="item"
-            type="org.the_chance.honeymart.ui.feature.category.CategoryUiState" />
+
         <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.product.uistste.CategoryUiState" />
+
+        <!--<variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />-->
 
     </data>
 
@@ -41,8 +43,8 @@ gd        <variable
             style="@style/Theme.HoneyMart.Text.H6.TextCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.name}"
             android:layout_marginTop="@dimen/spacing_medium"
+            android:text="@{item.categoryName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"
