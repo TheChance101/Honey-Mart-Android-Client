@@ -38,7 +38,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
             style="@style/Theme.HoneyMart.Text.H6.TextCategory"
-            android:layout_width="wrap_content"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:gravity="center_horizontal"
