@@ -9,7 +9,7 @@ gd        <variable
             type="org.the_chance.honeymart.ui.feature.uistate.CategoryUiState" />
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.product.CategoryProductInteractionListener" />
 
     </data>
 

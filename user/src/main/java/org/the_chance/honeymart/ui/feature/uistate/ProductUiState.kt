@@ -5,8 +5,8 @@ import org.the_chance.honeymart.domain.model.Product
 data class ProductsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-    val productList: List<ProductUiState> = emptyList(),
-    val categoryList: List<CategoryUiState> = emptyList(),
+    val products: List<ProductUiState> = emptyList(),
+    val categories: List<CategoryUiState> = emptyList(),
 )
 
 data class ProductUiState(

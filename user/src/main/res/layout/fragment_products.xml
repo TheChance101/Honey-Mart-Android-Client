@@ -15,37 +15,46 @@
         android:layout_height="match_parent"
         tools:context=".org.the_chance.user.ui.product.productFragment">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingVertical="@dimen/spacing_medium"
-            android:paddingStart="@dimen/spacing_medium"
             android:clipToPadding="false"
             android:orientation="vertical"
-            app:items="@{viewModel.uiState.categoryList}"
+            android:paddingVertical="@dimen/spacing_medium"
+            android:paddingStart="@dimen/spacing_medium"
+            app:items="@{viewModel.uiState.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_category_product"
-            tools:ignore="RtlSymmetry" />
+            app:layout_constraintEnd_toStartOf="@+id/guide_line"
+            tools:ignore="RtlSymmetry"
+            tools:listitem="@layout/item_category_product" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:items="@{viewModel.uiState.productList}"
+            android:clipToPadding="false"
             android:paddingVertical="@dimen/spacing_large"
             android:paddingEnd="@dimen/spacing_small"
-            android:clipToPadding="false"
+            app:items="@{viewModel.uiState.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/recycler_category"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_products"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            tools:listitem="@layout/item_products" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -52,7 +52,7 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                productList = products
+                products = products
             )
         }
     }
@@ -61,7 +61,7 @@ class ProductViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 isLoading = false,
-                categoryList = categories
+                categories = categories
             )
         }
     }
