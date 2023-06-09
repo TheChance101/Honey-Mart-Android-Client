@@ -5,9 +5,9 @@
 
     <data>
 
-            <variable
-                name="viewModel"
-                type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2"
-            />
+            app:layout_constraintGuide_percent="0.2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
@@ -34,9 +33,9 @@
             app:items="@{viewModel.uiState.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 

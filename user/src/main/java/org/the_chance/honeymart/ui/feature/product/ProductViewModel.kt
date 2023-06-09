@@ -21,10 +21,9 @@ class ProductViewModel @Inject constructor(
     CategoryProductInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
-
     init {
         getAllCategoriesInMarket(1) // should be replaced by marketId in args we get from savedStateHandle
-        getAllProductsInCategory(1) // should be replaced by categoryId un args we get from savedStateHandle
+        getAllProductsInCategory(6) // should be replaced by categoryId un args we get from savedStateHandle
     }
 
     private fun getAllCategoriesInMarket(marketId: Long) {

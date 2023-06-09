@@ -64,7 +64,7 @@ interface HoneyMartService {
 
     @GET("/category/{categoryId}") //naming fault in backend at the end point but, it returns list of products by category id
     suspend fun getAllProductsByCategory(
-        @Path("id") categoryId: Long
+        @Path("categoryId") categoryId: Long
     ): Response<BaseResponse<List<ProductDto>>>
 
     @GET("/product/{productId}")
