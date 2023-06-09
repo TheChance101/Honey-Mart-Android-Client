@@ -28,8 +28,7 @@
                 android:layout_gravity="start|bottom"
                 android:layout_margin="@dimen/spacing_xlarge"
                 android:visibility="visible"
-                app:srcCompat="@drawable/honey_mart_logo_when_scroll"
-                 />
+                app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_logo_scroll"
@@ -38,21 +37,21 @@
                 android:layout_gravity="start|bottom"
                 android:layout_margin="@dimen/spacing_xlarge"
                 android:visibility="gone"
-                app:srcCompat="@drawable/honey_mart_logo"
-                 />
+                app:srcCompat="@drawable/honey_mart_logo" />
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:defaultNavHost="true"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:navGraph="@navigation/nav_graph" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

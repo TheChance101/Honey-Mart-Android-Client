@@ -11,12 +11,13 @@ data class MarketsUiState(
 
 data class MarketUiState(
     val name: String = "",
-    val id: Int = 0,
+    val id: Long = 0,
 )
 
 
 fun Market.asMarketsUiState(): MarketUiState {
     return MarketUiState(
-        name = name
+        name = name,
+        id = id.toLong()
     )
 }
