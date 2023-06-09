@@ -124,7 +124,7 @@
 
     <!-- Market Image Style-->
     <style name="Theme.HoneyMart.Image.MarketImage">
-        <item name="srcCompat">@drawable/image_test</item>
+        <item name="srcCompat">@drawable/market</item>
         <item name="android:foreground">@color/black_55</item>
     </style>
 
