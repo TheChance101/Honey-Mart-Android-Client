@@ -5,10 +5,10 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.asProduct
 import javax.inject.Inject
 
-class GetAllProductsUseCase @Inject constructor(
+class GetAllProductsByCategoryUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(): List<Product>? {
-        return honeyMartRepository.getAllProducts()?.map { it.asProduct() }
-    }
+    suspend operator fun invoke(categoryId: Long): List<Product> =
+        honeyMartRepository.getAllProductsByCategory(categoryId)?.map { it.asProduct() }
+            ?: emptyList()
 }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.market
 
+import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.ui.BaseAdapter
 import org.the_chance.ui.BaseInteractionListener
 import org.the_chance.user.R
@@ -10,5 +11,5 @@ class MarketAdapter(listener: MarketInteractionListener) : BaseAdapter<MarketUiS
 }
 
 interface MarketInteractionListener: BaseInteractionListener{
-    fun onClickMarket(id: Long)
+    fun onClickMarket(marketId: Long)
 }

@@ -4,7 +4,12 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.ProductUiState" />
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.product.ProductInteractionListener" />
     </data>
 
 
@@ -32,6 +37,7 @@
                 android:id="@+id/text_product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{String.valueOf(item.productPrice)}"
                 style="@style/Theme.HoneyMart.Text.H4.ProductPrice"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{item.productName}"
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
                 app:layout_constraintStart_toStartOf="@+id/product_description"
                 tool:text="Primary Text" />
@@ -54,6 +61,7 @@
                 android:layout_height="wrap_content"
                 style="@style/Theme.HoneyMart.Text.H6.SecondaryText"
                 tool:text="Primary Text"
+                android:text="@{item.productQuantity}"
                 android:layout_margin="@dimen/spacing_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

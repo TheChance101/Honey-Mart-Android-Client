@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="org.the_chance.honeymart.ui.feature.market.MarketUiState" />
+            type="org.the_chance.honeymart.ui.feature.uistate.MarketUiState" />
         <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.market.MarketInteractionListener" />
@@ -16,10 +16,10 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/market_container"
         style="@style/Theme.HoneyMart.Card"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_margin="@dimen/spacing_medium"
         android:layout_width="match_parent"
         android:layout_height="164dp"
-        android:onClick="@{()-> listener.onClickMarket(item.id)}"
+        android:onClick="@{()-> listener.onClickMarket(item.marketId)}"
         >
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -37,7 +37,7 @@
             style="@style/Theme.HoneyMart.Text.H2.TextMarket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.name}"
+            android:text="@{item.marketName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

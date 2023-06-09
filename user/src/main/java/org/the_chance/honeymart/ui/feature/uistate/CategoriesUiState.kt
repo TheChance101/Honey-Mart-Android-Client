@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.Category
 
@@ -11,15 +11,15 @@ data class CategoriesUiState(
 )
 
 data class CategoryUiState(
-    val id: Long = 0L,
-    val name: String = "",
-    val imageId: Int = 0
+    val categoryId: Long? = 0L,
+    val categoryName: String? = "",
+    val categoryImageId: Int? = 0
 )
 
 fun Category.asCategoriesUiState(): CategoryUiState {
     return CategoryUiState(
-        id = id,
-        name = name,
-        imageId = imageId
+        categoryId = categoryId,
+        categoryName = categoryName,
+        categoryImageId = categoryImageId
     )
 }

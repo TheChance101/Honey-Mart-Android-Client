@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
    data class MarketDto(
     @SerializedName("marketId")
-    val marketId: Long,
+    val marketId: Long? = null,
     @SerializedName("marketName")
-    val marketName: String
+    val marketName: String? = null
 )

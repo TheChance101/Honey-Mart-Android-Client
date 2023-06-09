@@ -5,9 +5,8 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 
 interface HoneyMartRepository {
-
     suspend fun getAllMarkets(): List<MarketDto>?
-    suspend fun getAllProducts(): List<ProductDto>?
-    suspend fun getAllCategoriesByMarketId(id: Long): List<CategoryDto>?
-    suspend fun getAllProductsByCategoryId(id:Long):List<ProductDto>?
+    suspend fun getCategoriesInMarket(marketId: Long): List<CategoryDto>?
+    suspend fun getAllProductsByCategory(categoryId: Long): List<ProductDto>?
+    suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryDto>?
 }

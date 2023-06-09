@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.market
+package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.Market
 
@@ -10,14 +10,14 @@ data class MarketsUiState(
 )
 
 data class MarketUiState(
-    val name: String = "",
-    val id: Long = 0,
+    val marketId: Long? = 0L,
+    val marketName: String? = "",
 )
 
 
-fun Market.asMarketsUiState(): MarketUiState {
+fun Market.asMarketUiState(): MarketUiState {
     return MarketUiState(
-        name = name,
-        id = id.toLong()
+        marketId = marketId,
+        marketName = marketName
     )
 }
