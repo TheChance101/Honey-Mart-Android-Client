@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.Category
 data class CategoriesUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
+    val message: String = "",
     val categories: List<CategoryUiState> = emptyList(),
 )
 
