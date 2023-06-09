@@ -1,9 +1,8 @@
 package org.the_chance.honeymart.ui.feature.market
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -12,7 +11,7 @@ import javax.inject.Inject
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketUseCase,
 ) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
-
+     val uiMarketState = MutableLiveData<Long>()
     override val TAG: String = "TAG"
 
     init {
@@ -50,15 +49,9 @@ class MarketViewModel @Inject constructor(
     }
 
     override fun onClickMarket(id: Long) {
-        // navigate to market detail
-        viewModelScope.launch {
-            _uiState.update {
-                it.markets[id.toInt()].copy(
-                    id = id.toInt()
-                )
-            }
-        }
+            uiMarketState.postValue(id)
     }
+
 }
 
 

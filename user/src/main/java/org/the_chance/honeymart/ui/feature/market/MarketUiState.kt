@@ -11,7 +11,7 @@ data class MarketsUiState(
 
 data class MarketUiState(
     val name: String = "",
-    val id: Int = 0,
+    val id: Long = 0,
 )
 
 

@@ -32,15 +32,16 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
             .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-        navigateToCategory(MarketUiState())
+        viewModel.uiMarketState.observe(viewLifecycleOwner) {
+            navigateToCategory(it)
+        }
     }
 
 
-    private fun navigateToCategory(marketsId: MarketUiState) {
-        viewModel.onClickMarket(marketsId.id.toLong())
-        val action =
-            MarketsFragmentDirections
-                .actionMarketsFragmentToCategoriesFragment(marketsId.id.toLong())
+    private fun navigateToCategory(marketsId: Long) {
+        val action = MarketsFragmentDirections
+            .actionMarketsFragmentToCategoriesFragment(marketsId)
         findNavController().navigate(action)
     }
+
 }

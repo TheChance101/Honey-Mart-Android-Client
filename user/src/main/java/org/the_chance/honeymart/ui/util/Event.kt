@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.util
 import androidx.lifecycle.Observer
 
 open class Event<out T>(private val content: T) {
-    var hasBeenHandled = false
+    private var hasBeenHandled = false
         private set
 
     fun getContentIfHandled(): T? {

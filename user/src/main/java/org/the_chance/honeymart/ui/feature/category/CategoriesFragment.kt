@@ -14,7 +14,7 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
     override val TAG: String = this::class.simpleName.toString()
     override val layoutIdFragment = R.layout.fragment_categories
     override val viewModel: CategoryViewModel by viewModels()
-    val args: CategoriesFragmentArgs by navArgs()
+    private val args: CategoriesFragmentArgs by navArgs()
     override fun setup() {
         initiateAdapter()
         viewModel.getAllCategory(args.MarketId)
