@@ -7,15 +7,15 @@ import org.the_chance.honeymart.data.source.remote.models.ProductDto
  */
 
 data class Product(
-    val id: Long,
-    val name: String,
-    val quantity: String,
-    val price: Double,
+    val productId: Long?,
+    val productName: String?,
+    val productQuantity: String?,
+    val ProductPrice: Double?,
 )
 
-  fun ProductDto.asProduct() = Product(
-    id = id,
-    name = name,
-    quantity = quantity,
-    price = price,
+fun ProductDto.asProduct() = Product(
+    productId = id,
+    productName = name,
+    productQuantity = quantity,
+    ProductPrice = price
 )

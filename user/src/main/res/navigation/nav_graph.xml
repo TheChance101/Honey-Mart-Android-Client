@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/categoriesFragment">
+    app:startDestination="@id/marketsFragment">
 
     <fragment
         android:id="@+id/marketsFragment"
@@ -23,12 +23,22 @@
         <action
             android:id="@+id/action_categoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
+        <argument
+            android:name="marketId"
+            app:argType="long" />
     </fragment>
 
     <fragment
         android:id="@+id/productsFragment"
         android:name="org.the_chance.honeymart.ui.feature.product.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+        <argument
+            android:name="productMarketId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

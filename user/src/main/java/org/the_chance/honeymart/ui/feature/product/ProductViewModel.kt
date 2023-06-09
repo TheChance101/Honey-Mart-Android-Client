@@ -2,42 +2,40 @@ package org.the_chance.honeymart.ui.feature.product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllCategoryProductsUseCase
-import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.uistste.CategoryUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.ProductUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.ProductsUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.asCategoryUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.asProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honeymart.ui.feature.uistate.asCategoriesUiState
+import org.the_chance.honeymart.ui.feature.uistate.asProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val getAllProducts: GetAllCategoryProductsUseCase,
-    private val getMarketAllCategories: GetMarketAllCategoriesUseCase,
+    private val getAllProducts: GetAllProductsByCategoryUseCase,
+    private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
 ) : BaseViewModel<ProductsUiState>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
-    init {
-        getCategoriesByMarketId()
-        getProductsByCategoryId()
-    }
+    override val TAG: String = this::class.simpleName.toString()
 
-    private fun getCategoriesByMarketId() {
+
+    fun getCategoriesByMarketId(marketId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(1) },
-            { Category -> Category.asCategoryUiState() },
+            { getMarketAllCategories(marketId) },
+            { Category -> Category.asCategoriesUiState() },
             ::onSuccess,
             ::onError
         )
     }
 
-    private fun getProductsByCategoryId() {
+    fun getProductsByCategoryId(categoryId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(1) },
+            { getAllProducts(categoryId) },
             { Product -> Product.asProductUiState() },
             ::onSuccessGetProducts,
             ::onError
@@ -49,16 +47,17 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                productList = products
+                products = products
             )
         }
     }
+
     private fun onSuccess(categories: List<CategoryUiState>) {
         _uiState.update {
             it.copy(
                 isLoading = false,
                 isError = false,
-                categoryList = categories
+                categories = categories
             )
         }
     }
@@ -71,13 +70,12 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-    override val TAG: String = this::class.simpleName.toString()
 
-    override fun onClickCategoryProduct(id: Int) {
+    override fun onClickCategoryProduct(categoryId: Long) {
 
     }
 
-    override fun onClickProduct(id: Int) {
+    override fun onClickProduct(productId: Long) {
 
     }
 }
