@@ -25,8 +25,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="match_parent"
@@ -38,7 +37,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(item.productPrice)}"
-                style="@style/Theme.HoneyMart.Text.H4.ProductPrice"
+                android:background="@drawable/shape_price"
+                android:textColor="@color/white"
+                android:alpha="0.8"
+                android:gravity="center_horizontal"
+                android:paddingHorizontal="@dimen/spacing_large"
+                android:paddingVertical="@dimen/spacing_semi_medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="@dimen/spacing_medium"
@@ -54,6 +58,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
                 app:layout_constraintStart_toStartOf="@+id/product_description"
                 tool:text="Primary Text" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_description"
                 android:layout_width="wrap_content"
@@ -63,8 +68,8 @@
                 android:text="@{item.productQuantity}"
                 android:layout_margin="@dimen/spacing_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent" />
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
