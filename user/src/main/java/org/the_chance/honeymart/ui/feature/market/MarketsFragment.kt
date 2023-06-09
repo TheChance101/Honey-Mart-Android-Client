@@ -28,7 +28,7 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
 
         binding.recyclerMarkets
-            .addOnScrollListenerWithAppbarColor(requireContext(),this,appBarLayout)
+            .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
 

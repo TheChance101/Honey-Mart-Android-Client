@@ -6,7 +6,7 @@
     <data>
 gd        <variable
             name="item"
-            type="org.the_chance.honeymart.ui.feature.category.CategoryUiState" />
+            type="org.the_chance.honeymart.ui.feature.uistate.CategoryUiState" />
         <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />

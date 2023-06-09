@@ -5,11 +5,10 @@ import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllCategoryProductsUseCase
 import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.uistste.CategoryUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.ProductUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.ProductsUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.asCategoryUiState
-import org.the_chance.honeymart.ui.feature.product.uistste.asProductUiState
+import org.the_chance.honeymart.ui.feature.product.asCategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honeymart.ui.feature.uistate.asProductUiState
 import javax.inject.Inject
 
 @HiltViewModel

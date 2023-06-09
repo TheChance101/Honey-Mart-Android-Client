@@ -4,11 +4,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
+import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
+import org.the_chance.honeymart.ui.feature.uistate.asMarketUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
-    private val getAllMarket: GetAllMarketsUseCase,
+    private val getMarkets: GetAllMarketsUseCase,
 ) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = "TAG"
@@ -20,10 +23,10 @@ class MarketViewModel @Inject constructor(
     private fun getAllMarkets() {
         _uiState.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllMarket() },
-            { market -> market.asMarketsUiState() },
+            { getMarkets() },
+            { market -> market.asMarketUiState() },
             ::onSuccess,
-            ::onError
+            ::onError,
         )
     }
 
@@ -41,7 +44,6 @@ class MarketViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 isLoading = false,
-                isError = false,
                 markets = markets
             )
         }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.category
 
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.ui.BaseAdapter
 import org.the_chance.ui.BaseInteractionListener
 import org.the_chance.user.R

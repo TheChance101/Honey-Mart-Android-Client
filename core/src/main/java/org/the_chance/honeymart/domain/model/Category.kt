@@ -5,11 +5,11 @@ import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 data class Category(
     val categoryId: Long,
     val categoryName: String,
-    val CategoryImageId: Int
+    val categoryImageId: Int
 )
 
 fun CategoryDto.asCategory() = Category(
     categoryId = categoryId,
     categoryName = categoryName,
-    CategoryImageId = imageId
+    categoryImageId = imageId
 )

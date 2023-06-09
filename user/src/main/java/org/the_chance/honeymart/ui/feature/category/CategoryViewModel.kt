@@ -4,6 +4,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import javax.inject.Inject
 
 @HiltViewModel
