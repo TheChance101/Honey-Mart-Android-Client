@@ -2,13 +2,13 @@ package org.the_chance.honeymart.ui.feature.market
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
-    private val getAllMarket: GetAllMarketUseCase,
+    private val getAllMarket: GetAllMarketsUseCase,
 ) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = "TAG"

@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductDto(
     @SerializedName("id")
-    val id: Long? = null,
+    val id: Long,
     @SerializedName("name")
-    val name: String? = null,
+    val name: String,
     @SerializedName("quantity")
-    val quantity: String? = null,
+    val quantity: String,
     @SerializedName("price")
-    val price: Double? = null
+    val price: Double
 )
