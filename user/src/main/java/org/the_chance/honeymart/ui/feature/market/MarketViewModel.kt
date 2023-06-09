@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.feature.market
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
@@ -17,6 +19,9 @@ class MarketViewModel @Inject constructor(
 
     init {
         getAllMarkets()
+        viewModelScope.launch {
+            log("dataaa : ${getMarkets()}")
+        }
     }
 
     private fun getAllMarkets() {

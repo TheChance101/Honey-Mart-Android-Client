@@ -10,11 +10,11 @@ data class ProductsUiState(
 )
 
 data class ProductUiState(
-    val productId: Long = 0L,
-    val productName: String = "",
-    val productQuantity: String = "",
-    val productPrice: Double = 0.0,
-    val isFavorite: Boolean = false
+    val productId: Long? = 0L,
+    val productName: String? = "",
+    val productQuantity: String? = "",
+    val productPrice: Double? = 0.0,
+    val isFavorite: Boolean? = false
 )
 
 fun Product.asProductUiState(): ProductUiState {
