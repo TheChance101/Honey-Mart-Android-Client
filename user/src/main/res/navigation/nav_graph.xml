@@ -25,7 +25,7 @@
             app:destination="@id/productsFragment" />
         <argument
             android:name="MarketId"
-            app:argType="Long" />
+            app:argType="long" />
     </fragment>
 
     <fragment

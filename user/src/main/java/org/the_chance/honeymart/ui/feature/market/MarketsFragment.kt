@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.market
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,15 +32,15 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
             .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-//        navigateToCategory(MarketUiState())
+        navigateToCategory(MarketUiState())
     }
 
 
-//    private fun navigateToCategory(marketsId: MarketUiState) {
-//        viewModel.onClickMarket(marketsId.id.toLong())
-//        val action =
-//            MarketsFragmentDirections
-//                .actionMarketsFragmentToCategoriesFragment(marketsId)
-//        findNavController().navigate(action)
-//    }
+    private fun navigateToCategory(marketsId: MarketUiState) {
+        viewModel.onClickMarket(marketsId.id.toLong())
+        val action =
+            MarketsFragmentDirections
+                .actionMarketsFragmentToCategoriesFragment(marketsId.id.toLong())
+        findNavController().navigate(action)
+    }
 }

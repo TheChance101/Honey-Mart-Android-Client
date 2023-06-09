@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.feature.market
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -49,7 +51,13 @@ class MarketViewModel @Inject constructor(
 
     override fun onClickMarket(id: Long) {
         // navigate to market detail
-        _uiState.value.markets[id.toInt()]
+        viewModelScope.launch {
+            _uiState.update {
+                it.markets[id.toInt()].copy(
+                    id = id.toInt()
+                )
+            }
+        }
     }
 }
 
