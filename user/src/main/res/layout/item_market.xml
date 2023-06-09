@@ -16,7 +16,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/market_container"
         style="@style/Theme.HoneyMart.Card"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_margin="@dimen/spacing_medium"
         android:layout_width="match_parent"
         android:layout_height="164dp"
         android:onClick="@{()-> listener.onClickMarket(item.marketId)}"

@@ -94,7 +94,7 @@
 
     <!-- Card Styles-->
     <style name="Theme.HoneyMart.Card">
-        <item name="cornerRadius">@dimen/radius_small</item>
+        <item name="cardCornerRadius">@dimen/radius_small</item>
         <item name="strokeWidth">@dimen/stroke_zero</item>
     </style>
 

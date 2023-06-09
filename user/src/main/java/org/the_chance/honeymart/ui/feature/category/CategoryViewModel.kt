@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetMarketAllCategoriesUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.asCategoriesUiState
 import org.the_chance.honeymart.ui.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val getAllCategories: GetMarketAllCategoriesUseCase,
+    private val getAllCategories: GetAllCategoriesInMarketUseCase,
     //  val id: Long,
 ) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
