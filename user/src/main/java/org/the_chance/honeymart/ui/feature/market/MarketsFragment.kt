@@ -6,6 +6,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.util.EventObserve
 import org.the_chance.honeymart.ui.util.addOnScrollListenerWithAppbarColor
 import org.the_chance.honeymart.ui.util.addOnScrollListenerWithImageVisibility
 import org.the_chance.user.R
@@ -32,9 +33,10 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
             .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-        viewModel.uiMarketState.observe(viewLifecycleOwner) {
-            navigateToCategory(it)
-        }
+
+        viewModel.uiMarketState.observe(this, EventObserve { marketId ->
+            navigateToCategory(marketId)
+        })
     }
 
 
@@ -43,5 +45,4 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
             .actionMarketsFragmentToCategoriesFragment(marketsId)
         findNavController().navigate(action)
     }
-
 }

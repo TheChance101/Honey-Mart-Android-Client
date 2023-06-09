@@ -2,9 +2,8 @@ package org.the_chance.honeymart.ui.util
 
 import androidx.lifecycle.Observer
 
-open class Event<out T>(private val content: T) {
+open class EventHandler<out T>(private val content: T) {
     private var hasBeenHandled = false
-        private set
 
     fun getContentIfHandled(): T? {
         return if (hasBeenHandled)
@@ -17,8 +16,8 @@ open class Event<out T>(private val content: T) {
 }
 
 class EventObserve<T>(private val onEventUnhandledContent: (T) -> Unit) :
-    Observer<Event<T>?> {
-    override fun onChanged(value: Event<T>?) {
+    Observer<EventHandler<T>?> {
+    override fun onChanged(value: EventHandler<T>?) {
         value?.getContentIfHandled()?.let {
             onEventUnhandledContent(it)
         }
