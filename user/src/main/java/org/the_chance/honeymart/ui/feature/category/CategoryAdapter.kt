@@ -12,5 +12,5 @@ class CategoryAdapter(
 }
 
 interface CategoryInteractionListener : BaseInteractionListener{
-    fun onCategoryClicked(id: Long)
+    fun onCategoryClicked(categoryId: Long)
 }

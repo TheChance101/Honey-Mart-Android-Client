@@ -84,6 +84,6 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCategoryProduct(id: Int) {}
-    override fun onClickProduct(id: Int) {}
+    override fun onClickCategoryProduct(categoryId: Long) {}
+    override fun onClickProduct(productId: Long) {}
 }

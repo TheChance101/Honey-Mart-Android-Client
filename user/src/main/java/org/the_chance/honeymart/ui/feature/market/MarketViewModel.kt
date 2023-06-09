@@ -52,6 +52,6 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    override fun onClickMarket(id: Int) {}
+    override fun onClickMarket(marketId: Long) {}
 
 }

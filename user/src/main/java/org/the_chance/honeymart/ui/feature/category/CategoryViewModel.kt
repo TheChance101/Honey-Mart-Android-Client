@@ -48,7 +48,5 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    override fun onCategoryClicked(id: Long) {
-        //navigate to category details
-    }
+    override fun onCategoryClicked(categoryId: Long) {}
 }
