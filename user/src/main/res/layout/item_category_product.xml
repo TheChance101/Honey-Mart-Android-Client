@@ -20,8 +20,9 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/category_container"
             style="@style/Theme.HoneyMart.Card.CategoryCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:paddingHorizontal="@dimen/spacing_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,9 +38,10 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
             style="@style/Theme.HoneyMart.Text.H6.TextCategory"
-            android:layout_width="wrap_content"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center_horizontal"
             android:text="@{item.categoryName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -20,7 +20,7 @@
             android:layout_height="0dp"
             app:items="@{viewModel.uiState.categories}"
             android:paddingHorizontal="@dimen/spacing_large"
-            android:paddingVertical="@dimen/spacing_small"
+            android:paddingVertical="@dimen/spacing_large"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"

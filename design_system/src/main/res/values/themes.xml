@@ -124,13 +124,13 @@
 
     <!-- Market Image Style-->
     <style name="Theme.HoneyMart.Image.MarketImage">
-        <item name="srcCompat">@drawable/image_test</item>
+        <item name="srcCompat">@drawable/image_market</item>
         <item name="android:foreground">@color/black_55</item>
     </style>
 
     <!-- Product Image Style-->
     <style name="Theme.HoneyMart.Image.ProductImage">
-        <item name="srcCompat">@drawable/image_test</item>
+        <item name="srcCompat">@drawable/image_market</item>
         <item name="android:foreground">@color/black_8</item>
     </style>
 
@@ -156,8 +156,6 @@
         <item name="android:alpha">0.8</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/spacing_large</item>
         <item name="android:paddingVertical" tools:targetApi="o">@dimen/spacing_semi_medium</item>
-        <item name="android:drawableStart">@drawable/icon_price</item>
-        <item name="android:drawablePadding">@dimen/spacing_medium</item>
     </style>
 
     <!-- Product Primary text-->

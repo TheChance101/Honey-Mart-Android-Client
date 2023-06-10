@@ -23,8 +23,8 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/category_container"
             style="@style/Theme.HoneyMart.Card.CategoryCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
             android:onClick="@{()-> listener.onCategoryClicked(item.categoryId)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +41,15 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
             style="@style/Theme.HoneyMart.Text.H5.CategoryTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="104dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center_horizontal"
             android:text="@{item.categoryName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"
-            tool:text="Category" />
+            tool:text="Bedroom" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
