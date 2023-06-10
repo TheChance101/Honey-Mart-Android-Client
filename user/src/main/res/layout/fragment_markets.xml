@@ -20,17 +20,27 @@
             android:id="@+id/recycler_markets"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
             android:layout_marginHorizontal="@dimen/spacing_medium"
             android:layout_marginVertical="@dimen/spacing_xlarge"
+            android:clipToPadding="false"
             android:orientation="vertical"
             app:items="@{viewModel.uiState.markets}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_market"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_market" />
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/item_loading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfTrue="@{viewModel.uiState.isLoading}" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

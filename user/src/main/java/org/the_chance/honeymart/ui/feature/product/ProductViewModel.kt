@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -40,6 +41,17 @@ class ProductViewModel @Inject constructor(
             ::onSuccessGetProducts,
             ::onError
         )
+        Log.e("TAG", "getProductsByCategoryId: ${categoryId}")
+    }
+
+    private fun onError(throwable: Throwable) {
+        this._uiState.update {
+            it.copy(
+                isLoading = false,
+                isError = true,
+            )
+        }
+        Log.e("TAG", "onError:${throwable} ")
     }
 
     private fun onSuccessGetProducts(products: List<ProductUiState>) {
@@ -62,14 +74,6 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun onError() {
-        this._uiState.update {
-            it.copy(
-                isLoading = false,
-                isError = true,
-            )
-        }
-    }
 
     override fun onClickCategoryProduct(categoryId: Long) {
 
