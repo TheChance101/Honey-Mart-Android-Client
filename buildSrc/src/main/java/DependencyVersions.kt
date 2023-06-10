@@ -4,6 +4,7 @@ object DependencyVersions {
     const val CORE_KTX = "1.10.0"
     const val MATERIAL = "1.5.0"
     const val CONSTRAINT_LAYOUT = "2.1.4"
+    const val LOTTIE = "6.0.0"
 
     // Test Dependencies
     const val JUNIT = "4.13.2"

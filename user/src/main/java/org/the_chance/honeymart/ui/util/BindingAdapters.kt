@@ -12,7 +12,7 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
     (view.adapter as BaseAdapter<T>?)?.setItems(items ?: emptyList())
 }
 
-@BindingAdapter("showIfTrue")
+@BindingAdapter("app:showIfTrue")
 fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
