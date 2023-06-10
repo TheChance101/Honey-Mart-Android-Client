@@ -25,7 +25,7 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
         function: suspend () -> List<T>,
         transform: (T) -> R,
         onSuccess: (List<R>) -> Unit,
-        onError: () -> Unit,
+        onError: (t: Throwable) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
@@ -35,7 +35,7 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
                 onSuccess(result)
             } catch (e: Throwable) {
                 Log.e("TAG", "tryToExecute error: ${e.message}")
-                onError()
+                onError(e)
             }
         }
     }
