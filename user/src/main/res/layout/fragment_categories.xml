@@ -27,5 +27,14 @@
             app:spanCount="3"
             tools:listitem="@layout/item_category" />
 
+        <include
+            android:id="@+id/loading"
+            layout="@layout/item_loading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfTrue="@{viewModel.uiState.isLoading}" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
