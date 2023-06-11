@@ -24,7 +24,7 @@
             android:paddingVertical="@dimen/spacing_xlarge"
             android:paddingStart="@dimen/spacing_xlarge"
             android:paddingEnd="@dimen/spacing_medium"
-            app:items="@{viewModel.uiState.categories}"
+            app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/recycler_product"
@@ -40,7 +40,7 @@
             android:clipToPadding="false"
             android:paddingVertical="@dimen/spacing_huge"
             android:layout_marginEnd="@dimen/spacing_xlarge"
-            app:items="@{viewModel.uiState.products}"
+            app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:showIfTrue="@{viewModel.uiState.isLoading}" />
+            app:showIfTrue="@{viewModel.state.isLoading}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
