@@ -18,7 +18,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         initiateProductsAdapter()
         initiateCategoryAdapter()
         viewModel.getProductsByCategoryId(args.categoryId)
-        viewModel.getCategoriesByMarketId(args.productMarketId)
+        viewModel.getCategoriesByMarketId(args.productId)
     }
 
     private fun initiateCategoryAdapter() {
