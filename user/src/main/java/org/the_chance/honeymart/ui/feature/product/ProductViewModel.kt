@@ -1,8 +1,12 @@
 package org.the_chance.honeymart.ui.feature.product
 
-import android.util.Log
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -11,51 +15,51 @@ import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
 import org.the_chance.honeymart.ui.feature.uistate.asCategoriesUiState
 import org.the_chance.honeymart.ui.feature.uistate.asProductUiState
+import org.the_chance.honeymart.ui.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
-) : BaseViewModel<ProductsUiState>(ProductsUiState()), ProductInteractionListener,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
+    private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
+    init {
+        getCategoriesByMarketId()
+        getProductsByCategoryId()
+    }
 
-    fun getCategoriesByMarketId(marketId: Long) {
-        _uiState.update { it.copy(isLoading = true) }
+    private fun getCategoriesByMarketId() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(marketId) },
-            { Category -> Category.asCategoriesUiState() },
+            { getMarketAllCategories(args.marketId) },
+            Category::asCategoriesUiState,
             ::onSuccess,
             ::onError
         )
     }
 
-    fun getProductsByCategoryId(categoryId: Long) {
-        _uiState.update { it.copy(isLoading = true) }
+    private fun getProductsByCategoryId() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(categoryId) },
-            { Product -> Product.asProductUiState() },
+            { getAllProducts(args.categoryId) },
+            Product::asProductUiState,
             ::onSuccessGetProducts,
             ::onError
         )
-        Log.e("TAG", "getProductsByCategoryId: ${categoryId}")
     }
 
     private fun onError(throwable: Throwable) {
-        this._uiState.update {
-            it.copy(
-                isLoading = false,
-                isError = true,
-            )
-        }
-        Log.e("TAG", "onError:${throwable} ")
+        _state.update { it.copy(isLoading = false, isError = true) }
     }
 
     private fun onSuccessGetProducts(products: List<ProductUiState>) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isLoading = false,
                 isError = false,
@@ -65,7 +69,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onSuccess(categories: List<CategoryUiState>) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isLoading = false,
                 isError = false,
@@ -76,10 +80,15 @@ class ProductViewModel @Inject constructor(
 
 
     override fun onClickCategoryProduct(categoryId: Long) {
-
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllProducts(categoryId) },
+            Product::asProductUiState,
+            ::onSuccessGetProducts,
+            ::onError
+        )
+        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
-    override fun onClickProduct(productId: Long) {
-
-    }
+    override fun onClickProduct(productId: Long) {}
 }
