@@ -2,6 +2,9 @@
 <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
         app:font="@font/poppins_regular"
-        app:fontStyle="normal"
-        />
+        app:fontStyle="normal" />
+    <font
+        app:font="@font/poppins_medium"
+        app:fontStyle="normal" />
+
 </font-family>

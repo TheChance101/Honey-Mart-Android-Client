@@ -20,7 +20,7 @@
     <dimen name="text_caption">14sp</dimen>
     <dimen name="text_secondary">12sp</dimen>
 
-    <dimen name="radius_small">16dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
 
     <dimen name="stroke_zero">0dp</dimen>
     <dimen name="stroke_normal">1dp</dimen>
