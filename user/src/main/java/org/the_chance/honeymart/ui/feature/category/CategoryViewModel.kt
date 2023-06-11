@@ -33,12 +33,12 @@ class CategoryViewModel @Inject constructor(
         tryToExecute(
             { getAllCategories(args.marketId) },
             Category::asCategoriesUiState,
-            ::onSuccess,
-            ::onError
+            ::onGetCategorySuccess,
+            ::onGetCategoryError
         )
     }
 
-    private fun onSuccess(categories: List<CategoryUiState>) {
+    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
         this._state.update {
             it.copy(
                 isLoading = false,
@@ -48,7 +48,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun onError(throwable: Throwable) {
+    private fun onGetCategoryError(throwable: Throwable) {
         this._state.update {
             it.copy(
                 isLoading = false,

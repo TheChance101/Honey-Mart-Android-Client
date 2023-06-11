@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         tools:context=".org.the_chance.user.ui.product.productFragment">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
             android:layout_width="wrap_content"

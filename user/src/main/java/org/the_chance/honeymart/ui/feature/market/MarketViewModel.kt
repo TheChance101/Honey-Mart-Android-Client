@@ -2,8 +2,6 @@ package org.the_chance.honeymart.ui.feature.market
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
@@ -17,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-) : BaseViewModel<MarketsUiState , Long>(MarketsUiState()), MarketInteractionListener {
+) : BaseViewModel<MarketsUiState, Long>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
@@ -30,13 +28,12 @@ class MarketViewModel @Inject constructor(
         tryToExecute(
             { getAllMarket() },
             { market -> market.asMarketUiState() },
-            ::onSuccess,
-            ::onError
+            ::onGetMarketSuccess,
+            ::onGetMarketError
         )
     }
 
-
-    private fun onError(throwable: Throwable) {
+    private fun onGetMarketError(throwable: Throwable) {
         this._state.update {
             it.copy(
                 isLoading = false,
@@ -45,7 +42,7 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    private fun onSuccess(markets: List<MarketUiState>) {
+    private fun onGetMarketSuccess(markets: List<MarketUiState>) {
         _state.update {
             it.copy(
                 isLoading = false,

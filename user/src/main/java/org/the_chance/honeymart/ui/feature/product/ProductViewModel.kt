@@ -39,8 +39,8 @@ class ProductViewModel @Inject constructor(
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
             Category::asCategoriesUiState,
-            ::onSuccess,
-            ::onError
+            ::onGetCategorySuccess,
+            ::onGetCategoryError
         )
     }
 
@@ -49,26 +49,12 @@ class ProductViewModel @Inject constructor(
         tryToExecute(
             { getAllProducts(args.categoryId) },
             Product::asProductUiState,
-            ::onSuccessGetProducts,
-            ::onError
+            ::onGetProductSuccess,
+            ::onGetProductError
         )
     }
 
-    private fun onError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, isError = true) }
-    }
-
-    private fun onSuccessGetProducts(products: List<ProductUiState>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-                products = products
-            )
-        }
-    }
-
-    private fun onSuccess(categories: List<CategoryUiState>) {
+    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -78,14 +64,31 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    private fun onGetProductSuccess(products: List<ProductUiState>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                products = products
+            )
+        }
+    }
+
+    private fun onGetCategoryError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, isError = true) }
+    }
+
+    private fun onGetProductError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, isError = true) }
+    }
 
     override fun onClickCategoryProduct(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllProducts(categoryId) },
             Product::asProductUiState,
-            ::onSuccessGetProducts,
-            ::onError
+            ::onGetProductSuccess,
+            ::onGetProductError
         )
         viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
