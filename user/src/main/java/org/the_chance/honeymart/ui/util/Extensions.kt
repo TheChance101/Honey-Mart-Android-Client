@@ -5,10 +5,16 @@ import android.view.View
 import android.view.Window
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
@@ -67,4 +73,14 @@ fun RecyclerView.addOnScrollListenerWithImageVisibility(
 private fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
     val interpolatedColor = ArgbEvaluatorCompat.getInstance().evaluate(ratio, color1, color2)
     return interpolatedColor.coerceAtLeast(color1).coerceAtMost(color2)
+}
+
+fun <T> LifecycleOwner.collect(flow: Flow<T>, action: suspend (T) -> Unit) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect {
+                action.invoke(it)
+            }
+        }
+    }
 }
