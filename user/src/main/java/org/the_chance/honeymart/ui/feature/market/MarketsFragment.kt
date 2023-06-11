@@ -9,6 +9,7 @@ import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.util.EventObserve
 import org.the_chance.honeymart.ui.util.addOnScrollListenerWithAppbarColor
 import org.the_chance.honeymart.ui.util.addOnScrollListenerWithImageVisibility
+import org.the_chance.honeymart.ui.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentMarketsBinding
 
@@ -34,14 +35,14 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
 
-        observeOnMarket()
+        collectAction()
     }
 
-    private fun observeOnMarket() {
-        viewModel.uiMarketState.observe(this, EventObserve { marketId ->
-            navigateToCategory(marketId)
-            log(marketId)
-        })
+
+    private fun collectAction() {
+        collect(viewModel.marketUiEffect) { effect ->
+            effect.getContentIfHandled()?.let { navigateToCategory(it) }
+        }
     }
 
     private fun navigateToCategory(marketId: Long) {
