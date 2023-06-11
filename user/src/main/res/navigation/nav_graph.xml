@@ -37,7 +37,7 @@
             android:name="categoryId"
             app:argType="long" />
         <argument
-            android:name="productMarketId"
+            android:name="productId"
             app:argType="long" />
     </fragment>
 
