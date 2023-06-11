@@ -32,15 +32,18 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_market" />
 
-        <include
+      <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
-            layout="@layout/item_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
             app:showIfTrue="@{viewModel.state.isLoading}" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
