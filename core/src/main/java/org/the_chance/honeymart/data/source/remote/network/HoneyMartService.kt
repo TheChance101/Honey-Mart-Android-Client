@@ -4,7 +4,6 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.domain.model.Category
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
