@@ -34,7 +34,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_xlarge"
                         android:visibility="visible"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -43,7 +42,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_xlarge"
                         android:visibility="gone"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         app:srcCompat="@drawable/honey_mart_logo" />
 
                 </LinearLayout>
