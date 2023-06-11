@@ -6,7 +6,7 @@
 
     <data></data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.the_chance.honeymart.ui.MainActivity">
@@ -15,43 +15,48 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white_300"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:fitsSystemWindows="true"
+            app:liftOnScroll="true">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom"
-                android:layout_margin="@dimen/spacing_xlarge"
-                android:visibility="visible"
-                app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_logo_scroll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom"
-                android:layout_margin="@dimen/spacing_xlarge"
-                android:visibility="gone"
-                app:srcCompat="@drawable/honey_mart_logo" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/image_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_xlarge"
+                        android:visibility="visible"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/image_logo_scroll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_xlarge"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:srcCompat="@drawable/honey_mart_logo" />
+
+                </LinearLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/nav_graph" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
