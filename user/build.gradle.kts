@@ -53,4 +53,6 @@ dependencies {
     implementation(Dependencies.hiltDependency)
     //LiveData
     Dependencies.liveDataDependencies.forEach { implementation(it) }
+    //retrofit
+    Dependencies.retrofitDependencies.forEach { implementation(it) }
 }

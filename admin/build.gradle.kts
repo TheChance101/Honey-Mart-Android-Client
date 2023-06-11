@@ -38,5 +38,7 @@ dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    //retrofit
+    Dependencies.retrofitDependencies.forEach { implementation(it) }
 
 }
