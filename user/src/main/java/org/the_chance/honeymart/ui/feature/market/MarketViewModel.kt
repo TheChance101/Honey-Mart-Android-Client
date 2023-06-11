@@ -2,8 +2,12 @@ package org.the_chance.honeymart.ui.feature.market
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
@@ -19,9 +23,8 @@ class MarketViewModel @Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
 
-    private val _uiMarketState = MutableLiveData<EventHandler<Long>>()
-    val uiMarketState: LiveData<EventHandler<Long>>
-        get() = _uiMarketState
+    private val _marketUiEffect = MutableSharedFlow<EventHandler<Long>>()
+    val marketUiEffect = _marketUiEffect.asSharedFlow()
 
     init {
         getAllMarkets()
@@ -57,7 +60,10 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    override fun onClickMarket(id: Long) {
-        _uiMarketState.postValue(EventHandler(id))
+    override fun onClickMarket(marketId: Long) {
+//        _uiMarketState.postValue(EventHandler(marketId))
+        viewModelScope.launch {
+            _marketUiEffect.emit(EventHandler(marketId))
+        }
     }
 }
