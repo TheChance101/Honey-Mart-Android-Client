@@ -27,23 +27,33 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     val effect = _effect.asSharedFlow()
 
 
-    protected fun <T, R> tryToExecute(
-        function: suspend () -> List<T>,
-        transform: (T) -> R,
-        onSuccess: (List<R>) -> Unit,
-        onError: (t: Throwable) -> Unit,
+    protected fun <T> tryToExecute(
+        function: suspend () -> T,
+        onSuccess: (T) -> Unit,
+        onError: (t: ErrorState) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
             try {
-                val result = function().map(transform)
-                Log.e("TAG", "tryToExecute:$result ")
+                val result = function()
+                Log.e(TAG, "tryToExecute:$result ")
                 onSuccess(result)
-            } catch (e: Throwable) {
-                Log.e("TAG", "tryToExecute error: ${e.message}")
-                onError(e)
+            } catch (e: NetworkException) {
+                Log.e(TAG, "tryToExecute error: ${e.message}")
+                onError(ErrorState(e.message ?: "Unknown error"))
+            } catch (e: ApiException) {
+                onError(ErrorState(e.message ?: "Unknown error"))
+                Log.e(TAG, "tryToExecute error: ${e.message}")
             }
         }
     }
 
+
 }
+
+class NetworkException(message: String) : Exception(message)
+class ApiException(message: String) : Exception(message)
+data class ErrorState(
+    val message: String? = null,
+    val isError: Boolean = false,
+)

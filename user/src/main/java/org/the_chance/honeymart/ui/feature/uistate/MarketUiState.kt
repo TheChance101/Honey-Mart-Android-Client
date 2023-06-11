@@ -1,11 +1,12 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.ui.base.ErrorState
 
 
 data class MarketsUiState(
     val isLoading: Boolean = true,
-    val isError: Boolean = false,
+    val error: ErrorState? = null,
     val markets: List<MarketUiState> = emptyList(),
 )
 

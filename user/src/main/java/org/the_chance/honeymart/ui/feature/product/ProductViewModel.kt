@@ -5,11 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.Category
-import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.base.ErrorState
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
@@ -22,7 +21,7 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
@@ -37,8 +36,7 @@ class ProductViewModel @Inject constructor(
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId) },
-            Category::asCategoriesUiState,
+            { getMarketAllCategories(args.marketId).map { it.asCategoriesUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -47,8 +45,7 @@ class ProductViewModel @Inject constructor(
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(args.categoryId) },
-            Product::asProductUiState,
+            { getAllProducts(args.categoryId).map { it.asProductUiState() } },
             ::onGetProductSuccess,
             ::onGetProductError
         )
@@ -74,19 +71,18 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun onGetCategoryError(throwable: Throwable) {
+    private fun onGetCategoryError(throwable: ErrorState) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    private fun onGetProductError(throwable: Throwable) {
+    private fun onGetProductError(throwable: ErrorState) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
     override fun onClickCategoryProduct(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(categoryId) },
-            Product::asProductUiState,
+            { getAllProducts(categoryId).map { it.asProductUiState() } },
             ::onGetProductSuccess,
             ::onGetProductError
         )
