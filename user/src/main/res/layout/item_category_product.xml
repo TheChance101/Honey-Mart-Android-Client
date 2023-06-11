@@ -8,13 +8,17 @@
         <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.CategoryUiState" />
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.product.CategoryProductInteractionListener" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_8"
+        android:layout_margin="@dimen/spacing_medium"
+        android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
         <com.google.android.material.card.MaterialCardView
@@ -22,7 +26,7 @@
             style="@style/Theme.HoneyMart.Card.CategoryCard"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="@dimen/spacing_4"
+            android:paddingHorizontal="@dimen/spacing_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,21 +36,17 @@
                 style="@style/Theme.HoneyMart.CategoryIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_12" />
+                android:layout_margin="@dimen/spacing_large" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
-            style="@style/Theme.HoneyMart.Text.H6"
+            style="@style/Theme.HoneyMart.Text.H6.TextCategory"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_4"
-            android:ellipsize="end"
-            android:foregroundGravity="center"
+            android:layout_marginTop="@dimen/spacing_small"
             android:gravity="center_horizontal"
-            android:maxLines="2"
             android:text="@{item.categoryName}"
-            android:textColor="@color/black_37"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"

@@ -18,9 +18,9 @@
             android:id="@+id/recycler_categories"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:items="@{viewModel.uiState.categories}"
-            android:paddingHorizontal="@dimen/spacing_12"
-            android:paddingVertical="@dimen/spacing_12"
+            app:items="@{viewModel.state.categories}"
+            android:paddingHorizontal="@dimen/spacing_large"
+            android:paddingVertical="@dimen/spacing_large"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:showIfTrue="@{viewModel.uiState.isLoading}" />
+            app:showIfTrue="@{viewModel.state.isLoading}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

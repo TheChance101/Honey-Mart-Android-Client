@@ -1,9 +1,11 @@
 package org.the_chance.honeymart.ui.feature.category
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
@@ -15,36 +17,39 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
-    //  val id: Long,
-) : BaseViewModel<CategoriesUiState>(CategoriesUiState()), CategoryInteractionListener {
+    savedStateHandle: SavedStateHandle,
+) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
+    CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-    private val _uiCategoryState = MutableLiveData<EventHandler<Long>>()
-    val uiCategoryState: LiveData<EventHandler<Long>>
-        get() = _uiCategoryState
+    private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    fun getAllCategory(id: Long) {
-        _uiState.update { it.copy(isLoading = true) }
+    init {
+        getAllCategory()
+    }
+
+    private fun getAllCategory() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCategories(id) },
-            { category -> category.asCategoriesUiState() },
-            ::onSuccess,
-            ::onError
+            { getAllCategories(args.marketId) },
+            Category::asCategoriesUiState,
+            ::onGetCategorySuccess,
+            ::onGetCategoryError
         )
     }
 
-    private fun onSuccess(categories: List<CategoryUiState>) {
-        this._uiState.update {
+    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+        this._state.update {
             it.copy(
                 isLoading = false,
                 isError = false,
-                categories = categories
+                categories = categories,
             )
         }
     }
 
-    private fun onError(throwable: Throwable) {
-        this._uiState.update {
+    private fun onGetCategoryError(throwable: Throwable) {
+        this._state.update {
             it.copy(
                 isLoading = false,
                 isError = true
@@ -52,7 +57,9 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    override fun onCategoryClicked(id: Long) {
-        _uiCategoryState.postValue(EventHandler(id))
+    override fun onCategoryClicked(categoryId: Long) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId)))
+        }
     }
 }

@@ -24,7 +24,7 @@
             android:layout_marginVertical="@dimen/spacing_16"
             android:clipToPadding="false"
             android:orientation="vertical"
-            app:items="@{viewModel.uiState.markets}"
+            app:items="@{viewModel.state.markets}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:showIfTrue="@{viewModel.uiState.isLoading}" />
+            app:showIfTrue="@{viewModel.state.isLoading}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
