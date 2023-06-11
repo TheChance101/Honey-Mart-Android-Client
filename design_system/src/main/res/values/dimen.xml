@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="spacing_extra_small">2dp</dimen>
-    <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_semi_medium">6dp</dimen>
-    <dimen name="spacing_medium">8dp</dimen>
-    <dimen name="spacing_large">12dp</dimen>
-    <dimen name="spacing_xlarge">16dp</dimen>
-    <dimen name="spacing_xxlarge">18dp</dimen>
-    <dimen name="spacing_huge">20dp</dimen>
-    <dimen name="spacing_massive">24dp</dimen>
-    <dimen name="spacing_giant">32dp</dimen>
-    <dimen name="spacing_mammoth">40dp</dimen>
-    <dimen name="spacing_monstrous">48dp</dimen>
-    <dimen name="spacing_tremendous">46dp</dimen>
-    <dimen name="spacing_colossal">64dp</dimen>
+    <dimen name="spacing_2">2dp</dimen>
+    <dimen name="spacing_4">4dp</dimen>
+    <dimen name="spacing_6">6dp</dimen>
+    <dimen name="spacing_8">8dp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
+    <dimen name="spacing_32">32dp</dimen>
+    <dimen name="spacing_40">40dp</dimen>
+    <dimen name="spacing_48">48dp</dimen>
+    <dimen name="spacing_64">64dp</dimen>
 
     <dimen name="text_heading">24sp</dimen>
     <dimen name="text_subtitle">20sp</dimen>

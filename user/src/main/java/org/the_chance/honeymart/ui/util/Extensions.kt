@@ -16,7 +16,7 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
     fragment: Fragment,
     appBarLayout: AppBarLayout,
 ) {
-    val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_medium)
+    val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_8)
     val window: Window = fragment.requireActivity().window
 
     addOnScrollListener(object : RecyclerView.OnScrollListener() {

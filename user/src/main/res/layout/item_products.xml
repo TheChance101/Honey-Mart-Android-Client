@@ -18,7 +18,7 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginVertical="@dimen/spacing_small"
+        android:layout_marginVertical="@dimen/spacing_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,11 +41,11 @@
                 android:textColor="@color/white"
                 android:alpha="0.9"
                 android:gravity="center_horizontal"
-                android:paddingHorizontal="@dimen/spacing_large"
-                android:paddingVertical="@dimen/spacing_semi_medium"
+                android:paddingHorizontal="@dimen/spacing_12"
+                android:paddingVertical="@dimen/spacing_6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/spacing_medium"
+                android:layout_margin="@dimen/spacing_8"
                 tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -53,7 +53,7 @@
                 style="@style/Theme.HoneyMart.Text.H4.ProductPrimaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_4"
                 android:text="@{item.productName}"
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
                 app:layout_constraintStart_toStartOf="@+id/product_description"
@@ -66,7 +66,7 @@
                 style="@style/Theme.HoneyMart.Text.H6.SecondaryText"
                 tool:text="Primary Text"
                 android:text="@{item.productQuantity}"
-                android:layout_margin="@dimen/spacing_medium"
+                android:layout_margin="@dimen/spacing_8"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/spacing_xlarge"
+                android:layout_margin="@dimen/spacing_16"
                 app:srcCompat="@drawable/icon_favorite_unselected"
                 />
 
