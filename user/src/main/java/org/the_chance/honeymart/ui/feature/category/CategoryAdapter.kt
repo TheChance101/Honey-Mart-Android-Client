@@ -11,6 +11,6 @@ class CategoryAdapter(
     override val layoutID = R.layout.item_category
 }
 
-interface CategoryInteractionListener : BaseInteractionListener{
+interface CategoryInteractionListener : BaseInteractionListener {
     fun onCategoryClicked(categoryId: Long)
 }
