@@ -4,9 +4,11 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.CategoryUiState" />
+
         <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />
@@ -40,12 +42,16 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
-            style="@style/Theme.HoneyMart.Text.H5.CategoryTitle"
+            style="@style/Theme.HoneyMart.Text.H5"
             android:layout_width="104dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_8"
+            android:ellipsize="end"
+            android:foregroundGravity="center"
             android:gravity="center_horizontal"
+            android:maxLines="2"
             android:text="@{item.categoryName}"
+            android:textColor="@color/black_60"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"

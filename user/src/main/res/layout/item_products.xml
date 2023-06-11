@@ -4,9 +4,11 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.ProductUiState" />
+
         <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.product.ProductInteractionListener" />
@@ -28,56 +30,57 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
+                style="@style/Theme.HoneyMart.Image.ProductImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/Theme.HoneyMart.Image.ProductImage" />
+                android:layout_height="match_parent" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(item.productPrice)}"
-                android:background="@drawable/shape_price"
-                android:textColor="@color/white"
+                android:layout_margin="@dimen/spacing_8"
                 android:alpha="0.9"
+                android:background="@drawable/shape_price"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/spacing_12"
                 android:paddingVertical="@dimen/spacing_8"
+                android:text="@{String.valueOf(item.productPrice)}"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/spacing_8"
                 tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
-                style="@style/Theme.HoneyMart.Text.H4.ProductPrimaryText"
+                style="@style/Theme.HoneyMart.Text.H4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_4"
                 android:text="@{item.productName}"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
                 app:layout_constraintStart_toStartOf="@+id/product_description"
                 tool:text="Primary Text" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_description"
+                style="@style/Theme.HoneyMart.Text.H6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Theme.HoneyMart.Text.H6.SecondaryText"
-                tool:text="Primary Text"
-                android:text="@{item.productQuantity}"
                 android:layout_margin="@dimen/spacing_8"
+                android:text="@{item.productQuantity}"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="Primary Text" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/spacing_16"
-                app:srcCompat="@drawable/icon_favorite_unselected"
-                />
+                app:srcCompat="@drawable/icon_favorite_unselected" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
