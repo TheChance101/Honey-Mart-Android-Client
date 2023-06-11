@@ -155,7 +155,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:alpha">0.8</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/spacing_12</item>
-        <item name="android:paddingVertical" tools:targetApi="o">@dimen/spacing_6</item>
+        <item name="android:paddingVertical" tools:targetApi="o">@dimen/spacing_8</item>
     </style>
 
     <!-- Product Primary text-->

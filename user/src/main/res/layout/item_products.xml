@@ -42,7 +42,7 @@
                 android:alpha="0.9"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/spacing_12"
-                android:paddingVertical="@dimen/spacing_6"
+                android:paddingVertical="@dimen/spacing_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="@dimen/spacing_8"
