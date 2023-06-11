@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_medium"
+        android:layout_margin="@dimen/spacing_8"
         android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
@@ -26,7 +26,7 @@
             style="@style/Theme.HoneyMart.Card.CategoryCard"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="@dimen/spacing_small"
+            android:paddingHorizontal="@dimen/spacing_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,15 +36,17 @@
                 style="@style/Theme.HoneyMart.CategoryIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_large" />
+                android:layout_margin="@dimen/spacing_12" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
-            style="@style/Theme.HoneyMart.Text.H6.TextCategory"
+            style="@style/Theme.HoneyMart.Text.H6"
+            android:layout_marginTop="@dimen/spacing_4"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:gravity="center_horizontal"
             android:text="@{item.categoryName}"
             app:layout_constraintEnd_toEndOf="parent"
