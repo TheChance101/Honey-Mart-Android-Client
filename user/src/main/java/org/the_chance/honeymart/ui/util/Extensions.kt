@@ -41,31 +41,6 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
         }
     })
 }
-
-fun RecyclerView.addOnScrollListenerWithImageVisibility(
-    imageDefault: ShapeableImageView,
-    imageScrolled: ShapeableImageView
-) {
-    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-
-            when (newState) {
-                RecyclerView.SCROLL_STATE_DRAGGING -> {
-                    imageDefault.visibility = View.GONE
-                    imageScrolled.visibility = View.VISIBLE
-                }
-
-                RecyclerView.SCROLL_STATE_IDLE -> {
-                    if (!recyclerView.canScrollVertically(-1)) {
-                        imageDefault.visibility = View.VISIBLE
-                        imageScrolled.visibility = View.GONE
-                    }
-                }
-            }
-        }
-    })
-}
 fun RecyclerView.addToolbarScrollListener(
     imageLogoDefault: ShapeableImageView,
     imageLogoScrolled: ShapeableImageView

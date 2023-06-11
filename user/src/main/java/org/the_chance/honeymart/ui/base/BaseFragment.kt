@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +17,9 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
+import org.the_chance.honeymart.ui.util.addOnScrollListenerWithAppbarColor
 import org.the_chance.honeymart.ui.util.addToolbarScrollListener
 import org.the_chance.user.R
 
@@ -27,6 +30,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     abstract val layoutIdFragment: Int
     abstract val viewModel: ViewModel
     private lateinit var _binding: VB
+    private lateinit var appbar: AppBarLayout
     private lateinit var imageLogoDefault: ShapeableImageView
     private lateinit var imageLogoScrolled: ShapeableImageView
     protected val binding get() = _binding
@@ -66,34 +70,34 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     protected fun setupScrollListenerForRecyclerView(
         recyclerView: RecyclerView,
     ) {
+        appbar = requireActivity().findViewById(R.id.appBarLayout)
         imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
         imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
-        //recyclerView.addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
+        recyclerView.addOnScrollListenerWithAppbarColor(requireContext(), this, appbar)
         recyclerView.addToolbarScrollListener(imageLogoDefault, imageLogoScrolled)
-
     }
-    @Suppress("DEPRECATION")
+
+    @SuppressLint("InlinedApi")
     private fun setStatusBarMode(activity: Activity) {
         val window = activity.window
         val decorView = window.decorView
 
         window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
-            val isNightMode = (activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                decorView.systemUiVisibility =
+                    decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
 
-            decorView.postDelayed({
-                decorView.systemUiVisibility = when {
-                    isNightMode -> View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    else -> View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
-            }, 200) // Delay of 200 milliseconds
-
-            statusBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                statusBarColor = Color.TRANSPARENT
+            } else {
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            }
         }
     }
-
 
 
 }
