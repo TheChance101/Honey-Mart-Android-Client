@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.ui.feature.market
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,19 +17,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-) : BaseViewModel<MarketsUiState>(MarketsUiState()), MarketInteractionListener {
+) : BaseViewModel<MarketsUiState , Long>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
-
-    private val _marketUiEffect = MutableSharedFlow<EventHandler<Long>>()
-    val marketUiEffect = _marketUiEffect.asSharedFlow()
 
     init {
         getAllMarkets()
     }
 
     private fun getAllMarkets() {
-        _uiState.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllMarket() },
             { market -> market.asMarketUiState() },
@@ -42,7 +37,7 @@ class MarketViewModel @Inject constructor(
 
 
     private fun onError(throwable: Throwable) {
-        this._uiState.update {
+        this._state.update {
             it.copy(
                 isLoading = false,
                 isError = true,
@@ -51,7 +46,7 @@ class MarketViewModel @Inject constructor(
     }
 
     private fun onSuccess(markets: List<MarketUiState>) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isLoading = false,
                 isError = false,
@@ -61,9 +56,6 @@ class MarketViewModel @Inject constructor(
     }
 
     override fun onClickMarket(marketId: Long) {
-//        _uiMarketState.postValue(EventHandler(marketId))
-        viewModelScope.launch {
-            _marketUiEffect.emit(EventHandler(marketId))
-        }
+        viewModelScope.launch { _effect.emit(EventHandler(marketId)) }
     }
 }
