@@ -17,7 +17,7 @@ data class ProductUiState(
     val isFavorite: Boolean? = false
 )
 
-fun ProductEntity.asProductUiState(): ProductUiState {
+fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
