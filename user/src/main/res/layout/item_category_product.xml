@@ -24,6 +24,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/category_container"
             style="@style/Theme.HoneyMart.Card.CategoryCard"
+            app:selected="@{item.isCategorySelected}"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:paddingHorizontal="@dimen/spacing_4"
