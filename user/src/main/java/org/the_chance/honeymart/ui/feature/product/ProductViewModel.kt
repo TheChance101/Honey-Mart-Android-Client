@@ -38,7 +38,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
-            org.the_chance.honeymart.domain.model.CategoryEntity::asCategoriesUiState,
+            CategoryEntity::asCategoriesUiState,
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
