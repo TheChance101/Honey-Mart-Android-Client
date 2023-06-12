@@ -28,7 +28,6 @@ class ProductViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
-    private var selectedCategoryId: Long? = null
 
     init {
         getCategoriesByMarketId()
@@ -37,14 +36,14 @@ class ProductViewModel @Inject constructor(
 
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
-        selectedCategoryId = args.categoryId
+        updateSelectedCategoryState(args.categoryId)
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
             CategoryEntity::asCategoriesUiState,
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
-        updateSelectedCategoryState(args.categoryId)
+
     }
 
     private fun getProductsByCategoryId() {
@@ -88,7 +87,6 @@ class ProductViewModel @Inject constructor(
 
     override fun onClickCategoryProduct(CategoryId: Long) {
         _state.update { it.copy(isLoading = true) }
-        selectedCategoryId = CategoryId
         tryToExecute(
             { getAllProducts(CategoryId) },
             ProductEntity::asProductUiState,
