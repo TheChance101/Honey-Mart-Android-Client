@@ -22,9 +22,9 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/spacing_xlarge"
-            android:paddingStart="@dimen/spacing_xlarge"
-            android:paddingEnd="@dimen/spacing_medium"
+            android:paddingVertical="@dimen/spacing_16"
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingEnd="@dimen/spacing_8"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,8 +39,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/spacing_huge"
-            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:paddingVertical="@dimen/spacing_20"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,13 +50,17 @@
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_products" />
 
-        <include
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
-            layout="@layout/item_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
             app:showIfTrue="@{viewModel.state.isLoading}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
-import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.CategoryEntity
 
 
 data class CategoriesUiState(
@@ -16,7 +16,7 @@ data class CategoryUiState(
     val categoryImageId: Int? = 0
 )
 
-fun Category.asCategoriesUiState(): CategoryUiState {
+fun CategoryEntity.asCategoriesUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,

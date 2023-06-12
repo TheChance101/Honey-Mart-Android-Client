@@ -19,22 +19,25 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:items="@{viewModel.state.categories}"
-            android:paddingHorizontal="@dimen/spacing_large"
-            android:paddingVertical="@dimen/spacing_large"
+            android:paddingHorizontal="@dimen/spacing_12"
+            android:paddingVertical="@dimen/spacing_12"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="3"
             tools:listitem="@layout/item_category" />
 
-        <include
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
-            layout="@layout/item_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
             app:showIfTrue="@{viewModel.state.isLoading}" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

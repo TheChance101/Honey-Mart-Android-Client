@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.the_chance.honeymart.data.repository.HoneyMartRepository
 import org.the_chance.honeymart.data.repository.HoneyMartRepositoryImp
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Singleton
 
 @Module

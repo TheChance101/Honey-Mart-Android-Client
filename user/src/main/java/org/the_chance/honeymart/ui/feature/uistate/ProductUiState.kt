@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
-import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.ProductEntity
 
 data class ProductsUiState(
     val isLoading: Boolean = true,
@@ -17,7 +17,7 @@ data class ProductUiState(
     val isFavorite: Boolean? = false
 )
 
-fun Product.asProductUiState(): ProductUiState {
+fun ProductEntity.asProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
