@@ -15,7 +15,7 @@ data class MarketUiState(
 )
 
 
-fun MarketEntity.asMarketUiState(): MarketUiState {
+fun MarketEntity.toMarketUiState(): MarketUiState {
     return MarketUiState(
         marketId = marketId,
         marketName = marketName
