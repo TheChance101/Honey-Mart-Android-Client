@@ -4,8 +4,8 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.the_chance.ui.BaseAdapter
 import org.the_chance.design_system.R
+import org.the_chance.ui.BaseAdapter
 
 
 @BindingAdapter(value = ["app:items"])
@@ -17,11 +17,15 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
 fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
-@BindingAdapter("app:isSelectedCategory")
-fun isSelectedCategory(view: View, selected: Boolean) {
-    if (selected) {
-        view.setBackgroundResource(R.color.primary_100)
+
+@BindingAdapter("app:selected")
+fun changeIfSelected(cardView: CardView, isSelected: Boolean) {
+    if (isSelected) {
+        val selectedColor = ContextCompat.getColor(cardView.context, R.color.primary_100)
+        cardView.setCardBackgroundColor(selectedColor)
     } else {
-        view.setBackgroundResource(R.color.white_100)
+        val notSelectedColor = ContextCompat.getColor(cardView.context, R.color.white_100)
+        cardView.setCardBackgroundColor(notSelectedColor)
     }
 }
+
