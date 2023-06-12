@@ -14,7 +14,6 @@ import org.the_chance.honeymart.ui.util.EventHandler
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
-
     abstract val TAG: String
     protected open fun log(message: String) {
         Log.v(TAG, message)
@@ -37,13 +36,10 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         viewModelScope.launch(dispatcher) {
             try {
                 val result = function().map(transform)
-                Log.e("TAG", "tryToExecute:$result ")
                 onSuccess(result)
             } catch (e: Throwable) {
-                Log.e("TAG", "tryToExecute error: ${e.message}")
                 onError(e)
             }
         }
     }
-
 }
