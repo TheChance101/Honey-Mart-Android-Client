@@ -5,6 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -16,14 +20,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val getAllProducts: org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase,
-    private val getMarketAllCategories: org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase,
+    private val getAllProducts: GetAllProductsByCategoryUseCase,
+    private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private var selectedCategoryId: Long? = null
 
     init {
         getCategoriesByMarketId()
@@ -32,22 +37,25 @@ class ProductViewModel @Inject constructor(
 
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
+        selectedCategoryId = args.categoryId
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
-            org.the_chance.honeymart.domain.model.CategoryEntity::asCategoriesUiState,
+            CategoryEntity::asCategoriesUiState,
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
+        updateSelectedCategoryState(args.categoryId)
     }
 
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllProducts(args.categoryId) },
-            org.the_chance.honeymart.domain.model.ProductEntity::asProductUiState,
+            ProductEntity::asProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
         )
+
     }
 
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
@@ -78,16 +86,30 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    override fun onClickCategoryProduct(categoryId: Long) {
+    override fun onClickCategoryProduct(CategoryId: Long) {
         _state.update { it.copy(isLoading = true) }
+        selectedCategoryId = CategoryId
         tryToExecute(
-            { getAllProducts(categoryId) },
-            org.the_chance.honeymart.domain.model.ProductEntity::asProductUiState,
+            { getAllProducts(CategoryId) },
+            ProductEntity::asProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
         )
-        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
+        updateSelectedCategoryState(CategoryId)
+        viewModelScope.launch { _effect.emit(EventHandler(CategoryId)) }
     }
+
+    private fun updateSelectedCategoryState(categoryId: Long) {
+        val updatedCategories = _state.value.categories.map { category ->
+            if (category.categoryId == categoryId) {
+                category.copy(selectedCategory = true)
+            } else {
+                category.copy(selectedCategory = false)
+            }
+        }
+        _state.update { it.copy(categories = updatedCategories) }
+    }
+
 
     override fun onClickProduct(productId: Long) {}
 }

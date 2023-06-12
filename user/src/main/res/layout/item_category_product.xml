@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_8"
+        app:isSelectedCategory="@{item.selectedCategory}"
         android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
