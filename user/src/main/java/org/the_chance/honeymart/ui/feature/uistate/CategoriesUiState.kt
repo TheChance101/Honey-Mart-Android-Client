@@ -13,6 +13,7 @@ data class CategoriesUiState(
 data class CategoryUiState(
     val categoryId: Long? = 0L,
     val categoryName: String? = "",
+    val selectedCategory:Boolean = false,
     val categoryImageId: Int? = 0
 )
 
