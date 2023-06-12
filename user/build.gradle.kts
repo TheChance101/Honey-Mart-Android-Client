@@ -40,7 +40,8 @@ android {
 
 dependencies {
     implementation(project(BuildModules.DESIGN_SYSTEM))
-    implementation(project(BuildModules.CORE))
+    implementation(project(BuildModules.CORE_DOMAIN))
+    implementation(project(BuildModules.CORE_DATA))
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }

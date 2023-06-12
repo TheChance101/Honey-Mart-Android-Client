@@ -6,21 +6,24 @@ plugins {
 }
 
 android {
-    namespace = "org.the_chance.core"
-    compileSdk = ConfigData.COMPILE_SDK_VERSION
+    namespace = "org.the_chance.honeymart.data"
+    compileSdk = 33
 
     defaultConfig {
-        minSdk = ConfigData.MIN_SDK_VERSION
-        targetSdk = ConfigData.TARGET_SDK_VERSION
+        minSdk = 26
+        targetSdk = 33
 
-        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName(BuildType.RELEASE) {
-            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -33,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(BuildModules.CORE_DOMAIN))
     implementation(Dependencies.coreKtxDependency)
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
@@ -44,7 +48,6 @@ dependencies {
     implementation(Dependencies.hiltDependency)
     kapt(Dependencies.hiltCompiler)
 }
-
 kapt {
     correctErrorTypes = true
 }
