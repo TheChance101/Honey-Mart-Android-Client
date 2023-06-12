@@ -31,7 +31,7 @@ class ProductViewModel @Inject constructor(
 
     init {
         getCategoriesByMarketId()
-        getProductsByCategoryId()
+        getProductsByCategoryId(args.categoryId)
     }
 
     private fun getCategoriesByMarketId() {
@@ -44,10 +44,10 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun getProductsByCategoryId() {
+    private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(args.categoryId) },
+            { getAllProducts(categoryId) },
             ProductEntity::asProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
@@ -82,15 +82,6 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    private fun updateCategorySelection(
-        categories: List<CategoryUiState>,
-        selectedCategoryId: Long
-    ): List<CategoryUiState> {
-        return categories.map { category ->
-            category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
-        }
-    }
-
     override fun onClickCategoryProduct(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         _state.update {
@@ -100,13 +91,17 @@ class ProductViewModel @Inject constructor(
                 products = emptyList()
             )
         }
-        tryToExecute(
-            { getAllProducts(categoryId) },
-            ProductEntity::asProductUiState,
-            ::onGetProductSuccess,
-            ::onGetProductError
-        )
+        getProductsByCategoryId(categoryId)
         viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
+    }
+
+    private fun updateCategorySelection(
+        categories: List<CategoryUiState>,
+        selectedCategoryId: Long
+    ): List<CategoryUiState> {
+        return categories.map { category ->
+            category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
+        }
     }
 
     override fun onClickProduct(productId: Long) {}
