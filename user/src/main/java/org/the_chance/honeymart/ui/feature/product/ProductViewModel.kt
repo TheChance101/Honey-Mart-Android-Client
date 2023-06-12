@@ -36,7 +36,6 @@ class ProductViewModel @Inject constructor(
 
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
-        updateSelectedCategoryState(args.categoryId)
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
             CategoryEntity::asCategoriesUiState,
@@ -54,7 +53,6 @@ class ProductViewModel @Inject constructor(
             ::onGetProductSuccess,
             ::onGetProductError
         )
-
     }
 
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
@@ -62,9 +60,10 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                categories = categories
+                categories = updateCategorySelection(categories, args.categoryId)
             )
         }
+
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
@@ -86,28 +85,30 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickCategoryProduct(CategoryId: Long) {
-        _state.update { it.copy(isLoading = true) }
+        _state.update {
+            it.copy(
+                isLoading = true,
+                products = emptyList(),
+                categories = updateCategorySelection(_state.value.categories, CategoryId)
+            )
+        }
         tryToExecute(
             { getAllProducts(CategoryId) },
             ProductEntity::asProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
         )
-        updateSelectedCategoryState(CategoryId)
         viewModelScope.launch { _effect.emit(EventHandler(CategoryId)) }
     }
 
-    private fun updateSelectedCategoryState(categoryId: Long) {
-        val updatedCategories = _state.value.categories.map { category ->
-            if (category.categoryId == categoryId) {
-                category.copy(selectedCategory = true)
-            } else {
-                category.copy(selectedCategory = false)
-            }
-        }
-        _state.update { it.copy(categories = updatedCategories) }
-    }
 
+    private fun updateCategorySelection(
+        categories: List<CategoryUiState>, selectedCategoryId: Long
+    ): List<CategoryUiState> {
+        return categories.map { category ->
+            category.copy(selectedCategory = category.categoryId == selectedCategoryId)
+        }
+    }
 
     override fun onClickProduct(productId: Long) {}
 }

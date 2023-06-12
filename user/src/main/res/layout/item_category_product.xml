@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_8"
-        app:isSelectedCategory="@{item.selectedCategory}"
         android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
@@ -30,6 +29,7 @@
             android:paddingHorizontal="@dimen/spacing_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:isSelectedCategory="@{item.selectedCategory}"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
