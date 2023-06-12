@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
-import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.MarketEntity
 
 
 data class MarketsUiState(
@@ -15,7 +15,7 @@ data class MarketUiState(
 )
 
 
-fun Market.asMarketUiState(): MarketUiState {
+fun MarketEntity.asMarketUiState(): MarketUiState {
     return MarketUiState(
         marketId = marketId,
         marketName = marketName

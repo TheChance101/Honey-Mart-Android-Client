@@ -20,4 +20,5 @@ include(
     ":core",
     ":design_system"
 )
-
+include(":core:data")
+include(":core:domain")
