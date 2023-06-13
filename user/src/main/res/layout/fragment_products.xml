@@ -15,22 +15,28 @@
         android:layout_height="match_parent"
         tools:context=".org.the_chance.user.ui.product.productFragment">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/spacing_16"
-            android:paddingStart="@dimen/spacing_16"
-            android:paddingEnd="@dimen/spacing_8"
+            android:paddingVertical="@dimen/spacing_8"
+            android:paddingStart="@dimen/spacing_8"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/recycler_product"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 
@@ -39,8 +45,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:layout_marginEnd="@dimen/spacing_16"
-            android:paddingVertical="@dimen/spacing_20"
+            android:paddingVertical="@dimen/spacing_12"
+            android:paddingEnd="@dimen/spacing_4"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

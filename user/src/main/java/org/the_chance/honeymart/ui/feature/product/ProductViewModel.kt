@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.base.ErrorState
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
@@ -30,22 +31,24 @@ class ProductViewModel @Inject constructor(
 
     init {
         getCategoriesByMarketId()
-        getProductsByCategoryId()
+        getProductsByCategoryId(args.categoryId)
     }
 
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId).map { it.asCategoriesUiState() } },
+            { getMarketAllCategories(args.marketId) },
+            CategoryEntity::asCategoriesUiState,
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
     }
 
-    private fun getProductsByCategoryId() {
+    private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(args.categoryId).map { it.asProductUiState() } },
+            { getAllProducts(categoryId) },
+            ProductEntity::asProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
         )
@@ -56,7 +59,7 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                categories = categories
+                categories = updateCategorySelection(categories, args.categoryId)
             )
         }
     }
@@ -71,22 +74,34 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun onGetCategoryError(throwable: ErrorState) {
+    private fun onGetCategoryError(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    private fun onGetProductError(throwable: ErrorState) {
+    private fun onGetProductError(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
     override fun onClickCategoryProduct(categoryId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { getAllProducts(categoryId).map { it.asProductUiState() } },
-            ::onGetProductSuccess,
-            ::onGetProductError
-        )
+        val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        _state.update {
+            it.copy(
+                isLoading = true,
+                categories = updatedCategories,
+                products = emptyList()
+            )
+        }
+        getProductsByCategoryId(categoryId)
         viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
+    }
+
+    private fun updateCategorySelection(
+        categories: List<CategoryUiState>,
+        selectedCategoryId: Long
+    ): List<CategoryUiState> {
+        return categories.map { category ->
+            category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
+        }
     }
 
     override fun onClickProduct(productId: Long) {}
