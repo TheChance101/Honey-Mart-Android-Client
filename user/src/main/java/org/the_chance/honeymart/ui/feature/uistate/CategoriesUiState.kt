@@ -17,7 +17,7 @@ data class CategoryUiState(
     val isCategorySelected: Boolean = false
 )
 
-fun CategoryEntity.asCategoriesUiState(): CategoryUiState {
+fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,

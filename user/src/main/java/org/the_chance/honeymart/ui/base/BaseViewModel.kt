@@ -14,7 +14,6 @@ import org.the_chance.honeymart.ui.util.EventHandler
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
-
     abstract val TAG: String
     protected open fun log(message: String) {
         Log.v(TAG, message)
