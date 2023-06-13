@@ -13,8 +13,8 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
-import org.the_chance.honeymart.ui.feature.uistate.asCategoriesUiState
-import org.the_chance.honeymart.ui.feature.uistate.asProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
 import org.the_chance.honeymart.ui.util.EventHandler
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
-            CategoryEntity::asCategoriesUiState,
+            CategoryEntity::toCategoryUiState,
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -48,7 +48,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllProducts(categoryId) },
-            ProductEntity::asProductUiState,
+            ProductEntity::toProductUiState,
             ::onGetProductSuccess,
             ::onGetProductError
         )

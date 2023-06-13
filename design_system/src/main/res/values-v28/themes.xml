@@ -24,6 +24,7 @@
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight">500</item>
         <item name="android:textSize">@dimen/text_caption</item>
+        <item name="android:textColor">@color/black_60</item>
     </style>
 
     <style name="Theme.HoneyMart.Text.H6">

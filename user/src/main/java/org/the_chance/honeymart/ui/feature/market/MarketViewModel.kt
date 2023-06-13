@@ -8,7 +8,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
-import org.the_chance.honeymart.ui.feature.uistate.asMarketUiState
+import org.the_chance.honeymart.ui.feature.uistate.toMarketUiState
 import org.the_chance.honeymart.ui.util.EventHandler
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class MarketViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllMarket() },
-            { market -> market.asMarketUiState() },
+            { market -> market.toMarketUiState() },
             ::onGetMarketSuccess,
             ::onGetMarketError
         )

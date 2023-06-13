@@ -84,6 +84,7 @@
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
         <item name="android:textSize">@dimen/text_caption</item>
+        <item name="android:textColor">@color/black_60</item>
     </style>
 
     <!-- Heading 6 -->
@@ -117,13 +118,18 @@
     <!-- Market Image Style-->
     <style name="Theme.HoneyMart.Image.MarketImage">
         <item name="srcCompat">@drawable/image_market</item>
-        <item name="android:foreground">@color/black_55</item>
+        <item name="android:foreground">@color/black_37</item>
     </style>
 
     <!-- Product Image Style-->
     <style name="Theme.HoneyMart.Image.ProductImage">
         <item name="srcCompat">@drawable/image_market</item>
         <item name="android:foreground">@color/black_37</item>
+    </style>
+
+    <style name="Theme.HoneyMart.CircleShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 
