@@ -30,7 +30,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: ErrorState) -> Unit,
+        onError: (t: Throwable) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
@@ -38,22 +38,11 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 val result = function()
                 Log.e(TAG, "tryToExecute:$result ")
                 onSuccess(result)
-            } catch (e: NetworkException) {
+            } catch (e: Throwable) {
                 Log.e(TAG, "tryToExecute error: ${e.message}")
-                onError(ErrorState(e.message ?: "Unknown error"))
-            } catch (e: ApiException) {
-                onError(ErrorState(e.message ?: "Unknown error"))
-                Log.e(TAG, "tryToExecute error: ${e.message}")
+                onError(e)
             }
         }
     }
-
-
 }
 
-class NetworkException(message: String) : Exception(message)
-class ApiException(message: String) : Exception(message)
-data class ErrorState(
-    val message: String? = null,
-    val isError: Boolean = false,
-)

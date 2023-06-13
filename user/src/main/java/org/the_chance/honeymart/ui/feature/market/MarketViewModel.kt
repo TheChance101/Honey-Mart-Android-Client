@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.base.ErrorState
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
 import org.the_chance.honeymart.ui.feature.uistate.asMarketUiState
@@ -33,11 +32,11 @@ class MarketViewModel @Inject constructor(
         )
     }
 
-    private fun onGetMarketError(error: ErrorState) {
+    private fun onGetMarketError(throwable: Throwable) {
         this._state.update {
             it.copy(
                 isLoading = false,
-                error = error.copy(isError = true),
+                isError  = true,
             )
         }
     }
@@ -46,7 +45,7 @@ class MarketViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                error = it.error?.copy(isError = false),
+                isError = false,
                 markets = markets
             )
         }
