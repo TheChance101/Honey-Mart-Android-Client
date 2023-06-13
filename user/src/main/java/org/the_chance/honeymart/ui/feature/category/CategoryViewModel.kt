@@ -30,7 +30,7 @@ class CategoryViewModel @Inject constructor(
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCategories(args.marketId).map{it.asCategoriesUiState()} },
+            { getAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )

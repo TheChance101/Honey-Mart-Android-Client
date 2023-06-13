@@ -35,7 +35,7 @@ class ProductViewModel @Inject constructor(
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId).map{it.asCategoriesUiState()} },
+            { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -44,7 +44,7 @@ class ProductViewModel @Inject constructor(
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllProducts(categoryId).map { it.asProductUiState()} },
+            { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
             ::onGetProductError
         )

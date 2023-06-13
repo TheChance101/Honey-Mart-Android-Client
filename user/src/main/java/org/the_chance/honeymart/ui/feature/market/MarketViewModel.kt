@@ -26,7 +26,7 @@ class MarketViewModel @Inject constructor(
     private fun getAllMarkets() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllMarket().map { it.asMarketUiState() } },
+            { getAllMarket().map { it.toMarketUiState() } },
             ::onGetMarketSuccess,
             ::onGetMarketError
         )
