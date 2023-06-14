@@ -29,6 +29,7 @@
             tools:listitem="@layout/item_wish_list"
             />
         <ViewStub
+            android:id="@+id/placeHolder_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout="@layout/layout_wish_list_placeholder"
