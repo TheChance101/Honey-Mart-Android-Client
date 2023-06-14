@@ -72,6 +72,7 @@
     <style name="Theme.HoneyMart.Text.H3">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
         <item name="android:textSize">@dimen/text_body1</item>
+        <item name="android:textColor">@color/black_60</item>
     </style>
 
     <!-- Heading 4 -->

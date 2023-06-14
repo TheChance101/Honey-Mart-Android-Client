@@ -5,93 +5,84 @@
 
     <data>
 
-        <variable
-            name="item"
-            type="org.the_chance.honeymart.ui.feature.uistate.ProductUiState" />
-
-        <variable
-            name="listener"
-            type="org.the_chance.honeymart.ui.feature.product.ProductInteractionListener" />
     </data>
 
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/category_container"
+        android:id="@+id/product_container"
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="@dimen/spacing_2"
+        android:layout_height="192dp"
+        android:layout_margin="@dimen/spacing_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_product"
                 style="@style/Theme.HoneyMart.Image.ProductImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
-
-                style="@style/Theme.HoneyMart.Text.H4"
+                style="@style/Theme.HoneyMart.Text.H5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:text="@{item.productName}"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/product_description"
+                app:layout_constraintBottom_toTopOf="@+id/text_product_price"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="Product" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_product_price"
+                style="@style/Theme.HoneyMart.Text.H5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_4"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/text_product_description"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_product_price"
-                style="@style/Theme.HoneyMart.Text.H4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_8"
-                android:layout_marginBottom="@dimen/spacing_4"
-                android:textColor="@color/white"
-                android:text='@{String.valueOf(item.productPrice) + "$"}'
-                app:layout_constraintBottom_toTopOf="@+id/text_product_name"
-                app:layout_constraintStart_toStartOf="parent"
-                tool:text="Primary Text" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/product_description"
+                android:id="@+id/text_product_description"
                 style="@style/Theme.HoneyMart.Text.H6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_8"
-                android:text="@{item.productQuantity}"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_8"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tool:text="Primary Text" />
+                tool:text="Secondary Text" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_16"
-                android:backgroundTint="@color/primary_100"
+                android:layout_margin="@dimen/spacing_8"
+                android:backgroundTint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/icon_favorite_enabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_4"
-                    app:srcCompat="@drawable/icon_favorite_unselected" />
+                    app:srcCompat="@drawable/icon_favorite_selected" />
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
 
 </layout>
