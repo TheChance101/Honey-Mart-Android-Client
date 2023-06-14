@@ -23,36 +23,30 @@ fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
 
-@BindingAdapter("app:changeColor")
-fun changeIfSelected(cardView: CardView, isSelected: Boolean) {
-    if (isSelected) {
-        val selectedColor = ContextCompat.getColor(cardView.context, R.color.primary_100)
-        cardView.setCardBackgroundColor(selectedColor)
-    } else {
-        val notSelectedColor = ContextCompat.getColor(cardView.context, R.color.white_100)
-        cardView.setCardBackgroundColor(notSelectedColor)
+@BindingAdapter("app:changeIfSelected")
+fun changeIfSelected(view: View, isSelected: Boolean) {
+    val context = view.context
+
+    when (view) {
+        is CardView -> {
+            val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+            val color = ContextCompat.getColor(context, colorRes)
+            view.setCardBackgroundColor(color)
+        }
+
+        is ShapeableImageView -> {
+            val drawableRes =
+                if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
+            val drawable = ContextCompat.getDrawable(context, drawableRes)
+            view.setImageDrawable(drawable)
+        }
+
+        is MaterialTextView -> {
+            val colorRes = if (isSelected) R.color.primary_100 else R.color.black_60
+            val color = ContextCompat.getColor(context, colorRes)
+            view.setTextColor(color)
+        }
     }
 }
 
-@BindingAdapter("app:changeImage")
-fun changeIfSelected(imageView: ShapeableImageView, isSelected: Boolean) {
-    if (isSelected) {
-        val selectedColor = ContextCompat.getDrawable(imageView.context, R.drawable.icon_category_white)
-        imageView.setImageDrawable(selectedColor)
-    } else {
-        val notSelectedColor = ContextCompat.getDrawable(imageView.context, R.drawable.icon_category)
-        imageView.setImageDrawable(notSelectedColor)
-    }
-}
-
-@BindingAdapter("app:changeTextColor")
-fun changeIfSelected(textView: MaterialTextView, isSelected: Boolean) {
-    if (isSelected) {
-        val selectedColor = ContextCompat.getColor(textView.context, R.color.primary_100)
-        textView.setTextColor(selectedColor)
-    } else {
-        val notSelectedColor = ContextCompat.getColor(textView.context, R.color.black_60)
-        textView.setTextColor(notSelectedColor)
-    }
-}
 
