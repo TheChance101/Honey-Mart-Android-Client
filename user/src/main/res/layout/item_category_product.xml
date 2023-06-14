@@ -24,7 +24,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/category_container"
             style="@style/Theme.HoneyMart.Card.CategoryCard"
-            app:changeColor="@{item.isCategorySelected}"
+            app:changeIfSelected="@{item.isCategorySelected}"
             android:layout_width="56dp"
             android:layout_height="56dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_category"
                 style="@style/Theme.HoneyMart.CategoryIcon"
-                app:changeImage="@{item.isCategorySelected}"
+                app:changeIfSelected="@{item.isCategorySelected}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_12" />
@@ -44,7 +44,7 @@
             android:id="@+id/text_category"
             style="@style/Theme.HoneyMart.Text.H6"
             android:text="@{item.categoryName}"
-            app:changeTextColor="@{item.isCategorySelected}"
+            app:changeIfSelected="@{item.isCategorySelected}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_8"
