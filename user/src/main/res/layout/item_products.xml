@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_4"
-                    app:srcCompat="@drawable/icon_favorite_unenabled" />
+                    app:srcCompat="@drawable/icon_favorite_unselected" />
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
