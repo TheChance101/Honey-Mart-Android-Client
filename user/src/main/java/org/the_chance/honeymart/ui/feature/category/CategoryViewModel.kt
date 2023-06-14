@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
@@ -31,8 +30,7 @@ class CategoryViewModel @Inject constructor(
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCategories(args.marketId) },
-            CategoryEntity::toCategoryUiState,
+            { getAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )

@@ -26,20 +26,22 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     val effect = _effect.asSharedFlow()
 
 
-    protected fun <T, R> tryToExecute(
-        function: suspend () -> List<T>,
-        transform: (T) -> R,
-        onSuccess: (List<R>) -> Unit,
+    protected fun <T> tryToExecute(
+        function: suspend () -> T,
+        onSuccess: (T) -> Unit,
         onError: (t: Throwable) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
             try {
-                val result = function().map(transform)
+                val result = function()
+                Log.e(TAG, "tryToExecute:$result ")
                 onSuccess(result)
             } catch (e: Throwable) {
+                Log.e(TAG, "tryToExecute error: ${e.message}")
                 onError(e)
             }
         }
     }
 }
+

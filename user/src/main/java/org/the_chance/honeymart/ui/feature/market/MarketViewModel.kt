@@ -26,8 +26,7 @@ class MarketViewModel @Inject constructor(
     private fun getAllMarkets() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllMarket() },
-            { market -> market.toMarketUiState() },
+            { getAllMarket().map { it.toMarketUiState() } },
             ::onGetMarketSuccess,
             ::onGetMarketError
         )
@@ -37,7 +36,7 @@ class MarketViewModel @Inject constructor(
         this._state.update {
             it.copy(
                 isLoading = false,
-                isError = true,
+                isError  = true,
             )
         }
     }
