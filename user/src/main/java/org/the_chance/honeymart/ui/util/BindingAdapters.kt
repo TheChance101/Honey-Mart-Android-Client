@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.util
 
 import android.view.View
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -11,7 +10,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
 import org.the_chance.ui.BaseAdapter
-
 
 @BindingAdapter(value = ["app:items"])
 fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
@@ -48,5 +46,3 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
         }
     }
 }
-
-
