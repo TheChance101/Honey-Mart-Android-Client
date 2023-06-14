@@ -6,4 +6,7 @@
     <string name="product_description">Product Description</string>
     <string name="product_name">Product Name</string>
     <string name="product_price">3000$</string>
+    <string name="empty_wishlist">Your wish List is Empty!!</string>
+    <string name="placeholder_description">Unlock the power of favorites and indulge in a world of personalized shopping.</string>
+    <string name="discover_new_markets">Discover New Markets</string>
 </resources>
