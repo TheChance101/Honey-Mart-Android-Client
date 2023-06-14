@@ -30,4 +30,10 @@ object DependencyVersions {
     const val LIVE_DATA_FRAGMENT = "1.3.6"
     const val HILT = "2.44"
     const val DATA_BINDING = "7.1.0"
+    const val DAGGER_ANDROID = "2.35.1"
+
+
+    object ClasspathVersions{
+        const val NAVIGATION_CLASSPATH = "2.5.3"
+    }
 }

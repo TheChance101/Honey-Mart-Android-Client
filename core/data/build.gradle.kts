@@ -7,23 +7,20 @@ plugins {
 
 android {
     namespace = "org.the_chance.honeymart.data"
-    compileSdk = 33
+    compileSdk = ConfigData.COMPILE_SDK_VERSION
 
     defaultConfig {
-        minSdk = 26
-        targetSdk = 33
+        minSdk = ConfigData.MIN_SDK_VERSION
+        targetSdk = ConfigData.TARGET_SDK_VERSION
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        getByName(BuildType.RELEASE) {
+            isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
     compileOptions {

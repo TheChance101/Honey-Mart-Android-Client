@@ -9,4 +9,9 @@
     <string name="empty_wishlist">Your wish List is Empty!!</string>
     <string name="placeholder_description">Unlock the power of favorites and indulge in a world of personalized shopping.</string>
     <string name="discover_new_markets">Discover New Markets</string>
+    <string name="welcome_to_honey_mart">Welcome to Honey Mart</string>
+    <string name="get_ready_to_a_shopping_experience_like_no_other">Get ready to a shopping experience like no other!!</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_account">already have account?</string>
+    <string name="log_in">Log in</string>
 </resources>

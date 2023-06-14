@@ -1,6 +1,6 @@
 plugins {
-    id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    id(Plugins.JAVA_LIBRARY)
+    id(Plugins.KOTLIN_JVM)
     kotlin(Plugins.KOTLIN_KAPT)
 }
 
@@ -9,5 +9,5 @@ java {
     targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
 }
 dependencies {
-    implementation ("com.google.dagger:dagger-android:2.35.1")
+    implementation (Dependencies.daggerAndroid)
 }
