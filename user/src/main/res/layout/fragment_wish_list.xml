@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_wish_list"
             />
-        <include
+        <ViewStub
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/layout_wish_list_placeholder"
