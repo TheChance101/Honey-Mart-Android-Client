@@ -15,6 +15,7 @@
         <item name="android:colorBackground">@color/white_300</item>
         <item name="fontFamily">@font/poppins</item>
 
+        <item name="colorError">@color/error</item>
     </style>
 
     <!-- Button Styles -->
@@ -132,5 +133,29 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="Theme.HoneyMart.TextInputLayout">
+        <item name="boxStrokeColor">@color/black_16</item>
+        <item name="boxStrokeWidth">@dimen/stroke_normal</item>
+        <item name="boxStrokeWidthFocused">@dimen/stroke_normal</item>
+        <item name="boxStrokeErrorColor">@color/error</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_16</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_16</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_16</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_16</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.TextInputEditText">
+        <item name="android:textColorHint">@color/black_37</item>
+        <item name="android:textColor">@color/black_60</item>
+        <item name="drawableTint">@color/white_200</item>
+        <item name="android:drawablePadding">@dimen/spacing_8</item>
+        <item name="android:padding">@dimen/spacing_16</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
+        <item name="errorIconTint">@color/error</item>
+    </style>
 
 </resources>
