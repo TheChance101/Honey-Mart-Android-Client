@@ -35,20 +35,8 @@
                 android:layout_height="match_parent" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_product_price"
-                style="@style/Theme.HoneyMart.Text.H4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_8"
-                android:layout_marginBottom="@dimen/spacing_4"
-                android:text='@{String.valueOf(item.productPrice) + "$"}'
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/text_product_name"
-                app:layout_constraintStart_toStartOf="parent"
-                tool:text="3000$" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
+
                 style="@style/Theme.HoneyMart.Text.H4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,6 +45,19 @@
                 android:text="@{item.productName}"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="3000$" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_product_price"
+                style="@style/Theme.HoneyMart.Text.H4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_4"
+                android:textColor="@color/white"
+                android:text='@{String.valueOf(item.productPrice) + "$"}'
+                app:layout_constraintBottom_toTopOf="@+id/text_product_name"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Primary Text" />
 
