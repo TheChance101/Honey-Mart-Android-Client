@@ -10,7 +10,7 @@
             type="org.the_chance.honeymart.ui.feature.uistate.CategoryUiState" />
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.product.CategoryProductInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.product.ProductEffect" />
 
     </data>
 
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_8"
-        android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
+        android:onClick="@{() -> listener.onClickCategory(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
         <com.google.android.material.card.MaterialCardView

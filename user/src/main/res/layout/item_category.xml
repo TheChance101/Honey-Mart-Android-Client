@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.category.CategoryInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.category.CategoryEffect" />
     </data>
 
 
@@ -27,7 +27,7 @@
             style="@style/Theme.HoneyMart.Card.CategoryCard"
             android:layout_width="match_parent"
             android:layout_height="104dp"
-            android:onClick="@{()-> listener.onCategoryClicked(item.categoryId)}"
+            android:onClick="@{()-> listener.onClickCategory(item.categoryId)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

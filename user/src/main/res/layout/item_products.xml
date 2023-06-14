@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.product.ProductInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.product.ProductEffect" />
     </data>
 
 
@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="@dimen/spacing_2"
+        android:onClick="@{() -> listener.onClickProduct(item.productId)}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

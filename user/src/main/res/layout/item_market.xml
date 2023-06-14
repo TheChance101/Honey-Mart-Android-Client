@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.market.MarketInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.market.MarketUiEffect" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -15,22 +15,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-) : BaseViewModel<MarketsUiState, Long>(MarketsUiState()), MarketInteractionListener {
+) : BaseViewModel<MarketsUiState, Long>(MarketsUiState()), MarketUiEffect {
 
     override val TAG: String = this::class.java.simpleName
 
     init {
-        getAllMarkets()
-    }
-
-    private fun getAllMarkets() {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { getAllMarket() },
-            { market -> market.toMarketUiState() },
-            ::onGetMarketSuccess,
-            ::onGetMarketError
-        )
+        onGetAllMarkets()
     }
 
     private fun onGetMarketError(throwable: Throwable) {
@@ -53,6 +43,18 @@ class MarketViewModel @Inject constructor(
     }
 
     override fun onClickMarket(marketId: Long) {
-        viewModelScope.launch { _effect.emit(EventHandler(marketId)) }
+        viewModelScope.launch {
+            _effect.emit(EventHandler(marketId))
+        }
+    }
+
+    override fun onGetAllMarkets() {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllMarket() },
+            { market -> market.toMarketUiState() },
+            ::onGetMarketSuccess,
+            ::onGetMarketError
+        )
     }
 }

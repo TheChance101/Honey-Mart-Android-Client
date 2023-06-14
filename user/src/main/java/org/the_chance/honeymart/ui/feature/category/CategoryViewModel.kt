@@ -19,23 +19,13 @@ class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
-    CategoryInteractionListener {
+    CategoryEffect {
     override val TAG: String = this::class.java.simpleName
 
     private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-        getAllCategory()
-    }
-
-    private fun getAllCategory() {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { getAllCategories(args.marketId) },
-            CategoryEntity::toCategoryUiState,
-            ::onGetCategorySuccess,
-            ::onGetCategoryError
-        )
+        onGetAllCategories()
     }
 
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
@@ -57,9 +47,19 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    override fun onCategoryClicked(categoryId: Long) {
+    override fun onClickCategory(categoryId: Long) {
         viewModelScope.launch {
             _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId)))
         }
+    }
+
+    override fun onGetAllCategories() {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllCategories(args.marketId) },
+            CategoryEntity::toCategoryUiState,
+            ::onGetCategorySuccess,
+            ::onGetCategoryError
+        )
     }
 }

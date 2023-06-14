@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.util
 
 import android.view.View
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
-import org.the_chance.ui.BaseAdapter
+import org.the_chance.honeymart.ui.base.BaseAdapter
 
 
 @BindingAdapter(value = ["app:items"])

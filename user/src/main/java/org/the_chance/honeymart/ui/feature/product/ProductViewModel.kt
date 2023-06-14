@@ -23,38 +23,53 @@ class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
-    CategoryProductInteractionListener {
+) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductEffect {
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-        getCategoriesByMarketId()
-        getProductsByCategoryId(args.categoryId)
+        onGetAllCategories()
+        onGetAllProducts(args.categoryId)
+
     }
 
-    private fun getCategoriesByMarketId() {
+    override fun onClickCategory(categoryId: Long) {
+        val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        _state.update {
+            it.copy(
+                isLoading = true,
+                categories = updatedCategories,
+                products = emptyList()
+            )
+        }
+        onGetAllProducts(categoryId)
+        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
+    }
+
+    override fun onGetAllCategories() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId) },
             CategoryEntity::toCategoryUiState,
-            ::onGetCategorySuccess,
-            ::onGetCategoryError
+            ::onGetCategoriesSuccess,
+            ::onGetCategoryFailed
         )
     }
 
-    private fun getProductsByCategoryId(categoryId: Long) {
+    override fun onGetAllProducts(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllProducts(categoryId) },
             ProductEntity::toProductUiState,
-            ::onGetProductSuccess,
-            ::onGetProductError
+            ::onGetProductsSuccess,
+            ::onGetProductFailed
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+    override fun onClickProduct(productId: Long) {}
+
+    private fun onGetCategoriesSuccess(categories: List<CategoryUiState>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -64,7 +79,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun onGetProductSuccess(products: List<ProductUiState>) {
+    private fun onGetProductsSuccess(products: List<ProductUiState>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -74,25 +89,12 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun onGetCategoryError(throwable: Throwable) {
+    private fun onGetCategoryFailed(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    private fun onGetProductError(throwable: Throwable) {
+    private fun onGetProductFailed(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, isError = true) }
-    }
-
-    override fun onClickCategoryProduct(categoryId: Long) {
-        val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
-        _state.update {
-            it.copy(
-                isLoading = true,
-                categories = updatedCategories,
-                products = emptyList()
-            )
-        }
-        getProductsByCategoryId(categoryId)
-        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
@@ -103,6 +105,4 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
-
-    override fun onClickProduct(productId: Long) {}
 }

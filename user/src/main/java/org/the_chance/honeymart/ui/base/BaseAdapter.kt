@@ -1,4 +1,4 @@
-package org.the_chance.ui
+package org.the_chance.honeymart.ui.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
