@@ -31,7 +31,7 @@
         <ViewStub
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/layout_wish_list_placeholder"
+            android:layout="@layout/layout_wish_list_placeholder"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
