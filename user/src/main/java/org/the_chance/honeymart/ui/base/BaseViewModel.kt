@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.ui.util.EventHandler
+import org.the_chance.honeymart.util.EventHandler
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.util
+package org.the_chance.honeymart.util
 
 import android.view.View
 import androidx.cardview.widget.CardView

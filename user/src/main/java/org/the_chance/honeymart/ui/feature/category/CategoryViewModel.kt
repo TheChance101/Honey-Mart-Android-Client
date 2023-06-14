@@ -11,7 +11,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
-import org.the_chance.honeymart.ui.util.EventHandler
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel

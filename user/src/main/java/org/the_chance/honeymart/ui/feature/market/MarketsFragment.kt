@@ -6,9 +6,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.util.addOnScrollListenerWithAppbarColor
-import org.the_chance.honeymart.ui.util.addOnScrollListenerWithImageVisibility
-import org.the_chance.honeymart.ui.util.collect
+import org.the_chance.honeymart.util.addOnScrollListenerWithAppbarColor
+import org.the_chance.honeymart.util.addOnScrollListenerWithImageVisibility
+import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentMarketsBinding
 
