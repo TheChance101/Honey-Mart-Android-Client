@@ -30,7 +30,7 @@
             android:layout_marginBottom="@dimen/spacing_16"
             app:layout_constraintBottom_toBottomOf="@+id/header_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/honey_mart_logo_when_scroll" />
+            app:srcCompat="@drawable/logo_honey_mart_when_scroll" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_logo_dark"
@@ -41,7 +41,7 @@
             android:layout_marginBottom="@dimen/spacing_16"
             app:layout_constraintBottom_toBottomOf="@+id/header_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/honey_mart_logo" />
+            app:srcCompat="@drawable/logo_honey_mart" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_view"
-            app:navGraph="@navigation/nav_graph" />
+            app:navGraph="@navigation/main_nav_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

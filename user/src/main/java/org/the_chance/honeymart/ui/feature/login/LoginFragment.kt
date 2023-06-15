@@ -11,4 +11,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String = this::class.simpleName.toString()
     override val layoutIdFragment = R.layout.fragment_signup
     override val viewModel: LoginViewModel by viewModels()
+    override fun setup() {
+         binding.buttonContinue.setOnClickListener {
+
+        }
+    }
 }

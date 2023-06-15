@@ -23,10 +23,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
         navHostFragment.navController
         val navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.authFragment ||
+                destination.id == R.id.loginFragment ||
+                destination.id == R.id.signupFragment
+            ) {
+                binding.bottomNavigationView.visibility = View.GONE
+                actionBar?.hide()
+            } else {
+                binding.bottomNavigationView.visibility = View.VISIBLE
+            }
+        }
+
+        val navGraph=navController.navInflater.inflate(R.navigation.main_nav_graph)
+
         setupNavigation(navController)
         statusBarMode(this)
 
@@ -53,8 +69,9 @@ class MainActivity : AppCompatActivity() {
         val navView = binding.bottomNavigationView
         setOf(
             R.id.marketsFragment,
-            R.id.categoriesFragment,
-            R.id.productsFragment
+            R.id.cartFragment,
+            R.id.ordersFragment,
+            R.id.wishListFragment
         )
 
         navView.setupWithNavController(navController)
@@ -65,3 +82,4 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
+
