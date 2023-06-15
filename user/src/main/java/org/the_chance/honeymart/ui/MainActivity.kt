@@ -2,10 +2,14 @@ package org.the_chance.honeymart.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -16,6 +20,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
-        navHostFragment.navController
+        val navController = navHostFragment.navController
+        setupNavigation(navController)
+    }
+
+    private fun setupNavigation(navController: NavController) {
+        val navView = binding.bottomNavigationView
+      setOf(
+          R.id.marketsFragment,
+          R.id.categoriesFragment,
+          R.id.productsFragment
+      )
+
+        navView.setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.fragment_host)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/marketsFragment"
+        android:icon="@drawable/icon_market_nav"
+        android:title="Markets" />
+
+    <item
+        android:id="@+id/categoriesFragment"
+        android:icon="@drawable/icon_category_nav"
+        android:title="Categories" />
+
+    <item
+        android:id="@+id/productsFragment"
+        android:icon="@drawable/icon_order_nav"
+        android:title="Products" />
+
+    <item
+        android:id="@+id/favoriteFragment"
+        android:icon="@drawable/icon_favorite_nav"
+        android:title="Products" />
+
+</menu>
