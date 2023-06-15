@@ -33,21 +33,19 @@
 
             <TextView
                 android:id="@+id/text_view_title"
-                style="@style/Theme.HoneyMart.Text.H2"
+                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/welcome_to_honey_mart"
-                android:textColor="@color/black_60" />
+                android:text="@string/welcome_to_honey_mart" />
 
             <TextView
                 android:id="@+id/text_view_description"
-                style="@style/Theme.HoneyMart.Text.H4"
+                style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/get_ready_to_a_shopping_experience_like_no_other"
-                android:textColor="@color/black_37" />
+                android:text="@string/get_ready_to_a_shopping_experience_like_no_other" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_signup"
@@ -61,7 +59,7 @@
 
         <TextView
             android:id="@+id/text_view_already"
-            style="@style/Theme.HoneyMart.Text.H6"
+            style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_2"
