@@ -55,6 +55,16 @@
             app:layout_constraintTop_toBottomOf="@+id/header_view"
             app:navGraph="@navigation/nav_graph" />
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Theme.HoneyMart.Text.H6"
+            app:backgroundTint="@color/white_300"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:labelVisibilityMode="selected"
+            app:menu="@menu/bottom_nav_menu" />
+
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
