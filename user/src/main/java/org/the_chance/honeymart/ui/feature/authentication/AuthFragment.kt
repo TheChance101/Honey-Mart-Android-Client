@@ -16,7 +16,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
     override fun setup() {
         binding.buttonSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_authFragment2_to_marketsFragment)
+            findNavController().navigate(R.id.action_authFragment_to_signupFragment)
         }
     }
 }
