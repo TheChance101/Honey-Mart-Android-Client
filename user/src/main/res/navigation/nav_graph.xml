@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/marketsFragment">
+    app:startDestination="@id/signupFragment">
 
     <fragment
         android:id="@+id/marketsFragment"
@@ -63,5 +63,9 @@
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
         android:label="WishListFragment" />
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="org.the_chance.honeymart.ui.feature.signup.SignupFragment"
+        android:label="SignupFragment" />
 
 </navigation>
