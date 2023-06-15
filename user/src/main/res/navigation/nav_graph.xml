@@ -49,5 +49,19 @@
             android:name="marketId"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="org.the_chance.honeymart.ui.feature.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders" />
+    <fragment
+        android:id="@+id/wishListFragment"
+        android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
+        android:label="WishListFragment" />
 
 </navigation>

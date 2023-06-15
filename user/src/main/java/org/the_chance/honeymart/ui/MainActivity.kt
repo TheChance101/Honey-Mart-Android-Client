@@ -55,8 +55,9 @@ class MainActivity : AppCompatActivity() {
         val navView = binding.bottomNavigationView
         setOf(
             R.id.marketsFragment,
-            R.id.categoriesFragment,
-            R.id.productsFragment
+            R.id.cartFragment,
+            R.id.ordersFragment,
+            R.id.wishListFragment
         )
 
         navView.setupWithNavController(navController)
