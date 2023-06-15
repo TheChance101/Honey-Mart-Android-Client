@@ -30,36 +30,33 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
-                style="@style/Theme.HoneyMart.Text.H5"
+                style="@style/Theme.HoneyMart.Text.H5.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/text_product_price"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Product" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
-                style="@style/Theme.HoneyMart.Text.H5"
+                style="@style/Theme.HoneyMart.Text.H5.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/text_product_description"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_description"
-                style="@style/Theme.HoneyMart.Text.H6"
+                style="@style/Theme.HoneyMart.Text.H6.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Secondary Text" />
