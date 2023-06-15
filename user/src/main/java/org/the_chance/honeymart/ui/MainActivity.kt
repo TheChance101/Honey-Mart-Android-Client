@@ -23,10 +23,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
         navHostFragment.navController
- val navController = navHostFragment.navController
+        val navController = navHostFragment.navController
+
         setupNavigation(navController)
         statusBarMode(this)
 
@@ -48,15 +50,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-}
 
     private fun setupNavigation(navController: NavController) {
         val navView = binding.bottomNavigationView
-      setOf(
-          R.id.marketsFragment,
-          R.id.categoriesFragment,
-          R.id.productsFragment
-      )
+        setOf(
+            R.id.marketsFragment,
+            R.id.categoriesFragment,
+            R.id.productsFragment
+        )
 
         navView.setupWithNavController(navController)
     }
@@ -66,3 +67,4 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
+
