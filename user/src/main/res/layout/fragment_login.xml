@@ -11,134 +11,129 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.the_chance.honeymart.ui.feature.signup.ui.login.LoginFragment">
+        tools:context="org.the_chance.honeymart.ui.feature.signup.ui.login.SignupFragment">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_background_frame"
+        <View
+            android:id="@+id/image_background"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/background_frame"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            tools:layout_editor_absoluteX="0dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:paddingTop="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_background_frame">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField2"
-                style="@style/Theme.HoneyMart.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_32"
-                android:layout_marginBottom="@dimen/spacing_8"
-                app:startIconDrawable="@drawable/icon_price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email" />
-
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField"
-                style="@style/Theme.HoneyMart.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_32"
-
-                android:layout_marginTop="@dimen/spacing_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:startIconDrawable="@drawable/icon_price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/materialButton"
-                style="@style/Theme.HoneyMart.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_32"
-                android:layout_marginTop="57dp"
-                android:text="Login"
-                app:cornerRadius="@dimen/radius_16"
-                app:layout_constraintTop_toBottomOf="@+id/textField" />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/Theme.HoneyMart.Text.H6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_32"
-                android:gravity="center"
-                android:paddingStart="@dimen/spacing_32"
-                android:text="Don't have an account?"
-                android:layout_marginTop="@dimen/spacing_32"
-                />
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/Theme.HoneyMart.Text.H5"
-        android:textColor="@color/primary_100"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/spacing_8"
-        android:text="sign up"
-        android:layout_marginTop="@dimen/spacing_32"
-        />
-</LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_welcome_back"
             style="@style/Theme.HoneyMart.Text.H1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="128dp"
-            android:text="Welcome Back!!"
+            android:text="@string/welcome_back"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/image_background_frame"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="@+id/image_background_frame"
-            app:layout_constraintTop_toTopOf="@+id/image_background_frame" />
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_background" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_description"
             style="@style/Theme.HoneyMart.Text.H3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_32"
-            android:layout_marginTop="@dimen/spacing_8"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/spacing_32"
-            android:text="Reconnect with your favorite brands and saved items. Log in today!"
+            android:layout_marginHorizontal="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:text="@string/reconnect_with_your_favorite_brands_and_saved_items_log_in_today"
+            android:textAlignment="center"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/text_welcome_back" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_email"
+            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_32"
+            android:layout_marginTop="@dimen/spacing_48"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_background">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_email"
+                style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_password"
+            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_32"
+            android:layout_marginTop="@dimen/spacing_16"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_password"
+                style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:drawableStart="@drawable/ic_password"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_dont_have_account"
+            style="@style/Theme.HoneyMart.Text.H6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/don_t_have_an_account"
+            app:layout_constraintBottom_toBottomOf="@+id/text_signup"
+            app:layout_constraintEnd_toStartOf="@+id/text_signup"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_signup" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_signup"
+            style="@style/Theme.HoneyMart.Text.H5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_24"
+            android:paddingStart="@dimen/spacing_8"
+            android:text="@string/sign_up"
+            android:textColor="@color/primary_100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_dont_have_account" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_continue"
+            style="@style/Theme.HoneyMart.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_32"
+            android:layout_marginBottom="17dp"
+            android:background="@drawable/button_background"
+            android:text="@string/log_in"
+            app:layout_constraintBottom_toTopOf="@+id/text_dont_have_account"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
