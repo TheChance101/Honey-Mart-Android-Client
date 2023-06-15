@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
