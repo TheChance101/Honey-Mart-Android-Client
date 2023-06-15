@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint
+            android:id="@+id/header_view"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:alpha="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/image_logo_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginBottom="@dimen/spacing_16"
+            app:layout_constraintBottom_toBottomOf="@+id/header_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/honey_mart_logo" />
+        <Constraint
+            android:id="@+id/image_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginBottom="@dimen/spacing_16"
+            app:layout_constraintBottom_toBottomOf="@+id/header_view"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@+id/start"
+        app:duration="2000"
+        >
+        <OnSwipe
+            app:dragDirection="dragDown"
+            app:touchAnchorId="@+id/header_view" />
+    </Transition>
+</MotionScene>
