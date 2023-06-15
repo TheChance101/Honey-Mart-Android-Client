@@ -26,11 +26,12 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_full_name"
-            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:id="@+id/text_field_input_full_name"
+            style="@style/Theme.HoneyMart.H6.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_32"
+            android:hint="@string/full_name"
             android:layout_marginTop="@dimen/spacing_48"
             app:layout_constraintTop_toBottomOf="@+id/image_background">
 
@@ -40,21 +41,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_person"
-                android:hint="@string/full_name" />
+                 />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_email"
-            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:id="@+id/text_field_input_email"
+            style="@style/Theme.HoneyMart.H6.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_32"
             android:layout_marginTop="@dimen/spacing_16"
+            android:hint="@string/email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_full_name">
+            app:layout_constraintTop_toBottomOf="@+id/text_field_input_full_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_email"
@@ -62,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
-                android:hint="@string/email" />
+                 />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -76,15 +78,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_email" />
+            app:layout_constraintTop_toBottomOf="@+id/text_field_input_email" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_signup"
-            style="@style/Theme.HoneyMart.Text.H1"
+            style="@style/Theme.HoneyMart.Text.H1.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Sign_up"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/text_description"
             app:layout_constraintEnd_toEndOf="@+id/image_background"
             app:layout_constraintHorizontal_bias="0.5"
@@ -93,14 +94,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_description"
-            style="@style/Theme.HoneyMart.Text.H3"
+            style="@style/Theme.HoneyMart.Text.H3.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginTop="@dimen/spacing_24"
             android:gravity="center"
             android:text="@string/create_your_account_and_enter_a_world_of_endless_shopping_possibilities"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/image_background"
             app:layout_constraintEnd_toEndOf="@+id/text_signup"
             app:layout_constraintHorizontal_bias="0.5"

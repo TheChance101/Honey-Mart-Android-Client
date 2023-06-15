@@ -50,13 +50,13 @@
             app:layout_constraintTop_toBottomOf="@+id/text_welcome_back" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_email"
-            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:id="@+id/text_field_input_email"
+            style="@style/Theme.HoneyMart.H6.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_32"
             android:layout_marginTop="@dimen/spacing_48"
-            app:hintEnabled="false"
+            android:hint="@string/email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_background">
@@ -65,32 +65,31 @@
                 android:id="@+id/text_input_email"
                 style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
-                android:hint="@string/email"
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_password"
-            style="@style/Theme.HoneyMart.TextInputLayout"
+            android:id="@+id/text_field_input_password"
+            style="@style/Theme.HoneyMart.H6.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
             android:layout_marginHorizontal="@dimen/spacing_32"
             android:layout_marginTop="@dimen/spacing_16"
-            app:hintEnabled="false"
+            android:hint="@string/password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_email">
+            app:layout_constraintTop_toBottomOf="@+id/text_field_input_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_password"
                 style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_password"
-                android:hint="@string/password"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,13 +126,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_32"
-            android:layout_marginBottom="17dp"
             android:background="@drawable/button_background"
+            android:gravity="center"
             android:text="@string/log_in"
-            app:layout_constraintBottom_toTopOf="@+id/text_dont_have_account"
+            app:layout_constraintBottom_toTopOf="@+id/text_signup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_password" />
+            app:layout_constraintTop_toBottomOf="@+id/text_field_input_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
