@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Theme.HoneyMart.Text.H6"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="@color/white_300"
             app:layout_constraintBottom_toBottomOf="parent"
             app:labelVisibilityMode="selected"
             app:menu="@menu/bottom_nav_menu" />

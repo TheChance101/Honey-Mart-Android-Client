@@ -14,7 +14,6 @@ import org.the_chance.user.databinding.ActivityMainBinding
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -25,18 +24,13 @@ class MainActivity : AppCompatActivity() {
         setupNavigation(navController)
     }
 
-    override fun onResume() {
-        super.onResume()
-        findNavController(R.id.fragment_host)
-    }
-
     private fun setupNavigation(navController: NavController) {
         val navView = binding.bottomNavigationView
-        val topLevelDestinations = setOf(
-            R.id.marketsFragment,
-            R.id.categoriesFragment,
-            R.id.productsFragment
-        )
+      setOf(
+          R.id.marketsFragment,
+          R.id.categoriesFragment,
+          R.id.productsFragment
+      )
 
         navView.setupWithNavController(navController)
     }

@@ -9,7 +9,6 @@
         <item name="colorSecondaryContainer">@color/primary_100</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
         <item name="colorOnSurface">@color/primary_100</item>
-        <item name="colorSurface">@color/white</item>
 
 
         <!--Secondary-->
