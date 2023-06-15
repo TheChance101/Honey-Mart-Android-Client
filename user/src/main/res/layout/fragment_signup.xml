@@ -32,15 +32,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_32"
             android:layout_marginTop="@dimen/spacing_48"
-            app:layout_constraintTop_toBottomOf="@+id/image_background"
-            app:startIconDrawable="@drawable/ic_person">
+            app:layout_constraintTop_toBottomOf="@+id/image_background">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_full_name"
                 style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Full name" />
+                android:drawableStart="@drawable/ic_person"
+                android:hint="@string/full_name" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,15 +54,15 @@
             android:layout_marginTop="@dimen/spacing_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_full_name"
-            app:startIconDrawable="@drawable/ic_email">
+            app:layout_constraintTop_toBottomOf="@+id/text_full_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_email"
                 style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email" />
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
