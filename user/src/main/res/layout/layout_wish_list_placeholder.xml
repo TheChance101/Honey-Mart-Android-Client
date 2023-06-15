@@ -13,7 +13,7 @@
         android:id="@+id/image_wish_list_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/wish_list_placeholder"
+        app:srcCompat="@drawable/placeholder_wish_list"
         android:layout_gravity="center"
         />
     <com.google.android.material.textview.MaterialTextView

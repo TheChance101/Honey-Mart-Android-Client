@@ -25,7 +25,7 @@
             android:layout_marginBottom="@dimen/spacing_16"
             app:layout_constraintBottom_toBottomOf="@+id/header_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/honey_mart_logo" />
+            app:srcCompat="@drawable/logo_honey_mart" />
         <Constraint
             android:id="@+id/image_logo"
             android:layout_width="wrap_content"

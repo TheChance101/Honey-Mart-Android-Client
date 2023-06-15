@@ -7,18 +7,18 @@
         android:title="Markets" />
 
     <item
-        android:id="@+id/categoriesFragment"
-        android:icon="@drawable/icon_category_nav"
-        android:title="Categories" />
+        android:id="@+id/cartFragment"
+        android:icon="@drawable/icon_cart_nav"
+        android:title="Cart" />
 
     <item
-        android:id="@+id/productsFragment"
+        android:id="@+id/ordersFragment"
         android:icon="@drawable/icon_order_nav"
-        android:title="Products" />
+        android:title="Orders" />
 
     <item
-        android:id="@+id/favoriteFragment"
+        android:id="@+id/wishListFragment"
         android:icon="@drawable/icon_favorite_nav"
-        android:title="Products" />
+        android:title="Wish List" />
 
 </menu>
