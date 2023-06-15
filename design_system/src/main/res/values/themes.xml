@@ -6,6 +6,11 @@
         <!--Primary-->
         <item name="colorPrimary">@color/primary_100</item>
         <item name="colorOnPrimary">@color/white_300</item>
+        <item name="colorSecondaryContainer">@color/primary_100</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorOnSurface">@color/primary_100</item>
+        <item name="colorSurface">@color/white</item>
+
 
         <!--Secondary-->
         <item name="colorSecondary">@color/black_87</item>
