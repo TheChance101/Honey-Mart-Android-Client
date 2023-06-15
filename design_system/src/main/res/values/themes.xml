@@ -6,14 +6,15 @@
         <!--Primary-->
         <item name="colorPrimary">@color/primary_100</item>
         <item name="colorOnPrimary">@color/white_300</item>
-        <item name="colorSecondaryContainer">@color/primary_100</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="colorOnSurface">@color/primary_100</item>
 
+        <item name="colorOnSurface">@color/primary_100</item>
+        <item name="colorError">@color/error</item>
 
         <!--Secondary-->
         <item name="colorSecondary">@color/black_87</item>
         <item name="colorOnSecondary">@color/white_300</item>
+        <item name="colorSecondaryContainer">@color/primary_100</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
 
         <!--Background-->
         <item name="android:colorBackground">@color/white_300</item>
@@ -26,15 +27,13 @@
     </style>
 
     <!-- Button Styles -->
-    <style name="Theme.HoneyMart.Button">
-        <item name="cornerRadius">@dimen/spacing_8</item>
+    <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
+        <item name="cornerRadius">@dimen/radius_16</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingVertical">@dimen/spacing_12</item>
         <item name="android:paddingHorizontal">@dimen/spacing_24</item>
-        <item name="backgroundColor">@color/primary_100</item>
+        <item name="background">@drawable/button_background</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
-        <item name="android:textSize">@dimen/text_body1</item>
     </style>
 
     <!-- Button Outline Style -->
@@ -235,5 +234,31 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="Theme.HoneyMart.TextInputLayout">
+        <item name="boxStrokeWidth">@dimen/stroke_normal</item>
+        <item name="boxStrokeWidthFocused">@dimen/stroke_normal</item>
+        <item name="boxStrokeErrorColor">@color/error</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_16</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_16</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_16</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_16</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.TextInputEditText">
+        <item name="android:textColorHint">@color/black_37</item>
+        <item name="android:textColor">@color/black_60</item>
+        <item name="drawableTint">@color/white_200</item>
+        <item name="android:drawablePadding">@dimen/spacing_8</item>
+        <item name="android:padding">@dimen/spacing_16</item>
+        <item name="maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
+        <item name="errorIconTint">@color/error</item>
+    </style>
 
 </resources>

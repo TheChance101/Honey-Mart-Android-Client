@@ -14,4 +14,14 @@
     <string name="sign_up">Sign Up</string>
     <string name="already_have_account">already have account?</string>
     <string name="log_in">Log in</string>
+    <string name="reconnect_with_your_favorite_brands_and_saved_items_log_in_today">Reconnect with your favorite brands and saved items. Log in today!</string>
+    <string name="welcome_back">Welcome Back!!</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="create_your_account_and_enter_a_world_of_endless_shopping_possibilities">Create your account and enter a world of endless shopping possibilities !</string>
+    <string name="Sign_up">Sign up</string>
+    <string name="Continue">Continue</string>
+    <string name="full_name">Full name</string>
+
 </resources>
