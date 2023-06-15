@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.AuthViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.the_chance.honeymart.ui.feature.AuthFragment">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_background_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/background_frame_auth"
+            app:layout_constraintDimensionRatio="1:1.166"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_32"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/image_background_frame">
+
+            <TextView
+                android:id="@+id/text_view_title"
+                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/welcome_to_honey_mart" />
+
+            <TextView
+                android:id="@+id/text_view_description"
+                style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/get_ready_to_a_shopping_experience_like_no_other" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_signup"
+                style="@style/Theme.HoneyMart.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_32"
+                android:text="@string/sign_up"
+                app:cornerRadius="@dimen/spacing_16" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_view_already"
+            style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_2"
+            android:layout_marginBottom="@dimen/spacing_24"
+            android:text="@string/already_have_account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/text_view_login"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_login"
+            style="@style/Theme.HoneyMart.Text.H6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/spacing_12"
+            android:text="@string/log_in"
+            android:textColor="@color/primary_100"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_already"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_already"
+            app:layout_constraintTop_toTopOf="@id/text_view_already" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

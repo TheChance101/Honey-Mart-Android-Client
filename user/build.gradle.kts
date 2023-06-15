@@ -3,7 +3,7 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_LIBRARY)
-    id("androidx.navigation.safeargs.kotlin")
+    id(Plugins.NAVIGATION_ARGS)
 }
 
 android {

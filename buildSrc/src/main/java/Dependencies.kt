@@ -9,7 +9,7 @@ object Dependencies {
             "com.airbnb.android:lottie:${DependencyVersions.LOTTIE}"
         )
     }
-    val coreKtxDependency  by lazy { "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}" }
+    val coreKtxDependency by lazy { "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}" }
     val dataBindingDependency by lazy { "androidx.databinding:databinding-runtime:${DependencyVersions.DATA_BINDING}" }
 
     // Test Dependencies
@@ -63,4 +63,15 @@ object Dependencies {
     val hiltCompiler by lazy {
         "com.google.dagger:hilt-android-compiler:${DependencyVersions.HILT}"
     }
+    val daggerAndroid by lazy {
+        "com.google.dagger:dagger-android:${DependencyVersions.DAGGER_ANDROID}"
+    }
+
+    object Classpath {
+
+        val navigationClasspath by lazy {
+            "androidx.navigation:navigation-safe-args-gradle-plugin:${DependencyVersions.ClasspathVersions.NAVIGATION_CLASSPATH}"
+        }
+    }
+
 }

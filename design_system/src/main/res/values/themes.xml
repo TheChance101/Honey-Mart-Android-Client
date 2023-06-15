@@ -7,15 +7,23 @@
         <item name="colorPrimary">@color/primary_100</item>
         <item name="colorOnPrimary">@color/white_300</item>
 
+        <item name="colorOnSurface">@color/primary_100</item>
+        <item name="colorError">@color/error</item>
+
         <!--Secondary-->
         <item name="colorSecondary">@color/black_87</item>
         <item name="colorOnSecondary">@color/white_300</item>
+        <item name="colorSecondaryContainer">@color/primary_100</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
 
         <!--Background-->
         <item name="android:colorBackground">@color/white_300</item>
         <item name="fontFamily">@font/poppins</item>
 
-        <item name="colorError">@color/error</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
     </style>
 
     <!-- Button Styles -->
@@ -61,10 +69,42 @@
         <item name="android:textSize">@dimen/text_heading</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H1.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H1.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H1.DarkModerate">
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H1.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
+    </style>
+
     <!-- Heading 2 -->
     <style name="Theme.HoneyMart.Text.H2">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
         <item name="android:textSize">@dimen/text_subtitle</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H2.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H2.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H2.DarkModerate">
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H2.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
     </style>
 
     <!-- Heading 3 -->
@@ -73,23 +113,86 @@
         <item name="android:textSize">@dimen/text_body1</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H3.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H3.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H3.DarkModerate">
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H3.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
+    </style>
+
     <!-- Heading 4 -->
     <style name="Theme.HoneyMart.Text.H4">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
         <item name="android:textSize">@dimen/text_body2</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H4.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H4.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H4.DarkModerate">
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H4.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
+    </style>
+
     <!-- Heading 5 -->
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
         <item name="android:textSize">@dimen/text_caption</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H5.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H5.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H5.DarkModerate">
         <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H5.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
     </style>
 
     <!-- Heading 6 -->
     <style name="Theme.HoneyMart.Text.H6">
         <item name="android:textFontWeight" tools:ignore="NewApi">400</item>
         <item name="android:textSize">@dimen/text_secondary</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.DarkSubtle">
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.DarkModerate">
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.DarkIntense">
+        <item name="android:textColor">@color/black_37</item>
     </style>
 
     <!-- Card Styles-->

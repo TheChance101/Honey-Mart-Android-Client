@@ -18,7 +18,7 @@ include(
     ":admin",
     ":owner",
     ":core",
-    ":design_system"
+    ":design_system",
+    ":core:data",
+    ":core:domain"
 )
-include(":core:data")
-include(":core:domain")

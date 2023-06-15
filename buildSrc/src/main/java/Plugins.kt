@@ -5,4 +5,6 @@ object Plugins {
     const val KOTLIN_ANDROID = "android"
     const val KOTLIN_JVM = "org.jetbrains.kotlin.jvm"
     const val KOTLIN_KAPT = "kapt"
+    const val JAVA_LIBRARY = "java-library"
+    const val NAVIGATION_ARGS = "androidx.navigation.safeargs.kotlin"
 }

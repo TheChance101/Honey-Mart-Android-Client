@@ -9,7 +9,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
 import org.the_chance.honeymart.ui.feature.uistate.toMarketUiState
-import org.the_chance.honeymart.ui.util.EventHandler
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +26,7 @@ class MarketViewModel @Inject constructor(
     private fun getAllMarkets() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllMarket() },
-            { market -> market.toMarketUiState() },
+            { getAllMarket().map { it.toMarketUiState() } },
             ::onGetMarketSuccess,
             ::onGetMarketError
         )
@@ -37,7 +36,7 @@ class MarketViewModel @Inject constructor(
         this._state.update {
             it.copy(
                 isLoading = false,
-                isError = true,
+                isError  = true,
             )
         }
     }
