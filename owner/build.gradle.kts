@@ -30,6 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
+     buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
