@@ -97,5 +97,8 @@ interface HoneyMartService {
     suspend fun deleteProduct(@Path("id") productId: Long)
 
     //endregion Product
+    @PUT("/user/login")
+    suspend fun loginUser(@Body email: String, @Body password: String)
+    :Response<BaseResponse<String>>
 
 }
