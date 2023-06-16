@@ -1,8 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.util.ValidationResult
-import org.the_chance.honeymart.domain.util.fromArabic
-import org.the_chance.honeymart.domain.util.isUserName
 import java.util.regex.Pattern
 
 class ValidateUserNameUseCase {
