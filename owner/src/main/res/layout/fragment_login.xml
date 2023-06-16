@@ -33,8 +33,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:layout_width="210dp"
-                android:layout_height="210dp"
+                android:layout_width="190dp"
+                android:layout_height="150dp"
                 android:layout_marginStart="1144dp"
                 android:layout_marginBottom="1dp"
                 android:background="@drawable/image_group"
