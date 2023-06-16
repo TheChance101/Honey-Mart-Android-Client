@@ -36,10 +36,11 @@
                 android:layout_width="210dp"
                 android:layout_height="210dp"
                 android:layout_marginStart="1144dp"
-                android:layout_marginBottom="675dp"
-                android:background="@drawable/background_right_frame"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/image_group"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/text_description"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <com.google.android.material.textview.MaterialTextView
