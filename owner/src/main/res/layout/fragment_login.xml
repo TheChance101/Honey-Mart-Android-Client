@@ -21,6 +21,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/image_icon_honey_mart"
+                android:layout_width="281dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:layout_marginEnd="259.3dp"
+                android:background="@drawable/logo_honey_mart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/image_background"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:layout_marginStart="1144dp"
+                android:layout_marginBottom="675dp"
+                android:background="@drawable/background_right_frame"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_welcome_back"
                 style="@style/Theme.HoneyMart.Text.H1.DarkSubtle"
