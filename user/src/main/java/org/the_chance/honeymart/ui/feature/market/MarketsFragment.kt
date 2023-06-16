@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.market
 
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,10 +16,20 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override val viewModel: MarketViewModel by viewModels()
     override fun setup() {
 
+        handleOnBackPressed()
+        initAdapter()
+        collectAction()
+    }
+
+    private fun initAdapter() {
         val adapter = MarketAdapter(viewModel)
         binding.recyclerMarkets.adapter = adapter
+    }
 
-        collectAction()
+    private fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
     }
 
     private fun collectAction() {
