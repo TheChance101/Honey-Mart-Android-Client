@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.the_chance.honeymart.ui.OrdersFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <androidx.slidingpanelayout.widget.SlidingPaneLayout
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context="org.the_chance.honeymart.ui.orders.OrdersFragment">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_order"
+            android:layout_width="550dp"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_order"
+            android:clipToPadding="false"
+        />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/detail_container"
+            android:layout_height="match_parent"
+            android:layout_width="300dp"
+            android:layout_weight="1"
+            android:name="org.the_chance.honeymart.ui.orders.OrderDetailsFragment"
+            />
+
+
+    </androidx.slidingpanelayout.widget.SlidingPaneLayout>
+</layout>

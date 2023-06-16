@@ -9,7 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/spacing_16"
+        tools:context="org.the_chance.honeymart.ui.orders.OrderDetailsFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_order"

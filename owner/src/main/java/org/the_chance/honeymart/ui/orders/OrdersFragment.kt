@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui
+package org.the_chance.honeymart.ui.orders
 
 import android.os.Bundle
 import android.view.LayoutInflater
