@@ -101,4 +101,10 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {}
+
+    override fun onClickFavIcon(productId: Long) {
+         viewModelScope.launch {
+            _effect.emit(EventHandler(productId))
+        }
+    }
 }
