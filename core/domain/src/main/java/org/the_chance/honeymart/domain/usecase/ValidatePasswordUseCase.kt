@@ -12,9 +12,7 @@ class ValidatePasswordUseCase {
                 errorMsg = "The password needs to consist of at least 8 characters"
             )
         }
-        val containsLettersAndDigits = password.any { it.isDigit() } &&
-                password.any { it.isLetter() }
-        if(!containsLettersAndDigits) {
+        if(!isPassword(password)) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "The password needs to contain at least one letter and digit"
