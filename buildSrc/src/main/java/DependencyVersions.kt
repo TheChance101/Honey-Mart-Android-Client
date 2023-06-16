@@ -2,7 +2,7 @@ object DependencyVersions {
     // App Ui Dependencies
     const val APP_COMPAT = "1.6.1"
     const val CORE_KTX = "1.10.0"
-    const val MATERIAL = "1.5.0"
+    const val MATERIAL = "1.7.0"
     const val CONSTRAINT_LAYOUT = "2.1.4"
     const val LOTTIE = "6.0.0"
     const val SLIDE_PANE = "1.2.0-beta01"
