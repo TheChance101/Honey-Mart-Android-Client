@@ -27,7 +27,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     }
         private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToAuthenticate(it) }
+            effect.getContentIfHandled()?.let {
+                //TODO Check if user is already logged in => add it directly and show snack bar
+                //TODO else=> go to auth
+                navigateToAuthenticate(it)
+            }
         }
     }
        private fun navigateToAuthenticate(productId:Long) {
