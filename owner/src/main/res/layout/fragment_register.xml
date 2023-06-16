@@ -1,0 +1,184 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="org.the_chance.honeymart.ui.features.register.RegisterFragment">
+
+    <View
+        android:layout_width="600dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/owner_sign_up_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="300dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/Sign_up"
+        android:textColor="@color/black_87"
+        android:textSize="@dimen/text_heading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="220dp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="3"
+        android:text="@string/welcome_sign_owner"
+        android:textColor="@color/black_60"
+        android:textSize="@dimen/text_body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView3"
+        android:layout_width="578dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="@string/creat_account_owner"
+        android:textColor="@color/black_60"
+        android:textSize="@dimen/text_body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_input_full_name"
+        style="@style/Theme.HoneyMart.H6.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="51dp"
+        android:layout_marginTop="112dp"
+        android:hint="@string/full_name"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_full_name"
+            style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+            android:layout_width="550dp"
+            android:layout_height="56dp"
+            android:drawableStart="@drawable/ic_person" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_input_email"
+        style="@style/Theme.HoneyMart.H6.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_32"
+        android:hint="@string/email"
+        app:layout_constraintEnd_toEndOf="@id/text_field_input_full_name"
+        app:layout_constraintStart_toStartOf="@id/text_field_input_full_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_input_full_name" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_email"
+            style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+            android:layout_width="550dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_email" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_input_password"
+        style="@style/Theme.HoneyMart.H6.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_32"
+        android:layout_marginTop="16dp"
+        android:hint="@string/password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_input_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_password"
+            style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_input_confirm_password"
+        style="@style/Theme.HoneyMart.H6.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_32"
+        android:hint="Confirm Password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_input_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_confirm_password"
+            style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_sign_up"
+        style="@style/Theme.HoneyMart.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="51dp"
+        android:layout_marginTop="92dp"
+        android:background="@drawable/button_background"
+        android:text="@string/sign_up"
+        android:layout_marginBottom="43dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_input_confirm_password" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_already_have_account"
+        style="@style/Theme.HoneyMart.Text.H6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="@string/already_have_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_up" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_log_in"
+        style="@style/Theme.HoneyMart.Text.H5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/spacing_8"
+        android:text="@string/log_in"
+        android:textColor="@color/primary_100"
+        app:layout_constraintBottom_toBottomOf="@+id/text_already_have_account"
+        app:layout_constraintStart_toEndOf="@+id/text_already_have_account"
+        app:layout_constraintTop_toTopOf="@+id/text_already_have_account" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
