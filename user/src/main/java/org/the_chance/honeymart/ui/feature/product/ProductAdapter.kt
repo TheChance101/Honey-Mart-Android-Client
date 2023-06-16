@@ -11,4 +11,5 @@ class ProductAdapter(listener: ProductInteractionListener) : BaseAdapter<Product
 
 interface ProductInteractionListener : BaseInteractionListener {
     fun onClickProduct(productId: Long)
+    fun onClickFavIcon(productId: Long)
 }
