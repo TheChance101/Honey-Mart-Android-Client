@@ -100,6 +100,8 @@
                 android:layout_marginTop="@dimen/spacing_56"
                 android:background="@drawable/button_background"
                 android:text="@string/Continue"
+                android:layout_marginBottom="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_field_input_email" />
