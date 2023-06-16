@@ -16,7 +16,9 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/marketsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -31,7 +33,8 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            />
+            app:popUpTo="@id/categoriesFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="marketId"
             app:argType="long" />
