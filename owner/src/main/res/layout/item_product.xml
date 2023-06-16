@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+    </data>
+
+
+    >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_product"
+        style="@style/Theme.HoneyMart.Card"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/spacing_8"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_product"
+                app:shapeAppearanceOverlay = "@style/Theme.HoneyMart.CircleShape"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginStart="@dimen/spacing_16"
+                tool:background="@drawable/image_test"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/text_Product_name"
+                style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_24"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:layout_constraintStart_toEndOf="@id/image_product"
+                app:layout_constraintTop_toTopOf="@id/image_product"
+                tool:text="To Kill a Mockingbird" />
+
+            <TextView
+                android:id="@+id/text_Product_amount"
+                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:drawableStart="@drawable/icon_cart_check"
+                android:drawablePadding="@dimen/spacing_4"
+                app:layout_constraintStart_toStartOf="@id/text_Product_name"
+                app:layout_constraintTop_toBottomOf="@id/text_Product_name"
+                tool:text="To Kill a Mockingbird" />
+
+            <TextView
+                android:id="@+id/text_product_price"
+                style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_8"
+                android:drawablePadding="@dimen/spacing_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                tool:text="30,000$" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

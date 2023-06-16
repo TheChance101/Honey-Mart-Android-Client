@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         style="@style/Theme.HoneyMart.Card"
-        android:layout_margin="@dimen/spacing_2">
+        android:layout_margin="@dimen/spacing_8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
