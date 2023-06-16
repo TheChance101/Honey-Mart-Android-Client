@@ -7,7 +7,7 @@ package org.the_chance.honeymart.ui.feature.uistate
 data class LoginUiState(
     val isLoading: Boolean = true,
     val error: List<String> = emptyList(),
-    val email: String,
-    val password:String
+    val email: String?=null,
+    val password:String?=null
 
 )
