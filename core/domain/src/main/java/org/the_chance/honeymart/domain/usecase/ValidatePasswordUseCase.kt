@@ -1,21 +1,22 @@
 package org.the_chance.honeymart.domain.usecase
 
+import org.the_chance.honeymart.domain.util.ValidationState
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ValidatePasswordUseCase @Inject constructor() {
 
-    operator fun invoke(password: String): Boolean {
+    operator fun invoke(password: String): ValidationState {
         if (password.isBlank()) {
-            return false
+            return ValidationState.BLANK_PASSWORD
         }
         if (password.length < 6) {
-            return false
+            return ValidationState.INVALID_PASSWORD_LENGTH
         }
         if (!isPassword(password)) {
-            return false
+            return ValidationState.INVALID_PASSWORD
         }
-        return true
+        return ValidationState.VALID_PASSWORD
 
     }
 

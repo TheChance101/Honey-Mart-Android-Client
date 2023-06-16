@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
+import org.the_chance.honeymart.domain.util.ValidationState
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -8,14 +9,14 @@ import javax.inject.Inject
  */
 class ValidateEmailUseCase @Inject constructor() {
 
-   operator fun invoke(email: String): Boolean {
+   operator fun invoke(email: String): ValidationState {
        if (email.isBlank()) {
-           return false
+           return ValidationState.BLANK_EMAIL
        }
        if (!isEmail(email)) {
-           return false
+           return ValidationState.INVALID_EMAIL
        }
-       return true
+       return ValidationState.VALID_EMAIL
    }
 
      private fun isEmail(email: String): Boolean {
