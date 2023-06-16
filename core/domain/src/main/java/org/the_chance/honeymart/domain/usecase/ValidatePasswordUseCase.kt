@@ -23,7 +23,7 @@ class ValidatePasswordUseCase {
         )
     }
 
-    fun isPassword(password: String): Boolean {
+    private fun isPassword(password: String): Boolean {
         return (Pattern.compile("^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@_^%\$#?*&!-]).{8,16}"))
             .matcher(password).matches()
     }
