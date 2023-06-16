@@ -87,6 +87,7 @@
             android:layout_margin="16dp"
             android:gravity="center"
             app:icon="@drawable/icon_cart_white"
+            android:background="@drawable/button_background"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"

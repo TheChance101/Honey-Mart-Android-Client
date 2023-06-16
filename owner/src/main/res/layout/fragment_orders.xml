@@ -15,7 +15,7 @@
             android:id="@+id/recycler_order"
             android:layout_width="550dp"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_order"
+            tools:listitem="@layout/layout_orders"
             android:clipToPadding="false"
         />
 
