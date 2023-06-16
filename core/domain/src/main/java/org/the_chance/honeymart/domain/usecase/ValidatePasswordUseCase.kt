@@ -1,31 +1,26 @@
 package org.the_chance.honeymart.domain.usecase
 
-import org.the_chance.honeymart.domain.util.ValidationResult
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ValidatePasswordUseCase @Inject constructor() {
 
-    operator fun invoke(password: String): ValidationResult {
-        if (password.length < 8) {
-            return ValidationResult(
-                isSuccessful = false,
-                errorMsg = "The password needs to consist of at least 8 characters"
-            )
+    operator fun invoke(password: String): Boolean {
+        if (password.isBlank()) {
+            return false
+        }
+        if (password.length < 6) {
+            return false
         }
         if (!isPassword(password)) {
-            return ValidationResult(
-                isSuccessful = false,
-                errorMsg = "The password needs to contain at least one letter and digit"
-            )
+            return false
         }
-        return ValidationResult(
-            isSuccessful = true
-        )
+        return true
+
     }
 
     private fun isPassword(password: String): Boolean {
-        return (Pattern.compile("^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@_^%\$#?*&!-]).{8,16}"))
+        return (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,14}$"))
             .matcher(password).matches()
     }
 }
