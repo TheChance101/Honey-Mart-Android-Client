@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.market
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
@@ -17,20 +18,24 @@ import javax.inject.Inject
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-    private val addUser: AddUserUseCase
+    private val addUser: AddUserUseCase,
 ) : BaseViewModel<MarketsUiState, Long>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
     init {
         getAllMarkets()
-        viewModelScope.launch {
-            val addUser = addUser(
-                "ethaar75@gmail.com",
-                "12345546Ery",
-                "Ethaar hussen"
-            )
-            Log.e("tgy", "addUser:$addUser")
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val addUser = addUser(
+                    "Asia sama",
+                    "asiasama1@",
+                    "asiasama123456@gmail.com",
+                )
+                Log.e("TAG", "addUser:$addUser")
+            }
+        } catch (t: Throwable) {
+            Log.e("TAG", "addUser error:${t.message} ")
         }
 
     }

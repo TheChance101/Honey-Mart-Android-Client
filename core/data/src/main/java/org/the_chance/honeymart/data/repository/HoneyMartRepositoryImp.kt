@@ -1,4 +1,6 @@
 package org.the_chance.honeymart.data.repository
+
+import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
@@ -16,8 +18,27 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
-    override suspend fun addUser(fullName: String, email: String, password: String): String =
-        wrap { honeyMartService.addUser(fullName, email, password) }.toString()
+
+    override suspend fun addUser(
+        fullName: String,
+        password: String,
+        email: String,
+    ): Boolean? {
+        try {
+            val response = honeyMartService.addUser(fullName, password, email)
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                return responseBody?.isSuccess == true
+            } else {
+                Log.e("TAG", "addUser error: ${response.code()}")
+                return null
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "addUser ERROR: ${e.message}")
+            return false
+        }
+    }
+
 
     override suspend fun getAllMarkets(): List<MarketEntity> =
         wrap { honeyMartService.getAllMarkets() }.map { it.toMarketEntity() }
@@ -44,8 +65,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
         return if (response.isSuccessful) {
-            response.body()?.value as T
+            response.body()?.value ?: throw Throwable("Unknown error occurred")
         } else {
+            Log.e("TAG", "wrap: ${response}")
             throw Throwable("Unknown error occurred")
         }
     }

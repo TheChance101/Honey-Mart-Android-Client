@@ -6,6 +6,14 @@ import javax.inject.Inject
 class AddUserUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
 ) {
-    suspend operator fun invoke(email: String, password: String, fullName: String): String =
-        honeyMartRepository.addUser(fullName, email, password)
+    suspend operator fun invoke(
+        fullName: String,
+        password: String,
+        email: String,
+    ): Boolean? =
+        honeyMartRepository.addUser(fullName, password, email)
+
+    init {
+        println("AddUserUseCase init")
+    }
 }
