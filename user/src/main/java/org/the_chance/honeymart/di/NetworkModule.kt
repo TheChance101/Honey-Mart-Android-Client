@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -41,9 +42,13 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        headerInterceptor: Interceptor
+    ): OkHttpClient =
         OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
+            addInterceptor(headerInterceptor)
         }.build()
 
     @Singleton
@@ -56,5 +61,13 @@ internal object NetworkModule {
     @Provides
     fun provideHoneyMartService(retrofit: Retrofit): HoneyMartService =
         retrofit.create(HoneyMartService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
+        chain.proceed(chain.request().newBuilder().also {
+            it.addHeader("Authorization", "Bearer $")
+        }.build())
+    }
 
 }
