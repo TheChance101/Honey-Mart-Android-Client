@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.util
+package org.the_chance.honeymart.domain.util
 
 import java.util.regex.Pattern
 
