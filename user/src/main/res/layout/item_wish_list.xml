@@ -5,6 +5,13 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState" />
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.wishlist.WishListInteractionListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -25,7 +32,8 @@
                 android:id="@+id/image_product"
                 style="@style/Theme.HoneyMart.Image.ProductImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:onClick='@{()->listener.onClickProduct(item.productId)}' />
 
 
             <com.google.android.material.textview.MaterialTextView
@@ -35,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
+                android:text="@{item.productName}"
                 app:layout_constraintBottom_toTopOf="@+id/text_product_price"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Product" />
@@ -46,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
+                android:text='@{String.valueOf(item.productPrice) + "$"}'
                 app:layout_constraintBottom_toTopOf="@+id/text_product_description"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="3000$" />
@@ -74,7 +84,8 @@
                     android:id="@+id/icon_favorite_enabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_4"
+                    android:onClick="@{()->listener.onClickAddToWishList(item.productId)}"
+                    android:padding="@dimen/spacing_4"
                     app:srcCompat="@drawable/icon_favorite_selected" />
             </com.google.android.material.card.MaterialCardView>
 

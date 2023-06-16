@@ -234,27 +234,25 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Theme.HoneyMart.TextInputLayout">
+    <style name="Theme.HoneyMart.H6.TextInputLayout" parent="ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense">
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
         <item name="boxStrokeWidth">@dimen/stroke_normal</item>
-        <item name="boxStrokeWidthFocused">@dimen/stroke_normal</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="errorEnabled">true</item>
         <item name="boxStrokeErrorColor">@color/error</item>
         <item name="boxBackgroundColor">@color/white</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/radius_16</item>
-        <item name="boxCornerRadiusBottomEnd">@dimen/radius_16</item>
-        <item name="boxCornerRadiusTopStart">@dimen/radius_16</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/radius_16</item>
-        <item name="hintEnabled">false</item>
+        <item name="boxStrokeColor">@color/primary_100</item>
+        <item name="android:textColorHint">@color/gray</item>
     </style>
 
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText">
-        <item name="android:textColorHint">@color/black_37</item>
-        <item name="android:textColor">@color/black_60</item>
-        <item name="drawableTint">@color/white_200</item>
         <item name="android:drawablePadding">@dimen/spacing_8</item>
-        <item name="android:padding">@dimen/spacing_16</item>
+        <item name="android:textColor">@color/black_37</item>
         <item name="maxLines">1</item>
         <item name="android:ellipsize">end</item>
-
     </style>
 
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">

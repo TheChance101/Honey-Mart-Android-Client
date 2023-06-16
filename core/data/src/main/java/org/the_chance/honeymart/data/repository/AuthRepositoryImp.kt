@@ -2,16 +2,16 @@ package org.the_chance.honeymart.data.repository
 
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.domain.repository.AuthenticationRepository
+import org.the_chance.honeymart.domain.repository.AuthRepository
 import retrofit2.Response
 import javax.inject.Inject
 
 /**
  * Created by Aziza Helmy on 6/16/2023.
  */
-class AuthenticationRepositoryImp @Inject constructor(
+class AuthRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
-) : AuthenticationRepository {
+) : AuthRepository {
     override suspend fun loginUser(email: String, password: String): String =
         wrap { honeyMartService.loginUser(email, password) }.toString()
 
