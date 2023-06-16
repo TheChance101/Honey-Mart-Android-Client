@@ -1,8 +1,10 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductsBinding
 
@@ -16,11 +18,26 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     override fun setup() {
         initAdapters()
+        collectEffect()
     }
 
     private fun initAdapters(){
         binding.recyclerCategory.adapter = categoryAdapter
         binding.recyclerProduct.adapter = productAdapter
+    }
+        private fun collectEffect() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let {
+                //TODO Check if user is already logged in => add it directly and show snack bar
+                //TODO else=> go to auth
+                navigateToAuthenticate(it)
+            }
+        }
+    }
+       private fun navigateToAuthenticate(productId:Long) {
+        val action = ProductsFragmentDirections
+            .actionProductsFragmentToUserNavGraph()
+        findNavController().navigate(action)
     }
 
 }
