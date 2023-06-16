@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_margin="@dimen/spacing_16"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:srcCompat="@drawable/logo_honey_mart_when_scroll" />
         </com.google.android.material.appbar.AppBarLayout>
 
