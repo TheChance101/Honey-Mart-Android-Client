@@ -53,6 +53,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     override fun onClickAddToWishList(productId: Long) {
         viewModelScope.launch {
             deleteFromWishListUseCase(productId)
+            getWishListProducts()
         }
     }
 }
