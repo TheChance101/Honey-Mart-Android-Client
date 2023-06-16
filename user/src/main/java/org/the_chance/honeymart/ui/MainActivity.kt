@@ -1,17 +1,16 @@
 package org.the_chance.honeymart.ui
 
-import android.app.Activity
-import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.util.setupScrollingAppBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
 
@@ -24,6 +23,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+        setupScrollingAppBar(
+            binding.appBarLayout,
+            binding.imageLogo,
+            ContextCompat.getColor(this, org.the_chance.design_system.R.color.white_300),
+            ContextCompat.getColor(this, org.the_chance.design_system.R.color.primary_100),
+            org.the_chance.design_system.R.drawable.logo_honey_mart,
+            org.the_chance.design_system.R.drawable.logo_honey_mart_when_scroll
+        )
+
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
         navHostFragment.navController
@@ -35,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.signupFragment
             ) {
                 binding.bottomNavigationView.visibility = View.GONE
-                actionBar?.hide()
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             }
@@ -44,24 +54,6 @@ class MainActivity : AppCompatActivity() {
         val navGraph=navController.navInflater.inflate(R.navigation.main_nav_graph)
 
         setupNavigation(navController)
-        statusBarMode(this)
-
-    }
-
-    private fun statusBarMode(activity: Activity) {
-        activity.window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            when (context.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                }
-
-                else -> decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
-            statusBarColor = Color.TRANSPARENT
-        }
     }
 
 

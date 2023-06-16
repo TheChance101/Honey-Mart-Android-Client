@@ -3,6 +3,8 @@ package org.the_chance.honeymart.ui.feature.market
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
@@ -13,8 +15,27 @@ import org.the_chance.user.databinding.FragmentMarketsBinding
 class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override val TAG: String = this::class.java.simpleName
     override val layoutIdFragment = R.layout.fragment_markets
+//    private lateinit var appBarLayout: AppBarLayout
+//    private lateinit var imageLogoDefault: ShapeableImageView
+//    private lateinit var imageLogoScrolled: ShapeableImageView
+
+    private lateinit var appBarLayout: AppBarLayout
+    private lateinit var logoImageView: ShapeableImageView
     override val viewModel: MarketViewModel by viewModels()
     override fun setup() {
+
+//        appBarLayout = requireActivity().findViewById(R.id.appBarLayout)
+//        imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
+//        imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
+//
+//        binding.recyclerMarkets
+//            .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
+//        binding.recyclerMarkets
+//            .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
+
+
+
+
 
         handleOnBackPressed()
         initAdapter()
