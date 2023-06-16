@@ -2,13 +2,14 @@ package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.util.ValidationResult
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 /**
  * Created by Aziza Helmy on 6/16/2023.
  */
-class ValidateEmailUseCase {
+class ValidateEmailUseCase @Inject constructor() {
 
-    fun execute(email: String): ValidationResult {
+   operator fun invoke(email: String): ValidationResult {
         if (email.isBlank()) {
             return ValidationResult(
                 isSuccessful = false,

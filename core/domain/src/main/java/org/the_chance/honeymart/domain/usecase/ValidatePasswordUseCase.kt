@@ -2,17 +2,18 @@ package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.util.ValidationResult
 import java.util.regex.Pattern
+import javax.inject.Inject
 
-class ValidatePasswordUseCase {
+class ValidatePasswordUseCase @Inject constructor() {
 
-    fun execute(password: String): ValidationResult {
-        if(password.length < 8) {
+    operator fun invoke(password: String): ValidationResult {
+        if (password.length < 8) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "The password needs to consist of at least 8 characters"
             )
         }
-        if(!isPassword(password)) {
+        if (!isPassword(password)) {
             return ValidationResult(
                 isSuccessful = false,
                 errorMsg = "The password needs to contain at least one letter and digit"

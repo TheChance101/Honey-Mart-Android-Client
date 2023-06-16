@@ -2,10 +2,11 @@ package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.util.ValidationResult
 import java.util.regex.Pattern
+import javax.inject.Inject
 
-class ValidateUserNameUseCase {
+class ValidateUserNameUseCase @Inject constructor() {
 
-    fun execute(userName: String): ValidationResult {
+    operator fun invoke(userName: String): ValidationResult {
         if (userName.isBlank()) {
             return ValidationResult(
                 isSuccessful = false,
