@@ -98,4 +98,16 @@ interface HoneyMartService {
 
     //endregion Product
 
+    //region user
+
+    @POST("/user/signup")
+    suspend fun addUser(
+        @Body fullName: String,
+        @Body password: String,
+        @Body email: String
+    ): Response<BaseResponse<String>>
+
+    //endregion user
+
+
 }

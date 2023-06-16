@@ -1,5 +1,4 @@
 package org.the_chance.honeymart.data.repository
-
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
@@ -15,6 +14,8 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
+    override suspend fun addUser(fullName: String, email: String, password: String): String =
+        wrap { honeyMartService.addUser(fullName, email, password) }.toString()
 
     override suspend fun getAllMarkets(): List<MarketEntity> =
         wrap { honeyMartService.getAllMarkets() }.map { it.toMarketEntity() }
