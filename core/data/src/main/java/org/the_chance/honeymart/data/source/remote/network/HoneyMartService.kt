@@ -4,6 +4,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -98,4 +99,15 @@ interface HoneyMartService {
 
     //endregion Product
 
+    //region WishList
+    @GET("/wishList")
+    suspend fun getWishList(): Response<BaseResponse<List<WishListDto>>>
+
+    @DELETE("/wishList")
+    suspend fun deleteFromWishList(@Body productId: Long): Response<BaseResponse<String>>
+
+    @POST("/wishList")
+    suspend fun addToWishList(@Body productId: Long): Response<BaseResponse<String>>
+
+    //endregion WishList
 }
