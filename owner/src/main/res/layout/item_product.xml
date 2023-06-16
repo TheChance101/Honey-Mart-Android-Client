@@ -9,8 +9,6 @@
     </data>
 
 
-    >
-
     <androidx.cardview.widget.CardView
         android:id="@+id/card_product"
         style="@style/Theme.HoneyMart.Card"
