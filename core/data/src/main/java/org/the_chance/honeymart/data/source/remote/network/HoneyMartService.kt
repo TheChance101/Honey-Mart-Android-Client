@@ -8,6 +8,8 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -25,7 +27,7 @@ interface HoneyMartService {
     @PUT("/markets/{id}")
     suspend fun updateMarket(
         @Path("id") marketId: Long,
-        @Body name: String
+        @Body name: String,
     ): Response<BaseResponse<MarketDto>>
 
     @DELETE("/markets/{id}")
@@ -36,14 +38,14 @@ interface HoneyMartService {
     //region Category
     @GET("/markets/{id}/categories")
     suspend fun getCategoriesInMarket(
-        @Path("id") marketId: Long
+        @Path("id") marketId: Long,
     ): Response<BaseResponse<List<CategoryDto>>>
 
     @POST("/category")
     suspend fun addCategory(
         @Body marketID: Long,
         @Body name: String,
-        @Body imageId: Int
+        @Body imageId: Int,
     ): Response<BaseResponse<CategoryDto>>
 
     @PUT("/category")
@@ -51,7 +53,7 @@ interface HoneyMartService {
         @Body id: Long,
         @Body marketID: Long,
         @Body name: String,
-        @Body imageId: Int
+        @Body imageId: Int,
     )
 
     @DELETE("/category/{id}")
@@ -64,12 +66,12 @@ interface HoneyMartService {
 
     @GET("/category/{categoryId}/allProduct")
     suspend fun getAllProductsByCategory(
-        @Path("categoryId") categoryId: Long
+        @Path("categoryId") categoryId: Long,
     ): Response<BaseResponse<List<ProductDto>>>
 
     @GET("/product/{productId}")
     suspend fun getCategoriesForSpecificProduct(
-        @Path("productId") productId: Long
+        @Path("productId") productId: Long,
     ): Response<BaseResponse<List<CategoryDto>>>
 
     @POST("/product")
@@ -91,7 +93,7 @@ interface HoneyMartService {
     @PUT("/product/{id}/updateCategories")
     suspend fun updateCategoriesHasProduct(
         @Path("id") productId: Long,
-        @Body categoriesId: List<Long>
+        @Body categoriesId: List<Long>,
     )
 
     @DELETE("/product/{id}")
@@ -103,11 +105,12 @@ interface HoneyMartService {
     @GET("/wishList")
     suspend fun getWishList(): Response<BaseResponse<List<WishListDto>>>
 
-    @DELETE("/wishList")
-    suspend fun deleteFromWishList(@Body productId: Long): Response<BaseResponse<String>>
+    @DELETE("/wishList/{id}")
+    suspend fun deleteFromWishList(@Path("id") productId: Long): Response<BaseResponse<String>>
 
+    @FormUrlEncoded
     @POST("/wishList")
-    suspend fun addToWishList(@Body productId: Long): Response<BaseResponse<String>>
+    suspend fun addToWishList(@Field("productId") productId: Long): Response<BaseResponse<String>>
 
     //endregion WishList
 }
