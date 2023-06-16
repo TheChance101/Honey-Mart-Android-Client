@@ -51,6 +51,9 @@
         <argument
             android:name="marketId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_productsFragment_to_user_nav_graph"
+            app:destination="@id/user_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -66,5 +69,6 @@
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
         android:label="WishListFragment" />
+    <include app:graph="@navigation/user_nav_graph" />
 
 </navigation>
