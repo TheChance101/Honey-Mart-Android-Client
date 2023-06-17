@@ -71,7 +71,7 @@
         android:label="WishListFragment" />
     <navigation
         android:id="@+id/user_nav_graph"
-        app:startDestination="@id/loginFragment">
+        app:startDestination="@id/authFragment">
         <fragment
             android:id="@+id/authFragment"
             android:name="org.the_chance.honeymart.ui.feature.authentication.AuthFragment"
