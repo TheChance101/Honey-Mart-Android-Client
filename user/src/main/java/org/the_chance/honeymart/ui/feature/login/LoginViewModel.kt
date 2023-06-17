@@ -10,12 +10,13 @@ import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
-) : BaseViewModel<LoginUiState, Long>(LoginUiState()) {
+) : BaseViewModel<LoginUiState, Boolean>(LoginUiState()) {
 
     override val TAG: String = this::class.java.simpleName
 
@@ -76,6 +77,9 @@ class LoginViewModel @Inject constructor(
                 validationState = validationState
             )
         }
+        if (_state.value.validationState == ValidationState.SUCCESS)
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+
     }
 
     private fun onLoginError(throwable: Throwable) {
