@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
+import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.ValidationState
 import javax.inject.Inject
@@ -20,7 +21,10 @@ class LoginUserUseCase @Inject constructor(
         } else {
             val token = authRepository.loginUser(email, password)
             println("Token is: $token")
-            //authRepository.saveToken(token)
+            runBlocking {
+                authRepository.saveToken(token)
+            }
+
             ValidationState.SUCCESS
         }
     }
