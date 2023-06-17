@@ -1,14 +1,18 @@
 package org.the_chance.honeymart.ui
 
-import androidx.fragment.app.viewModels
-import org.the_chance.honeymart.base.BaseFragment
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import org.the_chance.owner.R
-import org.the_chance.owner.databinding.FragmentLoginBinding
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-    override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_login
-    override val viewModel: LoginViewModel by viewModels()
-    override fun setup() {}
-
+class LoginFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_login, container, false)
+    }
 }

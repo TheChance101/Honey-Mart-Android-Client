@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ordersFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/ordersFragment"
         android:name="org.the_chance.honeymart.ui.orders.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" >
+        tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment" />
@@ -18,6 +18,9 @@
         android:id="@+id/orderDetailsFragment"
         android:name="org.the_chance.honeymart.ui.orders.OrderDetailsFragment"
         android:label="OrderDetailsFragment"
-        tools:layout="@layout/fragment_order_details"
-        />
+        tools:layout="@layout/fragment_order_details" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="org.the_chance.honeymart.ui.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

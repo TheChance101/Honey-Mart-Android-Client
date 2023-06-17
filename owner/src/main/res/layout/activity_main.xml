@@ -41,7 +41,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
-            android:name="org.the_chance.honeymart.ui.orders.OrdersFragment"
+            android:name="org.the_chance.honeymart.ui.LoginFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
