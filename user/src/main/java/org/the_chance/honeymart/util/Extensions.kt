@@ -15,15 +15,20 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.the_chance.design_system.R
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
     context: Context,
     fragment: Fragment,
     appBarLayout: AppBarLayout,
 ) {
-    val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_8)
+    val threshold =
+        context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_8)
     val window: Window = fragment.requireActivity().window
+
+    fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
+        val interpolatedColor = ArgbEvaluatorCompat.getInstance().evaluate(ratio, color1, color2)
+        return interpolatedColor.coerceAtLeast(color1).coerceAtMost(color2)
+    }
 
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -32,8 +37,8 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
             val offset = recyclerView.computeVerticalScrollOffset()
             val alpha = (offset.toFloat() / threshold).coerceIn(0f, 1f)
             val newColor = interpolateColor(
-                ContextCompat.getColor(context, R.color.white_300),
-                ContextCompat.getColor(context, R.color.primary_100),
+                ContextCompat.getColor(context, org.the_chance.design_system.R.color.white_300),
+                ContextCompat.getColor(context, org.the_chance.design_system.R.color.primary_100),
                 alpha
             )
 
@@ -44,29 +49,29 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
     })
 }
 
-private fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
-    val interpolatedColor = ArgbEvaluatorCompat.getInstance().evaluate(ratio, color1, color2)
-    return interpolatedColor.coerceAtLeast(color1).coerceAtMost(color2)
-}
-
-fun RecyclerView.addOnScrollListenerWithImageVisibility(
-    imageDefault: ShapeableImageView,
-    imageScrolled: ShapeableImageView,
+fun RecyclerView.addToolbarScrollListener(
+    imageLogoDefault: ShapeableImageView,
+    imageLogoScrolled: ShapeableImageView,
 ) {
-    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
+    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        private var isAtTop = true
 
-            when (newState) {
-                RecyclerView.SCROLL_STATE_DRAGGING -> {
-                    imageDefault.visibility = View.GONE
-                    imageScrolled.visibility = View.VISIBLE
-                }
-
-                RecyclerView.SCROLL_STATE_IDLE -> {
-                    if (!recyclerView.canScrollVertically(-1)) {
-                        imageDefault.visibility = View.VISIBLE
-                        imageScrolled.visibility = View.GONE
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val isVerticalScroll = dy != 0
+            if (isVerticalScroll) {
+                val scrollY = recyclerView.computeVerticalScrollOffset()
+                if (scrollY == 0) {
+                    if (!isAtTop) {
+                        imageLogoDefault.visibility = View.VISIBLE
+                        imageLogoScrolled.visibility = View.GONE
+                        isAtTop = true
+                    }
+                } else {
+                    if (isAtTop) {
+                        imageLogoDefault.visibility = View.GONE
+                        imageLogoScrolled.visibility = View.VISIBLE
+                        isAtTop = false
                     }
                 }
             }
