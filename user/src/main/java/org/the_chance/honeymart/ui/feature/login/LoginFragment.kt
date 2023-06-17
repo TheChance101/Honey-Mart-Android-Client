@@ -9,9 +9,7 @@ import org.the_chance.user.databinding.FragmentLoginBinding
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_signup
+    override val layoutIdFragment = R.layout.fragment_login
     override val viewModel: LoginViewModel by viewModels()
-    override fun setup() {
 
-    }
 }

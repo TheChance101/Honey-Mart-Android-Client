@@ -22,6 +22,7 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.VALID_EMAIL -> R.string.valid_email
         ValidationState.VALID_PASSWORD -> R.string.valid_password
         ValidationState.VALID_FULL_NAME -> R.string.valid_full_name
+        ValidationState.SUCCESS -> R.string.success
     }
 
 }

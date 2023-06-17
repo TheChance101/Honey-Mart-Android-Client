@@ -9,5 +9,4 @@ data class LoginUiState(
     val error: Int = 0,
     val email: String = "",
     val password: String = ""
-
 )

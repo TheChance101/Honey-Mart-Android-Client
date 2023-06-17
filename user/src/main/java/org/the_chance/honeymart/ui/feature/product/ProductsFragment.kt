@@ -36,7 +36,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     }
        private fun navigateToAuthenticate(productId:Long) {
         val action = ProductsFragmentDirections
-            .actionProductsFragmentToUserNavGraph(productId)
+            .actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
     }
 
