@@ -21,7 +21,10 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     private lateinit var imageLogoDefault: ShapeableImageView
     private lateinit var imageLogoScrolled: ShapeableImageView
     override fun setup() {
-
+        initiateAdapter()
+        collectAction()
+    }
+    private fun initiateAdapter(){
         val adapter = MarketAdapter(viewModel)
         binding.recyclerMarkets.adapter = adapter
 
@@ -33,8 +36,6 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
             .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
         binding.recyclerMarkets
             .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-
-        collectAction()
     }
 
 
