@@ -15,7 +15,6 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/spacing_24"
             android:fitsSystemWindows="true"
             android:visibility="visible"
             android:background="@color/white_300"

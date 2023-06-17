@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
@@ -36,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.authFragment ||
                 destination.id == R.id.loginFragment ||
-                destination.id == R.id.signupFragment
+                destination.id == R.id.signupFragment ||
+                destination.id == R.id.signupConfirmPasswordFragment
             ) {
                 binding.bottomNavigationView.visibility = View.GONE
                 binding.appBarLayout.visibility = View.GONE
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val navGraph=navController.navInflater.inflate(R.navigation.main_nav_graph)
+        val navGraph = navController.navInflater.inflate(R.navigation.main_nav_graph)
 
         setupNavigation(navController)
         statusBarMode(this)

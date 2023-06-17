@@ -17,6 +17,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val viewModel: LoginViewModel by viewModels()
     override fun setup() {
         collectAction()
+        binding.textSignup.setOnClickListener {
+            navigateToSignup()
+        }
     }
 
 
@@ -25,6 +28,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             effect.getContentIfHandled()?.let { navigateToMainNav() }
             Log.e("TAG", "collectAction: $effect")
         }
+    }
+
+    private fun navigateToSignup() {
+        val action =
+            LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+        findNavController().navigate(action)
     }
 
     private fun navigateToMainNav() {

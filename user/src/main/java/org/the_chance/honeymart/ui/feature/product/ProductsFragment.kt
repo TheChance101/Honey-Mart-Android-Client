@@ -29,19 +29,27 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         setupScrollListenerForRecyclerView(binding.recyclerProduct)
 
     }
-        private fun collectEffect() {
+
+    private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let {
                 //TODO Check if user is already logged in => add it directly and show snack bar
                 //TODO else=> go to auth
-                navigateToAuthenticate(it)
+                navigateToAuthenticate()
             }
         }
     }
-       private fun navigateToAuthenticate(productId:Long) {
+
+    /*private fun navigateToProductDetails(productId: Long) {
         val action = ProductsFragmentDirections
             .actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
-    }
+    }*/
 
+    private fun navigateToAuthenticate() {
+        val action = ProductsFragmentDirections
+            .actionProductsFragmentToUserNavGraph()
+        findNavController().navigate(action)
+
+    }
 }
