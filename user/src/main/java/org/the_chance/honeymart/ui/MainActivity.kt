@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.Color
@@ -11,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
@@ -19,6 +21,8 @@ import org.the_chance.user.databinding.ActivityMainBinding
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,9 +39,11 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.signupFragment
             ) {
                 binding.bottomNavigationView.visibility = View.GONE
-                actionBar?.hide()
+                binding.appBarLayout.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE
+                binding.appBarLayout.visibility = View.VISIBLE
+
             }
         }
 

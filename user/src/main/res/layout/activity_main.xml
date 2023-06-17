@@ -6,42 +6,40 @@
 
     <data></data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutDescription="@xml/activity_main_scene"
         tools:context="org.the_chance.honeymart.ui.MainActivity">
 
-        <View
-            android:id="@+id/header_view"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="104dp"
-            android:background="@color/primary_100"
-            android:alpha="0"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:background="@color/white_300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_16"
-            android:layout_marginBottom="@dimen/spacing_16"
-            app:layout_constraintBottom_toBottomOf="@+id/header_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/logo_honey_mart_when_scroll" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_margin="@dimen/spacing_16"
+                android:visibility="visible"
+                app:srcCompat="@drawable/logo_honey_mart_when_scroll" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_logo_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0"
-            android:layout_marginStart="@dimen/spacing_16"
-            android:layout_marginBottom="@dimen/spacing_16"
-            app:layout_constraintBottom_toBottomOf="@+id/header_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/logo_honey_mart" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_logo_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_margin="@dimen/spacing_16"
+                android:visibility="gone"
+                app:srcCompat="@drawable/logo_honey_mart" />
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_host"
@@ -49,10 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:defaultNavHost="true"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_view"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
             app:navGraph="@navigation/main_nav_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -66,5 +64,5 @@
             app:menu="@menu/bottom_nav_menu" />
 
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
