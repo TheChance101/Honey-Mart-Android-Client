@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.login.LoginViewModel" />
     </data>
 
     <ScrollView
@@ -70,7 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.emailFlow}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +96,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.passwordFlow}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,6 +109,7 @@
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_56"
                 android:background="@drawable/button_background"
+                android:onClick="@{()->viewModel.onLoginClick()}"
                 android:text="@string/log_in"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

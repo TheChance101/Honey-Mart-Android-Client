@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.util
 
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 /**
  * Created by Aziza Helmy on 6/16/2023.
