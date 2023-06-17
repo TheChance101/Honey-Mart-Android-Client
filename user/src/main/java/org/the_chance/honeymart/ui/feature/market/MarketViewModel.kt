@@ -23,6 +23,7 @@ class MarketViewModel @Inject constructor(
         getAllMarkets()
     }
 
+
     private fun getAllMarkets() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -32,11 +33,12 @@ class MarketViewModel @Inject constructor(
         )
     }
 
+
     private fun onGetMarketError(throwable: Throwable) {
         this._state.update {
             it.copy(
                 isLoading = false,
-                isError  = true,
+                isError = true,
             )
         }
     }

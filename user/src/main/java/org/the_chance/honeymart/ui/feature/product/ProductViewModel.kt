@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
@@ -93,7 +93,7 @@ class ProductViewModel @Inject constructor(
 
     private fun updateCategorySelection(
         categories: List<CategoryUiState>,
-        selectedCategoryId: Long
+        selectedCategoryId: Long,
     ): List<CategoryUiState> {
         return categories.map { category ->
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
@@ -103,7 +103,7 @@ class ProductViewModel @Inject constructor(
     override fun onClickProduct(productId: Long) {}
 
     override fun onClickFavIcon(productId: Long) {
-         viewModelScope.launch {
+        viewModelScope.launch {
             _effect.emit(EventHandler(productId))
         }
     }

@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:context="org.the_chance.honeymart.ui.feature.authentication.AuthFragment">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -66,13 +66,15 @@
 
             <TextView
                 android:id="@+id/text_view_already"
-                style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
+                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_56"
+                android:layout_marginTop="@dimen/spacing_64"
                 android:layout_marginEnd="@dimen/spacing_2"
-                android:textSize="@dimen/text_caption"
                 android:text="@string/already_have_account"
+                android:textSize="@dimen/text_caption"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/text_view_login"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
