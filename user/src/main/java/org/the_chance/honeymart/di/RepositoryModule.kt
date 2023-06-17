@@ -27,7 +27,7 @@ internal object RepositoryModule {
     @Provides
     fun bindAuthRepository(
         honeyMartService: HoneyMartService,
-        authDataStorePref: AuthDataStorePref
+        authDataStorePref: AuthDataStorePref,
     ): AuthRepository {
         return AuthRepositoryImp(honeyMartService, authDataStorePref)
     }

@@ -12,7 +12,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String = this::class.simpleName.toString()
     override val layoutIdFragment = R.layout.fragment_login
     override val viewModel: LoginViewModel by viewModels()
-    override fun setup() {
+    /*override fun setup() {
         findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
-    }
+    }*/
 }

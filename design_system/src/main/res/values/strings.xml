@@ -36,5 +36,6 @@
     <string name="valid_email">valid email</string>
     <string name="valid_password">valid password</string>
     <string name="valid_full_name">valid full name</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>

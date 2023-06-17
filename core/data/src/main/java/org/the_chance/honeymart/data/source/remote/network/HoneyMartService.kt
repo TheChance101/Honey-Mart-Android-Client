@@ -117,4 +117,17 @@ interface HoneyMartService {
     suspend fun addToWishList(@Field("productId") productId: Long): Response<BaseResponse<String>>
 
     //endregion WishList
+    //region user
+
+
+    @FormUrlEncoded
+    @POST("/user/signup")
+    suspend fun addUser(
+        @Field("fullName") fullName: String,
+        @Field("password") password: String,
+        @Field("email") email: String,
+    ): Response<BaseResponse<String>>
+
+    //endregion user
+
 }
