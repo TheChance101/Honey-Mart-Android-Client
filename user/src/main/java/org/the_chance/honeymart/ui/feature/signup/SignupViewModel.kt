@@ -94,7 +94,7 @@ class SignupViewModel @Inject constructor(
     }
 
 
-    fun registerValidation(fullName: String, email: String): Int {
+    private fun registerValidation(fullName: String, email: String): Int {
         if (fullName.isBlank() && email.isBlank()) {
             _state.update { it.copy(error = listOf("Please fill all the fields")) }
             return 1
@@ -108,7 +108,7 @@ class SignupViewModel @Inject constructor(
         return 0
     }
 
-    fun passwordValidation(password: String, confirmPassword: String): Int {
+    private fun passwordValidation(password: String, confirmPassword: String): Int {
         if (password.isBlank() && confirmPassword.isBlank()) {
             _state.update { it.copy(error = listOf("Please fill all the fields")) }
             return 1
