@@ -7,7 +7,17 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="org.the_chance.honeymart.ui.OrdersFragment"
+        android:name="org.the_chance.honeymart.ui.orders.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="org.the_chance.honeymart.ui.orders.OrderDetailsFragment"
+        android:label="OrderDetailsFragment"
+        tools:layout="@layout/fragment_order_details"
+        />
 </navigation>

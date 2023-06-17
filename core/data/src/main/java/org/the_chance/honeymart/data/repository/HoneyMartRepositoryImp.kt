@@ -15,31 +15,10 @@ import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import retrofit2.Response
 import javax.inject.Inject
 
+
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
-
-    override suspend fun addUser(
-        fullName: String,
-        password: String,
-        email: String,
-    ): Boolean? {
-        try {
-            val response = honeyMartService.addUser(fullName, password, email)
-            if (response.isSuccessful) {
-                val responseBody = response.body()
-                return responseBody?.isSuccess == true
-            } else {
-                Log.e("TAG", "addUser error: ${response.code()}")
-                return null
-            }
-        } catch (e: Exception) {
-            Log.e("TAG", "addUser ERROR: ${e.message}")
-            return false
-        }
-    }
-
-
     override suspend fun getAllMarkets(): List<MarketEntity> =
         wrap { honeyMartService.getAllMarkets() }.map { it.toMarketEntity() }
 

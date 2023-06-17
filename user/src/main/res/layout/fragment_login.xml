@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.login.LoginViewModel" />
     </data>
 
     <ScrollView
@@ -70,7 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.emailFlow}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,8 +95,10 @@
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:passwordToggleTint="@color/gray"
                     android:drawableStart="@drawable/ic_password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.passwordFlow}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,6 +110,7 @@
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_56"
                 android:background="@drawable/button_background"
+                android:onClick="@{()->viewModel.onLoginClick()}"
                 android:text="@string/log_in"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,12 +118,15 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_dont_have_account"
-                style="@style/Theme.HoneyMart.Text.H6"
+                style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_64"
                 android:layout_marginBottom="100dp"
                 android:gravity="center"
+                android:textSize="@dimen/text_caption"
+                app:layout_constraintEnd_toStartOf="@id/text_signup"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 android:text="@string/don_t_have_an_account"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -131,6 +141,7 @@
                 android:paddingStart="@dimen/spacing_8"
                 android:text="@string/sign_up"
                 android:textColor="@color/primary_100"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/text_dont_have_account"
                 app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
                 app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
