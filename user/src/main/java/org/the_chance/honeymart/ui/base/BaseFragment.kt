@@ -10,6 +10,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.imageview.ShapeableImageView
+import org.the_chance.honeymart.util.addOnScrollListenerWithAppbarColor
+import org.the_chance.honeymart.util.addToolbarScrollListener
+import org.the_chance.user.R
 
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
@@ -18,6 +24,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     abstract val layoutIdFragment: Int
     abstract val viewModel: ViewModel
     private lateinit var _binding: VB
+    private lateinit var appbar: AppBarLayout
+    private lateinit var imageLogoDefault: ShapeableImageView
+    private lateinit var imageLogoScrolled: ShapeableImageView
     protected val binding get() = _binding
 
     override fun onCreateView(
@@ -34,7 +43,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.viewModel,viewModel)
+            setVariable(BR.viewModel, viewModel)
             return root
         }
     }
@@ -42,6 +51,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setup()
+    }
+
+    protected fun setupScrollListenerForRecyclerView(
+        recyclerView: RecyclerView,
+    ) {
+        appbar = requireActivity().findViewById(R.id.appBarLayout)
+        imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
+        imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
+        recyclerView.addOnScrollListenerWithAppbarColor(requireContext(), this, appbar)
+        recyclerView.addToolbarScrollListener(imageLogoDefault, imageLogoScrolled)
     }
 
     protected open fun setup() {}

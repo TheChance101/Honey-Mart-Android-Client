@@ -2,12 +2,8 @@ package org.the_chance.honeymart.ui.feature.product
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.util.addOnScrollListenerWithAppbarColor
-import org.the_chance.honeymart.util.addOnScrollListenerWithImageVisibility
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductsBinding
@@ -19,9 +15,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     override val viewModel: ProductViewModel by viewModels()
     private val categoryAdapter: CategoryProductAdapter by lazy { CategoryProductAdapter(viewModel) }
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var imageLogoDefault: ShapeableImageView
-    private lateinit var imageLogoScrolled: ShapeableImageView
+
 
     override fun setup() {
         initAdapters()
@@ -31,18 +25,8 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private fun initAdapters() {
         binding.recyclerCategory.adapter = categoryAdapter
         binding.recyclerProduct.adapter = productAdapter
-        appBarLayout = requireActivity().findViewById(R.id.appBarLayout)
-        imageLogoDefault = requireActivity().findViewById(R.id.image_logo)
-        imageLogoScrolled = requireActivity().findViewById(R.id.image_logo_scroll)
-
-        binding.recyclerCategory
-            .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
-        binding.recyclerCategory
-            .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
-        binding.recyclerProduct
-            .addOnScrollListenerWithAppbarColor(requireContext(), this, appBarLayout)
-        binding.recyclerProduct
-            .addOnScrollListenerWithImageVisibility(imageLogoDefault, imageLogoScrolled)
+        setupScrollListenerForRecyclerView(binding.recyclerCategory)
+        setupScrollListenerForRecyclerView(binding.recyclerProduct)
 
     }
         private fun collectEffect() {
