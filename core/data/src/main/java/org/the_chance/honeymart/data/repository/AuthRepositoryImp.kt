@@ -31,11 +31,13 @@ class AuthRepositoryImp @Inject constructor(
         return authDataStorePref.getToken
     }
 
-    override suspend fun isLoggedIn(): Boolean {
+    /*override suspend fun isLoggedIn(): Boolean {
         var isLoggedIn: String? = null
+        println("Is Logged In$isLoggedIn")
         authDataStorePref.getToken.collect { isLoggedIn = it }
+        println("Is Logged In$isLoggedIn")
         return !isLoggedIn.isNullOrEmpty()
-    }
+    }*/
 
     override suspend fun clearToke() {
         authDataStorePref.clearToken()

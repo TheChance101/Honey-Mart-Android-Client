@@ -112,6 +112,7 @@ class ProductViewModel @Inject constructor(
     override fun onClickFavIcon(productId: Long) {
         viewModelScope.launch {
             val result = addToWishListUseCase(productId)
+            log("Not Authenticated: $result")
             if (result == null) {
                 log("Not Authenticated")
                 _effect.emit(EventHandler(productId))

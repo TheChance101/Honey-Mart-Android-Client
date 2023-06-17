@@ -9,7 +9,14 @@ class AddToWishListUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(productId: Long): String? {
-        return if (authRepository.isLoggedIn()) {
+
+        var token: String? = null
+        val dataFlow = authRepository.getToken()
+        dataFlow.collect {
+            token = it
+            println("Token :$token")
+        }
+        return if (token != null) {
             println("Authenticated")
             honeyMartRepository.addToWishList(productId)
         } else {
