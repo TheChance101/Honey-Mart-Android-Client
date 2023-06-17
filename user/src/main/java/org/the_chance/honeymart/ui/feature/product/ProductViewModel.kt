@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
+    private val addToWishListUseCase: AddToWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
@@ -109,7 +111,11 @@ class ProductViewModel @Inject constructor(
 
     override fun onClickFavIcon(productId: Long) {
         viewModelScope.launch {
-            _effect.emit(EventHandler(productId))
+            val result = addToWishListUseCase(productId)
+            if (result == null) {
+                log("Not Authenticated")
+                _effect.emit(EventHandler(productId))
+            }
         }
     }
 }
