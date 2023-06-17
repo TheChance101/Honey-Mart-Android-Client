@@ -15,11 +15,31 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
     override val viewModel: AuthViewModel by viewModels()
 
     override fun setup() {
-        binding.buttonSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_authFragment_to_signupFragment)
-        }
+        addCallbacks()
+    }
+
+    private fun addCallbacks() {
+        handleOnSignUpClick()
+        handleOnLoginClick()
+    }
+
+    private fun handleOnLoginClick() {
+        navigateToLogin()
+    }
+
+    private fun navigateToLogin() {
         binding.textViewLogin.setOnClickListener {
             findNavController().navigate(R.id.action_authFragment_to_loginFragment)
+        }
+    }
+
+    private fun handleOnSignUpClick() {
+        navigateToSignUp()
+    }
+
+    private fun navigateToSignUp() {
+        binding.buttonSignup.setOnClickListener {
+            findNavController().navigate(R.id.action_authFragment_to_signupFragment)
         }
     }
 
