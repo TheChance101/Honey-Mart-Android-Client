@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val createUser: AddUserUseCase,
-    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SignupUiState, Boolean>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -27,10 +25,32 @@ class SignupViewModel @Inject constructor(
     val confirmPasswordInput = MutableStateFlow("")
 
     init {
+        setEmail()
+        setFullName()
+        setPassword()
+        setConfirmPassword()
+    }
+
+    private fun setEmail() {
+        viewModelScope.launch {
+            emailInput.collect { email -> _state.update { it.copy(email = email) } }
+        }
+    }
+
+    private fun setFullName() {
         viewModelScope.launch {
             fullNameInput.collect { fullName -> _state.update { it.copy(fullName = fullName) } }
-            emailInput.collect { email -> _state.update { it.copy(email = email) } }
+        }
+    }
+
+    private fun setPassword() {
+        viewModelScope.launch {
             passwordInput.collect { password -> _state.update { it.copy(password = password) } }
+        }
+    }
+
+    private fun setConfirmPassword() {
+        viewModelScope.launch {
             confirmPasswordInput.collect { confirmPassword ->
                 _state.update {
                     it.copy(
@@ -39,10 +59,6 @@ class SignupViewModel @Inject constructor(
                 }
             }
         }
-        Log.e(
-            "TAG",
-            "init:${fullNameInput.value} , ${emailInput.value} , ${passwordInput.value} , ${confirmPasswordInput.value}"
-        )
     }
 
     private fun addUser() {
@@ -52,23 +68,29 @@ class SignupViewModel @Inject constructor(
                 val result =
                     createUser(_state.value.fullName, _state.value.password, _state.value.email)
                 _state.update { it.copy(isLoading = false, isSignUp = result) }
-                Log.e("TAG", "addUser in viewmodel : $result")
+                Log.e("TAG", "addUser in viewModel : $result")
             }
         } catch (t: Throwable) {
             Log.e("TAG", "addUser error: ${t.message}")
         }
     }
 
-    fun onSignupClicked() {
-        passwordValidation(passwordInput.value, confirmPasswordInput.value)
-        Log.e("TAG", "on click  signup: ")
-        addUser()
+    fun onContinueClicked() {
+        if (registerValidation(fullNameInput.value, emailInput.value) == 0) {
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+        }
+        Log.e("TAG", "on click  continue: ")
     }
 
-    fun onContinueClicked() {
-        viewModelScope.launch { _effect.emit(EventHandler(true)) }
-        registerValidation(fullNameInput.value, emailInput.value)
-        Log.e("TAG", "on click  continue: ")
+    fun onSignupClicked() {
+        if (passwordValidation(passwordInput.value, confirmPasswordInput.value) == 0) {
+            addUser()
+
+        }
+        if (_state.value.isSignUp) {
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+        }
+        Log.e("TAG", "on click  signup: ")
     }
 
 
