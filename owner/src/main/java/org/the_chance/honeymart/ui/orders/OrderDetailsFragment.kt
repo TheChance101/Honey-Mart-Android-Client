@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui
+package org.the_chance.honeymart.ui.orders
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.the_chance.owner.R
 
-
-class OrdersFragment : Fragment() {
-
-
+class OrderDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_orders, container, false)
     }
-
 }
