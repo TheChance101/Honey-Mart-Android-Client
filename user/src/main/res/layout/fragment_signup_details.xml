@@ -92,6 +92,7 @@
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:text="@={viewModel.emailInput}"
                     android:drawableStart="@drawable/ic_email" />
             </com.google.android.material.textfield.TextInputLayout>
