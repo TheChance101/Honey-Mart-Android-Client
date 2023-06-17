@@ -6,6 +6,9 @@ import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.repository.AuthRepository
+import org.the_chance.honeymart.domain.util.InvalidEmailException
+import org.the_chance.honeymart.domain.util.InvalidFullNameException
+import org.the_chance.honeymart.domain.util.InvalidPasswordException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -37,7 +40,12 @@ class AuthRepositoryImp @Inject constructor(
         return if (response.isSuccessful) {
             response.body()?.value as T
         } else {
-            throw Throwable("Unknown error occurred")
+            when (response.code()) {
+                400 -> throw InvalidPasswordException()
+                400 -> throw InvalidEmailException()
+                400 -> throw InvalidFullNameException()
+                else -> throw Exception(response.message())
+            }
         }
     }
 
@@ -48,21 +56,18 @@ class AuthRepositoryImp @Inject constructor(
     ): Boolean? {
 
         val response = honeyMartService.addUser(fullName, password, email)
-        try {
-            return if (response.isSuccessful) {
-                val responseBody = response.body()
-                if (responseBody?.isSuccess == true) {
-                    response.body()?.isSuccess
-                } else {
-                    Log.e("TAG", "addUser error: ${response.code()}")
-                    throw Throwable(response.message())
-                }
-            } else {
-                throw Throwable(response.message())
+
+        return if (response.isSuccessful) {
+            response.body()?.isSuccess
+        } else {
+            when (response.code()) {
+                400 -> throw InvalidPasswordException()
+                400 -> throw InvalidEmailException()
+                400 -> throw InvalidFullNameException()
+                else -> throw Exception(response.message())
             }
-        } catch (t: Throwable) {
-            Log.e("TAG", "addUser error: ${t.message}")
-            throw Throwable(t.message)
+            false
         }
+
     }
 }

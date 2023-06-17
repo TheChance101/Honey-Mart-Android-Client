@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
+import org.the_chance.honeymart.domain.util.InvalidEmailException
+import org.the_chance.honeymart.domain.util.InvalidFullNameException
+import org.the_chance.honeymart.domain.util.InvalidPasswordException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
 import org.the_chance.honeymart.util.EventHandler
@@ -63,8 +66,10 @@ class SignupViewModel @Inject constructor(
 
     private fun addUser() {
         _state.update { it.copy(isLoading = true) }
-        try {
-            viewModelScope.launch {
+
+        viewModelScope.launch {
+            try {
+
                 val result =
                     createUser(_state.value.fullName, _state.value.password, _state.value.email)
                 _state.update { it.copy(isLoading = false, isSignUp = result) }
@@ -72,9 +77,36 @@ class SignupViewModel @Inject constructor(
                     viewModelScope.launch { _effect.emit(EventHandler(true)) }
                 }
                 Log.e("TAG", "addUser in viewModel : $result")
+
+            } catch (t: Exception) {
+                handleException(t)
+                Log.e("TAG", "Throwable error: ${t.message}")
             }
-        } catch (t: Throwable) {
-            Log.e("TAG", "addUser error: ${t.message}")
+        }
+    }
+
+
+    private fun handleException(exception: Exception) {
+        when (exception) {
+            is InvalidEmailException -> {
+                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
+            }
+
+            is InvalidFullNameException -> {
+                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
+            }
+
+            is InvalidPasswordException -> {
+                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
+            }
+
+            else -> {
+                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                Log.e("TAG", "Throwable error: ${exception.message}")
+            }
         }
     }
 
