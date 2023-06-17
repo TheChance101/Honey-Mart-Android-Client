@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/user_nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/authFragment">
 
     <fragment
         android:id="@+id/authFragment"
@@ -15,11 +15,18 @@
             android:name="currentProductId"
             android:defaultValue="1L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_authFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="org.the_chance.honeymart.ui.feature.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signupFragment"
         android:name="org.the_chance.honeymart.ui.feature.signup.SignupFragment"

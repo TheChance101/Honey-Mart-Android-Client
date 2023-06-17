@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/spacing_16"
                     android:text="@string/welcome_to_honey_mart" />
 
                 <TextView
@@ -50,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/spacing_16"
                     android:text="@string/get_ready_to_a_shopping_experience_like_no_other" />
 
                 <com.google.android.material.button.MaterialButton
@@ -57,7 +59,7 @@
                     style="@style/Theme.HoneyMart.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_32"
+                    android:layout_marginTop="@dimen/spacing_40"
                     android:text="@string/sign_up"
                     app:cornerRadius="@dimen/spacing_16" />
             </LinearLayout>
@@ -67,8 +69,9 @@
                 style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_32"
+                android:layout_marginTop="@dimen/spacing_56"
                 android:layout_marginEnd="@dimen/spacing_2"
+                android:textSize="@dimen/text_caption"
                 android:text="@string/already_have_account"
                 app:layout_constraintEnd_toStartOf="@id/text_view_login"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -82,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/spacing_12"
                 android:text="@string/log_in"
+                android:textSize="@dimen/text_caption"
                 android:textColor="@color/primary_100"
                 app:layout_constraintBottom_toBottomOf="@id/text_view_already"
                 app:layout_constraintEnd_toEndOf="parent"

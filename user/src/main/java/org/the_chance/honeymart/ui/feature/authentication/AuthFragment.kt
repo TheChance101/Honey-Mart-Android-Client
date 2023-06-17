@@ -18,5 +18,9 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         binding.buttonSignup.setOnClickListener {
             findNavController().navigate(R.id.action_authFragment_to_signupFragment)
         }
+        binding.textViewLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_authFragment_to_loginFragment)
+        }
     }
+
 }
