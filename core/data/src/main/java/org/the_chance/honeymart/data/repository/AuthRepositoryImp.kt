@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
@@ -20,6 +21,7 @@ class AuthRepositoryImp @Inject constructor(
 
     override suspend fun saveToken(token: String) {
         authDataStorePref.saveToken(token)
+        Log.e("Saved Successfully : " , "$token")
     }
 
     override suspend fun getToken(): Flow<String?> {
