@@ -15,10 +15,6 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     override val layoutIdFragment = R.layout.fragment_signup_conform_password
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
-
-        binding.buttonSignUp.setOnClickListener {
-            findNavController().navigate(R.id.action_signupFragment_to_loginFragment)
-        }
         collectAction()
     }
 
@@ -30,7 +26,8 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     }
 
     private fun navigateToLogin() {
-        val action = SignupFragmentDirections.actionSignupFragmentToSignupConfirmPasswordFragment()
+        val action =
+            SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToLoginFragment()
         findNavController().navigate(action)
     }
 }

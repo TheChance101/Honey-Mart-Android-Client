@@ -68,6 +68,9 @@ class SignupViewModel @Inject constructor(
                 val result =
                     createUser(_state.value.fullName, _state.value.password, _state.value.email)
                 _state.update { it.copy(isLoading = false, isSignUp = result) }
+                if (_state.value.isSignUp) {
+                    viewModelScope.launch { _effect.emit(EventHandler(true)) }
+                }
                 Log.e("TAG", "addUser in viewModel : $result")
             }
         } catch (t: Throwable) {
@@ -86,9 +89,6 @@ class SignupViewModel @Inject constructor(
         if (passwordValidation(passwordInput.value, confirmPasswordInput.value) == 0) {
             addUser()
 
-        }
-        if (_state.value.isSignUp) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
         }
         Log.e("TAG", "on click  signup: ")
     }

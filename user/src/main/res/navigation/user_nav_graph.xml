@@ -52,5 +52,9 @@
         android:id="@+id/signupConfirmPasswordFragment"
         android:name="org.the_chance.honeymart.ui.feature.signup.SignupConfirmPasswordFragment"
         android:label="SignupConfirmPasswordFragment"
-        tools:layout="@layout/fragment_signup_conform_password" />
+        tools:layout="@layout/fragment_signup_conform_password">
+        <action
+            android:id="@+id/action_signupConfirmPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>
