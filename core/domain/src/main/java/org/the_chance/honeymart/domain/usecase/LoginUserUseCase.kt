@@ -20,7 +20,7 @@ class LoginUserUseCase @Inject constructor(
         } else {
             val token = authRepository.loginUser(email, password)
             println("Token is: $token")
-            //authRepository.saveToken(token)
+            authRepository.saveToken(token)
             ValidationState.SUCCESS
         }
     }

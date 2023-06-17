@@ -10,4 +10,6 @@ java {
 }
 dependencies {
     implementation (Dependencies.daggerAndroid)
+    implementation(Dependencies.coroutinesDependency)
+
 }
