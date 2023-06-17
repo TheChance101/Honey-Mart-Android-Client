@@ -5,6 +5,7 @@ object DependencyVersions {
     const val MATERIAL = "1.7.0"
     const val CONSTRAINT_LAYOUT = "2.1.4"
     const val LOTTIE = "6.0.0"
+    const val SLIDE_PANE = "1.2.0-beta01"
 
     // Test Dependencies
     const val JUNIT = "4.13.2"

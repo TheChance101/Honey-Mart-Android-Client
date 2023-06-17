@@ -19,7 +19,8 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="192dp"
-        android:layout_margin="@dimen/spacing_4"
+        android:layout_marginHorizontal="@dimen/spacing_4"
+        android:layout_marginTop="@dimen/spacing_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,11 +54,10 @@
                 style="@style/Theme.HoneyMart.Text.H5.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
                 android:text='@{String.valueOf(item.productPrice) + "$"}'
                 app:layout_constraintBottom_toTopOf="@+id/text_product_description"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/text_product_name"
                 tool:text="3000$" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -65,16 +65,16 @@
                 style="@style/Theme.HoneyMart.Text.H6.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/text_product_price"
                 tool:text="Secondary Text" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
+                app:strokeWidth="0dp"
                 android:backgroundTint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

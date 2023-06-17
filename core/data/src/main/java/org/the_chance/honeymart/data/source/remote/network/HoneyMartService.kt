@@ -100,6 +100,10 @@ interface HoneyMartService {
     suspend fun deleteProduct(@Path("id") productId: Long)
 
     //endregion Product
+    @FormUrlEncoded
+    @POST("/user/login")
+    suspend fun loginUser(@Field("email") email: String, @Field("password") password: String)
+    :Response<BaseResponse<String>>
 
     //region WishList
     @GET("/wishList")
@@ -113,4 +117,17 @@ interface HoneyMartService {
     suspend fun addToWishList(@Field("productId") productId: Long): Response<BaseResponse<String>>
 
     //endregion WishList
+    //region user
+
+
+    @FormUrlEncoded
+    @POST("/user/signup")
+    suspend fun addUser(
+        @Field("fullName") fullName: String,
+        @Field("password") password: String,
+        @Field("email") email: String,
+    ): Response<BaseResponse<String>>
+
+    //endregion user
+
 }

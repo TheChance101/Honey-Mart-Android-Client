@@ -6,7 +6,8 @@ object Dependencies {
             "androidx.appcompat:appcompat:${DependencyVersions.APP_COMPAT}",
             "com.google.android.material:material:${DependencyVersions.MATERIAL}",
             "androidx.constraintlayout:constraintlayout:${DependencyVersions.CONSTRAINT_LAYOUT}",
-            "com.airbnb.android:lottie:${DependencyVersions.LOTTIE}"
+            "com.airbnb.android:lottie:${DependencyVersions.LOTTIE}",
+            "androidx.slidingpanelayout:slidingpanelayout:${DependencyVersions.SLIDE_PANE}"
         )
     }
     val coreKtxDependency by lazy { "androidx.core:core-ktx:${DependencyVersions.CORE_KTX}" }

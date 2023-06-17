@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 
 
 interface HoneyMartRepository {
+
     suspend fun getAllMarkets(): List<MarketEntity>?
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?

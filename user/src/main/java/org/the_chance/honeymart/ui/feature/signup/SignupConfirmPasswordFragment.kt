@@ -7,30 +7,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
-import org.the_chance.user.databinding.FragmentSignupDetailsBinding
+import org.the_chance.user.databinding.FragmentSignupConformPasswordBinding
 
 @AndroidEntryPoint
-class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
+class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPasswordBinding>() {
     override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_signup_details
+    override val layoutIdFragment = R.layout.fragment_signup_conform_password
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
-//        binding.buttonContinue.setOnClickListener {
-//           findNavController().navigate(R.id.action_signupFragment_to_signupConfirmPasswordFragment)
-//        }
         collectAction()
-
     }
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToConfirmPassword() }
+            effect.getContentIfHandled()?.let { navigateToLogin() }
             Log.e("TAG", "collectAction: $effect")
         }
     }
 
-    private fun navigateToConfirmPassword() {
-        val action = SignupFragmentDirections.actionSignupFragmentToSignupConfirmPasswordFragment()
+    private fun navigateToLogin() {
+        val action =
+            SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToLoginFragment()
         findNavController().navigate(action)
     }
 }
