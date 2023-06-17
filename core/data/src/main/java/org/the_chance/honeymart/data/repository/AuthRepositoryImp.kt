@@ -41,4 +41,28 @@ class AuthRepositoryImp @Inject constructor(
         }
     }
 
-}
+    override suspend fun addUser(
+        fullName: String,
+        password: String,
+        email: String,
+    ): Boolean? {
+
+        val response = honeyMartService.addUser(fullName, password, email)
+        try {
+            return if (response.isSuccessful) {
+                val responseBody = response.body()
+                if (responseBody?.isSuccess == true) {
+                    response.body()?.isSuccess
+                } else {
+                    Log.e("TAG", "addUser error: ${response.code()}")
+                    throw Throwable(response.message())
+                }
+            } else {
+                throw Throwable(response.message())
+            }
+        } catch (t: Throwable) {
+            Log.e("TAG", "addUser error: ${t.message}")
+            throw Throwable(t.message)
+
+
+        }

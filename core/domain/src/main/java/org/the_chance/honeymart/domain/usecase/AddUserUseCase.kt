@@ -1,19 +1,17 @@
 package org.the_chance.honeymart.domain.usecase
 
-import org.the_chance.honeymart.domain.repository.HoneyMartRepository
+import org.the_chance.honeymart.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class AddUserUseCase @Inject constructor(
-    private val honeyMartRepository: HoneyMartRepository,
+    private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(
         fullName: String,
         password: String,
         email: String,
-    ): Boolean? =
-        honeyMartRepository.addUser(fullName, password, email)
+    ): Boolean =
+        authRepository.addUser(fullName, password, email) ?: false
 
-    init {
-        println("AddUserUseCase init")
-    }
+
 }

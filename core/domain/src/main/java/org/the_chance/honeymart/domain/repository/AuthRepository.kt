@@ -9,7 +9,12 @@ interface AuthRepository {
     suspend fun loginUser(email: String, password: String): String
 
     suspend fun saveToken(token: String)
-    suspend fun getToken():Flow<String?>
+    suspend fun getToken(): Flow<String?>
     suspend fun clearToke()
 
+    suspend fun addUser(
+        fullName: String,
+        password: String,
+        email: String,
+    ): Boolean?
 }

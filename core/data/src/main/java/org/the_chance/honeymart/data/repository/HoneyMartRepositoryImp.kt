@@ -19,6 +19,7 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
+
     override suspend fun getAllMarkets(): List<MarketEntity> =
         wrap { honeyMartService.getAllMarkets() }.map { it.toMarketEntity() }
 

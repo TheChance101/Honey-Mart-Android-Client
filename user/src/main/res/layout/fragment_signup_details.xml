@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.signup.SignupViewModel" />
     </data>
 
     <ScrollView
@@ -65,6 +68,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_full_name"
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                    android:text="@={viewModel.fullNameInput}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_person" />
@@ -88,6 +92,7 @@
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={viewModel.emailInput}"
                     android:drawableStart="@drawable/ic_email" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,9 +103,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_56"
+                android:layout_marginBottom="100dp"
+                android:onClick="@{() -> viewModel.onContinueClicked()}"
                 android:background="@drawable/button_background"
                 android:text="@string/Continue"
-                android:layout_marginBottom="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
