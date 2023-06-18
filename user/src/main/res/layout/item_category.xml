@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_4"
-        android:layout_marginVertical="@dimen/spacing_8"
+        android:layout_marginVertical="@dimen/spacing_12"
         app:layout_constraintDimensionRatio="1:1">
 
         <com.google.android.material.card.MaterialCardView
@@ -46,6 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_8"
             android:text="@{item.categoryName}"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_container"
