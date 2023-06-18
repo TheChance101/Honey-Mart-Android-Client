@@ -75,7 +75,7 @@
                 app:strokeWidth="0dp"
                 android:layout_margin="@dimen/spacing_16"
                 android:onClick="@{()->listener.onClickFavIcon(item.productId)}"
-                android:backgroundTint="@color/primary_100"
+                app:changeColorIfSelected="@{item.isFavorite}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape">
@@ -83,6 +83,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:changeColorIfSelected="@{item.isFavorite}"
                     android:layout_margin="@dimen/spacing_4"
                     app:srcCompat="@drawable/icon_favorite_unselected" />
             </com.google.android.material.card.MaterialCardView>

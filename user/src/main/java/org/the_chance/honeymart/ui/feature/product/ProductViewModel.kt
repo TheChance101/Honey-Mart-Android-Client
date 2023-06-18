@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     private val addToWishListUseCase: AddToWishListUseCase,
+    private val getWishListUseCase: GetAllWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
@@ -110,13 +112,32 @@ class ProductViewModel @Inject constructor(
     override fun onClickProduct(productId: Long) {}
 
     override fun onClickFavIcon(productId: Long) {
-        viewModelScope.launch {
-            val result = addToWishListUseCase(productId)
-            log("Not Authenticated: $result")
-            if (result == null) {
-                log("Not Authenticated")
-                _effect.emit(EventHandler(productId))
+        updateFavoriteState(productId, true)
+        tryToExecute(
+            { addToWishListUseCase(productId) },
+            ::onAddToWishListSuccess,
+            { onAddToWishListError(it, productId) }
+        )
+    }
+
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+        val newProduct = _state.value.products.map {
+            if (it.productId == productId) {
+                it.copy(isFavorite = isFavorite)
+            } else {
+                it
             }
         }
+
+        _state.update { it.copy(products = newProduct) }
+    }
+
+    private fun onAddToWishListError(error: Throwable, productId: Long) {
+
+        updateFavoriteState(productId, false)
+    }
+
+    private fun onAddToWishListSuccess(message: String) {
+        log("Added Successfully")
     }
 }

@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
@@ -43,6 +44,24 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
             val colorRes = if (isSelected) R.color.primary_100 else R.color.black_60
             val color = ContextCompat.getColor(context, colorRes)
             view.setTextColor(color)
+        }
+    }
+}
+
+@BindingAdapter("app:changeColorIfSelected")
+fun changeColorIfSelected(view: View, isFavorite: Boolean) {
+    val context = view.context
+    when(view){
+        is CardView ->{
+            val colorRes = if (isFavorite) R.color.white else R.color.primary_100
+            val color = ContextCompat.getColor(context, colorRes)
+            view.setCardBackgroundColor(color)
+        }
+        is ShapeableImageView ->{
+            val drawableRes =
+                if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
+            val drawable = ContextCompat.getDrawable(context, drawableRes)
+            view.setImageDrawable(drawable)
         }
     }
 }
