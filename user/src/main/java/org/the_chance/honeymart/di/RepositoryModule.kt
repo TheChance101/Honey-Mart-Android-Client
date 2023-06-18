@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import org.the_chance.honeymart.data.repository.AuthRepositoryImp
 import org.the_chance.honeymart.data.repository.HoneyMartRepositoryImp
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
+import org.the_chance.honeymart.data.source.local.AuthDataStorePrefImp
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -27,8 +28,8 @@ internal object RepositoryModule {
     @Provides
     fun bindAuthRepository(
         honeyMartService: HoneyMartService,
-        authDataStorePref: AuthDataStorePref,
+        authDataStorePrefImp: AuthDataStorePref,
     ): AuthRepository {
-        return AuthRepositoryImp(honeyMartService, authDataStorePref)
+        return AuthRepositoryImp(honeyMartService, authDataStorePrefImp)
     }
 }
