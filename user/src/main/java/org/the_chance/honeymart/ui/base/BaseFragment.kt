@@ -46,12 +46,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
             container, false
         )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = requireActivity().window
-            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }
-
-
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
             setVariable(BR.viewModel, viewModel)
@@ -64,6 +58,18 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         setup()
 
 
+    }
+    protected fun makeStatusBarTransparent(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = requireActivity().window
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
+    }
+    protected fun disableStatusBarTransparent(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val window: Window = requireActivity().window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
     }
 
 

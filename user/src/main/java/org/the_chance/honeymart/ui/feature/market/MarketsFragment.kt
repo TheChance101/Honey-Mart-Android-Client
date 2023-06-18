@@ -17,6 +17,7 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override fun setup() {
         initiateAdapter()
         collectAction()
+        disableStatusBarTransparent()
     }
     private fun initiateAdapter(){
         val adapter = MarketAdapter(viewModel)

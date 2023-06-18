@@ -19,6 +19,7 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
 //           findNavController().navigate(R.id.action_signupFragment_to_signupConfirmPasswordFragment)
 //        }
         collectAction()
+        makeStatusBarTransparent()
 
     }
 
