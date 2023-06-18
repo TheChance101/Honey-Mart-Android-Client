@@ -35,9 +35,6 @@ class ProductViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private val _productEffect = MutableSharedFlow<EventHandler<Long>>()
-    val productEffect = _productEffect.asSharedFlow()
-
     init {
         getCategoriesByMarketId()
         getProductsByCategoryId(args.categoryId)
@@ -99,7 +96,7 @@ class ProductViewModel @Inject constructor(
             )
         }
         getProductsByCategoryId(categoryId)
-        viewModelScope.launch { _productEffect.emit(EventHandler(categoryId)) }
+        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
