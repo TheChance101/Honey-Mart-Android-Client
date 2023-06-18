@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
@@ -28,8 +27,9 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/spacing_16"
             android:paddingHorizontal="@dimen/spacing_16"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_24"
             app:scrollToPosition="@{viewModel.state.position}"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -45,7 +45,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/spacing_20"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_24"
             android:paddingEnd="@dimen/spacing_16"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

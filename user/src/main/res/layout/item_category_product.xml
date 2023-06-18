@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/spacing_8"
+        android:layout_marginBottom="@dimen/spacing_16"
         android:onClick="@{() -> listener.onClickCategoryProduct(item.categoryId)}"
         app:layout_constraintDimensionRatio="1:1">
 
