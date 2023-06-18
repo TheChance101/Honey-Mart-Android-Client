@@ -31,6 +31,7 @@
             android:orientation="vertical"
             android:paddingVertical="@dimen/spacing_8"
             android:paddingStart="@dimen/spacing_8"
+            app:scrollToPosition="@{viewModel.state.position}"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
