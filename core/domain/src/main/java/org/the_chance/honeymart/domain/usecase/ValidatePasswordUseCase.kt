@@ -7,16 +7,21 @@ import javax.inject.Inject
 class ValidatePasswordUseCase @Inject constructor() {
 
     operator fun invoke(password: String): ValidationState {
-        if (password.isBlank()) {
-            return ValidationState.BLANK_PASSWORD
+        return when {
+            password.isBlank() -> {
+                ValidationState.BLANK_PASSWORD
+            }
+
+            password.length < 6 -> {
+                ValidationState.INVALID_PASSWORD_LENGTH
+            }
+
+            !isPassword(password) -> {
+                ValidationState.INVALID_PASSWORD
+            }
+
+            else -> ValidationState.VALID_PASSWORD
         }
-        if (password.length < 6) {
-            return ValidationState.INVALID_PASSWORD_LENGTH
-        }
-        if (!isPassword(password)) {
-            return ValidationState.INVALID_PASSWORD
-        }
-        return ValidationState.VALID_PASSWORD
 
     }
 

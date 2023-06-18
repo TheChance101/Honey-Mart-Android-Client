@@ -7,17 +7,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.util.InvalidEmailException
 import org.the_chance.honeymart.domain.util.InvalidFullNameException
 import org.the_chance.honeymart.domain.util.InvalidPasswordException
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
 import org.the_chance.honeymart.util.EventHandler
+import org.the_chance.honeymart.util.handleValidation
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val createUser: AddUserUseCase,
+    private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
 ) : BaseViewModel<SignupUiState, Boolean>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -42,7 +46,10 @@ class SignupViewModel @Inject constructor(
 
     private fun setFullName() {
         viewModelScope.launch {
-            fullNameInput.collect { fullName -> _state.update { it.copy(fullName = fullName) } }
+            fullNameInput.collect { fullName ->
+
+                _state.update { it.copy(fullName = fullName) }
+            }
         }
     }
 
@@ -64,94 +71,79 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun addUser() {
+
+    private fun addUser(fullName: String, password: String, email: String) {
         _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { createUser(fullName = fullName, password = password, email = email) },
+            ::onSuccess,
+            ::onError,
+        )
+    }
 
-        viewModelScope.launch {
-            try {
-
-                val result =
-                    createUser(_state.value.fullName, _state.value.password, _state.value.email)
-                _state.update { it.copy(isLoading = false, isSignUp = result) }
-                if (_state.value.isSignUp) {
-                    viewModelScope.launch { _effect.emit(EventHandler(true)) }
-                }
-                Log.e("TAG", "addUser in viewModel : $result")
-
-            } catch (t: Exception) {
-                handleException(t)
-                Log.e("TAG", "Throwable error: ${t.message}")
-            }
+    private fun onSuccess(result: ValidationState) {
+        if (result == ValidationState.SUCCESS) {
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
         }
+        _state.update { it.copy(isLoading = false, validationState = result) }
+
+        Log.e("TAG", "addUser in viewModel : $result")
+    }
+
+    private fun onError(exception: Exception) {
+        handleException(exception)
+        Log.e("TAG", "Throwable error: ${exception.message}")
     }
 
 
     private fun handleException(exception: Exception) {
         when (exception) {
             is InvalidEmailException -> {
-                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                _state.update { it.copy(isLoading = false, isSignUp = false, isError = true) }
                 Log.e("TAG", "InvalidEmailException error: ${exception.message}")
             }
 
             is InvalidFullNameException -> {
-                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                _state.update { it.copy(isLoading = false, isSignUp = false, isError = true) }
                 Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
             }
 
             is InvalidPasswordException -> {
-                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                _state.update { it.copy(isLoading = false, isSignUp = false, isError = true) }
                 Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
             }
 
             else -> {
-                _state.update { it.copy(isLoading = false, isSignUp = false) }
+                _state.update { it.copy(isLoading = false, isSignUp = false, isError = true) }
                 Log.e("TAG", "Throwable error: ${exception.message}")
             }
         }
     }
 
     fun onContinueClicked() {
-        if (registerValidation(fullNameInput.value, emailInput.value) == 0) {
+        val validationState = validateFullNameAndEmail(fullNameInput.value, emailInput.value)
+        if (validationState == ValidationState.SUCCESS) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
+            Log.e("TAG", "on click  continue SUCCESS:$validationState ")
         }
-        Log.e("TAG", "on click  continue: ")
+        _state.update { it.copy(validationState = validationState) }
+
+        Log.e("TAG", "on click  continue validationState:$validationState ")
+        Log.e("TAG", "on click  continue handleValidation:${handleValidation(validationState)} ")
     }
 
     fun onSignupClicked() {
-        if (passwordValidation(passwordInput.value, confirmPasswordInput.value) == 0) {
-            addUser()
-
+        val validationState =
+            validateConfirmPassword(passwordInput.value, confirmPasswordInput.value)
+        if (validationState == ValidationState.VALID_PASSWORD) {
+            addUser(
+                fullName = _state.value.fullName,
+                password = _state.value.password,
+                email = _state.value.email
+            )
         }
+        _state.update { it.copy(validationState = validationState) }
         Log.e("TAG", "on click  signup: ")
-    }
-
-
-    private fun registerValidation(fullName: String, email: String): Int {
-        if (fullName.isBlank() && email.isBlank()) {
-            _state.update { it.copy(error = listOf("Please fill all the fields")) }
-            return 1
-        } else if (fullName.length < 3) {
-            _state.update { it.copy(error = listOf("Full name must be at least 3 characters")) }
-            return 2
-        } else if (email.length < 3) {
-            _state.update { it.copy(error = listOf("Email must be at least 3 characters")) }
-            return 3
-        }
-        return 0
-    }
-
-    private fun passwordValidation(password: String, confirmPassword: String): Int {
-        if (password.isBlank() && confirmPassword.isBlank()) {
-            _state.update { it.copy(error = listOf("Please fill all the fields")) }
-            return 1
-        } else if (password.length < 6) {
-            _state.update { it.copy(error = listOf("Password must be at least 6 characters")) }
-            return 2
-        } else if (password != confirmPassword) {
-            _state.update { it.copy(error = listOf("Password and confirm password must be the same")) }
-            return 3
-        }
-        return 0
     }
 
 
