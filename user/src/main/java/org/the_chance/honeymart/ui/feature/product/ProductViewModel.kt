@@ -81,11 +81,13 @@ class ProductViewModel @Inject constructor(
 
     override fun onClickCategoryProduct(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {
             it.copy(
                 isLoading = true,
                 categories = updatedCategories,
-                products = emptyList()
+                products = emptyList(),
+                position = position.inc()
             )
         }
         getProductsByCategoryId(categoryId)
