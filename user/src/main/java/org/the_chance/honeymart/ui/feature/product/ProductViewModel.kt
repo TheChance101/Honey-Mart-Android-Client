@@ -3,8 +3,6 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -28,10 +26,6 @@ class ProductViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
-
-    private val _productEffect = MutableSharedFlow<EventHandler<Long>>()
-    val productEffect = _productEffect.asSharedFlow()
-
     init {
         getCategoriesByMarketId()
         getProductsByCategoryId(args.categoryId)
@@ -60,9 +54,11 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                categories = updateCategorySelection(categories, args.categoryId)
+                categories = updateCategorySelection(categories, args.categoryId),
+                position = args.position
             )
         }
+
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
@@ -93,7 +89,6 @@ class ProductViewModel @Inject constructor(
             )
         }
         getProductsByCategoryId(categoryId)
-        viewModelScope.launch { _productEffect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
@@ -104,7 +99,6 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
-
     override fun onClickProduct(productId: Long) {}
 
     override fun onClickFavIcon(productId: Long) {

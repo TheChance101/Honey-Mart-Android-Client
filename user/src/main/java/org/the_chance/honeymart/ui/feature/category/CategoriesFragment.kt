@@ -29,13 +29,13 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToProduct(it.categoryId, it.marketId) }
+            effect.getContentIfHandled()?.let { navigateToProduct(it.categoryId, it.marketId,it.position) }
         }
     }
 
-    private fun navigateToProduct(categoryId: Long, marketId: Long) {
-        val action = CategoriesFragmentDirections
-            .actionCategoriesFragmentToProductsFragment(categoryId, marketId)
-        findNavController().navigate(action)
-    }
+private fun navigateToProduct(categoryId: Long, marketId: Long, position: Int) {
+    val action = CategoriesFragmentDirections
+        .actionCategoriesFragmentToProductsFragment(categoryId, marketId, position)
+    findNavController().navigate(action)
+}
 }
