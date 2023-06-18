@@ -46,3 +46,7 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
         }
     }
 }
+@BindingAdapter("scrollToPosition")
+fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
+    recyclerView.scrollToPosition(position)
+}
