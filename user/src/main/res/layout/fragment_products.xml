@@ -20,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25"
-            />
+            app:layout_constraintGuide_percent="0.25" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
@@ -35,9 +34,9 @@
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 
@@ -56,6 +55,35 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_products" />
+
+
+        <ImageView
+            android:id="@+id/image_view_placeholder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/placeholder_wish_list"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_category"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoProducts="@{viewModel.state.products}" />
+
+
+        <TextView
+            android:id="@+id/text_view_placeholder"
+            style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/no_products"
+            android:layout_marginTop="@dimen/spacing_56"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:showIfNoProducts="@{viewModel.state.products}"
+            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            app:layout_constraintStart_toStartOf="@id/image_view_placeholder"
+            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
