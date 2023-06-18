@@ -10,7 +10,7 @@ interface AuthRepository {
 
     suspend fun saveToken(token: String)
     suspend fun getToken(): Flow<String?>
-    suspend fun clearToke()
+    suspend fun clearToken()
 
     suspend fun addUser(
         fullName: String,
