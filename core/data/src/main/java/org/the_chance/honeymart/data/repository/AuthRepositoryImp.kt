@@ -17,22 +17,22 @@ import javax.inject.Inject
  */
 class AuthRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
-    private val authDataStorePref: AuthDataStorePref,
+    private val datastore: AuthDataStorePref,
 ) : AuthRepository {
     override suspend fun loginUser(email: String, password: String): String =
         wrap { honeyMartService.loginUser(email, password) }.toString()
 
     override suspend fun saveToken(token: String) {
-        authDataStorePref.saveToken(token)
+        datastore.saveToken(token)
         Log.e("Saved Successfully : ", "$token")
     }
 
     override suspend fun getToken(): Flow<String?> {
-        return authDataStorePref.getToken
+        return datastore.getToken()
     }
 
-    override suspend fun clearToke() {
-        authDataStorePref.clearToken()
+    override suspend fun clearToken() {
+        datastore.clearToken()
     }
 
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
