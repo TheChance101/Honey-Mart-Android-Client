@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:visibility="visible"
+            android:paddingTop="@dimen/spacing_24"
             android:background="@color/white_300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +61,8 @@
             android:layout_height="wrap_content"
             style="@style/Theme.HoneyMart.Text.H6"
             app:backgroundTint="@color/white_300"
+            android:paddingBottom="@dimen/spacing_24"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:labelVisibilityMode="selected"
             app:menu="@menu/bottom_nav_menu" />
