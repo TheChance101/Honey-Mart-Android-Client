@@ -66,7 +66,7 @@ internal object NetworkModule {
     @Provides
     fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
         chain.proceed(chain.request().newBuilder().also {
-            it.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDFiZjM5ZDA2IiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0A0ZmFkNjIxOCIsImV4cCI6MTY4NzEwNzIyN30.Vzzi6gBpRqrsinRytLNMqDOCvZEKTo2s-frK9LSYels")
+            it.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDFiZjM5ZDA2IiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0A0ZmFkNjIxOCIsImV4cCI6MTY4NzExODgxN30.9PPg8fMtYtQ1qrdLJGfwCnYAzJeARiCxej7lANz00J4")
         }.build())
     }
 
