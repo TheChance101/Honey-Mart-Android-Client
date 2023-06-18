@@ -19,6 +19,7 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
     override fun setup() {
         initiateAdapter()
         collectEffect()
+        disableStatusBarTransparent()
     }
     private fun initiateAdapter() {
         val adapter = CategoryAdapter(viewModel)

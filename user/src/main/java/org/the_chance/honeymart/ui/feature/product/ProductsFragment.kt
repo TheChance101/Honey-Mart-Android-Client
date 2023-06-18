@@ -20,6 +20,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     override fun setup() {
         initAdapters()
         collectEffect()
+        disableStatusBarTransparent()
     }
 
     private fun initAdapters() {
