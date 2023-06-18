@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.base
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -61,6 +62,15 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
         }*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = requireActivity().window
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            window.statusBarColor = Color.TRANSPARENT
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
     }
 
     protected fun setupScrollListenerForRecyclerView(
