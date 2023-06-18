@@ -53,11 +53,17 @@ class CategoryViewModel @Inject constructor(
                 isError = true
             )
         }
-    }
-
-    override fun onCategoryClicked(categoryId: Long) {
+        /*    override fun onCategoryClicked(categoryId: Long) {
         viewModelScope.launch {
             _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId)))
         }
+    }*/
+override fun onCategoryClicked(categoryId: Long) {
+    viewModelScope.launch {
+        val categories = _state.value.categories
+        val position = categories.indexOfFirst { it.categoryId == categoryId }
+
+        _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId, position)))
     }
+}
 }

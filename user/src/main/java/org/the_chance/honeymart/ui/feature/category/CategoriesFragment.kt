@@ -32,9 +32,15 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
         }
     }
 
-    private fun navigateToProduct(categoryId: Long, marketId: Long) {
+/*    private fun navigateToProduct(categoryId: Long, marketId: Long) {
         val action = CategoriesFragmentDirections
             .actionCategoriesFragmentToProductsFragment(categoryId, marketId)
         findNavController().navigate(action)
-    }
+    }*/
+private fun navigateToProduct(categoryId: Long, marketId: Long, position: Int) {
+    val action = CategoriesFragmentDirections
+        .actionCategoriesFragmentToProductsFragment(categoryId, marketId, position)
+    findNavController().navigate(action)
+}
+
 }
