@@ -3,8 +3,6 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -63,9 +61,11 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                categories = updateCategorySelection(categories, args.categoryId)
+                categories = updateCategorySelection(categories, args.categoryId),
+                position = args.position
             )
         }
+
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
@@ -92,7 +92,8 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 categories = updatedCategories,
-                products = emptyList()
+                products = emptyList(),
+                position = position.inc()
             )
         }
         getProductsByCategoryId(categoryId)
@@ -107,7 +108,6 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
-
     override fun onClickProduct(productId: Long) {}
 
     override fun onClickFavIcon(productId: Long) {

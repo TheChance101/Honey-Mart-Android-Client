@@ -17,6 +17,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val viewModel: LoginViewModel by viewModels()
     override fun setup() {
         collectAction()
+        makeStatusBarTransparent()
         binding.textSignup.setOnClickListener {
             navigateToSignup()
         }

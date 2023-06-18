@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
@@ -64,4 +63,8 @@ fun changeColorIfSelected(view: View, isFavorite: Boolean) {
             view.setImageDrawable(drawable)
         }
     }
+}
+@BindingAdapter("scrollToPosition")
+fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
+    recyclerView.scrollToPosition(position)
 }

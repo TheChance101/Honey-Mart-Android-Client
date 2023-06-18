@@ -20,6 +20,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     override fun setup() {
         initAdapters()
         collectEffect()
+        disableStatusBarTransparent()
     }
 
     private fun initAdapters() {
@@ -40,11 +41,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         }
     }
 
-    /*private fun navigateToProductDetails(productId: Long) {
-        val action = ProductsFragmentDirections
-            .actionProductsFragmentToUserNavGraph()
-        findNavController().navigate(action)
-    }*/
+
 
     private fun navigateToAuthenticate() {
         val action = ProductsFragmentDirections
