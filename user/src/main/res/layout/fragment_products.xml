@@ -20,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25"
-            />
+            app:layout_constraintGuide_percent="0.25" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
@@ -34,9 +33,9 @@
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guide_line"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 
@@ -55,6 +54,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_products" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_test"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_category"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoProducts="@{viewModel.state.products}"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
