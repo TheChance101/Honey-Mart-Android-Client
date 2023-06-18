@@ -14,8 +14,10 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -36,6 +38,45 @@ class ProductViewModel @Inject constructor(
     init {
         getCategoriesByMarketId()
         getProductsByCategoryId(args.categoryId)
+    }
+
+    private fun getWishListProducts(products: List<ProductUiState>) {
+        tryToExecute(
+            { getWishListUseCase().map { it.toWishListProductUiState() } },
+            { onGetWishListProductSuccess(it, products) },
+            { onGetWishListProductError(it, products) }
+        )
+    }
+
+    private fun onGetWishListProductSuccess(
+        wishListProducts: List<WishListProductUiState>,
+        products: List<ProductUiState>,
+    ) {
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                isLoading = false,
+                isError = false,
+                products = updateProducts(products, wishListProducts)
+            )
+        }
+    }
+
+    private fun updateProducts(
+        products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
+    ) = products.map { product ->
+        product.copy(
+            isFavorite = product.productId in wishListProducts.map { it.productId }
+        )
+    }
+
+    private fun onGetWishListProductError(throwable: Throwable, products: List<ProductUiState>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                products = products
+            )
+        }
     }
 
     private fun getCategoriesByMarketId() {
@@ -69,13 +110,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-                products = products
-            )
-        }
+        getWishListProducts(products)
     }
 
     private fun onGetCategoryError(throwable: Throwable) {
@@ -88,6 +123,7 @@ class ProductViewModel @Inject constructor(
 
     override fun onClickCategoryProduct(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {
             it.copy(
                 isLoading = true,
@@ -108,6 +144,7 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
+
     override fun onClickProduct(productId: Long) {}
 
     override fun onClickFavIcon(productId: Long) {
@@ -129,7 +166,7 @@ class ProductViewModel @Inject constructor(
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
-            { onDeleteWishListError(it, productId) }
+            ::onDeleteWishListError
         )
     }
 
@@ -139,14 +176,14 @@ class ProductViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: Throwable, productId: Long) {
+    private fun onDeleteWishListError(error: Throwable) {
         log("Delete From WishList Error : ${error.message}")
     }
 
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
             { addToWishListUseCase(productId) },
-            { onAddToWishListSuccess(it, productId) },
+            ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )
     }
@@ -159,11 +196,10 @@ class ProductViewModel @Inject constructor(
                 it
             }
         }
-
         _state.update { it.copy(products = newProduct) }
     }
 
-    private fun onAddToWishListSuccess(successMessage: String, productId: Long) {
+    private fun onAddToWishListSuccess(successMessage: String) {
         // emmit any value and observe it in fragment and Show Snake Bar message
         log("Added Successfully : $successMessage")
     }
