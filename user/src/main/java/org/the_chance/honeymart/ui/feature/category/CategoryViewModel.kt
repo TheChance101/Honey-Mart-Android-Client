@@ -57,9 +57,9 @@ class CategoryViewModel @Inject constructor(
 
 
     override fun onCategoryClicked(categoryId: Long) {
-        val Position = state.value.categories.indexOfFirst { it.categoryId == categoryId }
+        val position = state.value.categories.indexOfFirst { it.categoryId == categoryId }
         viewModelScope.launch {
-            _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId, Position)))
+            _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId, position)))
         }
     }
 }
