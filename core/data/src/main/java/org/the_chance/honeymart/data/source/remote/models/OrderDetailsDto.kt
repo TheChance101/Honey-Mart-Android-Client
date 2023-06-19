@@ -7,9 +7,9 @@ data class OrderDetailsDto(
     @SerializedName("orderId")
     val orderId: Long? = null,
     @SerializedName("userId")
-    val userId: String? = null,
+    val userId: Long? = null,
     @SerializedName("marketId")
-    val marketId: Double? = null,
+    val marketId: Long? = null,
     @SerializedName("products")
     val products: List<OrderProductDto>? = null,
     @SerializedName("totalPrice")

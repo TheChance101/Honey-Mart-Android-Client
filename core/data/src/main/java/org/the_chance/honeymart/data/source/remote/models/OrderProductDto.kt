@@ -8,7 +8,7 @@ data class OrderProductDto(
     @SerializedName("name")
     val name: String? = null,
     @SerializedName("count")
-    val count: Double? = null,
+    val count: Long? = null,
     @SerializedName("price")
     val price: Double? = null
 )
