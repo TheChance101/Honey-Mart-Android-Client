@@ -5,6 +5,13 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.OrderUiState" />
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.orders.OrderInteractionListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,6 +40,7 @@
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginTop="@dimen/spacing_16"
                 tool:text="@string/order_number"
+                android:text="@{item.orderId}"
                 style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
@@ -43,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/spacing_8"
                 tool:text="@string/market_name"
+                android:text="@{item.marketName}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 app:layout_constraintTop_toBottomOf="@id/text_order_number"
                 app:layout_constraintStart_toStartOf="@id/text_order_number"
@@ -63,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_4"
                 android:layout_marginStart="@dimen/spacing_4"
+                android:text="@{item.orderQuantity}"
                 android:layout_marginBottom="@dimen/spacing_16"
                 tool:layout_editor_absoluteX="143dp"
                 tool:text="item count"
@@ -78,6 +88,7 @@
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
+                android:text='@{String.valueOf(item.orderPrice)}'
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/stroke_order_price"
                 app:layout_constraintEnd_toEndOf="parent"

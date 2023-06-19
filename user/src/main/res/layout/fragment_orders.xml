@@ -65,6 +65,7 @@
             android:clipToPadding="false"
             android:layout_marginTop="@dimen/spacing_16"
             android:orientation="vertical"
+            app:items="@{viewModel.state.orders}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

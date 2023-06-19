@@ -3,6 +3,7 @@ package org.the_chance.honeymart.data.source.remote.network
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import retrofit2.Response
@@ -129,5 +130,7 @@ interface HoneyMartService {
     ): Response<BaseResponse<String>>
 
     //endregion user
+    @GET("order/userOrders")
+    suspend fun getAllOrders(): Response<BaseResponse<List<OrderDto>>>
 
 }
