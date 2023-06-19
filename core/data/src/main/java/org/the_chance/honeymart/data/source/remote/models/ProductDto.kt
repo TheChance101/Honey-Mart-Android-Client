@@ -10,5 +10,7 @@ data class ProductDto(
     @SerializedName("quantity")
     val quantity: String? = null,
     @SerializedName("price")
-    val price: Double? = null
+    val price: Double? = null,
+    @SerializedName("images")
+    val images: List<String>? = null
 )
