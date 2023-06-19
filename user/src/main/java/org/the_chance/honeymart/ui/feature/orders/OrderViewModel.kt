@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
-    savedStateHandle: SavedStateHandle,) :
+    savedStateHandle: SavedStateHandle) :
     BaseViewModel<OrdersUiState, Long>(OrdersUiState()), OrderInteractionListener
 {
     override val TAG: String = this::class.simpleName.toString()
