@@ -13,7 +13,12 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     private val ordersAdapter: OrdersAdapter by lazy { OrdersAdapter(viewModel) }
 
     override fun setup() {
-
+        initAdapter()
     }
+
+    private fun initAdapter() {
+        binding.recyclerOrder.adapter = ordersAdapter
+    }
+
 
 }
