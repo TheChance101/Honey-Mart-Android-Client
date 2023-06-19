@@ -10,6 +10,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.ui.BaseAdapter
 
@@ -21,6 +22,11 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
 @BindingAdapter("app:showIfTrue")
 fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
+}
+
+@BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
+fun productPlaceholder(view:View, productList:List<ProductUiState>, condition:Boolean){
+    view.isVisible = condition == false && productList.isEmpty()
 }
 
 @BindingAdapter("app:changeIfSelected")

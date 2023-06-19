@@ -38,6 +38,6 @@
     <string name="valid_full_name">valid full name</string>
     <string name="welcome_sign_owner">Welcome to Honey Mart!!</string>
     <string name="creat_account_owner">Create an account, Name your market and choose its category to start selling your products</string>
-
+    <string name="no_products">There is no product here!!</string>
 
 </resources>
