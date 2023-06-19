@@ -199,6 +199,13 @@
         <item name="cardCornerRadius">@dimen/radius_16</item>
         <item name="strokeWidth">@dimen/stroke_zero</item>
     </style>
+    <!-- Chip Styles-->
+    <style name="Theme.HoneyMart.Text.H5.Chips">
+        <item name="chipCornerRadius">@dimen/radius_16</item>
+        <item name="chipStrokeColor">@color/primary_100</item>
+        <item name="android:paddingHorizontal">@dimen/spacing_16</item>
+    </style>
+
 
     <!-- Card Category Style-->
     <style name="Theme.HoneyMart.Card.CategoryCard">
