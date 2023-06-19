@@ -72,11 +72,6 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetWishListProductError(throwable: Throwable, products: List<ProductUiState>) {
-        if (throwable is UnAuthorizedException){
-            viewModelScope.launch {
-                _effect.emit(EventHandler(true))
-            }
-        }
         _state.update {
             it.copy(
                 isLoading = false,
@@ -211,6 +206,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListError(error: Throwable, productId: Long) {
+        if (error is UnAuthorizedException) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(true))
+            }
+        }
         log("Add to WishList Error : ${error.message}")
         updateFavoriteState(productId, false)
     }
