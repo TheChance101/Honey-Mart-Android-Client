@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
@@ -11,7 +12,7 @@ import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
 import javax.inject.Inject
 
-
+@HiltViewModel
 class CartViewModel @Inject constructor(
     private val getAllCartUseCase: GetAllCartUseCase,
     private val deleteFromCartUseCase: DeleteFromCartUseCase,
