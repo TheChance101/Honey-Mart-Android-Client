@@ -1,20 +1,23 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.user.R
+import org.the_chance.user.databinding.FragmentCartBinding
 
-class CartFragment : Fragment() {
+class CartFragment : BaseFragment<FragmentCartBinding>() {
+    override val TAG: String = this::class.java.simpleName
+    override val layoutIdFragment: Int = R.layout.fragment_cart
+    override val viewModel: CartViewModel by viewModels()
+    private val cartAdapter: CartAdapter by lazy { CartAdapter(viewModel) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+    override fun setup() {
+        initAdapters()
     }
+
+    private fun initAdapters() {
+        binding.recyclerCartList.adapter = cartAdapter
+    }
+
 
 }
