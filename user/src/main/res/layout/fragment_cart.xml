@@ -16,12 +16,16 @@
         tools:context=".cart.CartFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_cart_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginVertical="@dimen/spacing_12"
+            android:clipToPadding="false"
             android:layout_marginHorizontal="@dimen/spacing_16"
             app:layout_constraintBottom_toTopOf="@+id/include"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_cart"
             app:layout_constraintTop_toTopOf="parent" />
         <include
             android:id="@+id/include"

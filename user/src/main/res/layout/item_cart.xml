@@ -9,8 +9,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="91dp"
+        android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
+        android:background="#FFFFFF"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card">
 
@@ -59,40 +60,40 @@
                 android:id="@+id/image_view_minus_order"
                 android:layout_width="@dimen/spacing_24"
                 android:layout_height="@dimen/spacing_24"
+                android:layout_marginEnd="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_16"
-                android:layout_marginStart="@dimen/spacing_16"
-                android:paddingVertical="@dimen/spacing_2"
                 android:background="@drawable/icon_minus_cart"
                 android:gravity="center_horizontal|center_vertical"
+                android:paddingVertical="@dimen/spacing_2"
                 android:text="@string/minus"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_item_price" />
+                app:layout_constraintEnd_toStartOf="@+id/text_view_number_of_items" />
 
 
             <TextView
                 android:id="@+id/text_view_number_of_items"
+                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_16"
+                android:layout_marginEnd="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_12"
-                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:text="@string/number_of_items"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/image_view_minus_order"/>
+                app:layout_constraintEnd_toStartOf="@+id/image_view_add_item" />
 
             <TextView
                 android:id="@+id/image_view_add_item"
                 android:layout_width="@dimen/spacing_24"
                 android:layout_height="@dimen/spacing_24"
-                android:text="@string/plus"
-                android:textColor="@color/white_300"
-                android:paddingVertical="@dimen/spacing_2"
-                android:layout_marginStart="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_16"
+                android:layout_marginEnd="@dimen/spacing_16"
                 android:background="@drawable/icon_add_cart"
                 android:gravity="center_horizontal|center_vertical"
+                android:paddingVertical="@dimen/spacing_2"
+                android:text="@string/plus"
+                android:textColor="@color/white_300"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_view_number_of_items" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
