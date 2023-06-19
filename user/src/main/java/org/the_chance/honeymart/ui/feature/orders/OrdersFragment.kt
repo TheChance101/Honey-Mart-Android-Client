@@ -1,20 +1,19 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.user.R
+import org.the_chance.user.databinding.FragmentOrdersBinding
+@AndroidEntryPoint
+class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
+    override val TAG: String = this::class.simpleName.toString()
+    override val layoutIdFragment = R.layout.fragment_products
+    override val viewModel: OrderViewModel by viewModels()
+    private val ordersAdapter: OrdersAdapter by lazy { OrdersAdapter(viewModel) }
 
-class OrdersFragment : Fragment() {
+    override fun setup() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orders, container, false)
     }
 
 }
