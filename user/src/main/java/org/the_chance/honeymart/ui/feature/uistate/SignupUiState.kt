@@ -13,6 +13,6 @@ data class SignupUiState(
     val confirmPassword: String = "",
     val emailState: ValidationState = ValidationState.VALID_EMAIL,
     val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val confirmPasswordState: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
+    val confirmPasswordState: ValidationState = ValidationState.VALID_PASSWORD,
     val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
     )
