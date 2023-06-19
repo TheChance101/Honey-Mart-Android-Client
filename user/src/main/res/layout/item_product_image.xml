@@ -7,24 +7,17 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-            style="@style/Theme.HoneyMart.Card"
+    <androidx.cardview.widget.CardView
+        style="@style/Theme.HoneyMart.Card"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginHorizontal="@dimen/spacing_12">
+
+        <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/spacing_12"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            tools:background="@drawable/image_market" />
+    </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                tools:background="@drawable/image_market" />
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
