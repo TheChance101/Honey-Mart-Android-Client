@@ -41,7 +41,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     private fun onEffect(effect: ProductUiEffect) {
         when (effect) {
-            is ProductUiEffect.ClickProductEffect -> TODO()
+            is ProductUiEffect.ClickProductEffect -> navigateToProductDetails(
+                effect.productId,
+                effect.categoryId
+            )
+
             ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
         }
     }
@@ -52,5 +56,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
             .actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
 
+    }
+
+    private fun navigateToProductDetails(productId: Long, categoryId: Long) {
+        val action =
+            ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId, categoryId)
+        findNavController().navigate(action)
     }
 }
