@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +19,7 @@
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:imageUrl="@{viewModel.state.products.get(0).productImages.get(0).toString()}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline1"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/image_test" />
@@ -79,6 +83,7 @@
             android:layout_marginTop="@dimen/spacing_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
+            android:text="@{viewModel.state.products.get(0).productName}"
             tools:text="Ottoman" />
 
         <com.google.android.material.card.MaterialCardView
@@ -103,6 +108,7 @@
                 android:layout_marginVertical="@dimen/spacing_4"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
+                android:text="@{viewModel.state.products.get(0).productPrice.toString()}"
                 tools:text="10,000,000$" />
 
         </com.google.android.material.card.MaterialCardView>
