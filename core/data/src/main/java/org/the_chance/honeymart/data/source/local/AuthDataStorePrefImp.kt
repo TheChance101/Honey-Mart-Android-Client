@@ -31,9 +31,7 @@ class AuthDataStorePrefImp @Inject constructor(context: Context) : AuthDataStore
 
     override fun getToken(): String? {
         return runBlocking {
-            prefDataStore.data.map { preferences ->
-                preferences[KEY_TOKEN]
-            }.first()
+            prefDataStore.data.map { preferences -> preferences[KEY_TOKEN] }.first()
         }
     }
 
