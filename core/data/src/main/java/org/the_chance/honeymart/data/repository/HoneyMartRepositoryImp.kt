@@ -1,16 +1,11 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
+import org.the_chance.honeymart.data.source.remote.mapper.*
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.MarketEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.WishListEntity
+import org.the_chance.honeymart.domain.model.*
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import retrofit2.Response
 import javax.inject.Inject
@@ -41,6 +36,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteFromWishList(productId: Long): String =
         wrap { honeyMartService.deleteFromWishList(productId) }
 
+
+     override suspend fun getOrderDetails(orderId : Long): OrderDetailsEntity =
+        wrap { honeyMartService.getOrderDetails(orderId) }.toOrderDetailsEntity()
 
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
