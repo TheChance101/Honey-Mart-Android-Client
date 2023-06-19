@@ -7,7 +7,6 @@
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.orders.OrderViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,20 +14,50 @@
         android:layout_height="match_parent"
         tools:context="org.the_chance.honeymart.ui.feature.orders.OrdersFragment">
 
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linear_layout_chips"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="@dimen/spacing_24"-->
+<!--            android:layout_marginStart="@dimen/spacing_16"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <com.google.android.material.chip.Chip-->
+<!--                android:id="@+id/chip_processing"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/shape_order_price"-->
+<!--                android:text="@string/processing" />-->
+
+<!--            <com.google.android.material.chip.Chip-->
+<!--                android:id="@+id/chip_done"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                style="@style/Theme.HoneyMart.Text.H5.Light"-->
+<!--                android:text="@string/done" />-->
+
+<!--            <com.google.android.material.chip.Chip-->
+<!--                android:id="@+id/chip_cancel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                style="@style/Theme.HoneyMart.Text.H5.Light"-->
+<!--                android:text="@string/cancel" />-->
+<!--        </LinearLayout>-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_order"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingHorizontal="@dimen/spacing_8"
-            android:paddingVertical="@dimen/spacing_16"
+            android:layout_marginHorizontal="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_24"
             android:clipToPadding="false"
             android:orientation="vertical"
+            tools:listitem="@layout/item_order"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-           />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
@@ -40,8 +69,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading"
-            />
+            app:lottie_rawRes="@raw/loading" />
+
+        <ViewStub
+            android:id="@+id/placeHolder_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout="@layout/layout_order_placeholder"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

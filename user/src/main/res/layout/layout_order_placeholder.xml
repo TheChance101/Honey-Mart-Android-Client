@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/spacing_16" >
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_wish_list_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/placeholder_order"
+        android:layout_gravity="center" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_placeholder_title"
+        style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/you_dont_have_any_orders"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/spacing_32" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_placeholder_description"
+        android:layout_width="219dp"
+        android:layout_height="54dp"
+        style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
+        android:text="@string/order_placeholder_description"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_16" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_discover_markets"
+        style="@style/Theme.HoneyMart.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/discover_new_markets"
+        app:icon="@drawable/icon_cart_white"
+        android:layout_margin="@dimen/spacing_16"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/spacing_8" />
+
+</LinearLayout>

@@ -39,5 +39,12 @@
     <string name="welcome_sign_owner">Welcome to Honey Mart!!</string>
     <string name="creat_account_owner">Create an account, Name your market and choose its category to start selling your products</string>
     <string name="no_products">There is no product here!!</string>
+    <string name="order_number">order #4011</string>
+    <string name="market_name">Market name</string>
+    <string name="processing">Processing</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="order_placeholder_description">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
+    <string name="you_dont_have_any_orders">You Dont have any orders!!</string>
 
 </resources>
