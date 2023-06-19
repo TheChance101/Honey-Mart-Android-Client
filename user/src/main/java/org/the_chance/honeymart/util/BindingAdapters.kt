@@ -1,16 +1,16 @@
 package org.the_chance.honeymart.util
 
 import android.view.View
-import android.view.ViewStub
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.ui.BaseAdapter
 
 @BindingAdapter(value = ["app:items"])
@@ -82,7 +82,59 @@ fun changeColorIfSelected(view: View, isFavorite: Boolean) {
     }
 }
 
+
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
+}
+
+@BindingAdapter("app:validationState")
+fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
+    val context = textInputLayout.context
+
+    when (validationState) {
+        ValidationState.INVALID_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.INVALID_EMAIL -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.INVALID_FULL_NAME -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.INVALID_CONFIRM_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.BLANK_EMAIL -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.BLANK_FULL_NAME -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.BLANK_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+
+        }
+
+        ValidationState.INVALID_PASSWORD_LENGTH -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        else -> {
+            textInputLayout.error = null
+            textInputLayout.isErrorEnabled = false
+        }
+    }
+
 }
