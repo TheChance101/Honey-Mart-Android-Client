@@ -52,6 +52,24 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
         }
     }
 }
+
+@BindingAdapter("app:changeColorIfSelected")
+fun changeColorIfSelected(view: View, isFavorite: Boolean) {
+    val context = view.context
+    when(view){
+        is CardView ->{
+            val colorRes = if (isFavorite) R.color.white else R.color.primary_100
+            val color = ContextCompat.getColor(context, colorRes)
+            view.setCardBackgroundColor(color)
+        }
+        is ShapeableImageView ->{
+            val drawableRes =
+                if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
+            val drawable = ContextCompat.getDrawable(context, drawableRes)
+            view.setImageDrawable(drawable)
+        }
+    }
+}
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)

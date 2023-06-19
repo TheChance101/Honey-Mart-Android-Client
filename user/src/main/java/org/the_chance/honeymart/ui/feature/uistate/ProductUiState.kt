@@ -15,7 +15,7 @@ data class ProductUiState(
     val productName: String? = "",
     val productQuantity: String? = "",
     val productPrice: Double? = 0.0,
-    val isFavorite: Boolean? = false
+    val isFavorite: Boolean? = false,
 )
 
 fun ProductEntity.toProductUiState(): ProductUiState {
