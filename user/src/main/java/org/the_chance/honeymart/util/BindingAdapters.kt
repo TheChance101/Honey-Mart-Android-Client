@@ -1,11 +1,13 @@
 package org.the_chance.honeymart.util
 
 import android.view.View
+import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
@@ -23,7 +25,7 @@ fun showIfTrue(view: View, condition: Boolean) {
 }
 
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
-fun productPlaceholder(view:View, productList:List<ProductUiState>, condition:Boolean){
+fun productPlaceholder(view: View, productList: List<ProductUiState>, condition: Boolean) {
     view.isVisible = condition == false && productList.isEmpty()
 }
 
@@ -56,13 +58,14 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
 @BindingAdapter("app:changeColorIfSelected")
 fun changeColorIfSelected(view: View, isFavorite: Boolean) {
     val context = view.context
-    when(view){
-        is CardView ->{
+    when (view) {
+        is CardView -> {
             val colorRes = if (isFavorite) R.color.white else R.color.primary_100
             val color = ContextCompat.getColor(context, colorRes)
             view.setCardBackgroundColor(color)
         }
-        is ShapeableImageView ->{
+
+        is ShapeableImageView -> {
             val drawableRes =
                 if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
             val drawable = ContextCompat.getDrawable(context, drawableRes)
@@ -70,7 +73,21 @@ fun changeColorIfSelected(view: View, isFavorite: Boolean) {
         }
     }
 }
+
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
+}
+
+@BindingAdapter(value = ["app:imageUrl"])
+fun setImageFromUrl(view: ImageView, url: String?) {
+    url?.let {
+        Glide
+            .with(view)
+            .load(url)
+            .placeholder(R.drawable.placeholder_wish_list)
+            .error(R.drawable.ic_error_password)
+            .centerCrop()
+            .into(view)
+    }
 }
