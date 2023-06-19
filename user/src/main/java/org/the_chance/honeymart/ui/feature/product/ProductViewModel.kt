@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -29,7 +30,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -133,7 +134,6 @@ class ProductViewModel @Inject constructor(
             )
         }
         getProductsByCategoryId(categoryId)
-        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
@@ -205,6 +205,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListError(error: Throwable, productId: Long) {
+        if (error is UnAuthorizedException) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(ProductUiEffect.UnAuthorizedUserEffect))
+            }
+        }
         log("Add to WishList Error : ${error.message}")
         updateFavoriteState(productId, false)
     }

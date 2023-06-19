@@ -40,5 +40,6 @@
     <string name="creat_account_owner">Create an account, Name your market and choose its category to start selling your products</string>
     <string name="no_products">There is no product here!!</string>
     <string name="add_to_cart">Add To Cart</string>
+    <string name="done">Done</string>
 
 </resources>
