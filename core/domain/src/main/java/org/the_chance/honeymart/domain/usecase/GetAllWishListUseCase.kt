@@ -8,5 +8,5 @@ class GetAllWishListUseCase  @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
     suspend operator fun invoke():List<WishListEntity> =
-        honeyMartRepository.getWishList() ?: emptyList()
+        honeyMartRepository.getWishList()
 }

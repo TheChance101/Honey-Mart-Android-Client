@@ -16,11 +16,10 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val categoryAdapter: CategoryProductAdapter by lazy { CategoryProductAdapter(viewModel) }
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
-
     override fun setup() {
+        disableStatusBarTransparent()
         initAdapters()
         collectEffect()
-        disableStatusBarTransparent()
     }
 
     private fun initAdapters() {
@@ -34,18 +33,21 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let {
-                //TODO Check if user is already logged in => add it directly and show snack bar
-                //TODO else=> go to auth
-                navigateToAuthenticate()
+                onEffect(it)
             }
         }
     }
 
+    private fun onEffect(effect: ProductUiEffect) {
+        when (effect) {
+            is ProductUiEffect.ClickProductEffect -> TODO()
+            ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+        }
+    }
 
 
     private fun navigateToAuthenticate() {
-        val action = ProductsFragmentDirections
-            .actionProductsFragmentToUserNavGraph()
+        val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
 
     }
