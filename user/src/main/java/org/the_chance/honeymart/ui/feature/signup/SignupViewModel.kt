@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.signup
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
@@ -30,39 +29,6 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, Boolean>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
-
-    val passwordInput = MutableStateFlow("")
-    val confirmPasswordInput = MutableStateFlow("")
-
-    init {
-
-        setPassword()
-        setConfirmPassword()
-    }
-
-
-    private fun setPassword() {
-        viewModelScope.launch {
-            passwordInput.collect { password ->
-                val passwordState = validatePassword(password)
-                _state.update { it.copy(password = passwordState) }
-            }
-        }
-    }
-
-    private fun setConfirmPassword() {
-        viewModelScope.launch {
-            confirmPasswordInput.collect { confirmPassword ->
-                val passwordState = validateConfirmPassword(passwordInput.value, confirmPassword)
-                if (!passwordState) {
-                    _state.update { it.copy(confirmPassword = ValidationState.INVALID_CONFIRM_PASSWORD) }
-                } else {
-                    _state.update { it.copy(confirmPassword = ValidationState.VALID_PASSWORD) }
-                }
-            }
-        }
-    }
-
 
     private fun addUser(fullName: String, password: String, email: String) {
         _state.update { it.copy(isLoading = true) }
@@ -111,37 +77,54 @@ class SignupViewModel @Inject constructor(
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
-        _state.update { it.copy(fullName = fullNameState, fullNameInput = fullName.toString()) }
+        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
     }
 
     fun onEmailInputChange(email: CharSequence) {
         val emailState = validateEmail(email.toString())
-        _state.update { it.copy(email = emailState, emailInput = email.toString()) }
+        _state.update { it.copy(emailState = emailState, email = email.toString()) }
+    }
+
+    fun onPasswordInputChanged(password: CharSequence) {
+        val passwordState = validatePassword(password.toString())
+        _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
+    }
+
+    fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
+        val passwordState =
+            validateConfirmPassword(state.value.password, confirmPassword.toString())
+        if (!passwordState) {
+            _state.update { it.copy(confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD) }
+        } else {
+            _state.update {
+                it.copy(
+                    confirmPasswordState = ValidationState.VALID_PASSWORD,
+                    confirmPassword = confirmPassword.toString()
+                )
+            }
+        }
     }
 
     fun onContinueClicked() {
-        val emailState = validateEmail(state.value.emailInput)
-        val fullNameState = validateFullName(state.value.fullNameInput)
+        val emailState = validateEmail(state.value.email)
+        val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
-            Log.e("TAG", "on click  continue: ")
         }
-        _state.update { it.copy(email = emailState, fullName = fullNameState) }
+        _state.update { it.copy(emailState = emailState, fullNameState = fullNameState) }
 
     }
 
     fun onSignupClicked() {
         val validationState =
-            validateConfirmPassword(passwordInput.value, confirmPasswordInput.value)
+            validateConfirmPassword(state.value.password, state.value.confirmPassword)
         if (validationState) {
             addUser(
-                fullName = state.value.fullNameInput,
-                password = passwordInput.value,
-                email = state.value.emailInput
+                fullName = state.value.fullName,
+                password = state.value.password,
+                email = state.value.email
             )
         }
-        Log.e("TAG", "on click  signup: ")
     }
-
 
 }

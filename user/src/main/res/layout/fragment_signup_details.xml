@@ -62,7 +62,7 @@
                 android:layout_height="86dp"
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_64"
-                app:validationState="@{viewModel.state.fullName}"
+                app:validationState="@{viewModel.state.fullNameState}"
                 android:hint="@string/full_name"
                 app:layout_constraintTop_toBottomOf="@+id/image_background">
 
@@ -71,7 +71,7 @@
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:afterTextChanged="@{(text) -> viewModel.onFullNameInputChange(text)}"
                     android:layout_width="match_parent"
-                    android:text="@{viewModel.state.fullNameInput}"
+                    android:text="@{viewModel.state.fullName}"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_person" />
 
@@ -86,7 +86,7 @@
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:hint="@string/email"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:validationState="@{viewModel.state.email}"
+                app:validationState="@{viewModel.state.emailState}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_field_input_full_name">
 
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:afterTextChanged="@{(text) -> viewModel.onEmailInputChange(text)}"
-                    android:text="@{viewModel.state.emailInput}"
+                    android:text="@{viewModel.state.email}"
                     android:drawableStart="@drawable/ic_email" />
             </com.google.android.material.textfield.TextInputLayout>
 
