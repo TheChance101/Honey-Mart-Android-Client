@@ -7,7 +7,6 @@ data class OrdersUiState(
     val isError: Boolean = false,
     val orders: List<OrderUiState> = emptyList()
 )
-
 data class OrderUiState(
     val orderId: Int? = 0,
     val marketName: String? = "",

@@ -8,7 +8,7 @@ import org.the_chance.user.databinding.FragmentOrdersBinding
 @AndroidEntryPoint
 class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_products
+    override val layoutIdFragment = R.layout.fragment_orders
     override val viewModel: OrderViewModel by viewModels()
     private val ordersAdapter: OrdersAdapter by lazy { OrdersAdapter(viewModel) }
 
@@ -18,8 +18,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun initAdapter() {
         binding.recyclerOrder.adapter = ordersAdapter
-        viewModel.ordersUiState.observe(viewLifecycleOwner) { ordersUiState ->
-            ordersAdapter.setItems(ordersUiState.orders)
         }
     }
 

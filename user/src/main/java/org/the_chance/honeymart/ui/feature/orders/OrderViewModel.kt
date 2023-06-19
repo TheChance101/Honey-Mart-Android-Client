@@ -1,16 +1,12 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
-import org.the_chance.honeymart.ui.feature.uistate.testOrdersUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
 import javax.inject.Inject
 
@@ -23,20 +19,27 @@ class OrderViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
+/*
         getOrderById()
+*/
+        val fakeOrders = listOf(
+            OrderUiState(1, "Market 1", "10", 9.99),
+            OrderUiState(2, "Market 2", "5", 4.99),
+            OrderUiState(3, "Market 3", "3", 2.99)
+        )
+        _state.update { currentState ->
+            currentState.copy(isLoading = false, isError = false, orders = fakeOrders)
+        }
     }
-    val ordersUiState: LiveData<OrdersUiState>
-        get() = state.asLiveData()
+
 
     private fun getOrderById(){
         _state.update { it.copy(isLoading = true) }
-        val testOrders = testOrdersUiState.orders
-        onOrderSuccess(testOrders)
-/*        tryToExecute(
+       tryToExecute(
             { getAllOrders().map { it.toOrderUiState() } },
             ::onOrderSuccess,
             ::onOrderError
-        )*/
+        )
     }
 
     private fun onOrderError(throwable: Throwable) {
