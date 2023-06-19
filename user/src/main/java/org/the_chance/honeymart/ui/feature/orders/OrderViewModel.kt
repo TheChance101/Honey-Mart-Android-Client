@@ -7,13 +7,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-) : BaseViewModel<OrdersUiState, Long>(OrdersUiState()), OrderInteractionListener, {
+    savedStateHandle: SavedStateHandle,) :
+    BaseViewModel<OrdersUiState, Long>(OrdersUiState()), OrderInteractionListener, {
     override val TAG: String = this::class.simpleName.toString()
-
     override fun onClickOrder(orderId: Long) {
         TODO("Not yet implemented")
     }
+
 
 }
 
