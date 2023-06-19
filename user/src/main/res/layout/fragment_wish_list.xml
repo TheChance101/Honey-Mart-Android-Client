@@ -29,16 +29,75 @@
             app:spanCount="2"
             tools:listitem="@layout/item_wish_list" />
 
-        <ViewStub
+        <LinearLayout
             android:id="@+id/placeHolder_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout="@layout/layout_wish_list_placeholder"
-            android:visibility="gone"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_16"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoProducts="@{viewModel.state.products}">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_wish_list_placeholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/placeholder_wish_list" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_placeholder_title"
+                style="@style/Theme.HoneyMart.Text.H3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_32"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/empty_wishlist" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_placeholder_description"
+                style="@style/Theme.HoneyMart.Text.H5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/placeholder_description"
+                android:textColor="@color/black_37" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_discover_markets"
+                style="@style/Theme.HoneyMart.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_16"
+                android:onClick="@{()->viewModel.onClickDiscoverButton()}"
+                android:text="@string/discover_new_markets"
+                app:icon="@drawable/icon_cart_white"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/spacing_8" />
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.loading}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

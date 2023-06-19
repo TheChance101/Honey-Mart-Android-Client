@@ -1,12 +1,12 @@
 package org.the_chance.honeymart.ui.feature.login
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
+import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
@@ -16,57 +16,19 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
+    private val validateEmail: ValidateEmailUseCase,
+    private val validatePassword: ValidatePasswordUseCase,
 ) : BaseViewModel<LoginUiState, Boolean>(LoginUiState()) {
 
     override val TAG: String = this::class.java.simpleName
 
-    val emailFlow = MutableStateFlow("")
-
-    val passwordFlow = MutableStateFlow("")
-
-    init {
-        viewModelScope.launch {
-            emailFlow.collect {
-                setEmail(it)
-            }
-        }
-        viewModelScope.launch {
-            passwordFlow.collect {
-                setPassword(it)
-            }
-        }
-    }
-
-    private suspend fun login(email: String, password: String) {
-
-        viewModelScope.launch() {
-            try {
-                val result = loginUserUseCase(email, password)
-                Log.e(TAG, "tryToExecute:$result ")
-                onLoginSuccess(result)
-            } catch (e: Throwable) {
-                Log.e(TAG, "tryToExecute error: ${e.message}")
-                onLoginError(e)
-            }
-        }
-    }
-
-    fun onLoginClick() {
-        viewModelScope.launch {
-            login(_state.value.email, _state.value.password)
-        }
-    }
-
-    private fun setEmail(email: String) {
-        _state.update {
-            it.copy(email = email)
-        }
-    }
-
-    private fun setPassword(password: String) {
-        _state.update {
-            it.copy(password = password)
-        }
+    private fun login(email: String, password: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { loginUserUseCase(password = password, email = email) },
+            ::onLoginSuccess,
+            ::onLoginError,
+        )
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
@@ -82,8 +44,25 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    private fun onLoginError(throwable: Throwable) {
+    private fun onLoginError(exception: Exception) {
         _state.update { it.copy(isLoading = false, error = 1) }
+    }
+
+
+    fun onLoginClick() {
+        viewModelScope.launch {
+            login(_state.value.email, _state.value.password)
+        }
+    }
+
+    fun onEmailInputChange(email: CharSequence) {
+        val emailState = validateEmail(email.toString())
+        _state.update { it.copy(emailState = emailState, email = email.toString()) }
+    }
+
+    fun onPasswordInputChanged(password: CharSequence) {
+        val passwordState = validatePassword(password.toString())
+        _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
 
 }

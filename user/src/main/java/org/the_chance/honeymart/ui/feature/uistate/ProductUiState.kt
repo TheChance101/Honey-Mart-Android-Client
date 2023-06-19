@@ -3,7 +3,8 @@ package org.the_chance.honeymart.ui.feature.uistate
 import org.the_chance.honeymart.domain.model.ProductEntity
 
 data class ProductsUiState(
-    val isLoading: Boolean = true,
+    val isLoadingCategory: Boolean = false,
+    val isLoadingProduct: Boolean = false,
     val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
@@ -15,7 +16,7 @@ data class ProductUiState(
     val productName: String? = "",
     val productQuantity: String? = "",
     val productPrice: Double? = 0.0,
-    val isFavorite: Boolean? = false
+    val isFavorite: Boolean? = false,
 )
 
 fun ProductEntity.toProductUiState(): ProductUiState {
