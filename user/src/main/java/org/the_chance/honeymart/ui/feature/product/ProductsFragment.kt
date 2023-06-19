@@ -19,7 +19,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     override fun setup() {
         initAdapters()
-        //collectEffect()
+        collectEffect()
         disableStatusBarTransparent()
     }
 
@@ -34,8 +34,6 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let {
-                //TODO Check if user is already logged in => add it directly and show snack bar
-                //TODO else=> go to auth
                 navigateToAuthenticate()
             }
         }

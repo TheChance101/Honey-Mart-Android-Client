@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -29,7 +30,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, Long>(ProductsUiState()), ProductInteractionListener,
+) : BaseViewModel<ProductsUiState, Boolean>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -71,6 +72,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetWishListProductError(throwable: Throwable, products: List<ProductUiState>) {
+        if (throwable is UnAuthorizedException){
+            viewModelScope.launch {
+                _effect.emit(EventHandler(true))
+            }
+        }
         _state.update {
             it.copy(
                 isLoading = false,
@@ -133,7 +139,7 @@ class ProductViewModel @Inject constructor(
             )
         }
         getProductsByCategoryId(categoryId)
-        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
+//        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
