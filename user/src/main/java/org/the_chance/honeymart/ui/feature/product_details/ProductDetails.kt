@@ -1,32 +1,14 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.user.R
+import org.the_chance.user.databinding.FragmentProductDetailsBinding
 
-class ProductDetails : Fragment() {
-
-    companion object {
-        fun newInstance() = ProductDetails()
-    }
-
-    private lateinit var viewModel: ProductDetailsViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_product_details, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProductDetailsViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
+@AndroidEntryPoint
+class ProductDetails : BaseFragment<FragmentProductDetailsBinding>() {
+    override val TAG: String = this::class.java.simpleName
+    override val layoutIdFragment: Int = R.layout.fragment_product_details
+    override val viewModel: ProductDetailsViewModel by viewModels()
 }
