@@ -5,12 +5,13 @@ import org.the_chance.honeymart.domain.util.ValidationState
 data class SignupUiState(
     val isLoading: Boolean = true,
     val error: List<String> = emptyList(),
-    val isSignUp: Boolean = false,
-    val validationState: ValidationState = ValidationState.SUCCESS,
-    val fullName: String = "",
-    val email: String = "",
-    val password: String = "",
     val isError: Boolean = false,
-    val confirmPassword: String = "",
+    val isSignUp: ValidationState = ValidationState.SUCCESS,
+    val fullName: ValidationState = ValidationState.VALID_FULL_NAME,
+    val fullNameInput: String = "",
+    val emailInput: String = "",
+    val email: ValidationState = ValidationState.VALID_EMAIL,
+    val password: ValidationState = ValidationState.VALID_EMAIL,
+    val confirmPassword: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
 
     )
