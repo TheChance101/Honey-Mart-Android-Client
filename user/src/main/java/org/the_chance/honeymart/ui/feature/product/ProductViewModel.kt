@@ -55,7 +55,7 @@ class ProductViewModel @Inject constructor(
     ) {
         _state.update { productsUiState ->
             productsUiState.copy(
-                isLoading = false,
+                isLoadingProduct = false,
                 isError = false,
                 products = updateProducts(products, wishListProducts)
             )
@@ -74,14 +74,14 @@ class ProductViewModel @Inject constructor(
     private fun onGetWishListProductError(throwable: Throwable, products: List<ProductUiState>) {
         _state.update {
             it.copy(
-                isLoading = false,
+                isLoadingProduct = false,
                 products = products
             )
         }
     }
 
     private fun getCategoriesByMarketId() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoadingCategory = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -90,7 +90,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoadingProduct = true) }
         tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
@@ -101,13 +101,12 @@ class ProductViewModel @Inject constructor(
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
         _state.update {
             it.copy(
-                isLoading = false,
                 isError = false,
+                isLoadingCategory = false,
                 categories = updateCategorySelection(categories, args.categoryId),
                 position = args.position
             )
         }
-
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
@@ -115,11 +114,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetCategoryError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, isError = true) }
+        _state.update { it.copy(isLoadingCategory = false, isError = true) }
     }
 
     private fun onGetProductError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, isError = true) }
+        _state.update { it.copy(isLoadingProduct = false, isError = true) }
     }
 
     override fun onClickCategoryProduct(categoryId: Long) {
@@ -127,7 +126,6 @@ class ProductViewModel @Inject constructor(
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {
             it.copy(
-                isLoading = true,
                 categories = updatedCategories,
                 products = emptyList(),
                 position = position.inc()

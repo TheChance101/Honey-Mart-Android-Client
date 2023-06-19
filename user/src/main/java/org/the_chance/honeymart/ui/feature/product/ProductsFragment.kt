@@ -16,11 +16,10 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val categoryAdapter: CategoryProductAdapter by lazy { CategoryProductAdapter(viewModel) }
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
-
     override fun setup() {
+        disableStatusBarTransparent()
         initAdapters()
         collectEffect()
-        disableStatusBarTransparent()
     }
 
     private fun initAdapters() {
@@ -48,8 +47,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
 
     private fun navigateToAuthenticate() {
-        val action = ProductsFragmentDirections
-            .actionProductsFragmentToUserNavGraph()
+        val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
 
     }
