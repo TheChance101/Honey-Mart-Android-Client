@@ -5,9 +5,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.the_chance.honeymart.data.source.local.AuthDataStorePref
+import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,7 +45,7 @@ internal object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        headerInterceptor: Interceptor
+        headerInterceptor: AuthInterceptor,
     ): OkHttpClient =
         OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
@@ -64,10 +65,8 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
-        chain.proceed(chain.request().newBuilder().also {
-            it.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5IiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDFiZjM5ZDA2IiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0A0ZmFkNjIxOCIsImV4cCI6MTY4NzExODgxN30.9PPg8fMtYtQ1qrdLJGfwCnYAzJeARiCxej7lANz00J4")
-        }.build())
+    fun provideHeaderInterceptor(dataStorePref: AuthDataStorePref): AuthInterceptor {
+        return AuthInterceptor(dataStorePref)
     }
 
 }

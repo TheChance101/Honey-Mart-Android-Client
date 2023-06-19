@@ -30,7 +30,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, Boolean>(ProductsUiState()), ProductInteractionListener,
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -134,7 +134,6 @@ class ProductViewModel @Inject constructor(
             )
         }
         getProductsByCategoryId(categoryId)
-//        viewModelScope.launch { _effect.emit(EventHandler(categoryId)) }
     }
 
     private fun updateCategorySelection(
@@ -208,7 +207,7 @@ class ProductViewModel @Inject constructor(
     private fun onAddToWishListError(error: Throwable, productId: Long) {
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(true))
+                _effect.emit(EventHandler(ProductUiEffect.UnAuthorizedUserEffect))
             }
         }
         log("Add to WishList Error : ${error.message}")

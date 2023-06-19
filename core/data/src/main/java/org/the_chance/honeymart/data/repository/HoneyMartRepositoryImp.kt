@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
@@ -46,7 +45,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
         return if (response.isSuccessful) {
-            response.body()?.value ?: throw Throwable("Unknown error occurred")
+            when (response.body()?.status?.code) {
+                else -> response.body()?.value!!
+            }
         } else {
             when (response.code()) {
                 401 -> throw UnAuthorizedException()
@@ -54,6 +55,5 @@ class HoneyMartRepositoryImp @Inject constructor(
             }
         }
     }
-
 
 }

@@ -34,11 +34,17 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let {
-                navigateToAuthenticate()
+                onEffect(it)
             }
         }
     }
 
+    private fun onEffect(effect: ProductUiEffect) {
+        when (effect) {
+            is ProductUiEffect.ClickProductEffect -> TODO()
+            ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+        }
+    }
 
 
     private fun navigateToAuthenticate() {
