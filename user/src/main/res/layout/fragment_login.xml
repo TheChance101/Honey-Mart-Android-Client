@@ -72,10 +72,11 @@
                     android:id="@+id/text_input_email"
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
+                    android:afterTextChanged="@{(text)->viewModel.onEmailInputChange(text)}"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_email"
                     android:inputType="textEmailAddress"
-                    android:text="@={viewModel.emailFlow}" />
+                    android:text="@{viewModel.state.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,7 +100,8 @@
                     app:passwordToggleTint="@color/gray"
                     android:drawableStart="@drawable/ic_password"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.passwordFlow}" />
+                    android:afterTextChanged="@{(text)->viewModel.onPasswordInputChanged(text)}"
+                    android:text="@{viewModel.state.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
