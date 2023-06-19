@@ -72,7 +72,12 @@
     <fragment
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
-        android:label="WishListFragment" />
+        android:label="WishListFragment" >
+        <action
+            android:id="@+id/action_wishListFragment_to_marketsFragment"
+            app:destination="@id/marketsFragment"
+            app:popUpTo="@id/marketsFragment"/>
+    </fragment>
     <navigation
         android:id="@+id/user_nav_graph"
         app:startDestination="@id/authFragment">

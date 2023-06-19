@@ -35,13 +35,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            app:showIfNoProducts="@{viewModel.state.products}"
-            app:hideIfLoading="@{viewModel.state.isLoading}"
             android:padding="@dimen/spacing_16"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoProducts="@{viewModel.state.products}">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_wish_list_placeholder"
@@ -79,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_16"
+                android:onClick="@{()->viewModel.onClickDiscoverButton()}"
                 android:text="@string/discover_new_markets"
                 app:icon="@drawable/icon_cart_white"
                 app:iconGravity="textStart"
