@@ -78,7 +78,7 @@
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
-                android:background="@drawable/shape_order_price"
+                android:background="@drawable/stroke_order_price"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
