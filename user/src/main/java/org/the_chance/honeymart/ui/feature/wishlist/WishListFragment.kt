@@ -35,8 +35,16 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let {
-                navigateToMarkets()
+                onEffect(it)
             }
+        }
+    }
+
+    private fun onEffect(effect: WishListUiEffect) {
+        when (effect) {
+            is WishListUiEffect.ClickProductEffect -> TODO()
+            is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
+            is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
         }
     }
 
