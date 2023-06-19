@@ -1,7 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        app:cardCornerRadius="@dimen/radius_16"
+        android:layout_marginBottom="@dimen/spacing_16"
+        style="@style/Theme.HoneyMart.Card">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_order"
+                android:layout_width="104dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/image_market"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_order_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginTop="@dimen/spacing_12"
+                tool:text="Armchairr"
+                style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_item_price"
+                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_cart_price"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:paddingHorizontal="@dimen/spacing_8"
+                android:paddingVertical="@dimen/spacing_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_order"
+                app:layout_constraintTop_toBottomOf="@+id/text_order_number"
+                tool:text="10,000,000$" />
+
+            <TextView
+                android:id="@+id/image_view_minus_order"
+                android:layout_width="@dimen/spacing_24"
+                android:layout_height="@dimen/spacing_24"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:paddingVertical="@dimen/spacing_2"
+                android:background="@drawable/icon_minus_cart"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_item_price" />
+
+
+            <TextView
+                android:id="@+id/text_view_number_of_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_12"
+                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
+                android:text="@string/number_of_items"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_view_minus_order"/>
+
+            <TextView
+                android:id="@+id/image_view_add_item"
+                android:layout_width="@dimen/spacing_24"
+                android:layout_height="@dimen/spacing_24"
+                android:text="@string/plus"
+                android:textColor="@color/white_300"
+                android:paddingVertical="@dimen/spacing_2"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:background="@drawable/icon_add_cart"
+                android:gravity="center_horizontal|center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_view_number_of_items" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
