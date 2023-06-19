@@ -19,7 +19,8 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="164dp"
-        android:layout_margin="@dimen/spacing_8"
+        android:layout_marginVertical="@dimen/spacing_8"
+        android:layout_marginHorizontal="@dimen/spacing_8"
         android:onClick="@{()-> listener.onClickMarket(item.marketId)}">
 
         <com.google.android.material.imageview.ShapeableImageView

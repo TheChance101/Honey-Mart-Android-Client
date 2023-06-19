@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -24,10 +23,10 @@ class AuthRepositoryImp @Inject constructor(
 
     override suspend fun saveToken(token: String) {
         datastore.saveToken(token)
-        Log.e("Saved Successfully : ", "$token")
+        Log.e("Saved Successfully : ", token)
     }
 
-    override suspend fun getToken(): Flow<String?> {
+    override fun getToken(): String? {
         return datastore.getToken()
     }
 
