@@ -1,12 +1,14 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
+import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -19,6 +21,17 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
+
+    override suspend fun getCart(): List<CartEntity> =
+        wrap { honeyMartService.getCart() }.map { it.toCartEntity() }
+
+    override suspend fun addToCart(productId: Long, count: Int): String {
+        return wrap { honeyMartService.addToCart(productId, count) }
+    }
+
+    override suspend fun deleteFromCart(productId: Long): String {
+        return wrap { honeyMartService.deleteFromCart(productId) }
+    }
 
     override suspend fun getAllMarkets(): List<MarketEntity> =
         wrap { honeyMartService.getAllMarkets() }.map { it.toMarketEntity() }
