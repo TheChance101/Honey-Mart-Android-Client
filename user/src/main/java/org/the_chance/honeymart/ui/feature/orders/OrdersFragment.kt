@@ -18,6 +18,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun initAdapter() {
         binding.recyclerOrder.adapter = ordersAdapter
+        viewModel.ordersUiState.observe(viewLifecycleOwner) { ordersUiState ->
+            ordersAdapter.setItems(ordersUiState.orders)
+        }
     }
 
 

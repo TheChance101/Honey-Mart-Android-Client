@@ -23,3 +23,14 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
         orderPrice = orderPrice
     )
 }
+
+// Test data for OrdersUiState
+val testOrdersUiState = OrdersUiState(
+    isLoading = false,
+    isError = false,
+    orders = listOf(
+        OrderUiState(1, "Market 1", "10", 9.99),
+        OrderUiState(2, "Market 2", "5", 4.99),
+        OrderUiState(3, "Market 3", "3", 2.99)
+    )
+)
