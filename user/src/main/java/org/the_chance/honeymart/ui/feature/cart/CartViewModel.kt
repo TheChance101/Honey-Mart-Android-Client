@@ -11,6 +11,7 @@ import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
 import javax.inject.Inject
 
+
 class CartViewModel @Inject constructor(
     private val getAllCartUseCase: GetAllCartUseCase,
     private val deleteFromCartUseCase: DeleteFromCartUseCase,
@@ -20,10 +21,10 @@ class CartViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     init {
-        getAllCart()
+        getChosenCartProducts()
     }
 
-    private fun getAllCart() {
+    private fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllCartUseCase().map { it.toCartListProductUiState() } },
@@ -44,10 +45,7 @@ class CartViewModel @Inject constructor(
 
     private fun onGetAllCartError(throwable: Throwable) {
         this._state.update {
-            it.copy(
-                isLoading = false,
-                isError = true
-            )
+            it.copy(isLoading = false, isError = true)
         }
     }
 

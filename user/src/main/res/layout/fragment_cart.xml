@@ -5,19 +5,20 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="org.the_chance.honeymart.ui.feature.cart.CartFragment" />
+            <variable
+                name="viewModel"
+                type="org.the_chance.honeymart.ui.feature.cart.CartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".cart.CartFragment">
+        tools:context="org.the_chance.honeymart.ui.feature.cart.CartFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_cart_list"
             android:layout_width="match_parent"
+            app:items="@{viewModel.state.products}"
             android:layout_height="0dp"
             android:layout_marginVertical="@dimen/spacing_12"
             android:clipToPadding="false"

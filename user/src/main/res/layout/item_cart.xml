@@ -3,15 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
 
+
     <data>
 
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState" />
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.cart.CartInteractionListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
-        android:background="#FFFFFF"
+        android:background="@color/white"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card">
 
@@ -35,6 +43,7 @@
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginTop="@dimen/spacing_12"
                 tool:text="Armchairr"
+                android:text="@{item.productName}"
                 style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
@@ -49,6 +58,7 @@
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_16"
                 android:layout_marginTop="@dimen/spacing_16"
+                android:text="@{item.productPrice.toString()}"
                 android:paddingHorizontal="@dimen/spacing_8"
                 android:paddingVertical="@dimen/spacing_4"
                 app:layout_constraintBottom_toBottomOf="parent"
