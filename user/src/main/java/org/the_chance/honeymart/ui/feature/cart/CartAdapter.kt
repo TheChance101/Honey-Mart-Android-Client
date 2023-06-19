@@ -12,5 +12,7 @@ class CartAdapter
     override val layoutID = R.layout.item_cart
 }
 interface CartInteractionListener : BaseInteractionListener {
+    fun onClickCart(productId: Long)
+    fun onClickDeleteCart(productId: Long)
 
 }
