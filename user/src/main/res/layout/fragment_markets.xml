@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingHorizontal="@dimen/spacing_8"
-            android:paddingVertical="@dimen/spacing_16"
             android:clipToPadding="false"
             android:orientation="vertical"
             app:items="@{viewModel.state.markets}"

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
@@ -28,8 +27,9 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/spacing_8"
-            android:paddingStart="@dimen/spacing_8"
+            android:paddingHorizontal="@dimen/spacing_16"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_24"
             app:scrollToPosition="@{viewModel.state.position}"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -45,8 +45,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/spacing_12"
-            android:paddingEnd="@dimen/spacing_4"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_24"
+            android:paddingEnd="@dimen/spacing_16"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,6 +80,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="@string/no_products"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/spacing_56"
             app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
             app:showIfNoProducts="@{viewModel.state.products}"
