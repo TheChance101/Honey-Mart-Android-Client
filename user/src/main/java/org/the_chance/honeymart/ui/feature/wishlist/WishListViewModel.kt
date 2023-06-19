@@ -10,6 +10,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
+import org.the_chance.honeymart.util.EventHandler
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
@@ -48,6 +49,12 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     override fun onClickProduct(productId: Long) {
 
+    }
+
+    fun onClickDiscoverButton() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(0))
+        }
     }
 
     override fun onClickAddToWishList(productId: Long) {

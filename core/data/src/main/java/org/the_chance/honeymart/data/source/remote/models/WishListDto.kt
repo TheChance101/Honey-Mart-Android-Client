@@ -3,7 +3,7 @@ package org.the_chance.honeymart.data.source.remote.models
 import com.google.gson.annotations.SerializedName
 
 data class WishListDto (
-    @SerializedName("productId")
+    @SerializedName("id")
     val productId: Long? = null,
     @SerializedName("name")
     val name: String? = null,

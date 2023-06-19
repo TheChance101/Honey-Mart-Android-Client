@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.util
 
 import android.view.View
+import android.view.ViewStub
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -23,11 +24,20 @@ fun showIfTrue(view: View, condition: Boolean) {
 }
 
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
-fun productPlaceholder(view:View, productList:List<ProductUiState>, condition:Boolean){
-    view.isVisible = condition == false && productList.isEmpty()
+fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
+    view.isVisible = condition == false && items.isEmpty()
 }
 
-@BindingAdapter("app:changeIfSelected")
+@BindingAdapter(value = ["app:showIfFirsTrue" ,"app:showIfSecondTrue"] )
+fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
+    if (!condition1 && !condition2) {
+        view.visibility = View.GONE
+    } else {
+        view.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("app:changeIfSelected" )
 fun changeIfSelected(view: View, isSelected: Boolean) {
     val context = view.context
 
@@ -52,6 +62,26 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
         }
     }
 }
+
+@BindingAdapter("app:changeColorIfSelected")
+fun changeColorIfSelected(view: View, isFavorite: Boolean) {
+    val context = view.context
+    when (view) {
+        is CardView -> {
+            val colorRes = if (isFavorite) R.color.white else R.color.primary_100
+            val color = ContextCompat.getColor(context, colorRes)
+            view.setCardBackgroundColor(color)
+        }
+
+        is ShapeableImageView -> {
+            val drawableRes =
+                if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
+            val drawable = ContextCompat.getDrawable(context, drawableRes)
+            view.setImageDrawable(drawable)
+        }
+    }
+}
+
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
