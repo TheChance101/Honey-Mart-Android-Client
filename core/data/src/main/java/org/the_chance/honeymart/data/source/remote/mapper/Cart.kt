@@ -7,5 +7,6 @@ fun CartDto.toCartEntity() = CartEntity(
     productId = productId,
     name = name,
     price =price,
-    count = count
+    count = count,
+    total = total,
 )

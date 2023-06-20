@@ -5,9 +5,9 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="item"-->
-        <!--            type="org.the_chance.honeymart.ui.feature.uistate.CartUiState" />-->
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.CartUiState" />
 
         <variable
             name="listener"
@@ -19,6 +19,7 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="103dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -31,10 +32,10 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_8"
-                tool:text="@string/_300000"
                 app:layout_constraintBottom_toTopOf="@+id/button_discover_markets"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tool:hint="@string/_300000" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_discover_markets"
@@ -58,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_16"
                 android:layout_marginTop="8dp"
-                android:text="@string/total_price"
                 android:layout_marginBottom="@dimen/spacing_8"
+                android:text="@string/total_price"
                 app:layout_constraintBottom_toTopOf="@+id/button_discover_markets"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

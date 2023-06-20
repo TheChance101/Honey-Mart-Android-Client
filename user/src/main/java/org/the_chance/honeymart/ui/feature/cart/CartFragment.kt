@@ -20,6 +20,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     override val viewModel: CartViewModel by viewModels()
     private val cartAdapter: CartAdapter by lazy { CartAdapter(viewModel) }
 
+
     override fun setup() {
         initAdapters()
         handleOnBackPressed()
@@ -33,16 +34,10 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     }
 
     private fun initAdapters() {
-        val fakeCarts = listOf(
-            CartListProductUiState(1, "Product 1", 100.0, 10),
-            CartListProductUiState(2, "Product 2", 200.5, 3),
-            CartListProductUiState(3, "Product 3", 300.9, 2),
-            CartListProductUiState(4, "Product 4", 400.9, 5),
 
-            )
         binding.recyclerCartList.adapter = cartAdapter
         binding.recyclerCartList.layoutManager = LinearLayoutManager(requireContext())
-        cartAdapter.setItems(fakeCarts)
+        cartAdapter.setItems(viewModel.fakeCarts)
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerCartList)
 
     }
@@ -52,12 +47,15 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder,
-        ) = false
+        ) = true
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.adapterPosition
+            val position = viewHolder.layoutPosition
             val item = cartAdapter.getItemId(position)
             viewModel.onClickDeleteCart(item)
+            cartAdapter.notifyItemRemoved(position)
+
+
         }
     }
 }

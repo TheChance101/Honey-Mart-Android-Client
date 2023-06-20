@@ -5,6 +5,7 @@ import org.the_chance.honeymart.domain.model.CartEntity
 data class CartUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
+    val total : Double = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
 )
 

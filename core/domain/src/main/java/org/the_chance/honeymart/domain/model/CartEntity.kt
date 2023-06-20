@@ -5,4 +5,5 @@ data class CartEntity(
     val name: String?,
     val price: Double?,
     val count: Int?,
+    val total: Double?,
 )

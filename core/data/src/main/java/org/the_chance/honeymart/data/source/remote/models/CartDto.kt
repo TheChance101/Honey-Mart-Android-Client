@@ -11,4 +11,6 @@ data class CartDto (
     val price: Double? = null,
     @SerializedName("count")
     val count: Int? = null,
+    @SerializedName("total")
+    val total: Double? = null,
     )

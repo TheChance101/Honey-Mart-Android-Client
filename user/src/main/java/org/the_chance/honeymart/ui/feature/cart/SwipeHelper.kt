@@ -23,7 +23,7 @@ abstract class SwipeHelper
             actionState,
             isCurrentlyActive
         )
-            .addBackgroundColor(org.the_chance.design_system.R.drawable.cart_delete)
+            .addActionIcon(org.the_chance.design_system.R.drawable.cart_delete)
             .create()
             .decorate()
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

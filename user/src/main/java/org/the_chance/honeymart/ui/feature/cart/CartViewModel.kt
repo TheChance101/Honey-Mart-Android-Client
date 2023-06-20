@@ -18,7 +18,12 @@ class CartViewModel @Inject constructor(
     private val deleteFromCartUseCase: DeleteFromCartUseCase,
 ) : BaseViewModel<CartUiState, Long>(CartUiState()),
     CartInteractionListener {
-
+    val fakeCarts = MutableList(4) {
+        CartListProductUiState(41, "Product 1", 100.0, 10)
+        CartListProductUiState(31, "Product 2", 200.5, 3)
+        CartListProductUiState(21, "Product 3", 300.9, 2)
+        CartListProductUiState(15, "Product 4", 400.9, 5)
+    }
     override val TAG: String = this::class.java.simpleName
 
     init {
@@ -39,7 +44,7 @@ class CartViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                products = products
+                products = products,
             )
         }
     }
@@ -53,9 +58,13 @@ class CartViewModel @Inject constructor(
     override fun onClickCart(productId: Long) {
     }
 
-    override fun onClickDeleteCart(productId: Long) {
-        viewModelScope.launch {
-            deleteFromCartUseCase(productId)
+    override fun onClickDeleteCart(position: Long) {
+        val productId = state.value.products.indexOfFirst {it.productId == position }
+        fakeCarts.removeAt(position .toInt()+1)
+        log("onClickDeleteCart: $productId")
+        log("onClickDeleteCart: $position")
+            viewModelScope.launch {
+            deleteFromCartUseCase(productId.toLong())
         }
     }
 
