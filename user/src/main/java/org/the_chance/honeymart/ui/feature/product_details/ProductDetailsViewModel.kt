@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -19,6 +21,8 @@ class ProductDetailsViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val _quantity = MutableStateFlow(0)
+    val quantity = _quantity.asStateFlow()
 
     init {
         getProductByCategoryId(args.productId, args.categoryId)
@@ -60,5 +64,16 @@ class ProductDetailsViewModel @Inject constructor(
         newList.add(0, _state.value.image)
         _state.update { it.copy(smallImages = newList) }
         _state.update { it.copy(image = url) }
+    }
+
+    fun addProduct(){
+        _quantity.value += 1
+        log(quantity.toString())
+    }
+
+    fun removeProduct(){
+        if(_quantity.value > 0){
+            _quantity.value -= 1
+        }
     }
 }
