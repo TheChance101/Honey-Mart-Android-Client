@@ -52,7 +52,7 @@
                 android:layout_marginVertical="@dimen/spacing_8"
                 android:layout_marginStart="@dimen/spacing_8"
                 tool:text="@string/market_name"
-                android:text="@{item.marketName}"
+                android:text="@{String.valueOf(item.state)}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 app:layout_constraintTop_toBottomOf="@id/text_order_number"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_4"
                 android:layout_marginTop="@dimen/spacing_4"
-                android:text="@{String.valueOf(item.orderQuantity)}"
+                android:text="@{String.valueOf(item.date)}"
                 app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
                 app:layout_constraintStart_toEndOf="@id/ic_cart_check"
                 app:layout_constraintTop_toBottomOf="@id/text_market_name"
@@ -89,7 +89,7 @@
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
-                android:text='@{String.valueOf(item.orderPrice)}'
+                android:text='@{String.valueOf(item.totalPrice)}'
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/stroke_order_price"
                 app:layout_constraintEnd_toEndOf="parent"

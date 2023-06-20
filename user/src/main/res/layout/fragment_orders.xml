@@ -15,8 +15,8 @@
         android:layout_height="match_parent"
         tools:context="org.the_chance.honeymart.ui.feature.orders.OrdersFragment">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_chips"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_orders_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_16"
@@ -32,6 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_8"
+                android:onClick="@{()-> viewModel.getAllProcessingOrders()}"
+                app:changeChipColorIfSelected="@{viewModel.state.selected}"
                 android:textColor="@color/primary_100"
                 android:text="@string/processing" />
 
@@ -42,8 +44,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:text="@string/done"
-                android:textColor="@color/primary_100"
-                />
+                android:onClick="@{()-> viewModel.getAllDoneOrders()}"
+                app:changeChipColorIfSelected="@{viewModel.state.selected}"
+                android:textColor="@color/primary_100" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_cancel"
@@ -55,7 +58,8 @@
                 android:textColor="@color/primary_100"
                 app:chipCornerRadius="@dimen/radius_16"
                 app:chipStrokeColor="@color/primary_100" />
-        </LinearLayout>
+
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_order"
@@ -69,7 +73,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout_chips"
+            app:layout_constraintTop_toBottomOf="@+id/chip_orders_group"
             tools:listitem="@layout/item_order" />
 
         <com.airbnb.lottie.LottieAnimationView
@@ -141,17 +145,6 @@
                 app:iconPadding="@dimen/spacing_8" />
 
         </LinearLayout>
-
-<!--        <ViewStub-->
-<!--            android:id="@+id/placeHolder_container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout="@layout/layout_order_placeholder"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="gone"
@@ -226,17 +219,6 @@
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--        <ViewStub-->
-<!--            android:id="@+id/dialog_container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout="@layout/layout_order_dialog"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

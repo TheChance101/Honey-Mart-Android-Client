@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -21,6 +22,20 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
 @BindingAdapter("app:showIfTrue")
 fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
+}
+
+@BindingAdapter("app:changeChipColorIfSelected")
+fun changeChipColorIfSelected(chip: Chip, isSelected: Boolean) {
+    val context = chip.context
+    if (isSelected) {
+        val textColor = ContextCompat.getColor(context, R.color.white_100)
+        chip.setChipBackgroundColorResource(R.color.primary_100)
+        chip.setTextColor(textColor)
+    } else {
+        val textColor = ContextCompat.getColor(context, R.color.primary_100)
+        chip.setChipBackgroundColorResource(R.color.white_100)
+        chip.setTextColor(textColor)
+    }
 }
 
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
