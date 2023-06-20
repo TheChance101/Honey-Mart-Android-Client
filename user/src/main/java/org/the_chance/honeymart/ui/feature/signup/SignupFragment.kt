@@ -17,7 +17,7 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
     override fun setup() {
 
         collectAction()
-        makeStatusBarTransparent()
+        setupUserFlowWindowVisibility()
 
     }
 
