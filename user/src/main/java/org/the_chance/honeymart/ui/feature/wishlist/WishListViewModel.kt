@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.ProductUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
@@ -44,7 +43,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
     }
 
-    private fun onGetProductError(throwable: Throwable) {
+    private fun onGetProductError(throwable: Exception) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 

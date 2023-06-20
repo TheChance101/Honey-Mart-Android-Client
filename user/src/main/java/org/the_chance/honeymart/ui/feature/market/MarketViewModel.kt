@@ -34,7 +34,7 @@ class MarketViewModel @Inject constructor(
     }
 
 
-    private fun onGetMarketError(throwable: Throwable) {
+    private fun onGetMarketError(throwable: Exception) {
         this._state.update {
             it.copy(
                 isLoading = false,
