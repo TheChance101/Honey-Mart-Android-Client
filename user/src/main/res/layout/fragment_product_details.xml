@@ -129,7 +129,6 @@
             android:layout_marginBottom="1dp"
             android:backgroundTint="@color/primary_100"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toBottomOf="@+id/text_product_quantity"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
@@ -148,11 +147,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="01"
+            app:layout_constraintTop_toTopOf="@id/icon_add_product"
+            app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
+            app:layout_constraintEnd_toStartOf="@id/icon_add_product"
+            tools:text="01"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toBottomOf="@id/icon_remove_product"
-            app:layout_constraintEnd_toStartOf="@+id/icon_add_product"
-            app:layout_constraintTop_toTopOf="@id/icon_remove_product" />
+             />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_remove_product"
@@ -161,10 +161,9 @@
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toBottomOf="@id/text_product_name"
+            app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toTopOf="@id/text_product_name"
+            app:layout_constraintTop_toTopOf="@id/icon_add_product"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeColor="@color/primary_100"
             app:strokeWidth="1dp">
