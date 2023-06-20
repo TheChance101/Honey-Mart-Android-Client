@@ -5,6 +5,7 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val isSelected: Boolean = false,
     val orders: List<OrderUiState> = emptyList()
 )
 
