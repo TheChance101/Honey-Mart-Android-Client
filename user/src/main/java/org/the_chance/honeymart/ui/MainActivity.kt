@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
             if (destination.id == R.id.authFragment ||
                 destination.id == R.id.loginFragment ||
                 destination.id == R.id.signupFragment ||
-                destination.id == R.id.signupConfirmPasswordFragment
+                destination.id == R.id.signupConfirmPasswordFragment ||
+                destination.id == R.id.productDetails
             ) {
                 binding.bottomNavigationView.visibility = View.GONE
                 binding.appBarLayout.visibility = View.GONE
