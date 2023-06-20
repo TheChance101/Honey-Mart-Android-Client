@@ -5,28 +5,21 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val orders: List<OrderUiState> = testOrdersUiState
+    val orders: List<OrderUiState> = emptyList()
 )
 
 data class OrderUiState(
-    val orderId: Int? = 0,
-    val marketName: String? = "",
-    val orderQuantity: String? = "",
-    val orderPrice: Double? = 0.0
+    val orderId: Int?= 1,
+    val totalPrice: Double? = 0.0,
+    val state: Int?= 0,
+    val date: Long?= 1687259600016
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
-        marketName = marketName,
-        orderQuantity = orderQuantity,
-        orderPrice = orderPrice
+        totalPrice = totalPrice ,
+        state = state,
+        date = date
     )
 }
-
-// Test data for OrdersUiState
-val testOrdersUiState: List<OrderUiState> = listOf(
-    OrderUiState(1, "Market 1", "10", 9.99),
-    OrderUiState(2, "Market 2", "5", 4.99),
-    OrderUiState(3, "Market 3", "3", 2.99)
-)
