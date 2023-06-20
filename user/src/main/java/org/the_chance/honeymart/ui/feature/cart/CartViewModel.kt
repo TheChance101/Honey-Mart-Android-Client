@@ -63,6 +63,7 @@ class CartViewModel @Inject constructor(
     fun onClickDeleteCart(position: Long) {
 
         val productId = state.value.products[position.toInt()].productId
+
         
            viewModelScope.launch {
                if (productId != null) {

@@ -8,6 +8,7 @@ import org.the_chance.user.R
 
 class CartAdapter
     (
+
     listener: CartInteractionListener,
 ) : BaseAdapter<CartListProductUiState>(listener) {
     override val layoutID = R.layout.item_cart
