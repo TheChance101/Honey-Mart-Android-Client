@@ -8,7 +8,7 @@ class GetProductByIdUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
 
-    suspend operator fun invoke(productId: Long, categoryId: Long): List<ProductEntity> =
+    suspend operator fun invoke(productId: Long, categoryId: Long): ProductEntity =
         filterProductById(
             honeyMartRepository.getAllProductsByCategory(categoryId) ?: emptyList(),
             productId
@@ -17,7 +17,5 @@ class GetProductByIdUseCase @Inject constructor(
     private fun filterProductById(
         products: List<ProductEntity>,
         productId: Long
-    ): List<ProductEntity> {
-        return products.filter { it.productId == productId }.take(1)
-    }
+    ): ProductEntity = products.first { it.productId == productId }
 }
