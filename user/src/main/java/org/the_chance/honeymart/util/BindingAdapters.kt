@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.util
 
 import android.view.View
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -28,7 +29,7 @@ fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
 }
 
-@BindingAdapter(value = ["app:showIfFirsTrue" ,"app:showIfSecondTrue"] )
+@BindingAdapter(value = ["app:showIfFirsTrue", "app:showIfSecondTrue"])
 fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
     if (!condition1 && !condition2) {
         view.visibility = View.GONE
@@ -37,7 +38,17 @@ fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
     }
 }
 
-@BindingAdapter("app:changeIfSelected" )
+@BindingAdapter(value = ["app:showState"])
+fun showState(textView: TextView, state: Int) {
+    val context = textView.context
+    if (state == 0) {
+        textView.text = context.getString(R.string.Processing)
+    } else {
+        textView.text = context.getString(R.string.Done)
+    }
+}
+
+@BindingAdapter("app:changeIfSelected")
 fun changeIfSelected(view: View, isSelected: Boolean) {
     val context = view.context
 
