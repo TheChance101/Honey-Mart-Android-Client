@@ -22,6 +22,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
 
     override fun setup() {
+        viewModel.getChosenCartProducts()
         initAdapters()
         handleOnBackPressed()
     }
@@ -47,9 +48,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder,
         ) = true
+
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-           val position =  binding.recyclerCartList.getChildAdapterPosition(viewHolder.itemView)
-            viewModel.onClickDeleteCart(position.toLong())
+            val position = binding.recyclerCartList.getChildAdapterPosition(viewHolder.itemView)
+            viewModel.deleteCart(position.toLong())
+            cartAdapter.notifyItemRemoved(position)
+            viewModel.getChosenCartProducts()
+            cartAdapter.notifyItemRemoved(position)
         }
     }
 

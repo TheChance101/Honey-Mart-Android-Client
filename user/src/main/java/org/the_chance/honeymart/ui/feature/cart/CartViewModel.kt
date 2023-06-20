@@ -7,11 +7,9 @@ import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
 import org.the_chance.honeymart.util.EventHandler
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,25 +20,21 @@ class CartViewModel @Inject constructor(
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-    init {
-        getChosenCartProducts()
-    }
-
-    private fun getChosenCartProducts() {
+    fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCartUseCase().map { it.toCartListProductUiState() } },
+            { getAllCartUseCase().toCartListProductUiState() },
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
     }
 
-    private fun onGetAllCartSuccess(products: List<CartListProductUiState>) {
+    private fun onGetAllCartSuccess(cart: CartUiState) {
         _state.update {
             it.copy(
                 isLoading = false,
                 isError = false,
-                products = products,
+                products = cart.products,
             )
         }
     }
@@ -60,15 +54,15 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun onClickDeleteCart(position: Long) {
+    fun deleteCart(position: Long) {
 
         val productId = state.value.products[position.toInt()].productId
 
-        
-           viewModelScope.launch {
-               if (productId != null) {
-                   deleteFromCartUseCase(productId)
-               }
+
+        viewModelScope.launch {
+            if (productId != null) {
+                deleteFromCartUseCase(productId)
+            }
         }
 
     }

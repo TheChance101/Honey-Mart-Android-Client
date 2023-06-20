@@ -135,7 +135,7 @@ interface HoneyMartService {
     //endregion user
     // region cart
     @GET("/cart")
-    suspend fun getCart(): Response<BaseResponse<List<CartDto>>>
+    suspend fun getCart(): Response<BaseResponse<CartDto>>
 
     @POST("/cart")
     suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>

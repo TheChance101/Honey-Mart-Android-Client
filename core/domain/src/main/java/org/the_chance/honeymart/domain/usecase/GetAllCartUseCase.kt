@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetAllCartUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(): List<CartEntity> =
-        honeyMartRepository.getCart() ?: emptyList()
+    suspend operator fun invoke():CartEntity =
+        honeyMartRepository.getCart()
 }

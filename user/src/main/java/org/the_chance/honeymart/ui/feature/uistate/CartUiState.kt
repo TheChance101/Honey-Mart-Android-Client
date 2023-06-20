@@ -1,11 +1,12 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.CartEntity
+import org.the_chance.honeymart.domain.model.CartProductEntity
 
 data class CartUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-    val total : Double? = 0.0,
+    val total: Double? = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
 )
 
@@ -16,13 +17,22 @@ data class CartListProductUiState(
     val productCount: Int? = 0,
 )
 
-fun CartEntity.toCartListProductUiState(): CartListProductUiState {
-    return CartListProductUiState(
-        productId = productId,
-        productName = name,
-        productPrice = price,
-        productCount = count
+fun CartEntity.toCartListProductUiState(): CartUiState {
+    return CartUiState(
+        total = total,
+        products = products.toCartProductUiState()
     )
+}
+
+fun List<CartProductEntity>.toCartProductUiState(): List<CartListProductUiState> {
+    return this.map {
+        CartListProductUiState(
+            productId = it.productId,
+            productName = it.name,
+            productPrice = it.price,
+            productCount = it.count
+        )
+    }
 }
 
 
