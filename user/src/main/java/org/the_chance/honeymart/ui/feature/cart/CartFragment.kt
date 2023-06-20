@@ -3,8 +3,10 @@ package org.the_chance.honeymart.ui.feature.cart
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentCartBinding
 
@@ -29,7 +31,16 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     }
 
     private fun initAdapters() {
+        val fakeCarts = listOf(
+            CartListProductUiState(1, "Product 1", 100.0, 10),
+            CartListProductUiState(2, "Product 2", 200.5, 3),
+            CartListProductUiState(3, "Product 3", 300.9, 2),
+            CartListProductUiState(4, "Product 4", 400.9, 5),
+
+            )
         binding.recyclerCartList.adapter = cartAdapter
+        binding.recyclerCartList.layoutManager=LinearLayoutManager(requireContext())
+        cartAdapter.setItems(fakeCarts)
     }
 
 

@@ -18,7 +18,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_cart_list"
             android:layout_width="match_parent"
-            app:items="@{viewModel.state.products}"
             android:layout_height="0dp"
             android:layout_marginVertical="@dimen/spacing_12"
             android:clipToPadding="false"
