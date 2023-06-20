@@ -90,3 +90,9 @@ fun setImageFromUrl(view: ImageView, url: String?) {
             .into(view)
     }
 }
+
+@BindingAdapter("app:hideIfLoading")
+fun hideIfLoading(view: View, condition: Boolean) {
+    view.isVisible = !condition
+}
+
