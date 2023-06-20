@@ -17,32 +17,30 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
-    savedStateHandle: SavedStateHandle) :
-    BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-//        _state.update { currentState ->
-//            currentState.copy(isLoading = false, isError = false, orders = fakeOrders)
-//        }
+        getOrders()
     }
 
     private fun getOrders() {
-//        _state.update { it.copy(isLoading = true) }
-//        tryToExecute(
-//            { getAllOrders().map { it.toOrderUiState() } },
-//            ::onOrderSuccess,
-//            ::onOrderError
-//        )
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getAllOrders().map { it.toOrderUiState() } },
+            ::onOrderSuccess,
+            ::onOrderError
+        )
     }
 
     private fun onOrderError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, isError = true) }
+        _state.update { it.copy(isLoading = false) }
     }
 
     private fun onOrderSuccess(orders: List<OrderUiState>) {
         _state.update {
-            it.copy(isLoading = false, isError = false, orders = orders)
+            it.copy(isLoading = false, orders = orders)
         }
     }
 
