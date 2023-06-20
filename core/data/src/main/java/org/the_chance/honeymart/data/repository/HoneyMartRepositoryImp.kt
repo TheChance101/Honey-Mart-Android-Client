@@ -7,6 +7,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.*
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -43,10 +44,14 @@ class HoneyMartRepositoryImp @Inject constructor(
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
         return if (response.isSuccessful) {
-            response.body()?.value ?: throw Throwable("Unknown error occurred")
+            when (response.body()?.status?.code) {
+                else -> response.body()?.value!!
+            }
         } else {
-            Log.e("TAG", "wrap: ${response}")
-            throw Throwable("Unknown error occurred")
+            when (response.code()) {
+                401 -> throw UnAuthorizedException()
+                else -> throw Throwable("Unknown error occurred")
+            }
         }
     }
 

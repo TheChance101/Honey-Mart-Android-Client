@@ -12,5 +12,5 @@ class WishListAdapter(listener: WishListInteractionListener) :
 
 interface WishListInteractionListener : BaseInteractionListener {
     fun onClickProduct(productId: Long)
-    fun onClickAddToWishList(productId: Long)
+    fun onClickFavoriteIcon(productId: Long)
 }

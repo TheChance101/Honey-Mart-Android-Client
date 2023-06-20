@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductsBinding
 
@@ -16,11 +17,10 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val categoryAdapter: CategoryProductAdapter by lazy { CategoryProductAdapter(viewModel) }
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
-
     override fun setup() {
+        disableStatusBarTransparent()
         initAdapters()
         collectEffect()
-        disableStatusBarTransparent()
     }
 
     private fun initAdapters() {
@@ -33,19 +33,28 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let {
-                //TODO Check if user is already logged in => add it directly and show snack bar
-                //TODO else=> go to auth
-                navigateToAuthenticate()
+            effect.getContentIfHandled()?.let { onEffect(it) }
+        }
+    }
+
+    private fun onEffect(effect: ProductUiEffect) {
+        when (effect) {
+            is ProductUiEffect.ClickProductEffect -> TODO()
+            ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            ProductUiEffect.AddedToWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
+            }
+
+            ProductUiEffect.RemovedFromWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+
             }
         }
     }
 
 
-
     private fun navigateToAuthenticate() {
-        val action = ProductsFragmentDirections
-            .actionProductsFragmentToUserNavGraph()
+        val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
 
     }

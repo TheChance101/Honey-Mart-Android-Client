@@ -28,15 +28,16 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/spacing_8"
-            android:paddingStart="@dimen/spacing_8"
-            app:scrollToPosition="@{viewModel.state.position}"
+            android:paddingHorizontal="@dimen/spacing_16"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingBottom="@dimen/spacing_24"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guide_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:scrollToPosition="@{viewModel.state.position}"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 
@@ -45,8 +46,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingVertical="@dimen/spacing_12"
-            android:paddingEnd="@dimen/spacing_4"
+            android:paddingTop="@dimen/spacing_8"
+            android:paddingEnd="@dimen/spacing_16"
+            android:paddingBottom="@dimen/spacing_24"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,12 +59,12 @@
             tools:listitem="@layout/item_products" />
 
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_view_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/placeholder_wish_list"
-            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/recycler_category"
@@ -70,20 +72,21 @@
             app:showIfNoProducts="@{viewModel.state.products}" />
 
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_placeholder"
             style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_56"
             android:gravity="center"
             android:text="@string/no_products"
-            android:layout_marginTop="@dimen/spacing_56"
-            app:hideIfLoading="@{viewModel.state.isLoading}"
-            app:showIfNoProducts="@{viewModel.state.products}"
-            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            android:visibility="gone"
+            app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
+            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder"
             app:layout_constraintStart_toStartOf="@id/image_view_placeholder"
-            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder" />
+            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            app:showIfNoProducts="@{viewModel.state.products}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
@@ -96,7 +99,8 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading"
-            app:showIfTrue="@{viewModel.state.isLoading}" />
+            app:showIfFirsTrue="@{viewModel.state.isLoadingCategory}"
+            app:showIfSecondTrue="@{viewModel.state.isLoadingProduct}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
