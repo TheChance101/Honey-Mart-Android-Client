@@ -1,8 +1,11 @@
 package org.the_chance.honeymart.ui.feature.cart
 import android.graphics.Canvas
+import android.view.View.OnTouchListener
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import javax.inject.Inject
+
 abstract class SwipeHelper
     : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     override fun onChildDraw(

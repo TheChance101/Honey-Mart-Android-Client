@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
-import org.the_chance.honeymart.ui.feature.wishlist.WishListFragmentDirections
-import org.the_chance.honeymart.ui.feature.wishlist.WishListUiEffect
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentCartBinding
@@ -39,7 +36,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     private fun initAdapters() {
         binding.recyclerCartList.adapter = cartAdapter
         binding.recyclerCartList.layoutManager = LinearLayoutManager(requireContext())
-        cartAdapter.setItems(viewModel.fakeCarts)
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerCartList)
         collectEffect()
 
@@ -51,12 +47,9 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder,
         ) = true
-
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.layoutPosition
-            val item = cartAdapter.getItemId(position)
-            viewModel.onClickDeleteCart(item)
-            cartAdapter.notifyItemRemoved(position)
+           val position =  binding.recyclerCartList.getChildAdapterPosition(viewHolder.itemView)
+            viewModel.onClickDeleteCart(position.toLong())
         }
     }
 

@@ -11,6 +11,7 @@ import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
 import org.the_chance.honeymart.util.EventHandler
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,12 +20,6 @@ class CartViewModel @Inject constructor(
     private val deleteFromCartUseCase: DeleteFromCartUseCase,
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
-    val fakeCarts = MutableList(4) {
-        CartListProductUiState(41, "Product 1", 100.0, 10)
-        CartListProductUiState(31, "Product 2", 200.5, 3)
-        CartListProductUiState(21, "Product 3", 300.9, 2)
-        CartListProductUiState(15, "Product 4", 400.9, 5)
-    }
     override val TAG: String = this::class.java.simpleName
 
     init {
@@ -50,7 +45,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun onGetAllCartError(throwable: Throwable) {
+    private fun onGetAllCartError(throwable: Exception) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
         }
@@ -58,19 +53,24 @@ class CartViewModel @Inject constructor(
 
     override fun onClickCart(productId: Long) {
     }
+
     fun onClickDiscoverButton() {
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
         }
     }
-    override fun onClickDeleteCart(position: Long) {
-        val productId = state.value.products.indexOfFirst {it.productId == position }
-        fakeCarts.removeAt(position .toInt()+1)
-        log("onClickDeleteCart: $productId")
-        log("onClickDeleteCart: $position")
-//            viewModelScope.launch {
-//            deleteFromCartUseCase(productId.toLong())
-//        }
+
+    fun onClickDeleteCart(position: Long) {
+
+        val productId = state.value.products[position.toInt()].productId
+        
+           viewModelScope.launch {
+               if (productId != null) {
+                   deleteFromCartUseCase(productId)
+               }
+        }
+
     }
+
 
 }

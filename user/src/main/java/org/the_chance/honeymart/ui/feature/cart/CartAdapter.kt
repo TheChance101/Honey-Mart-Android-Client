@@ -14,6 +14,4 @@ class CartAdapter
 }
 interface CartInteractionListener : BaseInteractionListener {
     fun onClickCart(productId: Long)
-    fun onClickDeleteCart(productId: Long)
-
 }
