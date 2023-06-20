@@ -16,7 +16,7 @@
         android:fitsSystemWindows="true"
         tools:context="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -79,7 +79,7 @@
             tools:listitem="@layout/item_product_image" />
 
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_product_name"
             style="@style/Theme.HoneyMart.Text.H2.DarkSubtle"
             android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
             app:strokeColor="@color/primary_100"
             app:strokeWidth="1dp">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
                 style="@style/Theme.HoneyMart.Text.H2"
                 android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                 app:srcCompat="@drawable/icon_add_product" />
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_product_quantity"
             style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
             android:layout_width="wrap_content"
@@ -174,7 +174,7 @@
                 app:srcCompat="@drawable/icon_remove_product" />
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/product_description"
             style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
             android:layout_width="0dp"
