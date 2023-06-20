@@ -63,14 +63,11 @@
                 android:layout_marginStart="@dimen/spacing_8"
                 android:text="@string/cancel"
                 style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
-                android:background="@drawable/button_background_white"
+                android:backgroundTint="@color/white_100"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog"
                 app:layout_constraintStart_toEndOf="@id/button_sure" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
     </com.google.android.material.card.MaterialCardView>
 

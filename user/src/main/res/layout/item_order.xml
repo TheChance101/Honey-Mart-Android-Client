@@ -40,7 +40,7 @@
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginTop="@dimen/spacing_16"
                 tool:text="@string/order_number"
-                android:text="@{item.orderId}"
+                android:text="@{String.valueOf(item.orderId)}"
                 style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
@@ -50,34 +50,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/spacing_8"
+                android:layout_marginStart="@dimen/spacing_8"
                 tool:text="@string/market_name"
                 android:text="@{item.marketName}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 app:layout_constraintTop_toBottomOf="@id/text_order_number"
-                app:layout_constraintStart_toStartOf="@id/text_order_number"
-                app:layout_constraintEnd_toEndOf="@id/text_order_number"/>
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ic_cart_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
                 app:srcCompat="@drawable/icon_cart_check"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_market_name"
-                app:layout_constraintStart_toStartOf="@id/text_market_name" />
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
 
             <TextView
                 android:id="@+id/text_item_count"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4"
                 android:layout_marginStart="@dimen/spacing_4"
-                android:text="@{item.orderQuantity}"
-                android:layout_marginBottom="@dimen/spacing_16"
-                tool:layout_editor_absoluteX="143dp"
-                tool:text="item count"
+                android:layout_marginTop="@dimen/spacing_4"
+                android:text="@{String.valueOf(item.orderQuantity)}"
+                app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
+                app:layout_constraintStart_toEndOf="@id/ic_cart_check"
                 app:layout_constraintTop_toBottomOf="@id/text_market_name"
-                app:layout_constraintStart_toEndOf="@id/ic_cart_check"/>
+                tool:text="item count" />
 
             <TextView
                 android:id="@+id/text_item_price"

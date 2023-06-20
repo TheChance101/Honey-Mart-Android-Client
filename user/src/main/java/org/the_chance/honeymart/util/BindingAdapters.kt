@@ -23,7 +23,7 @@ fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
 
-@BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
+@BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading", "app:showIfNoOrders"])
 fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
 }
