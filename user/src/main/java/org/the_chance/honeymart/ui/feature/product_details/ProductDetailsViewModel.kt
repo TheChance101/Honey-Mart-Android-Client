@@ -14,10 +14,11 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(
     private val getProductById: GetProductByIdUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ProductDetailsUiState, Long>(ProductDetailsUiState()) {
+) : BaseViewModel<ProductDetailsUiState, Long>(ProductDetailsUiState()),
+    ProductImageInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
-    private val args = ProductDetailsArgs.fromSavedStateHandle(savedStateHandle)
+    private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getProductByCategoryId(args.productId, args.categoryId)
@@ -37,7 +38,9 @@ class ProductDetailsViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                product = product
+                product = product,
+                image = product.productImages[0],
+                smallImages = product.productImages.drop(1)
             )
         }
     }
@@ -49,5 +52,13 @@ class ProductDetailsViewModel @Inject constructor(
                 isError = true,
             )
         }
+    }
+
+    override fun onClickImage(url: String) {
+        val newList = mutableListOf<String>()
+        newList.addAll(_state.value.smallImages.filter { it != url })
+        newList.add(0, _state.value.image)
+        _state.update { it.copy(smallImages = newList) }
+        _state.update { it.copy(image = url) }
     }
 }
