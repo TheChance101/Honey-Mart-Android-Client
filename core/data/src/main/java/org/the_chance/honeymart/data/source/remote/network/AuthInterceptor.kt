@@ -12,8 +12,7 @@ class AuthInterceptor @Inject constructor(
     private val dataStorePref: AuthDataStorePref
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val testToken =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDUxNzZkMjc5IiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0AxYTg5MWFkZCIsImV4cCI6MTY4NzI3MjEwNX0.FUAjpWU993oZrvIuczG_cKjZQHs_U0RystrDzS-KcMA"
+        val testToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDUxNzZkMjc5IiwiUk9MRV9UWVBFIjoiTWFya2V0T3duZXIiLCJpc3MiOiJpby5rdG9yLnNlcnZlci5jb25maWcuTWFwQXBwbGljYXRpb25Db25maWdAMWE4OTFhZGQiLCJleHAiOjE2ODcyNzUwMDJ9.A6UUR4k7CVn9YnXUGFyZ6Xf0hxr_XxNWDj_kLtxSJeQ"
         val token = dataStorePref.getToken()
         val newRequest = chain
             .request()

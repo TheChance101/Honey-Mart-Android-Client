@@ -28,18 +28,23 @@ fun showIfTrue(view: View, condition: Boolean) {
 fun changeChipColorIfSelected(chip: Chip, isSelected: Boolean) {
     val context = chip.context
     if (isSelected) {
-        val textColor = ContextCompat.getColor(context, R.color.white_100)
+        val textColor = ContextCompat.getColor(context, R.color.white)
         chip.setChipBackgroundColorResource(R.color.primary_100)
         chip.setTextColor(textColor)
     } else {
         val textColor = ContextCompat.getColor(context, R.color.primary_100)
-        chip.setChipBackgroundColorResource(R.color.white_100)
+        chip.setChipBackgroundColorResource(R.color.white)
         chip.setTextColor(textColor)
     }
 }
 
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
 fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
+    view.isVisible = condition == false && items.isEmpty()
+}
+
+@BindingAdapter(value = ["app:showIfNoOrders", "app:hideIfLoading"])
+fun <T> showIfEmptyOrders(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
 }
 

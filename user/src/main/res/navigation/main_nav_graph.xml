@@ -68,7 +68,11 @@
         android:id="@+id/ordersFragment"
         android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_marketsFragment"
+            app:destination="@id/marketsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"

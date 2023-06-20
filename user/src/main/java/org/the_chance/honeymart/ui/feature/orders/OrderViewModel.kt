@@ -11,6 +11,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
+import org.the_chance.honeymart.ui.feature.wishlist.WishListUiEffect
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class OrderViewModel @Inject constructor(
     }
 
     fun getAllProcessingOrders() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isSelected = true) }
         tryToExecute(
             { getProcessingOrders().map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
@@ -44,7 +45,7 @@ class OrderViewModel @Inject constructor(
     }
 
     fun getAllDoneOrders() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isSelected = true) }
         tryToExecute(
             { getDoneOrders().map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
