@@ -9,6 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -38,18 +39,21 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let {
-                onEffect(it)
-            }
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
     private fun onEffect(effect: OrderUiEffect) {
         when (effect) {
-            OrderUiEffect.UnAuthorizedUserEffect -> TODO()
-//            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToLogin()
+            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
+            is OrderUiEffect.ClickOrderEffect -> TODO()
         }
+    }
+
+    private fun navigateToAuthenticate() {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToUserNavGraph()
+        findNavController().navigate(action)
     }
 
     private fun navigateToMarkets() {
@@ -84,5 +88,4 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             dialog.dismiss()
         }
     }
-
 }

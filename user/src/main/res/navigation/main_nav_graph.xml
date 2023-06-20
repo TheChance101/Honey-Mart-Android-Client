@@ -73,6 +73,12 @@
             android:id="@+id/action_ordersFragment_to_marketsFragment"
             app:destination="@id/marketsFragment"
             app:popUpTo="@id/marketsFragment"/>
+        <action
+            android:id="@+id/action_ordersFragment_to_user_nav_graph"
+            app:destination="@id/user_nav_graph" />
+        <action
+            android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishListFragment"

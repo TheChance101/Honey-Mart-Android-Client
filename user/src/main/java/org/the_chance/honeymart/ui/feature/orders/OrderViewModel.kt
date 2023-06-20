@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetDoneOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetProcessingOrdersUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
+    private val getAllOrders: GetAllOrdersUseCase,
     private val getProcessingOrders: GetProcessingOrdersUseCase,
     private val getDoneOrders: GetDoneOrdersUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
