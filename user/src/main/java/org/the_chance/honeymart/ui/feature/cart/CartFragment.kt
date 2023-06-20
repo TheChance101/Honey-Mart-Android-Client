@@ -3,7 +3,9 @@ package org.the_chance.honeymart.ui.feature.cart
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
@@ -39,9 +41,23 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
             )
         binding.recyclerCartList.adapter = cartAdapter
-        binding.recyclerCartList.layoutManager=LinearLayoutManager(requireContext())
+        binding.recyclerCartList.layoutManager = LinearLayoutManager(requireContext())
         cartAdapter.setItems(fakeCarts)
+        ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerCartList)
+
     }
 
+    private val swipe = object : SwipeHelper() {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder,
+        ) = false
 
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            val item = cartAdapter.getItemId(position)
+            viewModel.onClickDeleteCart(item)
+        }
+    }
 }
