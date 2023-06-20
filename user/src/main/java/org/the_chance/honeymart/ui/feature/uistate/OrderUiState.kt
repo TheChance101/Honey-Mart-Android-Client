@@ -6,8 +6,13 @@ data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val isSelected: Boolean = false,
-    val orders: List<OrderUiState> = emptyList()
+    val orders: List<OrderUiState> = emptyList(),
+    val orderStates:OrderStates = OrderStates.PROCESSING
 )
+
+enum class OrderStates{
+    PROCESSING,DONE,CANCELED
+}
 
 data class OrderUiState(
     val orderId: Int?= 1,

@@ -41,7 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:showIfNoProducts="@{viewModel.state.products}">
+            app:showIfNoItems="@{viewModel.state.products}">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_wish_list_placeholder"

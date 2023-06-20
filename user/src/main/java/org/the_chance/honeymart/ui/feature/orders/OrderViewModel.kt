@@ -4,22 +4,20 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetDoneOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetProcessingOrdersUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
-import org.the_chance.honeymart.ui.feature.wishlist.WishListUiEffect
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-//    private val getAllOrders: GetAllOrdersUseCase,
-    private val getProcessingOrders : GetProcessingOrdersUseCase,
-    private val getDoneOrders : GetDoneOrdersUseCase,
+    private val getProcessingOrders: GetProcessingOrdersUseCase,
+    private val getDoneOrders: GetDoneOrdersUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
@@ -28,7 +26,13 @@ class OrderViewModel @Inject constructor(
     }
 
     fun getAllProcessingOrders() {
-        _state.update { it.copy(isLoading = true, isSelected = true) }
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isSelected = true,
+                orderStates = OrderStates.PROCESSING
+            )
+        }
         tryToExecute(
             { getProcessingOrders().map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
@@ -40,12 +44,18 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetProcessingOrdersError(throwable: Throwable) {
+    private fun onGetProcessingOrdersError(throwable: Exception) {
         _state.update { it.copy(isLoading = false) }
     }
 
     fun getAllDoneOrders() {
-        _state.update { it.copy(isLoading = true, isSelected = true) }
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isSelected = true,
+                orderStates = OrderStates.DONE
+            )
+        }
         tryToExecute(
             { getDoneOrders().map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
@@ -57,7 +67,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetDoneOrdersError(throwable: Throwable) {
+    private fun onGetDoneOrdersError(throwable: Exception) {
         _state.update { it.copy(isLoading = false) }
     }
 

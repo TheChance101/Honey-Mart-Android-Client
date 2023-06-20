@@ -96,7 +96,7 @@ fun <T> LifecycleOwner.collect(flow: Flow<T>, action: suspend (T) -> Unit) {
 fun Fragment.showSnackBar(
     message: String,
     actionText: String? = null,
-    action: (() -> Unit)? = null
+    action: (() -> Unit)? = null,
 ) {
     val rootView = requireView()
     val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
