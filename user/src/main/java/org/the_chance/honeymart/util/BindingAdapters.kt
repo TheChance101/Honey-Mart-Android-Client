@@ -81,12 +81,11 @@ fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
 
 @BindingAdapter(value = ["app:imageUrl"])
 fun setImageFromUrl(view: ImageView, url: String?) {
-    url?.let {
+    url.let {
         Glide
             .with(view)
             .load(url)
             .placeholder(R.drawable.placeholder_wish_list)
-            .error(R.drawable.ic_error_password)
             .centerCrop()
             .into(view)
     }
