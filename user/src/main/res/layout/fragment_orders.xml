@@ -65,6 +65,7 @@
             android:clipToPadding="false"
             android:layout_marginTop="@dimen/spacing_16"
             android:orientation="vertical"
+            app:items="@{viewModel.state.orders}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +86,7 @@
             app:lottie_rawRes="@raw/loading"
             app:showIfTrue="@{viewModel.state.loading}"/>
 
+<!--        app:showIfNoOrders="@{viewModel.state.orders}"-->
         <LinearLayout
             android:id="@+id/placeHolder_container"
             android:orientation="vertical"
@@ -92,8 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="@dimen/spacing_16"
-            app:hideIfLoading="@{viewModel.state.isLoading}"
-            app:showIfNoOrders="@{viewModel.state.orders}"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,6 +154,7 @@
 <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

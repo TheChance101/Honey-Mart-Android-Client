@@ -22,26 +22,18 @@ class OrderViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-///*
-//        getOrderById()
-//*/
-        val fakeOrders = listOf(
-            OrderUiState(1, "Market 1", "10", 9.99),
-            OrderUiState(2, "Market 2", "5", 4.99),
-            OrderUiState(3, "Market 3", "3", 2.99)
-        )
-        _state.update { currentState ->
-            currentState.copy(isLoading = false, isError = false, orders = fakeOrders)
-        }
+//        _state.update { currentState ->
+//            currentState.copy(isLoading = false, isError = false, orders = fakeOrders)
+//        }
     }
 
-    private fun getOrderById() {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { getAllOrders().map { it.toOrderUiState() } },
-            ::onOrderSuccess,
-            ::onOrderError
-        )
+    private fun getOrders() {
+//        _state.update { it.copy(isLoading = true) }
+//        tryToExecute(
+//            { getAllOrders().map { it.toOrderUiState() } },
+//            ::onOrderSuccess,
+//            ::onOrderError
+//        )
     }
 
     private fun onOrderError(throwable: Throwable) {
