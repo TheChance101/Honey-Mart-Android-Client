@@ -10,13 +10,14 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val getAllCartUseCase: GetAllCartUseCase,
     private val deleteFromCartUseCase: DeleteFromCartUseCase,
-) : BaseViewModel<CartUiState, Long>(CartUiState()),
+) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     val fakeCarts = MutableList(4) {
         CartListProductUiState(41, "Product 1", 100.0, 10)
@@ -57,15 +58,19 @@ class CartViewModel @Inject constructor(
 
     override fun onClickCart(productId: Long) {
     }
-
+    fun onClickDiscoverButton() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
+        }
+    }
     override fun onClickDeleteCart(position: Long) {
         val productId = state.value.products.indexOfFirst {it.productId == position }
         fakeCarts.removeAt(position .toInt()+1)
         log("onClickDeleteCart: $productId")
         log("onClickDeleteCart: $position")
-            viewModelScope.launch {
-            deleteFromCartUseCase(productId.toLong())
-        }
+//            viewModelScope.launch {
+//            deleteFromCartUseCase(productId.toLong())
+//        }
     }
 
 }
