@@ -97,12 +97,12 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
             android:visibility="gone"
-            app:showIfNoOrders="@{viewModel.state.orders}"
             app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoOrders="@{viewModel.state.orders}">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_wish_list_placeholder"
@@ -146,79 +146,73 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_cancel_dialog"
+            android:layout_width="328dp"
+            android:layout_height="257dp"
+            android:layout_marginHorizontal="@dimen/spacing_16"
+            android:layout_marginTop="273dp"
+            android:background="@color/white_300"
+            app:cardCornerRadius="@dimen/radius_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="@dimen/stroke_zero">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="328dp"
-                android:layout_height="257dp"
-                android:layout_marginHorizontal="@dimen/spacing_16"
-                android:layout_marginTop="273dp"
-                android:background="@color/white_300"
-                app:cardCornerRadius="@dimen/radius_16"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="@dimen/stroke_zero">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ic_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="127dp"
+                    android:layout_marginEnd="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_warning" />
+
+                <TextView
+                    android:id="@+id/text_dialog"
+                    style="@style/Theme.HoneyMart.Text.H4.DarkModerate"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="28dp"
+                    android:layout_marginTop="@dimen/spacing_32"
+                    android:gravity="center"
+                    android:text="@string/order_dialog"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ic_warning" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/ic_warning"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="127dp"
-                        android:layout_marginEnd="80dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_warning" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_sure"
+                    style="@style/Theme.HoneyMart.Text.H5.Light"
+                    android:layout_width="144dp"
+                    android:layout_height="48dp"
+                    android:layout_marginVertical="@dimen/spacing_32"
+                    android:layout_marginStart="@dimen/spacing_16"
+                    android:background="@drawable/button_background"
+                    android:text="@string/yes_i_m_sure"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
-                    <TextView
-                        android:id="@+id/text_dialog"
-                        style="@style/Theme.HoneyMart.Text.H4.DarkModerate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="28dp"
-                        android:layout_marginTop="@dimen/spacing_32"
-                        android:gravity="center"
-                        android:text="@string/order_dialog"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ic_warning" />
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
+                    android:layout_width="144dp"
+                    android:layout_height="48dp"
+                    android:layout_marginVertical="@dimen/spacing_32"
+                    android:layout_marginStart="@dimen/spacing_8"
+                    android:backgroundTint="@color/white_100"
+                    android:text="@string/cancel"
+                    app:layout_constraintStart_toEndOf="@id/button_sure"
+                    app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_sure"
-                        style="@style/Theme.HoneyMart.Text.H5.Light"
-                        android:layout_width="144dp"
-                        android:layout_height="48dp"
-                        android:layout_marginVertical="@dimen/spacing_32"
-                        android:layout_marginStart="@dimen/spacing_16"
-                        android:background="@drawable/button_background"
-                        android:text="@string/yes_i_m_sure"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_dialog" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
-                        android:layout_width="144dp"
-                        android:layout_height="48dp"
-                        android:layout_marginVertical="@dimen/spacing_32"
-                        android:layout_marginStart="@dimen/spacing_8"
-                        android:backgroundTint="@color/white_100"
-                        android:text="@string/cancel"
-                        app:layout_constraintStart_toEndOf="@id/button_sure"
-                        app:layout_constraintTop_toBottomOf="@id/text_dialog" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
