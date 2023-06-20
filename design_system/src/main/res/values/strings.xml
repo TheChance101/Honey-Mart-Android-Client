@@ -46,5 +46,7 @@
     <string name="total_price">Total Price</string>
     <string name="order_now">Order Now</string>
     <string name="_300000">300000$</string>
+    <string name="order_complete">Order complete!</string>
+    <string name="thank_you_for_shopping_with_us">Thank you for shopping with us</string>
 
 </resources>
