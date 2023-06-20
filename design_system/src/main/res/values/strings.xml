@@ -45,6 +45,9 @@
     <string name="done">Done</string>
     <string name="successMessage">Successfully Added To Wish List</string>
     <string name="removedFromWishList">Item Removed From Wish List</string>
+    <string name="total_price">Total Price</string>
+    <string name="Processing">Processing</string>
+    <string name="Done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="order_placeholder_description">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="you_dont_have_any_orders">You Dont have any orders!!</string>
