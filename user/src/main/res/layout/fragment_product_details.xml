@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_16"
                 android:layout_marginVertical="@dimen/spacing_4"
-                android:text="@{viewModel.state.product.productPrice.toString()}"
+                app:formattedPrice="@{viewModel.state.product.productPrice}"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
                 tools:text="10,000,000$" />

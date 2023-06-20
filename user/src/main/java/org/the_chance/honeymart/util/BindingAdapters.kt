@@ -2,6 +2,7 @@ package org.the_chance.honeymart.util
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -96,3 +97,8 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
+@BindingAdapter("app:formattedPrice")
+fun setFormattedPrice(view: TextView, price: Double) {
+    val formattedPrice = String.format("%,.0f$", price)
+    view.text = formattedPrice
+}
