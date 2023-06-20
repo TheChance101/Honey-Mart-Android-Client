@@ -144,7 +144,7 @@
     </navigation>
     <fragment
         android:id="@+id/productDetails"
-        android:name="org.the_chance.honeymart.ui.feature.product_details.ProductDetails"
+        android:name="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment"
         android:label="ProductDetails"
         tools:layout="@layout/fragment_product_details">
         <argument
