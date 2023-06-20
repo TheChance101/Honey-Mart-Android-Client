@@ -7,7 +7,9 @@ import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
+import org.the_chance.honeymart.ui.feature.uistate.OrderParentDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderDetailsProductUiState
+import org.the_chance.honeymart.ui.feature.uistate.toOrderParentDetailsUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,38 +20,51 @@ class OrderDetailsViewModel @Inject constructor(
     OrderDetailsInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-    private fun getOrderProducts() {
 
-        _state.update { it.copy(isLoading = true) }
+    init {
+        getOrderProducts()
+        getOrderDetails()
+    }
+
+
+    private fun getOrderProducts() {
+        _state.update { it.copy(isProductsLoading = true) }
         tryToExecute(
             { getOrderProductsDetailsUseCase(1).map { it.toOrderDetailsProductUiState() } },
-            :: onGetOrderProductsSuccess,
-            :: onGetOrderProductsError
+            ::onGetOrderProductsSuccess,
+            ::onGetOrderProductsError
         )
     }
 
+    private fun onGetOrderProductsSuccess(products: List<OrderDetailsProductUiState>) {
+        _state.update { it.copy(isProductsLoading = false, products = products) }
+    }
+
     private fun onGetOrderProductsError(error: Exception) {
-        this._state.update {
-            it.copy(
-                isLoading = false,
-                isError = true,
-            )
-        }
+        _state.update { it.copy(isProductsLoading = false) }
+
+
     }
 
-    private fun  onGetOrderProductsSuccess(products:List<OrderDetailsProductUiState>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-                products=products
-            )
-        }
+    private fun getOrderDetails() {
+        _state.update { it.copy(isDetailsLoading = true) }
+        tryToExecute(
+            { getOrderDetailsUseCase(1).toOrderParentDetailsUiState() },
+            ::onGetOrderDetailsSuccess,
+            ::onGetOrderDetailsError
+        )
     }
 
-    override fun onClickProduct(productId: Long) {
-        TODO("Not yet implemented")
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderParentDetailsUiState) {
+        _state.update { it.copy(isDetailsLoading = false, orderDetails = orderDetails) }
     }
+
+    private fun onGetOrderDetailsError(error: Exception) {
+        _state.update { it.copy(isDetailsLoading = false) }
+    }
+
+
+    override fun onClickProduct(productId: Long) {}
 
 
 }

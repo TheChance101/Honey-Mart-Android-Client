@@ -4,7 +4,8 @@ import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 
 data class OrderDetailsUiState(
-    val isLoading: Boolean = false,
+    val isProductsLoading: Boolean = false,
+    val isDetailsLoading: Boolean = false,
     val isError: Boolean = false,
     val orderDetails: OrderParentDetailsUiState = OrderParentDetailsUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
