@@ -13,16 +13,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.the_chance.honeymart.ui.feature.product_details.ProductDetails">
+        tools:context="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment">
 
         <ImageView
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:imageUrl="@{viewModel.state.product.productImages[0]}"
+            app:imageUrl="@{viewModel.state.image}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline1"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/image_test" />
+            tools:background="@drawable/image_test"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_favorite"
@@ -32,6 +34,7 @@
             android:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="0dp">
 
@@ -50,6 +53,7 @@
             android:backgroundTint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="0dp">
 
@@ -68,6 +72,7 @@
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/spacing_12"
+            app:items="@{viewModel.state.smallImages}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline1"
             app:layout_constraintTop_toTopOf="@id/guideline1"
@@ -82,6 +87,7 @@
             android:layout_marginStart="@dimen/spacing_16"
             android:layout_marginTop="@dimen/spacing_24"
             android:text="@{viewModel.state.product.productName}"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
             tools:text="Ottoman" />
@@ -94,6 +100,7 @@
             android:layout_marginTop="@dimen/spacing_8"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardElevation="0dp"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="@id/text_product_name"
             app:layout_constraintTop_toBottomOf="@id/text_product_name"
             app:strokeColor="@color/primary_100"
@@ -117,11 +124,14 @@
             android:id="@+id/icon_add_product"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_margin="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:layout_marginBottom="1dp"
             android:backgroundTint="@color/primary_100"
-            app:layout_constraintBottom_toBottomOf="@id/text_product_quantity"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintBottom_toBottomOf="@+id/text_product_quantity"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/text_product_quantity"
+            app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="0dp">
 
@@ -138,10 +148,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="01"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/icon_remove_product"
             app:layout_constraintEnd_toStartOf="@+id/icon_add_product"
-            app:layout_constraintTop_toTopOf="@id/icon_remove_product"
-            tools:text="01" />
+            app:layout_constraintTop_toTopOf="@id/icon_remove_product" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_remove_product"
@@ -149,6 +160,7 @@
             android:layout_height="32dp"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/text_product_name"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -172,6 +184,7 @@
             android:layout_marginTop="@dimen/spacing_24"
             android:layout_marginEnd="@dimen/spacing_16"
             android:textAlignment="textStart"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/card_product_price"
             app:layout_constraintTop_toBottomOf="@id/card_product_price"
@@ -189,6 +202,7 @@
             app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
