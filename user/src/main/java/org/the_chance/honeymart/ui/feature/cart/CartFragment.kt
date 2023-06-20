@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
+import org.the_chance.honeymart.ui.feature.wishlist.WishListFragmentDirections
+import org.the_chance.honeymart.ui.feature.wishlist.WishListUiEffect
+import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentCartBinding
 
@@ -34,11 +37,11 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     }
 
     private fun initAdapters() {
-
         binding.recyclerCartList.adapter = cartAdapter
         binding.recyclerCartList.layoutManager = LinearLayoutManager(requireContext())
         cartAdapter.setItems(viewModel.fakeCarts)
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerCartList)
+        collectEffect()
 
     }
 
@@ -54,8 +57,26 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
             val item = cartAdapter.getItemId(position)
             viewModel.onClickDeleteCart(item)
             cartAdapter.notifyItemRemoved(position)
-
-
         }
+    }
+
+    private fun collectEffect() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let {
+                onEffect(it)
+            }
+        }
+    }
+
+    private fun onEffect(effect: CartUiEffect) {
+        when (effect) {
+            is CartUiEffect.ClickDiscoverEffect -> navigateToMarkets()
+            is CartUiEffect.ClickOrderEffect -> TODO()
+        }
+    }
+
+    private fun navigateToMarkets() {
+        val action = CartFragmentDirections.actionCartFragmentToMarketsFragment()
+        findNavController().navigate(action)
     }
 }
