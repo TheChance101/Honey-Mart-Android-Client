@@ -66,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_8"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/text_product_price"
                 tool:text="Secondary Text" />
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
                 app:strokeWidth="0dp"
-                android:backgroundTint="@color/white"
+                app:changeColorIfSelected="@{item.isFavorite}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape">
@@ -84,7 +85,8 @@
                     android:id="@+id/icon_favorite_enabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()->listener.onClickAddToWishList(item.productId)}"
+                    app:changeColorIfSelected="@{item.isFavorite}"
+                    android:onClick="@{()->listener.onClickFavoriteIcon(item.productId)}"
                     android:padding="@dimen/spacing_4"
                     app:srcCompat="@drawable/icon_favorite_selected" />
             </com.google.android.material.card.MaterialCardView>
