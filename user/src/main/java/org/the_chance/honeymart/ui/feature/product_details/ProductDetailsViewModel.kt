@@ -43,8 +43,8 @@ class ProductDetailsViewModel @Inject constructor(
                 isLoading = false,
                 isError = false,
                 product = product,
-                image = product.productImages[0],
-                smallImages = product.productImages.drop(1)
+                image = product.productImages?.get(0) ?: "",
+                smallImages = product.productImages?.drop(1) as List<String>
             )
         }
     }

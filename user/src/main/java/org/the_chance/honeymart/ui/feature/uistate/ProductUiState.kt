@@ -15,7 +15,7 @@ data class ProductUiState(
     val productName: String? = "",
     val productQuantity: String? = "",
     val productPrice: Double? = 0.0,
-    val productImages: List<String> = emptyList(),
+    val productImages: List<String>? = emptyList(),
     val isFavorite: Boolean? = false,
 )
 
