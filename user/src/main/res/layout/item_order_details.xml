@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_8"
-                    android:text="@{item.products}"
+                    android:text="@{item.name}"
                     android:textColor="@color/white_300"
                     tool:text="order"
                     app:layout_constraintBottom_toTopOf="@+id/text_order_price"
@@ -53,7 +53,7 @@
                     style="@style/Theme.HoneyMart.Text.H6.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{String.valueOf(item.totalPrice) + "$"}'
+                    android:text='@{String.valueOf(item.price) + "$"}'
                     tool:text="3000$"
                     app:layout_constraintBottom_toTopOf="@+id/text_order_description"
                     app:layout_constraintStart_toStartOf="@id/text_order_name" />
@@ -64,14 +64,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_8"
+                    android:text='@{"x" + String.valueOf(item.count) }'
                     tool:text=" x4"
                     app:drawableStartCompat="@drawable/order"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/text_order_price" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </com.google.android.material.card.MaterialCardView>
 
 
