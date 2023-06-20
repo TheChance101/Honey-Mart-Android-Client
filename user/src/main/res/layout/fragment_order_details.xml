@@ -27,12 +27,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
             tools:itemCount="6"
+            app:items="@{viewModel.state.products}"
             tools:listitem="@layout/item_order_details" />
 
         <include
             android:id="@+id/layout_order_status"
-            layout="@layout/item_processing"/>
+            layout="@layout/item_processing" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isLoading}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
