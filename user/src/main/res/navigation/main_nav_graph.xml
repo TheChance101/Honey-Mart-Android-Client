@@ -71,7 +71,8 @@
         tools:layout="@layout/fragment_orders" >
         <action
             android:id="@+id/action_ordersFragment_to_marketsFragment"
-            app:destination="@id/marketsFragment" />
+            app:destination="@id/marketsFragment"
+            app:popUpTo="@id/marketsFragment"/>
     </fragment>
     <fragment
         android:id="@+id/wishListFragment"

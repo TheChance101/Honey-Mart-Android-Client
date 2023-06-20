@@ -89,7 +89,6 @@
             app:lottie_rawRes="@raw/loading"
             app:showIfTrue="@{viewModel.state.loading}" />
 
-        <!--        app:showIfNoOrders="@{viewModel.state.orders}"-->
         <LinearLayout
             android:id="@+id/placeHolder_container"
             android:layout_width="match_parent"
