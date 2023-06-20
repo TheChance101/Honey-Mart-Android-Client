@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
@@ -16,16 +18,23 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     override fun setup() {
         initAdapter()
+        handleOnBackPressed()
+    }
+
+    private fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigate(R.id.marketsFragment)
+        }
     }
 
     private fun initAdapter() {
-        val fakeOrders = listOf(
-            OrderUiState(1, "Market 1", "10", 9.99),
-            OrderUiState(2, "Market 2", "5", 4.99),
-            OrderUiState(3, "Market 3", "3", 2.99)
-        )
+//        val fakeOrders = listOf(
+//            OrderUiState(1, "Market 1", "10", 9.99),
+//            OrderUiState(2, "Market 2", "5", 4.99),
+//            OrderUiState(3, "Market 3", "3", 2.99)
+//        )
         binding.recyclerOrder.adapter = ordersAdapter
-        binding.recyclerOrder.layoutManager = LinearLayoutManager(requireContext())
-        ordersAdapter.setItems(fakeOrders)
+//        binding.recyclerOrder.layoutManager = LinearLayoutManager(requireContext())
+//        ordersAdapter.setItems(fakeOrders)
         }
     }
