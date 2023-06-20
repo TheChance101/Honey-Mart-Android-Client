@@ -7,9 +7,6 @@ import javax.inject.Inject
 class GetOrderDetailsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-
     suspend operator fun invoke(orderId: Long): OrderDetailsEntity =
         honeyMartRepository.getOrderDetails(orderId)
-
-
 }

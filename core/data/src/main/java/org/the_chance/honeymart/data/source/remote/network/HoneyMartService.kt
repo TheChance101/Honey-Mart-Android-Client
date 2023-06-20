@@ -116,7 +116,7 @@ interface HoneyMartService {
     //region user
 
     @GET("/order/{orderId}")
-    suspend fun getOrderDetails(@Path("orderId") orderid: Long): Response<BaseResponse<OrderDetailsDto>>
+    suspend fun getOrderDetails(@Path("orderId") orderId: Long): Response<BaseResponse<OrderDetailsDto>>
 
     @FormUrlEncoded
     @POST("/user/signup")

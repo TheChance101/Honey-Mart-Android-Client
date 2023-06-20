@@ -1,10 +1,15 @@
 package org.the_chance.honeymart.domain.model
 
-import java.util.Date
-
 data class OrderDetailsEntity(
-    val products: List<Any>?,
+    val products: List<OrderProductDetailsEntity>?,
     val totalPrice: Double?,
-    val date: Date?,
-    val state: Long?
+    val date: String?,
+    val state: Int?
+)
+
+data class OrderProductDetailsEntity(
+    val id: Long?,
+    val name: String?,
+    val count: Int?,
+    val price: Double?
 )
