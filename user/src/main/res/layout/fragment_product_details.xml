@@ -19,12 +19,11 @@
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:imageUrl="@{viewModel.state.image}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline1"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/image_test"
-            app:hideIfLoading="@{viewModel.state.loading}"
-            />
+            tools:background="@drawable/image_test" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_favorite"
@@ -32,9 +31,9 @@
             android:layout_height="32dp"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:hideIfLoading="@{viewModel.state.loading}"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="0dp">
 
@@ -51,9 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:hideIfLoading="@{viewModel.state.loading}"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="0dp">
 
@@ -113,9 +112,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_16"
                 android:layout_marginVertical="@dimen/spacing_4"
-                app:formattedPrice="@{viewModel.state.product.productPrice}"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
+                app:formattedPrice="@{viewModel.state.product.productPrice}"
                 tools:text="10,000,000$" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -147,12 +146,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toTopOf="@id/icon_add_product"
+            android:text="01"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
             app:layout_constraintEnd_toStartOf="@id/icon_add_product"
-            tools:text="01"
-            app:hideIfLoading="@{viewModel.state.loading}"
-             />
+            app:layout_constraintTop_toTopOf="@id/icon_add_product" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_remove_product"
@@ -198,10 +196,10 @@
             android:background="@drawable/button_background"
             android:gravity="center"
             android:text="@string/add_to_cart"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
-            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
