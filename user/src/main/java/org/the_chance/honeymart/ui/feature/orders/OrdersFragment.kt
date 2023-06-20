@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
+import org.the_chance.honeymart.ui.feature.wishlist.WishListUiEffect
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -20,6 +21,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     override fun setup() {
         initAdapter()
         handleOnBackPressed()
+        collectEffect()
     }
 
     private fun handleOnBackPressed() {
@@ -31,4 +33,26 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     private fun initAdapter() {
         binding.recyclerOrder.adapter = ordersAdapter
     }
+
+    private fun collectEffect() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let {
+                onEffect(it)
+            }
+        }
+    }
+
+    private fun onEffect(effect: OrderUiEffect) {
+        when(effect){
+            OrderUiEffect.UnAuthorizedUserEffect -> TODO()
+//            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToLogin()
+            is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
+        }
+    }
+
+    private fun navigateToMarkets() {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
+        findNavController().navigate(action)
+    }
+
 }
