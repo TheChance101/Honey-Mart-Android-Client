@@ -60,7 +60,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     }
 
-    protected fun makeStatusBarTransparent() {
+    protected fun setupUserFlowWindowVisibility() {
         val window: Window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -72,7 +72,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         }
     }
 
-    protected fun disableStatusBarTransparent() {
+    protected fun setupMainFlowWindowVisibility() {
         val window: Window = requireActivity().window
         window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
