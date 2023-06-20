@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentWishListBinding
 
@@ -45,6 +46,9 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
             is WishListUiEffect.ClickProductEffect -> TODO()
             is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
             is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
+            WishListUiEffect.DeleteProductFromWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+            }
         }
     }
 
