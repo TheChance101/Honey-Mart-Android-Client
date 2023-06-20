@@ -170,7 +170,9 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        // emmit any value and observe it in fragment and Show Snake Bar message
+        viewModelScope.launch {
+            _effect.emit(EventHandler(ProductUiEffect.RemovedFromWishListEffect))
+        }
         log("Deleted Successfully : $successMessage")
     }
 
@@ -198,7 +200,9 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
-        // emmit any value and observe it in fragment and Show Snake Bar message
+        viewModelScope.launch {
+            _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
+        }
         log("Added Successfully : $successMessage")
     }
 
@@ -211,6 +215,5 @@ class ProductViewModel @Inject constructor(
         log("Add to WishList Error : ${error.message}")
         updateFavoriteState(productId, false)
     }
-
 
 }

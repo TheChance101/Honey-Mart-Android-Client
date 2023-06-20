@@ -6,6 +6,7 @@ import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
+import org.the_chance.honeymart.data.source.remote.models.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -120,6 +121,8 @@ interface HoneyMartService {
     //endregion WishList
     //region user
 
+    @GET("/order/{orderId}")
+    suspend fun getOrderDetails(@Path("orderId") orderId: Long): Response<BaseResponse<OrderDetailsDto>>
 
     @FormUrlEncoded
     @POST("/user/signup")

@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductsBinding
 
@@ -17,7 +18,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
     override fun setup() {
-        disableStatusBarTransparent()
+        setupMainFlowWindowVisibility()
         initAdapters()
         collectEffect()
     }
@@ -32,9 +33,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let {
-                onEffect(it)
-            }
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
@@ -42,6 +41,14 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         when (effect) {
             is ProductUiEffect.ClickProductEffect -> TODO()
             ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            ProductUiEffect.AddedToWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
+            }
+
+            ProductUiEffect.RemovedFromWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+
+            }
         }
     }
 

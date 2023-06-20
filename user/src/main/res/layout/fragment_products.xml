@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.product.ProductViewModel" />
@@ -30,13 +31,13 @@
             android:paddingHorizontal="@dimen/spacing_16"
             android:paddingTop="@dimen/spacing_8"
             android:paddingBottom="@dimen/spacing_24"
-            app:scrollToPosition="@{viewModel.state.position}"
             app:items="@{viewModel.state.categories}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guide_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:scrollToPosition="@{viewModel.state.position}"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_category_product" />
 
@@ -46,8 +47,8 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingTop="@dimen/spacing_8"
-            android:paddingBottom="@dimen/spacing_24"
             android:paddingEnd="@dimen/spacing_16"
+            android:paddingBottom="@dimen/spacing_24"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,13 +64,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/placeholder_wish_list"
-            app:showIfNoProducts="@{viewModel.state.products}"
             app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/recycler_category"
             app:layout_constraintTop_toTopOf="parent"
-           />
+            app:showIfNoProducts="@{viewModel.state.products}" />
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -78,15 +78,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_56"
             android:gravity="center"
             android:text="@string/no_products"
             android:visibility="gone"
-            android:layout_marginTop="@dimen/spacing_56"
             app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
-            app:showIfNoProducts="@{viewModel.state.products}"
-            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder"
             app:layout_constraintStart_toStartOf="@id/image_view_placeholder"
-            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder" />
+            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            app:showIfNoProducts="@{viewModel.state.products}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
@@ -100,8 +100,7 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading"
             app:showIfFirsTrue="@{viewModel.state.isLoadingCategory}"
-            app:showIfSecondTrue="@{viewModel.state.isLoadingProduct}"
-            />
+            app:showIfSecondTrue="@{viewModel.state.isLoadingProduct}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

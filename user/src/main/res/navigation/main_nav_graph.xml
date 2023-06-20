@@ -145,5 +145,9 @@
                 app:destination="@id/loginFragment" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
+        android:label="OrderDetailsFragment" />
 
 </navigation>

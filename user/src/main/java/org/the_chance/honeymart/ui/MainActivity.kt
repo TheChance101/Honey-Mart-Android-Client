@@ -32,23 +32,6 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.navController
         val navController = navHostFragment.navController
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.authFragment ||
-                destination.id == R.id.loginFragment ||
-                destination.id == R.id.signupFragment ||
-                destination.id == R.id.signupConfirmPasswordFragment
-            ) {
-                binding.bottomNavigationView.visibility = View.GONE
-                binding.appBarLayout.visibility = View.GONE
-            } else {
-                binding.bottomNavigationView.visibility = View.VISIBLE
-                binding.appBarLayout.visibility = View.VISIBLE
-
-            }
-        }
-
-        val navGraph = navController.navInflater.inflate(R.navigation.main_nav_graph)
-
         setupNavigation(navController)
         statusBarMode(this)
 

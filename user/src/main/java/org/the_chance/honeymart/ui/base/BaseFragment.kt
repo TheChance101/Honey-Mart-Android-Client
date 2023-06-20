@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.base
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
 import org.the_chance.honeymart.util.addOnScrollListenerWithAppbarColor
 import org.the_chance.honeymart.util.addToolbarScrollListener
@@ -59,16 +59,28 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
 
     }
-    protected fun makeStatusBarTransparent(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = requireActivity().window
-            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+    protected fun setupUserFlowWindowVisibility() {
+        val window: Window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            ?.let { navigateIcon ->
+                navigateIcon.visibility = View.GONE
+            }
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
+            toolbar.visibility = View.GONE
         }
     }
-    protected fun disableStatusBarTransparent(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val window: Window = requireActivity().window
-            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+    protected fun setupMainFlowWindowVisibility() {
+        val window: Window = requireActivity().window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            ?.let { navigateIcon ->
+                navigateIcon.visibility = View.VISIBLE
+            }
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
+            toolbar.visibility = View.VISIBLE
         }
     }
 
