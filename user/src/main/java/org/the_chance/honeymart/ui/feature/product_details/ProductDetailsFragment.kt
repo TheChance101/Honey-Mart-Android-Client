@@ -44,8 +44,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             is ProductDetailsUiEffect.AddToCartSuccess -> { showSnackBar(effect.message) }
             is ProductDetailsUiEffect.AddToCartError -> { showSnackBar(effect.error.toString()) }
             ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
-            ProductDetailsUiEffect.AddedToWishListEffect -> TODO()
-            ProductDetailsUiEffect.RemovedFromWishListEffect -> TODO()
+            is ProductDetailsUiEffect.AddProductToWishListEffectError -> TODO()
+            is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> TODO()
+            is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> TODO()
+            is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> TODO()
         }
     }
 

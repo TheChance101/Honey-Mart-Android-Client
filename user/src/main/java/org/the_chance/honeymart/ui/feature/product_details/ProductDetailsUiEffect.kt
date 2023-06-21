@@ -4,7 +4,8 @@ sealed class ProductDetailsUiEffect {
     data class AddToCartSuccess(val message: String) : ProductDetailsUiEffect()
     data class AddToCartError(val error: Exception) : ProductDetailsUiEffect()
     object UnAuthorizedUserEffect : ProductDetailsUiEffect()
-
-    object AddedToWishListEffect : ProductDetailsUiEffect()
-    object RemovedFromWishListEffect : ProductDetailsUiEffect()
+    data class AddProductToWishListEffectSuccess(val message: String) : ProductDetailsUiEffect()
+    data class AddProductToWishListEffectError(val error: Exception) : ProductDetailsUiEffect()
+    data class RemoveProductFromWishListEffectSuccess(val message: String) : ProductDetailsUiEffect()
+    data class RemoveProductFromWishListEffectError(val message: String) : ProductDetailsUiEffect()
 }

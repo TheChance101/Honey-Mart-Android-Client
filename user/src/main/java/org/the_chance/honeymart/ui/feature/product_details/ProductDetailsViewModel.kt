@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
+import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
+import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -19,6 +22,9 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(
     private val getProductByIdUseCase: GetProductByIdUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
+    private val addProductToWishListUseCase: AddToWishListUseCase,
+    private val getProductFromWishListUseCase: GetAllWishListUseCase,
+    private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductImageInteractionListener {
@@ -103,7 +109,6 @@ class ProductDetailsViewModel @Inject constructor(
         } else {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
-                log(error.toString())
             }
         }
     }
@@ -111,5 +116,41 @@ class ProductDetailsViewModel @Inject constructor(
     // endregion
 
     // region Wishlist
+
+    private fun addProductToWishList(productId: Long) {
+        tryToExecute(
+            { addProductToWishListUseCase(productId) },
+            ::onAddProductToWishListSuccess,
+            { error -> onAddProductToWishListError(error, productId) }
+        )
+    }
+
+    private fun onAddProductToWishListSuccess(message: String) {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess(message))
+            )
+        }
+    }
+
+    private fun onAddProductToWishListError(error: Exception, productId: Long) {
+        if (error is UnAuthorizedException) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+            }
+        } else {
+            viewModelScope.launch {
+                _effect.emit(
+                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
+                )
+            }
+        }
+        updateFavoriteState(productId, false)
+    }
+
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+
+    }
+
     // endregion
 }
