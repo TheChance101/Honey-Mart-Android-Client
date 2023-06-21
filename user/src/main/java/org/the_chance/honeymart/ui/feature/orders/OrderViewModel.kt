@@ -5,8 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
-import org.the_chance.honeymart.domain.usecase.GetDoneOrdersUseCase
-import org.the_chance.honeymart.domain.usecase.GetProcessingOrdersUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
@@ -18,16 +17,15 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
-    private val getProcessingOrders: GetProcessingOrdersUseCase,
-    private val getDoneOrders: GetDoneOrdersUseCase,
+    private val updateOrderStateUseCase: UpdateOrderStateUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getAllProcessingOrders()
+        getAllProcessingOrders(1)
     }
 
-    fun getAllProcessingOrders() {
+    fun getAllProcessingOrders(state: Int) {
         _state.update {
             it.copy(
                 isLoading = true,
@@ -36,7 +34,7 @@ class OrderViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getProcessingOrders().map { it.toOrderUiState() } },
+            { getAllOrders(state).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
@@ -50,7 +48,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
     }
 
-    fun getAllDoneOrders() {
+    fun getAllDoneOrders(state: Int) {
         _state.update {
             it.copy(
                 isLoading = true,
@@ -59,7 +57,7 @@ class OrderViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getDoneOrders().map { it.toOrderUiState() } },
+            { getAllOrders(state).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -70,6 +68,52 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun onGetDoneOrdersError(throwable: Exception) {
+        _state.update { it.copy(isLoading = false) }
+    }
+
+    fun getAllCancelOrders(state: Int) {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isSelected = true,
+                orderStates = OrderStates.DONE
+            )
+        }
+        tryToExecute(
+            { getAllOrders(state).map { it.toOrderUiState() } },
+            ::onGetCancelOrdersSuccess,
+            ::onGetCancelOrdersError
+        )
+    }
+
+    private fun onGetCancelOrdersSuccess(orders: List<OrderUiState>) {
+        _state.update { it.copy(isLoading = false, orders = orders) }
+    }
+
+    private fun onGetCancelOrdersError(throwable: Exception) {
+        _state.update { it.copy(isLoading = false) }
+    }
+
+    fun updateOrders(id:Long, state: Int) {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isSelected = true,
+                orderStates = OrderStates.DONE
+            )
+        }
+        tryToExecute(
+            {updateOrderStateUseCase(id,state)},
+            ::updateOrdersSuccess,
+            ::updateOrdersError
+        )
+    }
+
+    private fun updateOrdersSuccess(state: Boolean) {
+        _state.update { it.copy(isLoading = false, state = state) }
+    }
+
+    private fun updateOrdersError(throwable: Exception) {
         _state.update { it.copy(isLoading = false) }
     }
 
