@@ -2,15 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_cancel_dialog"
-    android:layout_width="328dp"
+    android:layout_width="match_parent"
     android:layout_height="257dp"
-    android:layout_marginHorizontal="@dimen/spacing_16"
-    android:layout_marginTop="273dp"
+    android:padding="@dimen/spacing_16"
     android:background="@color/white_300"
     app:cardCornerRadius="@dimen/radius_16"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     app:strokeWidth="@dimen/stroke_zero">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,6 +58,7 @@
             android:layout_marginStart="@dimen/spacing_8"
             android:backgroundTint="@color/white_100"
             android:text="@string/cancel"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_sure"
             app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
