@@ -125,6 +125,11 @@ fun setFormattedPrice(view: TextView, price: Double) {
     view.text = formattedPrice
 }
 
+@BindingAdapter("app:disableIfNoQuantity")
+fun disableIfNoQuantity(view:View, condition:Boolean){
+    view.isEnabled = condition
+}
+
 @BindingAdapter("app:validationState")
 fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
     val context = textInputLayout.context
