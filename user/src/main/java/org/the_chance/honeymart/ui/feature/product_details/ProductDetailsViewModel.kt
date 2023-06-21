@@ -9,7 +9,6 @@ import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.ProductUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
@@ -101,8 +100,7 @@ class ProductDetailsViewModel @Inject constructor(
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
             }
-        }
-        else{
+        } else {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
                 log(error.toString())
@@ -110,5 +108,8 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
+    // endregion
+
+    // region Wishlist
     // endregion
 }
