@@ -164,7 +164,11 @@
             app:argType="long" />
         <action
             android:id="@+id/action_productDetails_to_user_nav_graph"
-            app:destination="@id/user_nav_graph" />
+            app:destination="@id/user_nav_graph"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
 </navigation>
