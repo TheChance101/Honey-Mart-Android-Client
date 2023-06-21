@@ -1,16 +1,13 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentProductDetailsBinding
-import java.lang.Exception
 
 @AndroidEntryPoint
 class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
@@ -42,11 +39,17 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         }
     }
 
-    private fun observeViewModelEvents(effect: ProductDetailsEvent) {
+    private fun observeViewModelEvents(effect: ProductDetailsUiEffect) {
         when (effect) {
-            is ProductDetailsEvent.AddToCartSuccess -> { showSnackBar(effect.message) }
-            is ProductDetailsEvent.AddToCartError -> { showSnackBar(effect.error.toString()) }
+            is ProductDetailsUiEffect.AddToCartSuccess -> { showSnackBar(effect.message) }
+            is ProductDetailsUiEffect.AddToCartError -> { showSnackBar(effect.error.toString()) }
+            ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
         }
+    }
+
+    private fun navigateToAuthenticate(){
+        val action = ProductDetailsFragmentDirections.actionProductDetailsToUserNavGraph()
+        findNavController().navigate(action)
     }
 
 }

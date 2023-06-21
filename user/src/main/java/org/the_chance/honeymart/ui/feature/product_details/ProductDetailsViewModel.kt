@@ -3,12 +3,13 @@ package org.the_chance.honeymart.ui.feature.product_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.product.ProductUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
@@ -20,7 +21,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val getProductByIdUseCase: GetProductByIdUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ProductDetailsUiState, ProductDetailsEvent>(ProductDetailsUiState()),
+) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductImageInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -91,13 +92,21 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onAddProductToCartSuccess(message: String) {
         viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsEvent.AddToCartSuccess(message)))
+            _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartSuccess(message)))
         }
     }
 
     private fun onAddProductToCartError(error: Exception) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsEvent.AddToCartError(error)))
+        if (error is UnAuthorizedException) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+            }
+        }
+        else{
+            viewModelScope.launch {
+                _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+                log(error.toString())
+            }
         }
     }
 

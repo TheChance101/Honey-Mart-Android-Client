@@ -115,6 +115,7 @@ interface HoneyMartService {
     //endregion WishList
 
     //region Cart
+    @FormUrlEncoded
     @POST("/cart/addProduct")
     suspend fun addProductToCart(
         @Field("productId") productId: Long,
