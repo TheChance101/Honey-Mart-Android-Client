@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderDto(
     @SerializedName("orderId")
-    val orderId: Int? = null,
+    val orderId: Long? = null,
     @SerializedName("totalPrice")
     val totalPrice: Double? = null,
     @SerializedName("state")
@@ -12,5 +12,5 @@ data class OrderDto(
     @SerializedName("date")
     val date: Long? = null,
     @SerializedName("market")
-    val market: MarketDto? = null
+    val market: List<MarketDto>
 )
