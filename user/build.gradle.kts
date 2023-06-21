@@ -56,4 +56,7 @@ dependencies {
     Dependencies.liveDataDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //swipe
+    implementation ("it.xabaras.android:recyclerview-swipedecorator:1.4")
+
 }
