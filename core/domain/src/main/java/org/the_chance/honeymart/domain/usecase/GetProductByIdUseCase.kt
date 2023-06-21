@@ -17,5 +17,5 @@ class GetProductByIdUseCase @Inject constructor(
     private fun filterProductById(
         products: List<ProductEntity>,
         productId: Long
-    ): ProductEntity = products.first { it.productId == productId }
+    ): ProductEntity = products.find { it.productId == productId }!!
 }

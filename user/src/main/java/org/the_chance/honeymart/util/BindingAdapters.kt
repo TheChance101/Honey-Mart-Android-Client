@@ -28,11 +28,8 @@ fun showIfTrue(view: View, condition: Boolean) {
 }
 
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
-fun productPlaceholder(view: View, productList: List<ProductUiState>, condition: Boolean) {
-    view.isVisible = condition == false && productList.isEmpty()
-    fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
-        view.isVisible = condition == false && items.isEmpty()
-    }
+fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
+    view.isVisible = condition == false && items.isEmpty()
 }
 
 @BindingAdapter(value = ["app:showIfFirsTrue", "app:showIfSecondTrue"])
