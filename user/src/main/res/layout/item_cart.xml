@@ -80,7 +80,7 @@
                 app:strokeWidth="1dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingVertical="@dimen/spacing_2"
-                android:onClick="@{() -> viewModel.decrementProductCount(item.productCount)}"
+                android:onClick="@{() -> viewModel.decrementProductCount(item.productId,item.productCount)}"
                 android:text="@string/minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_number_of_items">
@@ -115,7 +115,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingVertical="@dimen/spacing_2"
                 android:text="@string/plus"
-                android:onClick="@{() -> viewModel.addProductCount(item.productCount)}"
+                android:onClick="@{() -> viewModel.addProductCount(item.productId,item.productCount)}"
                 android:textColor="@color/white_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" >

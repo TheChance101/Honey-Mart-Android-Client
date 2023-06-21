@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val getAllCart: GetAllCartUseCase,
     private val deleteFromCart: DeleteFromCartUseCase,
+    private val addToCartUseCase: AddToCartUseCase,
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -40,13 +42,13 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun onGetAllCartError(throwable: Exception) {
+    private fun onGetAllCartError(
+        throwable: Exception) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
         }
     }
-
-    fun addProductCount(productCount: Int) {
+    fun addProductCount(productId:Long,productCount: Int) {
         _state.update { currentState ->
             val updatedProducts = currentState.products.map { product ->
                     val newProductCount = productCount + 1
@@ -54,17 +56,46 @@ class CartViewModel @Inject constructor(
             }
             currentState.copy(products = updatedProducts)
         }
+        updateProductCart(productId,productCount+1)
+
 
     }
 
-    fun decrementProductCount(productCount: Int) {
+    fun decrementProductCount(productId:Long,productCount: Int) {
         _state.update { currentState ->
             val updatedProducts = currentState.products.map { product ->
-                    val newProductCount = if (productCount > 0) productCount - 1 else 0
-                    product.copy(productCount = newProductCount)
+                val newProductCount = if (productCount > 0) productCount - 1 else 0
+                product.copy(productCount = newProductCount)
             }
             currentState.copy(products = updatedProducts)
         }
+        updateProductCart(productId,productCount-1)
+
+    }
+
+    private fun updateProductCart(productId: Long, count: Int) {
+        tryToExecute(
+            { addToCartUseCase(productId, count) },
+            ::onUpdateProductInCartSuccess,
+            ::onUpdateProductInCartError
+        )
+    }
+
+    private fun onUpdateProductInCartSuccess(message: String) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+            )
+        }
+
+    }
+
+    private fun onUpdateProductInCartError(exception: Exception) {
+        this._state.update {
+            it.copy(isLoading = false, isError = true)
+        }
+
     }
 
     override fun onClickCart(productId: Long) {
