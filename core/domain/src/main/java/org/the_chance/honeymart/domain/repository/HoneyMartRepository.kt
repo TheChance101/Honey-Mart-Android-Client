@@ -19,5 +19,6 @@ interface HoneyMartRepository {
     suspend fun getWishList(): List<WishListEntity>
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun getAllOrders(): List<OrderEntity>
+    suspend fun getAllOrders(orderState:Int): List<OrderEntity>
+    suspend fun updateOrderState(id: Long, state: Int):Boolean
 }

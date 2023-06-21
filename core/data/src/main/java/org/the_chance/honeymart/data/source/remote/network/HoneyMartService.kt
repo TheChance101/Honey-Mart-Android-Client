@@ -15,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface HoneyMartService {
 
@@ -104,7 +105,7 @@ interface HoneyMartService {
     @FormUrlEncoded
     @POST("/user/login")
     suspend fun loginUser(@Field("email") email: String, @Field("password") password: String)
-    :Response<BaseResponse<String>>
+            : Response<BaseResponse<String>>
 
     //region WishList
     @GET("/wishList")
@@ -133,6 +134,14 @@ interface HoneyMartService {
 
     //endregion user
     @GET("order/userOrders")
-    suspend fun getAllOrders(): Response<BaseResponse<List<OrderDto>>>
+    suspend fun getAllOrders(
+        @Query("orderState") orderState:Int
+    ): Response<BaseResponse<List<OrderDto>>>
+
+    @PUT("/order/{id}")
+    suspend fun updateOrderState(
+        @Path("id") id: Long,
+        @Body state: Int
+    ): Response<BaseResponse<Boolean>>
 
 }

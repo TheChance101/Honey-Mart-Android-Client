@@ -44,11 +44,14 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteFromWishList(productId: Long): String =
         wrap { honeyMartService.deleteFromWishList(productId) }
 
-    override suspend fun getAllOrders(): List<OrderEntity> =
-        wrap { honeyMartService.getAllOrders() }.map { it.toOrderEntity() }
+    override suspend fun getAllOrders(orderState:Int): List<OrderEntity> =
+        wrap { honeyMartService.getAllOrders(orderState) }.map { it.toOrderEntity() }
 
-     override suspend fun getOrderDetails(orderId : Long): OrderDetailsEntity =
+    override suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity =
         wrap { honeyMartService.getOrderDetails(orderId) }.toOrderDetailsEntity()
+
+    override suspend fun updateOrderState(id: Long, state: Int): Boolean =
+        wrap { honeyMartService.updateOrderState(id, state) }
 
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
