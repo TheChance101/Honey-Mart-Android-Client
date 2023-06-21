@@ -5,5 +5,6 @@ data class ProductDetailsUiState(
     val isError: Boolean = false,
     val product: ProductUiState = ProductUiState(),
     val image: String = " ",
-    val smallImages: List<String> = emptyList()
+    val smallImages: List<String> = emptyList(),
+    val quantity: Int = 0
 )
