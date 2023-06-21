@@ -16,6 +16,7 @@ abstract class BaseAdapter<T>(
 
     private var items = emptyList<T>()
     abstract val layoutID: Int
+
     open fun removeItem(position: Int) {
         if (position in items.indices) {
             val mutableList = items.toMutableList()
