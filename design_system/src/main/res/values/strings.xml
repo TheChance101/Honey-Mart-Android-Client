@@ -41,5 +41,10 @@
     <string name="no_products">There is no product here!!</string>
     <string name="add_to_cart">Add To Cart</string>
     <string name="done">Done</string>
+    <string name="successMessage">Successfully Added To Wish List</string>
+    <string name="removedFromWishList">Item Removed From Wish List</string>
+    <string name="total_price">Total Price</string>
+    <string name="Processing">Processing</string>
+    <string name="Done">Done</string>
 
 </resources>

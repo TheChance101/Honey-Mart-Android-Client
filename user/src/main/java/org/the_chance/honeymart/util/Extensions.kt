@@ -12,9 +12,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import org.the_chance.user.R
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
     context: Context,
@@ -87,4 +90,24 @@ fun <T> LifecycleOwner.collect(flow: Flow<T>, action: suspend (T) -> Unit) {
             }
         }
     }
+}
+
+
+fun Fragment.showSnackBar(
+    message: String,
+    actionText: String? = null,
+    action: (() -> Unit)? = null
+) {
+    val rootView = requireView()
+    val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
+
+    val bottomNavBar =
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+    snackBar.anchorView = bottomNavBar
+
+    if (actionText != null && action != null) {
+        snackBar.setAction(actionText) { action.invoke() }
+    }
+
+    snackBar.show()
 }

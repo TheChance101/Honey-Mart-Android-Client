@@ -46,7 +46,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun onGetCategoryError(throwable: Throwable) {
+    private fun onGetCategoryError(throwable: Exception) {
         this._state.update {
             it.copy(
                 isLoading = false,

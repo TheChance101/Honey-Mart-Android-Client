@@ -5,7 +5,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.product.ProductAdapter
+import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentWishListBinding
 
@@ -19,6 +20,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     override fun setup() {
         handleOnBackPressed()
         initAdapters()
+        collectEffect()
     }
 
     private fun handleOnBackPressed() {
@@ -29,5 +31,30 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun initAdapters() {
         binding.recyclerWishList.adapter = wishListAdapter
+    }
+
+    private fun collectEffect() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let {
+                onEffect(it)
+            }
+        }
+    }
+
+    private fun onEffect(effect: WishListUiEffect) {
+        when (effect) {
+            is WishListUiEffect.ClickProductEffect -> TODO()
+            is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
+            is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
+            WishListUiEffect.DeleteProductFromWishListEffect -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+            }
+        }
+    }
+
+    private fun navigateToMarkets() {
+        val action = WishListFragmentDirections.actionWishListFragmentToMarketsFragment()
+        findNavController().navigate(action)
+
     }
 }

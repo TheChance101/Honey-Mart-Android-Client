@@ -10,8 +10,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.ui.BaseAdapter
 
@@ -28,6 +30,28 @@ fun showIfTrue(view: View, condition: Boolean) {
 @BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
 fun productPlaceholder(view: View, productList: List<ProductUiState>, condition: Boolean) {
     view.isVisible = condition == false && productList.isEmpty()
+    fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
+        view.isVisible = condition == false && items.isEmpty()
+    }
+}
+
+@BindingAdapter(value = ["app:showIfFirsTrue", "app:showIfSecondTrue"])
+fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
+    if (!condition1 && !condition2) {
+        view.visibility = View.GONE
+    } else {
+        view.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter(value = ["app:showState"])
+fun showState(textView: TextView, state: Int) {
+    val context = textView.context
+    if (state == 0) {
+        textView.text = context.getString(R.string.Processing)
+    } else {
+        textView.text = context.getString(R.string.Done)
+    }
 }
 
 @BindingAdapter("app:changeIfSelected")
@@ -75,6 +99,7 @@ fun changeColorIfSelected(view: View, isFavorite: Boolean) {
     }
 }
 
+
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
@@ -101,4 +126,54 @@ fun hideIfLoading(view: View, condition: Boolean) {
 fun setFormattedPrice(view: TextView, price: Double) {
     val formattedPrice = String.format("%,.0f$", price)
     view.text = formattedPrice
+}
+
+@BindingAdapter("app:validationState")
+fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
+    val context = textInputLayout.context
+
+    when (validationState) {
+        ValidationState.INVALID_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.INVALID_EMAIL -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.INVALID_FULL_NAME -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.INVALID_CONFIRM_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+        }
+
+        ValidationState.BLANK_EMAIL -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.BLANK_FULL_NAME -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        ValidationState.BLANK_PASSWORD -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+
+        }
+
+        ValidationState.INVALID_PASSWORD_LENGTH -> {
+            textInputLayout.error = context.getString(handleValidation(validationState))
+
+        }
+
+        else -> {
+            textInputLayout.error = null
+            textInputLayout.isErrorEnabled = false
+        }
+    }
 }

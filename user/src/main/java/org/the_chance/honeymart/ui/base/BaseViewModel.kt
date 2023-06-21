@@ -29,7 +29,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: Throwable) -> Unit,
+        onError: (t: Exception) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
@@ -37,7 +37,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 val result = function()
                 Log.e(TAG, "tryToExecute:$result ")
                 onSuccess(result)
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 Log.e(TAG, "tryToExecute error: ${e.message}")
                 onError(e)
             }

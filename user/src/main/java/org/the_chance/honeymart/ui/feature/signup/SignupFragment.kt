@@ -15,11 +15,9 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
     override val layoutIdFragment = R.layout.fragment_signup_details
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
-//        binding.buttonContinue.setOnClickListener {
-//           findNavController().navigate(R.id.action_signupFragment_to_signupConfirmPasswordFragment)
-//        }
+
         collectAction()
-        makeStatusBarTransparent()
+        setupUserFlowWindowVisibility()
 
     }
 
