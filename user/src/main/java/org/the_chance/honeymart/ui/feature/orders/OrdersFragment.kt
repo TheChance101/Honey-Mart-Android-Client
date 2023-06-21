@@ -1,11 +1,14 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import android.app.Dialog
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +29,43 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         initAdapter()
         handleOnBackPressed()
         collectEffect()
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteOrder(requireContext()) { position ->
-            (binding.recyclerOrder.adapter as OrdersAdapter).removeItem(position)
-        })
-        itemTouchHelper.attachToRecyclerView(binding.recyclerOrder)
+        ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerOrder)
+    }
+
+    private val swipe = object : SwipeToDeleteOrder() {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder,
+        ) = true
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            //val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
+            val position = viewHolder.absoluteAdapterPosition
+            //viewModel.deleteCart(position.toLong())
+            showDeleteConfirmationDialog(position)
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(position: Int) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.layout_order_dialog)
+        //val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        //dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog);
+        val btnCancel = dialog.findViewById<Button>(R.id.button_cancel)
+        val btnSure = dialog.findViewById<Button>(R.id.button_sure)
+        btnSure.setOnClickListener {
+            ordersAdapter.removeItem(position)
+            //viewModel.updateItemState(2)
+            dialog.dismiss()
+
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     private fun handleOnBackPressed() {
