@@ -29,6 +29,11 @@ fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
 }
 
+@BindingAdapter("app:showIfNotEmpty")
+fun <T> showIfNotEmpty(view: View, items: List<T>) {
+    view.isVisible = items.isNotEmpty()
+}
+
 @BindingAdapter(value = ["app:showIfFirsTrue", "app:showIfSecondTrue"])
 fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
     if (!condition1 && !condition2) {
