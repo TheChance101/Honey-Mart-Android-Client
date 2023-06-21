@@ -14,7 +14,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.ui.BaseAdapter
 
 @BindingAdapter(value = ["app:items"])
@@ -126,8 +125,8 @@ fun setFormattedPrice(view: TextView, price: Double) {
 }
 
 @BindingAdapter("app:disableIfNoQuantity")
-fun disableIfNoQuantity(view:View, condition:Boolean){
-    view.isEnabled = condition
+fun disableIfNoQuantity(view: View, quantity: Int) {
+    view.isEnabled = quantity > 0
 }
 
 @BindingAdapter("app:validationState")

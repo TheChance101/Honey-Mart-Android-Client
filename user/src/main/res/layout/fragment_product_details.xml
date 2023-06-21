@@ -201,7 +201,7 @@
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             android:text="@string/add_to_cart"
-            app:disableIfNoQuantity="@{viewModel.state.quantity > 0}"
+            app:disableIfNoQuantity="@{viewModel.state.quantity}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
