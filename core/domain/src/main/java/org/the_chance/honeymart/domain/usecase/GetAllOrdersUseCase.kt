@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetAllOrdersUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(): List<OrderEntity> {
-        return honeyMartRepository.getAllOrders()
+    suspend operator fun invoke(orderState:Int): List<OrderEntity> {
+        return honeyMartRepository.getAllOrders(orderState)
     }
 }
