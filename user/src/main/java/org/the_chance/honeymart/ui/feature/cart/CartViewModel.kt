@@ -46,7 +46,29 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    fun addProductCount(productCount: Int) {
+        _state.update { currentState ->
+            val updatedProducts = currentState.products.map { product ->
+                    val newProductCount = productCount + 1
+                    product.copy(productCount = newProductCount)
+            }
+            currentState.copy(products = updatedProducts)
+        }
+
+    }
+
+    fun decrementProductCount(productCount: Int) {
+        _state.update { currentState ->
+            val updatedProducts = currentState.products.map { product ->
+                    val newProductCount = if (productCount > 0) productCount - 1 else 0
+                    product.copy(productCount = newProductCount)
+            }
+            currentState.copy(products = updatedProducts)
+        }
+    }
+
     override fun onClickCart(productId: Long) {
+
     }
 
     fun onClickOrderNowButton() {
