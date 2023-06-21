@@ -1,33 +1,41 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val getProductById: GetProductByIdUseCase,
+    private val getProductByIdUseCase: GetProductByIdUseCase,
+    private val addProductToCartUseCase: AddProductToCartUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ProductDetailsUiState, Long>(ProductDetailsUiState()),
+) : BaseViewModel<ProductDetailsUiState, ProductDetailsEvent>(ProductDetailsUiState()),
     ProductImageInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
+
     init {
         getProductByCategoryId(args.productId, args.categoryId)
     }
 
+    // region Product
     private fun getProductByCategoryId(productId: Long, categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getProductById(productId, categoryId).toProductUiState() },
+            { getProductByIdUseCase(productId, categoryId).toProductUiState() },
             ::onGetProductSuccess,
             ::onGetProductError,
         )
@@ -68,4 +76,30 @@ class ProductDetailsViewModel @Inject constructor(
         val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
         _state.update { it.copy(quantity = newQuantity) }
     }
+
+    // endregion
+
+    // region Cart
+
+    fun addProductToCart(productId: Long, count: Long) {
+        tryToExecute(
+            { addProductToCartUseCase(productId, count) },
+            ::onAddProductToCartSuccess,
+            ::onAddProductToCartError
+        )
+    }
+
+    private fun onAddProductToCartSuccess(message: String) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(ProductDetailsEvent.AddToCartSuccess(message)))
+        }
+    }
+
+    private fun onAddProductToCartError(error: Exception) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(ProductDetailsEvent.AddToCartError(error)))
+        }
+    }
+
+    // endregion
 }
