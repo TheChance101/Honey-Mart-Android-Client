@@ -151,7 +151,8 @@
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
             app:layout_constraintEnd_toStartOf="@id/icon_add_product"
-            app:layout_constraintTop_toTopOf="@id/icon_add_product" />
+            app:layout_constraintTop_toTopOf="@id/icon_add_product"
+            tools:text="01" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/icon_remove_product"
@@ -198,6 +199,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/button_background"
             android:gravity="center"
+            android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             android:text="@string/add_to_cart"
             app:disableIfNoQuantity="@{viewModel.state.quantity > 0}"
             app:hideIfLoading="@{viewModel.state.loading}"
