@@ -29,7 +29,6 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                isSelected = true,
                 orderStates = OrderStates.PROCESSING
             )
         }
@@ -52,7 +51,6 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                isSelected = true,
                 orderStates = OrderStates.DONE
             )
         }
@@ -75,7 +73,6 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                isSelected = true,
                 orderStates = OrderStates.DONE
             )
         }
@@ -98,7 +95,6 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                isSelected = true,
                 orderStates = OrderStates.DONE
             )
         }
