@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val getAllCartUseCase: GetAllCartUseCase,
-    private val deleteFromCartUseCase: DeleteFromCartUseCase,
+    private val getAllCart: GetAllCartUseCase,
+    private val deleteFromCart: DeleteFromCartUseCase,
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -23,7 +23,7 @@ class CartViewModel @Inject constructor(
     fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllCartUseCase().toCartListProductUiState() },
+            { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
@@ -48,6 +48,11 @@ class CartViewModel @Inject constructor(
     override fun onClickCart(productId: Long) {
     }
 
+    fun onClickOrderNowButton() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
+        }
+    }
     fun onClickDiscoverButton() {
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
@@ -55,16 +60,12 @@ class CartViewModel @Inject constructor(
     }
 
     fun deleteCart(position: Long) {
-
         val productId = state.value.products[position.toInt()].productId
-
-
         viewModelScope.launch {
             if (productId != null) {
-                deleteFromCartUseCase(productId)
+                deleteFromCart(productId)
             }
         }
-
     }
 
 

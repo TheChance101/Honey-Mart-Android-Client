@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-            <variable
-                name="viewModel"
-                type="org.the_chance.honeymart.ui.feature.cart.CartViewModel" />
+
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.cart.CartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,24 +19,76 @@
             android:id="@+id/recycler_cart_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginVertical="@dimen/spacing_12"
             android:clipToPadding="false"
-            android:layout_marginHorizontal="@dimen/spacing_16"
             app:items="@{viewModel.state.products}"
-            app:layout_constraintBottom_toTopOf="@+id/include"
+            app:layout_constraintBottom_toTopOf="@id/product_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_cart"
-            app:layout_constraintTop_toTopOf="parent" />
-        <include
-            android:id="@+id/include"
-            layout="@layout/cart_order_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_cart" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/product_container"
+            style="@style/Theme.HoneyMart.Card"
+            android:layout_width="match_parent"
+            android:layout_height="103dp"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:showIfNoProducts="@{viewModel.state.products}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:showIfTrue="@{viewModel.state.total > 0.0}">
+
+                <TextView
+                    android:id="@+id/PriceInDollars"
+                    style="@style/Theme.HoneyMart.Text.H3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/spacing_16"
+                    android:layout_marginBottom="@dimen/spacing_8"
+                    android:hint="@string/_300000"
+                    android:text="@{viewModel.state.total.toString()}"
+                    app:layout_constraintBottom_toTopOf="@+id/order_now_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/order_now_button"
+                    style="@style/Theme.HoneyMart.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_16"
+                    android:layout_marginBottom="@dimen/spacing_16"
+                    android:onClick="@{() -> viewModel.onClickOrderNowButton()}"
+                    android:text="@string/order_now"
+                    app:icon="@drawable/icon_cart_white"
+                    app:iconGravity="textStart"
+                    app:iconPadding="@dimen/spacing_8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/total_price"
+                    style="@style/Theme.HoneyMart.Text.H6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_16"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/spacing_8"
+                    android:text="@string/total_price"
+                    app:layout_constraintBottom_toTopOf="@+id/order_now_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:id="@+id/placeHolder_container_cart"
@@ -44,14 +97,14 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
-            android:visibility="gone"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.364"
-            >
+            app:showIfNoProducts="@{viewModel.state.products}">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_wish_list_placeholder"

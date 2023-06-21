@@ -69,8 +69,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     private fun onEffect(effect: CartUiEffect) {
         when (effect) {
             is CartUiEffect.ClickDiscoverEffect -> navigateToMarkets()
-            is CartUiEffect.ClickOrderEffect -> TODO()
+            is CartUiEffect.ClickOrderEffect -> navigateToOrders()
         }
+    }
+
+    private fun navigateToOrders() {
+        val action = CartFragmentDirections.actionCartFragmentToOrdersFragment()
+        findNavController().navigate(action)
     }
 
     private fun navigateToMarkets() {
