@@ -2,9 +2,11 @@ package org.the_chance.honeymart.data.source.remote.models
 
 import com.google.gson.annotations.SerializedName
 
-   data class MarketDto(
+data class MarketDto(
     @SerializedName("marketId")
-    val marketId: Long? = null,
+    val marketId: Int? = null,
     @SerializedName("marketName")
-    val marketName: String? = null
+    val marketName: String? = null,
+    @SerializedName("imageUrl")
+    val imageUrl: String? = null
 )
