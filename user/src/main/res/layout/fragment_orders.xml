@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_8"
-                android:onClick="@{()-> viewModel.getAllDoneOrders()}"
+                android:onClick="@{()-> viewModel.getAllDoneOrders(2)}"
                 android:text="@string/done"
                 android:textColor="@color/primary_100"
                 app:changeChipColorForOrderDone="@{viewModel.state.orderStates}" />
@@ -56,6 +56,7 @@
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:text="@string/cancel"
                 android:textColor="@color/primary_100"
+                android:onClick="@{()-> viewModel.getAllDoneOrders(3)}"
                 app:changeChipColorForOrderCanceled="@{viewModel.state.orderStates}"
                 app:chipCornerRadius="@dimen/radius_16"
                 app:chipStrokeColor="@color/primary_100" />
