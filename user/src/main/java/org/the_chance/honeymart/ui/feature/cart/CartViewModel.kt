@@ -35,6 +35,7 @@ class CartViewModel @Inject constructor(
                 isLoading = false,
                 isError = false,
                 products = cart.products,
+                total = cart.total
             )
         }
     }
@@ -53,6 +54,7 @@ class CartViewModel @Inject constructor(
             _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
         }
     }
+
     fun onClickDiscoverButton() {
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
@@ -63,8 +65,32 @@ class CartViewModel @Inject constructor(
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
             if (productId != null) {
-                deleteFromCart(productId)
+                tryToExecute(
+                    { getAllCart().toCartListProductUiState() },
+                    ::onGetAllCartSuccess,
+                    ::onGetAllCartError
+                )
+                tryToExecute(
+                    { deleteFromCart(productId) },
+                    ::onDeleteFromCartSuccess,
+                    ::onDeleteFromCartError
+                )
             }
+        }
+    }
+
+    private fun onDeleteFromCartSuccess(message: String) {
+        _state.update {
+            it.copy(
+                isError = false,
+            )
+        }
+        getChosenCartProducts()
+    }
+
+    private fun onDeleteFromCartError(throwable: Exception) {
+        this._state.update {
+            it.copy(isLoading = false, isError = true)
         }
     }
 

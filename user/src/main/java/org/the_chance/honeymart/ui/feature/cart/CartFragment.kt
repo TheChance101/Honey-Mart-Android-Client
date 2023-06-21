@@ -52,9 +52,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = binding.recyclerCartList.getChildAdapterPosition(viewHolder.itemView)
             viewModel.deleteCart(position.toLong())
-            cartAdapter.notifyItemRemoved(position)
-            viewModel.getChosenCartProducts()
-            cartAdapter.notifyItemRemoved(position)
         }
     }
 

@@ -34,15 +34,13 @@
             style="@style/Theme.HoneyMart.Card"
             android:layout_width="match_parent"
             android:layout_height="103dp"
-            app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:showIfNoProducts="@{viewModel.state.products}">
+            app:showIfNotEmpty="@{viewModel.state.products}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:showIfTrue="@{viewModel.state.total > 0.0}">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/PriceInDollars"
@@ -53,7 +51,7 @@
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
-                    android:text="@{viewModel.state.total.toString()}"
+                    android:text="@{String.valueOf(viewModel.state.total)}"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
