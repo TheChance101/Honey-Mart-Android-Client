@@ -2,11 +2,14 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.uistate.FavouriteItemState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
@@ -19,13 +22,27 @@ class WishListViewModel @javax.inject.Inject constructor(
 ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
     override val TAG: String = this::class.java.simpleName
+    private val clickFav = MutableStateFlow(FavouriteItemState())
 
     init {
         getWishListProducts()
+        updateFav()
+    }
+
+    private fun updateFav() {
+        viewModelScope.launch {
+            clickFav.debounce(1000).collect { favoriteItem ->
+                val isFavorite = favoriteItem.isFavorite
+                if (isFavorite) {
+                    deleteProductFromWishList(favoriteItem.productId)
+                } else {
+                    log("FAVOURITE")
+                }
+            }
+        }
     }
 
     private fun deleteProductFromWishList(productId: Long) {
-        _state.update { it.copy(products = updateProductFavoriteState(false, productId)) }
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteProductSuccess,
@@ -42,7 +59,7 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     private fun updateProductFavoriteState(
         isFavorite: Boolean,
-        productId: Long
+        productId: Long,
     ): List<WishListProductUiState> {
         val updatedProducts = _state.value.products.map { wishListProductUiState ->
             if (wishListProductUiState.productId == productId) {
@@ -87,6 +104,22 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickFavoriteIcon(productId: Long) {
-        deleteProductFromWishList(productId)
+        val currentProduct = _state.value.products.find { it.productId == productId }
+        val isFavorite = currentProduct?.isFavorite ?: false
+        val newFavoriteState = !isFavorite
+        viewModelScope.launch {
+            clickFav.emit(FavouriteItemState(productId, isFavorite))
+        }
+        updateFavoriteState(productId, newFavoriteState)
+    }
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+        val newProduct = _state.value.products.map {
+            if (it.productId == productId) {
+                it.copy(isFavorite = isFavorite)
+            } else {
+                it
+            }
+        }
+        _state.update { it.copy(products = newProduct) }
     }
 }

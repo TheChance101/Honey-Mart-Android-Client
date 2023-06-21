@@ -3,6 +3,8 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -13,6 +15,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.FavouriteItemState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
@@ -35,10 +38,12 @@ class ProductViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
     private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val clickFav = MutableStateFlow(FavouriteItemState())
 
     init {
         getCategoriesByMarketId()
         getProductsByCategoryId(args.categoryId)
+        updateFav()
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
@@ -149,13 +154,22 @@ class ProductViewModel @Inject constructor(
         val currentProduct = _state.value.products.find { it.productId == productId }
         val isFavorite = currentProduct?.isFavorite ?: false
         val newFavoriteState = !isFavorite
-
+        viewModelScope.launch {
+            clickFav.emit(FavouriteItemState(productId, isFavorite))
+        }
         updateFavoriteState(productId, newFavoriteState)
+    }
 
-        if (isFavorite) {
-            deleteProductFromWishList(productId)
-        } else {
-            addProductToWishList(productId)
+    private fun updateFav() {
+        viewModelScope.launch {
+            clickFav.debounce(1000).collect { favoriteItem ->
+                val isFavorite = favoriteItem.isFavorite
+                if (isFavorite) {
+                    deleteProductFromWishList(favoriteItem.productId)
+                } else {
+                    addProductToWishList(favoriteItem.productId)
+                }
+            }
         }
     }
 
