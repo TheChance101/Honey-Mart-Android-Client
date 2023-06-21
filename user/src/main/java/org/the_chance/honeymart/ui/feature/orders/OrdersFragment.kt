@@ -5,6 +5,7 @@ import android.widget.Button
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         initAdapter()
         handleOnBackPressed()
         collectEffect()
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteOrder(requireContext()) { position ->
+            (binding.recyclerOrder.adapter as OrdersAdapter).removeItem(position)
+        })
+        itemTouchHelper.attachToRecyclerView(binding.recyclerOrder)
     }
 
     private fun handleOnBackPressed() {
