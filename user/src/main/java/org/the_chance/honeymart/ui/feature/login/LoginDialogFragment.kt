@@ -18,6 +18,5 @@ class LoginDialogFragment : BaseDialog<LayoutLoginDialogBinding>(90) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(true)
-
     }
 }
