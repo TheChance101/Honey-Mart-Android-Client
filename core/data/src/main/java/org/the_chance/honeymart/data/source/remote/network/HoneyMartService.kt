@@ -137,11 +137,11 @@ interface HoneyMartService {
     suspend fun getAllOrders(
         @Query("orderState") orderState:Int
     ): Response<BaseResponse<List<OrderDto>>>
-
+    @FormUrlEncoded
     @PUT("/order/{id}")
     suspend fun updateOrderState(
-        @Path("id") id: Long,
-        @Body state: Int
+        @Path("id") id: Long?,
+        @Field("state") state: Int
     ): Response<BaseResponse<Boolean>>
 
 }
