@@ -51,7 +51,8 @@
     <string name="cancel">Cancel</string>
     <string name="order_placeholder_description">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="you_dont_have_any_orders">You Dont have any orders!!</string>
-    <string name="order_dialog">Oh no!!! you’re cancel this order.....Are you sure?</string>
+    <string name="order_dialog_Cancel_Text">Oh no!!! you’re cancel this order.....Are you sure?</string>
+    <string name="order_dialog_Delete_Text"> you’re delete this order....Are you sure?</string>
     <string name="yes_i_m_sure">Yes, I’m sure</string>
     <string name="you_dont_have_any_completed_orders">You Dont have any completed orders!!</string>
     <string name="you_don_t_have_any_canceled_orders">You Don\'t have any canceled orders!!</string>

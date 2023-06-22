@@ -94,6 +94,19 @@ fun setOrderPlaceHolderText(view: TextView, orderStates: OrderStates) {
     }
 }
 
+@BindingAdapter("app:orderDialogText")
+fun setOrderDialogText(view: TextView, orderStates: OrderStates) {
+    when (orderStates) {
+        OrderStates.PROCESSING -> view.text =
+            view.context.getString(R.string.order_dialog_Cancel_Text)
+
+        OrderStates.CANCELED -> view.text =
+            view.context.getString(R.string.order_dialog_Delete_Text)
+
+        else -> {}
+    }
+}
+
 @BindingAdapter(value = ["app:showIfNoItems", "app:hideIfLoading"])
 fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
