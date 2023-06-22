@@ -54,7 +54,8 @@
 
             <TextView
                 android:id="@+id/text_item_price"
-                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                style="@style/Theme.HoneyMart.Text.H6"
+                android:textColor="@color/primary_100"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
