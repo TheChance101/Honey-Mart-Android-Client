@@ -21,12 +21,12 @@
             android:layout_height="0dp"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:imageUrl="@{viewModel.state.image}"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline1"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/image_test" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/icon_favorite"
+            android:id="@+id/card_wishlist"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="@dimen/spacing_16"
@@ -38,16 +38,16 @@
             app:strokeWidth="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/icon_favorite_selected" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/icon_back_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/card_back_arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
@@ -57,10 +57,10 @@
             app:strokeWidth="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/spacing_4"
+                android:layout_marginHorizontal="@dimen/spacing_8"
                 app:srcCompat="@drawable/icon_back_arrow" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -73,8 +73,8 @@
             android:paddingHorizontal="@dimen/spacing_12"
             app:items="@{viewModel.state.smallImages}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="@id/guideline1"
-            app:layout_constraintTop_toTopOf="@id/guideline1"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
             tools:listitem="@layout/item_product_image" />
 
 
@@ -120,7 +120,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/icon_add_product"
+            android:id="@+id/card_increase_count"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="@dimen/spacing_24"
@@ -136,7 +136,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/icon_add_product" />
         </com.google.android.material.card.MaterialCardView>
@@ -146,32 +146,32 @@
             style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/spacing_16"
             android:text="@{String.valueOf(viewModel.state.quantity)}"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
-            app:layout_constraintEnd_toStartOf="@id/icon_add_product"
-            app:layout_constraintTop_toTopOf="@id/icon_add_product"
+            app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
+            app:layout_constraintEnd_toStartOf="@id/card_increase_count"
+            app:layout_constraintTop_toTopOf="@id/card_increase_count"
             tools:text="01" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/icon_remove_product"
+            android:id="@+id/card_decrease_count"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             android:onClick="@{() -> viewModel.removeProduct()}"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toBottomOf="@id/icon_add_product"
+            app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
-            app:layout_constraintTop_toTopOf="@id/icon_add_product"
+            app:layout_constraintTop_toTopOf="@id/card_increase_count"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeColor="@color/primary_100"
             app:strokeWidth="1dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/icon_remove_product" />
         </com.google.android.material.card.MaterialCardView>
@@ -192,11 +192,11 @@
             tools:text="Product Description Product Description Product Description Product Description Product Description Product Description Product Description" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_done"
+            android:id="@+id/button_add_to_cart"
             style="@style/Theme.HoneyMart.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/spacing_16"
             android:background="@drawable/button_background"
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
@@ -205,7 +205,7 @@
             app:hideIfLoading="@{viewModel.state.loading}"
             app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
-            app:iconPadding="10dp"
+            app:iconPadding="@dimen/spacing_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -224,7 +224,7 @@
             app:showIfTrue="@{viewModel.state.isLoading}" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
+            android:id="@+id/guideline_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

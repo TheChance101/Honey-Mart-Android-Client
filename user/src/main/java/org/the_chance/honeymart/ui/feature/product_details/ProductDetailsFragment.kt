@@ -28,7 +28,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     }
 
     private fun navigateBack() {
-        binding.iconBackArrow.setOnClickListener {
+        binding.cardBackArrow.setOnClickListener {
             findNavController().navigateUp()
         }
     }
