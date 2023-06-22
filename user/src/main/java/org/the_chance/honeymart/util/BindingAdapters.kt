@@ -131,8 +131,10 @@ fun setFormattedPrice(view: TextView, price: Double) {
 }
 
 @BindingAdapter("app:disableIfNoQuantity")
-fun disableIfNoQuantity(view: View, quantity: Int) {
-    view.isEnabled = quantity > 0
+fun disableIfNoQuantity(view: View, quantity: Int?) {
+    if (quantity != null) {
+        view.isEnabled = quantity > 0
+    }
 }
 
 @BindingAdapter("app:validationState")

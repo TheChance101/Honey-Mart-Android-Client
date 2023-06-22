@@ -25,8 +25,5 @@ interface HoneyMartRepository {
 
     suspend fun checkout(): String
 
-    suspend fun getAllCartProducts(): List<CartEntity>
-    //TODO
-    suspend fun addProductToCart(productId: Long, count: Long): String
     suspend fun getProductDetails(productId: Long): ProductEntity
 }

@@ -1,11 +1,5 @@
 package org.the_chance.honeymart.data.source.remote.network
 
-import org.the_chance.honeymart.data.source.remote.models.BaseResponse
-import org.the_chance.honeymart.data.source.remote.models.CartDto
-import org.the_chance.honeymart.data.source.remote.models.CategoryDto
-import org.the_chance.honeymart.data.source.remote.models.MarketDto
-import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.data.source.remote.models.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -149,14 +143,6 @@ interface HoneyMartService {
     @GET("/cart")
     suspend fun getCart(): Response<BaseResponse<CartDto>>
 
-//    @POST("/cart/addProduct")
-//    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
-    @FormUrlEncoded
-    @POST("/cart/addProduct")
-    suspend fun addProductToCart(
-        @Field("productId") productId: Long,
-        @Field("count") count: Long
-    ): Response<BaseResponse<String>>
     @FormUrlEncoded
     @POST("/cart/addProduct")
     suspend fun addToCart(
