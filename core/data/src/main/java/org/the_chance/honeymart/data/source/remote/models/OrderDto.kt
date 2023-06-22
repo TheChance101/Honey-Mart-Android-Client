@@ -12,5 +12,5 @@ data class OrderDto(
     @SerializedName("date")
     val date: Long? = null,
     @SerializedName("market")
-    val market: List<MarketDto>
+    val market: MarketDto
 )
