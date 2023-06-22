@@ -1,10 +1,12 @@
 package org.the_chance.honeymart.ui.feature.orderdetails
 
+import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.category.CategoriesFragmentArgs
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrderParentDetailsUiState
@@ -15,11 +17,13 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
-    private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase
+    private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<OrderDetailsUiState, Long>(OrderDetailsUiState()),
     OrderDetailsInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
+    private val args = OrderDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getOrderProducts()
@@ -30,7 +34,7 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderProducts() {
         _state.update { it.copy(isProductsLoading = true) }
         tryToExecute(
-            { getOrderProductsDetailsUseCase(1).map { it.toOrderDetailsProductUiState() } },
+            { getOrderProductsDetailsUseCase(args.orderId).map { it.toOrderDetailsProductUiState() } },
             ::onGetOrderProductsSuccess,
             ::onGetOrderProductsError
         )
