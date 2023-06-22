@@ -9,15 +9,14 @@ data class OrdersUiState(
     val orders: List<OrderUiState> = emptyList(),
     val orderStates:OrderStates = OrderStates.PROCESSING
 )
-enum class OrderStates{
-    PROCESSING,DONE,CANCELED
-}
 
 data class OrderUiState(
     val orderId: Long?= 1,
     val totalPrice: Double? = 0.0,
     val state: Int?= 0,
     val date: Long?= 1687259600016,
+    val marketName: String?="",
+    val imageUrl: String?="",
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
@@ -25,6 +24,12 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
         orderId = orderId,
         totalPrice = totalPrice ,
         state = state,
-        date = date
+        date = date,
+        marketName = market.marketName,
+        imageUrl = market.imageUrl
     )
+}
+
+enum class OrderStates{
+    PROCESSING,DONE,CANCELED
 }
