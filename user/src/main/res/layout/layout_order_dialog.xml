@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -51,22 +52,20 @@
                 android:layout_height="48dp"
                 android:layout_marginVertical="@dimen/spacing_32"
                 android:layout_marginStart="@dimen/spacing_16"
-                android:background="@drawable/btn_background_in_dialog"
+                android:background="@drawable/button_background"
                 android:text="@string/yes_i_m_sure"
-                android:textColor="@drawable/selector_button_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
             <Button
                 android:id="@+id/button_cancel"
-                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_width="144dp"
                 android:layout_height="48dp"
+                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_marginVertical="@dimen/spacing_32"
-                android:background="@drawable/btn_background_in_dialog"
                 android:text="@string/cancel"
                 android:layout_marginEnd="@dimen/spacing_16"
-                android:textColor="@drawable/selector_button_background"
+                android:background="@drawable/button_white_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
