@@ -191,6 +191,19 @@
             app:layout_constraintTop_toBottomOf="@id/card_product_price"
             tools:text="Product Description Product Description Product Description Product Description Product Description Product Description Product Description" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/add_to_cart_loading"
+            android:layout_width="@dimen/add_to_cart_lottie_loading"
+            android:layout_height="@dimen/add_to_cart_lottie_loading"
+            app:layout_constraintBottom_toTopOf="@id/button_add_to_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/spacing_4"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add_to_cart"
             style="@style/Theme.HoneyMart.Button"

@@ -88,6 +88,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Cart
 
     fun addProductToCart(productId: Long, count: Long) {
+        _state.update { it.copy(isAddToCartLoading = true) }
         tryToExecute(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
@@ -96,12 +97,14 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToCartSuccess(message: String) {
+        _state.update { it.copy(isAddToCartLoading = false) }
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartSuccess(message)))
         }
     }
 
     private fun onAddProductToCartError(error: Exception) {
+        _state.update { it.copy(isAddToCartLoading = false, isError = true) }
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))

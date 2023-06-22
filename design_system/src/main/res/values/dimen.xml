@@ -29,6 +29,7 @@
     <dimen name="elevation_zero">0dp</dimen>
 
     <dimen name="lottie_loading">100dp</dimen>
+    <dimen name="add_to_cart_lottie_loading">50dp</dimen>
     <dimen name="item_product_image">88dp</dimen>
 
 </resources>
