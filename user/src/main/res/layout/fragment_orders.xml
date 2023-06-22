@@ -53,10 +53,10 @@
                 style="@style/Theme.HoneyMart.Text.H5.Chips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()-> viewModel.getAllDoneOrders(3)}"
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:text="@string/cancel"
                 android:textColor="@color/primary_100"
-                android:onClick="@{()-> viewModel.getAllDoneOrders(3)}"
                 app:changeChipColorForOrderCanceled="@{viewModel.state.orderStates}"
                 app:chipCornerRadius="@dimen/radius_16"
                 app:chipStrokeColor="@color/primary_100" />

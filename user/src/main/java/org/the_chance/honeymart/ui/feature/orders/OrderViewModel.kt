@@ -73,7 +73,7 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                orderStates = OrderStates.DONE
+                orderStates = OrderStates.CANCELED
             )
         }
         tryToExecute(
