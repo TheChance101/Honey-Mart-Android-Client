@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
-import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -23,7 +23,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val addProductToWishListUseCase: AddToWishListUseCase,
-    private val getProductFromWishListUseCase: GetAllWishListUseCase,
+    private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
@@ -48,6 +48,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(product: ProductUiState) {
+        checkIfProductInWishList(args.productId)
         _state.update {
             it.copy(
                 isLoading = false,
@@ -120,6 +121,25 @@ class ProductDetailsViewModel @Inject constructor(
 
     // region Wishlist
 
+
+    private fun checkIfProductInWishList(productId: Long) {
+        tryToExecute(
+            {
+                getIfProductInWishListUseCase(productId)
+            },
+            ::onGetWishListProductSuccess,
+            ::onGetWishListProductError
+        )
+    }
+
+    private fun onGetWishListProductSuccess(isFavorite: Boolean) {
+        updateFavoriteState(_state.value.product.productId, isFavorite)
+    }
+
+    private fun onGetWishListProductError(error: Exception) {
+        log("something went wrong with getWithListProduct $error")
+    }
+
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
             { addProductToWishListUseCase(productId) },
@@ -151,7 +171,7 @@ class ProductDetailsViewModel @Inject constructor(
         updateFavoriteState(productId, false)
     }
 
-    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+    private fun updateFavoriteState(productId: Long?, isFavorite: Boolean) {
         val updatedProductUiState = _state.value.product.copy(isFavorite = isFavorite)
         _state.update { it.copy(product = updatedProductUiState) }
     }

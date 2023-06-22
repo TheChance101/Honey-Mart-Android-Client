@@ -30,7 +30,7 @@
             android:layout_width="@dimen/spacing_32"
             android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
-            android:backgroundTint="@color/white"
+            tools:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
             android:onClick="@{() -> viewModel.onClickFavIcon(viewModel.state.product.productId)}"
             app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
@@ -43,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/icon_favorite_selected" />
+                app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
+                tools:srcCompat="@drawable/icon_favorite_selected" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
