@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.orders.OrderViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_cancel_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="257dp"
+        app:cardCornerRadius="@dimen/radius_16"
+        app:strokeWidth="@dimen/stroke_zero">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ic_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="127dp"
+                android:layout_marginEnd="80dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_warning" />
+
+            <TextView
+                android:id="@+id/text_dialog"
+                style="@style/Theme.HoneyMart.Text.H4.DarkModerate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginTop="@dimen/spacing_32"
+                android:gravity="center"
+                android:text="@string/order_dialog_Cancel_Text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ic_warning"
+                app:orderDialogText="@{viewModel.state.orderStates}" />
+
+            <Button
+                android:id="@+id/button_sure"
+                style="@style/Theme.HoneyMart.Text.H5.Light"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:layout_marginVertical="@dimen/spacing_32"
+                android:layout_marginStart="@dimen/spacing_16"
+                android:background="@drawable/btn_background_in_dialog"
+                android:text="@string/yes_i_m_sure"
+                android:textColor="@drawable/selector_button_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_dialog" />
+
+            <Button
+                android:id="@+id/button_cancel"
+                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:layout_marginVertical="@dimen/spacing_32"
+                android:background="@drawable/btn_background_in_dialog"
+                android:text="@string/cancel"
+                android:layout_marginEnd="@dimen/spacing_16"
+                android:textColor="@drawable/selector_button_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_dialog" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

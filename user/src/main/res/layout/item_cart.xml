@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_16"
-                android:background="@drawable/shape_cart_price"
+                android:background="@drawable/shape_background_price"
                 android:paddingHorizontal="@dimen/spacing_8"
                 android:paddingVertical="@dimen/spacing_4"
                 android:text="@{item.productPrice.toString()}"

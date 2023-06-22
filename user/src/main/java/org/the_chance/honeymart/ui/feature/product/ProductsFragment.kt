@@ -39,7 +39,8 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     private fun onEffect(effect: ProductUiEffect) {
         when (effect) {
-            is ProductUiEffect.ClickProductEffect -> TODO()
+            is ProductUiEffect.ClickProductEffect -> navigateToProductDetails(effect.productId)
+
             ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             ProductUiEffect.AddedToWishListEffect -> {
                 showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
@@ -57,5 +58,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph()
         findNavController().navigate(action)
 
+    }
+
+    private fun navigateToProductDetails(productId: Long) {
+        val action =
+            ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
+        findNavController().navigate(action)
     }
 }

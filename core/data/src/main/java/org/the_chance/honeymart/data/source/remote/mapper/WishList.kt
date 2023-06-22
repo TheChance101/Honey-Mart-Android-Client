@@ -6,5 +6,6 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 fun WishListDto.toWishListEntity() = WishListEntity(
     productId = productId,
     name = name,
-    price = price
+    price = price,
+    images = images
 )

@@ -3,20 +3,16 @@ package org.the_chance.honeymart.data.source.remote.mapper
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CartProductDto
 import org.the_chance.honeymart.domain.model.CartEntity
-import org.the_chance.honeymart.domain.model.CartProductEntity
+import org.the_chance.honeymart.domain.model.CartProductsEntity
 
-fun CartDto.toCartEntity() = CartEntity(
-    products = products.toCartProductEntity(),
+internal fun CartDto.toCartEntity() = CartEntity(
+    products = products.map { it.toCartProductsEntity() },
     total = total
 )
 
-fun List<CartProductDto>.toCartProductEntity(): List<CartProductEntity> {
-    return this.map {
-        CartProductEntity(
-            productId = it.productId,
-            name = it.name,
-            price = it.price,
-            count = it.count
-        )
-    }
-}
+internal fun CartProductDto.toCartProductsEntity() = CartProductsEntity(
+    id = productId,
+    name = name,
+    count = count,
+    price = price
+)

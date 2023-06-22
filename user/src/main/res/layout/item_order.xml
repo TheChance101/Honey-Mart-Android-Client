@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="org.the_chance.honeymart.ui.feature.uistate.OrderUiState" />
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.orders.OrderInteractionListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardCornerRadius="@dimen/radius_16"
+        android:layout_marginBottom="@dimen/spacing_16"
+        android:background="@color/white"
+        style="@style/Theme.HoneyMart.Card">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_order"
+                android:layout_width="104dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/image_market"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/text_order_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginTop="@dimen/spacing_16"
+                tool:text="@string/order_number"
+                android:text="@{String.valueOf(item.orderId)}"
+                style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
+
+            <TextView
+                android:id="@+id/text_market_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_8"
+                android:layout_marginStart="@dimen/spacing_8"
+                tool:text="@string/market_name"
+                android:text="@{item.marketName}"
+                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                app:layout_constraintTop_toBottomOf="@id/text_order_number"
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ic_cart_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                app:srcCompat="@drawable/icon_cart_check"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_market_name"
+                app:layout_constraintStart_toEndOf="@id/image_order"/>
+
+            <TextView
+                android:id="@+id/text_item_count"
+                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4"
+                android:layout_marginTop="@dimen/spacing_4"
+                android:text="@{String.valueOf(item.state)}"
+                app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
+                app:layout_constraintStart_toEndOf="@id/ic_cart_check"
+                app:layout_constraintTop_toBottomOf="@id/text_market_name"
+                tool:text="item count" />
+
+            <TextView
+                android:id="@+id/text_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="10,000,000$"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="@dimen/spacing_16"
+                android:layout_marginEnd="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_8"
+                android:text='@{String.valueOf(item.totalPrice)}'
+                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                android:background="@drawable/shape_background_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</layout>
