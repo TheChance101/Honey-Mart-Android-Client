@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -157,12 +159,13 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
 }
 
 @BindingAdapter("app:loadImage")
-fun bindImage(image: ShapeableImageView, imageURL: String?) {
+fun bindImage(image: ImageView, imageURL: String?) {
     imageURL?.let {
-        Glide.with(image)
-            .load(imageURL)
-            .placeholder(R.drawable.product_error_placeholder)
-            .centerCrop()
-            .into(image)
+        image.load(imageURL) {
+            placeholder(R.drawable.loading)
+            error(R.drawable.product_error_placeholder)
+            crossfade(true)
+            crossfade(1000)
+        }
     }
 }
