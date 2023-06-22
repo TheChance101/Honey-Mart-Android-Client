@@ -18,7 +18,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_product"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/spacing_zero"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:imageUrl="@{viewModel.state.image}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
@@ -27,15 +27,15 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_wishlist"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeWidth="0dp">
+            app:strokeWidth="@dimen/stroke_zero">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
@@ -46,15 +46,15 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_back_arrow"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeWidth="0dp">
+            app:strokeWidth="@dimen/stroke_zero">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="match_parent"
@@ -98,12 +98,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_8"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
+            app:cardElevation="@dimen/elevation_zero"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="@id/text_product_name"
             app:layout_constraintTop_toBottomOf="@id/text_product_name"
             app:strokeColor="@color/primary_100"
-            app:strokeWidth="1dp">
+            app:strokeWidth="@dimen/stroke_normal">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
@@ -121,18 +121,18 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_increase_count"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
             android:layout_marginTop="@dimen/spacing_24"
             android:layout_marginEnd="@dimen/spacing_16"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="@dimen/spacing_2"
             android:backgroundTint="@color/primary_100"
             android:onClick="@{() -> viewModel.addProduct()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeWidth="0dp">
+            app:strokeWidth="@dimen/stroke_zero">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
@@ -156,8 +156,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_decrease_count"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
             android:onClick="@{() -> viewModel.removeProduct()}"
@@ -167,7 +167,7 @@
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeColor="@color/primary_100"
-            app:strokeWidth="1dp">
+            app:strokeWidth="@dimen/stroke_normal">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
@@ -179,11 +179,11 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/product_description"
             style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/spacing_zero"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_24"
             android:layout_marginEnd="@dimen/spacing_16"
-            android:text="@{viewModel.state.product.productQuantity}"
+            android:text="@{viewModel.state.product.productDescription}"
             android:textAlignment="textStart"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +194,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add_to_cart"
             style="@style/Theme.HoneyMart.Button"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/spacing_zero"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_16"
             android:background="@drawable/button_background"
@@ -212,8 +212,8 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/lottie_loading"
+            android:layout_height="@dimen/lottie_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

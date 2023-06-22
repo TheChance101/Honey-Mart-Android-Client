@@ -18,11 +18,10 @@
 
     <androidx.cardview.widget.CardView
         style="@style/Theme.HoneyMart.Card"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="@dimen/item_product_image"
+        android:layout_height="@dimen/item_product_image"
         android:layout_marginHorizontal="@dimen/spacing_12"
-        android:onClick="@{()-> listener.onClickImage(item)}"
-        >
+        android:onClick="@{()-> listener.onClickImage(item)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="spacing_zero">0dp</dimen>
     <dimen name="spacing_2">2dp</dimen>
     <dimen name="spacing_4">4dp</dimen>
     <dimen name="spacing_8">8dp</dimen>
@@ -24,5 +25,10 @@
 
     <dimen name="stroke_zero">0dp</dimen>
     <dimen name="stroke_normal">1dp</dimen>
+
+    <dimen name="elevation_zero">0dp</dimen>
+
+    <dimen name="lottie_loading">100dp</dimen>
+    <dimen name="item_product_image">88dp</dimen>
 
 </resources>
