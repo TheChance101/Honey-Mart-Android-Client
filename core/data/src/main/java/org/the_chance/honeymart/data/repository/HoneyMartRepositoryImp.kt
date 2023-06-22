@@ -50,7 +50,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity =
         wrap { honeyMartService.getOrderDetails(orderId) }.toOrderDetailsEntity()
 
-    override suspend fun updateOrderState(id: Long, state: Int): Boolean =
+    override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
         wrap { honeyMartService.updateOrderState(id, state) }
 
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {

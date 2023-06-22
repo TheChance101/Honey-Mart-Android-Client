@@ -6,7 +6,7 @@ import javax.inject.Inject
 class UpdateOrderStateUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(id: Long, state: Int): Boolean {
+    suspend operator fun invoke(id: Long?, state: Int): Boolean {
         return honeyMartRepository.updateOrderState(id, state)
     }
 }

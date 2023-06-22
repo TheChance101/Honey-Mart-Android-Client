@@ -20,5 +20,5 @@ interface HoneyMartRepository {
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
     suspend fun getAllOrders(orderState:Int): List<OrderEntity>
-    suspend fun updateOrderState(id: Long, state: Int):Boolean
+    suspend fun updateOrderState(id: Long?, state: Int):Boolean
 }
