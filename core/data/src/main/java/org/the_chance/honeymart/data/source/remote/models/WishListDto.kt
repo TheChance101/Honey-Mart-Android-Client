@@ -9,4 +9,6 @@ data class WishListDto (
     val name: String? = null,
     @SerializedName("price")
     val price: Double? = null,
+    @SerializedName("images")
+    val images:List<String>? = null
 )
