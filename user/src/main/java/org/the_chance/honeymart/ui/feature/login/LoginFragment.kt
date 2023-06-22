@@ -9,7 +9,7 @@ import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentLoginBinding
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginDialog {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String = this::class.simpleName.toString()
     override val layoutIdFragment = R.layout.fragment_login
     override val viewModel: LoginViewModel by viewModels()
@@ -37,14 +37,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginDialog {
     private fun navigateToMainNav() {
         val action = LoginFragmentDirections.actionLoginFragmentPop()
         findNavController().navigate(action)
-        showDialog()
     }
-
-    override fun showDialog() {
-        dialog.show(parentFragmentManager, loginDialog)
-    }
-
-    private val loginDialog = "login_dialog"
 
 
 }

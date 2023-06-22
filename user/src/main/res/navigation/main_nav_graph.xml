@@ -150,8 +150,10 @@
             android:label="SignupConfirmPasswordFragment"
             tools:layout="@layout/fragment_signup_conform_password">
             <action
-                android:id="@+id/action_signupConfirmPasswordFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                android:id="@+id/action_signupConfirmPasswordFragment_pop"
+                app:popExitAnim="@android:anim/slide_in_left"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
     </navigation>
     <dialog
