@@ -19,12 +19,12 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
         collectAction()
         disableStatusBarTransparent()
     }
+
     private fun initiateAdapter(){
         val adapter = MarketAdapter(viewModel)
         binding.recyclerMarkets.adapter = adapter
         setupScrollListenerForRecyclerView(binding.recyclerMarkets)
     }
-
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->

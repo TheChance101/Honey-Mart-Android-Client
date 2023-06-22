@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
 import android.app.Dialog
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.addCallback
@@ -9,8 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
@@ -29,6 +26,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         handleOnBackPressed()
         collectEffect()
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerOrder)
+    }
+
+    private fun initAdapter() {
+        binding.recyclerOrder.adapter = ordersAdapter
+        setupScrollListenerForRecyclerView(binding.recyclerOrder)
     }
 
     private val swipe = object : SwipeToDeleteOrder() {
@@ -72,10 +74,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigate(R.id.marketsFragment)
         }
-    }
-
-    private fun initAdapter() {
-        binding.recyclerOrder.adapter = ordersAdapter
     }
 
     private fun collectEffect() {
