@@ -18,7 +18,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
     override fun setup() {
-        disableStatusBarTransparent()
+        setupMainFlowWindowVisibility()
         initAdapters()
         collectEffect()
     }

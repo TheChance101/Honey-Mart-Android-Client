@@ -12,13 +12,14 @@ data class MarketsUiState(
 data class MarketUiState(
     val marketId: Long? = 0L,
     val marketName: String? = "",
-    val imageUrl: String? = ""
+    val marketImage: String? = ""
 )
+
 
 fun MarketEntity.toMarketUiState(): MarketUiState {
     return MarketUiState(
         marketId = marketId,
         marketName = marketName,
-        imageUrl = imageUrl
+        marketImage = imageUrl
     )
 }

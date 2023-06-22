@@ -45,7 +45,6 @@
     <string name="done">Done</string>
     <string name="successMessage">Successfully Added To Wish List</string>
     <string name="removedFromWishList">Item Removed From Wish List</string>
-    <string name="total_price">Total Price</string>
     <string name="Processing">Processing</string>
     <string name="Done">Done</string>
     <string name="cancel">Cancel</string>
@@ -56,5 +55,13 @@
     <string name="yes_i_m_sure">Yes, I’m sure</string>
     <string name="you_dont_have_any_completed_orders">You Dont have any completed orders!!</string>
     <string name="you_don_t_have_any_canceled_orders">You Don\'t have any canceled orders!!</string>
+    <string name="plus">+</string>
+    <string name="number_of_items">1</string>
+    <string name="minus">-</string>
+    <string name="total_price">Total Price</string>
+    <string name="order_now">Order Now</string>
+    <string name="_300000">300000$</string>
+    <string name="order_complete">Order complete!</string>
+    <string name="thank_you_for_shopping_with_us">Thank you for shopping with us</string>
 
 </resources>

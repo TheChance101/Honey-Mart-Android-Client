@@ -63,7 +63,17 @@
         android:id="@+id/cartFragment"
         android:name="org.the_chance.honeymart.ui.feature.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_marketsFragment"
+            app:destination="@id/marketsFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_cartBottomFragment"
+            app:destination="@id/cartBottomFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ordersFragment"
         android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
@@ -153,5 +163,14 @@
         android:id="@+id/orderDetailsFragment"
         android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
         android:label="OrderDetailsFragment" />
+    <dialog
+        android:id="@+id/cartBottomFragment"
+        android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"
+        android:label="CartBottomFragment"
+        tools:layout="@layout/bottom_sheet_complete_cart_order">
+        <action
+            android:id="@+id/action_cartBottomFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+    </dialog>
 
 </navigation>

@@ -1,12 +1,16 @@
 package org.the_chance.honeymart.util
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -110,6 +114,11 @@ fun setOrderDialogText(view: TextView, orderStates: OrderStates) {
 @BindingAdapter(value = ["app:showIfNoItems", "app:hideIfLoading"])
 fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
+}
+
+@BindingAdapter("app:showIfNotEmpty")
+fun <T> showIfNotEmpty(view: View, items: List<T>) {
+    view.isVisible = items.isNotEmpty()
 }
 
 @BindingAdapter(value = ["app:showIfFirsTrue", "app:showIfSecondTrue"])
@@ -228,6 +237,19 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
         else -> {
             textInputLayout.error = null
             textInputLayout.isErrorEnabled = false
+        }
+    }
+
+}
+
+@BindingAdapter("app:loadImage")
+fun bindImage(image: ImageView, imageURL: String?) {
+    imageURL?.let {
+        image.load(imageURL) {
+            placeholder(R.drawable.loading)
+            error(R.drawable.product_error_placeholder)
+            crossfade(true)
+            crossfade(1000)
         }
     }
 }

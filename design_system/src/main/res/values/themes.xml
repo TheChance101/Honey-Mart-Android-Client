@@ -225,13 +225,11 @@
 
     <!-- Market Image Style-->
     <style name="Theme.HoneyMart.Image.MarketImage">
-        <item name="srcCompat">@drawable/image_market</item>
         <item name="android:foreground">@color/black_37</item>
     </style>
 
     <!-- Product Image Style-->
     <style name="Theme.HoneyMart.Image.ProductImage">
-        <item name="srcCompat">@drawable/image_market</item>
         <item name="android:foreground">@color/black_37</item>
     </style>
 

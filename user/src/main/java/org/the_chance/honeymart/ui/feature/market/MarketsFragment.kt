@@ -17,7 +17,7 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override fun setup() {
         initiateAdapter()
         collectAction()
-        disableStatusBarTransparent()
+        setupMainFlowWindowVisibility()
     }
 
     private fun initiateAdapter(){

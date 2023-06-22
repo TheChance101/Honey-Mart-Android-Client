@@ -16,7 +16,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
     override fun setup() {
         addCallbacks()
-        makeStatusBarTransparent()
+        setupUserFlowWindowVisibility()
     }
 
     private fun addCallbacks() {

@@ -12,6 +12,8 @@ import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
 import javax.inject.Singleton
 
 
@@ -27,6 +29,7 @@ internal object NetworkModule {
         client: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory,
     ): Retrofit {
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
@@ -50,6 +53,9 @@ internal object NetworkModule {
         OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
             addInterceptor(headerInterceptor)
+            connectTimeout(60, TimeUnit.SECONDS)
+            writeTimeout(60, TimeUnit.SECONDS)
+            readTimeout(60, TimeUnit.SECONDS)
         }.build()
 
     @Singleton
