@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
+import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -18,9 +19,13 @@ class CartViewModel @Inject constructor(
     private val getAllCart: GetAllCartUseCase,
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
+    private val checkout:CheckoutUseCase
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
+
+
+
 
     fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true) }
@@ -103,8 +108,16 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                products = emptyList(),
+            )
+        }
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
+            checkout()
         }
     }
 
@@ -118,11 +131,6 @@ class CartViewModel @Inject constructor(
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
             if (productId != null) {
-                tryToExecute(
-                    { getAllCart().toCartListProductUiState() },
-                    ::onGetAllCartSuccess,
-                    ::onGetAllCartError
-                )
                 tryToExecute(
                     { deleteFromCart(productId) },
                     ::onDeleteFromCartSuccess,
