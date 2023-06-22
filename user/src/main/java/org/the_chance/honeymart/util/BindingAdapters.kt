@@ -141,7 +141,6 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
         ValidationState.BLANK_PASSWORD -> {
             textInputLayout.error = context.getString(handleValidation(validationState))
 
-
         }
 
         ValidationState.INVALID_PASSWORD_LENGTH -> {
@@ -162,8 +161,7 @@ fun bindImage(image: ShapeableImageView, imageURL: String?) {
     imageURL?.let {
         Glide.with(image)
             .load(imageURL)
-            .placeholder(R.drawable.product_placeholder)
-            .error(R.drawable.product_error_placeholder)
+            .placeholder(R.drawable.product_error_placeholder)
             .centerCrop()
             .into(image)
     }
