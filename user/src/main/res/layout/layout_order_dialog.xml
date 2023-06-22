@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_warning"
                 app:orderDialogText="@{viewModel.state.orderStates}" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/button_sure"
                 style="@style/Theme.HoneyMart.Text.H5.Light"
                 android:layout_width="144dp"
@@ -57,18 +57,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/button_cancel"
                 style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_width="144dp"
                 android:layout_height="48dp"
                 android:layout_marginVertical="@dimen/spacing_32"
-                android:layout_marginStart="@dimen/spacing_8"
                 android:background="@drawable/btn_background_in_dialog"
                 android:text="@string/cancel"
+                android:layout_marginEnd="@dimen/spacing_16"
                 android:textColor="@drawable/selector_button_background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/button_sure"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
