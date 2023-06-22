@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_product"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_zero"
+            android:scaleType="centerCrop"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:loadImage="@{viewModel.state.image}"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/image_test" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_wishlist"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
+            android:layout_margin="@dimen/spacing_16"
+            tools:backgroundTint="@color/white"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            android:onClick="@{() -> viewModel.onClickFavIcon(viewModel.state.product.productId)}"
+            app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+            app:strokeWidth="@dimen/stroke_zero">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
+                tools:srcCompat="@drawable/icon_favorite_selected" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_back_arrow"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
+            android:layout_margin="@dimen/spacing_16"
+            android:backgroundTint="@color/white"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+            app:strokeWidth="@dimen/stroke_zero">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/spacing_8"
+                app:srcCompat="@drawable/icon_back_arrow" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_product_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_12"
+            app:items="@{viewModel.state.smallImages}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
+            tools:listitem="@layout/item_product_image" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_product_name"
+            style="@style/Theme.HoneyMart.Text.H2.DarkSubtle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:text="@{viewModel.state.product.productName}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
+            tools:text="Ottoman" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_product_price"
+            style="@style/Theme.HoneyMart.Card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_8"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="@dimen/elevation_zero"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintStart_toStartOf="@id/text_product_name"
+            app:layout_constraintTop_toBottomOf="@id/text_product_name"
+            app:strokeColor="@color/primary_100"
+            app:strokeWidth="@dimen/stroke_normal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_product_price"
+                style="@style/Theme.HoneyMart.Text.H2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_16"
+                android:layout_marginVertical="@dimen/spacing_4"
+                android:textAlignment="center"
+                android:textColor="@color/primary_100"
+                app:formattedPrice="@{viewModel.state.product.productPrice}"
+                tools:text="10,000,000$" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_increase_count"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:layout_marginBottom="@dimen/spacing_2"
+            android:backgroundTint="@color/primary_100"
+            android:onClick="@{() -> viewModel.addProduct()}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
+            app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+            app:strokeWidth="@dimen/stroke_zero">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/icon_add_product" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_product_quantity"
+            style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:text="@{String.valueOf(viewModel.state.quantity)}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
+            app:layout_constraintEnd_toStartOf="@id/card_increase_count"
+            app:layout_constraintTop_toTopOf="@id/card_increase_count"
+            tools:text="01" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_decrease_count"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
+            android:layout_margin="@dimen/spacing_16"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> viewModel.removeProduct()}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
+            app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
+            app:layout_constraintTop_toTopOf="@id/card_increase_count"
+            app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+            app:strokeColor="@color/primary_100"
+            app:strokeWidth="@dimen/stroke_normal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/icon_remove_product" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/product_description"
+            style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
+            android:layout_width="@dimen/spacing_zero"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:text="@{viewModel.state.product.productDescription}"
+            android:textAlignment="textStart"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/card_product_price"
+            app:layout_constraintTop_toBottomOf="@id/card_product_price"
+            tools:text="Product Description Product Description Product Description Product Description Product Description Product Description Product Description" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/add_to_cart_loading"
+            android:layout_width="@dimen/add_to_cart_lottie_loading"
+            android:layout_height="@dimen/add_to_cart_lottie_loading"
+            app:layout_constraintBottom_toTopOf="@id/button_add_to_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/spacing_4"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_add_to_cart"
+            style="@style/Theme.HoneyMart.Button"
+            android:layout_width="@dimen/spacing_zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_16"
+            android:background="@drawable/button_background"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
+            android:text="@string/add_to_cart"
+            app:disableIfNoQuantity="@{viewModel.state.quantity}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:icon="@drawable/icon_add_to_cart"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/spacing_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="@dimen/lottie_loading"
+            android:layout_height="@dimen/lottie_loading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isLoading}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
