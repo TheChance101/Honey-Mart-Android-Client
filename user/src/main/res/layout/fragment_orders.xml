@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_8"
-                android:onClick="@{()-> viewModel.getAllProcessingOrders(1)}"
+                android:onClick="@{()-> viewModel.getAllProcessingOrders()}"
                 android:text="@string/processing"
                 android:textColor="@color/primary_100"
                 app:changeChipColorForOrderProcessing="@{viewModel.state.orderStates}" />

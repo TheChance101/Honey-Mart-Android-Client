@@ -1,15 +1,17 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import android.app.Dialog
-import android.view.ViewGroup
+import android.view.LayoutInflater
 import android.widget.Button
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -20,12 +22,14 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     override val layoutIdFragment = R.layout.fragment_orders
     override val viewModel: OrderViewModel by viewModels()
     private val ordersAdapter: OrdersAdapter by lazy { OrdersAdapter(viewModel) }
+    private lateinit var swipe: SwipeToDeleteOrder
+    private lateinit var touchHelper: ItemTouchHelper
 
     override fun setup() {
         initAdapter()
         handleOnBackPressed()
         collectEffect()
-        ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerOrder)
+        attachSwipe(OrderStates.PROCESSING)
     }
 
     private fun initAdapter() {
@@ -33,41 +37,74 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         setupScrollListenerForRecyclerView(binding.recyclerOrder)
     }
 
-    private val swipe = object : SwipeToDeleteOrder() {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder,
-        ) = true
+    private fun attachSwipe(orderState: OrderStates) {
+        swipe = object : SwipeToDeleteOrder(orderState) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ) = true
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.absoluteAdapterPosition
-            viewModel.updateOrders(position.toLong(),3)  // here you can update state
-            showOrderDialog(position)
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.absoluteAdapterPosition
+                when (orderState) {
+                    OrderStates.PROCESSING -> {
+                        // here you can update state
+                        showAlertOrderDialog(position) {
+                            viewModel.updateOrders(
+                                position.toLong(),
+                                3
+                            )
+                        }
+                    }
+
+                    OrderStates.DONE -> {
+                        viewModel.updateOrders(position.toLong(), 4)  // here you can update state
+                        //showOrderDialog(position)
+                    }
+
+                    OrderStates.CANCELED -> {
+                        viewModel.updateOrders(position.toLong(), 4)
+                    }
+                }
+            }
+        }
+        if (::touchHelper.isInitialized) {
+            touchHelper.attachToRecyclerView(null)
+            touchHelper = ItemTouchHelper(swipe)
+            touchHelper.attachToRecyclerView(binding.recyclerOrder)
+        } else {
+            touchHelper = ItemTouchHelper(swipe)
+            touchHelper.attachToRecyclerView(binding.recyclerOrder)
         }
     }
 
-    private fun showOrderDialog(position: Int) {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.layout_order_dialog)
+    private fun showAlertOrderDialog(position: Int, execute: () -> Unit) {
+        val customView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
 
-        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog)
+        val buttonSure = customView.findViewById<Button>(R.id.button_sure)
+        val buttonCancel = customView.findViewById<Button>(R.id.button_cancel)
 
-        val btnCancel = dialog.findViewById<Button>(R.id.button_cancel)
-        val btnSure = dialog.findViewById<Button>(R.id.button_sure)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(customView)
+            .setCancelable(false)
+            .show()
 
-        btnSure.setOnClickListener {
-            ordersAdapter.removeItem(position)
+        buttonSure.setOnClickListener {
+            execute()
             dialog.dismiss()
         }
-        btnCancel.setOnClickListener {
+
+        buttonCancel.setOnClickListener {
+            Snackbar.make(
+                requireView(),
+                getString(org.the_chance.design_system.R.string.cancel),
+                Snackbar.LENGTH_SHORT
+            )
+                .show()
             dialog.dismiss()
         }
-
-        dialog.setCancelable(false)
-        dialog.show()
     }
 
     private fun handleOnBackPressed() {
@@ -87,6 +124,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
             is OrderUiEffect.ClickOrderEffect -> TODO()
+            OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
+            OrderUiEffect.ClickDone -> attachSwipe(OrderStates.DONE)
+            OrderUiEffect.ClickProcessing -> attachSwipe(OrderStates.PROCESSING)
         }
     }
 
