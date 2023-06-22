@@ -20,4 +20,5 @@ interface HoneyMartRepository {
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
     suspend fun getAllCartProducts(): List<CartEntity>
     suspend fun addProductToCart(productId: Long, count: Long): String
+    suspend fun getProductDetails(productId: Long): ProductEntity
 }

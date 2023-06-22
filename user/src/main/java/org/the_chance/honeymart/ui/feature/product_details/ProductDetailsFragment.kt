@@ -72,5 +72,4 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         val action = ProductDetailsFragmentDirections.actionProductDetailsToUserNavGraph()
         findNavController().navigate(action)
     }
-
 }

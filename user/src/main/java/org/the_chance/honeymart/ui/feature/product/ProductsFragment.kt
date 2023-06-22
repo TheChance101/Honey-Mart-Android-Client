@@ -39,10 +39,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     private fun onEffect(effect: ProductUiEffect) {
         when (effect) {
-            is ProductUiEffect.ClickProductEffect -> navigateToProductDetails(
-                effect.productId,
-                effect.categoryId
-            )
+            is ProductUiEffect.ClickProductEffect -> navigateToProductDetails(effect.productId)
 
             ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             ProductUiEffect.AddedToWishListEffect -> {
@@ -63,9 +60,9 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
     }
 
-    private fun navigateToProductDetails(productId: Long, categoryId: Long) {
+    private fun navigateToProductDetails(productId: Long) {
         val action =
-            ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId, categoryId)
+            ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)
     }
 }

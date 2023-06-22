@@ -143,4 +143,10 @@ interface HoneyMartService {
 
     //endregion user
 
+    // region Product Details
+    @GET("/product/{productId}")
+    suspend fun getProductDetails(
+        @Path("productId") productId: Long,
+    ): Response<BaseResponse<ProductDto>>
+    // endregion
 }

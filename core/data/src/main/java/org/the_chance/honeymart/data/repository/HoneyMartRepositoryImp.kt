@@ -55,6 +55,10 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun addProductToCart(productId: Long, count: Long): String =
         wrap { honeyMartService.addProductToCart(productId, count) }
 
+    override suspend fun getProductDetails(productId: Long): ProductEntity =
+        wrap { honeyMartService.getProductDetails(productId) }.toProductEntity()
+
+
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
         return if (response.isSuccessful) {

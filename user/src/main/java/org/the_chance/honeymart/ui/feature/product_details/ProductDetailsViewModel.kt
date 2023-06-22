@@ -34,14 +34,14 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     init {
-        getProductDetails(args.productId, args.categoryId)
+        getProductDetails(args.productId)
     }
 
     // region Product
-    private fun getProductDetails(productId: Long, categoryId: Long) {
+    private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getProductDetailsUseCase(productId, categoryId).toProductUiState() },
+            { getProductDetailsUseCase(productId).toProductUiState() },
             ::onGetProductSuccess,
             ::onGetProductError,
         )

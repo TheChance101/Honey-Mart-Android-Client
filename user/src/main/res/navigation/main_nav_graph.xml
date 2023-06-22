@@ -159,9 +159,6 @@
         <argument
             android:name="productId"
             app:argType="long" />
-        <argument
-            android:name="categoryId"
-            app:argType="long" />
         <action
             android:id="@+id/action_productDetails_to_user_nav_graph"
             app:destination="@id/user_nav_graph"
