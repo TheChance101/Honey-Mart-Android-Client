@@ -41,17 +41,34 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
     private fun observeViewModelEvents(effect: ProductDetailsUiEffect) {
         when (effect) {
-            is ProductDetailsUiEffect.AddToCartSuccess -> { showSnackBar(effect.message) }
-            is ProductDetailsUiEffect.AddToCartError -> { showSnackBar(effect.error.toString()) }
+            is ProductDetailsUiEffect.AddToCartSuccess -> {
+                showSnackBar(effect.message)
+            }
+
+            is ProductDetailsUiEffect.AddToCartError -> {
+                showSnackBar(effect.error.toString())
+            }
+
             ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
-            is ProductDetailsUiEffect.AddProductToWishListEffectError -> TODO()
-            is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> TODO()
-            is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> TODO()
-            is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> TODO()
+            is ProductDetailsUiEffect.AddProductToWishListEffectError -> {
+                showSnackBar(effect.error.toString())
+            }
+
+            is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {
+                showSnackBar(effect.message)
+            }
+
+            is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
+                showSnackBar(effect.error.toString())
+            }
+
+            is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {
+                showSnackBar(effect.message)
+            }
         }
     }
 
-    private fun navigateToAuthenticate(){
+    private fun navigateToAuthenticate() {
         val action = ProductDetailsFragmentDirections.actionProductDetailsToUserNavGraph()
         findNavController().navigate(action)
     }

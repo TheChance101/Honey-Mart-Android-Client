@@ -152,7 +152,51 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+        val updatedProductUiState = _state.value.product.copy(isFavorite = isFavorite)
+        _state.update { it.copy(product = updatedProductUiState) }
+    }
 
+    fun onClickFavIcon(productId: Long) {
+        val currentProduct = _state.value.product
+        val isFavorite = currentProduct.isFavorite ?: false
+        val newFavoriteState = !isFavorite
+
+        updateFavoriteState(productId, newFavoriteState)
+
+        if (isFavorite) {
+            deleteProductFromWishList(productId)
+        } else {
+            addProductToWishList(productId)
+        }
+    }
+
+    private fun deleteProductFromWishList(productId: Long) {
+        tryToExecute(
+            { deleteProductFromWishListUseCase(productId) },
+            ::onDeleteWishListSuccess,
+            ::onDeleteWishListError
+        )
+    }
+
+
+    private fun onDeleteWishListSuccess(successMessage: String) {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(
+                    ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess(successMessage)
+                )
+            )
+        }
+        log("Deleted Successfully : $successMessage")
+    }
+
+    private fun onDeleteWishListError(error: Exception) {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError(error))
+            )
+        }
+        log("Delete From WishList Error : ${error.message}")
     }
 
     // endregion
