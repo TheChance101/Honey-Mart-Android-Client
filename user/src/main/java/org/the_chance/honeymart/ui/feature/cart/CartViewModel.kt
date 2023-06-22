@@ -112,7 +112,6 @@ class CartViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                products = emptyList(),
             )
         }
         viewModelScope.launch {
