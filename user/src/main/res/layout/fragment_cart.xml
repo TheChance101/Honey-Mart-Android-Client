@@ -70,18 +70,18 @@
                     app:iconPadding="@dimen/spacing_8"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/total_price"
                     style="@style/Theme.HoneyMart.Text.H6"
-                    android:textColor="@color/black_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:text="@string/total_price"
+                    android:textColor="@color/black_16"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -97,14 +97,15 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
 
+            app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.364"
-            app:showIfNoProducts="@{viewModel.state.products}">
-<!--            app:hideIfLoading="@{viewModel.state.isLoading}"-->
+            app:showIfNoItems="@{viewModel.state.products}">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_wish_list_placeholder"
                 android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
