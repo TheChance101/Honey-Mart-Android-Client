@@ -40,7 +40,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.absoluteAdapterPosition
-            //viewModel.updateOrders(position.toLong(),3)  // here you can update state
+            viewModel.updateOrders(position.toLong(),3)  // here you can update state
             showOrderDialog(position)
         }
     }

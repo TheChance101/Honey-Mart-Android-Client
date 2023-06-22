@@ -10,10 +10,6 @@
             type="org.the_chance.honeymart.ui.feature.uistate.OrderUiState" />
 
         <variable
-            name="itemMarket"
-            type="org.the_chance.honeymart.ui.feature.uistate.MarketUiState" />
-
-        <variable
             name="listener"
             type="org.the_chance.honeymart.ui.feature.orders.OrderInteractionListener" />
     </data>
@@ -56,7 +52,7 @@
                 android:layout_marginVertical="@dimen/spacing_8"
                 android:layout_marginStart="@dimen/spacing_8"
                 tool:text="@string/market_name"
-                android:text="@{itemMarket.marketName}"
+                android:text="@{item.marketName}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 app:layout_constraintTop_toBottomOf="@id/text_order_number"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
