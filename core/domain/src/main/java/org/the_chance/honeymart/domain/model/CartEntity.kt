@@ -8,6 +8,6 @@ data class CartEntity(
 data class CartProductsEntity(
     val id: Long?,
     val name: String?,
-    val count: Long?,
+    val count: Int?,
     val price: Double?,
 )

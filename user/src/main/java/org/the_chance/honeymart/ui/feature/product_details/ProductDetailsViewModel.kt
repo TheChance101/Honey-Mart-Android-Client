@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
+import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
-    private val addProductToCartUseCase: AddProductToCartUseCase,
+    private val addProductToCartUseCase: AddToCartUseCase,
     private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
@@ -88,7 +88,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     // region Cart
 
-    fun addProductToCart(productId: Long, count: Long) {
+    fun addProductToCart(productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = true) }
         tryToExecute(
             { addProductToCartUseCase(productId, count) },
