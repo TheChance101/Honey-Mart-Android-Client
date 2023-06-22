@@ -1,5 +1,10 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.data.source.remote.models.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -10,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface HoneyMartService {
 
@@ -139,6 +145,18 @@ interface HoneyMartService {
     ): Response<BaseResponse<String>>
 
     //endregion user
+    @GET("order/userOrders")
+    suspend fun getAllOrders(
+        @Query("orderState") orderState: Int
+    ): Response<BaseResponse<List<OrderDto>>>
+
+    @FormUrlEncoded
+    @PUT("/order/{id}")
+    suspend fun updateOrderState(
+        @Path("id") id: Long?,
+        @Field("state") state: Int
+    ): Response<BaseResponse<Boolean>>
+
     // region cart
     @GET("/cart")
     suspend fun getCart(): Response<BaseResponse<CartDto>>

@@ -4,6 +4,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
@@ -12,6 +13,7 @@ import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -26,8 +28,9 @@ class HoneyMartRepositoryImp @Inject constructor(
 
 
     override suspend fun checkout(): String {
-        return wrap { honeyMartService.checkout()}
+        return wrap { honeyMartService.checkout() }
     }
+
     override suspend fun getCart(): CartEntity =
         wrap { honeyMartService.getCart() }.toCartEntity()
 
@@ -60,9 +63,14 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteFromWishList(productId: Long): String =
         wrap { honeyMartService.deleteFromWishList(productId) }
 
+    override suspend fun getAllOrders(orderState: Int): List<OrderEntity> =
+        wrap { honeyMartService.getAllOrders(orderState) }.map { it.toOrderEntity() }
 
     override suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity =
         wrap { honeyMartService.getOrderDetails(orderId) }.toOrderDetailsEntity()
+
+    override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
+        wrap { honeyMartService.updateOrderState(id, state) }
 
 
     override suspend fun getProductDetails(productId: Long): ProductEntity =
@@ -83,5 +91,6 @@ class HoneyMartRepositoryImp @Inject constructor(
             }
         }
     }
+
 
 }

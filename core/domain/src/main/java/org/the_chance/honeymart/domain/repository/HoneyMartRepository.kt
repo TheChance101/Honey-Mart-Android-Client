@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
@@ -23,6 +24,8 @@ interface HoneyMartRepository {
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
+    suspend fun getAllOrders(orderState:Int): List<OrderEntity>
+    suspend fun updateOrderState(id: Long?, state: Int):Boolean
     suspend fun checkout(): String
 
     suspend fun getProductDetails(productId: Long): ProductEntity

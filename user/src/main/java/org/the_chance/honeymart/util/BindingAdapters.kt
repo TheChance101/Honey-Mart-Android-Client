@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import coil.load
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -15,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
 
 @BindingAdapter(value = ["app:items"])
@@ -27,7 +29,88 @@ fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
 }
 
-@BindingAdapter(value = ["app:showIfNoProducts", "app:hideIfLoading"])
+@BindingAdapter("app:changeChipColorForOrderProcessing")
+fun changeChipColorIfProcessingSelected(chip: Chip, orderStates: OrderStates) {
+    val context = chip.context
+    when (orderStates) {
+        OrderStates.PROCESSING -> {
+            val textColor = ContextCompat.getColor(context, R.color.white)
+            chip.setChipBackgroundColorResource(R.color.primary_100)
+            chip.setTextColor(textColor)
+        }
+
+        else -> {
+            val textColor = ContextCompat.getColor(context, R.color.primary_100)
+            chip.setChipBackgroundColorResource(R.color.white)
+            chip.setTextColor(textColor)
+        }
+    }
+}
+
+@BindingAdapter("app:changeChipColorForOrderDone")
+fun changeChipColorIfDoneSelected(chip: Chip, orderStates: OrderStates) {
+    val context = chip.context
+    when (orderStates) {
+        OrderStates.DONE -> {
+            val textColor = ContextCompat.getColor(context, R.color.white)
+            chip.setChipBackgroundColorResource(R.color.primary_100)
+            chip.setTextColor(textColor)
+        }
+
+        else -> {
+            val textColor = ContextCompat.getColor(context, R.color.primary_100)
+            chip.setChipBackgroundColorResource(R.color.white)
+            chip.setTextColor(textColor)
+        }
+    }
+}
+
+@BindingAdapter("app:changeChipColorForOrderCanceled")
+fun changeChipColorIfCanceledSelected(chip: Chip, orderStates: OrderStates) {
+    val context = chip.context
+    when (orderStates) {
+        OrderStates.CANCELED -> {
+            val textColor = ContextCompat.getColor(context, R.color.white)
+            chip.setChipBackgroundColorResource(R.color.primary_100)
+            chip.setTextColor(textColor)
+        }
+
+        else -> {
+            val textColor = ContextCompat.getColor(context, R.color.primary_100)
+            chip.setChipBackgroundColorResource(R.color.white)
+            chip.setTextColor(textColor)
+        }
+    }
+}
+
+@BindingAdapter("app:placeHolderText")
+fun setOrderPlaceHolderText(view: TextView, orderStates: OrderStates) {
+    when (orderStates) {
+        OrderStates.PROCESSING -> view.text =
+            view.context.getString(R.string.you_dont_have_any_orders)
+
+        OrderStates.DONE -> view.text =
+            view.context.getString(R.string.you_dont_have_any_completed_orders)
+
+        OrderStates.CANCELED -> view.text =
+            view.context.getString(R.string.you_don_t_have_any_canceled_orders)
+    }
+}
+
+@BindingAdapter("app:orderDialogText")
+fun setOrderDialogText(view: TextView, orderStates: OrderStates) {
+    when (orderStates) {
+        OrderStates.PROCESSING -> view.text =
+            view.context.getString(R.string.order_dialog_Cancel_Text)
+
+        OrderStates.CANCELED -> view.text =
+            view.context.getString(R.string.order_dialog_Delete_Text)
+
+        else -> {}
+    }
+}
+
+@BindingAdapter(value = ["app:showIfNoItems", "app:hideIfLoading"])
 fun <T> showIfEmpty(view: View, items: List<T>, condition: Boolean) {
     view.isVisible = condition == false && items.isEmpty()
 }
@@ -171,6 +254,7 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
 
         ValidationState.BLANK_PASSWORD -> {
             textInputLayout.error = context.getString(handleValidation(validationState))
+
 
         }
 
