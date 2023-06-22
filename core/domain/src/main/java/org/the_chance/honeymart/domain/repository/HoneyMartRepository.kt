@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.repository
 
+import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
@@ -16,6 +17,12 @@ interface HoneyMartRepository {
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String
     suspend fun getWishList(): List<WishListEntity>
+    suspend fun getCart(): CartEntity
+
+    suspend fun addToCart(productId: Long,count:Int): String
+    suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
+
+    suspend fun checkout(): String
 
 }

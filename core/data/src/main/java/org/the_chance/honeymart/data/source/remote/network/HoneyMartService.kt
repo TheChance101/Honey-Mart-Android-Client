@@ -1,5 +1,11 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CartDto
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.data.source.remote.models.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -99,7 +105,7 @@ interface HoneyMartService {
     @FormUrlEncoded
     @POST("/user/login")
     suspend fun loginUser(@Field("email") email: String, @Field("password") password: String)
-    :Response<BaseResponse<String>>
+            : Response<BaseResponse<String>>
 
     //region WishList
     @GET("/wishList")
@@ -127,5 +133,33 @@ interface HoneyMartService {
     ): Response<BaseResponse<String>>
 
     //endregion user
+    // region cart
+    @GET("/cart")
+    suspend fun getCart(): Response<BaseResponse<CartDto>>
 
+//    @POST("/cart/addProduct")
+//    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addProductToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Long
+    ): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Int
+    ): Response<BaseResponse<String>>
+
+    @DELETE("/cart/{id}")
+    suspend fun deleteFromCart(@Path("id") productId: Long): Response<BaseResponse<String>>
+
+    @DELETE("/cart/deleteAll")
+    suspend fun deleteAllFromCart(): Response<BaseResponse<String>>
+
+    @POST("/order/checkout")
+    suspend fun checkout(): Response<BaseResponse<String>>
+
+    //endregion cart
 }
