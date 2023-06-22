@@ -15,6 +15,10 @@ class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : HoneyMartRepository {
 
+
+    override suspend fun checkout(): String {
+        return wrap { honeyMartService.checkout()}
+    }
     override suspend fun getCart(): CartEntity =
         wrap { honeyMartService.getCart() }.toCartEntity()
 

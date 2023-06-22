@@ -137,14 +137,29 @@ interface HoneyMartService {
     @GET("/cart")
     suspend fun getCart(): Response<BaseResponse<CartDto>>
 
-    @POST("/cart")
-    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
+//    @POST("/cart/addProduct")
+//    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addProductToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Long
+    ): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Int
+    ): Response<BaseResponse<String>>
 
     @DELETE("/cart/{id}")
     suspend fun deleteFromCart(@Path("id") productId: Long): Response<BaseResponse<String>>
 
     @DELETE("/cart/deleteAll")
     suspend fun deleteAllFromCart(): Response<BaseResponse<String>>
+
+    @POST("/order/checkout")
+    suspend fun checkout(): Response<BaseResponse<String>>
 
     //endregion cart
 }
