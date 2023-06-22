@@ -45,5 +45,6 @@
     <string name="total_price">Total Price</string>
     <string name="Processing">Processing</string>
     <string name="Done">Done</string>
+    <string name="success_sign_up_description">High five! You\'ve joined our market app. Get ready for an amazing shopping experience</string>
 
 </resources>
