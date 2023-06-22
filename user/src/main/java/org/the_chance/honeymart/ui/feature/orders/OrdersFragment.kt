@@ -28,7 +28,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerOrder)
     }
 
-
     private fun initAdapter() {
         binding.recyclerOrder.adapter = ordersAdapter
         setupScrollListenerForRecyclerView(binding.recyclerOrder)
