@@ -63,6 +63,7 @@
             android:id="@+id/image_view_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:src="@drawable/placeholder_wish_list"
             app:hideIfLoading="@{viewModel.state.isLoadingProduct}"
             app:layout_constraintBottom_toBottomOf="parent"

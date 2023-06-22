@@ -17,6 +17,7 @@ import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
 
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
