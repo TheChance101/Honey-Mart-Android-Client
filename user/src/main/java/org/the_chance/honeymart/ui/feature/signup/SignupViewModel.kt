@@ -30,51 +30,6 @@ class SignupViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-    private fun addUser(fullName: String, password: String, email: String) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { createUser(fullName = fullName, password = password, email = email) },
-            ::onSuccess,
-            ::onError,
-        )
-    }
-
-    private fun onSuccess(result: ValidationState) {
-        if (result == ValidationState.SUCCESS) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
-        }
-        _state.update { it.copy(isLoading = false, isSignUp = result) }
-    }
-
-    private fun onError(exception: Exception) {
-        handleException(exception)
-        Log.e("TAG", "Throwable error: ${exception.message}")
-    }
-
-    private fun handleException(exception: Exception) {
-        when (exception) {
-            is InvalidEmailException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
-            }
-
-            is InvalidFullNameException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
-            }
-
-            is InvalidPasswordException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
-            }
-
-            else -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "Throwable error: ${exception.message}")
-            }
-        }
-    }
-
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
         _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
@@ -105,13 +60,61 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    private fun addUser(fullName: String, password: String, email: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { createUser(fullName = fullName, password = password, email = email) },
+            ::onSuccess,
+            ::onError,
+        )
+    }
+
+    private fun onSuccess(result: ValidationState) {
+        if (result == ValidationState.SUCCESS) {
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+        }
+        _state.update { it.copy(isLoading = false, isSignUp = result) }
+    }
+
+    private fun onError(exception: Exception) {
+        when (exception) {
+            is InvalidEmailException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
+            }
+
+            is InvalidFullNameException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
+            }
+
+            is InvalidPasswordException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
+            }
+
+            else -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "Throwable error: ${exception.message}")
+            }
+        }
+    }
+
+
+
     fun onContinueClicked() {
         val emailState = validateEmail(state.value.email)
         val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
         }
-        _state.update { it.copy(emailState = emailState, fullNameState = fullNameState) }
+        _state.update {
+            it.copy(
+                emailState = emailState,
+                fullNameState = fullNameState,
+                isLoading = false
+            )
+        }
 
     }
 

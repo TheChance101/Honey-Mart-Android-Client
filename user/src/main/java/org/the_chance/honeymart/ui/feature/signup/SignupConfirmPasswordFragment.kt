@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +21,6 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let { navigateToLogin() }
-            Log.e("TAG", "collectAction: $effect")
         }
     }
 
