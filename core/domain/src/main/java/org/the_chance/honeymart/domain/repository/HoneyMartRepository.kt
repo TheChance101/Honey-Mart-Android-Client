@@ -28,4 +28,5 @@ interface HoneyMartRepository {
     suspend fun updateOrderState(id: Long?, state: Int):Boolean
     suspend fun checkout(): String
 
+    suspend fun getProductDetails(productId: Long): ProductEntity
 }

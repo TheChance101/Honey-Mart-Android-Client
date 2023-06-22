@@ -80,7 +80,7 @@ interface HoneyMartService {
     suspend fun addProduct(
         @Body name: String,
         @Body price: Double,
-        @Body quantity: String,
+        @Body description: String,
         @Body categoriesId: List<Long>,
     ): Response<BaseResponse<ProductDto>>
 
@@ -89,7 +89,7 @@ interface HoneyMartService {
         @Path("id") productId: Long,
         @Body name: String,
         @Body price: Double,
-        @Body quantity: String,
+        @Body description: String,
     )
 
     @PUT("/product/{id}/updateCategories")
@@ -119,6 +119,18 @@ interface HoneyMartService {
     suspend fun addToWishList(@Field("productId") productId: Long): Response<BaseResponse<String>>
 
     //endregion WishList
+
+    //region Cart
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addProductToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Long
+    ): Response<BaseResponse<String>>
+
+    //endregion Cart
+
+
     //region user
 
     @GET("/order/{orderId}")
@@ -135,26 +147,20 @@ interface HoneyMartService {
     //endregion user
     @GET("order/userOrders")
     suspend fun getAllOrders(
-        @Query("orderState") orderState:Int
+        @Query("orderState") orderState: Int
     ): Response<BaseResponse<List<OrderDto>>>
+
     @FormUrlEncoded
     @PUT("/order/{id}")
     suspend fun updateOrderState(
         @Path("id") id: Long?,
         @Field("state") state: Int
     ): Response<BaseResponse<Boolean>>
+
     // region cart
     @GET("/cart")
     suspend fun getCart(): Response<BaseResponse<CartDto>>
 
-//    @POST("/cart/addProduct")
-//    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
-    @FormUrlEncoded
-    @POST("/cart/addProduct")
-    suspend fun addProductToCart(
-        @Field("productId") productId: Long,
-        @Field("count") count: Long
-    ): Response<BaseResponse<String>>
     @FormUrlEncoded
     @POST("/cart/addProduct")
     suspend fun addToCart(
@@ -172,4 +178,10 @@ interface HoneyMartService {
     suspend fun checkout(): Response<BaseResponse<String>>
 
     //endregion cart
+    // region Product Details
+    @GET("/product/{productId}")
+    suspend fun getProductDetails(
+        @Path("productId") productId: Long,
+    ): Response<BaseResponse<ProductDto>>
+    // endregion
 }

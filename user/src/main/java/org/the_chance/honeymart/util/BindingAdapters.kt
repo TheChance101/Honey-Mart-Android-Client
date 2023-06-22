@@ -9,6 +9,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import coil.load
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -188,6 +190,36 @@ fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
 }
 
+@BindingAdapter(value = ["app:imageUrl"])
+fun setImageFromUrl(view: ImageView, url: String?) {
+    url.let {
+        Glide
+            .with(view)
+            .load(url)
+            .placeholder(R.drawable.placeholder_wish_list)
+            .centerCrop()
+            .into(view)
+    }
+}
+
+@BindingAdapter("app:hideIfLoading")
+fun hideIfLoading(view: View, condition: Boolean) {
+    view.isVisible = !condition
+}
+
+@BindingAdapter("app:formattedPrice")
+fun setFormattedPrice(view: TextView, price: Double) {
+    val formattedPrice = String.format("%,.0f$", price)
+    view.text = formattedPrice
+}
+
+@BindingAdapter("app:disableIfNoQuantity")
+fun disableIfNoQuantity(view: View, quantity: Int?) {
+    if (quantity != null) {
+        view.isEnabled = quantity > 0
+    }
+}
+
 @BindingAdapter("app:validationState")
 fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
     val context = textInputLayout.context
@@ -239,14 +271,14 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
 
 }
 
-//@BindingAdapter("app:loadImage")
-//fun bindImage(image: ImageView, imageURL: String?) {
-//    imageURL?.let {
-//        image.load(imageURL) {
-//            placeholder(R.drawable.loading)
-//            error(R.drawable.product_error_placeholder)
-//            crossfade(true)
-//            crossfade(1000)
-//        }
-//    }
-//}
+@BindingAdapter("app:loadImage")
+fun bindImage(image: ImageView, imageURL: String?) {
+    imageURL?.let {
+        image.load(imageURL) {
+            placeholder(R.drawable.loading)
+            error(R.drawable.product_error_placeholder)
+            crossfade(true)
+            crossfade(1000)
+        }
+    }
+}

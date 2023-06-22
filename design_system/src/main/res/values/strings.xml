@@ -42,6 +42,7 @@
     <string name="order_number">order #4011</string>
     <string name="market_name">Market name</string>
     <string name="processing">Processing</string>
+    <string name="add_to_cart">Add To Cart</string>
     <string name="done">Done</string>
     <string name="successMessage">Successfully Added To Wish List</string>
     <string name="removedFromWishList">Item Removed From Wish List</string>

@@ -20,6 +20,8 @@
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_margin="@dimen/spacing_4"
+        android:onClick="@{() -> listener.onClickProduct(item.productId)}"
         android:layout_marginBottom="@dimen/spacing_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

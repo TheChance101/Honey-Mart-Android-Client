@@ -143,7 +143,20 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    override fun onClickProduct(productId: Long) {}
+    override fun onClickProduct(productId: Long) {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(
+                    ProductUiEffect.ClickProductEffect(
+                        productId,
+                        args.categoryId
+                    )
+                )
+            )
+        }
+        log(productId.toString())
+        log(args.categoryId.toString())
+    }
 
     override fun onClickFavIcon(productId: Long) {
         val currentProduct = _state.value.products.find { it.productId == productId }
