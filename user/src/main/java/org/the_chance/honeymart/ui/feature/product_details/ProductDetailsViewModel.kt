@@ -122,23 +122,27 @@ class ProductDetailsViewModel @Inject constructor(
     // region Wishlist
 
 
+    // region Check If Product In Wishlist
+
     private fun checkIfProductInWishList(productId: Long) {
         tryToExecute(
-            {
-                getIfProductInWishListUseCase(productId)
-            },
-            ::onGetWishListProductSuccess,
-            ::onGetWishListProductError
+            { getIfProductInWishListUseCase(productId) },
+            ::onGetIfProductInWishListSuccess,
+            ::onGetIfProductInWishListError
         )
     }
 
-    private fun onGetWishListProductSuccess(isFavorite: Boolean) {
-        updateFavoriteState(_state.value.product.productId, isFavorite)
+    private fun onGetIfProductInWishListSuccess(isFavorite: Boolean) {
+        updateFavoriteState(isFavorite)
     }
 
-    private fun onGetWishListProductError(error: Exception) {
+    private fun onGetIfProductInWishListError(error: Exception) {
         log("something went wrong with getWithListProduct $error")
     }
+
+    // endregion
+
+    // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
@@ -168,10 +172,14 @@ class ProductDetailsViewModel @Inject constructor(
                 )
             }
         }
-        updateFavoriteState(productId, false)
+        updateFavoriteState(false)
     }
 
-    private fun updateFavoriteState(productId: Long?, isFavorite: Boolean) {
+    // endregion
+
+    // region Update Favorite State
+
+    private fun updateFavoriteState(isFavorite: Boolean) {
         val updatedProductUiState = _state.value.product.copy(isFavorite = isFavorite)
         _state.update { it.copy(product = updatedProductUiState) }
     }
@@ -181,7 +189,7 @@ class ProductDetailsViewModel @Inject constructor(
         val isFavorite = currentProduct.isFavorite ?: false
         val newFavoriteState = !isFavorite
 
-        updateFavoriteState(productId, newFavoriteState)
+        updateFavoriteState(newFavoriteState)
 
         if (isFavorite) {
             deleteProductFromWishList(productId)
@@ -189,6 +197,10 @@ class ProductDetailsViewModel @Inject constructor(
             addProductToWishList(productId)
         }
     }
+
+    // endregion
+
+    // region Delete Product From WishList
 
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
@@ -218,6 +230,8 @@ class ProductDetailsViewModel @Inject constructor(
         }
         log("Delete From WishList Error : ${error.message}")
     }
+
+    // endregion
 
     // endregion
 }
