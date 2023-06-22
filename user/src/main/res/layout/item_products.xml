@@ -33,9 +33,9 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 style="@style/Theme.HoneyMart.Image.ProductImage"
+                app:loadImage="@{item.productImages.get(0)}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-<!--            app:loadImage="@{item.productImages.get(0)}"-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
