@@ -14,7 +14,7 @@ data class ProductsUiState(
 data class ProductUiState(
     val productId: Long? = 0L,
     val productName: String? = "",
-    val productQuantity: String? = "",
+    val productDescription: String? = "",
     val productPrice: Double? = 0.0,
     val productImages: List<String>? = emptyList(),
     val isFavorite: Boolean? = false,
@@ -24,7 +24,7 @@ fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productQuantity = productQuantity,
+        productDescription = productDescription,
         productPrice = ProductPrice,
         productImages = ProductImages
     )

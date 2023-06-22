@@ -74,7 +74,7 @@ interface HoneyMartService {
     suspend fun addProduct(
         @Body name: String,
         @Body price: Double,
-        @Body quantity: String,
+        @Body description: String,
         @Body categoriesId: List<Long>,
     ): Response<BaseResponse<ProductDto>>
 
@@ -83,7 +83,7 @@ interface HoneyMartService {
         @Path("id") productId: Long,
         @Body name: String,
         @Body price: Double,
-        @Body quantity: String,
+        @Body description: String,
     )
 
     @PUT("/product/{id}/updateCategories")

@@ -9,7 +9,7 @@ import org.the_chance.honeymart.domain.usecase.AddProductToCartUseCase
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
-import org.the_chance.honeymart.domain.usecase.GetProductByIdUseCase
+import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val getProductByIdUseCase: GetProductByIdUseCase,
+    private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getProductFromWishListUseCase: GetAllWishListUseCase,
@@ -34,14 +34,14 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     init {
-        getProductByCategoryId(args.productId, args.categoryId)
+        getProductDetails(args.productId, args.categoryId)
     }
 
     // region Product
-    private fun getProductByCategoryId(productId: Long, categoryId: Long) {
+    private fun getProductDetails(productId: Long, categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getProductByIdUseCase(productId, categoryId).toProductUiState() },
+            { getProductDetailsUseCase(productId, categoryId).toProductUiState() },
             ::onGetProductSuccess,
             ::onGetProductError,
         )

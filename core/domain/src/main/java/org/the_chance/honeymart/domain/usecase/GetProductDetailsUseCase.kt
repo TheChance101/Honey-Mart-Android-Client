@@ -4,7 +4,7 @@ import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
-class GetProductByIdUseCase @Inject constructor(
+class GetProductDetailsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
 
