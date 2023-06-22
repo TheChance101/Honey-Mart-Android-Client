@@ -160,7 +160,11 @@
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
-        android:label="OrderDetailsFragment" />
+        android:label="OrderDetailsFragment" >
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_productDetails2"
+            app:destination="@id/productDetails" />
+    </fragment>
     <dialog
         android:id="@+id/cartBottomFragment"
         android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"

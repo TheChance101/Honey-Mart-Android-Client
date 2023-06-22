@@ -7,6 +7,11 @@
         <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState" />
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsInteractionListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,9 +27,10 @@
             android:layout_marginTop="@dimen/spacing_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{()-> listener.onClickProduct(item.id)}">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
