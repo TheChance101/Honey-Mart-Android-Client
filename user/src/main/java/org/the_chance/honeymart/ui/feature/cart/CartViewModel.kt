@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getAllCart: GetAllCartUseCase,
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
@@ -103,8 +101,6 @@ class CartViewModel @Inject constructor(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
-        Log.e("Sara",updatedProducts.toString())
-        Log.e("Sara","${updatedProducts.find { it.productId ==productId }?.productCount?:0}")
     }
 
     private fun updateProductCart(productId: Long, count: Int) {
@@ -122,16 +118,13 @@ class CartViewModel @Inject constructor(
                 isError = false,
             )
         }
-        Log.e("Sara",message)
+        getChosenCartProducts()
     }
 
     private fun onUpdateProductInCartError(exception: Exception) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
         }
-        Log.e("Sara",exception.toString())
-
-
     }
 
     override fun onClickAddCountProductInCart(productId: Long) {
