@@ -91,18 +91,19 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
     }
 
-    fun updateOrders(id:Long, state: Int) {
+    fun updateOrders(id: Long, stateOrder: Int) {
+        val orderId = state.value.orders[id.toInt()].orderId
         _state.update {
             it.copy(
                 isLoading = true,
-                orderStates = OrderStates.DONE
             )
         }
         tryToExecute(
-            {updateOrderStateUseCase(id,state)},
+            { updateOrderStateUseCase(orderId, stateOrder) },
             ::updateOrdersSuccess,
             ::updateOrdersError
         )
+
     }
 
     private fun updateOrdersSuccess(state: Boolean) {

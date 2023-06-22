@@ -39,30 +39,31 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         ) = true
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            //val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
             val position = viewHolder.absoluteAdapterPosition
-            //viewModel.deleteCart(position.toLong())
-            showDeleteConfirmationDialog(position)
+            //viewModel.updateOrders(position.toLong(),3)  // here you can update state
+            showOrderDialog(position)
         }
     }
 
-    private fun showDeleteConfirmationDialog(position: Int) {
+    private fun showOrderDialog(position: Int) {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.layout_order_dialog)
-        //val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
-        //dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog);
+
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog)
+
         val btnCancel = dialog.findViewById<Button>(R.id.button_cancel)
         val btnSure = dialog.findViewById<Button>(R.id.button_sure)
+
         btnSure.setOnClickListener {
             ordersAdapter.removeItem(position)
-            //viewModel.updateItemState(2)
             dialog.dismiss()
-
         }
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
+
         dialog.setCancelable(false)
         dialog.show()
     }
@@ -99,33 +100,5 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     private fun navigateToMarkets() {
         val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
         findNavController().navigate(action)
-    }
-
-    private fun showAlertOrderDialog(execute: () -> Unit) {
-        val customView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
-
-        val buttonSure = customView.findViewById<Button>(R.id.button_sure)
-        val buttonCancel = customView.findViewById<Button>(R.id.button_cancel)
-
-        val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setView(customView)
-            .setCancelable(false)
-            .show()
-
-        buttonSure.setOnClickListener {
-            execute()
-            dialog.dismiss()
-        }
-
-        buttonCancel.setOnClickListener {
-            Snackbar.make(
-                requireView(),
-                getString(org.the_chance.design_system.R.string.cancel),
-                Snackbar.LENGTH_SHORT
-            )
-                .show()
-            dialog.dismiss()
-        }
     }
 }
