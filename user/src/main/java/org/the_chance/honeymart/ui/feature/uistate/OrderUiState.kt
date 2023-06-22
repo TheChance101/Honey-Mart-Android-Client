@@ -9,7 +9,6 @@ data class OrdersUiState(
     val orders: List<OrderUiState> = emptyList(),
     val orderStates:OrderStates = OrderStates.PROCESSING
 )
-
 enum class OrderStates{
     PROCESSING,DONE,CANCELED
 }
