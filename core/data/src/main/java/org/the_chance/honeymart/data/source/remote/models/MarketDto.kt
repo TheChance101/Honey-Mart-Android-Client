@@ -6,5 +6,7 @@ import com.google.gson.annotations.SerializedName
     @SerializedName("marketId")
     val marketId: Long? = null,
     @SerializedName("marketName")
-    val marketName: String? = null
+    val marketName: String? = null,
+    @SerializedName("imageUrl")
+    val imageUrl:String? = null
 )
