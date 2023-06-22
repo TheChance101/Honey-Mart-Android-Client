@@ -216,6 +216,7 @@
             android:layout_margin="@dimen/spacing_16"
             android:background="@drawable/button_background"
             android:gravity="center"
+            app:disableIfLoading="@{viewModel.state.isAddToCartLoading}"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             android:text="@string/add_to_cart"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
