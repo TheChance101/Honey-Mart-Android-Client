@@ -26,7 +26,8 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:imageUrl="@{item}"
+            android:scaleType="centerCrop"
+            app:loadImage="@{item}"
             tools:background="@drawable/image_market" />
     </androidx.cardview.widget.CardView>
 

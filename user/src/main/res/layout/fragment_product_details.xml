@@ -19,8 +19,9 @@
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_zero"
+            android:scaleType="centerCrop"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:imageUrl="@{viewModel.state.image}"
+            app:loadImage="@{viewModel.state.image}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/image_test" />
