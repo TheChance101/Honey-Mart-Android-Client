@@ -23,4 +23,6 @@ interface HoneyMartRepository {
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
+    suspend fun checkout(): String
+
 }

@@ -51,7 +51,7 @@
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
-                    android:text="@{String.valueOf(viewModel.state.total)}"
+                    android:text="@{String.valueOf(viewModel.state.total)+`$`}"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -75,6 +75,7 @@
                 <TextView
                     android:id="@+id/total_price"
                     style="@style/Theme.HoneyMart.Text.H6"
+                    android:textColor="@color/black_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"

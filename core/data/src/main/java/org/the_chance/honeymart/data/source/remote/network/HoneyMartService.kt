@@ -158,5 +158,8 @@ interface HoneyMartService {
     @DELETE("/cart/deleteAll")
     suspend fun deleteAllFromCart(): Response<BaseResponse<String>>
 
+    @POST("/order/checkout")
+    suspend fun checkout(): Response<BaseResponse<String>>
+
     //endregion cart
 }

@@ -47,14 +47,15 @@
                 android:layout_marginTop="@dimen/spacing_12"
                 tool:text="Armchairr"
                 android:text="@{item.productName}"
-                style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
+                style="@style/Theme.HoneyMart.Text.H5"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
 
 
             <TextView
                 android:id="@+id/text_item_price"
-                style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
+                style="@style/Theme.HoneyMart.Text.H6"
+                android:textColor="@color/primary_100"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"

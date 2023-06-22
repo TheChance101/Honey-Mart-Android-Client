@@ -71,7 +71,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     }
 
     private fun navigateToOrders() {
-        val action = CartFragmentDirections.actionCartFragmentToOrdersFragment()
+        val action = CartFragmentDirections.actionCartFragmentToCartBottomFragment()
         findNavController().navigate(action)
     }
 
