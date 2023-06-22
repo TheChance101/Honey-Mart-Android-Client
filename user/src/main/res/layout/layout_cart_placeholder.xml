@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_16">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_wish_list_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/cart_placeholder" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_placeholder_title"
+        style="@style/Theme.HoneyMart.Text.H3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_32"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Your Cart list is empty!!" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_placeholder_description"
+        style="@style/Theme.HoneyMart.Text.H5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:paddingHorizontal="24dp"
+        android:text="It's a carttastrophe! Let's fix it by adding items that catch your eye!"
+        android:textColor="@color/black_37" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_discover_markets"
+        style="@style/Theme.HoneyMart.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_16"
+        android:text="Discover Market Now"
+        app:icon="@drawable/icon_cart_white"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/spacing_8"
+        app:iconSize="@dimen/spacing_24" />
+</LinearLayout>

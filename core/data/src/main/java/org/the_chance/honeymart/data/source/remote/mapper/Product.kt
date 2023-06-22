@@ -8,5 +8,5 @@ fun ProductDto.toProductEntity() = ProductEntity(
     productName = name,
     productDescription = description,
     ProductPrice = price,
-    ProductImages = images
+    productImages = images
 )

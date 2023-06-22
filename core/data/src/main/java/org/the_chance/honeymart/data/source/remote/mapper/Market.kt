@@ -9,4 +9,5 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 fun MarketDto.toMarketEntity() = MarketEntity(
     marketId = marketId,
     marketName = marketName,
+    imageUrl = imageUrl
 )

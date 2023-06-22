@@ -1,5 +1,11 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CartDto
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.data.source.remote.models.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -122,9 +128,6 @@ interface HoneyMartService {
         @Field("count") count: Long
     ): Response<BaseResponse<String>>
 
-    @GET("/cart")
-    suspend fun getAllCartProducts(): Response<BaseResponse<List<CartDto>>>
-
     //endregion Cart
 
 
@@ -142,7 +145,35 @@ interface HoneyMartService {
     ): Response<BaseResponse<String>>
 
     //endregion user
+    // region cart
+    @GET("/cart")
+    suspend fun getCart(): Response<BaseResponse<CartDto>>
 
+//    @POST("/cart/addProduct")
+//    suspend fun addToCart(@Body productId: Long, @Body count: Int): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addProductToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Long
+    ): Response<BaseResponse<String>>
+    @FormUrlEncoded
+    @POST("/cart/addProduct")
+    suspend fun addToCart(
+        @Field("productId") productId: Long,
+        @Field("count") count: Int
+    ): Response<BaseResponse<String>>
+
+    @DELETE("/cart/{id}")
+    suspend fun deleteFromCart(@Path("id") productId: Long): Response<BaseResponse<String>>
+
+    @DELETE("/cart/deleteAll")
+    suspend fun deleteAllFromCart(): Response<BaseResponse<String>>
+
+    @POST("/order/checkout")
+    suspend fun checkout(): Response<BaseResponse<String>>
+
+    //endregion cart
     // region Product Details
     @GET("/product/{productId}")
     suspend fun getProductDetails(

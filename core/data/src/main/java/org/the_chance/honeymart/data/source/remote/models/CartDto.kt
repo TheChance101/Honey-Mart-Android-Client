@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class CartDto(
     @SerializedName("products")
-    val products: List<CartProductsDto>? = null,
+    val products: List<CartProductDto>,
     @SerializedName("total")
-    val total: Double? = null
+    val total: Double? = null,
 )
 
-data class CartProductsDto(
+data class CartProductDto(
     @SerializedName("id")
-    val id: Long? = null,
+    val productId: Long? = null,
     @SerializedName("name")
     val name: String? = null,
-    @SerializedName("count")
-    val count: Long? = null,
     @SerializedName("price")
     val price: Double? = null,
+    @SerializedName("count")
+    val count: Int? = null,
 )

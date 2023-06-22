@@ -5,5 +5,6 @@ data class ProductEntity(
     val productName: String?,
     val productDescription: String?,
     val ProductPrice: Double?,
-    val ProductImages: List<String>?
+    val productImages:List<String>?
 )
+

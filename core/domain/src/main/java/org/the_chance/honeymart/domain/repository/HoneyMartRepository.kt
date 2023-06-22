@@ -17,8 +17,16 @@ interface HoneyMartRepository {
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String
     suspend fun getWishList(): List<WishListEntity>
+    suspend fun getCart(): CartEntity
+
+    suspend fun addToCart(productId: Long,count:Int): String
+    suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
+
+    suspend fun checkout(): String
+
     suspend fun getAllCartProducts(): List<CartEntity>
+    //TODO
     suspend fun addProductToCart(productId: Long, count: Long): String
     suspend fun getProductDetails(productId: Long): ProductEntity
 }
