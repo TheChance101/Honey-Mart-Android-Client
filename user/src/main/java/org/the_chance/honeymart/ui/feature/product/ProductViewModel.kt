@@ -78,6 +78,7 @@ class ProductViewModel @Inject constructor(
                 products = products
             )
         }
+        log("ErrorHandler throwable")
     }
 
     private fun getCategoriesByMarketId() {

@@ -110,10 +110,6 @@ class ProductDetailsViewModel @Inject constructor(
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
             }
-        } else {
-            viewModelScope.launch {
-//                _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
-            }
         }
     }
 
@@ -164,12 +160,6 @@ class ProductDetailsViewModel @Inject constructor(
         if (error is ErrorHandler.UnAuthorized) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
-            }
-        } else {
-            viewModelScope.launch {
-//                _effect.emit(
-//                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
-//                )
             }
         }
         updateFavoriteState(false)
@@ -223,11 +213,11 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        viewModelScope.launch {
+//        viewModelScope.launch {
 //            _effect.emit(
 //                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError(error))
 //            )
-        }
+//        }
         log("Delete From WishList Error : ${error}")
     }
 

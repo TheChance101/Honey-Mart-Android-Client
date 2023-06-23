@@ -21,7 +21,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
     abstract val TAG: String
     protected open fun log(message: String) {
-        Log.v(TAG, message)
+        Log.e(TAG, message)
     }
 
     protected val _state = MutableStateFlow(initialState)
