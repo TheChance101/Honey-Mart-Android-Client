@@ -33,7 +33,9 @@
                     android:id="@+id/image_orders"
                     style="@style/Theme.HoneyMart.Image.ProductImage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/fruite_image"
+                    android:scaleType="centerCrop"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_order_name"
