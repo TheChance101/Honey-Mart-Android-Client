@@ -87,8 +87,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun showAlertOrderDialog(execute: () -> Unit) {
-//        val customView =
-//            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
         val dialog = Dialog(requireContext())
             dialog.setContentView(R.layout.layout_order_dialog)
             dialog.setCancelable(false)
