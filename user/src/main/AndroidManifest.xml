@@ -13,6 +13,7 @@
         android:usesCleartextTraffic="true"
         android:name="org.the_chance.honeymart.UserApplication"
         android:theme="@style/Theme.HoneyMart"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name="org.the_chance.honeymart.ui.MainActivity"
