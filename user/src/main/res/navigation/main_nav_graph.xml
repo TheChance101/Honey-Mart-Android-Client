@@ -180,7 +180,7 @@
                 app:destination="@id/signupConfirmPasswordFragment"
                 app:popUpTo="@id/signupFragment" />
             <argument
-                android:name="authData"
+                android:name="AuthData"
                 app:argType="org.the_chance.honeymart.util.AuthData" />
         </fragment>
         <fragment
