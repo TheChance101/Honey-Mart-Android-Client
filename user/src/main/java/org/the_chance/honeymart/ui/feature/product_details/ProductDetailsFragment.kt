@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
@@ -49,7 +50,13 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
                 showSnackBar(getString(org.the_chance.design_system.R.string.addedToCartFailedMessage))
             }
 
-            ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            is ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(
+                effect.authData
+            )
+
+            is ProductDetailsUiEffect.AddProductToWishListEffectError -> {
+                showSnackBar(effect.error.toString())
+            }
 
             is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {
                 showSnackBar(getString(org.the_chance.design_system.R.string.addedToWishlistSuccessMessage))
@@ -69,8 +76,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         }
     }
 
-    private fun navigateToAuthenticate() {
-        val action = ProductDetailsFragmentDirections.actionProductDetailsToUserNavGraph()
+    private fun navigateToAuthenticate(authData: AuthData.ProductDetails) {
+        val action = ProductDetailsFragmentDirections.actionProductDetailsToUserNavGraph(
+            authData
+        )
         findNavController().navigate(action)
     }
 }
