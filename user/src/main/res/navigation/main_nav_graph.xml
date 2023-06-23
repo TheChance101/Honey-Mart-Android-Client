@@ -67,7 +67,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/productsFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -103,16 +103,45 @@
     <fragment
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
-        android:label="WishListFragment" >
+        android:label="WishListFragment">
         <action
             android:id="@+id/action_wishListFragment_to_marketsFragment"
             app:destination="@id/marketsFragment"
-            app:popUpTo="@id/marketsFragment"/>
+            app:popUpTo="@id/marketsFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
         android:label="OrderDetailsFragment" />
+    <dialog
+        android:id="@+id/cartBottomFragment"
+        android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"
+        android:label="CartBottomFragment"
+        tools:layout="@layout/bottom_sheet_complete_cart_order">
+        <action
+            android:id="@+id/action_cartBottomFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/signupDialog"
+        android:name="org.the_chance.honeymart.ui.feature.login.LoginDialogFragment"
+        android:label="SignupDialog" />
+    <fragment
+        android:id="@+id/productDetails"
+        android:name="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment"
+        android:label="ProductDetails"
+        tools:layout="@layout/fragment_product_details">
+        <argument
+            android:name="productId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_productDetails_to_user_nav_graph"
+            app:destination="@id/user_nav_graph"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <navigation
         android:id="@+id/user_nav_graph"
         app:startDestination="@id/authFragment">
@@ -176,35 +205,6 @@
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
-    <dialog
-        android:id="@+id/cartBottomFragment"
-        android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"
-        android:label="CartBottomFragment"
-        tools:layout="@layout/bottom_sheet_complete_cart_order">
-        <action
-            android:id="@+id/action_cartBottomFragment_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
-    </dialog>
-    <dialog
-        android:id="@+id/signupDialog"
-        android:name="org.the_chance.honeymart.ui.feature.login.LoginDialogFragment"
-        android:label="SignupDialog" />
-    <fragment
-        android:id="@+id/productDetails"
-        android:name="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment"
-        android:label="ProductDetails"
-        tools:layout="@layout/fragment_product_details">
-        <argument
-            android:name="productId"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_productDetails_to_user_nav_graph"
-            app:destination="@id/user_nav_graph"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-    </fragment>
 
 
 </navigation>
