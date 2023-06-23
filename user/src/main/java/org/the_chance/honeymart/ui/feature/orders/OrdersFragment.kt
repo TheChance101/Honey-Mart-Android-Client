@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.view.ViewGroup
 import android.widget.Button
@@ -107,7 +108,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             dialog.dismiss()
         }
     }
-
 
 
     private fun handleOnBackPressed() {

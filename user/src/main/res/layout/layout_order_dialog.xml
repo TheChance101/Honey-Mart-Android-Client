@@ -65,7 +65,7 @@
                 android:layout_marginVertical="@dimen/spacing_32"
                 android:text="@string/cancel"
                 android:layout_marginEnd="@dimen/spacing_16"
-                android:backgroundTint="@color/white_300"
+                android:background="@drawable/button_white_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_dialog" />
 
