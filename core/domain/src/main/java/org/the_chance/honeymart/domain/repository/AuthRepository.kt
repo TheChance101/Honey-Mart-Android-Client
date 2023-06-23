@@ -14,6 +14,6 @@ interface AuthRepository {
         fullName: String,
         password: String,
         email: String,
-    ): Boolean?
+    ): String
 
 }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
@@ -35,17 +36,15 @@ class LoginViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                error = 1,
                 validationState = validationState
             )
         }
         if (_state.value.validationState == ValidationState.SUCCESS)
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
-
     }
 
-    private fun onLoginError(exception: Exception) {
-        _state.update { it.copy(isLoading = false, error = 1) }
+    private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
 

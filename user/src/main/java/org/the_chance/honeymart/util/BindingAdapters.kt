@@ -12,9 +12,11 @@ import coil.load
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
@@ -219,6 +221,7 @@ fun disableIfNoQuantity(view: View, quantity: Int?) {
         view.isEnabled = quantity > 0
     }
 }
+
 @BindingAdapter("app:disableIfLoading")
 fun disableIfLoading(view: View, isLoading: Boolean) {
     view.isEnabled = !isLoading
@@ -286,3 +289,24 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
+
+@BindingAdapter("app:errorState")
+fun setError(view: View, error: ErrorHandler?) {
+    error?.let {
+        when (error) {
+            is ErrorHandler.NoNetwork -> {
+                val context = view.context
+                val message = "no connection"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            else -> {
+                val context = view.context
+                val message = "something went wrong"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+}
+

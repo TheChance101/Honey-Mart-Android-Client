@@ -10,9 +10,7 @@ import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
-import org.the_chance.honeymart.domain.util.InvalidEmailException
-import org.the_chance.honeymart.domain.util.InvalidFullNameException
-import org.the_chance.honeymart.domain.util.InvalidPasswordException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
@@ -46,34 +44,11 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isSignUp = result) }
     }
 
-    private fun onError(exception: Exception) {
-        handleException(exception)
-        Log.e("TAG", "Throwable error: ${exception.message}")
+    private fun onError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        Log.e("TAG", "Throwable error: ${error}")
     }
 
-    private fun handleException(exception: Exception) {
-        when (exception) {
-            is InvalidEmailException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
-            }
-
-            is InvalidFullNameException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
-            }
-
-            is InvalidPasswordException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
-            }
-
-            else -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "Throwable error: ${exception.message}")
-            }
-        }
-    }
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
