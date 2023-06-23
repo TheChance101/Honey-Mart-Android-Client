@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
 import android.app.Dialog
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.addCallback
@@ -9,8 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
@@ -145,6 +142,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun navigateToMarkets() {
         val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToOrdersDetails(orderId: Long) {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailsFragment(orderId)
         findNavController().navigate(action)
     }
 }

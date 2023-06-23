@@ -20,7 +20,8 @@
         app:cardCornerRadius="@dimen/radius_16"
         android:layout_marginBottom="@dimen/spacing_16"
         android:background="@color/white"
-        style="@style/Theme.HoneyMart.Card">
+        style="@style/Theme.HoneyMart.Card"
+        android:onClick="@{()-> listener.onClickOrder(item.orderId)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
