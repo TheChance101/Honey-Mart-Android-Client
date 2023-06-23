@@ -248,5 +248,10 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
 
+        <include
+            android:id="@+id/no_connection"
+            layout="@layout/no_connection_layout"
+            android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

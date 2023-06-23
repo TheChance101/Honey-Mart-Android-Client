@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -14,9 +13,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="138dp"
         android:layout_marginHorizontal="@dimen/spacing_32"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/no_connection_placeholder_image" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -25,11 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
+        android:layout_gravity="center_horizontal"
         android:text="@string/no_connection_text"
-        android:textColor="@color/black_60"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_no_connection_placeholder" />
+        android:textColor="@color/black_60" />
 
 
     <com.google.android.material.button.MaterialButton
@@ -38,9 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_16"
-        android:text="@string/try_again_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/try_again_text" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

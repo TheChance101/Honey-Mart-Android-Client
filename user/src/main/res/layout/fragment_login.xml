@@ -164,6 +164,11 @@
                 app:lottie_rawRes="@raw/loading"
                 app:showIfTrue="@{viewModel.state.isLoading}" />
 
+            <include
+                android:id="@+id/no_connection"
+                layout="@layout/no_connection_layout"
+                android:visibility="gone" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
