@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="your_cart_list_is_empty">Your Cart list is empty!!</string>
+    <string name="it_s_a_carttastrophe_let_s_fix_it_by_adding_items_that_catch_your_eye">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
 </resources>

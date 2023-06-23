@@ -94,7 +94,7 @@
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
                 android:textColor="@color/primary_100"
-                android:text='@{String.valueOf(item.totalPrice)}'
+                app:approximateNumber="@{item.totalPrice}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/shape_background_price"
                 app:layout_constraintEnd_toEndOf="parent"

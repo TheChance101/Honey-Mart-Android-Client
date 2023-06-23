@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.util
 
+import android.icu.text.DecimalFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -207,11 +208,7 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
-@BindingAdapter("app:formattedPrice")
-fun setFormattedPrice(view: TextView, price: Double) {
-    val formattedPrice = String.format("%,.0f$", price)
-    view.text = formattedPrice
-}
+
 
 @BindingAdapter("app:disableIfNoQuantity")
 fun disableIfNoQuantity(view: View, quantity: Int?) {
@@ -285,4 +282,11 @@ fun bindImage(image: ImageView, imageURL: String?) {
             crossfade(1000)
         }
     }
+}
+
+@BindingAdapter("approximateNumber")
+fun TextView.approximateNumber(number: Double) {
+    val decimalFormat = DecimalFormat("#0.00 $")
+    val approximatedNumber = decimalFormat.format(number)
+    text = approximatedNumber
 }
