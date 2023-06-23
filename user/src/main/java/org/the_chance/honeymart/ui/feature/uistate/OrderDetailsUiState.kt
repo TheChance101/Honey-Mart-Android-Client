@@ -14,7 +14,7 @@ data class OrderDetailsUiState(
 data class OrderParentDetailsUiState(
     val totalPrice: Double? = 0.0,
     val date: String? = "",
-    val state: Int? = 0
+    val state: Int? = 1
 )
 
 data class OrderDetailsProductUiState(
