@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"
                     android:layout_marginTop="@dimen/spacing_8"
-                    android:text='@{String.valueOf(viewModel.state.orderDetails.totalPrice) + "$"}'
+                    app:FormatCurrency='@{viewModel.state.orderDetails.totalPrice}'
                     app:layout_constraintBottom_toTopOf="@+id/total_price_order"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

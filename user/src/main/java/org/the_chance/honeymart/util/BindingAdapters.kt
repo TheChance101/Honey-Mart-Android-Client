@@ -284,9 +284,9 @@ fun bindImage(image: ImageView, imageURL: String?) {
     }
 }
 
-@BindingAdapter("approximateNumber")
-fun TextView.approximateNumber(number: Double) {
-    val decimalFormat = DecimalFormat("#0.00 $")
-    val approximatedNumber = decimalFormat.format(number)
-    text = approximatedNumber
+@BindingAdapter("FormatCurrency")
+fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    val formattedAmount = decimalFormat.format(amount)
+    text = formattedAmount
 }

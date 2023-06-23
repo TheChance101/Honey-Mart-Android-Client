@@ -118,7 +118,7 @@
                 android:layout_marginVertical="@dimen/spacing_4"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
-                app:approximateNumber="@{viewModel.state.product.productPrice}"
+                app:FormatCurrency="@{viewModel.state.product.productPrice}"
                 tools:text="10,000,000$" />
 
         </com.google.android.material.card.MaterialCardView>
