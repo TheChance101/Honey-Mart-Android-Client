@@ -58,7 +58,11 @@
         <action
             android:id="@+id/action_productsFragment_to_user_nav_graph"
             app:destination="@id/user_nav_graph"
-            app:exitAnim="@android:anim/slide_out_right"/>
+            app:exitAnim="@android:anim/slide_out_right">
+            <argument
+                android:name="AuthData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
+        </action>
         <action
             android:id="@+id/action_productsFragment_to_productDetails"
             app:destination="@id/productDetails"
@@ -73,7 +77,7 @@
         android:id="@+id/cartFragment"
         android:name="org.the_chance.honeymart.ui.feature.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_marketsFragment"
             app:destination="@id/marketsFragment" />
@@ -88,14 +92,18 @@
         android:id="@+id/ordersFragment"
         android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" >
+        tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_ordersFragment_to_marketsFragment"
             app:destination="@id/marketsFragment"
-            app:popUpTo="@id/marketsFragment"/>
+            app:popUpTo="@id/marketsFragment" />
         <action
             android:id="@+id/action_ordersFragment_to_user_nav_graph"
-            app:destination="@id/user_nav_graph" />
+            app:destination="@id/user_nav_graph">
+            <argument
+                android:name="AuthData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
+        </action>
         <action
             android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment" />
@@ -121,14 +129,13 @@
                 android:id="@+id/action_authFragment_to_signupFragment"
                 app:destination="@id/signupFragment"
                 app:popUpTo="@id/authFragment" />
-            <argument
-                android:name="currentProductId"
-                android:defaultValue="1L"
-                app:argType="long" />
             <action
                 android:id="@+id/action_authFragment_to_loginFragment"
                 app:destination="@id/loginFragment"
                 app:popUpTo="@id/authFragment" />
+            <argument
+                android:name="AuthData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
         </fragment>
         <fragment
             android:id="@+id/loginFragment"
@@ -145,6 +152,23 @@
                 app:popExitAnim="@android:anim/slide_in_left"
                 app:popUpTo="@id/nav_graph"
                 app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_loginFragment_to_productsFragment"
+                app:destination="@id/productsFragment"
+                app:popUpTo="@id/categoriesFragment"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_loginFragment_to_productDetails"
+                app:destination="@id/productDetails"
+                app:popUpTo="@id/productDetails" />
+            <argument
+                android:name="authData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
+            <action
+                android:id="@+id/action_loginFragment_to_ordersFragment"
+                app:destination="@id/ordersFragment"
+                app:popUpTo="@id/ordersFragment"
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/signupFragment"
@@ -152,13 +176,12 @@
             android:label="SignupFragment"
             tools:layout="@layout/fragment_signup_details">
             <action
-                android:id="@+id/action_signupFragment_to_loginFragment"
-                app:destination="@id/loginFragment"
-                app:popUpTo="@id/signupFragment" />
-            <action
                 android:id="@+id/action_signupFragment_to_signupConfirmPasswordFragment"
                 app:destination="@id/signupConfirmPasswordFragment"
                 app:popUpTo="@id/signupFragment" />
+            <argument
+                android:name="authData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
         </fragment>
         <fragment
             android:id="@+id/signupConfirmPasswordFragment"
@@ -170,12 +193,21 @@
                 app:popExitAnim="@android:anim/slide_in_left"
                 app:popUpTo="@id/nav_graph"
                 app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_signupConfirmPasswordFragment_to_productDetails"
+                app:destination="@id/productDetails"
+                app:popUpTo="@id/productDetails" />
+            <action
+                android:id="@+id/action_signupConfirmPasswordFragment_to_productsFragment"
+                app:destination="@id/productsFragment"
+                app:popUpTo="@id/categoriesFragment"
+                app:popUpToInclusive="true" />
         </fragment>
     </navigation>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
-        android:label="OrderDetailsFragment" >
+        android:label="OrderDetailsFragment">
         <argument
             android:name="orderId"
             app:argType="long" />
@@ -203,7 +235,11 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right">
+            <argument
+                android:name="AuthData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
+        </action>
     </fragment>
 
 </navigation>

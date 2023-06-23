@@ -87,7 +87,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         } else {
             when (response.code()) {
                 401 -> throw UnAuthorizedException()
-                else -> throw Throwable("Unknown error occurred")
+                else -> throw Exception("Unknown error occurred")
             }
         }
     }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.login
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -9,18 +10,22 @@ import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val loginUserUseCase: LoginUserUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-) : BaseViewModel<LoginUiState, Boolean>(LoginUiState()) {
+) : BaseViewModel<LoginUiState, AuthenticationUiEffect>(LoginUiState()) {
 
     override val TAG: String = this::class.java.simpleName
+    private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
+
 
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
@@ -33,7 +38,15 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginSuccess(validationState: ValidationState) {
         if (validationState == ValidationState.SUCCESS) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+            viewModelScope.launch {
+                _effect.emit(
+                    EventHandler(
+                        AuthenticationUiEffect.ClickLoginEffect(
+                            authData
+                        )
+                    )
+                )
+            }
         }
         _state.update { it.copy(isLoading = false, error = 1, validationState = validationState) }
 
@@ -59,6 +72,18 @@ class LoginViewModel @Inject constructor(
     fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validatePassword(password.toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
+    }
+
+    fun onClickSignUp() {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(
+                    AuthenticationUiEffect.ClickSignUpEffect(
+                        authData
+                    )
+                )
+            )
+        }
     }
 
 }
