@@ -30,7 +30,10 @@
                 android:id="@+id/image_order"
                 android:layout_width="104dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/image_market"
+                app:loadImage="@{item.imageUrl}"
+                style="@style/Theme.HoneyMart.Image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
