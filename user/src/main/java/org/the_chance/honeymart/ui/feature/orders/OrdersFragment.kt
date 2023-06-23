@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -90,9 +91,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 //        val customView =
 //            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
         val dialog = Dialog(requireContext())
-            dialog.setContentView(R.layout.layout_order_dialog)
-            dialog.setCancelable(false)
-            dialog.show()
+        dialog.setContentView(R.layout.layout_order_dialog)
+        dialog.setCancelable(false)
+        dialog.show()
         val buttonSure = dialog.findViewById<Button>(R.id.button_sure)
         val buttonCancel = dialog.findViewById<Button>(R.id.button_cancel)
 
@@ -111,7 +112,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
 
-
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().navigate(R.id.marketsFragment)
@@ -126,7 +126,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun onEffect(effect: OrderUiEffect) {
         when (effect) {
-            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(effect.authData)
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
             is OrderUiEffect.ClickOrderEffect -> TODO()
             OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
@@ -135,8 +135,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun navigateToAuthenticate() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToUserNavGraph()
+    private fun navigateToAuthenticate(authData: AuthData.Order) {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToUserNavGraph(authData)
         findNavController().navigate(action)
     }
 

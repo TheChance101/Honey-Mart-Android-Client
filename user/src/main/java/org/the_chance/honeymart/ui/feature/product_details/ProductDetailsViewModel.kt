@@ -15,6 +15,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductImageInteractionListener {
 
@@ -108,7 +109,15 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(isAddToCartLoading = false, isError = true) }
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+                _effect.emit(
+                    EventHandler(
+                        ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                            AuthData.ProductDetails(
+                                state.value.product.productId!!
+                            )
+                        )
+                    )
+                )
             }
         } else {
             viewModelScope.launch {
@@ -163,7 +172,13 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onAddProductToWishListError(error: Exception, productId: Long) {
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+                _effect.emit(
+                    EventHandler(
+                        ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                            AuthData.ProductDetails(state.value.product.productId!!)
+                        )
+                    )
+                )
             }
         } else {
             viewModelScope.launch {

@@ -47,9 +47,9 @@
                 style="@style/Theme.HoneyMart.Text.H3.Light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:layout_marginHorizontal="@dimen/spacing_24"
                 android:layout_marginTop="@dimen/spacing_24"
+                android:maxLines="3"
                 android:text="@string/reconnect_with_your_favorite_brands_and_saved_items_log_in_today"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="@+id/text_welcome_back"
@@ -64,17 +64,17 @@
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_64"
                 android:hint="@string/email"
-                app:validationState="@{viewModel.state.emailState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_background">
+                app:layout_constraintTop_toBottomOf="@+id/image_background"
+                app:validationState="@{viewModel.state.emailState}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_email"
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
-                    android:afterTextChanged="@{(text)->viewModel.onEmailInputChange(text)}"
                     android:layout_height="wrap_content"
+                    android:afterTextChanged="@{(text)->viewModel.onEmailInputChange(text)}"
                     android:drawableStart="@drawable/ic_email"
                     android:inputType="textEmailAddress"
                     android:text="@{viewModel.state.email}" />
@@ -88,21 +88,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:hint="@string/password"
-                app:passwordToggleTint="@color/gray"
-                app:validationState="@{viewModel.state.passwordState}"
                 app:endIconMode="password_toggle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_field_input_email">
+                app:layout_constraintTop_toBottomOf="@+id/text_field_input_email"
+                app:passwordToggleTint="@color/gray"
+                app:validationState="@{viewModel.state.passwordState}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/text_input_password"
                     style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:afterTextChanged="@{(text)->viewModel.onPasswordInputChanged(text)}"
                     android:drawableStart="@drawable/ic_password"
                     android:inputType="textPassword"
-                    android:afterTextChanged="@{(text)->viewModel.onPasswordInputChanged(text)}"
                     android:text="@{viewModel.state.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,12 +129,12 @@
                 android:layout_marginTop="@dimen/spacing_64"
                 android:layout_marginBottom="@dimen/spacing_24"
                 android:gravity="center"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintEnd_toStartOf="@id/text_signup"
-                app:layout_constraintHorizontal_chainStyle="packed"
                 android:text="@string/don_t_have_an_account"
+                android:textSize="@dimen/text_caption"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/text_signup"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_continue" />
 
@@ -143,11 +143,12 @@
                 style="@style/Theme.HoneyMart.Text.H5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onClickSignUp()}"
                 android:paddingStart="@dimen/spacing_8"
                 android:text="@string/sign_up"
                 android:textColor="@color/primary_100"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/text_dont_have_account"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
                 app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
 
