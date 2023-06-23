@@ -42,9 +42,12 @@
     <string name="processing">Processing</string>
     <string name="add_to_cart">Add To Cart</string>
     <string name="done">Done</string>
-    <string name="successMessage">Successfully Added To Wish List</string>
-    <string name="addedToCartsuccessMessage">Successfully Added To Cart</string>
-    <string name="removedFromWishList">Item Removed From Wish List</string>
+    <string name="addedToWishlistSuccessMessage">Successfully Added To Wish List</string>
+    <string name="addedToWishlistFailedMessage">Failed Added To Wish List</string>
+    <string name="addedToCartSuccessMessage">Successfully Added To Cart</string>
+    <string name="addedToCartFailedMessage">Failed Added To Cart</string>
+    <string name="removedFromWishListSuccessMessage">Successfully Item Removed From Wish List</string>
+    <string name="removedFromWishListFailedMessage">Failed Item Removed From Wish List</string>
     <string name="Processing">Processing</string>
     <string name="Done">Done</string>
     <string name="cancel">Cancel</string>
