@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import android.app.Dialog
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
@@ -49,8 +51,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
-                        // here you can update state
-                        showAlertOrderDialog(position) {
+                        showAlertOrderDialog() {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 3
@@ -59,12 +60,21 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                     }
 
                     OrderStates.DONE -> {
-                        viewModel.updateOrders(position.toLong(), 4)  // here you can update state
-                        //showOrderDialog(position)
+                        showAlertOrderDialog() {
+                            viewModel.updateOrders(
+                                position.toLong(),
+                                4
+                            )
+                        }
                     }
 
                     OrderStates.CANCELED -> {
-                        viewModel.updateOrders(position.toLong(), 4)
+                        showAlertOrderDialog() {
+                            viewModel.updateOrders(
+                                position.toLong(),
+                                4
+                            )
+                        }
                     }
                 }
             }
@@ -79,17 +89,19 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun showAlertOrderDialog(position: Int, execute: () -> Unit) {
-        val customView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
+    private fun showAlertOrderDialog(execute: () -> Unit) {
+//        val customView =
+//            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
+        val dialog = Dialog(requireContext())
+            dialog.setContentView(R.layout.layout_order_dialog)
+            dialog.setCancelable(false)
+            dialog.show()
+        val buttonSure = dialog.findViewById<Button>(R.id.button_sure)
+        val buttonCancel = dialog.findViewById<Button>(R.id.button_cancel)
 
-        val buttonSure = customView.findViewById<Button>(R.id.button_sure)
-        val buttonCancel = customView.findViewById<Button>(R.id.button_cancel)
-
-        val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setView(customView)
-            .setCancelable(false)
-            .show()
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog)
 
         buttonSure.setOnClickListener {
             execute()
@@ -97,15 +109,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }
 
         buttonCancel.setOnClickListener {
-            Snackbar.make(
-                requireView(),
-                getString(org.the_chance.design_system.R.string.cancel),
-                Snackbar.LENGTH_SHORT
-            )
-                .show()
             dialog.dismiss()
         }
     }
+
+
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
