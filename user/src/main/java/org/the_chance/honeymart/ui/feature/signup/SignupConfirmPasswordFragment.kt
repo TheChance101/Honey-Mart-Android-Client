@@ -5,6 +5,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.login.LoginDialog
+import org.the_chance.honeymart.ui.feature.login.LoginFragmentDirections
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentSignupConformPasswordBinding
@@ -22,13 +24,37 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToMainNav() }
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
-    private fun navigateToMainNav() {
-        val action =
-            SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentPop()
+    private fun onEffect(effect: AuthUiEffect) {
+        when (effect) {
+            AuthUiEffect.ClickContinueEffect -> TODO()
+            is AuthUiEffect.ClickSignUpEffect -> navigateToMainNav(effect.authData)
+        }
+    }
+
+    private fun navigateToMainNav(authData: AuthData) {
+        val action = when (authData) {
+            is AuthData.Products -> {
+                SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToProductsFragment(
+                    authData.categoryId,
+                    authData.marketId,
+                    authData.position
+                )
+            }
+
+            is AuthData.ProductDetails -> {
+                SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToProductDetails(
+                    authData.productId
+                )
+            }
+
+            AuthData.Order -> {
+                LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
+            }
+        }
         findNavController().navigate(action)
         showDialog()
     }

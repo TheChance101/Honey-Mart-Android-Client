@@ -32,6 +32,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/image_orders"
                     style="@style/Theme.HoneyMart.Image.ProductImage"
+                    app:loadImage="@{item.images.get(0)}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
