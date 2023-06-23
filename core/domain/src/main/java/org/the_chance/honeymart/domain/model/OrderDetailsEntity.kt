@@ -11,5 +11,6 @@ data class OrderProductDetailsEntity(
     val id: Long?,
     val name: String?,
     val count: Int?,
-    val price: Double?
+    val price: Double?,
+    val images: List<String>?
 )

@@ -14,14 +14,15 @@ data class OrderDetailsUiState(
 data class OrderParentDetailsUiState(
     val totalPrice: Double? = 0.0,
     val date: String? = "",
-    val state: Int? = 1
+    val state: Int? = 1,
 )
 
 data class OrderDetailsProductUiState(
     val id: Long? = 0L,
     val name: String? = "",
     val count: Int? = 0,
-    val price: Double? = 0.0
+    val price: Double? = 0.0,
+    val images: List<String>? = emptyList(),
 )
 
 fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
@@ -29,7 +30,8 @@ fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProduc
         id = id,
         name = name,
         price = price,
-        count = count
+        count = count,
+        images = images
     )
 }
 
@@ -37,6 +39,6 @@ fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState 
     return OrderParentDetailsUiState(
         totalPrice = totalPrice,
         state = state,
-        date = date
+        date = date,
     )
 }
