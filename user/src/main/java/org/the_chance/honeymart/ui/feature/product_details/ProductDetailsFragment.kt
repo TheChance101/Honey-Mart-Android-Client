@@ -17,7 +17,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     override val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun setup() {
-        //setupUserFlowWindowVisibility()
+        hideAppBarAndBottomNavigation()
         initiateAdapter()
         navigateBack()
         collectEffect()
@@ -43,11 +43,11 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     private fun observeViewModelEvents(effect: ProductDetailsUiEffect) {
         when (effect) {
             is ProductDetailsUiEffect.AddToCartSuccess -> {
-                showSnackBar(effect.message)
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToCartSuccessMessage))
             }
 
             is ProductDetailsUiEffect.AddToCartError -> {
-                showSnackBar(effect.error.toString())
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToCartFailedMessage))
             }
 
             is ProductDetailsUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(
@@ -59,15 +59,19 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {
-                showSnackBar(effect.message)
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToWishlistSuccessMessage))
             }
 
-            is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
-                showSnackBar(effect.error.toString())
+            is ProductDetailsUiEffect.AddProductToWishListEffectError -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToWishlistFailedMessage))
             }
 
             is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {
-                showSnackBar(effect.message)
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListSuccessMessage))
+            }
+
+            is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListFailedMessage))
             }
         }
     }

@@ -44,11 +44,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
 
             is ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(effect.authData)
             ProductUiEffect.AddedToWishListEffect -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToWishlistSuccessMessage))
             }
 
             ProductUiEffect.RemovedFromWishListEffect -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListSuccessMessage))
 
             }
         }

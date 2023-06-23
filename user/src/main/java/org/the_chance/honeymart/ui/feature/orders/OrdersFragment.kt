@@ -49,30 +49,35 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 3
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
+
                     }
 
                     OrderStates.DONE -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 4
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
+
                     }
 
                     OrderStates.CANCELED -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 4
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
                     }
                 }
             }
@@ -88,8 +93,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun showAlertOrderDialog(execute: () -> Unit) {
-//        val customView =
-//            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.layout_order_dialog)
         dialog.setCancelable(false)
@@ -128,7 +131,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         when (effect) {
             is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(effect.authData)
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
-            is OrderUiEffect.ClickOrderEffect -> TODO()
+            is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
             OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
             OrderUiEffect.ClickDone -> attachSwipe(OrderStates.DONE)
             OrderUiEffect.ClickProcessing -> attachSwipe(OrderStates.PROCESSING)
