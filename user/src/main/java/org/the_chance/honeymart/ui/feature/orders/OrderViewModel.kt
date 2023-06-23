@@ -22,18 +22,21 @@ class OrderViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getAllProcessingOrders(1)
+        getAllProcessingOrders()
     }
 
-    fun getAllProcessingOrders(state: Int) {
+    fun getAllProcessingOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
                 orderStates = OrderStates.PROCESSING
             )
         }
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
+        }
         tryToExecute(
-            { getAllOrders(state).map { it.toOrderUiState() } },
+            { getAllOrders(1).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
@@ -53,6 +56,9 @@ class OrderViewModel @Inject constructor(
                 isLoading = true,
                 orderStates = OrderStates.DONE
             )
+        }
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickDone))
         }
         tryToExecute(
             { getAllOrders(state).map { it.toOrderUiState() } },
@@ -75,6 +81,9 @@ class OrderViewModel @Inject constructor(
                 isLoading = true,
                 orderStates = OrderStates.CANCELED
             )
+        }
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
         }
         tryToExecute(
             { getAllOrders(state).map { it.toOrderUiState() } },
@@ -108,6 +117,7 @@ class OrderViewModel @Inject constructor(
 
     private fun updateOrdersSuccess(state: Boolean) {
         _state.update { it.copy(isLoading = false, state = state) }
+        getAllProcessingOrders()
     }
 
     private fun updateOrdersError(throwable: Exception) {
