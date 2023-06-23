@@ -27,6 +27,10 @@ class CartBottomFragment : BottomSheetDialogFragment(), View.OnClickListener {
         val button: Button = view.findViewById(R.id.button_discover_markets)
         button.setOnClickListener(this)
     }
+
+    override fun getTheme(): Int {
+        return com.google.android.material.R.style.ShapeAppearanceOverlay_MaterialComponents_BottomSheet
+    }
     private fun navigateToOrderComplete() {
         findNavController().navigate(R.id.action_cartBottomFragment_to_ordersFragment)
     }
