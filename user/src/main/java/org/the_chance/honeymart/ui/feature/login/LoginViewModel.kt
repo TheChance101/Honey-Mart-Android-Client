@@ -33,14 +33,11 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                validationState = validationState
-            )
-        }
-        if (_state.value.validationState == ValidationState.SUCCESS)
+        if (validationState == ValidationState.SUCCESS) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
+        }
+        _state.update { it.copy(isLoading = false, error = 1, validationState = validationState) }
+
     }
 
     private fun onLoginError(error: ErrorHandler) {
@@ -49,9 +46,10 @@ class LoginViewModel @Inject constructor(
 
 
     fun onLoginClick() {
-        viewModelScope.launch {
-            login(_state.value.email, _state.value.password)
+        if (_state.value.validationState == ValidationState.SUCCESS) {
+            viewModelScope.launch { login(_state.value.email, _state.value.password) }
         }
+
     }
 
     fun onEmailInputChange(email: CharSequence) {

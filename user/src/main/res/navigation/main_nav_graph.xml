@@ -34,7 +34,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/categoriesFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
         <argument
             android:name="marketId"
             app:argType="long" />
@@ -57,7 +57,8 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_productsFragment_to_user_nav_graph"
-            app:destination="@id/user_nav_graph" />
+            app:destination="@id/user_nav_graph"
+            app:exitAnim="@android:anim/slide_out_right"/>
         <action
             android:id="@+id/action_productsFragment_to_productDetails"
             app:destination="@id/productDetails"
@@ -66,7 +67,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/productsFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -102,11 +103,11 @@
     <fragment
         android:id="@+id/wishListFragment"
         android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
-        android:label="WishListFragment" >
+        android:label="WishListFragment">
         <action
             android:id="@+id/action_wishListFragment_to_marketsFragment"
             app:destination="@id/marketsFragment"
-            app:popUpTo="@id/marketsFragment"/>
+            app:popUpTo="@id/marketsFragment" />
     </fragment>
     <navigation
         android:id="@+id/user_nav_graph"
@@ -141,6 +142,7 @@
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_loginFragment_pop"
+                app:popExitAnim="@android:anim/slide_in_left"
                 app:popUpTo="@id/nav_graph"
                 app:popUpToInclusive="true" />
         </fragment>
@@ -164,8 +166,10 @@
             android:label="SignupConfirmPasswordFragment"
             tools:layout="@layout/fragment_signup_conform_password">
             <action
-                android:id="@+id/action_signupConfirmPasswordFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                android:id="@+id/action_signupConfirmPasswordFragment_pop"
+                app:popExitAnim="@android:anim/slide_in_left"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
     </navigation>
     <fragment

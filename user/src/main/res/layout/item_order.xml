@@ -31,7 +31,10 @@
                 android:id="@+id/image_order"
                 android:layout_width="104dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/image_market"
+                app:loadImage="@{item.imageUrl}"
+                style="@style/Theme.HoneyMart.Image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -40,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginTop="@dimen/spacing_16"
-                tool:text="@string/order_number"
+                tool:text="order #1"
                 android:text="@{String.valueOf(item.orderId)}"
                 style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/spacing_8"
                 android:layout_marginStart="@dimen/spacing_8"
-                tool:text="@string/market_name"
+                tool:text="market name"
                 android:text="@{item.marketName}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 app:layout_constraintTop_toBottomOf="@id/text_order_number"
@@ -90,6 +93,7 @@
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_8"
+                android:textColor="@color/primary_100"
                 android:text='@{String.valueOf(item.totalPrice)}'
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/shape_background_price"

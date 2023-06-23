@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.login
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +25,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()?.let { navigateToMainNav() }
-            Log.e("TAG", "collectAction: $effect")
         }
     }
 
@@ -37,8 +35,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun navigateToMainNav() {
-        val action =
-            LoginFragmentDirections.actionLoginFragmentPop()
+        val action = LoginFragmentDirections.actionLoginFragmentPop()
         findNavController().navigate(action)
     }
+
+
 }
