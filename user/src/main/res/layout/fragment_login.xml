@@ -150,6 +150,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/text_dont_have_account"
                 app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
                 app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading"
+                app:showIfTrue="@{viewModel.state.isLoading}" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

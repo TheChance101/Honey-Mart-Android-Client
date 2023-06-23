@@ -7,7 +7,7 @@ import org.the_chance.honeymart.domain.util.ValidationState
  */
 
 data class LoginUiState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val error: Int = 0,
     val email: String = "",
     val password: String = "",

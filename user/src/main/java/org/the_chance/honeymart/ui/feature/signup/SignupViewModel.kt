@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
+import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val createUser: AddUserUseCase,
+    private val createAccount: AddUserUseCase,
+    private val loginUser: LoginUserUseCase,
     private val validateFullName: ValidateFullNameUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
@@ -29,51 +31,6 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, Boolean>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
-
-    private fun addUser(fullName: String, password: String, email: String) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { createUser(fullName = fullName, password = password, email = email) },
-            ::onSuccess,
-            ::onError,
-        )
-    }
-
-    private fun onSuccess(result: ValidationState) {
-        if (result == ValidationState.SUCCESS) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
-        }
-        _state.update { it.copy(isLoading = false, isSignUp = result) }
-    }
-
-    private fun onError(exception: Exception) {
-        handleException(exception)
-        Log.e("TAG", "Throwable error: ${exception.message}")
-    }
-
-    private fun handleException(exception: Exception) {
-        when (exception) {
-            is InvalidEmailException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
-            }
-
-            is InvalidFullNameException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
-            }
-
-            is InvalidPasswordException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
-            }
-
-            else -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "Throwable error: ${exception.message}")
-            }
-        }
-    }
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
@@ -105,14 +62,75 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    private fun addUser(fullName: String, password: String, email: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { createAccount(fullName = fullName, password = password, email = email) },
+            ::onSuccess,
+            ::onError,
+        )
+    }
+
+    private fun onSuccess(signUpState: ValidationState) {
+        if (signUpState == ValidationState.SUCCESS) {
+            login(email = _state.value.email, password = _state.value.password)
+        }
+        _state.update { it.copy(isLoading = false, isSignUp = signUpState) }
+    }
+
+    private fun onError(exception: Exception) {
+        when (exception) {
+            is InvalidEmailException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
+            }
+
+            is InvalidFullNameException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
+            }
+
+            is InvalidPasswordException -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
+            }
+
+            else -> {
+                _state.update { it.copy(isLoading = false, isError = true) }
+                Log.e("TAG", "Throwable error: ${exception.message}")
+            }
+        }
+    }
+
+    private fun login(email: String, password: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { loginUser(password = password, email = email) },
+            ::onLoginSuccess,
+            ::onLoginError,
+        )
+    }
+
+    private fun onLoginSuccess(loginState: ValidationState) {
+        if (loginState == ValidationState.SUCCESS) {
+            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+        }
+        _state.update { it.copy(isLoading = false, isLogin = loginState) }
+    }
+
+    private fun onLoginError(exception: Exception) {
+        _state.update { it.copy(isLoading = false, error = 1) }
+    }
+
     fun onContinueClicked() {
         val emailState = validateEmail(state.value.email)
         val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
         }
-        _state.update { it.copy(emailState = emailState, fullNameState = fullNameState) }
-
+        _state.update {
+            it.copy(emailState = emailState, fullNameState = fullNameState, isLoading = false)
+        }
     }
 
     fun onSignupClicked() {
@@ -120,8 +138,7 @@ class SignupViewModel @Inject constructor(
             validateConfirmPassword(state.value.password, state.value.confirmPassword)
         if (validationState) {
             addUser(
-                fullName = state.value.fullName,
-                password = state.value.password,
+                fullName = state.value.fullName, password = state.value.password,
                 email = state.value.email
             )
         }
