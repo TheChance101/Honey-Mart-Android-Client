@@ -19,7 +19,7 @@
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
         android:layout_marginBottom="@dimen/spacing_16"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         style="@style/Theme.HoneyMart.Card"
         android:onClick="@{()-> listener.onClickOrder(item.orderId)}">
 
