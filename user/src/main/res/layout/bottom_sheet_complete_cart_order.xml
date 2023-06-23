@@ -8,9 +8,10 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/product_container"
         style="@style/Theme.HoneyMart.Card"
+        android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -84,6 +85,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view_order_complete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>
