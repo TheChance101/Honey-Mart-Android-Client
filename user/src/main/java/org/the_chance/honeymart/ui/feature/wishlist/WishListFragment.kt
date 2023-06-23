@@ -47,7 +47,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
             is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
             is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
             WishListUiEffect.DeleteProductFromWishListEffect -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListSuccessMessage))
             }
         }
     }

@@ -16,5 +16,6 @@ fun OrderProductDto.toOrderProductDetailsEntity() = OrderProductDetailsEntity(
     id = id,
     name = name,
     count = count,
-    price = price
+    price = price,
+    images = images
 )

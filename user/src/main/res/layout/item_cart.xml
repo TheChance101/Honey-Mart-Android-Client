@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card">
 
@@ -47,10 +47,9 @@
                 android:layout_marginTop="@dimen/spacing_12"
                 tool:text="Armchairr"
                 android:text="@{item.productName}"
-                style="@style/Theme.HoneyMart.Text.H5"
+                style="@style/Theme.HoneyMart.Text.H5.DarkSubtle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
-
 
             <TextView
                 android:id="@+id/text_item_price"
@@ -72,24 +71,22 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_view_minus_order"
-                android:layout_width="@dimen/spacing_24"
-                android:layout_height="@dimen/spacing_24"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginEnd="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_16"
-                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-                app:strokeColor="@color/primary_100"
-                app:strokeWidth="1dp"
                 android:gravity="center_horizontal|center_vertical"
+                app:strokeWidth="0dp"
                 android:paddingVertical="@dimen/spacing_2"
                 android:onClick="@{() -> listener.onClickMinusCountProductInCart(item.productId)}"
-                android:text="@string/minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_number_of_items">
+
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="@dimen/spacing_16"
-                    android:layout_height="@dimen/spacing_16"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/icon_remove_from_cart" />
+                    app:srcCompat="@drawable/ic_minus" />
 
             </com.google.android.material.card.MaterialCardView>
             <TextView
@@ -106,32 +103,28 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_view_add_item"
-                android:layout_width="@dimen/spacing_24"
-                android:layout_height="@dimen/spacing_24"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginBottom="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_16"
-                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
                 android:backgroundTint="@color/primary_100"
                 app:strokeWidth="0dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingVertical="@dimen/spacing_2"
-                android:text="@string/plus"
                 android:onClick="@{() -> listener.onClickAddCountProductInCart(item.productId)}"
                 android:textColor="@color/white_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" >
+
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="@dimen/spacing_16"
-                    android:layout_height="@dimen/spacing_16"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/icon_add_to_cart" />
+                    app:srcCompat="@drawable/ic_plus" />
 
             </com.google.android.material.card.MaterialCardView>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

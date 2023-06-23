@@ -134,10 +134,10 @@ fun showIfBothLoading(view: View, condition1: Boolean, condition2: Boolean) {
 @BindingAdapter(value = ["app:showState"])
 fun showState(textView: TextView, state: Int) {
     val context = textView.context
-    if (state == 0) {
-        textView.text = context.getString(R.string.Processing)
-    } else {
-        textView.text = context.getString(R.string.Done)
+    when (state) {
+        1 -> textView.text = context.getString(R.string.Processing)
+        2 -> textView.text = context.getString(R.string.Done)
+        3 -> textView.text = context.getString(R.string.cancel)
     }
 }
 
@@ -280,7 +280,9 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
 
 @BindingAdapter("app:loadImage")
 fun bindImage(image: ImageView, imageURL: String?) {
-    imageURL?.let {
+    if (imageURL.isNullOrEmpty()) {
+        image.setImageResource(R.drawable.product_error_placeholder)
+    } else {
         image.load(imageURL) {
             placeholder(R.drawable.loading)
             error(R.drawable.product_error_placeholder)
@@ -289,6 +291,7 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
+
 
 @BindingAdapter("app:errorState")
 fun setError(view: View, error: ErrorHandler?) {

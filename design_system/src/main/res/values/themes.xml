@@ -26,6 +26,12 @@
 
     </style>
 
+    <!-- ButtomSheet Styles -->
+    <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
     <!-- Button Styles -->
     <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
         <item name="cornerRadius">@dimen/radius_16</item>

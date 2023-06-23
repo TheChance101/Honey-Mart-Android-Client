@@ -41,8 +41,8 @@
                     style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="@dimen/spacing_16"
+                    android:gravity="center"
                     android:text="@string/welcome_to_honey_mart" />
 
                 <TextView
@@ -50,8 +50,8 @@
                     style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="@dimen/spacing_16"
+                    android:gravity="center"
                     android:text="@string/get_ready_to_a_shopping_experience_like_no_other" />
 
                 <com.google.android.material.button.MaterialButton
@@ -60,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_40"
+                    android:onClick="@{()->viewModel.onClickSignUp()}"
                     android:text="@string/sign_up"
                     app:cornerRadius="@dimen/spacing_16" />
             </LinearLayout>
@@ -71,9 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_64"
                 android:layout_marginEnd="@dimen/spacing_2"
+                android:layout_marginBottom="16dp"
                 android:text="@string/already_have_account"
                 android:textSize="@dimen/text_caption"
-                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/text_view_login"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -85,10 +86,11 @@
                 style="@style/Theme.HoneyMart.Text.H6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onClickLogin()}"
                 android:paddingVertical="@dimen/spacing_12"
                 android:text="@string/log_in"
-                android:textSize="@dimen/text_caption"
                 android:textColor="@color/primary_100"
+                android:textSize="@dimen/text_caption"
                 app:layout_constraintBottom_toBottomOf="@id/text_view_already"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/text_view_already"

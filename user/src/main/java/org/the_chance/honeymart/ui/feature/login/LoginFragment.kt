@@ -4,6 +4,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentLoginBinding
@@ -16,26 +18,47 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun setup() {
         collectAction()
         setupUserFlowWindowVisibility()
-        binding.textSignup.setOnClickListener {
-            navigateToSignup()
-        }
     }
 
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToMainNav() }
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
-    private fun navigateToSignup() {
-        val action =
-            LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+    private fun onEffect(effect: AuthenticationUiEffect) {
+        when (effect) {
+            is AuthenticationUiEffect.ClickLoginEffect -> navigateToLogin(effect.authData)
+            is AuthenticationUiEffect.ClickSignUpEffect -> navigateToSignUp(effect.authData)
+        }
+    }
+
+    private fun navigateToLogin(authData: AuthData) {
+        val action = when (authData) {
+            is AuthData.Products -> {
+                LoginFragmentDirections.actionLoginFragmentToProductsFragment(
+                    authData.categoryId,
+                    authData.marketId,
+                    authData.position
+                )
+            }
+
+            is AuthData.ProductDetails -> {
+                LoginFragmentDirections.actionLoginFragmentToProductDetails(
+                    authData.productId
+                )
+            }
+
+            AuthData.Order -> {
+                LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
+            }
+        }
         findNavController().navigate(action)
     }
 
-    private fun navigateToMainNav() {
-        val action = LoginFragmentDirections.actionLoginFragmentPop()
+    private fun navigateToSignUp(authData: AuthData) {
+        val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment(authData)
         findNavController().navigate(action)
     }
 

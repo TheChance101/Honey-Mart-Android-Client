@@ -9,14 +9,13 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-
         android:id="@+id/product_container"
+        app:cardCornerRadius="@dimen/spacing_32"
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -45,7 +44,6 @@
 
             <LinearLayout
                 android:id="@+id/text_view_order_complete"
-                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_32"
@@ -77,7 +75,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_16"
                 android:layout_marginVertical="@dimen/spacing_24"
-                android:text="Show My Order Details"
+                android:backgroundTint="@color/primary_100"
+                android:text="@string/show_my_order_details"
+                app:backgroundTint="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

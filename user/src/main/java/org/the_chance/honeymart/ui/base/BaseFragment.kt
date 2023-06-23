@@ -83,6 +83,15 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
             toolbar.visibility = View.VISIBLE
         }
     }
+    protected fun hideAppBarAndBottomNavigation() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            ?.let { navigateIcon ->
+                navigateIcon.visibility = View.GONE
+            }
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
+            toolbar.visibility = View.GONE
+        }
+    }
 
 
     protected fun setupScrollListenerForRecyclerView(
