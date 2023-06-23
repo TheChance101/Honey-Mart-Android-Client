@@ -86,7 +86,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         when (effect) {
             is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
-            is OrderUiEffect.ClickOrderEffect -> TODO()
+            is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
         }
     }
 
@@ -97,6 +97,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun navigateToMarkets() {
         val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToOrdersDetails(orderId: Long) {
+        val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailsFragment(orderId)
         findNavController().navigate(action)
     }
 }

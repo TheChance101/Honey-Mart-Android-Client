@@ -172,6 +172,7 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isError = false,
+                products = emptyList()
             )
         }
         getChosenCartProducts()

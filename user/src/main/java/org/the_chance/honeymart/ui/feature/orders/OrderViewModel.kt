@@ -121,8 +121,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun onClickOrder(orderId: Long) {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
+        }
+        log(orderId.toString())
     }
 }
-
-
