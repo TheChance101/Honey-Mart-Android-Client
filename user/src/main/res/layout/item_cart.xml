@@ -47,10 +47,9 @@
                 android:layout_marginTop="@dimen/spacing_12"
                 tool:text="Armchairr"
                 android:text="@{item.productName}"
-                style="@style/Theme.HoneyMart.Text.H5"
+                style="@style/Theme.HoneyMart.Text.H5.DarkSubtle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>
-
 
             <TextView
                 android:id="@+id/text_item_price"
@@ -120,18 +119,16 @@
                 android:textColor="@color/white_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" >
+
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="@dimen/spacing_16"
                     android:layout_height="@dimen/spacing_16"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/icon_add_to_cart" />
+                    app:srcCompat="@drawable/ic_plus" />
 
             </com.google.android.material.card.MaterialCardView>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

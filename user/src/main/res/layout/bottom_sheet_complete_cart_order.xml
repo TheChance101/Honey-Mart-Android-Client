@@ -8,15 +8,13 @@
 
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-
+    <androidx.cardview.widget.CardView
         android:id="@+id/product_container"
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -56,7 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/image_complete_order">
 
                 <TextView
-                    style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
+                    style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -84,6 +82,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_view_order_complete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
 </layout>
