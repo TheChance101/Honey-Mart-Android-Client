@@ -33,7 +33,7 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, AuthUiEffect>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
-    private val authData = SignupFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
+    private val authData = SignupFragmentArgs.fromSavedStateHandle(savedStateHandle).AuthData
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
