@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
@@ -43,7 +44,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetProcessingOrdersError(throwable: Exception) {
+    private fun onGetProcessingOrdersError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
     }
 
@@ -65,7 +66,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetDoneOrdersError(throwable: Exception) {
+    private fun onGetDoneOrdersError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
     }
 
@@ -87,7 +88,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetCancelOrdersError(throwable: Exception) {
+    private fun onGetCancelOrdersError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
     }
 
@@ -110,7 +111,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, state = state) }
     }
 
-    private fun updateOrdersError(throwable: Exception) {
+    private fun updateOrdersError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
     }
 

@@ -10,7 +10,7 @@ import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.util.UnAuthorizedException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -60,7 +60,7 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onGetProductError(throwable: Throwable) {
+    private fun onGetProductError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
@@ -104,15 +104,15 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onAddProductToCartError(error: Exception) {
+    private fun onAddProductToCartError(error: ErrorHandler) {
         _state.update { it.copy(isAddToCartLoading = false, isError = true) }
-        if (error is UnAuthorizedException) {
+        if (error is ErrorHandler.UnAuthorized) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
             }
         } else {
             viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+//                _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
             }
         }
     }
@@ -136,7 +136,7 @@ class ProductDetailsViewModel @Inject constructor(
         updateFavoriteState(isFavorite)
     }
 
-    private fun onGetIfProductInWishListError(error: Exception) {
+    private fun onGetIfProductInWishListError(error: ErrorHandler) {
         log("something went wrong with getWithListProduct $error")
     }
 
@@ -160,16 +160,16 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onAddProductToWishListError(error: Exception, productId: Long) {
-        if (error is UnAuthorizedException) {
+    private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorized) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
             }
         } else {
             viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
-                )
+//                _effect.emit(
+//                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
+//                )
             }
         }
         updateFavoriteState(false)
@@ -222,13 +222,13 @@ class ProductDetailsViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: Exception) {
+    private fun onDeleteWishListError(error: ErrorHandler) {
         viewModelScope.launch {
-            _effect.emit(
-                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError(error))
-            )
+//            _effect.emit(
+//                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError(error))
+//            )
         }
-        log("Delete From WishList Error : ${error.message}")
+        log("Delete From WishList Error : ${error}")
     }
 
     // endregion

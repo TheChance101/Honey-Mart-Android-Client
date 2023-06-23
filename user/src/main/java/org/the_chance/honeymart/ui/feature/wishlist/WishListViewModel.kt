@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
@@ -55,10 +56,10 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
 
-    private fun onDeleteProductError(exception: Exception, productId: Long) {
+    private fun onDeleteProductError(ErrorHandler: ErrorHandler, productId: Long) {
         _state.update { it.copy(products = updateProductFavoriteState(true, productId)) }
         // emit anything to observe on Fragment to show snackbar or to show vector something went wrong
-        // this based on caught exception(Very important , may be internet or timeout , or server error)
+        // this based on caught ErrorHandler(Very important , may be internet or timeout , or server error)
     }
 
     private fun getWishListProducts() {
@@ -74,7 +75,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         _state.update { it.copy(isLoading = false, isError = false, products = products) }
     }
 
-    private fun onGetProductError(throwable: Exception) {
+    private fun onGetProductError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 

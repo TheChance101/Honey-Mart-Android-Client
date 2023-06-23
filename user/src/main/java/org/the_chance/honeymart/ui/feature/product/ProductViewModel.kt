@@ -10,7 +10,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
-import org.the_chance.honeymart.domain.util.UnAuthorizedException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -71,7 +71,7 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun onGetWishListProductError(throwable: Exception, products: List<ProductUiState>) {
+    private fun onGetWishListProductError(throwable: ErrorHandler, products: List<ProductUiState>) {
         _state.update {
             it.copy(
                 isLoadingProduct = false,
@@ -113,11 +113,11 @@ class ProductViewModel @Inject constructor(
         getWishListProducts(products)
     }
 
-    private fun onGetCategoryError(throwable: Exception) {
+    private fun onGetCategoryError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoadingCategory = false, isError = true) }
     }
 
-    private fun onGetProductError(throwable: Exception) {
+    private fun onGetProductError(throwable: ErrorHandler) {
         _state.update { it.copy(isLoadingProduct = false, isError = true) }
     }
 
@@ -189,8 +189,8 @@ class ProductViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: Exception) {
-        log("Delete From WishList Error : ${error.message}")
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        log("Delete From WishList Error : ${error}")
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -219,13 +219,13 @@ class ProductViewModel @Inject constructor(
         log("Added Successfully : $successMessage")
     }
 
-    private fun onAddToWishListError(error: Exception, productId: Long) {
-        if (error is UnAuthorizedException) {
+    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorized) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(ProductUiEffect.UnAuthorizedUserEffect))
             }
         }
-        log("Add to WishList Error : ${error.message}")
+        log("Add to WishList Error : ${error}")
         updateFavoriteState(productId, false)
     }
 

@@ -22,7 +22,8 @@ sealed interface ErrorHandler {
     object NoNetwork : ErrorHandler
     object InvalidPassword : ErrorHandler
 
-    //    object InvalidEmailOrPassword : ErrorHandler()
-//    object UnAuthorized : ErrorHandler()
+//        object InvalidEmailOrPassword : ErrorHandler()
+object UnAuthorized : ErrorHandler
     object NoError : ErrorHandler
+
 }

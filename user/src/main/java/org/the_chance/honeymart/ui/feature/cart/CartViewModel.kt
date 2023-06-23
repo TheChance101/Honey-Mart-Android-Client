@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
@@ -50,7 +51,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun onGetAllCartError(
-        throwable: Exception,
+        throwable: ErrorHandler,
     ) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
@@ -121,7 +122,7 @@ class CartViewModel @Inject constructor(
         getChosenCartProducts()
     }
 
-    private fun onUpdateProductInCartError(exception: Exception) {
+    private fun onUpdateProductInCartError(ErrorHandler: ErrorHandler) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
         }
@@ -178,7 +179,7 @@ class CartViewModel @Inject constructor(
         getChosenCartProducts()
     }
 
-    private fun onDeleteFromCartError(throwable: Exception) {
+    private fun onDeleteFromCartError(throwable: ErrorHandler) {
         this._state.update {
             it.copy(isLoading = false, isError = true)
         }

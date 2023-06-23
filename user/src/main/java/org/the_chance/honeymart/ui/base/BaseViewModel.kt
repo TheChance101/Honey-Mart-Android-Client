@@ -14,6 +14,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.InvalidEmailException
 import org.the_chance.honeymart.domain.util.InvalidRegisterException
 import org.the_chance.honeymart.domain.util.NoNetworkException
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.util.EventHandler
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
@@ -50,6 +51,8 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             } catch (exception: NoNetworkException) {
                 log("tryToExecute error InvalidEmailException: ${exception.message}")
                 onError(ErrorHandler.NoNetwork)
+            } catch (exception: UnAuthorizedException) {
+                log("tryToExecute error Exception: ${exception.message}")
             } catch (exception: Exception) {
                 log("tryToExecute error Exception: ${exception.message}")
             }

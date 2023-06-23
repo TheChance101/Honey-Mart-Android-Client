@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
@@ -34,7 +35,7 @@ class MarketViewModel @Inject constructor(
     }
 
 
-    private fun onGetMarketError(throwable: Exception) {
+    private fun onGetMarketError(throwable: ErrorHandler) {
         this._state.update {
             it.copy(
                 isLoading = false,
