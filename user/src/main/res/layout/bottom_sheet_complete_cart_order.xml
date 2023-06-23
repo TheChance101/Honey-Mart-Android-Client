@@ -10,8 +10,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/product_container"
-        style="@style/Theme.HoneyMart.Card"
-        android:backgroundTint="@color/white"
+        app:cardCornerRadius="@dimen/spacing_32"
+        app:strokeColor="@color/white"
+        app:strokeWidth="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,7 +45,6 @@
 
             <LinearLayout
                 android:id="@+id/text_view_order_complete"
-                style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_32"
@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/image_complete_order">
 
                 <TextView
-                    style="@style/Theme.HoneyMart.Text.H4.DarkIntense"
+                    style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
