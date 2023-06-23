@@ -36,7 +36,13 @@ class LoginViewModel @Inject constructor(
         if (validationState == ValidationState.SUCCESS) {
             viewModelScope.launch { _effect.emit(EventHandler(true)) }
         }
-        _state.update { it.copy(isLoading = false, error = 1, validationState = validationState) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = ErrorHandler.NoError,
+                validationState = validationState
+            )
+        }
 
     }
 

@@ -63,7 +63,7 @@ class SignupViewModel @Inject constructor(
     private fun addUser(fullName: String, password: String, email: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { createUser(fullName = fullName, password = password, email = email) },
+            { createAccount(fullName = fullName, password = password, email = email) },
             ::onSuccess,
             ::onError,
         )
@@ -97,8 +97,8 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
 
-    private fun onLoginError(exception: Exception) {
-        _state.update { it.copy(isLoading = false, error = 1) }
+    private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun onContinueClicked() {
