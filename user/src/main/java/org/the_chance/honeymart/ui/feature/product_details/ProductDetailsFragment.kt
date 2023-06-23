@@ -16,7 +16,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     override val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun setup() {
-        //setupUserFlowWindowVisibility()
+        hideAppBarAndBottomNavigation()
         initiateAdapter()
         navigateBack()
         collectEffect()
