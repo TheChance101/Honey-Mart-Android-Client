@@ -48,30 +48,35 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 3
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
+
                     }
 
                     OrderStates.DONE -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 4
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
+
                     }
 
                     OrderStates.CANCELED -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 4
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
                     }
                 }
             }
