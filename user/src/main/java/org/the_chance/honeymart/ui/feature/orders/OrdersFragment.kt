@@ -125,7 +125,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         when (effect) {
             is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
-            is OrderUiEffect.ClickOrderEffect -> TODO()
+            is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
             OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
             OrderUiEffect.ClickDone -> attachSwipe(OrderStates.DONE)
             OrderUiEffect.ClickProcessing -> attachSwipe(OrderStates.PROCESSING)
