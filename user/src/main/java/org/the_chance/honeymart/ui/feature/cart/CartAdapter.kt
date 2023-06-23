@@ -12,7 +12,9 @@ class CartAdapter
 ) : BaseAdapter<CartListProductUiState>(listener) {
     override val layoutID = R.layout.item_cart
 }
+
 interface CartInteractionListener : BaseInteractionListener {
+    fun onClickAddOrderNew(orderId: Long)
     fun onClickAddCountProductInCart(productId: Long)
     fun onClickMinusCountProductInCart(productId: Long)
 

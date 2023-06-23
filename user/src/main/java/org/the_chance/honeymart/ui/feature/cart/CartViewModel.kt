@@ -127,6 +127,19 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    override fun onClickAddOrderNew(orderId: Long) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+            )
+        }
+        viewModelScope.launch {
+            _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect(orderId)))
+            checkout()
+        }
+    }
+
     override fun onClickAddCountProductInCart(productId: Long) {
         incrementProductCountByOne(productId)
     }
@@ -136,18 +149,6 @@ class CartViewModel @Inject constructor(
 
     }
 
-    fun onClickOrderNowButton() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-            )
-        }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
-            checkout()
-        }
-    }
 
     fun onClickDiscoverButton() {
         viewModelScope.launch {

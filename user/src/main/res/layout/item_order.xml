@@ -31,6 +31,7 @@
                 android:id="@+id/image_order"
                 android:layout_width="104dp"
                 android:layout_height="match_parent"
+                app:loadImage="@{item.imageUrl}"
                 android:background="@drawable/image_market"
                 app:layout_constraintStart_toStartOf="parent" />
 

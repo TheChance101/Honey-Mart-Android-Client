@@ -8,6 +8,11 @@
         <variable
             name="viewModel"
             type="org.the_chance.honeymart.ui.feature.cart.CartViewModel" />
+
+
+        <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.cart.CartInteractionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_16"
-                    android:onClick="@{() -> viewModel.onClickOrderNowButton()}"
+                    android:onClick="@{() -> viewModel.onClickAddOrderNew()}"
                     android:text="@string/order_now"
                     app:icon="@drawable/icon_cart_white"
                     app:iconGravity="textStart"
@@ -96,7 +101,6 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
-
             app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

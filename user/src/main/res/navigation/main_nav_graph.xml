@@ -182,8 +182,8 @@
         android:label="CartBottomFragment"
         tools:layout="@layout/bottom_sheet_complete_cart_order">
         <action
-            android:id="@+id/action_cartBottomFragment_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
+            android:id="@+id/action_cartBottomFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
     </dialog>
     <fragment
         android:id="@+id/productDetails"
