@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="no_connection_text">Oops, No connection!!1</string>
+    <string name="try_again_text">Try Again</string>
 </resources>
