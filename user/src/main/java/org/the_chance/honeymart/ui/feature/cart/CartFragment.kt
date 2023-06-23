@@ -1,5 +1,8 @@
 package org.the_chance.honeymart.ui.feature.cart
 
+import android.app.Dialog
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -51,32 +54,57 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = binding.recyclerCartList.getChildAdapterPosition(viewHolder.itemView)
-            viewModel.deleteCart(position.toLong())
+            showOrderDialog(position, viewHolder)
         }
     }
 
-    private fun collectEffect() {
-        collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let {
-                onEffect(it)
+    private fun showOrderDialog(position: Int, viewHolder: RecyclerView.ViewHolder) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.layout_order_dialog)
+
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog)
+
+        val btnCancel = dialog.findViewById<Button>(R.id.button_cancel)
+        val btnSure = dialog.findViewById<Button>(R.id.button_sure)
+        btnSure.setOnClickListener {
+            cartAdapter.removeItem(position)
+            viewModel.deleteCart(position.toLong())
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+            cartAdapter.notifyItemChanged(position)
+        }
+            dialog.setCancelable(false)
+            dialog.show()
+        }
+
+
+        private fun collectEffect() {
+            collect(viewModel.effect) { effect ->
+                effect.getContentIfHandled()?.let {
+                    onEffect(it)
+                }
             }
         }
-    }
 
-    private fun onEffect(effect: CartUiEffect) {
-        when (effect) {
-            is CartUiEffect.ClickDiscoverEffect -> navigateToMarkets()
-            is CartUiEffect.ClickOrderEffect -> navigateToOrders()
+        private fun onEffect(effect: CartUiEffect) {
+            when (effect) {
+                is CartUiEffect.ClickDiscoverEffect -> navigateToMarkets()
+                is CartUiEffect.ClickOrderEffect -> navigateToOrders()
+            }
+        }
+
+        private fun navigateToOrders() {
+            val action = CartFragmentDirections.actionCartFragmentToCartBottomFragment()
+            findNavController().navigate(action)
+        }
+
+        private fun navigateToMarkets() {
+            val action = CartFragmentDirections.actionCartFragmentToMarketsFragment()
+            findNavController().navigate(action)
         }
     }
 
-    private fun navigateToOrders() {
-        val action = CartFragmentDirections.actionCartFragmentToCartBottomFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToMarkets() {
-        val action = CartFragmentDirections.actionCartFragmentToMarketsFragment()
-        findNavController().navigate(action)
-    }
-}
