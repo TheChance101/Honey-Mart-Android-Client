@@ -42,7 +42,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     private fun observeViewModelEvents(effect: ProductDetailsUiEffect) {
         when (effect) {
             is ProductDetailsUiEffect.AddToCartSuccess -> {
-                showSnackBar(effect.message)
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToCartsuccessMessage))
             }
 
             is ProductDetailsUiEffect.AddToCartError -> {
@@ -55,7 +55,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {
-                showSnackBar(effect.message)
+             showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
             }
 
             is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
@@ -63,7 +63,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {
-                showSnackBar(effect.message)
+                 showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
             }
         }
     }
