@@ -277,7 +277,9 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
 
 @BindingAdapter("app:loadImage")
 fun bindImage(image: ImageView, imageURL: String?) {
-    imageURL?.let {
+    if (imageURL.isNullOrEmpty()) {
+        image.setImageResource(R.drawable.product_error_placeholder)
+    } else {
         image.load(imageURL) {
             placeholder(R.drawable.loading)
             error(R.drawable.product_error_placeholder)
