@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -22,15 +23,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val createAccount: AddUserUseCase,
     private val loginUser: LoginUserUseCase,
     private val validateFullName: ValidateFullNameUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, Boolean>(SignupUiState()) {
+) : BaseViewModel<SignupUiState, AuthUiEffect>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
+    private val authData = SignupFragmentArgs.fromSavedStateHandle(savedStateHandle).AuthData
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
@@ -113,7 +116,15 @@ class SignupViewModel @Inject constructor(
 
     private fun onLoginSuccess(loginState: ValidationState) {
         if (loginState == ValidationState.SUCCESS) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+            viewModelScope.launch {
+                _effect.emit(
+                    EventHandler(
+                        AuthUiEffect.ClickSignUpEffect(
+                            authData
+                        )
+                    )
+                )
+            }
         }
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
@@ -126,14 +137,20 @@ class SignupViewModel @Inject constructor(
         val emailState = validateEmail(state.value.email)
         val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+            viewModelScope.launch {
+                _effect.emit(
+                    EventHandler(
+                        AuthUiEffect.ClickContinueEffect
+                    )
+                )
+            }
         }
         _state.update {
             it.copy(emailState = emailState, fullNameState = fullNameState, isLoading = false)
         }
     }
 
-    fun onSignupClicked() {
+    fun onClickSignup() {
         val validationState =
             validateConfirmPassword(state.value.password, state.value.confirmPassword)
         if (validationState) {

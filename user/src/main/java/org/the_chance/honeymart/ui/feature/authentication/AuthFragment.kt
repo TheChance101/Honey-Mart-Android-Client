@@ -4,6 +4,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentAuthBinding
 
@@ -20,28 +22,30 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
     }
 
     private fun addCallbacks() {
-        handleOnSignUpClick()
-        handleOnLoginClick()
+        collectAction()
     }
 
-    private fun handleOnLoginClick() {
-        navigateToLogin()
-    }
-
-    private fun navigateToLogin() {
-        binding.textViewLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_authFragment_to_loginFragment)
+    private fun collectAction() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
-    private fun handleOnSignUpClick() {
-        navigateToSignUp()
+    private fun onEffect(effect: AuthenticationUiEffect) {
+        when (effect) {
+            is AuthenticationUiEffect.ClickLoginEffect -> navigateToLogin(effect.authData)
+            is AuthenticationUiEffect.ClickSignUpEffect -> navigateToSignUp(effect.authData)
+        }
     }
 
-    private fun navigateToSignUp() {
-        binding.buttonSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_authFragment_to_signupFragment)
-        }
+    private fun navigateToLogin(authData: AuthData) {
+        val action = AuthFragmentDirections.actionAuthFragmentToLoginFragment(authData)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToSignUp(authData: AuthData) {
+        val action = AuthFragmentDirections.actionAuthFragmentToSignupFragment(authData)
+        findNavController().navigate(action)
     }
 
 }

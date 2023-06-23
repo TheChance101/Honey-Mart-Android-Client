@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoriesFragmentArgs
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrderParentDetailsUiState
@@ -53,7 +52,7 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderDetails() {
         _state.update { it.copy(isDetailsLoading = true) }
         tryToExecute(
-            { getOrderDetailsUseCase(1).toOrderParentDetailsUiState() },
+            { getOrderDetailsUseCase(args.orderId).toOrderParentDetailsUiState() },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )

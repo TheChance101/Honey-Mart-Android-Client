@@ -41,8 +41,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         binding.recyclerCartList.adapter = cartAdapter
         binding.recyclerCartList.layoutManager = LinearLayoutManager(requireContext())
         ItemTouchHelper(swipe).attachToRecyclerView(binding.recyclerCartList)
+        setupScrollListenerForRecyclerView(binding.recyclerCartList)
         collectEffect()
-
     }
 
     private val swipe = object : SwipeHelper() {
