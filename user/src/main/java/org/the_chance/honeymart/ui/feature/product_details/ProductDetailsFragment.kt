@@ -16,7 +16,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     override val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun setup() {
-        //setupUserFlowWindowVisibility()
+        hideAppBarAndBottomNavigation()
         initiateAdapter()
         navigateBack()
         collectEffect()
@@ -42,7 +42,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     private fun observeViewModelEvents(effect: ProductDetailsUiEffect) {
         when (effect) {
             is ProductDetailsUiEffect.AddToCartSuccess -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.addedToCartsuccessMessage))
+                showSnackBar(effect.message)
             }
 
             is ProductDetailsUiEffect.AddToCartError -> {
@@ -55,7 +55,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {
-             showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
+                showSnackBar(effect.message)
             }
 
             is ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
@@ -63,7 +63,7 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {
-                 showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+                showSnackBar(effect.message)
             }
         }
     }
