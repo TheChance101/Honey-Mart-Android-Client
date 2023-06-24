@@ -17,7 +17,7 @@
         android:title="Orders" />
 
     <item
-        android:id="@+id/wishListFragment"
+        android:id="@+id/wish_list_graph"
         android:icon="@drawable/icon_favorite_nav"
         android:title="Wish List" />
 

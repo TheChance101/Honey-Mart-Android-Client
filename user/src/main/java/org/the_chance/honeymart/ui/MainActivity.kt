@@ -78,10 +78,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.wishListFragment -> {
                     navController.popBackStack(R.id.wishListFragment, true)
                 }*/
-                /*in destinations ->{
+                in destinations ->{
                     navController.popBackStack(navController.graph.startDestinationId,false)
-                }*/
-                R.id.markets_graph -> {
+                }
+                /*R.id.markets_graph -> {
                         navController.popBackStack(navController.graph.startDestinationId, false)
                 }
 
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         navController.popBackStack(navController.graph.startDestinationId, false)
                     }
-                }
+                }*/
             }
         }
 

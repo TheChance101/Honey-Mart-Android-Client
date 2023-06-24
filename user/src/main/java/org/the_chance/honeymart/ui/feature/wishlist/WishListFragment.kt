@@ -26,7 +26,6 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //findNavController().navigate(WishListFragmentDirections.actionWishListFragmentToMarketsFragment())
             showExitAlertDialog()
         }
     }

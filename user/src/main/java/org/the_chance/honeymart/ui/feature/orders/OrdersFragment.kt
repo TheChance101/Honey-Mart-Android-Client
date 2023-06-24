@@ -118,7 +118,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //navigateToMarkets()
             showExitAlertDialog()
         }
     }
@@ -146,8 +145,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun navigateToMarkets() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.markets_graph)
     }
 
     private fun navigateToOrdersDetails(orderId: Long) {

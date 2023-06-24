@@ -88,8 +88,7 @@
             <action
                 android:id="@+id/action_cartFragment_to_ordersFragment"
                 app:destination="@id/ordersFragment"
-                app:popUpTo="@id/marketsFragment"
-                app:popUpToInclusive="true" />
+                app:popUpTo="@id/marketsFragment" />
             <action
                 android:id="@+id/action_cartFragment_to_cartBottomFragment"
                 app:destination="@id/cartBottomFragment"
@@ -131,7 +130,7 @@
                 android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
                 app:destination="@id/orderDetailsFragment"
                 app:popUpTo="@id/ordersFragment"
-                app:popUpToInclusive="true"/>
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/orderDetailsFragment"
@@ -142,16 +141,20 @@
                 app:argType="long" />
         </fragment>
     </navigation>
-    <fragment
-        android:id="@+id/wishListFragment"
-        android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
-        android:label="WishListFragment">
-        <action
-            android:id="@+id/action_wishListFragment_to_marketsFragment"
-            app:destination="@id/markets_graph"
-            app:popUpTo="@id/markets_graph"
-            app:popUpToInclusive="true" />
-    </fragment>
+    <navigation
+        android:id="@+id/wish_list_graph"
+        app:startDestination="@id/wishListFragment">
+        <fragment
+            android:id="@+id/wishListFragment"
+            android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
+            android:label="WishListFragment">
+            <action
+                android:id="@+id/action_wishListFragment_to_marketsFragment"
+                app:destination="@id/markets_graph"
+                app:popUpTo="@id/markets_graph"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
     <navigation
         android:id="@+id/user_nav_graph"
         app:startDestination="@id/authFragment">
