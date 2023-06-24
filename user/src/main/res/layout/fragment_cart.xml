@@ -34,7 +34,6 @@
             style="@style/Theme.HoneyMart.Card"
             android:layout_width="match_parent"
             android:layout_height="103dp"
-            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showIfNotEmpty="@{viewModel.state.products}">
@@ -75,14 +74,13 @@
 
                 <TextView
                     android:id="@+id/total_price"
-                    style="@style/Theme.HoneyMart.Text.H6"
+                    style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:text="@string/total_price"
-                    android:textColor="@color/black_16"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

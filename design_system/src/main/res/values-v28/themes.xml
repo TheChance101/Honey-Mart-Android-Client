@@ -282,5 +282,4 @@
     <style name="AppbarStyle" parent="Widget.Material3.AppBarLayout">
         <item name="android:backgroundTint">@color/dark_background_200</item>
     </style>
-
 </resources>

@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
-        android:backgroundTint="@color/white"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card">
 

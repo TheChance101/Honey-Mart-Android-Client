@@ -10,8 +10,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/product_container"
-        app:cardCornerRadius="@dimen/spacing_32"
-        style="@style/Theme.HoneyMart.Card"
+        app:cardCornerRadius="@dimen/radius_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
