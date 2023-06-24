@@ -24,6 +24,13 @@ fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
     (view.adapter as BaseAdapter<T>?)?.setItems(items ?: emptyList())
 }
 
+@BindingAdapter(value = ["app:recyclerItemsByCount", "app:recyclerItemCount"])
+fun <T> setRecyclerItemsByCount(view: RecyclerView, items: List<T>?, count: Int) {
+    (view.adapter as BaseAdapter<T>?)?.setItems(
+        items?.subList(0, items.size.coerceAtMost(count)) ?: emptyList()
+    )
+}
+
 @BindingAdapter("app:showIfTrue")
 fun showIfTrue(view: View, condition: Boolean) {
     view.isVisible = condition
