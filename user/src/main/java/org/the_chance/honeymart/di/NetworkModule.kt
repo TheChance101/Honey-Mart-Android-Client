@@ -21,8 +21,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
 
-    //private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
-    private const val BASE_URL = "http://192.168.1.10:8080/"
+    private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
+//    private const val BASE_URL = "http://192.168.1.10:8080/"
 
     @Singleton
     @Provides
