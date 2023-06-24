@@ -66,48 +66,9 @@ class MainActivity : AppCompatActivity() {
 
         navView.setOnNavigationItemReselectedListener { item ->
             when (item.itemId) {
-                /*R.id.marketsFragment -> {
-                    navController.popBackStack(R.id.marketsFragment, true)
-                }
-                R.id.cartFragment -> {
-                    navController.popBackStack(R.id.cartFragment, true)
-                }
-                R.id.ordersFragment -> {
-                    navController.popBackStack(R.id.ordersFragment, true)
-                }
-                R.id.wishListFragment -> {
-                    navController.popBackStack(R.id.wishListFragment, true)
-                }*/
                 in destinations ->{
                     navController.popBackStack(navController.graph.startDestinationId,false)
                 }
-                /*R.id.markets_graph -> {
-                        navController.popBackStack(navController.graph.startDestinationId, false)
-                }
-
-                R.id.cart_graph -> {
-                    if (navController.currentDestination?.id == R.id.cart_graph) {
-                        navController.popBackStack(R.id.cart_graph, false)
-                    } else {
-                        navController.popBackStack(navController.graph.startDestinationId, false)
-                    }
-                }
-
-                R.id.orders_graph -> {
-                    if (navController.currentDestination?.id == R.id.orders_graph) {
-                        navController.popBackStack(R.id.orders_graph, false)
-                    } else {
-                        navController.popBackStack(navController.graph.startDestinationId, false)
-                    }
-                }
-
-                R.id.wishListFragment -> {
-                    if (navController.currentDestination?.id == R.id.wishListFragment) {
-                        navController.popBackStack(R.id.wishListFragment, false)
-                    } else {
-                        navController.popBackStack(navController.graph.startDestinationId, false)
-                    }
-                }*/
             }
         }
 
