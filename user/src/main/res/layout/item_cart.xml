@@ -35,7 +35,6 @@
                 android:id="@+id/image_order"
                 android:layout_width="104dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/image_market"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
