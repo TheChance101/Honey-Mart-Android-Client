@@ -116,6 +116,12 @@
             android:id="@+id/action_wishListFragment_to_marketsFragment"
             app:destination="@id/marketsFragment"
             app:popUpTo="@id/marketsFragment" />
+        <action
+            android:id="@+id/action_wishListFragment_to_productDetails"
+            app:destination="@id/productDetails" />
+        <argument
+            android:name="product_id"
+            app:argType="long" />
     </fragment>
     <navigation
         android:id="@+id/user_nav_graph"
@@ -211,6 +217,9 @@
         <argument
             android:name="orderId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_productDetails"
+            app:destination="@id/productDetails" />
     </fragment>
     <dialog
         android:id="@+id/cartBottomFragment"
