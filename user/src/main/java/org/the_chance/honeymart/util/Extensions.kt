@@ -76,21 +76,6 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
                     window.statusBarColor = newColor
                 }
 
-                else -> {
-                        val newColor = interpolateColor(
-                            ContextCompat.getColor(
-                                context,
-                                org.the_chance.design_system.R.color.dark_background_200
-                            ),
-                            ContextCompat.getColor(
-                                context,
-                                org.the_chance.design_system.R.color.dark_background_300
-                            ),
-                            alpha
-                        )
-                        appBarLayout.setBackgroundColor(newColor)
-                        window.statusBarColor = newColor
-                }
             }
         }
     })

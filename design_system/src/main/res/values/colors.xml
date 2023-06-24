@@ -30,12 +30,12 @@
     <!--Error-->
     <color name="dark_error">#CF6679</color>
     <!--Background-->
-    <color name="dark_background_200">#99121212</color>
+    <color name="dark_background_200">#252525</color>
     <color name="dark_background_300">#333333</color>
     <color name="dark_background_400">#484848</color>
     <!--Text-->
-    <color name="dark_text_87">#DEFFFFFF</color>
-    <color name="dark_text_60">#99FFFFFF</color>
-    <color name="dark_text_37">#5EFFFFFF</color>
+    <color name="dark_text_87">#E2E2E2</color>
+    <color name="dark_text_60">#A6A6A6</color>
+    <color name="dark_text_37">#737373</color>
 
 </resources>
