@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Honey Mart App Theme   -->
+    <!--Honey Mart App Light Theme-->
     <style name="Theme.HoneyMart" parent="Theme.Material3.Light.NoActionBar">
 
         <!--Primary-->
@@ -269,5 +269,7 @@
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
         <item name="errorIconTint">@color/error</item>
     </style>
+
+
 
 </resources>

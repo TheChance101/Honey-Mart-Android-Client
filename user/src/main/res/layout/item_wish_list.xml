@@ -40,7 +40,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
-                style="@style/Theme.HoneyMart.Text.H5.Light"
+                style="@style/Theme.HoneyMart.Text.H5.DarkSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
@@ -52,7 +52,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
-                style="@style/Theme.HoneyMart.Text.H5.Light"
+                style="@style/Theme.HoneyMart.Text.H5.DarkSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_4"
