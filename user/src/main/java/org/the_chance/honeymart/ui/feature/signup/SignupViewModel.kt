@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val createAccount: AddUserUseCase,
     private val loginUser: LoginUserUseCase,
     private val validateFullName: ValidateFullNameUseCase,

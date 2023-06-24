@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/marketsFragment"
+        android:id="@+id/markets_graph"
         android:icon="@drawable/icon_market_nav"
         android:title="Markets" />
 
     <item
-        android:id="@+id/cartFragment"
+        android:id="@+id/cart_graph"
         android:icon="@drawable/icon_cart_nav"
         android:title="Cart" />
 
     <item
-        android:id="@+id/ordersFragment"
+        android:id="@+id/orders_graph"
         android:icon="@drawable/icon_order_nav"
         android:title="Orders" />
 
