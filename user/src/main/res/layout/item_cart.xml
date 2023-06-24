@@ -7,10 +7,6 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="org.the_chance.honeymart.ui.feature.cart.CartViewModel" />
-
-        <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState" />
 
@@ -22,23 +18,24 @@
     <com.google.android.material.card.MaterialCardView
         style="@style/Theme.HoneyMart.Card"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_16"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="@dimen/radius_16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="100dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_order"
-                android:layout_width="104dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:loadImage="@{item.productImage}" />
+                android:scaleType="centerCrop"
+                app:loadImage="@{item.productImage.get(0)}" />
 
             <TextView
                 android:id="@+id/text_order_number"
@@ -76,17 +73,15 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="@dimen/spacing_16"
-                android:layout_marginBottom="@dimen/spacing_16"
-                android:gravity="center_horizontal|center_vertical"
                 android:onClick="@{() -> listener.onClickMinusCountProductInCart(item.productId)}"
-                android:paddingVertical="@dimen/spacing_2"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/image_view_add_item"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_number_of_items"
+                app:layout_constraintTop_toTopOf="@+id/image_view_add_item"
                 app:strokeWidth="0dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_minus" />
 
@@ -97,11 +92,11 @@
                 style="@style/Theme.HoneyMart.Text.H2.DarkModerate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_16"
-                android:layout_marginBottom="@dimen/spacing_16"
+                android:layout_marginHorizontal="@dimen/spacing_16"
                 android:text="@{item.productCount.toString()}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/image_view_add_item"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_add_item"
+                app:layout_constraintTop_toTopOf="@+id/image_view_add_item"
                 tool:text="@string/number_of_items" />
 
             <com.google.android.material.card.MaterialCardView
@@ -113,17 +108,17 @@
                 android:backgroundTint="@color/primary_100"
                 android:gravity="center_horizontal|center_vertical"
                 android:onClick="@{() -> listener.onClickAddCountProductInCart(item.productId)}"
-                android:paddingVertical="@dimen/spacing_2"
                 android:textColor="@color/white_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
                 app:strokeWidth="0dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_plus" />
+                    app:srcCompat="@drawable/icon_add_product" />
 
             </com.google.android.material.card.MaterialCardView>
 
