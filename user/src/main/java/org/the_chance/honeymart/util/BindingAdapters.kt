@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.util
 
+import android.icu.text.DecimalFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -295,4 +296,11 @@ fun bindImage(image: ImageView, imageURL: String?) {
             crossfade(1000)
         }
     }
+}
+
+@BindingAdapter("FormatCurrency")
+fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    val formattedAmount = decimalFormat.format(amount)
+    text = formattedAmount
 }
