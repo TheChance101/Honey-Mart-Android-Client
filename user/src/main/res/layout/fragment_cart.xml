@@ -31,9 +31,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/product_container"
-            style="@style/Theme.HoneyMart.Card"
+            style="@style/CartCardView"
             android:layout_width="match_parent"
-            android:layout_height="103dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showIfNotEmpty="@{viewModel.state.products}">

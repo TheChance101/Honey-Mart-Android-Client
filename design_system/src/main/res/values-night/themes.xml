@@ -179,6 +179,23 @@
         <item name="cardBackgroundColor">@color/dark_background_300</item>
     </style>
 
+
+
+    <!-- Cart Card Style-->
+    <style name="CartCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+        <item name="cardBackgroundColor">@color/dark_background_300</item>
+        <item name="strokeWidth">@dimen/stroke_zero</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_16</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_16</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
     <!-- Icon Category Style-->
     <style name="Theme.HoneyMart.CategoryIcon">
         <item name="srcCompat">@drawable/icon_category</item>
@@ -263,7 +280,6 @@
 
 
     <!--Bottom Navigation-->
-
     <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/dark_background_300</item>
         <item name="itemIconTint">@color/dark_text_87</item>
@@ -275,6 +291,5 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/dark_background_400</item>
     </style>
-
 
 </resources>
