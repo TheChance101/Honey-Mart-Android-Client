@@ -75,7 +75,6 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
             }
 
             is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {
-                log("Cllled as you want")
                 showOrderDialog(effect.productId, effect.count)
             }
         }
