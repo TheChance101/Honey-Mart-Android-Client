@@ -296,6 +296,7 @@ fun bindImage(image: ImageView, imageURL: String?) {
 @BindingAdapter("app:errorState")
 fun setError(view: View, error: ErrorHandler?) {
     error?.let {
+//        view.visibility = View.VISIBLE
         when (error) {
             is ErrorHandler.NoNetwork -> {
                 val context = view.context
@@ -303,9 +304,33 @@ fun setError(view: View, error: ErrorHandler?) {
                 Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
             }
 
-            else -> {
+            is ErrorHandler.EmailIsExist -> {
                 val context = view.context
-                val message = "something went wrong"
+                val message = "email is exist"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.InvalidPassword -> {
+                val context = view.context
+                val message = "invalid password"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.InvalidRegister -> {
+                val context = view.context
+                val message = "invalid register"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.NoError -> {
+                val context = view.context
+                val message = "no error"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.UnAuthorized -> {
+                val context = view.context
+                val message = "unauthorized"
                 Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
             }
         }

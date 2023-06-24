@@ -5,7 +5,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.login.LoginDialog
-import org.the_chance.honeymart.ui.feature.login.LoginFragmentDirections
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
@@ -29,19 +28,20 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     }
 
     private fun onEffect(effect: AuthUiEffect) {
-        when (effect) {
-            AuthUiEffect.ClickContinueEffect -> TODO()
-            is AuthUiEffect.ClickSignUpEffect -> navigateToMainNav(effect.authData)
+        if (effect is AuthUiEffect.ClickSignUpEffect) {
+            navigateToMainNav(effect.authData)
         }
     }
 
+
     private fun navigateToMainNav(authData: AuthData) {
+        showDialog()
         val action = when (authData) {
             is AuthData.Products -> {
                 SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToProductsFragment(
-                    authData.categoryId,
-                    authData.marketId,
-                    authData.position
+                    categoryId = authData.categoryId,
+                    marketId = authData.marketId,
+                    position = authData.position
                 )
             }
 
@@ -52,11 +52,11 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
             }
 
             AuthData.Order -> {
-                LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
+                SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToOrdersFragment()
             }
         }
         findNavController().navigate(action)
-        showDialog()
+
     }
 
     override fun showDialog() {

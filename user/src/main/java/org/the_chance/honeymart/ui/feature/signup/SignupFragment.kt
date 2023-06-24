@@ -14,15 +14,19 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
     override val layoutIdFragment = R.layout.fragment_signup_details
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
-
         collectAction()
         setupUserFlowWindowVisibility()
-
     }
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToConfirmPassword() }
+            effect.getContentIfHandled()?.let { onEffect(it) }
+        }
+    }
+
+    private fun onEffect(effect: AuthUiEffect) {
+        if (effect is AuthUiEffect.ClickContinueEffect) {
+            navigateToConfirmPassword()
         }
     }
 

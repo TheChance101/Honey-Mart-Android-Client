@@ -142,6 +142,9 @@
             android:name="org.the_chance.honeymart.ui.feature.login.LoginFragment"
             android:label="LoginFragment"
             tools:layout="@layout/fragment_login">
+            <argument
+                android:name="authData"
+                app:argType="org.the_chance.honeymart.util.AuthData" />
             <action
                 android:id="@+id/action_loginFragment_to_signupFragment"
                 app:destination="@id/signupFragment"
@@ -161,9 +164,6 @@
                 android:id="@+id/action_loginFragment_to_productDetails"
                 app:destination="@id/productDetails"
                 app:popUpTo="@id/productDetails" />
-            <argument
-                android:name="authData"
-                app:argType="org.the_chance.honeymart.util.AuthData" />
             <action
                 android:id="@+id/action_loginFragment_to_ordersFragment"
                 app:destination="@id/ordersFragment"
@@ -201,6 +201,11 @@
                 android:id="@+id/action_signupConfirmPasswordFragment_to_productsFragment"
                 app:destination="@id/productsFragment"
                 app:popUpTo="@id/categoriesFragment"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_signupConfirmPasswordFragment_to_ordersFragment"
+                app:destination="@id/ordersFragment"
+                app:popUpTo="@id/ordersFragment"
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>

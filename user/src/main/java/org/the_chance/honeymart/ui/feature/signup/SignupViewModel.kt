@@ -33,6 +33,7 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
     private val authData = SignupFragmentArgs.fromSavedStateHandle(savedStateHandle).AuthData
 
+    //region text field input change
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
         _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
@@ -63,6 +64,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    //endregion
     private fun addUser(fullName: String, password: String, email: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -74,7 +76,7 @@ class SignupViewModel @Inject constructor(
 
     private fun onSuccess(result: ValidationState) {
         if (result == ValidationState.SUCCESS) {
-            viewModelScope.launch { _effect.emit(EventHandler(true)) }
+            login(email = _state.value.email, password = _state.value.password)
         }
         _state.update { it.copy(isLoading = false, isSignUp = result) }
     }
@@ -116,13 +118,7 @@ class SignupViewModel @Inject constructor(
         val emailState = validateEmail(state.value.email)
         val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        AuthUiEffect.ClickContinueEffect
-                    )
-                )
-            }
+            viewModelScope.launch { _effect.emit(EventHandler(AuthUiEffect.ClickContinueEffect)) }
         }
         _state.update { it.copy(emailState = emailState, fullNameState = fullNameState) }
 
