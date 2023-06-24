@@ -64,6 +64,7 @@
                 android:paddingVertical="@dimen/spacing_4"
                 android:text="@{item.productPrice.toString()}"
                 android:textColor="@color/primary_100"
+                app:FormatCurrency="@{item.productPrice}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_order"
                 app:layout_constraintTop_toBottomOf="@+id/text_order_number"

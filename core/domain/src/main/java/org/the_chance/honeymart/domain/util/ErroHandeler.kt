@@ -6,6 +6,9 @@ package org.the_chance.honeymart.domain.util
  */
 
 class InvalidEmailException(message: String = "Email is not valid") : Exception(message)
+class ProductNotInSameCartMarketException(message: String = "this product not in same market, you should delete cart") :
+    Exception(message)
+
 class UnAuthorizedException(message: String = "UnAuthorized User") : Exception(message)
 class InvalidPasswordException(message: String = "Password should be at least has one letter, one special character, one number, and a total length between 8 to 14 characters") :
     Exception(message)

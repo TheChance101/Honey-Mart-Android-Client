@@ -33,7 +33,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 style="@style/Theme.HoneyMart.Image.ProductImage"
-                app:loadImage="@{item.productImages.get(0)}"
+                app:loadImage="@{item.productImages.size() > 0 ? item.productImages.get(0) : null}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:text="@{item.productName}"
+                app:FormatCurrency="@{item.productPrice}"
                 app:layout_constraintBottom_toTopOf="@+id/product_description"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="3000$" />
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:text='@{String.valueOf(item.productPrice)}'
+                android:text="@{item.productName}"
                 app:layout_constraintBottom_toTopOf="@+id/text_product_name"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Primary Text" />
