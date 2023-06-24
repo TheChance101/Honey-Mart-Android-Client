@@ -32,6 +32,19 @@
     </style>
 
 
+    <!--Bottom Navigation-->
+    <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <!-- Customize the attributes here -->
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/black_60</item>
+        <item name="itemRippleColor">@color/primary_100</item>
+        <item name="itemActiveIndicatorStyle">@style/App.Custom.Indicator</item>
+
+    </style>
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/primary_100</item>
+    </style>
+
     <!-- Button Styles -->
     <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
         <item name="cornerRadius">@dimen/radius_16</item>

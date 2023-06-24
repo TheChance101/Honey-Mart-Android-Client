@@ -7,7 +7,7 @@
         <!--Primary-->
         <item name="colorPrimary">@color/dark_primary_100</item>
         <item name="colorOnPrimary">@color/dark_text_87</item>
-
+      <item name="android:colorBackground">@color/dark_background_200</item>
         <item name="colorOnSurface">@color/dark_text_87</item>
         <item name="colorError">@color/dark_error</item>
 
@@ -20,13 +20,10 @@
         <item name="fontFamily">@font/poppins</item>
         <item name="android:fitsSystemWindows">true</item>
 
+
     </style>
 
-    <!--Bottom Navigation-->
-    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorPrimary">@color/dark_background_300</item>
-        <item name="colorOnPrimary">@color/dark_text_37</item>
-    </style>
+
 
     <!-- Text Styles -->
     <style name="Theme.HoneyMart.Text">
@@ -263,6 +260,27 @@
         <item name="icon">@drawable/icon_category</item>
         <item name="drawableTint">@color/black_60</item>
         <item name="android:drawablePadding">@dimen/spacing_8</item>
+    </style>
+
+
+    <!--Bottom Navigation-->
+
+    <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/dark_background_300</item>
+        <item name="itemIconTint">@color/dark_text_87</item>
+        <item name="itemRippleColor">@color/dark_background_400</item>
+        <item name="itemActiveIndicatorStyle">@style/App.Custom.Indicator</item>
+
+    </style>
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/dark_background_400</item>
+    </style>
+
+
+    <!--Appbar-->
+    <style name="AppbarStyle" parent="Widget.Material3.AppBarLayout">
+        <item name="android:backgroundTint">@color/dark_background_200</item>
     </style>
 
 </resources>
