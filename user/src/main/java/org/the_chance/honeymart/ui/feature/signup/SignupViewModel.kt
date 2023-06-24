@@ -33,7 +33,11 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, AuthUiEffect>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
-    private val authData = SignupFragmentArgs.fromSavedStateHandle(savedStateHandle).AuthData
+    private lateinit var args: SignupFragmentArgs
+
+    fun saveArgs(args: SignupFragmentArgs){
+        args.also { this.args = it }
+    }
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
@@ -120,7 +124,7 @@ class SignupViewModel @Inject constructor(
                 _effect.emit(
                     EventHandler(
                         AuthUiEffect.ClickSignUpEffect(
-                            authData
+                            args.AuthData
                         )
                     )
                 )
