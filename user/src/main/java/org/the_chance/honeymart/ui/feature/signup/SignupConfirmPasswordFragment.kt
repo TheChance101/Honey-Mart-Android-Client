@@ -1,11 +1,14 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.login.LoginDialog
 import org.the_chance.honeymart.ui.feature.login.LoginFragmentDirections
+import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
+import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
@@ -38,7 +41,7 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     private fun navigateToMainNav(authData: AuthData) {
         val action = when (authData) {
             is AuthData.Products -> {
-                SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToProductsFragment(
+                ProductsFragmentDirections.actionGlobalProductsFragment(
                     authData.categoryId,
                     authData.marketId,
                     authData.position
@@ -46,7 +49,7 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
             }
 
             is AuthData.ProductDetails -> {
-                SignupConfirmPasswordFragmentDirections.actionSignupConfirmPasswordFragmentToProductDetails(
+                ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
                     authData.productId
                 )
             }
@@ -55,7 +58,7 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
                 LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
             }
         }
-        findNavController().navigate(action)
+        changeNavGraphToMain().navigate(action)
         showDialog()
     }
 
@@ -64,5 +67,11 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     }
 
     private val loginDialog = "login_dialog"
+
+    private fun changeNavGraphToMain(): NavController {
+        val navController = findNavController()
+        navController.setGraph(R.navigation.main_nav_graph)
+        return navController
+    }
 
 }

@@ -72,6 +72,22 @@
                 app:popExitAnim="@android:anim/slide_out_right"
                 app:popUpTo="@id/productsFragment" />
         </fragment>
+        <action
+            android:id="@+id/action_global_productsFragment"
+            app:destination="@id/productsFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/categoriesFragment"
+            app:popUpToInclusive="false">
+            <argument
+                android:name="categoryId"
+                app:argType="long" />
+            <argument
+                android:name="marketId"
+                app:argType="long" />
+            <argument
+                android:name="position"
+                app:argType="integer" />
+        </action>
     </navigation>
     <navigation
         android:id="@+id/cart_graph"
@@ -193,6 +209,7 @@
             <action
                 android:id="@+id/action_loginFragment_to_productsFragment"
                 app:destination="@id/productsFragment"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/categoriesFragment"
                 app:popUpToInclusive="true">
                 <argument
@@ -208,6 +225,7 @@
             <action
                 android:id="@+id/action_loginFragment_to_productDetails"
                 app:destination="@id/productDetails"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/productDetails">
                 <argument
                     android:name="productId"
@@ -248,6 +266,7 @@
             <action
                 android:id="@+id/action_signupConfirmPasswordFragment_to_productDetails"
                 app:destination="@id/productDetails"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/productDetails">
                 <argument
                     android:name="productId"
@@ -256,6 +275,7 @@
             <action
                 android:id="@+id/action_signupConfirmPasswordFragment_to_productsFragment"
                 app:destination="@id/productsFragment"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/categoriesFragment"
                 app:popUpToInclusive="true">
                 <argument
@@ -290,5 +310,15 @@
                 app:argType="org.the_chance.honeymart.util.AuthData" />
         </action>
     </fragment>
+    <action
+        android:id="@+id/action_global_productDetailsFragment"
+        app:destination="@id/productDetails"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/productsFragment"
+        app:popUpToInclusive="false">
+        <argument
+            android:name="productId"
+            app:argType="long" />
+    </action>
 
 </navigation>
