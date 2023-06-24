@@ -67,5 +67,6 @@
     <string name="order_complete">Order complete!</string>
     <string name="thank_you_for_shopping_with_us">Thank you for shopping with us</string>
     <string name="success_sign_up_description">High five! You\'ve joined our market app. Get ready for an amazing shopping experience</string>
+    <string name="add_from_different_cart_message">this product not in same market, you should delete the last cart to add this product , Are you sure delete last cart ?</string>
 
 </resources>

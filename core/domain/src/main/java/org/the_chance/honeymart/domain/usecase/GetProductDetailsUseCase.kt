@@ -8,6 +8,8 @@ class GetProductDetailsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
 
-    suspend operator fun invoke(productId: Long): ProductEntity =
-        honeyMartRepository.getProductDetails(productId)
+    suspend operator fun invoke(productId: Long): ProductEntity {
+        return honeyMartRepository.getProductDetails(productId)
+
+    }
 }
