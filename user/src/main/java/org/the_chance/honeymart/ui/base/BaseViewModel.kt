@@ -10,13 +10,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.util.InvalidEmailException
+import org.the_chance.honeymart.domain.util.InvalidEmailOrPasswordException
+import org.the_chance.honeymart.domain.util.InvalidRegisterException
+import org.the_chance.honeymart.domain.util.NoNetworkException
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.util.EventHandler
+import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
     abstract val TAG: String
     protected open fun log(message: String) {
-        Log.v(TAG, message)
+        Log.e(TAG, message)
     }
 
     protected val _state = MutableStateFlow(initialState)
@@ -37,9 +43,23 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 val result = function()
                 Log.e(TAG, "tryToExecute:$result ")
                 onSuccess(result)
-            } catch (e: Exception) {
-                Log.e(TAG, "tryToExecute error: ${e.message}")
-                onError(e)
+            } catch (exception: InvalidRegisterException) {
+                log("tryToExecute error InvalidRegisterException: ${exception.message}")
+//                onError(ErrorHandler.InvalidRegister)
+            } catch (exception: InvalidEmailException) {
+                log("tryToExecute error InvalidEmailException: ${exception.message}")
+//                onError(ErrorHandler.EmailIsExist)
+            } catch (exception: NoNetworkException) {
+                log("tryToExecute error InvalidEmailException: ${exception.message}")
+//                onError(ErrorHandler.NoNetwork)
+            } catch (exception: UnAuthorizedException) {
+                log("tryToExecute error Exception: ${exception.message}")
+            } catch (exception: InvalidEmailOrPasswordException) {
+//                onError(ErrorHandler.InvalidEmailAndPassword)
+                log("tryToExecute error InvalidEmailOrPasswordException: ${exception.message}")
+            } catch (exception: IOException) {
+//                onError(ErrorHandler.NoNetwork)
+                log("tryToExecute error Exception: ${exception.message}, ${exception.cause}")
             }
         }
     }

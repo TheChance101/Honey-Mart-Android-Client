@@ -12,9 +12,11 @@ import coil.load
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
@@ -288,4 +290,49 @@ fun bindImage(image: ImageView, imageURL: String?) {
             crossfade(1000)
         }
     }
+}
+
+@BindingAdapter("app:errorState")
+fun setError(view: View, error: ErrorHandler?) {
+    error?.let {
+//        view.visibility = View.VISIBLE
+        when (error) {
+            is ErrorHandler.NoNetwork -> {
+                val context = view.context
+                val message = "no connection"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            is ErrorHandler.EmailIsExist -> {
+                val context = view.context
+                val message = "email is exist"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.InvalidEmailAndPassword -> {
+                val context = view.context
+                val message = "invalid email or password"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.InvalidRegister -> {
+                val context = view.context
+                val message = "invalid register"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.NoError -> {
+                val context = view.context
+                val message = "no error"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+
+            ErrorHandler.UnAuthorized -> {
+                val context = view.context
+                val message = "unauthorized"
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 
 /**
@@ -8,7 +9,7 @@ import org.the_chance.honeymart.domain.util.ValidationState
 
 data class LoginUiState(
     val isLoading: Boolean = false,
-    val error: Int = 0,
+    val error: ErrorHandler? = null,
     val email: String = "",
     val password: String = "",
     val emailState: ValidationState = ValidationState.VALID_EMAIL,

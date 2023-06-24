@@ -1,13 +1,22 @@
 package org.the_chance.honeymart.ui.feature.login
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okio.IOException
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.InvalidEmailException
+import org.the_chance.honeymart.domain.util.InvalidEmailOrPasswordException
+import org.the_chance.honeymart.domain.util.InvalidRegisterException
+import org.the_chance.honeymart.domain.util.NoNetworkException
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
@@ -29,11 +38,36 @@ class LoginViewModel @Inject constructor(
 
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { loginUserUseCase(password = password, email = email) },
-            ::onLoginSuccess,
-            ::onLoginError,
-        )
+//        tryToExecute(
+//            { loginUserUseCase(password = password, email = email) },
+//            ::onLoginSuccess,
+//            ::onLoginError,
+//        )
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = loginUserUseCase(password = password, email = email)
+                Log.e(TAG, "tryToExecute:$result ")
+                onLoginSuccess(result)
+            } catch (exception: InvalidRegisterException) {
+                log("tryToExecute error InvalidRegisterException: ${exception.message}")
+                onLoginError(ErrorHandler.InvalidRegister)
+            } catch (exception: InvalidEmailException) {
+                log("tryToExecute error InvalidEmailException: ${exception.message}")
+                onLoginError(ErrorHandler.EmailIsExist)
+            } catch (exception: NoNetworkException) {
+                log("tryToExecute error InvalidEmailException: ${exception.message}")
+                onLoginError(ErrorHandler.NoNetwork)
+            } catch (exception: UnAuthorizedException) {
+                log("tryToExecute error Exception: ${exception.message}")
+            } catch (exception: InvalidEmailOrPasswordException) {
+                onLoginError(ErrorHandler.InvalidEmailAndPassword)
+                log("tryToExecute error InvalidEmailOrPasswordException: ${exception.message}")
+            } catch (exception: IOException) {
+                onLoginError(ErrorHandler.NoNetwork)
+                log("tryToExecute error Exception: ${exception.message}, ${exception.cause}")
+            }
+
+        }
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
@@ -48,12 +82,18 @@ class LoginViewModel @Inject constructor(
                 )
             }
         }
-        _state.update { it.copy(isLoading = false, error = 1, validationState = validationState) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = ErrorHandler.NoError,
+                validationState = validationState
+            )
+        }
 
     }
 
-    private fun onLoginError(exception: Exception) {
-        _state.update { it.copy(isLoading = false, error = 1) }
+    private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
 

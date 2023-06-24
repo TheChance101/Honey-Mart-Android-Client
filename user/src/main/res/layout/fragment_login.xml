@@ -19,6 +19,7 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:errorState="@{viewModel.state.error}"
             tools:context="org.the_chance.honeymart.ui.feature.signup.ui.login.SignupFragment">
 
             <View
