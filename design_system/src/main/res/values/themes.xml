@@ -219,6 +219,7 @@
         <item name="cardCornerRadius">@dimen/radius_16</item>
         <item name="strokeWidth">@dimen/stroke_zero</item>
     </style>
+
     <!-- Chip Styles-->
     <style name="Theme.HoneyMart.Text.H5.Chips">
         <item name="chipCornerRadius">@dimen/radius_16</item>

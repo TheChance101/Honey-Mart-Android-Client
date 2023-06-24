@@ -7,7 +7,7 @@
         <!--Primary-->
         <item name="colorPrimary">@color/dark_primary_100</item>
         <item name="colorOnPrimary">@color/dark_text_87</item>
-      <item name="android:colorBackground">@color/dark_background_200</item>
+        <item name="android:colorBackground">@color/dark_background_200</item>
         <item name="colorOnSurface">@color/dark_text_87</item>
         <item name="colorError">@color/dark_error</item>
 
@@ -20,10 +20,7 @@
         <item name="fontFamily">@font/poppins</item>
         <item name="android:fitsSystemWindows">true</item>
 
-
     </style>
-
-
 
     <!-- Text Styles -->
     <style name="Theme.HoneyMart.Text">
@@ -169,10 +166,12 @@
     </style>
 
     <!-- Chip Styles-->
-    <style name="Theme.HoneyMart.Text.H5.Chips">
+    <style name="Theme.HoneyMart.Text.H5.Chips" parent="">
         <item name="chipCornerRadius">@dimen/radius_16</item>
         <item name="chipStrokeColor">@color/primary_100</item>
         <item name="android:paddingHorizontal">@dimen/spacing_16</item>
+        <item name="android:textColor">@color/primary_100</item>
+        <item name="colorOnSurface">@android:color/transparent</item>
     </style>
 
     <!-- Card Category Style-->
@@ -276,7 +275,6 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/dark_background_400</item>
     </style>
-
 
     <!--Appbar-->
     <style name="AppbarStyle" parent="Widget.Material3.AppBarLayout">
