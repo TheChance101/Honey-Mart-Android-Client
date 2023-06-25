@@ -41,8 +41,8 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
             val offset = recyclerView.computeVerticalScrollOffset()
             val alpha = (offset.toFloat() / threshold).coerceIn(0f, 1f)
             val newColor = interpolateColor(
-                ContextCompat.getColor(context, org.the_chance.design_system.R.color.white_300),
-                ContextCompat.getColor(context, org.the_chance.design_system.R.color.primary_100),
+                ContextCompat.getColor(context, R.color.white_300),
+                ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
 
@@ -103,7 +103,7 @@ fun Fragment.showSnackBar(
     val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
 
     val bottomNavBar =
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        requireActivity().findViewById<BottomNavigationView>(org.the_chance.user.R.id.bottomNavigationView)
     snackBar.anchorView = bottomNavBar
 
     if (actionText != null && action != null) {

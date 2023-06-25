@@ -20,6 +20,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     private val wishListAdapter: WishListAdapter by lazy { WishListAdapter(viewModel) }
 
     override fun setup() {
+        setupMainFlowWindowVisibility()
         handleOnBackPressed()
         initAdapters()
         collectEffect()
@@ -55,7 +56,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     }
 
     private fun navigateToProductDetails(productId: Long) {
-        val action = WishListFragmentDirections.actionWishListFragmentToProductDetails(productId)
+        val action = WishListFragmentDirections.actionGlobalProductDetailsFragment(productId)
         findNavController().navigate(action)
     }
     private fun navigateToMarkets() {
