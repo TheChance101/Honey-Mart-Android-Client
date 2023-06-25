@@ -57,8 +57,7 @@ dependencies {
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
     //swipe
-    implementation ("it.xabaras.android:recyclerview-swipedecorator:1.4")
+    implementation(Dependencies.swipeDependency)
     // coil
-    implementation ("io.coil-kt:coil:2.2.2")
-
+    implementation(Dependencies.coilDependency)
 }
