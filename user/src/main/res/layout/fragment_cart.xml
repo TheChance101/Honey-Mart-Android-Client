@@ -133,7 +133,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="It's a carttastrophe! Let's fix it by adding items that catch your eye!"
-                android:textColor="@color/black_37" />
+                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_discover_markets"
