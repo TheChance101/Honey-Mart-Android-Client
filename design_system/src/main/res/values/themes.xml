@@ -29,22 +29,24 @@
 
     <!-- Cart Card Style-->
     <style name="CartCardView" parent="Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut
+        </item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="strokeWidth">@dimen/stroke_zero</item>
     </style>
-        <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
-            <item name="cornerFamily">rounded</item>
-            <item name="cornerSizeTopRight">@dimen/radius_16</item>
-            <item name="cornerSizeTopLeft">@dimen/radius_16</item>
-            <item name="cornerSizeBottomRight">0dp</item>
-            <item name="cornerSizeBottomLeft">0dp</item>
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_16</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_16</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
-    <!-- ButtomSheet Styles -->
+
+    <!-- Bottom Sheet Styles -->
     <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
 
     <!--Bottom Navigation-->
     <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
@@ -53,7 +55,6 @@
         <item name="android:colorPressedHighlight">@color/white</item>
         <item name="itemRippleColor">@color/primary_100</item>
         <item name="itemActiveIndicatorStyle">@style/App.Custom.Indicator</item>
-
     </style>
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
@@ -141,6 +142,10 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H2.SameColor">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- Heading 3 -->
     <style name="Theme.HoneyMart.Text.H3">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -185,6 +190,10 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H4.SameColor">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- Heading 5 -->
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -207,6 +216,10 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H5.SameColor">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- Heading 6 -->
     <style name="Theme.HoneyMart.Text.H6">
         <item name="android:textFontWeight" tools:ignore="NewApi">400</item>
@@ -227,6 +240,10 @@
 
     <style name="Theme.HoneyMart.Text.H6.DarkIntense">
         <item name="android:textColor">@color/black_37</item>
+    </style>
+
+    <style name="Theme.HoneyMart.Text.H6.SameColor">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- Card Styles-->
@@ -298,7 +315,5 @@
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
         <item name="errorIconTint">@color/error</item>
     </style>
-
-
 
 </resources>
