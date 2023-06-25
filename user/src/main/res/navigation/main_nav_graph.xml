@@ -3,120 +3,174 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/marketsFragment">
+    app:startDestination="@id/markets_graph">
+    <navigation
+        android:id="@+id/markets_graph"
+        app:startDestination="@id/marketsFragment">
+        <fragment
+            android:id="@+id/marketsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
+            android:label="MarketsFragment"
+            tools:layout="@layout/fragment_markets">
+            <action
+                android:id="@+id/action_marketsFragment_to_categoriesFragment"
+                app:destination="@id/categoriesFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/slide_in_left"
+                app:popExitAnim="@android:anim/slide_out_right"
+                app:popUpTo="@id/marketsFragment" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/marketsFragment"
-        android:name="org.the_chance.honeymart.ui.feature.market.MarketsFragment"
-        android:label="MarketsFragment"
-        tools:layout="@layout/fragment_markets">
-        <action
-            android:id="@+id/action_marketsFragment_to_categoriesFragment"
-            app:destination="@id/categoriesFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/marketsFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        <fragment
+            android:id="@+id/categoriesFragment"
+            android:name="org.the_chance.honeymart.ui.feature.category.CategoriesFragment"
+            android:label="fragment_categories"
+            tools:layout="@layout/fragment_categories">
+            <action
+                android:id="@+id/action_categoriesFragment_to_productsFragment"
+                app:destination="@id/productsFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/slide_in_left"
+                app:popExitAnim="@android:anim/slide_out_right"
+                app:popUpTo="@id/categoriesFragment" />
+            <argument
+                android:name="marketId"
+                app:argType="long" />
 
-    <fragment
-        android:id="@+id/categoriesFragment"
-        android:name="org.the_chance.honeymart.ui.feature.category.CategoriesFragment"
-        android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories">
+        </fragment>
+
+        <fragment
+            android:id="@+id/productsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.product.ProductsFragment"
+            android:label="fragment_products"
+            tools:layout="@layout/fragment_products">
+            <argument
+                android:name="categoryId"
+                app:argType="long" />
+            <argument
+                android:name="marketId"
+                app:argType="long" />
+            <argument
+                android:name="position"
+                app:argType="integer" />
+            <action
+                android:id="@+id/action_productsFragment_to_user_nav_graph"
+                app:destination="@id/user_nav_graph"
+                app:exitAnim="@android:anim/slide_out_right">
+                <argument
+                    android:name="AuthData"
+                    app:argType="org.the_chance.honeymart.util.AuthData" />
+            </action>
+            <action
+                android:id="@+id/action_productsFragment_to_productDetails"
+                app:destination="@id/productDetails"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/slide_in_left"
+                app:popExitAnim="@android:anim/slide_out_right"
+                app:popUpTo="@id/productsFragment" />
+        </fragment>
         <action
-            android:id="@+id/action_categoriesFragment_to_productsFragment"
+            android:id="@+id/action_global_productsFragment"
             app:destination="@id/productsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="false"
             app:popUpTo="@id/categoriesFragment"
-            app:popUpToInclusive="true" />
-        <argument
-            android:name="marketId"
-            app:argType="long" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/productsFragment"
-        android:name="org.the_chance.honeymart.ui.feature.product.ProductsFragment"
-        android:label="fragment_products"
-        tools:layout="@layout/fragment_products">
-        <argument
-            android:name="categoryId"
-            app:argType="long" />
-        <argument
-            android:name="marketId"
-            app:argType="long" />
-        <argument
-            android:name="position"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_productsFragment_to_user_nav_graph"
-            app:destination="@id/user_nav_graph"
-            app:exitAnim="@android:anim/slide_out_right">
+            app:popUpToInclusive="false">
             <argument
-                android:name="AuthData"
-                app:argType="org.the_chance.honeymart.util.AuthData" />
-        </action>
-        <action
-            android:id="@+id/action_productsFragment_to_productDetails"
-            app:destination="@id/productDetails"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/productsFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/cartFragment"
-        android:name="org.the_chance.honeymart.ui.feature.cart.CartFragment"
-        android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart">
-        <action
-            android:id="@+id/action_cartFragment_to_marketsFragment"
-            app:destination="@id/marketsFragment" />
-        <action
-            android:id="@+id/action_cartFragment_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
-        <action
-            android:id="@+id/action_cartFragment_to_cartBottomFragment"
-            app:destination="@id/cartBottomFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/ordersFragment"
-        android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
-        android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders">
-        <action
-            android:id="@+id/action_ordersFragment_to_marketsFragment"
-            app:destination="@id/marketsFragment"
-            app:popUpTo="@id/marketsFragment" />
-        <action
-            android:id="@+id/action_ordersFragment_to_user_nav_graph"
-            app:destination="@id/user_nav_graph">
+                android:name="categoryId"
+                app:argType="long" />
             <argument
-                android:name="AuthData"
-                app:argType="org.the_chance.honeymart.util.AuthData" />
+                android:name="marketId"
+                app:argType="long" />
+            <argument
+                android:name="position"
+                app:argType="integer" />
         </action>
-        <action
-            android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
-            app:destination="@id/orderDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/wishListFragment"
-        android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
-        android:label="WishListFragment">
-        <action
-            android:id="@+id/action_wishListFragment_to_marketsFragment"
-            app:destination="@id/marketsFragment"
-            app:popUpTo="@id/marketsFragment" />
-    </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/cart_graph"
+        app:startDestination="@id/cartFragment">
+        <fragment
+            android:id="@+id/cartFragment"
+            android:name="org.the_chance.honeymart.ui.feature.cart.CartFragment"
+            android:label="fragment_cart"
+            tools:layout="@layout/fragment_cart">
+            <action
+                android:id="@+id/action_cartFragment_to_marketsFragment"
+                app:destination="@id/markets_graph"
+                app:popUpTo="@id/markets_graph" />
+            <action
+                android:id="@+id/action_cartFragment_to_ordersFragment"
+                app:destination="@id/ordersFragment"
+                app:popUpTo="@id/marketsFragment" />
+            <action
+                android:id="@+id/action_cartFragment_to_cartBottomFragment"
+                app:destination="@id/cartBottomFragment"
+                app:popUpTo="@id/cartFragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <dialog
+            android:id="@+id/cartBottomFragment"
+            android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"
+            android:label="CartBottomFragment"
+            tools:layout="@layout/bottom_sheet_complete_cart_order">
+            <action
+                android:id="@+id/action_cartBottomFragment_to_ordersFragment"
+                app:destination="@id/ordersFragment"
+                app:popUpTo="@id/marketsFragment"
+                app:popUpToInclusive="true" />
+        </dialog>
+    </navigation>
+    <navigation
+        android:id="@+id/orders_graph"
+        app:startDestination="@id/ordersFragment">
+        <fragment
+            android:id="@+id/ordersFragment"
+            android:name="org.the_chance.honeymart.ui.feature.orders.OrdersFragment"
+            android:label="fragment_orders"
+            tools:layout="@layout/fragment_orders">
+            <action
+                android:id="@+id/action_ordersFragment_to_marketsFragment"
+                app:destination="@id/markets_graph"
+                app:popUpTo="@id/markets_graph" />
+            <action
+                android:id="@+id/action_ordersFragment_to_user_nav_graph"
+                app:destination="@id/user_nav_graph">
+                <argument
+                    android:name="AuthData"
+                    app:argType="org.the_chance.honeymart.util.AuthData" />
+            </action>
+            <action
+                android:id="@+id/action_ordersFragment_to_orderDetailsFragment"
+                app:destination="@id/orderDetailsFragment"
+                app:popUpTo="@id/ordersFragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/orderDetailsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
+            android:label="OrderDetailsFragment">
+            <argument
+                android:name="orderId"
+                app:argType="long" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/wish_list_graph"
+        app:startDestination="@id/wishListFragment">
+        <fragment
+            android:id="@+id/wishListFragment"
+            android:name="org.the_chance.honeymart.ui.feature.wishlist.WishListFragment"
+            android:label="WishListFragment">
+            <action
+                android:id="@+id/action_wishListFragment_to_marketsFragment"
+                app:destination="@id/markets_graph"
+                app:popUpTo="@id/markets_graph"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
     <navigation
         android:id="@+id/user_nav_graph"
         app:startDestination="@id/authFragment">
@@ -155,12 +209,28 @@
             <action
                 android:id="@+id/action_loginFragment_to_productsFragment"
                 app:destination="@id/productsFragment"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/categoriesFragment"
-                app:popUpToInclusive="true" />
+                app:popUpToInclusive="true">
+                <argument
+                    android:name="categoryId"
+                    app:argType="long" />
+                <argument
+                    android:name="marketId"
+                    app:argType="long" />
+                <argument
+                    android:name="position"
+                    app:argType="integer" />
+            </action>
             <action
                 android:id="@+id/action_loginFragment_to_productDetails"
                 app:destination="@id/productDetails"
-                app:popUpTo="@id/productDetails" />
+                app:launchSingleTop="false"
+                app:popUpTo="@id/productDetails">
+                <argument
+                    android:name="productId"
+                    app:argType="long" />
+            </action>
             <argument
                 android:name="authData"
                 app:argType="org.the_chance.honeymart.util.AuthData" />
@@ -196,31 +266,30 @@
             <action
                 android:id="@+id/action_signupConfirmPasswordFragment_to_productDetails"
                 app:destination="@id/productDetails"
-                app:popUpTo="@id/productDetails" />
+                app:launchSingleTop="false"
+                app:popUpTo="@id/productDetails">
+                <argument
+                    android:name="productId"
+                    app:argType="long" />
+            </action>
             <action
                 android:id="@+id/action_signupConfirmPasswordFragment_to_productsFragment"
                 app:destination="@id/productsFragment"
+                app:launchSingleTop="false"
                 app:popUpTo="@id/categoriesFragment"
-                app:popUpToInclusive="true" />
+                app:popUpToInclusive="true">
+                <argument
+                    android:name="categoryId"
+                    app:argType="long" />
+                <argument
+                    android:name="marketId"
+                    app:argType="long" />
+                <argument
+                    android:name="position"
+                    app:argType="integer" />
+            </action>
         </fragment>
     </navigation>
-    <fragment
-        android:id="@+id/orderDetailsFragment"
-        android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
-        android:label="OrderDetailsFragment">
-        <argument
-            android:name="orderId"
-            app:argType="long" />
-    </fragment>
-    <dialog
-        android:id="@+id/cartBottomFragment"
-        android:name="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment"
-        android:label="CartBottomFragment"
-        tools:layout="@layout/bottom_sheet_complete_cart_order">
-        <action
-            android:id="@+id/action_cartBottomFragment_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
-    </dialog>
     <fragment
         android:id="@+id/productDetails"
         android:name="org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragment"
@@ -241,5 +310,15 @@
                 app:argType="org.the_chance.honeymart.util.AuthData" />
         </action>
     </fragment>
+    <action
+        android:id="@+id/action_global_productDetailsFragment"
+        app:destination="@id/productDetails"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/productsFragment"
+        app:popUpToInclusive="false">
+        <argument
+            android:name="productId"
+            app:argType="long" />
+    </action>
 
 </navigation>

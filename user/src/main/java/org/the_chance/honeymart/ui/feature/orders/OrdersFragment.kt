@@ -12,7 +12,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
 
@@ -52,7 +54,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                3
+                                Constant.ORDER_STATE_3
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
@@ -63,7 +65,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
@@ -74,7 +76,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
@@ -117,7 +119,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.marketsFragment)
+            showExitAlertDialog()
         }
     }
 
@@ -144,8 +146,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun navigateToMarkets() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.markets_graph)
     }
 
     private fun navigateToOrdersDetails(orderId: Long) {

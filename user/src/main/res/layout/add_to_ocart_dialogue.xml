@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_cancel_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/radius_16"
+    app:strokeWidth="@dimen/stroke_zero">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/spacing_16"
+        android:paddingVertical="@dimen/spacing_8">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ic_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_warning" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_dialog"
+            style="@style/Theme.HoneyMart.Text.H4.DarkModerate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_32"
+            android:gravity="center"
+            android:text="@string/add_from_different_cart_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ic_warning" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_sure_delete_cart"
+            style="@style/Theme.HoneyMart.Text.H5.Light"
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/spacing_32"
+            android:background="@drawable/button_background"
+            android:text="@string/yes_i_m_sure"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_dialog" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancel_delete_cart"
+            style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:layout_marginVertical="@dimen/spacing_32"
+            android:background="@drawable/button_white_background"
+            android:backgroundTint="@color/white_300"
+            android:text="@string/cancel"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_dialog" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
