@@ -41,7 +41,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     }
 
     private fun navigateToProductsDetails(orderId: Long) {
-        val action = OrderDetailsFragmentDirections.actionOrderDetailsFragmentToProductDetails(orderId)
+        val action = OrderDetailsFragmentDirections.actionGlobalProductDetailsFragment(orderId)
         findNavController().navigate(action)
     }
 }

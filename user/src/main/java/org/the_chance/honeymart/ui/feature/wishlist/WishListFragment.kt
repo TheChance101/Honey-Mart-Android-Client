@@ -55,7 +55,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     }
 
     private fun navigateToProductDetails(productId: Long) {
-        val action = WishListFragmentDirections.actionWishListFragmentToProductDetails(productId)
+        val action = WishListFragmentDirections.actionGlobalProductDetailsFragment(productId)
         findNavController().navigate(action)
     }
     private fun navigateToMarkets() {
