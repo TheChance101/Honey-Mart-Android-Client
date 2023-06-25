@@ -21,9 +21,9 @@
             android:layout_height="@dimen/spacing_zero"
             android:scaleType="centerCrop"
             app:hideIfLoading="@{viewModel.state.loading}"
-            app:loadImage="@{viewModel.state.image}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
             app:layout_constraintTop_toTopOf="parent"
+            app:loadImage="@{viewModel.state.image}"
             tools:background="@drawable/image_test" />
 
         <com.google.android.material.card.MaterialCardView
@@ -31,14 +31,14 @@
             android:layout_width="@dimen/spacing_32"
             android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
-            tools:backgroundTint="@color/white"
-            app:hideIfLoading="@{viewModel.state.loading}"
             android:onClick="@{() -> viewModel.onClickFavIcon(viewModel.state.product.productId)}"
             app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeWidth="@dimen/stroke_zero">
+            app:strokeWidth="@dimen/stroke_zero"
+            tools:backgroundTint="@color/white">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
@@ -70,15 +70,19 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product_images"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/spacing_12"
-            app:items="@{viewModel.state.smallImages}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
+            app:recyclerItemCount="@{3}"
+            app:recyclerItemsByCount="@{viewModel.state.smallImages}"
+            tools:itemCount="3"
             tools:listitem="@layout/item_product_image" />
 
 
@@ -118,7 +122,7 @@
                 android:layout_marginVertical="@dimen/spacing_4"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
-                app:formattedPrice="@{viewModel.state.product.productPrice}"
+                app:FormatCurrency="@{viewModel.state.product.productPrice}"
                 tools:text="10,000,000$" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -199,10 +203,10 @@
             android:id="@+id/add_to_cart_loading"
             android:layout_width="@dimen/add_to_cart_lottie_loading"
             android:layout_height="@dimen/add_to_cart_lottie_loading"
+            android:layout_marginBottom="@dimen/spacing_4"
             app:layout_constraintBottom_toTopOf="@id/button_add_to_cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="@dimen/spacing_4"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading"
@@ -214,12 +218,12 @@
             android:layout_width="@dimen/spacing_zero"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_16"
+            android:layout_marginBottom="@dimen/spacing_32"
             android:background="@drawable/button_background"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/spacing_32"
-            app:disableIfLoading="@{viewModel.state.isAddToCartLoading}"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             android:text="@string/add_to_cart"
+            app:disableIfLoading="@{viewModel.state.isAddToCartLoading}"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:icon="@drawable/icon_add_to_cart"

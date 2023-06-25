@@ -14,5 +14,6 @@ internal fun CartProductDto.toCartProductsEntity() = CartProductsEntity(
     id = productId,
     name = name,
     count = count,
-    price = price
+    price = price,
+    images = images
 )

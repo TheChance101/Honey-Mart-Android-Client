@@ -103,7 +103,7 @@ fun Fragment.showSnackBar(
     val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
 
     val bottomNavBar =
-        requireActivity().findViewById<BottomNavigationView>(org.the_chance.user.R.id.bottomNavigationView)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
     snackBar.anchorView = bottomNavBar
 
     if (actionText != null && action != null) {

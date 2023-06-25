@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.user.R
@@ -53,7 +54,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                3
+                                Constant.ORDER_STATE_3
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
@@ -64,7 +65,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
@@ -75,7 +76,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)

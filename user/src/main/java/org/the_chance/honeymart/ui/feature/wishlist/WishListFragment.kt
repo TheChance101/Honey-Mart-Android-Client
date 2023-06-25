@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.honeymart.util.showSnackBar
@@ -44,7 +45,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun onEffect(effect: WishListUiEffect) {
         when (effect) {
-            is WishListUiEffect.ClickProductEffect -> TODO()
+            is WishListUiEffect.ClickProductEffect -> navigateToProductDetails(effect.productId)
             is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
             is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
             WishListUiEffect.DeleteProductFromWishListEffect -> {
@@ -53,6 +54,10 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
         }
     }
 
+    private fun navigateToProductDetails(productId: Long) {
+        val action = WishListFragmentDirections.actionWishListFragmentToProductDetails(productId)
+        findNavController().navigate(action)
+    }
     private fun navigateToMarkets() {
         val action = WishListFragmentDirections.actionWishListFragmentToMarketsFragment()
         findNavController().navigate(action)

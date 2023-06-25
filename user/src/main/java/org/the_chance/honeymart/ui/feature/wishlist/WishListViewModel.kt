@@ -78,8 +78,6 @@ class WishListViewModel @javax.inject.Inject constructor(
         _state.update { it.copy(isLoading = false, isError = true) }
     }
 
-    override fun onClickProduct(productId: Long) {}
-
     fun onClickDiscoverButton() {
         viewModelScope.launch {
             _effect.emit(EventHandler(WishListUiEffect.ClickDiscoverEffect))
@@ -88,5 +86,17 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     override fun onClickFavoriteIcon(productId: Long) {
         deleteProductFromWishList(productId)
+    }
+
+    override fun onClickProduct(productId: Long) {
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(
+                    WishListUiEffect.ClickProductEffect(
+                        productId
+                    )
+                )
+            )
+        }
     }
 }

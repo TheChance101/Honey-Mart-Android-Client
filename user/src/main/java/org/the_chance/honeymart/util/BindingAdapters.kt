@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.util
 
+import android.icu.text.DecimalFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +23,13 @@ import org.the_chance.ui.BaseAdapter
 @BindingAdapter(value = ["app:items"])
 fun <T> setRecyclerItems(view: RecyclerView, items: List<T>?) {
     (view.adapter as BaseAdapter<T>?)?.setItems(items ?: emptyList())
+}
+
+@BindingAdapter(value = ["app:recyclerItemsByCount", "app:recyclerItemCount"])
+fun <T> setRecyclerItemsByCount(view: RecyclerView, items: List<T>?, count: Int) {
+    (view.adapter as BaseAdapter<T>?)?.setItems(
+        items?.subList(0, items.size.coerceAtMost(count)) ?: emptyList()
+    )
 }
 
 @BindingAdapter("app:showIfTrue")
@@ -135,7 +143,8 @@ fun showState(textView: TextView, state: Int) {
     when (state) {
         1 -> textView.text = context.getString(R.string.Processing)
         2 -> textView.text = context.getString(R.string.Done)
-        3 -> textView.text = context.getString(R.string.cancel)
+        3 -> textView.text = context.getString(R.string.canceled)
+        4 -> textView.text = context.getString(R.string.deleted)
     }
 }
 
@@ -288,4 +297,11 @@ fun bindImage(image: ImageView, imageURL: String?) {
             crossfade(1000)
         }
     }
+}
+
+@BindingAdapter("FormatCurrency")
+fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    val formattedAmount = decimalFormat.format(amount)
+    text = formattedAmount
 }
