@@ -57,12 +57,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigation(navController: NavController) {
         val navView = binding.bottomNavigationView
-        setOf(
+        val destinations = setOf(
             R.id.marketsFragment,
             R.id.cartFragment,
             R.id.ordersFragment,
             R.id.wishListFragment
         )
+
+        navView.setOnNavigationItemReselectedListener { item ->
+            when (item.itemId) {
+                in destinations ->{
+                    navController.popBackStack(navController.graph.startDestinationId,false)
+                }
+            }
+        }
 
         navView.setupWithNavController(navController)
     }

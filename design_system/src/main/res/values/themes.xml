@@ -270,4 +270,8 @@
         <item name="errorIconTint">@color/error</item>
     </style>
 
+    <style name="alertDialogCustomStyle">
+        <item name="android:background">@color/white_100</item>
+    </style>
+
 </resources>
