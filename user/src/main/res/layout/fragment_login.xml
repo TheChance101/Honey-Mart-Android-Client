@@ -121,6 +121,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_field_input_password" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/white_300"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/button_continue"
+                app:layout_constraintEnd_toEndOf="@id/button_continue"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toStartOf="@id/button_continue"
+                app:layout_constraintTop_toTopOf="@id/button_continue"
+                app:showIfTrue="@{viewModel.state.isLoading}" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_dont_have_account"
                 style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
@@ -152,18 +165,6 @@
                 app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
                 app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/loading"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loading"
-                app:showIfTrue="@{viewModel.state.isLoading}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
