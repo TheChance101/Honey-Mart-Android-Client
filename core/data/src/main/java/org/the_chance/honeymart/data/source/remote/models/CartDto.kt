@@ -18,6 +18,6 @@ data class CartProductDto(
     val price: Double? = null,
     @SerializedName("count")
     val count: Int? = null,
-    @SerializedName("imageUrl")
-    val imageUrl: String? = null,
+    @SerializedName("images")
+    val images: List<String>? = null,
 )

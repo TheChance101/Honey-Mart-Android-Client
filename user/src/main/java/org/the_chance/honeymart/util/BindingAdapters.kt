@@ -143,7 +143,8 @@ fun showState(textView: TextView, state: Int) {
     when (state) {
         1 -> textView.text = context.getString(R.string.Processing)
         2 -> textView.text = context.getString(R.string.Done)
-        3 -> textView.text = context.getString(R.string.cancel)
+        3 -> textView.text = context.getString(R.string.canceled)
+        4 -> textView.text = context.getString(R.string.deleted)
     }
 }
 
