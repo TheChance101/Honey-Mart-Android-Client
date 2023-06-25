@@ -48,7 +48,7 @@
                 tools:srcCompat="@drawable/icon_favorite_selected" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/card_back_arrow"
             android:layout_width="@dimen/spacing_32"
             android:layout_height="@dimen/spacing_32"
@@ -56,16 +56,10 @@
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_back_arrow"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
             app:strokeWidth="@dimen/stroke_zero">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/spacing_8"
-                app:srcCompat="@drawable/icon_back_arrow" />
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.imageview.ShapeableImageView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product_images"
@@ -240,7 +234,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/text_product_name"
             app:layout_constraintTop_toBottomOf="@+id/recycler_product_images"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_minus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

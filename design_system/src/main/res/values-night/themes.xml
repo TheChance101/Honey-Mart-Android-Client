@@ -144,7 +144,7 @@
     </style>
 
     <style name="Theme.HoneyMart.Text.H6.Light">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/dark_text_87</item>
     </style>
 
     <style name="Theme.HoneyMart.Text.H6.DarkSubtle">

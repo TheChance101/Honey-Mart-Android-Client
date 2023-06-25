@@ -51,7 +51,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_order_price"
-                    style="@style/Theme.HoneyMart.Text.H6.DarkSubtle"
+                    style="@style/Theme.HoneyMart.Text.H6.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='@{String.valueOf(item.price) + "$"}'
@@ -61,7 +61,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_order_description"
-                    style="@style/Theme.HoneyMart.Text.H6.DarkSubtle"
+                    style="@style/Theme.HoneyMart.Text.H6.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_8"

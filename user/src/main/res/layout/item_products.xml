@@ -39,7 +39,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_name"
-                style="@style/Theme.HoneyMart.Text.H4.DarkSubtle"
+                style="@style/Theme.HoneyMart.Text.H4.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
@@ -51,7 +51,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
-                style="@style/Theme.HoneyMart.Text.H4.DarkSubtle"
+                style="@style/Theme.HoneyMart.Text.H4.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
@@ -63,7 +63,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_description"
-                style="@style/Theme.HoneyMart.Text.H6.DarkSubtle"
+                style="@style/Theme.HoneyMart.Text.H6.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
