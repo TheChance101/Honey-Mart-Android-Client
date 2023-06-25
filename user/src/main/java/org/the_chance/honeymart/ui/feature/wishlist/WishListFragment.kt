@@ -20,6 +20,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     private val wishListAdapter: WishListAdapter by lazy { WishListAdapter(viewModel) }
 
     override fun setup() {
+        setupMainFlowWindowVisibility()
         handleOnBackPressed()
         initAdapters()
         collectEffect()

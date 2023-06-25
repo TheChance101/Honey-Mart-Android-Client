@@ -64,6 +64,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     }
 
     private fun navigateToProductDetails(productId: Long) {
+        log(productId)
         val action =
             ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)
