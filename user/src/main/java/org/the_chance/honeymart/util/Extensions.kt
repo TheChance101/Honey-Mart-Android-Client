@@ -27,7 +27,7 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
     fragment: Fragment,
     appBarLayout: AppBarLayout,
 ) {
-    val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_8)
+    val threshold = context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_8)
     val window: Window = fragment.requireActivity().window
 
     fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
@@ -135,15 +135,11 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         snackBar.anchorView = bottomNavBar
     val layoutParams = snackBar.view.layoutParams as ViewGroup.MarginLayoutParams
-    val horizontalMargin = resources.getDimensionPixelSize(R.dimen.spacing_16)
+    val horizontalMargin = resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_16)
     layoutParams.setMargins(horizontalMargin, layoutParams.topMargin, horizontalMargin, layoutParams.bottomMargin)
     snackBar.view.layoutParams = layoutParams
-
-    val bottomNavBar =
-        requireActivity().findViewById<BottomNavigationView>(org.the_chance.user.R.id.bottomNavigationView)
-
     val buttonAddToCart =
-        requireActivity().findViewById<Button>(org.the_chance.user.R.id.button_add_to_cart)
+        requireActivity().findViewById<Button>(R.id.button_add_to_cart)
 
     if (bottomNavBar.visibility == View.VISIBLE) {
         snackBar.anchorView = bottomNavBar
