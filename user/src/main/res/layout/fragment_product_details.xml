@@ -186,7 +186,6 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:ellipsize="end"
             android:maxLines="4"
-            android:onClick="@{() -> viewModel.decreaseProductCount()}"
             android:text="@{viewModel.state.product.productDescription}"
             android:textAlignment="textStart"
             app:hideIfLoading="@{viewModel.state.loading}"
