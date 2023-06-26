@@ -67,10 +67,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
+                android:paddingEnd="@dimen/spacing_8"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text="@{item.productDescription}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tool:text="Primary Text" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tool:text="Secondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary Text"
+                tool:ignore="RtlSymmetry" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"

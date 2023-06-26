@@ -6,7 +6,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.login.LoginDialog
-import org.the_chance.honeymart.ui.feature.login.LoginFragmentDirections
 import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
 import org.the_chance.honeymart.util.AuthData
@@ -22,7 +21,8 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
         collectAction()
-        setupUserFlowWindowVisibility()
+//        hideAppBarAndBottomNavigationInUserFlow()
+        hideAppBarAndBottomNavigation(true , true , false)
     }
 
     private fun collectAction() {
