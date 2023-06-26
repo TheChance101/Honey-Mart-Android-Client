@@ -18,7 +18,8 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
     override fun setup() {
 
         collectAction()
-        setupUserFlowWindowVisibility()
+//        hideAppBarAndBottomNavigationInUserFlow()
+        hideAppBarAndBottomNavigation(true , true , false)
         viewModel.saveArgs(args)
 
     }

@@ -28,13 +28,13 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //showExitAlertDialog()
             findNavController().navigate(R.id.markets_graph)
         }
     }
 
     private fun initAdapters() {
         binding.recyclerWishList.adapter = wishListAdapter
+        setupScrollListenerForRecyclerView(binding.recyclerWishList)
     }
 
     private fun collectEffect() {
@@ -60,6 +60,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
         val action = WishListFragmentDirections.actionGlobalProductDetailsFragment(productId)
         findNavController().navigate(action)
     }
+
     private fun navigateToMarkets() {
         val action = WishListFragmentDirections.actionWishListFragmentToMarketsFragment()
         findNavController().navigate(action)
