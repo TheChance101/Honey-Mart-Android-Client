@@ -18,6 +18,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
 
     override fun setup() {
+        setupMainFlowWindowVisibility()
         initAdapters()
         collectEffect()
     }

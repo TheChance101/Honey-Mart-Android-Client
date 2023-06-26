@@ -12,6 +12,4 @@ sealed class AuthData : Serializable {
         val position: Int,
         val categoryId: Long,
     ) : AuthData(), Serializable
-
-    object Order : AuthData()
 }
