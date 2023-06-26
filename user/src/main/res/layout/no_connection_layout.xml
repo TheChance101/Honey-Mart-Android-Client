@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="138dp"
         android:layout_marginHorizontal="@dimen/spacing_32"
-        app:srcCompat="@drawable/no_connection_placeholder_image" />
+        app:srcCompat="@drawable/no_connection_placeholder" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView"
