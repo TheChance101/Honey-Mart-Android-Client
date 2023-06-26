@@ -19,7 +19,6 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
     override fun setup() {
         initiateAdapter()
         collectEffect()
-        setupMainFlowWindowVisibility()
     }
 
     private fun initiateAdapter() {

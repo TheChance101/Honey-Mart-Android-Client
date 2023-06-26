@@ -18,9 +18,6 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
 
     override fun setup() {
-//        setupMainFlowWindowVisibility()
-        hideAppBarAndBottomNavigation(false, false, false)
-
         initAdapters()
         collectEffect()
     }

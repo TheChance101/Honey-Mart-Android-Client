@@ -21,8 +21,15 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
         collectAction()
-//        hideAppBarAndBottomNavigationInUserFlow()
-        hideAppBarAndBottomNavigation(true , true , false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )
     }
 
     private fun collectAction() {

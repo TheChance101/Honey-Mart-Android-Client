@@ -19,7 +19,6 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
     override fun setup() {
         initiateAdapter()
         collectAction()
-        setupMainFlowWindowVisibility()
         handleOnBackPressed()
     }
 

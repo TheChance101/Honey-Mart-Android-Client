@@ -27,8 +27,11 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
 
     override fun onResume() {
         super.onResume()
-        hideAppBarAndBottomNavigation(true , true , true)
-    }
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )    }
 
     private fun initiateAdapter() {
         val adapter = ProductDetailsAdapter(viewModel)
