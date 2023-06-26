@@ -83,11 +83,20 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
                 ?.let { navigateIcon ->
                     navigateIcon.visibility = View.GONE
                 }
+        }else{
+             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                ?.let { navigateIcon ->
+                    navigateIcon.visibility = View.VISIBLE
+                }
         }
 
         if (hideAppBar) {
             requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
                 toolbar.visibility = View.GONE
+            }
+        }else{
+             requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
+                toolbar.visibility = View.VISIBLE
             }
         }
     }

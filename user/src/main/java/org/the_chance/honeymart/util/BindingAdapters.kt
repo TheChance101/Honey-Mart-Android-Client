@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
@@ -201,18 +200,6 @@ fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
 }
 
-@BindingAdapter(value = ["app:imageUrl"])
-fun setImageFromUrl(view: ImageView, url: String?) {
-    url.let {
-        Glide
-            .with(view)
-            .load(url)
-            .placeholder(R.drawable.placeholder_wish_list)
-            .centerCrop()
-            .into(view)
-    }
-}
-
 @BindingAdapter("app:hideIfLoading")
 fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
@@ -294,7 +281,6 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
-
 @BindingAdapter("FormatCurrency")
 fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
