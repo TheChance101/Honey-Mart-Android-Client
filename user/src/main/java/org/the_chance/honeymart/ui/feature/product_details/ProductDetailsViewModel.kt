@@ -154,11 +154,11 @@ class ProductDetailsViewModel @Inject constructor(
                 }
             }
 
-            else -> {
-                viewModelScope.launch {
-                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
-                }
-            }
+//            else -> {
+//                viewModelScope.launch {
+//                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+//                }
+//            }
         }
     }
 
@@ -214,13 +214,14 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
-        } else {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
-                )
-            }
         }
+//        else {
+//            viewModelScope.launch {
+//                _effect.emit(
+//                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
+//                )
+//            }
+//        }
         updateFavoriteState(false)
     }
 
@@ -270,9 +271,9 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: Exception) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
-        }
+//        viewModelScope.launch {
+//            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
+//        }
         log("Delete From WishList Error : ${error.message}")
     }
 
