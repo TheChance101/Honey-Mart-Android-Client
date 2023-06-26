@@ -1,89 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment">
 
-    <data>
-
-    </data>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/product_container"
-        app:cardCornerRadius="@dimen/spacing_32"
-        style="@style/Theme.HoneyMart.Card"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="45dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+        <View
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="@dimen/spacing_16"
+            android:background="@color/black_37"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_complete_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_48"
+            android:src="@drawable/complete_cart_order"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/text_view_order_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_32"
+            android:layout_marginTop="@dimen/spacing_24"
             android:orientation="vertical"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="45dp"
-            app:layout_behavior="@string/bottom_sheet_behavior">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_complete_order">
 
-            <View
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginTop="@dimen/spacing_16"
-                android:background="@color/black_37"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_complete_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_48"
-                android:src="@drawable/complete_cart_order"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/text_view_order_complete"
+            <TextView
+                style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_32"
-                android:layout_marginTop="@dimen/spacing_24"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_complete_order">
+                android:gravity="center"
+                android:text="@string/order_complete" />
 
-                <TextView
-                    style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/order_complete" />
-
-                <TextView
-                    style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/thank_you_for_shopping_with_us" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_discover_markets"
-                style="@style/Theme.HoneyMart.Button"
+            <TextView
+                style="@style/Theme.HoneyMart.Text.H2.DarkIntense"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/spacing_16"
-                android:layout_marginVertical="@dimen/spacing_24"
-                android:backgroundTint="@color/primary_100"
-                android:text="@string/show_my_order_details"
-                app:backgroundTint="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_order_complete" />
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/thank_you_for_shopping_with_us" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_discover_markets"
+            style="@style/Theme.HoneyMart.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_16"
+            android:layout_marginVertical="@dimen/spacing_24"
+            android:backgroundTint="@color/primary_100"
+            android:text="@string/show_my_order_details"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_order_complete" />
 
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

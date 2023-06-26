@@ -11,5 +11,5 @@ class OrderDetailsAdapter(listener: OrderDetailsInteractionListener) :
 }
 
 interface OrderDetailsInteractionListener : BaseInteractionListener {
-    fun onClickProduct(productId: Long)
+    fun onClickOrder(productId: Long)
 }

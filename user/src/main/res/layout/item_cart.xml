@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
-        android:backgroundTint="@color/white"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card">
 
@@ -71,15 +70,15 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_view_minus_order"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_16"
                 android:layout_marginBottom="@dimen/spacing_16"
                 android:gravity="center_horizontal|center_vertical"
                 app:strokeWidth="0dp"
-                android:paddingVertical="@dimen/spacing_2"
                 android:onClick="@{() -> listener.onClickMinusCountProductInCart(item.productId)}"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_number_of_items">
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -103,19 +102,17 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_view_add_item"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_16"
-                android:backgroundTint="@color/primary_100"
                 app:strokeWidth="0dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingVertical="@dimen/spacing_2"
                 android:onClick="@{() -> listener.onClickAddCountProductInCart(item.productId)}"
-                android:textColor="@color/white_300"
+                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" >
-
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"

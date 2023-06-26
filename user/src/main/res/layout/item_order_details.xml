@@ -5,6 +5,10 @@
 
     <data>
         <variable
+            name="listener"
+            type="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsInteractionListener" />
+
+        <variable
             name="item"
             type="org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState" />
     </data>
@@ -18,6 +22,7 @@
             style="@style/Theme.HoneyMart.Card"
             android:layout_width="match_parent"
             android:layout_height="192dp"
+            android:onClick="@{()->listener.onClickOrder(item.id)}"
             android:layout_marginHorizontal="@dimen/spacing_4"
             android:layout_marginTop="@dimen/spacing_16"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +43,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_order_name"
-                    style="@style/Theme.HoneyMart.Text.H5"
+                    style="@style/Theme.HoneyMart.Text.H5.DarkSubtle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_8"
@@ -54,7 +59,7 @@
                     style="@style/Theme.HoneyMart.Text.H6.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{String.valueOf(item.price) + "$"}'
+                    app:FormatCurrency='@{item.price}'
                     tool:text="3000$"
                     app:layout_constraintBottom_toTopOf="@+id/text_order_description"
                     app:layout_constraintStart_toStartOf="@id/text_order_name" />

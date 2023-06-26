@@ -31,10 +31,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/product_container"
-            style="@style/Theme.HoneyMart.Card"
+            style="@style/CartCardView"
             android:layout_width="match_parent"
-            android:layout_height="103dp"
-            android:backgroundTint="@color/white"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showIfNotEmpty="@{viewModel.state.products}">
@@ -45,10 +44,11 @@
 
                 <TextView
                     android:id="@+id/PriceInDollars"
-                    style="@style/Theme.HoneyMart.Text.H3"
+                    style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:textAlignment="textEnd"
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
@@ -75,14 +75,13 @@
 
                 <TextView
                     android:id="@+id/total_price"
-                    style="@style/Theme.HoneyMart.Text.H6"
+                    style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:text="@string/total_price"
-                    android:textColor="@color/black_16"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -112,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/cart_placeholder" />
+                app:srcCompat="@drawable/placeholder_order" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_placeholder_title"
@@ -127,7 +126,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_placeholder_description"
-                style="Theme.HoneyMart.Text.H5.DarkIntense"
+                style="@style/Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_16"
@@ -135,7 +134,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="It's a carttastrophe! Let's fix it by adding items that catch your eye!"
-                android:textColor="@color/black_37" />
+                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_discover_markets"
