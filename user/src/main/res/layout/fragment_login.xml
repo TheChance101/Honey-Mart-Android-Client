@@ -116,10 +116,12 @@
                 android:layout_marginTop="@dimen/spacing_56"
                 android:background="@drawable/button_background"
                 android:onClick="@{()->viewModel.onLoginClick()}"
-                android:text="@string/log_in"
+                android:text='@{viewModel.state.loading ? "" : @string/log_in}'
+                android:enabled="@{!viewModel.state.loading}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_field_input_password" />
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_dont_have_account"
@@ -154,16 +156,17 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:layout_constraintBottom_toBottomOf="@id/button_continue"
+                app:layout_constraintEnd_toEndOf="@id/button_continue"
+                app:layout_constraintStart_toStartOf="@id/button_continue"
+                app:layout_constraintTop_toTopOf="@id/button_continue"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/loading"
                 app:showIfTrue="@{viewModel.state.isLoading}" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

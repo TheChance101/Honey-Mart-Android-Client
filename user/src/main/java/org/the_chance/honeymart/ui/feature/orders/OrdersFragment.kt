@@ -26,6 +26,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     private lateinit var touchHelper: ItemTouchHelper
 
     override fun setup() {
+        hideAppBarAndBottomNavigation(false, false, false)
         initAdapter()
         handleOnBackPressed()
         collectEffect()
