@@ -53,10 +53,6 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
                     authData.productId
                 )
             }
-
-            AuthData.Order -> {
-                LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
-            }
         }
         changeNavGraphToMain().navigate(action)
         showDialog()

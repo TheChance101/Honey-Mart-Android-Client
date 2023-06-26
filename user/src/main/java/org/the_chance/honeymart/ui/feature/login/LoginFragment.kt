@@ -52,10 +52,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     authData.productId
                 )
             }
-
-            AuthData.Order -> {
-                LoginFragmentDirections.actionLoginFragmentToOrdersFragment()
-            }
         }
         changeNavGraphToMain().navigate(action)
     }

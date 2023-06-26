@@ -3,4 +3,6 @@
     <string name="show_my_order_details">Show My Order Details</string>
     <string name="your_cart_list_is_empty">Your Cart list is empty!!</string>
     <string name="it_s_a_carttastrophe_let_s_fix_it_by_adding_items_that_catch_your_eye">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
+    <string name="no_connection_text">Oops, No connection!!1</string>
+    <string name="try_again_text">Try Again</string>
 </resources>
