@@ -93,7 +93,7 @@ class ProductViewModel @Inject constructor(
 
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoadingProduct = true) }
-        tryToDebounceExecute(
+        tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
             ::onGetProductError
@@ -177,7 +177,7 @@ class ProductViewModel @Inject constructor(
 
 
     private fun deleteProductFromWishList(productId: Long) {
-        tryToDebounceExecute(
+        tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
@@ -197,7 +197,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun addProductToWishList(productId: Long) {
-        tryToDebounceExecute(
+        tryToExecute(
             { addToWishListUseCase(productId) },
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
