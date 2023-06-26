@@ -201,18 +201,6 @@
             app:layout_constraintTop_toBottomOf="@id/card_product_price"
             tools:text="Product Description Product Description Product Description Product Description Product Description Product Description Product Description" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/add_to_cart_loading"
-            android:layout_width="@dimen/add_to_cart_lottie_loading"
-            android:layout_height="@dimen/add_to_cart_lottie_loading"
-            android:layout_marginBottom="@dimen/spacing_4"
-            app:layout_constraintBottom_toTopOf="@id/button_add_to_cart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading"
-            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add_to_cart"
@@ -222,18 +210,29 @@
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_32"
             android:background="@drawable/button_background"
+            app:loadingCartState="@{viewModel.state.isAddToCartLoading}"
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
-            android:text="@string/add_to_cart"
-            app:disableIfLoading="@{viewModel.state.isAddToCartLoading}"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
-            app:hideIfLoading="@{viewModel.state.loading}"
-            app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/spacing_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/add_to_cart_loading"
+            android:layout_width="@dimen/add_to_cart_lottie_loading"
+            android:layout_height="@dimen/add_to_cart_lottie_loading"
+            android:layout_marginBottom="@dimen/spacing_4"
+            app:layout_constraintBottom_toBottomOf="@id/button_add_to_cart"
+            app:layout_constraintEnd_toEndOf="@id/button_add_to_cart"
+            app:layout_constraintStart_toStartOf="@id/button_add_to_cart"
+            app:layout_constraintTop_toTopOf="@+id/button_add_to_cart"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"

@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -11,6 +12,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -222,12 +224,6 @@ fun setFormattedPrice(view: TextView, price: Double) {
     view.text = formattedPrice
 }
 
-@BindingAdapter("app:disableIfNoQuantity")
-fun disableIfNoQuantity(view: View, quantity: Int?) {
-    if (quantity != null) {
-        view.isEnabled = quantity > 0
-    }
-}
 
 @BindingAdapter("app:disableIfLoading")
 fun disableIfLoading(view: View, isLoading: Boolean) {
@@ -304,4 +300,21 @@ fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
     text = formattedAmount
+}
+
+@BindingAdapter(value = ["app:loadingCartState", "app:disableIfNoQuantity"])
+fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?) {
+    if (quantity != null) {
+        if (quantity > 0) {
+            button.isEnabled = !isLoading
+            button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
+            val icon = if (isLoading) null else AppCompatResources.getDrawable(
+                button.context,
+                R.drawable.icon_add_to_cart
+            )
+            button.icon = icon
+        } else {
+            button.isEnabled = false
+        }
+    }
 }
