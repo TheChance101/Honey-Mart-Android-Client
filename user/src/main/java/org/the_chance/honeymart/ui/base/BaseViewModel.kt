@@ -49,7 +49,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     }
 
 
-    protected fun <T> tryToDebounceExecute(
+    protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
         onError: (t: Exception) -> Unit,
