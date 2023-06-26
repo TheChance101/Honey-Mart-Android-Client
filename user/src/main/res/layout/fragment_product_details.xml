@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="horizontal"
+            android:paddingVertical="@dimen/spacing_2"
             android:paddingHorizontal="@dimen/spacing_12"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
