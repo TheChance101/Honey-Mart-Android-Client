@@ -68,6 +68,16 @@ object Dependencies {
         "com.google.dagger:dagger-android:${DependencyVersions.DAGGER_ANDROID}"
     }
 
+    val swipeDependency by lazy {
+        "it.xabaras.android:recyclerview-swipedecorator:${DependencyVersions.SWIPE}"
+    }
+    val coilDependency by lazy {
+        "io.coil-kt:coil:${DependencyVersions.COIL}"
+    }
+    val dateStoreDependency by lazy {
+        "androidx.datastore:datastore-preferences:${DependencyVersions.DATA_STORE}"
+    }
+
     object Classpath {
 
         val navigationClasspath by lazy {

@@ -94,6 +94,7 @@
                 android:layout_marginBottom="@dimen/spacing_16"
                 android:text='@{String.format("%.2f$", item.totalPrice)}'
                 android:textColor="@color/primary_100"
+                app:FormatCurrency="@{item.totalPrice}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/shape_background_price"
                 app:layout_constraintEnd_toEndOf="parent"

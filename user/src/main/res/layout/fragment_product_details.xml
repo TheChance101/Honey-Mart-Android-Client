@@ -63,15 +63,19 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product_images"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/spacing_12"
-            app:items="@{viewModel.state.smallImages}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guideline_horizontal"
+            app:recyclerItemCount="@{3}"
+            app:recyclerItemsByCount="@{viewModel.state.smallImages}"
+            tools:itemCount="3"
             tools:listitem="@layout/item_product_image" />
 
 
@@ -111,7 +115,7 @@
                 android:layout_marginVertical="@dimen/spacing_4"
                 android:textAlignment="center"
                 android:textColor="@color/primary_100"
-                app:formattedPrice="@{viewModel.state.product.productPrice}"
+                app:FormatCurrency="@{viewModel.state.product.productPrice}"
                 tools:text="10,000,000$" />
 
         </com.google.android.material.card.MaterialCardView>

@@ -32,6 +32,9 @@ object DependencyVersions {
     const val HILT = "2.44"
     const val DATA_BINDING = "7.1.0"
     const val DAGGER_ANDROID = "2.35.1"
+    const val SWIPE = "1.4"
+    const val COIL = "2.2.2"
+    const val DATA_STORE = "1.0.0"
 
 
     object ClasspathVersions{

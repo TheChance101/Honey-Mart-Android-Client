@@ -155,8 +155,6 @@ class ProductViewModel @Inject constructor(
                 )
             )
         }
-        log(productId.toString())
-        log(args.categoryId.toString())
     }
 
     override fun onClickFavIcon(productId: Long) {

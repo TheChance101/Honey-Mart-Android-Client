@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:layout_marginHorizontal="@dimen/spacing_4"
+        android:onClick="@{()->listener.onClickProduct(item.productId)}"
         android:layout_marginTop="@dimen/spacing_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,7 @@
                 style="@style/Theme.HoneyMart.Image.ProductImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:loadImage="@{item.productImages.get(0)}"
+                app:loadImage="@{item.productImages.size() > 0 ? item.productImages.get(0) : null}"
                 android:onClick='@{()->listener.onClickProduct(item.productId)}' />
 
 

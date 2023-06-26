@@ -18,15 +18,16 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_order_details"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/spacing_12"
             android:clipToPadding="false"
             android:paddingTop="@dimen/spacing_8"
             android:paddingBottom="@dimen/spacing_24"
             app:items="@{viewModel.state.products}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/orders_Fragment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
             tools:itemCount="6"
@@ -61,6 +62,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_info_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -71,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_16"
                     android:layout_marginTop="@dimen/spacing_8"
-                    android:text='@{String.valueOf(viewModel.state.orderDetails.totalPrice) + "$"}'
+                    app:FormatCurrency='@{viewModel.state.orderDetails.totalPrice}'
                     app:layout_constraintBottom_toTopOf="@+id/total_price_order"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

@@ -5,7 +5,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentWishListBinding
@@ -18,6 +20,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
     private val wishListAdapter: WishListAdapter by lazy { WishListAdapter(viewModel) }
 
     override fun setup() {
+        setupMainFlowWindowVisibility()
         handleOnBackPressed()
         initAdapters()
         collectEffect()
@@ -25,7 +28,8 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.marketsFragment)
+            //showExitAlertDialog()
+            findNavController().navigate(R.id.markets_graph)
         }
     }
 
@@ -43,7 +47,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
 
     private fun onEffect(effect: WishListUiEffect) {
         when (effect) {
-            is WishListUiEffect.ClickProductEffect -> TODO()
+            is WishListUiEffect.ClickProductEffect -> navigateToProductDetails(effect.productId)
             is WishListUiEffect.UnAuthorizedUserEffect -> TODO()
             is WishListUiEffect.ClickDiscoverEffect -> navigateToMarkets()
             WishListUiEffect.DeleteProductFromWishListEffect -> {
@@ -52,6 +56,10 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
         }
     }
 
+    private fun navigateToProductDetails(productId: Long) {
+        val action = WishListFragmentDirections.actionGlobalProductDetailsFragment(productId)
+        findNavController().navigate(action)
+    }
     private fun navigateToMarkets() {
         val action = WishListFragmentDirections.actionWishListFragmentToMarketsFragment()
         findNavController().navigate(action)
