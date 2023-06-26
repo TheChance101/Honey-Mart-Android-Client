@@ -128,7 +128,7 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_2"
             android:backgroundTint="@color/primary_100"
-            android:onClick="@{() -> viewModel.addProduct()}"
+            android:onClick="@{() -> viewModel.increaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
@@ -155,6 +155,27 @@
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
             tools:text="01" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_decrease_count"
+            android:layout_width="@dimen/spacing_32"
+            android:layout_height="@dimen/spacing_32"
+            android:layout_margin="@dimen/spacing_16"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> viewModel.decreaseProductCount()}"
+            app:hideIfLoading="@{viewModel.state.loading}"
+            app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
+            app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
+            app:layout_constraintTop_toTopOf="@id/card_increase_count"
+            app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+            app:strokeColor="@color/primary_100"
+            app:strokeWidth="@dimen/stroke_normal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/icon_remove_product" />
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/product_description"
@@ -165,6 +186,7 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:ellipsize="end"
             android:maxLines="4"
+            android:onClick="@{() -> viewModel.decreaseProductCount()}"
             android:text="@{viewModel.state.product.productDescription}"
             android:textAlignment="textStart"
             app:hideIfLoading="@{viewModel.state.loading}"

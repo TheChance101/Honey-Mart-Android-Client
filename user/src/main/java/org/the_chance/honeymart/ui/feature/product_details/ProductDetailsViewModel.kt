@@ -92,13 +92,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(image = url) }
     }
 
-    fun addProduct() {
+    fun increaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = currentQuantity + 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
-    fun removeProduct() {
+    fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
         _state.update { it.copy(quantity = newQuantity) }
@@ -110,7 +110,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun addProductToCart(productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = true) }
-        tryToExecute(
+        tryToExecuteDebounced(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -154,11 +154,11 @@ class ProductDetailsViewModel @Inject constructor(
                 }
             }
 
-            else -> {
-                viewModelScope.launch {
-                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
-                }
-            }
+//            else -> {
+//                viewModelScope.launch {
+//                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+//                }
+//            }
         }
     }
 
@@ -190,7 +190,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
-        tryToExecute(
+        tryToExecuteDebounced(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
@@ -214,13 +214,14 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
-        } else {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
-                )
-            }
         }
+//        else {
+//            viewModelScope.launch {
+//                _effect.emit(
+//                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
+//                )
+//            }
+//        }
         updateFavoriteState(false)
     }
 
@@ -252,7 +253,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Delete Product From WishList
 
     private fun deleteProductFromWishList(productId: Long) {
-        tryToExecute(
+        tryToExecuteDebounced(
             { deleteProductFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
@@ -270,9 +271,9 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: Exception) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
-        }
+//        viewModelScope.launch {
+//            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
+//        }
         log("Delete From WishList Error : ${error.message}")
     }
 
