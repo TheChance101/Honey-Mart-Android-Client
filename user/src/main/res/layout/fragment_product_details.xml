@@ -23,8 +23,10 @@
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:loadImage="@{viewModel.state.image}"
-            tools:background="@drawable/image_test" />
+            tools:background="@drawable/image_test"
+            tools:layout_editor_absoluteX="-74dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_wishlist"
@@ -135,7 +137,7 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_2"
             android:backgroundTint="@color/primary_100"
-            android:onClick="@{() -> viewModel.addProduct()}"
+            android:onClick="@{() -> viewModel.increaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
@@ -168,7 +170,7 @@
             android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
             android:backgroundTint="@color/white"
-            android:onClick="@{() -> viewModel.removeProduct()}"
+            android:onClick="@{() -> viewModel.decreaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"

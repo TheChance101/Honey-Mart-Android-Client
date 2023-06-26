@@ -92,13 +92,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(image = url) }
     }
 
-    fun addProduct() {
+    fun increaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = currentQuantity + 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
-    fun removeProduct() {
+    fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
         _state.update { it.copy(quantity = newQuantity) }
@@ -110,7 +110,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun addProductToCart(productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = true) }
-        tryToDebounceExecute(
+        tryToExecuteDebounced(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -190,7 +190,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
-        tryToDebounceExecute(
+        tryToExecuteDebounced(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
@@ -252,7 +252,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Delete Product From WishList
 
     private fun deleteProductFromWishList(productId: Long) {
-        tryToDebounceExecute(
+        tryToExecuteDebounced(
             { deleteProductFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
