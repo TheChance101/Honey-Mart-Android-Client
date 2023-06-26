@@ -142,9 +142,7 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
-    <style name="Theme.HoneyMart.Text.H2.SameColor">
-        <item name="android:textColor">@color/white</item>
-    </style>
+
 
     <!-- Heading 3 -->
     <style name="Theme.HoneyMart.Text.H3">
@@ -190,9 +188,7 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
-    <style name="Theme.HoneyMart.Text.H4.SameColor">
-        <item name="android:textColor">@color/white</item>
-    </style>
+
 
     <!-- Heading 5 -->
     <style name="Theme.HoneyMart.Text.H5">
@@ -216,9 +212,7 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
-    <style name="Theme.HoneyMart.Text.H5.SameColor">
-        <item name="android:textColor">@color/white</item>
-    </style>
+
 
     <!-- Heading 6 -->
     <style name="Theme.HoneyMart.Text.H6">
