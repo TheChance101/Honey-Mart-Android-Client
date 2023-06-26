@@ -2,7 +2,9 @@ package org.the_chance.honeymart.util
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -25,8 +27,7 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
     fragment: Fragment,
     appBarLayout: AppBarLayout,
 ) {
-    val threshold =
-        context.resources.getDimensionPixelSize(org.the_chance.design_system.R.dimen.spacing_8)
+    val threshold = context.resources.getDimensionPixelSize(R.dimen.spacing_8)
     val window: Window = fragment.requireActivity().window
 
     fun interpolateColor(color1: Int, color2: Int, ratio: Float): Int {
@@ -102,9 +103,22 @@ fun Fragment.showSnackBar(
     val rootView = requireView()
     val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
 
+    val layoutParams = snackBar.view.layoutParams as ViewGroup.MarginLayoutParams
+    val horizontalMargin = resources.getDimensionPixelSize(R.dimen.spacing_16)
+    layoutParams.setMargins(horizontalMargin, layoutParams.topMargin, horizontalMargin, layoutParams.bottomMargin)
+    snackBar.view.layoutParams = layoutParams
+
     val bottomNavBar =
         requireActivity().findViewById<BottomNavigationView>(org.the_chance.user.R.id.bottomNavigationView)
-    snackBar.anchorView = bottomNavBar
+
+    val buttonAddToCart =
+        requireActivity().findViewById<Button>(org.the_chance.user.R.id.button_add_to_cart)
+
+    if (bottomNavBar.visibility == View.VISIBLE) {
+        snackBar.anchorView = bottomNavBar
+    } else {
+        snackBar.anchorView = buttonAddToCart
+    }
 
     if (actionText != null && action != null) {
         snackBar.setAction(actionText) { action.invoke() }

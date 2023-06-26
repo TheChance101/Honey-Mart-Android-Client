@@ -20,7 +20,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val viewModel: LoginViewModel by viewModels()
     override fun setup() {
         collectAction()
-        setupUserFlowWindowVisibility()
+//        hideAppBarAndBottomNavigationInUserFlow()
+        hideAppBarAndBottomNavigation(true , true , false)
+
     }
 
 

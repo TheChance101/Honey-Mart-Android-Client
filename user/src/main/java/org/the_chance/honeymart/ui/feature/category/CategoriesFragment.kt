@@ -21,6 +21,7 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
         collectEffect()
         setupMainFlowWindowVisibility()
     }
+
     private fun initiateAdapter() {
         val adapter = CategoryAdapter(viewModel)
         binding.recyclerCategories.adapter = adapter
@@ -29,13 +30,14 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToProduct(it.categoryId, it.marketId,it.position) }
+            effect.getContentIfHandled()
+                ?.let { navigateToProduct(it.categoryId, it.marketId, it.position) }
         }
     }
 
-private fun navigateToProduct(categoryId: Long, marketId: Long, position: Int) {
-    val action = CategoriesFragmentDirections
-        .actionCategoriesFragmentToProductsFragment(categoryId, marketId, position)
-    findNavController().navigate(action)
-}
+    private fun navigateToProduct(categoryId: Long, marketId: Long, position: Int) {
+        val action = CategoriesFragmentDirections
+            .actionCategoriesFragmentToProductsFragment(categoryId, marketId, position)
+        findNavController().navigate(action)
+    }
 }
