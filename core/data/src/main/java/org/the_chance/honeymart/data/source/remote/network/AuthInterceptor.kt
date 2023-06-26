@@ -12,13 +12,12 @@ class AuthInterceptor @Inject constructor(
     private val dataStorePref: AuthDataStorePref
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val testToken =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQGMxZmNhMmEiLCJST0xFX1RZUEUiOiJOb3JtYWxVc2VyIiwiaXNzIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDJjNzY4YWRhIiwiZXhwIjoxNjg3NjIwMzgwfQ.8o1KI5lmBQAlzBdmeyWppM5wAvQaJKamswrlLLnia6E"
+
         val token = dataStorePref.getToken()
         val newRequest = chain
             .request()
             .newBuilder()
-            .addHeader(AUTHORIZATION, "Bearer $testToken")
+            .addHeader(AUTHORIZATION, "Bearer $token")
             .build()
         return chain.proceed(newRequest)
     }
