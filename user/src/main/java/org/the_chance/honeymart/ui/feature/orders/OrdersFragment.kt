@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
+import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -48,30 +49,25 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                 val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
-                        showAlertOrderDialog() {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                3
+                                Constant.ORDER_STATE_3
                             )
                         }
+                        ordersAdapter.notifyItemChanged(position)
+
                     }
 
-                    OrderStates.DONE -> {
-                        showAlertOrderDialog() {
+                    OrderStates.DONE, OrderStates.CANCELED -> {
+                        showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
-                    }
+                        ordersAdapter.notifyItemChanged(position)
 
-                    OrderStates.CANCELED -> {
-                        showAlertOrderDialog() {
-                            viewModel.updateOrders(
-                                position.toLong(),
-                                4
-                            )
-                        }
                     }
                 }
             }
@@ -87,12 +83,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun showAlertOrderDialog(execute: () -> Unit) {
-//        val customView =
-//            LayoutInflater.from(requireContext()).inflate(R.layout.layout_order_dialog, null)
         val dialog = Dialog(requireContext())
-            dialog.setContentView(R.layout.layout_order_dialog)
-            dialog.setCancelable(false)
-            dialog.show()
+        dialog.setContentView(R.layout.layout_order_dialog)
+        dialog.setCancelable(false)
+        dialog.show()
         val buttonSure = dialog.findViewById<Button>(R.id.button_sure)
         val buttonCancel = dialog.findViewById<Button>(R.id.button_cancel)
 
@@ -111,10 +105,10 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
 
-
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.marketsFragment)
+            //showExitAlertDialog()
+            findNavController().navigate(R.id.markets_graph)
         }
     }
 
@@ -126,9 +120,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun onEffect(effect: OrderUiEffect) {
         when (effect) {
-            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
-            is OrderUiEffect.ClickOrderEffect -> TODO()
+            is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
             OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
             OrderUiEffect.ClickDone -> attachSwipe(OrderStates.DONE)
             OrderUiEffect.ClickProcessing -> attachSwipe(OrderStates.PROCESSING)
@@ -136,13 +130,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     }
 
     private fun navigateToAuthenticate() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToUserNavGraph()
-        findNavController().navigate(action)
+        //TODO
     }
 
     private fun navigateToMarkets() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.markets_graph)
     }
 
     private fun navigateToOrdersDetails(orderId: Long) {

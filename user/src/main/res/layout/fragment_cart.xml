@@ -34,6 +34,7 @@
             style="@style/Theme.HoneyMart.Card"
             android:layout_width="match_parent"
             android:layout_height="103dp"
+            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:showIfNotEmpty="@{viewModel.state.products}">
@@ -51,7 +52,7 @@
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
-                    android:text="@{String.valueOf(viewModel.state.total)+`$`}"
+                    app:FormatCurrency="@{viewModel.state.total}"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -115,25 +116,25 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_placeholder_title"
-                style="@style/Theme.HoneyMart.Text.H3"
+                style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_32"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="Your Cart list is empty!!" />
+                android:text="@string/your_cart_list_is_empty" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_placeholder_description"
-                style="@style/Theme.HoneyMart.Text.H5"
+                style="Theme.HoneyMart.Text.H5.DarkIntense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_16"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
-                android:text="It's a carttastrophe! Let's fix it by adding items that catch your eye!"
+                android:text="@string/it_s_a_carttastrophe_let_s_fix_it_by_adding_items_that_catch_your_eye"
                 android:textColor="@color/black_37" />
 
             <com.google.android.material.button.MaterialButton

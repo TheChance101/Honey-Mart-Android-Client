@@ -19,7 +19,7 @@
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"
         android:layout_marginBottom="@dimen/spacing_16"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         style="@style/Theme.HoneyMart.Card"
         android:onClick="@{()-> listener.onClickOrder(item.orderId)}">
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_4"
                 android:layout_marginTop="@dimen/spacing_4"
-                android:text="@{String.valueOf(item.state)}"
+                android:text="@{String.valueOf(item.state) + &quot;item&quot;}"
                 app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
                 app:layout_constraintStart_toEndOf="@id/ic_cart_check"
                 app:layout_constraintTop_toBottomOf="@id/text_market_name"
@@ -88,13 +88,14 @@
                 android:id="@+id/text_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tool:text="10,000,000$"
+                tool:text="10,000,00000000000$"
                 android:paddingVertical="6dp"
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:layout_marginEnd="@dimen/spacing_8"
-                android:layout_marginBottom="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:text='@{String.format("%.2f$", item.totalPrice)}'
                 android:textColor="@color/primary_100"
-                android:text='@{String.valueOf(item.totalPrice)}'
+                app:FormatCurrency="@{item.totalPrice}"
                 style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
                 android:background="@drawable/shape_background_price"
                 app:layout_constraintEnd_toEndOf="parent"

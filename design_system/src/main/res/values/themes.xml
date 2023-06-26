@@ -26,6 +26,12 @@
 
     </style>
 
+    <!-- ButtomSheet Styles -->
+    <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
     <!-- Button Styles -->
     <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
         <item name="cornerRadius">@dimen/radius_16</item>
@@ -262,6 +268,10 @@
 
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
         <item name="errorIconTint">@color/error</item>
+    </style>
+
+    <style name="alertDialogCustomStyle">
+        <item name="android:background">@color/white_100</item>
     </style>
 
 </resources>

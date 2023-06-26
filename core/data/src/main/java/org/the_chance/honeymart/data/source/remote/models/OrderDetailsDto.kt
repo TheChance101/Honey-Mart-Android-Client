@@ -28,5 +28,7 @@ data class OrderProductDto(
     @SerializedName("count")
     val count: Int? = null,
     @SerializedName("price")
-    val price: Double? = null
+    val price: Double? = null,
+    @SerializedName("images")
+    val images: List<String>? = null
 )

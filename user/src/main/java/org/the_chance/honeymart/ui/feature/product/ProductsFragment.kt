@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
@@ -41,26 +42,29 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         when (effect) {
             is ProductUiEffect.ClickProductEffect -> navigateToProductDetails(effect.productId)
 
-            ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
+            is ProductUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(effect.authData)
             ProductUiEffect.AddedToWishListEffect -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.successMessage))
+                showSnackBar(getString(org.the_chance.design_system.R.string.addedToWishlistSuccessMessage))
             }
 
             ProductUiEffect.RemovedFromWishListEffect -> {
-                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishList))
+                showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListSuccessMessage))
 
             }
         }
     }
 
 
-    private fun navigateToAuthenticate() {
-        val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph()
+    private fun navigateToAuthenticate(authData: AuthData.Products) {
+        val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph(
+            authData
+        )
         findNavController().navigate(action)
 
     }
 
     private fun navigateToProductDetails(productId: Long) {
+        log(productId)
         val action =
             ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)

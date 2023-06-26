@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
+import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
@@ -17,6 +18,7 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
+import org.the_chance.honeymart.domain.util.ProductNotInSameCartMarketException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import retrofit2.Response
 import javax.inject.Inject
@@ -76,18 +78,23 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getProductDetails(productId: Long): ProductEntity =
         wrap { honeyMartService.getProductDetails(productId) }.toProductEntity()
 
+    override suspend fun deleteAllCart(): String =
+        wrap { honeyMartService.deleteAllFromCart() }
+
 
     private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
         val response = function()
         return if (response.isSuccessful) {
             when (response.body()?.status?.code) {
-                //TODO Error Handling
+                400 -> {
+                    throw ProductNotInSameCartMarketException()
+                }
                 else -> response.body()?.value!!
             }
         } else {
             when (response.code()) {
                 401 -> throw UnAuthorizedException()
-                else -> throw Throwable("Unknown error occurred")
+                else -> throw Exception("Unknown error occurred")
             }
         }
     }

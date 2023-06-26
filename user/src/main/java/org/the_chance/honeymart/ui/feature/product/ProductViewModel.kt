@@ -19,6 +19,7 @@ import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -154,8 +155,6 @@ class ProductViewModel @Inject constructor(
                 )
             )
         }
-        log(productId.toString())
-        log(args.categoryId.toString())
     }
 
     override fun onClickFavIcon(productId: Long) {
@@ -222,7 +221,17 @@ class ProductViewModel @Inject constructor(
     private fun onAddToWishListError(error: Exception, productId: Long) {
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(ProductUiEffect.UnAuthorizedUserEffect))
+                _effect.emit(
+                    EventHandler(
+                        ProductUiEffect.UnAuthorizedUserEffect(
+                            AuthData.Products(
+                                args.marketId,
+                                state.value.position,
+                                args.categoryId
+                            )
+                        )
+                    )
+                )
             }
         }
         log("Add to WishList Error : ${error.message}")

@@ -7,14 +7,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
+import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
+import org.the_chance.honeymart.domain.util.ProductNotInSameCartMarketException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -22,10 +25,11 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val addProductToCartUseCase: AddToCartUseCase,
+    private val deleteCartUseCase: DeleteAllCartUseCase,
     private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductImageInteractionListener {
 
@@ -36,6 +40,22 @@ class ProductDetailsViewModel @Inject constructor(
     init {
         getProductDetails(args.productId)
     }
+
+    fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
+        tryToExecute(
+            { deleteCartUseCase() },
+            { onDeleteCartSuccess(it, productId, count) },
+            ::onDeleteCartError,
+        )
+    }
+
+    private fun onDeleteCartSuccess(message: String, productId: Long, count: Int) {
+        addProductToCart(productId, count)
+    }
+
+    private fun onDeleteCartError(exception: Exception) {
+    }
+
 
     // region Product
     private fun getProductDetails(productId: Long) {
@@ -93,26 +113,51 @@ class ProductDetailsViewModel @Inject constructor(
         tryToExecute(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
-            ::onAddProductToCartError
+            { onAddProductToCartError(it, productId, count) }
         )
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
         viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartSuccess(message)))
+            _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartSuccess))
         }
     }
 
-    private fun onAddProductToCartError(error: Exception) {
+    private fun onAddProductToCartError(error: Exception, productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = false, isError = true) }
-        if (error is UnAuthorizedException) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+        when (error) {
+            is UnAuthorizedException -> {
+                viewModelScope.launch {
+                    _effect.emit(
+                        EventHandler(
+                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                                AuthData.ProductDetails(
+                                    state.value.product.productId!!
+                                )
+                            )
+                        )
+                    )
+                }
             }
-        } else {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+
+            is ProductNotInSameCartMarketException -> {
+                viewModelScope.launch {
+                    _effect.emit(
+                        EventHandler(
+                            ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(
+                                productId,
+                                count
+                            )
+                        )
+                    )
+                }
+            }
+
+            else -> {
+                viewModelScope.launch {
+                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
+                }
             }
         }
     }
@@ -154,16 +199,20 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onAddProductToWishListSuccess(message: String) {
         viewModelScope.launch {
-            _effect.emit(
-                EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess(message))
-            )
+            _effect.emit(EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess))
         }
     }
 
     private fun onAddProductToWishListError(error: Exception, productId: Long) {
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(ProductDetailsUiEffect.UnAuthorizedUserEffect))
+                _effect.emit(
+                    EventHandler(
+                        ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                            AuthData.ProductDetails(state.value.product.productId!!)
+                        )
+                    )
+                )
             }
         } else {
             viewModelScope.launch {
@@ -214,9 +263,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onDeleteWishListSuccess(successMessage: String) {
         viewModelScope.launch {
             _effect.emit(
-                EventHandler(
-                    ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess(successMessage)
-                )
+                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
             )
         }
         log("Deleted Successfully : $successMessage")
@@ -224,9 +271,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onDeleteWishListError(error: Exception) {
         viewModelScope.launch {
-            _effect.emit(
-                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError(error))
-            )
+            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
         }
         log("Delete From WishList Error : ${error.message}")
     }

@@ -11,6 +11,7 @@ import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
+import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class OrderViewModel @Inject constructor(
             _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
         }
         tryToExecute(
-            { getAllOrders(1).map { it.toOrderUiState() } },
+            { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
@@ -50,7 +51,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
     }
 
-    fun getAllDoneOrders(state: Int) {
+    fun getAllDoneOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
@@ -61,7 +62,7 @@ class OrderViewModel @Inject constructor(
             _effect.emit(EventHandler(OrderUiEffect.ClickDone))
         }
         tryToExecute(
-            { getAllOrders(state).map { it.toOrderUiState() } },
+            { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -75,7 +76,7 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
     }
 
-    fun getAllCancelOrders(state: Int) {
+    fun getAllCancelOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
@@ -86,7 +87,7 @@ class OrderViewModel @Inject constructor(
             _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
         }
         tryToExecute(
-            { getAllOrders(state).map { it.toOrderUiState() } },
+            { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
             ::onGetCancelOrdersSuccess,
             ::onGetCancelOrdersError
         )
@@ -117,7 +118,11 @@ class OrderViewModel @Inject constructor(
 
     private fun updateOrdersSuccess(state: Boolean) {
         _state.update { it.copy(isLoading = false, state = state) }
-        getAllProcessingOrders()
+        when (_state.value.orderStates) {
+            OrderStates.PROCESSING -> getAllProcessingOrders()
+            OrderStates.DONE -> getAllDoneOrders()
+            OrderStates.CANCELED -> getAllCancelOrders()
+        }
     }
 
     private fun updateOrdersError(throwable: Exception) {

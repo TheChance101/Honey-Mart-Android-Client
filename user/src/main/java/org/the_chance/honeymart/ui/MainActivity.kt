@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
@@ -30,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
-        navHostFragment.navController
         val navController = navHostFragment.navController
 
         setupNavigation(navController)
@@ -57,14 +57,61 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigation(navController: NavController) {
         val navView = binding.bottomNavigationView
-        setOf(
-            R.id.marketsFragment,
+        val cart = setOf(
             R.id.cartFragment,
-            R.id.ordersFragment,
+            R.id.cartBottomFragment
+        )
+        val wishList = setOf(
             R.id.wishListFragment
         )
+        val orders = setOf(
+            R.id.ordersFragment,
+            R.id.orderDetailsFragment
+        )
+
+        setOnBottomNavigationListener(navView, navController, cart, orders, wishList)
 
         navView.setupWithNavController(navController)
+    }
+
+    private fun setOnBottomNavigationListener(
+        navView: BottomNavigationView,
+        navController: NavController,
+        cart: Set<Int>,
+        orders: Set<Int>,
+        wishList: Set<Int>,
+    ) {
+        navView.setOnNavigationItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.markets_graph -> {
+                    navController.popBackStack(R.id.marketsFragment, false)
+                }
+
+                R.id.cart_graph -> {
+                    if (navController.currentDestination?.id in cart) {
+                        navController.popBackStack(R.id.cartFragment, false)
+                    } else {
+                        navController.popBackStack(R.id.markets_graph, false)
+                    }
+                }
+
+                R.id.orders_graph -> {
+                    if (navController.currentDestination?.id in orders) {
+                        navController.popBackStack(R.id.ordersFragment, false)
+                    } else {
+                        navController.popBackStack(R.id.markets_graph, false)
+                    }
+                }
+
+                R.id.wish_list_graph -> {
+                    if (navController.currentDestination?.id in wishList) {
+                        navController.popBackStack(R.id.wishListFragment, false)
+                    } else {
+                        navController.popBackStack(R.id.markets_graph, false)
+                    }
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

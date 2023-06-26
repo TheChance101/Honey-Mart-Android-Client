@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 fun RecyclerView.addOnScrollListenerWithAppbarColor(
     context: Context,
@@ -40,8 +41,8 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
             val offset = recyclerView.computeVerticalScrollOffset()
             val alpha = (offset.toFloat() / threshold).coerceIn(0f, 1f)
             val newColor = interpolateColor(
-                ContextCompat.getColor(context, org.the_chance.design_system.R.color.white_300),
-                ContextCompat.getColor(context, org.the_chance.design_system.R.color.primary_100),
+                ContextCompat.getColor(context, R.color.white_300),
+                ContextCompat.getColor(context, R.color.primary_100),
                 alpha
             )
 
@@ -102,7 +103,7 @@ fun Fragment.showSnackBar(
     val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
 
     val bottomNavBar =
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        requireActivity().findViewById<BottomNavigationView>(org.the_chance.user.R.id.bottomNavigationView)
     snackBar.anchorView = bottomNavBar
 
     if (actionText != null && action != null) {
@@ -110,4 +111,23 @@ fun Fragment.showSnackBar(
     }
 
     snackBar.show()
+}
+
+fun Fragment.showExitAlertDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.alertDialogCustomStyle)
+        .setTitle(getString(R.string.dialog_title))
+        .setMessage(getString(R.string.confirm))
+        .setPositiveButton(
+            getString(R.string.exit)
+        ) { _, _ ->
+            activity?.moveTaskToBack(true)
+            activity?.finish()
+        }
+        .setNegativeButton(
+            getString(R.string.stay)
+        ) { _, _ ->
+            /*Snackbar.make(requireView(), getString(R.string.canceled), Snackbar.LENGTH_SHORT)
+                .show()*/
+            //TODO
+        }.show()
 }
