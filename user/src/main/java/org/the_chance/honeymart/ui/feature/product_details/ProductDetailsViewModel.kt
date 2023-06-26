@@ -190,6 +190,9 @@ class ProductDetailsViewModel @Inject constructor(
     // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
+        _state.update {
+            it.copy(isLoading = true)
+        }
         tryToExecuteDebounced(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
@@ -198,12 +201,18 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToWishListSuccess(message: String) {
+        _state.update {
+            it.copy(isLoading = false)
+        }
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess))
         }
     }
 
     private fun onAddProductToWishListError(error: Exception, productId: Long) {
+        _state.update {
+            it.copy(isLoading = false)
+        }
         if (error is UnAuthorizedException) {
             viewModelScope.launch {
                 _effect.emit(

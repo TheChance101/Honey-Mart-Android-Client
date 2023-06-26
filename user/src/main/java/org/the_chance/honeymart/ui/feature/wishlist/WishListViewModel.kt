@@ -25,7 +25,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun deleteProductFromWishList(productId: Long) {
-        _state.update { it.copy(products = updateProductFavoriteState(false, productId)) }
+        _state.update { it.copy(products = updateProductFavoriteState(false, productId), isLoading = true) }
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteProductSuccess,
@@ -61,7 +61,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         // this based on caught exception(Very important , may be internet or timeout , or server error)
     }
 
-    private fun getWishListProducts() {
+   fun getWishListProducts() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllWishListUseCase().map { it.toWishListProductUiState() } },
