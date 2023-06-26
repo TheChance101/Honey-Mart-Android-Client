@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
-import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
@@ -26,6 +26,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     private lateinit var touchHelper: ItemTouchHelper
 
     override fun setup() {
+        hideAppBarAndBottomNavigation(false, false, false)
         initAdapter()
         handleOnBackPressed()
         collectEffect()
@@ -52,32 +53,22 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                3
+                                Constant.ORDER_STATE_3
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
 
                     }
 
-                    OrderStates.DONE -> {
+                    OrderStates.DONE, OrderStates.CANCELED -> {
                         showAlertOrderDialog {
                             viewModel.updateOrders(
                                 position.toLong(),
-                                4
+                                Constant.ORDER_STATE_4
                             )
                         }
                         ordersAdapter.notifyItemChanged(position)
 
-                    }
-
-                    OrderStates.CANCELED -> {
-                        showAlertOrderDialog {
-                            viewModel.updateOrders(
-                                position.toLong(),
-                                4
-                            )
-                        }
-                        ordersAdapter.notifyItemChanged(position)
                     }
                 }
             }
@@ -117,7 +108,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.marketsFragment)
+            //showExitAlertDialog()
+            findNavController().navigate(R.id.markets_graph)
         }
     }
 
@@ -129,7 +121,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun onEffect(effect: OrderUiEffect) {
         when (effect) {
-            is OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate(effect.authData)
+            OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
             is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
             is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
             OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
@@ -138,14 +130,12 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun navigateToAuthenticate(authData: AuthData.Order) {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToUserNavGraph(authData)
-        findNavController().navigate(action)
+    private fun navigateToAuthenticate() {
+        //TODO
     }
 
     private fun navigateToMarkets() {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToMarketsFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.markets_graph)
     }
 
     private fun navigateToOrdersDetails(orderId: Long) {

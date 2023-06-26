@@ -34,7 +34,8 @@ class CartBottomFragment : BottomSheetDialogFragment(), View.OnClickListener {
 //        return com.google.android.material.R.style.ShapeAppearanceOverlay_MaterialComponents_BottomSheet
     }
     private fun navigateToOrderComplete() {
-        findNavController().navigate(R.id.action_cartBottomFragment_to_ordersFragment)
+        val action = CartBottomFragmentDirections.actionGlobalCartToOrders()
+        findNavController().navigate(action)
     }
 
     override fun onClick(v: View?) {

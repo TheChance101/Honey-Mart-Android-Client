@@ -34,7 +34,6 @@
                 android:layout_marginEnd="@dimen/spacing_8"
                 android:onClick="@{()-> viewModel.getAllProcessingOrders()}"
                 android:text="@string/processing"
-                android:textColor="@color/primary_100"
                 app:changeChipColorForOrderProcessing="@{viewModel.state.orderStates}" />
 
             <com.google.android.material.chip.Chip
@@ -43,9 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_8"
-                android:onClick="@{()-> viewModel.getAllDoneOrders(2)}"
+                android:onClick="@{()-> viewModel.getAllDoneOrders()}"
                 android:text="@string/done"
-                android:textColor="@color/primary_100"
                 app:changeChipColorForOrderDone="@{viewModel.state.orderStates}" />
 
             <com.google.android.material.chip.Chip
@@ -53,13 +51,10 @@
                 style="@style/Theme.HoneyMart.Text.H5.Chips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{()-> viewModel.getAllCancelOrders(3)}"
+                android:onClick="@{()-> viewModel.getAllCancelOrders()}"
                 android:paddingHorizontal="@dimen/spacing_16"
                 android:text="@string/cancel"
-                android:textColor="@color/primary_100"
-                app:changeChipColorForOrderCanceled="@{viewModel.state.orderStates}"
-                app:chipCornerRadius="@dimen/radius_16"
-                app:chipStrokeColor="@color/primary_100" />
+                app:changeChipColorForOrderCanceled="@{viewModel.state.orderStates}" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -73,10 +68,10 @@
             android:orientation="vertical"
             app:items="@{viewModel.state.orders}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chip_orders_group"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/item_order" />
 
         <com.airbnb.lottie.LottieAnimationView

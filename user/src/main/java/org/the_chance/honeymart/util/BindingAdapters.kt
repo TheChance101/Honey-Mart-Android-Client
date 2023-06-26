@@ -1,16 +1,19 @@
 package org.the_chance.honeymart.util
 
+import android.app.UiModeManager
+import android.content.Context
 import android.icu.text.DecimalFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -40,17 +43,39 @@ fun showIfTrue(view: View, condition: Boolean) {
 @BindingAdapter("app:changeChipColorForOrderProcessing")
 fun changeChipColorIfProcessingSelected(chip: Chip, orderStates: OrderStates) {
     val context = chip.context
-    when (orderStates) {
-        OrderStates.PROCESSING -> {
-            val textColor = ContextCompat.getColor(context, R.color.white)
-            chip.setChipBackgroundColorResource(R.color.primary_100)
-            chip.setTextColor(textColor)
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (orderStates) {
+                OrderStates.PROCESSING -> {
+                    val textColor = ContextCompat.getColor(context, R.color.white)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
 
-        else -> {
-            val textColor = ContextCompat.getColor(context, R.color.primary_100)
-            chip.setChipBackgroundColorResource(R.color.white)
-            chip.setTextColor(textColor)
+        UiModeManager.MODE_NIGHT_YES -> {
+            when (orderStates) {
+                OrderStates.PROCESSING -> {
+                    val textColor = ContextCompat.getColor(context, R.color.dark_background_300)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.dark_background_300)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
     }
 }
@@ -58,17 +83,39 @@ fun changeChipColorIfProcessingSelected(chip: Chip, orderStates: OrderStates) {
 @BindingAdapter("app:changeChipColorForOrderDone")
 fun changeChipColorIfDoneSelected(chip: Chip, orderStates: OrderStates) {
     val context = chip.context
-    when (orderStates) {
-        OrderStates.DONE -> {
-            val textColor = ContextCompat.getColor(context, R.color.white)
-            chip.setChipBackgroundColorResource(R.color.primary_100)
-            chip.setTextColor(textColor)
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (orderStates) {
+                OrderStates.DONE -> {
+                    val textColor = ContextCompat.getColor(context, R.color.white)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
 
-        else -> {
-            val textColor = ContextCompat.getColor(context, R.color.primary_100)
-            chip.setChipBackgroundColorResource(R.color.white)
-            chip.setTextColor(textColor)
+        UiModeManager.MODE_NIGHT_YES -> {
+            when (orderStates) {
+                OrderStates.DONE -> {
+                    val textColor = ContextCompat.getColor(context, R.color.dark_background_300)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.dark_background_300)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
     }
 }
@@ -76,17 +123,39 @@ fun changeChipColorIfDoneSelected(chip: Chip, orderStates: OrderStates) {
 @BindingAdapter("app:changeChipColorForOrderCanceled")
 fun changeChipColorIfCanceledSelected(chip: Chip, orderStates: OrderStates) {
     val context = chip.context
-    when (orderStates) {
-        OrderStates.CANCELED -> {
-            val textColor = ContextCompat.getColor(context, R.color.white)
-            chip.setChipBackgroundColorResource(R.color.primary_100)
-            chip.setTextColor(textColor)
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (orderStates) {
+                OrderStates.CANCELED -> {
+                    val textColor = ContextCompat.getColor(context, R.color.white)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
 
-        else -> {
-            val textColor = ContextCompat.getColor(context, R.color.primary_100)
-            chip.setChipBackgroundColorResource(R.color.white)
-            chip.setTextColor(textColor)
+        UiModeManager.MODE_NIGHT_YES -> {
+            when (orderStates) {
+                OrderStates.CANCELED -> {
+                    val textColor = ContextCompat.getColor(context, R.color.dark_background_300)
+                    chip.setChipBackgroundColorResource(R.color.primary_100)
+                    chip.setTextColor(textColor)
+                }
+
+                else -> {
+                    val textColor = ContextCompat.getColor(context, R.color.primary_100)
+                    chip.setChipBackgroundColorResource(R.color.dark_background_300)
+                    chip.setTextColor(textColor)
+                }
+            }
         }
     }
 }
@@ -177,18 +246,42 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
 @BindingAdapter("app:changeColorIfSelected")
 fun changeColorIfSelected(view: View, isFavorite: Boolean) {
     val context = view.context
-    when (view) {
-        is CardView -> {
-            val colorRes = if (isFavorite) R.color.white else R.color.primary_100
-            val color = ContextCompat.getColor(context, colorRes)
-            view.setCardBackgroundColor(color)
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (view) {
+                is CardView -> {
+                    val colorRes = if (isFavorite) R.color.white else R.color.primary_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
+
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
+            }
         }
 
-        is ShapeableImageView -> {
-            val drawableRes =
-                if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
-            val drawable = ContextCompat.getDrawable(context, drawableRes)
-            view.setImageDrawable(drawable)
+        UiModeManager.MODE_NIGHT_YES -> {
+            when (view) {
+                is CardView -> {
+                    val colorRes =
+                        if (isFavorite) R.color.dark_background_300 else R.color.primary_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
+
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isFavorite) R.drawable.icon_favorite_selected else R.drawable.icon_favorite_unselected
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
+            }
         }
     }
 }
@@ -197,18 +290,6 @@ fun changeColorIfSelected(view: View, isFavorite: Boolean) {
 @BindingAdapter("scrollToPosition")
 fun scrollToPosition(recyclerView: RecyclerView, position: Int) {
     recyclerView.scrollToPosition(position)
-}
-
-@BindingAdapter(value = ["app:imageUrl"])
-fun setImageFromUrl(view: ImageView, url: String?) {
-    url.let {
-        Glide
-            .with(view)
-            .load(url)
-            .placeholder(R.drawable.placeholder_wish_list)
-            .centerCrop()
-            .into(view)
-    }
 }
 
 @BindingAdapter("app:hideIfLoading")
@@ -222,12 +303,6 @@ fun setFormattedPrice(view: TextView, price: Double) {
     view.text = formattedPrice
 }
 
-@BindingAdapter("app:disableIfNoQuantity")
-fun disableIfNoQuantity(view: View, quantity: Int?) {
-    if (quantity != null) {
-        view.isEnabled = quantity > 0
-    }
-}
 
 @BindingAdapter("app:disableIfLoading")
 fun disableIfLoading(view: View, isLoading: Boolean) {
@@ -298,10 +373,27 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
-
 @BindingAdapter("FormatCurrency")
 fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
     text = formattedAmount
+}
+
+
+@BindingAdapter(value = ["app:loadingCartState", "app:disableIfNoQuantity"])
+fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?) {
+    if (quantity != null) {
+        if (quantity > 0) {
+            button.isEnabled = !isLoading
+            button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
+            val icon = if (isLoading) null else AppCompatResources.getDrawable(
+                button.context,
+                R.drawable.icon_add_to_cart
+            )
+            button.icon = icon
+        } else {
+            button.isEnabled = false
+        }
+    }
 }
