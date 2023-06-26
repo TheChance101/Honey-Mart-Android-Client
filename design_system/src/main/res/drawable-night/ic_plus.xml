@@ -8,7 +8,7 @@
       android:fillColor="#FEBC33" />
   <path
       android:pathData="M6 12H12M12 12H18M12 12V6M12 12V18"
-      android:strokeColor="#FAFAFA"
+      android:strokeColor="@color/dark_background_300"
       android:strokeWidth="1.5"
       android:strokeLineCap="round"
       android:strokeLineJoin="round" />

@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="@dimen/spacing_4"
-        android:onClick="@{() -> listener.onClickProduct(item.productId)}"
         android:layout_marginBottom="@dimen/spacing_8"
+        android:onClick="@{() -> listener.onClickProduct(item.productId)}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,33 +38,33 @@
                 android:layout_height="match_parent" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_product_name"
-                style="@style/Theme.HoneyMart.Text.H4.Light"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_8"
-                android:layout_marginBottom="@dimen/spacing_4"
-                app:FormatCurrency="@{item.productPrice}"
-                app:layout_constraintBottom_toTopOf="@+id/product_description"
-                app:layout_constraintStart_toStartOf="parent"
-                tool:text="3000$" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_product_price"
                 style="@style/Theme.HoneyMart.Text.H4.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginBottom="@dimen/spacing_4"
-                android:text="@{item.productName}"
+                android:text='@{item.productName}'
                 app:layout_constraintBottom_toTopOf="@+id/text_product_name"
                 app:layout_constraintStart_toStartOf="parent"
                 tool:text="Primary Text" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_product_name"
+                style="@style/Theme.HoneyMart.Text.H4.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_8"
+                android:layout_marginBottom="@dimen/spacing_4"
+                app:formattedPrice="@{item.productPrice}"
+                app:layout_constraintBottom_toTopOf="@+id/product_description"
+                app:layout_constraintStart_toStartOf="parent"
+                tool:text="3000$" />
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_description"
-                style="@style/Theme.HoneyMart.Text.H6.Light"
-                android:layout_width="0dp"
+                style="@style/Theme.HoneyMart.Text.H6.SameColor"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
                 android:paddingEnd="@dimen/spacing_8"
@@ -80,20 +80,20 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:strokeWidth="0dp"
                 android:layout_margin="@dimen/spacing_16"
-                tool:backgroundTint="@color/primary_100"
                 android:onClick="@{()->listener.onClickFavIcon(item.productId)}"
                 app:changeColorIfSelected="@{item.isFavorite}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape">
+                app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
+                app:strokeWidth="0dp"
+                tool:backgroundTint="@color/primary_100">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:changeColorIfSelected="@{item.isFavorite}"
                     android:layout_margin="@dimen/spacing_4"
+                    app:changeColorIfSelected="@{item.isFavorite}"
                     app:srcCompat="@drawable/icon_favorite_unselected" />
             </com.google.android.material.card.MaterialCardView>
 

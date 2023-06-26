@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:fitsSystemWindows="false"
-            android:background="@color/white_300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -57,10 +56,9 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
-            style="@style/Theme.HoneyMart.Text.H6"
+            style="@style/AppBottomNavigationStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/white_300"
             android:fitsSystemWindows="false"
             app:labelVisibilityMode="selected"
             app:layout_constraintBottom_toBottomOf="parent"
