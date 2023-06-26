@@ -16,12 +16,17 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
     override val viewModel: SignupViewModel by activityViewModels()
     private val args : SignupFragmentArgs by navArgs()
     override fun setup() {
-
         collectAction()
-//        hideAppBarAndBottomNavigationInUserFlow()
-        hideAppBarAndBottomNavigation(true , true , false)
         viewModel.saveArgs(args)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )
     }
 
     private fun collectAction() {

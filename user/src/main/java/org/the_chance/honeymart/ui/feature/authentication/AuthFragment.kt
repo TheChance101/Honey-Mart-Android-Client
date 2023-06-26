@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.ui.feature.authentication
 
-import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +18,15 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
     override fun setup() {
         addCallbacks()
-        hideAppBarAndBottomNavigation(true , true , false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )
     }
     private fun addCallbacks() {
         collectAction()
