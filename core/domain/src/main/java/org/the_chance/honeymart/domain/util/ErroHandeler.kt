@@ -1,30 +1,52 @@
 package org.the_chance.honeymart.domain.util
 
-/**
- * Created by Asia sama on 6/17/2023.
- * sehunexo710@gmail.com
- */
+open class GeneralException : Exception()
+class UnAuthorizedException : GeneralException()//401
+class InvalidDataException : GeneralException()//400
+class NotFoundException : GeneralException()//404
+class AlreadyExistException : GeneralException()//409
 
-class InvalidEmailException(message: String = "This Email already exist") : Exception(message)
-class ProductNotInSameCartMarketException(message: String = "this product not in same market, you should delete cart") :
-    Exception(message)
 
-class UnAuthorizedException(message: String = "UnAuthorized User") : Exception(message)
-class InvalidPasswordException(message: String = "Password should be at least has one letter, one special character, one number, and a total length between 8 to 14 characters") :
-    Exception(message)
+open class NetworkException : Exception()
+class NoConnectionException : NetworkException()
+class InternalServerException : NetworkException()//500
 
-class InvalidFullNameException(message: String = "Name is not valid") : Exception(message)
-class InvalidRegisterException(message: String = " is not valid") : Exception(message)
-class NoNetworkException(message: String = "No connection") : Exception(message)
-class InvalidEmailOrPasswordException(message: String = "Name is not valid") : Exception(message)
+
+open class AuthenticationException : Exception()
+class EmailIsExistException : AuthenticationException()//1001
+class ForbiddenException : AuthenticationException()//403
 
 
 sealed interface ErrorHandler {
     object EmailIsExist : ErrorHandler
-    object InvalidRegister : ErrorHandler
-    object NoNetwork : ErrorHandler
-    object InvalidEmailAndPassword : ErrorHandler
-    object UnAuthorized : ErrorHandler
-    object NoError : ErrorHandler
+
+    object NoConnection : ErrorHandler
+    object ServerError : ErrorHandler
+
+    object InvalidData : ErrorHandler
+    object NotFound : ErrorHandler
+    object UnAuthorizedUser : ErrorHandler
+    object AlreadyExist : ErrorHandler
+    object UnKnownError : ErrorHandler
 
 }
+
+
+//////httm code
+//Created 201 post
+// ok 200 delete update get
+// 404 notFound
+// 302 found get owner profile
+
+//class ProductNotInSameCartMarketException(message: String = "this product not in same market, you should delete cart") :
+//    Exception(message)
+//
+//
+//open class RegisterException() : Exception()
+//class InvalidFullNameException : RegisterException()
+//class InvalidEmailException : RegisterException()
+//
+//class InvalidEmailOrPasswordException : RegisterException()
+//class InvalidRegisterException : RegisterException()
+//
+//class InvalidPasswordException : RegisterException()

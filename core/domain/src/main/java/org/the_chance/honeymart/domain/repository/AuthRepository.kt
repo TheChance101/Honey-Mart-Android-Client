@@ -10,10 +10,6 @@ interface AuthRepository {
     fun getToken(): String?
     suspend fun clearToken()
 
-    suspend fun addUser(
-        fullName: String,
-        password: String,
-        email: String,
-    ): Boolean?
+    suspend fun createUserAccount(fullName: String, password: String, email: String): String?
 
 }

@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -11,9 +10,8 @@ import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
-import org.the_chance.honeymart.domain.util.InvalidEmailException
-import org.the_chance.honeymart.domain.util.InvalidFullNameException
-import org.the_chance.honeymart.domain.util.InvalidPasswordException
+import org.the_chance.honeymart.domain.util.EmailIsExistException
+import org.the_chance.honeymart.domain.util.InvalidDataException
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
@@ -76,33 +74,25 @@ class SignupViewModel @Inject constructor(
         )
     }
 
-    private fun onSuccess(signUpState: ValidationState) {
-        if (signUpState == ValidationState.SUCCESS) {
+    private fun onSuccess(isSignUp: Boolean) {
+        if (isSignUp) {
             login(email = _state.value.email, password = _state.value.password)
         }
-        _state.update { it.copy(isLoading = false, isSignUp = signUpState) }
+        _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
     }
 
     private fun onError(exception: Exception) {
         when (exception) {
-            is InvalidEmailException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidEmailException error: ${exception.message}")
+            is InvalidDataException -> {
+                _state.update { it.copy(isLoading = false, error = 1) }
             }
 
-            is InvalidFullNameException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidFullNameException error: ${exception.message}")
-            }
-
-            is InvalidPasswordException -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "InvalidPasswordException error: ${exception.message}")
+            is EmailIsExistException -> {
+                _state.update { it.copy(isLoading = false, error = 2) }
             }
 
             else -> {
-                _state.update { it.copy(isLoading = false, isError = true) }
-                Log.e("TAG", "Throwable error: ${exception.message}")
+                _state.update { it.copy(isLoading = false, error = 3) }
             }
         }
     }
@@ -119,13 +109,7 @@ class SignupViewModel @Inject constructor(
     private fun onLoginSuccess(loginState: ValidationState) {
         if (loginState == ValidationState.SUCCESS) {
             viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        AuthUiEffect.ClickSignUpEffect(
-                            args.AuthData
-                        )
-                    )
-                )
+                _effect.emit(EventHandler(AuthUiEffect.ClickSignUpEffect(args.AuthData)))
             }
         }
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
@@ -140,11 +124,7 @@ class SignupViewModel @Inject constructor(
         val fullNameState = validateFullName(state.value.fullName)
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
             viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        AuthUiEffect.ClickContinueEffect
-                    )
-                )
+                _effect.emit(EventHandler(AuthUiEffect.ClickContinueEffect))
             }
         }
         _state.update {

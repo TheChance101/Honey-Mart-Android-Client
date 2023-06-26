@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -116,6 +117,7 @@ class ProductViewModel @Inject constructor(
 
     private fun onGetCategoryError(throwable: Exception) {
         _state.update { it.copy(isLoadingCategory = false, isError = true) }
+        Log.e("TAG", "onGetCategoryError: " + throwable.message)
     }
 
     private fun onGetProductError(throwable: Exception) {
@@ -142,6 +144,8 @@ class ProductViewModel @Inject constructor(
         return categories.map { category ->
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
+        Log.e("TAG", "updateCategorySelection:$selectedCategoryId ")
+
     }
 
     override fun onClickProduct(productId: Long) {

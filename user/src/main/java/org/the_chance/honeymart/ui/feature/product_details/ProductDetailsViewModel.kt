@@ -11,7 +11,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.util.ProductNotInSameCartMarketException
+import org.the_chance.honeymart.domain.util.InvalidDataException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
@@ -132,16 +132,14 @@ class ProductDetailsViewModel @Inject constructor(
                     _effect.emit(
                         EventHandler(
                             ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(
-                                    state.value.product.productId!!
-                                )
+                                AuthData.ProductDetails(state.value.product.productId!!)
                             )
                         )
                     )
                 }
             }
 
-            is ProductNotInSameCartMarketException -> {
+            is InvalidDataException -> {
                 viewModelScope.launch {
                     _effect.emit(
                         EventHandler(

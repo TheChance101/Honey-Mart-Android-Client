@@ -311,44 +311,16 @@ fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
 @BindingAdapter("app:errorState")
 fun setError(view: View, error: ErrorHandler?) {
     error?.let {
-//        view.visibility = View.VISIBLE
-        when (error) {
-            is ErrorHandler.NoNetwork -> {
-                val context = view.context
-                val message = "no connection"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
-
-            is ErrorHandler.EmailIsExist -> {
-                val context = view.context
-                val message = "email is exist"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
-
-            ErrorHandler.InvalidEmailAndPassword -> {
-                val context = view.context
-                val message = "invalid email or password"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
-
-            ErrorHandler.InvalidRegister -> {
-                val context = view.context
-                val message = "invalid register"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
-
-            ErrorHandler.NoError -> {
-                val context = view.context
-                val message = "no error"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
-
-            ErrorHandler.UnAuthorized -> {
-                val context = view.context
-                val message = "unauthorized"
-                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-            }
+        if (error is ErrorHandler.NoConnection) {
+            view.visibility = View.GONE
+            val context = view.context
+            val message = "No internet Connection"
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+        } else {
+            view.visibility = View.VISIBLE
+            val context = view.context
+            val message = "Connection restored"
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
         }
     }
-
 }

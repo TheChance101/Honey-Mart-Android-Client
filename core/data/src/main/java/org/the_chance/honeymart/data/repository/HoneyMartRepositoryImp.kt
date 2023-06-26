@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
@@ -18,7 +17,7 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
-import org.the_chance.honeymart.domain.util.ProductNotInSameCartMarketException
+import org.the_chance.honeymart.domain.util.InvalidDataException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import retrofit2.Response
 import javax.inject.Inject
@@ -87,7 +86,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         return if (response.isSuccessful) {
             when (response.body()?.status?.code) {
                 400 -> {
-                    throw ProductNotInSameCartMarketException()
+                    throw InvalidDataException()
                 }
                 else -> response.body()?.value!!
             }
