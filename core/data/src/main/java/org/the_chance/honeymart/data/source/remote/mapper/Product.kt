@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.data.source.remote.mapper
+package org.the_chance.honeymart.data .source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -8,5 +8,7 @@ fun ProductDto.toProductEntity() = ProductEntity(
     productName = name,
     productDescription = description,
     ProductPrice = price,
-    productImages = images
+    productImages = images?.ifEmpty { listOf("") }
+
+
 )
