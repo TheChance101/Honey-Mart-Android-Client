@@ -42,8 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_8"
                 android:layout_marginTop="@dimen/spacing_16"
-                tool:text="order #1"
-                android:text="@{String.valueOf(item.orderId)}"
+                android:text="@{`order #`+String.valueOf(item.orderId)}"
                 style="@style/Theme.HoneyMart.Text.H5.DarkModerate"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_order"/>

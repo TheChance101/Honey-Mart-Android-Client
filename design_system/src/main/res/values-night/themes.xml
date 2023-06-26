@@ -18,7 +18,6 @@
         <item name="colorOnSecondaryContainer">@color/white</item>
 
         <item name="fontFamily">@font/poppins</item>
-        <item name="android:fitsSystemWindows">true</item>
 
     </style>
 

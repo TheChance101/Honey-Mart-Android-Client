@@ -64,7 +64,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_description"
                 style="@style/Theme.HoneyMart.Text.H6.SameColor"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_8"
                 android:paddingEnd="@dimen/spacing_8"
@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tool:text="Secondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary TextSecondary Text"
+                tool:text="Seconondary Text Seconondary Text"
                 tool:ignore="RtlSymmetry" />
 
             <com.google.android.material.card.MaterialCardView
