@@ -14,12 +14,11 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView"
-        style="@style/Theme.HoneyMart.Text.H3"
+        style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/poppins_medium"
         android:text="@string/no_connection_text"
-        android:textColor="@color/black_60" />
+        />
 
 </LinearLayout>
