@@ -60,7 +60,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteCartError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+      _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
 
@@ -86,7 +89,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+       _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     override fun onClickImage(url: String) {
@@ -182,7 +188,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetIfProductInWishListError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+         _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     // endregion
@@ -266,7 +275,6 @@ class ProductDetailsViewModel @Inject constructor(
                 EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
             )
         }
-
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
