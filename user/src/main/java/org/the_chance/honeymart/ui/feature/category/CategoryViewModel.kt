@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoriesUiState
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
@@ -21,14 +22,16 @@ class CategoryViewModel @Inject constructor(
     CategoryInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
+
     private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getAllCategory()
     }
 
-    private fun getAllCategory() {
-        _state.update { it.copy(isLoading = true) }
+
+    fun getAllCategory() {
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -40,18 +43,16 @@ class CategoryViewModel @Inject constructor(
         this._state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
+                error = null,
                 categories = categories,
             )
         }
     }
 
-    private fun onGetCategoryError(throwable: Exception) {
-        this._state.update {
-            it.copy(
-                isLoading = false,
-                isError = true
-            )
+    private fun onGetCategoryError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
     }
 

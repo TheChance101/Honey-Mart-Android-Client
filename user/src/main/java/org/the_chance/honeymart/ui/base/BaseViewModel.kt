@@ -12,7 +12,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.util.AuthenticationException
+import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.GeneralException
+import org.the_chance.honeymart.domain.util.NetworkException
+import org.the_chance.honeymart.domain.util.handelAuthenticationException
+import org.the_chance.honeymart.domain.util.handelGeneralException
+import org.the_chance.honeymart.domain.util.handelNetworkException
 import org.the_chance.honeymart.util.EventHandler
+import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
@@ -32,7 +40,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: Exception) -> Unit,
+        onError: (t: ErrorHandler) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
@@ -40,11 +48,22 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 val result = function()
                 log("tryToExecute:$result ")
                 onSuccess(result)
-            } catch (e: Exception) {
-                log("tryToExecute error: ${e.message}")
-                onError(e)
+            } catch (exception: GeneralException) {
+                handelGeneralException(exception, onError)
+                log("tryToExecute error GeneralException: ${exception}")
+            } catch (exception: NetworkException) {
+                handelNetworkException(exception, onError)
+                log("tryToExecute error NetworkException: ${exception}")
+            } catch (exception: AuthenticationException) {
+                handelAuthenticationException(exception, onError)
+                log("tryToExecute error AuthenticationException: ${exception}")
+            } catch (exception: IOException) {
+                log("tryToExecute error IOException: ${exception}")
+                onError(ErrorHandler.NoConnection)
+            } catch (exception: Exception) {
+                log("tryToExecute error Exception: ${exception}")
+                onError(ErrorHandler.UnKnownError)
             }
-            log("tryToExecute: job: $job")
         }
     }
 
@@ -52,7 +71,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: Exception) -> Unit,
+        onError: (t: ErrorHandler) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         job?.cancel()
@@ -63,9 +82,21 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 log("tryToExecute:$result ")
                 onSuccess(result)
 
-            } catch (e: Exception) {
-                log("tryToExecute error: ${e.message}")
-                onError(e)
+            } catch (exception: GeneralException) {
+                handelGeneralException(exception, onError)
+                log("tryToExecute error GeneralException: ${exception}")
+            } catch (exception: NetworkException) {
+                handelNetworkException(exception, onError)
+                log("tryToExecute error NetworkException: ${exception}")
+            } catch (exception: AuthenticationException) {
+                handelAuthenticationException(exception, onError)
+                log("tryToExecute error AuthenticationException: ${exception}")
+            } catch (exception: IOException) {
+                log("tryToExecute error IOException: ${exception}")
+                onError(ErrorHandler.NoConnection)
+            } catch (exception: Exception) {
+                log("tryToExecute error Exception: ${exception}")
+                onError(ErrorHandler.UnKnownError)
             }
         }
         log("job isCompleted : ${job?.isCompleted} ")

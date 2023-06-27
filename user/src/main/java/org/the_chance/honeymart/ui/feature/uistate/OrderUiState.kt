@@ -1,13 +1,15 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val error: ErrorHandler? = null,
     val state: Boolean = false,
     val orders: List<OrderUiState> = emptyList(),
-    val orderStates:OrderStates = OrderStates.PROCESSING
+    val orderStates: OrderStates = OrderStates.PROCESSING,
 )
 
 data class OrderUiState(
@@ -17,6 +19,7 @@ data class OrderUiState(
     val date: Long?= 1687259600016,
     val marketName: String?="",
     val imageUrl: String?="",
+    val numItems:Int?=1
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
@@ -26,7 +29,8 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
         state = state,
         date = date,
         marketName = market.marketName,
-        imageUrl = market.imageUrl
+        imageUrl = market.imageUrl,
+        numItems=numItems
     )
 }
 

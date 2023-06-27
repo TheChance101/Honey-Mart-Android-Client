@@ -62,52 +62,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         setup()
 
     }
-
-//    protected fun hideAppBarAndBottomNavigation(
-//        hideAppBar: Boolean,
-//        hideBottomNavigation: Boolean,
-//        changeStatusBarColor: Boolean
-//    ) {
-//        val window: Window = requireActivity().window
-//
-//        if (changeStatusBarColor) {
-//            window.statusBarColor = ContextCompat.getColor(
-//                requireContext(),
-//                org.the_chance.design_system.R.color.primary_100
-//            )
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//
-//        } else {
-//            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//        }
-//        if (hideBottomNavigation) {
-//            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//                ?.let { navigateIcon ->
-//                    navigateIcon.visibility = View.GONE
-//                }
-//        }
-//
-//        if (hideAppBar) {
-//            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
-//                toolbar.visibility = View.GONE
-//            }
-//        }
-//    }
-//
-//
-//    protected fun setupMainFlowWindowVisibility() {
-//        val window: Window = requireActivity().window
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//            ?.let { navigateIcon ->
-//                navigateIcon.visibility = View.VISIBLE
-//            }
-//        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
-//            toolbar.visibility = View.VISIBLE
-//        }
-//    }
-
-
     protected fun setWindowVisibility(
         appBarVisibility: Boolean = true,
         bottomNavVisibility: Boolean = true,

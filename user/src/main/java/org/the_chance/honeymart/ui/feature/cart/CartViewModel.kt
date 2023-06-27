@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -9,6 +8,7 @@ import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
@@ -25,12 +25,8 @@ class CartViewModel @Inject constructor(
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-
-
-
-
     fun getChosenCartProducts() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
@@ -42,24 +38,22 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
+                error = null,
                 products = cart.products,
                 total = cart.total
             )
         }
     }
 
-    private fun onGetAllCartError(
-        throwable: Exception,
-    ) {
-        this._state.update {
-            it.copy(isLoading = false, isError = true)
+    private fun onGetAllCartError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
     private fun incrementProductCountByOne(productId: Long) {
         val currentState = _state.value
-
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
                 val newProductCount = (product.productCount ?: 0) + 1
@@ -78,8 +72,6 @@ class CartViewModel @Inject constructor(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
-        Log.e("Sara",updatedProducts.toString())
-        Log.e("Sara","${updatedProducts.find { it.productId ==productId }?.productCount?:0}")
     }
 
     private fun decrementProductCountByOne(productId: Long) {
@@ -104,8 +96,10 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateProductCart(productId: Long, count: Int) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+
         tryToExecute(
-            { addToCartUseCase(productId, count)},
+            { addToCartUseCase(productId, count) },
             ::onUpdateProductInCartSuccess,
             ::onUpdateProductInCartError
         )
@@ -113,17 +107,15 @@ class CartViewModel @Inject constructor(
 
     private fun onUpdateProductInCartSuccess(message: String) {
         _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-            )
+            it.copy(isLoading = false, error = null)
         }
         getChosenCartProducts()
     }
 
-    private fun onUpdateProductInCartError(exception: Exception) {
-        this._state.update {
-            it.copy(isLoading = false, isError = true)
+    private fun onUpdateProductInCartError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
@@ -137,23 +129,27 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-                products = emptyList()
-            )
-        }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
-            checkout()
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { checkout() },
+            ::onCheckOutSuccess,
+            ::onCheckOutFailed
+        )
+    }
+ private fun onCheckOutSuccess(message: String) {
+     _state.update { it.copy(isLoading = false, products = emptyList()) }
+     viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
+ }
+
+    private fun onCheckOutFailed(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
     fun onClickDiscoverButton() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
-        }
+        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
     }
 
     fun deleteCart(position: Long) {
@@ -172,17 +168,15 @@ class CartViewModel @Inject constructor(
     private fun onDeleteFromCartSuccess(message: String) {
         _state.update {
             it.copy(
-                isError = false,
+                error = null,
                 products = emptyList()
             )
         }
         getChosenCartProducts()
     }
 
-    private fun onDeleteFromCartError(throwable: Exception) {
-        this._state.update {
-            it.copy(isLoading = false, isError = true)
-        }
+    private fun onDeleteFromCartError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
 

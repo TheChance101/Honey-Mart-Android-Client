@@ -16,9 +16,11 @@ import coil.load
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
@@ -220,28 +222,55 @@ fun showState(textView: TextView, state: Int) {
 @BindingAdapter("app:changeIfSelected")
 fun changeIfSelected(view: View, isSelected: Boolean) {
     val context = view.context
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (view) {
+                is CardView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
 
-    when (view) {
-        is CardView -> {
-            val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
-            val color = ContextCompat.getColor(context, colorRes)
-            view.setCardBackgroundColor(color)
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
+
+                is MaterialTextView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setTextColor(color)
+                }
+            }
         }
+        UiModeManager.MODE_NIGHT_YES ->{
+            when (view) {
+                is CardView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.dark_background_400
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
 
-        is ShapeableImageView -> {
-            val drawableRes =
-                if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
-            val drawable = ContextCompat.getDrawable(context, drawableRes)
-            view.setImageDrawable(drawable)
-        }
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
 
-        is MaterialTextView -> {
-            val colorRes = if (isSelected) R.color.primary_100 else R.color.black_60
-            val color = ContextCompat.getColor(context, colorRes)
-            view.setTextColor(color)
+                is MaterialTextView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.dark_text_87
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setTextColor(color)
+                }
+            }
         }
     }
-}
+    }
 
 @BindingAdapter("app:changeColorIfSelected")
 fun changeColorIfSelected(view: View, isFavorite: Boolean) {
@@ -297,11 +326,7 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
-@BindingAdapter("app:formattedPrice")
-fun setFormattedPrice(view: TextView, price: Double) {
-    val formattedPrice = String.format("%,.0f$", price)
-    view.text = formattedPrice
-}
+
 
 
 @BindingAdapter("app:disableIfLoading")
@@ -309,8 +334,12 @@ fun disableIfLoading(view: View, isLoading: Boolean) {
     view.isEnabled = !isLoading
 }
 
-@BindingAdapter("app:validationState")
-fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
+@BindingAdapter(value = ["app:errorState", "app:validationState"])
+fun setValidationState(
+    textInputLayout: TextInputLayout,
+    error: ErrorHandler?,
+    validationState: ValidationState,
+) {
     val context = textInputLayout.context
 
     when (validationState) {
@@ -353,11 +382,31 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
         }
 
         else -> {
-            textInputLayout.error = null
-            textInputLayout.isErrorEnabled = false
+            if (error != null) {
+                error.let {
+                    when (error) {
+                        is ErrorHandler.AlreadyExist -> {
+                            textInputLayout.error =
+                                textInputLayout.context.getString(R.string.email_exist)
+                        }
+
+                        is ErrorHandler.EmailIsExist -> {
+                            val message = "Email already exist"
+                            Snackbar.make(textInputLayout, message, Snackbar.LENGTH_LONG).show()
+                        }
+
+                        else -> {
+                            textInputLayout.error = null
+                            textInputLayout.isErrorEnabled = false
+                        }
+                    }
+                }
+            } else {
+                textInputLayout.error = null
+                textInputLayout.isErrorEnabled = false
+            }
         }
     }
-
 }
 
 @BindingAdapter("app:loadImage")
@@ -373,11 +422,12 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
+
 @BindingAdapter("FormatCurrency")
-fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
-    text = formattedAmount
+   View.text = formattedAmount
 }
 
 
@@ -386,14 +436,30 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
     if (quantity != null) {
         if (quantity > 0) {
             button.isEnabled = !isLoading
-            button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
-            val icon = if (isLoading) null else AppCompatResources.getDrawable(
-                button.context,
-                R.drawable.icon_add_to_cart
-            )
-            button.icon = icon
         } else {
             button.isEnabled = false
+        }
+        button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
+        val icon = if (isLoading) null else AppCompatResources.getDrawable(
+            button.context,
+            R.drawable.icon_add_to_cart
+        )
+        button.icon = icon
+    }
+}
+
+@BindingAdapter("app:handleSummation")
+fun handleSummation(text: TextView, count: Int) {
+    text.text = if (count > 1) "$count items" else "$count item"
+}
+
+@BindingAdapter("app:errorState")
+fun setError(view: View, error: ErrorHandler?) {
+    error?.let {
+        if (error is ErrorHandler.NoConnection) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
         }
     }
 }

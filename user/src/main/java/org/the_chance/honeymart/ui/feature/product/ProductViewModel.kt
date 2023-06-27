@@ -11,7 +11,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
-import org.the_chance.honeymart.domain.util.UnAuthorizedException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -36,30 +36,35 @@ class ProductViewModel @Inject constructor(
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
-    private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+
+    val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-        getCategoriesByMarketId()
+        getData()
+    }
+
+    fun getData() {
+        _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(args.categoryId)
+        getCategoriesByMarketId()
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }
         )
+
     }
 
     private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>,
-        products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
     ) {
         _state.update { productsUiState ->
             productsUiState.copy(
-                isLoadingProduct = false,
-                isError = false,
-                products = updateProducts(products, wishListProducts)
+                isLoadingProduct = false, products = updateProducts(products, wishListProducts)
             )
         }
     }
@@ -68,22 +73,18 @@ class ProductViewModel @Inject constructor(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
     ) = products.map { product ->
-        product.copy(
-            isFavorite = product.productId in wishListProducts.map { it.productId }
-        )
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
     }
 
-    private fun onGetWishListProductError(throwable: Exception, products: List<ProductUiState>) {
-        _state.update {
-            it.copy(
-                isLoadingProduct = false,
-                products = products
-            )
+    private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
+        _state.update { it.copy(isLoadingProduct = false, error = error, products = products) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
     }
 
-    private fun getCategoriesByMarketId() {
-        _state.update { it.copy(isLoadingCategory = true) }
+    fun getCategoriesByMarketId() {
+        _state.update { it.copy(isLoadingCategory = true, isError = false) }
         tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -91,8 +92,8 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoadingProduct = true) }
+    fun getProductsByCategoryId(categoryId: Long) {
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
@@ -103,8 +104,7 @@ class ProductViewModel @Inject constructor(
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
         _state.update {
             it.copy(
-                isError = false,
-                isLoadingCategory = false,
+                error = null, isLoadingCategory = false,
                 categories = updateCategorySelection(categories, args.categoryId),
                 position = args.position
             )
@@ -115,13 +115,18 @@ class ProductViewModel @Inject constructor(
         getWishListProducts(products)
     }
 
-    private fun onGetCategoryError(throwable: Exception) {
-        _state.update { it.copy(isLoadingCategory = false, isError = true) }
-        Log.e("TAG", "onGetCategoryError: " + throwable.message)
+    private fun onGetCategoryError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingCategory = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
-    private fun onGetProductError(throwable: Exception) {
-        _state.update { it.copy(isLoadingProduct = false, isError = true) }
+    private fun onGetProductError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingProduct = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     override fun onClickCategoryProduct(categoryId: Long) {
@@ -144,18 +149,13 @@ class ProductViewModel @Inject constructor(
         return categories.map { category ->
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
-        Log.e("TAG", "updateCategorySelection:$selectedCategoryId ")
-
     }
 
     override fun onClickProduct(productId: Long) {
         viewModelScope.launch {
             _effect.emit(
                 EventHandler(
-                    ProductUiEffect.ClickProductEffect(
-                        productId,
-                        args.categoryId
-                    )
+                    ProductUiEffect.ClickProductEffect(productId, args.categoryId)
                 )
             )
         }
@@ -189,11 +189,12 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductUiEffect.RemovedFromWishListEffect))
         }
-        log("Deleted Successfully : $successMessage")
+
     }
 
-    private fun onDeleteWishListError(error: Exception) {
-        log("Delete From WishList Error : ${error.message}")
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        _state.update { it.copy(error = error, isError = true) }
+
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -219,26 +220,21 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
         }
-        log("Added Successfully : $successMessage")
+
     }
 
-    private fun onAddToWishListError(error: Exception, productId: Long) {
-        if (error is UnAuthorizedException) {
+    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorizedUser) {
             viewModelScope.launch {
                 _effect.emit(
                     EventHandler(
                         ProductUiEffect.UnAuthorizedUserEffect(
-                            AuthData.Products(
-                                args.marketId,
-                                state.value.position,
-                                args.categoryId
-                            )
+                            AuthData.Products(args.marketId, state.value.position, args.categoryId)
                         )
                     )
                 )
             }
         }
-        log("Add to WishList Error : ${error.message}")
         updateFavoriteState(productId, false)
     }
 

@@ -17,6 +17,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/radius_16"
         android:layout_marginBottom="@dimen/spacing_16"
         style="@style/Theme.HoneyMart.Card"
@@ -76,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_4"
                 android:layout_marginTop="@dimen/spacing_4"
-                android:text="@{String.valueOf(item.state) + &quot; item&quot;}"
+                app:handleSummation="@{item.numItems}"
                 app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
                 app:layout_constraintStart_toEndOf="@id/ic_cart_check"
                 app:layout_constraintTop_toTopOf="@id/ic_cart_check"
