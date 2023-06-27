@@ -183,7 +183,6 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onGetIfProductInWishListError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error, isError = true) }
-        log("something went wrong with getWithListProduct $error")
     }
 
     // endregion
@@ -267,12 +266,11 @@ class ProductDetailsViewModel @Inject constructor(
                 EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
             )
         }
-        log("Deleted Successfully : $successMessage")
+
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error, isError = true) }
-        log("Delete From WishList Error : ${error}")
     }
 
 

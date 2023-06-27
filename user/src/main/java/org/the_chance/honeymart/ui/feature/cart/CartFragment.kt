@@ -33,7 +33,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //showExitAlertDialog()
             findNavController().navigate(R.id.markets_graph)
         }
     }

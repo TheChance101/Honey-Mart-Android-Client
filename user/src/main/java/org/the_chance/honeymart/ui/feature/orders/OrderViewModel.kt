@@ -150,6 +150,5 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
         }
-        log(orderId.toString())
     }
 }
