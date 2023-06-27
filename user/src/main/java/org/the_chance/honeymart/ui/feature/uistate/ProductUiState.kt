@@ -1,11 +1,12 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
     val isLoadingProduct: Boolean = false,
-    val isError: Boolean = false,
+    val error: ErrorHandler? = null,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),

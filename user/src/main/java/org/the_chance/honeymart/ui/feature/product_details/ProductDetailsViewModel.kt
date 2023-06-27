@@ -11,8 +11,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.util.ProductNotInSameCartMarketException
-import org.the_chance.honeymart.domain.util.UnAuthorizedException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
@@ -34,12 +33,18 @@ class ProductDetailsViewModel @Inject constructor(
     ProductImageInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
+
     private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
 
     init {
+        getData()
+    }
+
+    fun getData() {
         getProductDetails(args.productId)
     }
+
 
     fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
         tryToExecute(
@@ -53,7 +58,8 @@ class ProductDetailsViewModel @Inject constructor(
         addProductToCart(productId, count)
     }
 
-    private fun onDeleteCartError(exception: Exception) {
+    private fun onDeleteCartError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
 
@@ -72,7 +78,7 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
+                error = null,
                 product = product,
                 image = product.productImages?.first() ?: "",
                 smallImages = product.productImages?.drop(1) as List<String>
@@ -80,8 +86,8 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onGetProductError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, isError = true) }
+    private fun onGetProductError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     override fun onClickImage(url: String) {
@@ -124,24 +130,22 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onAddProductToCartError(error: Exception, productId: Long, count: Int) {
-        _state.update { it.copy(isAddToCartLoading = false, isError = true) }
+    private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
+        _state.update { it.copy(isAddToCartLoading = false, error = error) }
         when (error) {
-            is UnAuthorizedException -> {
+            is ErrorHandler.UnAuthorizedUser -> {
                 viewModelScope.launch {
                     _effect.emit(
                         EventHandler(
                             ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(
-                                    state.value.product.productId!!
-                                )
+                                AuthData.ProductDetails(state.value.product.productId!!)
                             )
                         )
                     )
                 }
             }
 
-            is ProductNotInSameCartMarketException -> {
+            is ErrorHandler.InvalidData -> {
                 viewModelScope.launch {
                     _effect.emit(
                         EventHandler(
@@ -154,11 +158,7 @@ class ProductDetailsViewModel @Inject constructor(
                 }
             }
 
-//            else -> {
-//                viewModelScope.launch {
-//                    _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartError(error)))
-//                }
-//            }
+            else -> {}
         }
     }
 
@@ -181,7 +181,8 @@ class ProductDetailsViewModel @Inject constructor(
         updateFavoriteState(isFavorite)
     }
 
-    private fun onGetIfProductInWishListError(error: Exception) {
+    private fun onGetIfProductInWishListError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
         log("something went wrong with getWithListProduct $error")
     }
 
@@ -209,11 +210,9 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onAddProductToWishListError(error: Exception, productId: Long) {
-        _state.update {
-            it.copy(isLoading = false)
-        }
-        if (error is UnAuthorizedException) {
+    private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.UnAuthorizedUser) {
             viewModelScope.launch {
                 _effect.emit(
                     EventHandler(
@@ -224,13 +223,6 @@ class ProductDetailsViewModel @Inject constructor(
                 )
             }
         }
-//        else {
-//            viewModelScope.launch {
-//                _effect.emit(
-//                    EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectError(error))
-//                )
-//            }
-//        }
         updateFavoriteState(false)
     }
 
@@ -279,11 +271,9 @@ class ProductDetailsViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: Exception) {
-//        viewModelScope.launch {
-//            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
-//        }
-        log("Delete From WishList Error : ${error.message}")
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        log("Delete From WishList Error : ${error}")
     }
 
     // endregion

@@ -19,6 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
@@ -305,8 +306,12 @@ fun disableIfLoading(view: View, isLoading: Boolean) {
     view.isEnabled = !isLoading
 }
 
-@BindingAdapter("app:validationState")
-fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
+@BindingAdapter(value = ["app:errorState", "app:validationState"])
+fun setValidationState(
+    textInputLayout: TextInputLayout,
+    error: ErrorHandler?,
+    validationState: ValidationState,
+) {
     val context = textInputLayout.context
 
     when (validationState) {
@@ -349,8 +354,14 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
         }
 
         else -> {
-            textInputLayout.error = null
-            textInputLayout.isErrorEnabled = false
+            error?.let {
+                if (error is ErrorHandler.AlreadyExist) {
+                    textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
+                } else {
+                    textInputLayout.error = null
+                    textInputLayout.isErrorEnabled = false
+                }
+            }
         }
     }
 
@@ -369,6 +380,7 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
+
 @BindingAdapter("FormatCurrency")
 fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
@@ -397,4 +409,15 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
 @BindingAdapter("app:handleSummation")
 fun handleSummation(text: TextView, count: Int) {
     text.text = if (count > 1) "$count items" else "$count item"
+}
+
+@BindingAdapter("app:errorState")
+fun setError(view: View, error: ErrorHandler?) {
+    error?.let {
+        if (error is ErrorHandler.NoConnection) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
+    }
 }

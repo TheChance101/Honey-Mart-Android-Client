@@ -1,13 +1,14 @@
 package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrdersUiState(
     val isLoading: Boolean = false,
-    val isError: Boolean = false,
+    val error: ErrorHandler? = null,
     val state: Boolean = false,
     val orders: List<OrderUiState> = emptyList(),
-    val orderStates:OrderStates = OrderStates.PROCESSING
+    val orderStates: OrderStates = OrderStates.PROCESSING,
 )
 
 data class OrderUiState(
