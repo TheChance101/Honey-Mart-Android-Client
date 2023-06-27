@@ -44,11 +44,13 @@ class ProductViewModel @Inject constructor(
     }
 
     fun getData() {
+        _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(args.categoryId)
         getCategoriesByMarketId()
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
@@ -58,13 +60,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>,
-        products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
     ) {
         _state.update { productsUiState ->
             productsUiState.copy(
-                isLoadingProduct = false,
-                products = updateProducts(products, wishListProducts)
+                isLoadingProduct = false, products = updateProducts(products, wishListProducts)
             )
         }
     }
@@ -73,24 +73,18 @@ class ProductViewModel @Inject constructor(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
     ) = products.map { product ->
-        product.copy(
-            isFavorite = product.productId in wishListProducts.map { it.productId }
-        )
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
     }
 
     private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
-        _state.update {
-            it.copy(
-                isLoadingProduct = false,
-                error = error,
-                products = products
-            )
+        _state.update { it.copy(isLoadingProduct = false, error = error, products = products) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
-
     }
 
     fun getCategoriesByMarketId() {
-        _state.update { it.copy(isLoadingCategory = true) }
+        _state.update { it.copy(isLoadingCategory = true, isError = false) }
         tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -99,7 +93,7 @@ class ProductViewModel @Inject constructor(
     }
 
     fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoadingProduct = true) }
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
@@ -110,8 +104,7 @@ class ProductViewModel @Inject constructor(
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
         _state.update {
             it.copy(
-                error = null,
-                isLoadingCategory = false,
+                error = null, isLoadingCategory = false,
                 categories = updateCategorySelection(categories, args.categoryId),
                 position = args.position
             )
@@ -124,12 +117,16 @@ class ProductViewModel @Inject constructor(
 
     private fun onGetCategoryError(error: ErrorHandler) {
         _state.update { it.copy(isLoadingCategory = false, error = error) }
-        Log.e("TAG", "onGetCategoryError: $error")
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     private fun onGetProductError(error: ErrorHandler) {
         _state.update { it.copy(isLoadingProduct = false, error = error) }
-        Log.e("TAG", "onGetProductError: $error")
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     override fun onClickCategoryProduct(categoryId: Long) {
@@ -196,7 +193,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
+        _state.update { it.copy(error = error, isError = true) }
         log("Delete From WishList Error : ${error}")
     }
 

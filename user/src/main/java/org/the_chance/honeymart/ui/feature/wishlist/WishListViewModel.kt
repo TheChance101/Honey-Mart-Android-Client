@@ -26,7 +26,13 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun deleteProductFromWishList(productId: Long) {
-        _state.update { it.copy(products = updateProductFavoriteState(false, productId), isLoading = true) }
+        _state.update {
+            it.copy(
+                products = updateProductFavoriteState(false, productId),
+                isLoading = true,
+                isError = false
+            )
+        }
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteProductSuccess,
@@ -58,17 +64,15 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
         _state.update {
-            it.copy(
-                products = updateProductFavoriteState(true, productId),
-                error = error
-            )
+            it.copy(products = updateProductFavoriteState(true, productId), error = error)
         }
-        // emit anything to observe on Fragment to show snackbar or to show vector something went wrong
-        // this based on caught exception(Very important , may be internet or timeout , or server error)
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
    fun getWishListProducts() {
-        _state.update { it.copy(isLoading = true) }
+       _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllWishListUseCase().map { it.toWishListProductUiState() } },
             ::onGetProductSuccess,
@@ -82,6 +86,9 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     private fun onGetProductError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun onClickDiscoverButton() {

@@ -16,9 +16,23 @@
         <item name="colorOnSecondary">@color/dark_text_87</item>
         <item name="colorSecondaryContainer">@color/dark_primary_100</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-
         <item name="fontFamily">@font/poppins</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 
+    <style name="BaseBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/round_corner_dialog</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Text Styles -->
@@ -256,11 +270,6 @@
         <item name="errorIconTint">@color/dark_error</item>
     </style>
 
-    <!-- Bottom Sheet Styles -->
-    <style name="TransparentBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
     <!-- Button Styles -->
     <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
         <item name="cornerRadius">@dimen/radius_16</item>
@@ -297,5 +306,16 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/dark_background_400</item>
     </style>
+
+    <!-- Card Dialog Login Style-->
+    <style name="Theme.HoneyMart.Card.DialogCard">
+        <item name="cardBackgroundColor">@color/dark_background_300</item>
+    </style>
+
+    <style name="alertDialogCustomStyle">
+        <item name="android:background">@color/dark_background_300</item>
+    </style>
+
+
 
 </resources>

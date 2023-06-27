@@ -222,28 +222,55 @@ fun showState(textView: TextView, state: Int) {
 @BindingAdapter("app:changeIfSelected")
 fun changeIfSelected(view: View, isSelected: Boolean) {
     val context = view.context
+    val uiManager =
+        context.applicationContext.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    when (uiManager.nightMode) {
+        UiModeManager.MODE_NIGHT_NO -> {
+            when (view) {
+                is CardView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
 
-    when (view) {
-        is CardView -> {
-            val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
-            val color = ContextCompat.getColor(context, colorRes)
-            view.setCardBackgroundColor(color)
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
+
+                is MaterialTextView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setTextColor(color)
+                }
+            }
         }
+        UiModeManager.MODE_NIGHT_YES ->{
+            when (view) {
+                is CardView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.dark_background_400
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setCardBackgroundColor(color)
+                }
 
-        is ShapeableImageView -> {
-            val drawableRes =
-                if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
-            val drawable = ContextCompat.getDrawable(context, drawableRes)
-            view.setImageDrawable(drawable)
-        }
+                is ShapeableImageView -> {
+                    val drawableRes =
+                        if (isSelected) R.drawable.icon_category_white else R.drawable.icon_category
+                    val drawable = ContextCompat.getDrawable(context, drawableRes)
+                    view.setImageDrawable(drawable)
+                }
 
-        is MaterialTextView -> {
-            val colorRes = if (isSelected) R.color.primary_100 else R.color.black_60
-            val color = ContextCompat.getColor(context, colorRes)
-            view.setTextColor(color)
+                is MaterialTextView -> {
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.dark_text_87
+                    val color = ContextCompat.getColor(context, colorRes)
+                    view.setTextColor(color)
+                }
+            }
         }
     }
-}
+    }
 
 @BindingAdapter("app:changeColorIfSelected")
 fun changeColorIfSelected(view: View, isFavorite: Boolean) {
@@ -299,11 +326,7 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
-@BindingAdapter("app:formattedPrice")
-fun setFormattedPrice(view: TextView, price: Double) {
-    val formattedPrice = String.format("%,.0f$", price)
-    view.text = formattedPrice
-}
+
 
 
 @BindingAdapter("app:disableIfLoading")
@@ -401,10 +424,10 @@ fun bindImage(image: ImageView, imageURL: String?) {
 }
 
 @BindingAdapter("FormatCurrency")
-fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
-    text = formattedAmount
+   View.text = formattedAmount
 }
 
 

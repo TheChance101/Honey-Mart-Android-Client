@@ -5,6 +5,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class WishListUiState(
     val isLoading: Boolean = true,
+    val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val products: List<WishListProductUiState> = emptyList(),
 )

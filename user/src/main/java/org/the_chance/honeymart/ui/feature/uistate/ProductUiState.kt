@@ -7,6 +7,7 @@ data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
     val isLoadingProduct: Boolean = false,
     val error: ErrorHandler? = null,
+    val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),

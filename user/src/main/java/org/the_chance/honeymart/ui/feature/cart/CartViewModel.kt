@@ -26,7 +26,7 @@ class CartViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     fun getChosenCartProducts() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
@@ -46,7 +46,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun onGetAllCartError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
     private fun incrementProductCountByOne(productId: Long) {
@@ -95,8 +95,10 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateProductCart(productId: Long, count: Int) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+
         tryToExecute(
-            { addToCartUseCase(productId, count)},
+            { addToCartUseCase(productId, count) },
             ::onUpdateProductInCartSuccess,
             ::onUpdateProductInCartError
         )
@@ -104,17 +106,14 @@ class CartViewModel @Inject constructor(
 
     private fun onUpdateProductInCartSuccess(message: String) {
         _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-            )
+            it.copy(isLoading = false, error = null)
         }
         getChosenCartProducts()
     }
 
     private fun onUpdateProductInCartError(error: ErrorHandler) {
         this._state.update {
-            it.copy(isLoading = false, error = error)
+            it.copy(isLoading = false, error = error, isError = true)
         }
     }
 
@@ -128,39 +127,24 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { checkout() },
             ::onCheckOutSuccess,
             ::onCheckOutFailed
         )
-         _state.update {
-            it.copy(
-                isLoading = true,
-            )
-        }
     }
  private fun onCheckOutSuccess(message: String) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                products = emptyList()
-            )
-        }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
-        }
-    }
+     _state.update { it.copy(isLoading = false, products = emptyList()) }
+     viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
+ }
 
     private fun onCheckOutFailed(error: ErrorHandler) {
-        this._state.update {
-            it.copy(isLoading = false, error = error)
-        }
+        this._state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
     fun onClickDiscoverButton() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect))
-        }
+        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
     }
 
     fun deleteCart(position: Long) {
@@ -187,9 +171,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun onDeleteFromCartError(error: ErrorHandler) {
-        this._state.update {
-            it.copy(isLoading = false, error = error)
-        }
+        _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
 
