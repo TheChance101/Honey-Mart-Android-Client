@@ -271,11 +271,9 @@ class ProductDetailsViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: Exception) {
-//        viewModelScope.launch {
-//            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
-//        }
-        log("Delete From WishList Error : ${error.message}")
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        log("Delete From WishList Error : ${error}")
     }
 
     // endregion

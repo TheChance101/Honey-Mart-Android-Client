@@ -71,7 +71,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: Exception) -> Unit,
+        onError: (t: ErrorHandler) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         job?.cancel()
@@ -82,9 +82,21 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 log("tryToExecute:$result ")
                 onSuccess(result)
 
-            } catch (e: Exception) {
-                log("tryToExecute error: ${e.message}")
-                onError(e)
+            } catch (exception: GeneralException) {
+                handelGeneralException(exception, onError)
+                log("tryToExecute error GeneralException: ${exception}")
+            } catch (exception: NetworkException) {
+                handelNetworkException(exception, onError)
+                log("tryToExecute error NetworkException: ${exception}")
+            } catch (exception: AuthenticationException) {
+                handelAuthenticationException(exception, onError)
+                log("tryToExecute error AuthenticationException: ${exception}")
+            } catch (exception: IOException) {
+                log("tryToExecute error IOException: ${exception}")
+                onError(ErrorHandler.NoConnection)
+            } catch (exception: Exception) {
+                log("tryToExecute error Exception: ${exception}")
+                onError(ErrorHandler.UnKnownError)
             }
         }
         log("job isCompleted : ${job?.isCompleted} ")
