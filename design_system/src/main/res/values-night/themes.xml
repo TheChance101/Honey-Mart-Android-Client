@@ -16,9 +16,21 @@
         <item name="colorOnSecondary">@color/dark_text_87</item>
         <item name="colorSecondaryContainer">@color/dark_primary_100</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
-
         <item name="fontFamily">@font/poppins</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+    </style>
 
+    <style name="BaseBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/round_corner_dialog</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Text Styles -->
@@ -254,11 +266,6 @@
 
     <style name="Theme.HoneyMart.Text.H6.TextInputEditText.ErrorIconColor">
         <item name="errorIconTint">@color/dark_error</item>
-    </style>
-
-    <!-- Bottom Sheet Styles -->
-    <style name="TransparentBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!-- Button Styles -->
