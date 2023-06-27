@@ -15,5 +15,5 @@ internal fun CartProductDto.toCartProductsEntity() = CartProductsEntity(
     name = name,
     count = count,
     price = price,
-    images = images
+    images =  images?.ifEmpty { listOf("") }
 )

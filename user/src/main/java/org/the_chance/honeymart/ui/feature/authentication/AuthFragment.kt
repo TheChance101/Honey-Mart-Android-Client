@@ -18,9 +18,16 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
 
     override fun setup() {
         addCallbacks()
-        setupUserFlowWindowVisibility()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )
+    }
     private fun addCallbacks() {
         collectAction()
     }

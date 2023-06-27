@@ -18,7 +18,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_product"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_zero"
+            android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"
@@ -48,25 +48,18 @@
                 tools:srcCompat="@drawable/icon_favorite_selected" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/card_back_arrow"
             android:layout_width="@dimen/spacing_32"
             android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
-            android:backgroundTint="@color/white"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeWidth="@dimen/stroke_zero">
+            app:srcCompat="@drawable/icon_back_arrow"
+            app:strokeWidth="@dimen/stroke_zero" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/spacing_8"
-                app:srcCompat="@drawable/icon_back_arrow" />
-        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_product_images"
@@ -74,6 +67,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="horizontal"
+            android:paddingVertical="@dimen/spacing_2"
             android:paddingHorizontal="@dimen/spacing_12"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
@@ -135,7 +129,7 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_2"
             android:backgroundTint="@color/primary_100"
-            android:onClick="@{() -> viewModel.addProduct()}"
+            android:onClick="@{() -> viewModel.increaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_product_images"
@@ -146,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/icon_add_product" />
+                app:srcCompat="@drawable/ic_plus" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
@@ -160,28 +154,28 @@
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@id/card_increase_count"
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
-            tools:text="01" />
+            tools:text="0" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_decrease_count"
-            android:layout_width="@dimen/spacing_32"
-            android:layout_height="@dimen/spacing_32"
-            android:layout_margin="@dimen/spacing_16"
-            android:backgroundTint="@color/white"
-            android:onClick="@{() -> viewModel.removeProduct()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:gravity="center_horizontal|center_vertical"
+            android:onClick="@{() -> viewModel.decreaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeColor="@color/primary_100"
-            app:strokeWidth="@dimen/stroke_normal">
+            app:strokeWidth="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/icon_remove_product" />
+                app:srcCompat="@drawable/ic_minus" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
@@ -191,6 +185,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_24"
             android:layout_marginEnd="@dimen/spacing_16"
+            android:ellipsize="end"
+            android:maxLines="4"
             android:text="@{viewModel.state.product.productDescription}"
             android:textAlignment="textStart"
             app:hideIfLoading="@{viewModel.state.loading}"
@@ -199,18 +195,6 @@
             app:layout_constraintTop_toBottomOf="@id/card_product_price"
             tools:text="Product Description Product Description Product Description Product Description Product Description Product Description Product Description" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/add_to_cart_loading"
-            android:layout_width="@dimen/add_to_cart_lottie_loading"
-            android:layout_height="@dimen/add_to_cart_lottie_loading"
-            android:layout_marginBottom="@dimen/spacing_4"
-            app:layout_constraintBottom_toTopOf="@id/button_add_to_cart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading"
-            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add_to_cart"
@@ -219,19 +203,31 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_32"
+            app:hideIfLoading="@{viewModel.state.loading}"
             android:background="@drawable/button_background"
+            app:loadingCartState="@{viewModel.state.isAddToCartLoading}"
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
-            android:text="@string/add_to_cart"
-            app:disableIfLoading="@{viewModel.state.isAddToCartLoading}"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
-            app:hideIfLoading="@{viewModel.state.loading}"
-            app:icon="@drawable/icon_add_to_cart"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/spacing_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/add_to_cart_loading"
+            android:layout_width="@dimen/add_to_cart_lottie_loading"
+            android:layout_height="@dimen/add_to_cart_lottie_loading"
+            android:layout_marginBottom="@dimen/spacing_4"
+            app:layout_constraintBottom_toBottomOf="@id/button_add_to_cart"
+            app:layout_constraintEnd_toEndOf="@id/button_add_to_cart"
+            app:layout_constraintStart_toStartOf="@id/button_add_to_cart"
+            app:layout_constraintTop_toTopOf="@+id/button_add_to_cart"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isAddToCartLoading}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"

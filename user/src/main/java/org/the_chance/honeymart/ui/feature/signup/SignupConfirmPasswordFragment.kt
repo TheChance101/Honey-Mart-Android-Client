@@ -21,7 +21,15 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
     override val viewModel: SignupViewModel by activityViewModels()
     override fun setup() {
         collectAction()
-        setupUserFlowWindowVisibility()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )
     }
 
     private fun collectAction() {

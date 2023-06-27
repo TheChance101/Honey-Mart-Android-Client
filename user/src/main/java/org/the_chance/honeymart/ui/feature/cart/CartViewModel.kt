@@ -132,7 +132,12 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
-        _state.update { it.copy(isLoading = false) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                products = emptyList()
+            )
+        }
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
             checkout()

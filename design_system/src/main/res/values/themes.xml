@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Honey Mart App Theme   -->
+    <!--Honey Mart App Light Theme-->
     <style name="Theme.HoneyMart" parent="Theme.Material3.Light.NoActionBar">
 
         <!--Primary-->
@@ -20,17 +20,42 @@
         <item name="android:colorBackground">@color/white_300</item>
         <item name="fontFamily">@font/poppins</item>
 
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:fitsSystemWindows">true</item>
-
-
     </style>
 
-    <!-- ButtomSheet Styles -->
+
+    <!-- Cart Card Style-->
+    <style name="CartCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut
+        </item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="strokeWidth">@dimen/stroke_zero</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_16</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_16</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <!-- Bottom Sheet Styles -->
     <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <!--Bottom Navigation-->
+    <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/black_60</item>
+        <item name="android:colorPressedHighlight">@color/white</item>
+        <item name="itemRippleColor">@color/primary_100</item>
+        <item name="itemActiveIndicatorStyle">@style/App.Custom.Indicator</item>
+    </style>
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/primary_100</item>
+    </style>
 
     <!-- Button Styles -->
     <style name="Theme.HoneyMart.Button" parent="Theme.HoneyMart.Text.H3">
@@ -113,6 +138,8 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+
+
     <!-- Heading 3 -->
     <style name="Theme.HoneyMart.Text.H3">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -157,6 +184,8 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+
+
     <!-- Heading 5 -->
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -178,6 +207,8 @@
     <style name="Theme.HoneyMart.Text.H5.DarkIntense">
         <item name="android:textColor">@color/black_37</item>
     </style>
+
+
 
     <!-- Heading 6 -->
     <style name="Theme.HoneyMart.Text.H6">
@@ -201,11 +232,16 @@
         <item name="android:textColor">@color/black_37</item>
     </style>
 
+    <style name="Theme.HoneyMart.Text.H6.SameColor">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- Card Styles-->
     <style name="Theme.HoneyMart.Card">
         <item name="cardCornerRadius">@dimen/radius_16</item>
         <item name="strokeWidth">@dimen/stroke_zero</item>
     </style>
+
     <!-- Chip Styles-->
     <style name="Theme.HoneyMart.Text.H5.Chips">
         <item name="chipCornerRadius">@dimen/radius_16</item>

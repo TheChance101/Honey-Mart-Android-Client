@@ -19,7 +19,6 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
     private val productAdapter: ProductAdapter by lazy { ProductAdapter(viewModel) }
 
     override fun setup() {
-        setupMainFlowWindowVisibility()
         initAdapters()
         collectEffect()
     }
@@ -68,5 +67,11 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
         val action =
             ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCategoriesByMarketId()
+        viewModel.getProductsByCategoryId(viewModel.args.categoryId)
     }
 }

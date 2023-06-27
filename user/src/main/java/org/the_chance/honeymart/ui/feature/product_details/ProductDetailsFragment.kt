@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.AuthData
@@ -21,11 +20,18 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     override val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun setup() {
-        hideAppBarAndBottomNavigation()
         initiateAdapter()
         navigateBack()
         collectEffect()
     }
+
+    override fun onResume() {
+        super.onResume()
+        setWindowVisibility(
+            appBarVisibility = false,
+            bottomNavVisibility = false,
+            isTransparentStatusBar = false
+        )    }
 
     private fun initiateAdapter() {
         val adapter = ProductDetailsAdapter(viewModel)

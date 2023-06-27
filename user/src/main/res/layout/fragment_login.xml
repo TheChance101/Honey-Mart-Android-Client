@@ -10,159 +10,168 @@
             type="org.the_chance.honeymart.ui.feature.login.LoginViewModel" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.the_chance.honeymart.ui.feature.signup.ui.login.SignupFragment">
+        tools:context=".ui.feature.login.LoginFragment">
 
-
-        <View
-            android:id="@+id/image_background"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="@drawable/background_frame"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_welcome_back"
-            style="@style/Theme.HoneyMart.Text.H1.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:text="@string/welcome_back"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_description"
-            style="@style/Theme.HoneyMart.Text.H3.Light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_24"
-            android:layout_marginTop="@dimen/spacing_24"
-            android:maxLines="3"
-            android:text="@string/reconnect_with_your_favorite_brands_and_saved_items_log_in_today"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@+id/text_welcome_back"
-            app:layout_constraintStart_toStartOf="@+id/text_welcome_back"
-            app:layout_constraintTop_toBottomOf="@+id/text_welcome_back" />
+                <View
+                    android:id="@+id/image_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:background="@drawable/background_frame"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_field_input_email"
-            style="@style/Theme.HoneyMart.H6.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="86dp"
-            android:layout_marginHorizontal="@dimen/spacing_32"
-            android:layout_marginTop="@dimen/spacing_64"
-            android:hint="@string/email"
-            app:emailErrorState="@{viewModel.state.error}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_background"
-            app:validationState="@{viewModel.state.emailState}">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_welcome_back"
+                    style="@style/Theme.HoneyMart.Text.H1.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:text="@string/welcome_back"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_email"
-                style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_description"
+                    style="@style/Theme.HoneyMart.Text.H3.Light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_24"
+                    android:layout_marginTop="@dimen/spacing_24"
+                    android:maxLines="3"
+                    android:text="@string/reconnect_with_your_favorite_brands_and_saved_items_log_in_today"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/text_welcome_back"
+                    app:layout_constraintStart_toStartOf="@+id/text_welcome_back"
+                    app:layout_constraintTop_toBottomOf="@+id/text_welcome_back" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_field_input_email"
+                    style="@style/Theme.HoneyMart.H6.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:layout_marginHorizontal="@dimen/spacing_32"
+                    android:layout_marginTop="@dimen/spacing_64"
+                    android:hint="@string/email"
+                    app:emailErrorState="@{viewModel.state.error}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_background"
+                    app:validationState="@{viewModel.state.emailState}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_email"
+                        style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:afterTextChanged="@{(text)->viewModel.onEmailInputChange(text)}"
+                        android:drawableStart="@drawable/ic_email"
+                        android:inputType="textEmailAddress"
+                        android:text="@{viewModel.state.email}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_field_input_password"
+                    style="@style/Theme.HoneyMart.H6.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_32"
+                    android:hint="@string/password"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_field_input_email"
+                    app:passwordToggleTint="@color/gray"
+                    app:validationState="@{viewModel.state.passwordState}">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_password"
+                        style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:afterTextChanged="@{(text)->viewModel.onPasswordInputChanged(text)}"
+                        android:drawableStart="@drawable/ic_password"
+                        android:inputType="textPassword"
+                        android:text="@{viewModel.state.password}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_continue"
+                style="@style/Theme.HoneyMart.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:afterTextChanged="@{(text)->viewModel.onEmailInputChange(text)}"
-                android:drawableStart="@drawable/ic_email"
-                android:inputType="textEmailAddress"
-                android:text="@{viewModel.state.email}" />
+                android:layout_marginHorizontal="@dimen/spacing_32"
+                android:layout_marginTop="@dimen/spacing_56"
+                android:background="@drawable/button_background"
+                android:onClick="@{()->viewModel.onLoginClick()}"
+                android:text='@{viewModel.state.loading ? "" : @string/log_in}'
+                android:enabled="@{!viewModel.state.loading}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_field_input_password" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_dont_have_account"
+                    style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_64"
+                    android:layout_marginBottom="@dimen/spacing_24"
+                    android:gravity="center"
+                    android:text="@string/don_t_have_an_account"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/text_signup"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_continue" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_field_input_password"
-            style="@style/Theme.HoneyMart.H6.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_32"
-            android:hint="@string/password"
-            app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_field_input_email"
-            app:passwordToggleTint="@color/gray"
-            app:validationState="@{viewModel.state.passwordState}">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_signup"
+                    style="@style/Theme.HoneyMart.Text.H5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->viewModel.onClickSignUp()}"
+                    android:paddingStart="@dimen/spacing_8"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/primary_100"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_dont_have_account"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
+                    app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_password"
-                style="@style/Theme.HoneyMart.Text.H6.TextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:afterTextChanged="@{(text)->viewModel.onPasswordInputChanged(text)}"
-                android:drawableStart="@drawable/ic_password"
-                android:inputType="textPassword"
-                android:text="@{viewModel.state.password}" />
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/loading"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintBottom_toBottomOf="@id/button_continue"
+                    app:layout_constraintEnd_toEndOf="@id/button_continue"
+                    app:layout_constraintStart_toStartOf="@id/button_continue"
+                    app:layout_constraintTop_toTopOf="@id/button_continue"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/loading"
+                    app:showIfTrue="@{viewModel.state.isLoading}" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_continue"
-            style="@style/Theme.HoneyMart.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_32"
-            android:layout_marginTop="@dimen/spacing_56"
-            android:background="@drawable/button_background"
-            android:onClick="@{()->viewModel.onLoginClick()}"
-            android:text="@string/log_in"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_field_input_password" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_dont_have_account"
-            style="@style/Theme.HoneyMart.Text.H6.DarkIntense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_64"
-            android:layout_marginBottom="@dimen/spacing_24"
-            android:gravity="center"
-            android:text="@string/don_t_have_an_account"
-            android:textSize="@dimen/text_caption"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_signup"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_continue" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_signup"
-            style="@style/Theme.HoneyMart.Text.H5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.onClickSignUp()}"
-            android:paddingStart="@dimen/spacing_8"
-            android:text="@string/sign_up"
-            android:textColor="@color/primary_100"
-            app:layout_constraintBottom_toBottomOf="@+id/text_dont_have_account"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_dont_have_account"
-            app:layout_constraintTop_toTopOf="@+id/text_dont_have_account" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loading"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading"
-            app:showIfTrue="@{viewModel.state.isLoading}" />
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

@@ -21,4 +21,21 @@
 
     <color name="gray">#A7A7A7</color>
 
+    <!--Dark Theme Colors-->
+
+    <!--Primary-->
+    <color name="dark_primary_100">#FEBC33</color>
+    <!--Success-->
+    <color name="dark_success">#00E82D</color>
+    <!--Error-->
+    <color name="dark_error">#CF6679</color>
+    <!--Background-->
+    <color name="dark_background_200">#252525</color>
+    <color name="dark_background_300">#333333</color>
+    <color name="dark_background_400">#484848</color>
+    <!--Text-->
+    <color name="dark_text_87">#E2E2E2</color>
+    <color name="dark_text_60">#A7A7A7</color>
+    <color name="dark_text_37">#8C8C8C</color>
+
 </resources>

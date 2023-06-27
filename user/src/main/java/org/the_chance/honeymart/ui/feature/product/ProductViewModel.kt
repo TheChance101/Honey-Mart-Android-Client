@@ -37,7 +37,7 @@ class ProductViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-    private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getData()
@@ -89,7 +89,7 @@ class ProductViewModel @Inject constructor(
 
     }
 
-    private fun getCategoriesByMarketId() {
+    fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
@@ -98,14 +98,13 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun getProductsByCategoryId(categoryId: Long) {
+    fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoadingProduct = true) }
         tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
             ::onGetProductError
         )
-        Log.e("TAG", "getProductsByCategoryId: $categoryId")
     }
 
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
@@ -121,7 +120,6 @@ class ProductViewModel @Inject constructor(
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
         getWishListProducts(products)
-        Log.e("TAG", "onGetProductSuccess: $products")
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
@@ -154,7 +152,6 @@ class ProductViewModel @Inject constructor(
         return categories.map { category ->
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
-
     }
 
     override fun onClickProduct(productId: Long) {

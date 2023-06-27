@@ -34,7 +34,6 @@ class ProductDetailsViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-
     private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
 
@@ -99,13 +98,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(image = url) }
     }
 
-    fun addProduct() {
+    fun increaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = currentQuantity + 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
-    fun removeProduct() {
+    fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
         _state.update { it.copy(quantity = newQuantity) }
@@ -117,7 +116,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun addProductToCart(productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = true) }
-        tryToExecute(
+        tryToExecuteDebounced(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -192,7 +191,10 @@ class ProductDetailsViewModel @Inject constructor(
     // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
-        tryToExecute(
+        _state.update {
+            it.copy(isLoading = true)
+        }
+        tryToExecuteDebounced(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
@@ -200,12 +202,16 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToWishListSuccess(message: String) {
+        _state.update {
+            it.copy(isLoading = false)
+        }
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess))
         }
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
+        _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.UnAuthorizedUser) {
             viewModelScope.launch {
                 _effect.emit(
@@ -248,7 +254,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Delete Product From WishList
 
     private fun deleteProductFromWishList(productId: Long) {
-        tryToExecute(
+        tryToExecuteDebounced(
             { deleteProductFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
@@ -265,11 +271,11 @@ class ProductDetailsViewModel @Inject constructor(
         log("Deleted Successfully : $successMessage")
     }
 
-    private fun onDeleteWishListError(error: ErrorHandler) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
-        }
-        log("Delete From WishList Error : ${error}")
+    private fun onDeleteWishListError(error: Exception) {
+//        viewModelScope.launch {
+//            _effect.emit(EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectError))
+//        }
+        log("Delete From WishList Error : ${error.message}")
     }
 
     // endregion
