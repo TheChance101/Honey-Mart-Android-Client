@@ -151,9 +151,9 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun onCheckOutFailed(exception: Exception) {
+    private fun onCheckOutFailed(error: ErrorHandler) {
         this._state.update {
-            it.copy(isLoading = false, isError = true)
+            it.copy(isLoading = false, error = error)
         }
     }
 
