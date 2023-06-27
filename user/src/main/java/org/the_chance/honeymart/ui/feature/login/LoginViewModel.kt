@@ -52,7 +52,12 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginError(error: ErrorHandler) {
         if (error is ErrorHandler.AlreadyExist) {
-            _state.update { it.copy(isLoading = false, error = error) }
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = error
+                )
+            }
         }
     }
 

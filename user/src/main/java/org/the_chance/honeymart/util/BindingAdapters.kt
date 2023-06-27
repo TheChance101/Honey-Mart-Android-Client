@@ -310,8 +310,12 @@ fun disableIfLoading(view: View, isLoading: Boolean) {
     view.isEnabled = !isLoading
 }
 
-@BindingAdapter("app:validationState")
-fun setValidationState(textInputLayout: TextInputLayout, validationState: ValidationState) {
+@BindingAdapter(value = ["app:errorState", "app:validationState"])
+fun setValidationState(
+    textInputLayout: TextInputLayout,
+    error: ErrorHandler?,
+    validationState: ValidationState,
+) {
     val context = textInputLayout.context
 
     when (validationState) {
@@ -354,8 +358,14 @@ fun setValidationState(textInputLayout: TextInputLayout, validationState: Valida
         }
 
         else -> {
-            textInputLayout.error = null
-            textInputLayout.isErrorEnabled = false
+            error?.let {
+                if (error is ErrorHandler.AlreadyExist) {
+                    textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
+                } else {
+                    textInputLayout.error = null
+                    textInputLayout.isErrorEnabled = false
+                }
+            }
         }
     }
 
@@ -374,6 +384,7 @@ fun bindImage(image: ImageView, imageURL: String?) {
         }
     }
 }
+
 @BindingAdapter("FormatCurrency")
 fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
@@ -411,18 +422,6 @@ fun setError(view: View, error: ErrorHandler?) {
             view.visibility = View.VISIBLE
         } else {
             view.visibility = View.GONE
-        }
-    }
-}
-
-@BindingAdapter("app:emailErrorState")
-fun setEmailError(textInputLayout: TextInputLayout, error: ErrorHandler?) {
-    error?.let {
-        if (error is ErrorHandler.AlreadyExist) {
-            textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
-        } else {
-            textInputLayout.error = null
-            textInputLayout.isErrorEnabled = false
         }
     }
 }

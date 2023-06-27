@@ -74,7 +74,7 @@
     <string name="stay">stay</string>
     <string name="add_from_different_cart_message">Product not in same market. Delete last cart item to add? Confirm?</string>
     <string name="deleted">Deleted</string>
-    <string name="email_exist">there is no Email by this address</string>
+    <string name="email_exist">there is no account with this email and password</string>
     <string name="connection_restored">Connection restored</string>
     <string name="show_my_order_details">Show My Order Details</string>
     <string name="your_cart_list_is_empty">Your Cart list is empty!!</string>
