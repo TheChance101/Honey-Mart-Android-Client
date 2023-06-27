@@ -16,7 +16,6 @@ import coil.load
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
@@ -407,8 +406,6 @@ fun setError(view: View, error: ErrorHandler?) {
             view.visibility = View.VISIBLE
         } else {
             view.visibility = View.GONE
-            val message = view.context.getString(R.string.connection_restored)
-            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
         }
     }
 }

@@ -1,20 +1,20 @@
 package org.the_chance.honeymart.domain.util
 
 open class GeneralException : Exception()
-class InvalidDataException : GeneralException()//400
-class NotFoundException : GeneralException()//404
-class AlreadyExistException : GeneralException()//409
+class InvalidDataException : GeneralException()
+class NotFoundException : GeneralException()
+class AlreadyExistException : GeneralException()
 
 
 open class NetworkException : Exception()
 class NoConnectionException : NetworkException()
-class InternalServerException : NetworkException()//500
+class InternalServerException : NetworkException()
 
 
 open class AuthenticationException : Exception()
-class UnAuthorizedException : AuthenticationException()//401
-class EmailIsExistException : AuthenticationException()//1001
-class ForbiddenException : AuthenticationException()//403
+class UnAuthorizedException : AuthenticationException()
+class EmailIsExistException : AuthenticationException()
+class ForbiddenException : AuthenticationException()
 
 
 sealed interface ErrorHandler {
