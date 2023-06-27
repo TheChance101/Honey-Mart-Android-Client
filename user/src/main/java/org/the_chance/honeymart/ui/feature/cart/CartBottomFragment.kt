@@ -29,7 +29,7 @@ class CartBottomFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     override fun getTheme(): Int {
-        return org.the_chance.design_system.R.style.TransparentBottomSheetDialog
+        return org.the_chance.design_system.R.style.BottomSheetStyle
 
 //        return com.google.android.material.R.style.ShapeAppearanceOverlay_MaterialComponents_BottomSheet
     }
