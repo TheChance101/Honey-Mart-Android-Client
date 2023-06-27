@@ -59,5 +59,10 @@ dependencies {
     //swipe
     implementation(Dependencies.swipeDependency)
     // coil
-    implementation(Dependencies.coilDependency)
+    implementation(Dependencies.coilDependency);
+    //splash
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+
+
 }
