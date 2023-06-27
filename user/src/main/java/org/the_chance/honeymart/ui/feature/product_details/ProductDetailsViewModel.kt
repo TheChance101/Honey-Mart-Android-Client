@@ -280,7 +280,6 @@ class ProductDetailsViewModel @Inject constructor(
                 EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
             )
         }
-        log("Deleted Successfully : $successMessage")
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
