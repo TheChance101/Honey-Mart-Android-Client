@@ -154,7 +154,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone"
-            app:errorState="@{viewModel.state.error}">
+            app:showIfTrue="@{viewModel.state.isError}">
 
             <include
                 android:id="@+id/no_connection"

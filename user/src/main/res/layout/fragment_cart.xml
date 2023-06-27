@@ -167,9 +167,10 @@
             android:layout_height="match_parent"
             android:background="?android:attr/colorBackground"
             android:gravity="center"
-            android:orientation="vertical"
+            android:elevation="@dimen/spacing_8"
             android:visibility="gone"
-            app:errorState="@{viewModel.state.error}">
+            android:orientation="vertical"
+            app:showIfTrue="@{viewModel.state.isError}">
 
             <include
                 android:id="@+id/no_connection"

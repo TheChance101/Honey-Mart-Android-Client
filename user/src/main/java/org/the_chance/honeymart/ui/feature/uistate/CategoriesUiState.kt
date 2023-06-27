@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class CategoriesUiState(
     val isLoading: Boolean = true,
+    val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
     val categories: List<CategoryUiState> = emptyList(),

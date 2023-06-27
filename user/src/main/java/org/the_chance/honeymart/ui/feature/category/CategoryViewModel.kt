@@ -31,7 +31,7 @@ class CategoryViewModel @Inject constructor(
 
 
     fun getAllCategory() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -50,11 +50,9 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
-        this._state.update {
-            it.copy(
-                isLoading = false,
-                error = error
-            )
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
     }
 
