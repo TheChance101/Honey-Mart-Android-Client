@@ -43,7 +43,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_category"
-            style="@style/Theme.HoneyMart.Text.H6.Light"
+            style="@style/Theme.HoneyMart.Text.H6.DarkModerate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_8"
