@@ -25,10 +25,6 @@ class CartViewModel @Inject constructor(
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-
-
-
-
     fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -137,6 +133,18 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
+        tryToExecute(
+            { checkout() },
+            ::onCheckOutSuccess,
+            ::onCheckOutFailed
+        )
+         _state.update {
+            it.copy(
+                isLoading = true,
+            )
+        }
+    }
+ private fun onCheckOutSuccess(message: String) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -146,7 +154,12 @@ class CartViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
-            checkout()
+        }
+    }
+
+    private fun onCheckOutFailed(exception: Exception) {
+        this._state.update {
+            it.copy(isLoading = false, isError = true)
         }
     }
 

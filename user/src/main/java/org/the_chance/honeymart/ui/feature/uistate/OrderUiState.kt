@@ -17,6 +17,7 @@ data class OrderUiState(
     val date: Long?= 1687259600016,
     val marketName: String?="",
     val imageUrl: String?="",
+    val numItems:Int?=1
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
@@ -26,7 +27,8 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
         state = state,
         date = date,
         marketName = market.marketName,
-        imageUrl = market.imageUrl
+        imageUrl = market.imageUrl,
+        numItems=numItems
     )
 }
 
