@@ -36,7 +36,7 @@ class ProductViewModel @Inject constructor(
     CategoryProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
-    private val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getCategoriesByMarketId()
@@ -82,7 +82,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun getCategoriesByMarketId() {
+    fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true) }
         tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
@@ -91,7 +91,7 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun getProductsByCategoryId(categoryId: Long) {
+   fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoadingProduct = true) }
         tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },

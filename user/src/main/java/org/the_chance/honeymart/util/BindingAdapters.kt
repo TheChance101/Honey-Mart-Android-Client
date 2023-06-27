@@ -386,14 +386,14 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
     if (quantity != null) {
         if (quantity > 0) {
             button.isEnabled = !isLoading
-            button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
-            val icon = if (isLoading) null else AppCompatResources.getDrawable(
-                button.context,
-                R.drawable.icon_add_to_cart
-            )
-            button.icon = icon
         } else {
             button.isEnabled = false
         }
+        button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
+        val icon = if (isLoading) null else AppCompatResources.getDrawable(
+            button.context,
+            R.drawable.icon_add_to_cart
+        )
+        button.icon = icon
     }
 }
