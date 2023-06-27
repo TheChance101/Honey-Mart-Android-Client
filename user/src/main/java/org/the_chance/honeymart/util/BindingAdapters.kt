@@ -397,3 +397,8 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
         button.icon = icon
     }
 }
+
+@BindingAdapter("app:handleSummation")
+fun handleSummation(text: TextView, count: Int) {
+    text.text = if (count > 1) "$count items" else "$count item"
+}
