@@ -35,6 +35,10 @@ class SignupViewModel @Inject constructor(
         args.also { this.args = it }
     }
 
+    fun getData() {
+        onClickSignup()
+    }
+
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.toString())
         _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
