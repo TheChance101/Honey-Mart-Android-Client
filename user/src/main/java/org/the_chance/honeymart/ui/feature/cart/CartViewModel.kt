@@ -46,7 +46,10 @@ class CartViewModel @Inject constructor(
     }
 
     private fun onGetAllCartError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     private fun incrementProductCountByOne(productId: Long) {
@@ -112,8 +115,9 @@ class CartViewModel @Inject constructor(
     }
 
     private fun onUpdateProductInCartError(error: ErrorHandler) {
-        this._state.update {
-            it.copy(isLoading = false, error = error, isError = true)
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
@@ -140,7 +144,10 @@ class CartViewModel @Inject constructor(
  }
 
     private fun onCheckOutFailed(error: ErrorHandler) {
-        this._state.update { it.copy(isLoading = false, error = error, isError = true) }
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     fun onClickDiscoverButton() {
