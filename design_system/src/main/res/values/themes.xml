@@ -43,7 +43,7 @@
     <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
+  <style name="BottomSheetStyle" parent="Theme.Material3.Light.BottomSheetDialog" />
     <!--Bottom Navigation-->
     <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/white</item>

@@ -9,6 +9,7 @@ fun OrderDto.toOrderEntity(): OrderEntity {
         totalPrice = totalPrice,
         state = state,
         date = date,
-        market = market.toMarketEntity()
+        market = market.toMarketEntity(),
+        numItems=numItems
     )
 }

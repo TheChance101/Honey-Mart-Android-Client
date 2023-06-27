@@ -399,6 +399,11 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
     }
 }
 
+@BindingAdapter("app:handleSummation")
+fun handleSummation(text: TextView, count: Int) {
+    text.text = if (count > 1) "$count items" else "$count item"
+}
+
 @BindingAdapter("app:errorState")
 fun setError(view: View, error: ErrorHandler?) {
     error?.let {

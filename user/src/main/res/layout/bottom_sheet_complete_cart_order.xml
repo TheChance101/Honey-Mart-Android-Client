@@ -6,6 +6,7 @@
     android:id="@+id/product_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/shape_bottom_sheet"
     tools:context="org.the_chance.honeymart.ui.feature.cart.CartBottomFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
