@@ -260,6 +260,12 @@
     </style>
 
 
+    <!-- Card Dialog Login Style-->
+    <style name="Theme.HoneyMart.Card.DialogCard">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+
     <!-- Card Category Style-->
     <style name="Theme.HoneyMart.Card.CategoryCard">
         <item name="cardBackgroundColor">@color/white_100</item>

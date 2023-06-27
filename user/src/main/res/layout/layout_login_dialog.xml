@@ -11,7 +11,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Theme.HoneyMart.Card.CategoryCard"
+        style="@style/Theme.HoneyMart.Card.DialogCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_16"

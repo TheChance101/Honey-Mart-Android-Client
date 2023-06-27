@@ -307,6 +307,11 @@
         <item name="android:color">@color/dark_background_400</item>
     </style>
 
+    <!-- Card Dialog Login Style-->
+    <style name="Theme.HoneyMart.Card.DialogCard">
+        <item name="cardBackgroundColor">@color/dark_background_300</item>
+    </style>
+
     <style name="alertDialogCustomStyle">
         <item name="android:background">@color/dark_background_300</item>
     </style>

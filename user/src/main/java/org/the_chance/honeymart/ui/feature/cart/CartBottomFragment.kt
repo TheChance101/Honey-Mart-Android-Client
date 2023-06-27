@@ -29,7 +29,7 @@ class CartBottomFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     override fun getTheme(): Int {
-        return org.the_chance.design_system.R.style.BottomSheetStyle
+        return org.the_chance.design_system.R.style.BottomSheetDialogTheme
 
     }
     private fun navigateToOrderComplete() {
