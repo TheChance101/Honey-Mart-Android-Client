@@ -95,7 +95,7 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
-            android:visibility="visible"
+            android:visibility="gone"
             app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
