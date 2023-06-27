@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.HoneyMart.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white_300</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_honey_mart</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.HoneyMart</item>
     </style>
 </resources>
