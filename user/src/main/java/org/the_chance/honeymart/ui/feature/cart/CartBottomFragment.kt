@@ -28,10 +28,6 @@ class CartBottomFragment : BottomSheetDialogFragment(), View.OnClickListener {
         button.setOnClickListener(this)
     }
 
-    override fun getTheme(): Int {
-        return org.the_chance.design_system.R.style.BottomSheetStyle
-
-    }
     private fun navigateToOrderComplete() {
         val action = CartBottomFragmentDirections.actionGlobalCartToOrders()
         findNavController().navigate(action)

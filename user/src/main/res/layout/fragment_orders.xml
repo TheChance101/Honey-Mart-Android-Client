@@ -95,12 +95,13 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/spacing_16"
-            android:visibility="gone"
+            android:visibility="visible"
             app:hideIfLoading="@{viewModel.state.isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/spacing_48"
+            app:layout_constraintTop_toBottomOf="@+id/chip_orders_group"
             app:showIfNoItems="@{viewModel.state.orders}">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -153,7 +154,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone"
-            app:errorState="@{viewModel.state.error}">
+            app:showIfTrue="@{viewModel.state.isError}">
 
             <include
                 android:id="@+id/no_connection"

@@ -8,6 +8,7 @@ data class OrderDetailsUiState(
     val isProductsLoading: Boolean = false,
     val isDetailsLoading: Boolean = false,
     val error: ErrorHandler? = null,
+    val isError: Boolean = false,
     val orderDetails: OrderParentDetailsUiState = OrderParentDetailsUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
 )

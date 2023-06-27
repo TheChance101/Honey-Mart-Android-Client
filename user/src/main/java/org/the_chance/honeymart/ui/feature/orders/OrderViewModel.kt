@@ -31,7 +31,11 @@ class OrderViewModel @Inject constructor(
 
     fun getAllProcessingOrders() {
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.PROCESSING)
+            it.copy(
+                isLoading = true,
+                isError = false,
+                orderStates = OrderStates.PROCESSING
+            )
         }
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
@@ -49,14 +53,14 @@ class OrderViewModel @Inject constructor(
 
     private fun onGetProcessingOrdersError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun getAllDoneOrders() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                orderStates = OrderStates.DONE
-            )
+            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickDone))
@@ -74,15 +78,20 @@ class OrderViewModel @Inject constructor(
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun getAllCancelOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
-                orderStates = OrderStates.CANCELED
+                orderStates = OrderStates.CANCELED,
+                isError = false
             )
         }
+
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
         }
@@ -99,11 +108,14 @@ class OrderViewModel @Inject constructor(
 
     private fun onGetCancelOrdersError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun updateOrders(id: Long, stateOrder: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { updateOrderStateUseCase(orderId, stateOrder) },
             ::updateOrdersSuccess,
@@ -123,6 +135,9 @@ class OrderViewModel @Inject constructor(
 
     private fun updateOrdersError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun onClickDiscoverMarketsButton() {

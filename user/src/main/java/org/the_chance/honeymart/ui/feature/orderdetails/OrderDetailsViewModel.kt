@@ -39,7 +39,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     private fun getOrderProducts() {
-        _state.update { it.copy(isProductsLoading = true) }
+        _state.update { it.copy(isProductsLoading = true, isError = false) }
         tryToExecute(
             { getOrderProductsDetailsUseCase(args.orderId).map { it.toOrderDetailsProductUiState() } },
             ::onGetOrderProductsSuccess,
@@ -53,12 +53,13 @@ class OrderDetailsViewModel @Inject constructor(
 
     private fun onGetOrderProductsError(error: ErrorHandler) {
         _state.update { it.copy(isProductsLoading = false, error = error) }
-
-
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     private fun getOrderDetails() {
-        _state.update { it.copy(isDetailsLoading = true) }
+        _state.update { it.copy(isDetailsLoading = true, isError = false) }
         tryToExecute(
             { getOrderDetailsUseCase(args.orderId).toOrderParentDetailsUiState() },
             ::onGetOrderDetailsSuccess,

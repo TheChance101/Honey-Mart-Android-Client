@@ -52,7 +52,7 @@
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
-                    android:text='@{String.format("%.2f$", viewModel.state.total)}'
+                    app:FormatCurrency="@{viewModel.state.total}"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -65,6 +65,7 @@
                     android:layout_marginHorizontal="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_16"
                     android:onClick="@{() -> viewModel.onClickOrderNowButton()}"
+                    app:disableIfLoading="@{viewModel.state.isLoading}"
                     android:text="@string/order_now"
                     app:icon="@drawable/icon_cart_white"
                     app:iconGravity="textStart"
@@ -167,9 +168,10 @@
             android:layout_height="match_parent"
             android:background="?android:attr/colorBackground"
             android:gravity="center"
-            android:orientation="vertical"
+            android:elevation="@dimen/spacing_8"
             android:visibility="gone"
-            app:errorState="@{viewModel.state.error}">
+            android:orientation="vertical"
+            app:showIfTrue="@{viewModel.state.isError}">
 
             <include
                 android:id="@+id/no_connection"
