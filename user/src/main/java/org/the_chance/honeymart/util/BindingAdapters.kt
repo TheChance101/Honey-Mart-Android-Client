@@ -19,6 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.ui.BaseAdapter
@@ -401,4 +402,27 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
 @BindingAdapter("app:handleSummation")
 fun handleSummation(text: TextView, count: Int) {
     text.text = if (count > 1) "$count items" else "$count item"
+}
+
+@BindingAdapter("app:errorState")
+fun setError(view: View, error: ErrorHandler?) {
+    error?.let {
+        if (error is ErrorHandler.NoConnection) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
+    }
+}
+
+@BindingAdapter("app:emailErrorState")
+fun setEmailError(textInputLayout: TextInputLayout, error: ErrorHandler?) {
+    error?.let {
+        if (error is ErrorHandler.AlreadyExist) {
+            textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
+        } else {
+            textInputLayout.error = null
+            textInputLayout.isErrorEnabled = false
+        }
+    }
 }

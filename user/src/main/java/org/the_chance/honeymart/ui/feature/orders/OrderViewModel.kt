@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
@@ -22,16 +23,15 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
+
     init {
         getAllProcessingOrders()
     }
 
+
     fun getAllProcessingOrders() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                orderStates = OrderStates.PROCESSING
-            )
+            it.copy(isLoading = true, orderStates = OrderStates.PROCESSING)
         }
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
@@ -47,8 +47,8 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetProcessingOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetProcessingOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun getAllDoneOrders() {
@@ -72,8 +72,8 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetDoneOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetDoneOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun getAllCancelOrders() {
@@ -97,17 +97,13 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetCancelOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetCancelOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun updateOrders(id: Long, stateOrder: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
-        _state.update {
-            it.copy(
-                isLoading = true,
-            )
-        }
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { updateOrderStateUseCase(orderId, stateOrder) },
             ::updateOrdersSuccess,
@@ -125,8 +121,8 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    private fun updateOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun updateOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun onClickDiscoverMarketsButton() {
