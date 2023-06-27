@@ -381,17 +381,22 @@ fun setValidationState(
         }
 
         else -> {
-            error?.let {
-                if (error is ErrorHandler.AlreadyExist) {
-                    textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
-                } else {
-                    textInputLayout.error = null
-                    textInputLayout.isErrorEnabled = false
+            if (error != null) {
+                error.let {
+                    if (error is ErrorHandler.AlreadyExist) {
+                        textInputLayout.error =
+                            textInputLayout.context.getString(R.string.email_exist)
+                    } else {
+                        textInputLayout.error = null
+                        textInputLayout.isErrorEnabled = false
+                    }
                 }
+            } else {
+                textInputLayout.error = null
+                textInputLayout.isErrorEnabled = false
             }
         }
     }
-
 }
 
 @BindingAdapter("app:loadImage")
