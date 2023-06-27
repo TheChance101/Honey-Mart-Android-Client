@@ -20,6 +20,24 @@
         <item name="android:colorBackground">@color/white_300</item>
         <item name="fontFamily">@font/poppins</item>
 
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!--base bottom sheet-->
+    <style name="BaseBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/round_corner_dialog</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
 
@@ -39,16 +57,11 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <!-- Bottom Sheet Styles -->
-    <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-  <style name="BottomSheetStyle" parent="Theme.Material3.Light.BottomSheetDialog" />
+
     <!--Bottom Navigation-->
     <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/white</item>
-        <item name="itemIconTint">@color/black_60</item>
-        <item name="android:colorPressedHighlight">@color/white</item>
+        <item name="itemIconTint">@color/bottomnav</item>
         <item name="itemRippleColor">@color/primary_100</item>
         <item name="itemActiveIndicatorStyle">@style/App.Custom.Indicator</item>
     </style>
@@ -139,7 +152,6 @@
     </style>
 
 
-
     <!-- Heading 3 -->
     <style name="Theme.HoneyMart.Text.H3">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -185,7 +197,6 @@
     </style>
 
 
-
     <!-- Heading 5 -->
     <style name="Theme.HoneyMart.Text.H5">
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
@@ -207,7 +218,6 @@
     <style name="Theme.HoneyMart.Text.H5.DarkIntense">
         <item name="android:textColor">@color/black_37</item>
     </style>
-
 
 
     <!-- Heading 6 -->

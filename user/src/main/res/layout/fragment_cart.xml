@@ -52,7 +52,7 @@
                     android:layout_marginEnd="@dimen/spacing_16"
                     android:layout_marginBottom="@dimen/spacing_8"
                     android:hint="@string/_300000"
-                    android:text='@{String.format("%.2f$", viewModel.state.total)}'
+                    app:FormatCurrency="@{viewModel.state.total}"
                     app:layout_constraintBottom_toTopOf="@+id/order_now_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

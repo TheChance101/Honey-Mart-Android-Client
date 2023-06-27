@@ -5,5 +5,6 @@ data class OrderEntity(
     val totalPrice: Double?,
     val state: Int?,
     val date: Long?,
-    val market: MarketEntity
+    val market: MarketEntity,
+    val numItems:Int?
 )

@@ -297,11 +297,7 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
-@BindingAdapter("app:formattedPrice")
-fun setFormattedPrice(view: TextView, price: Double) {
-    val formattedPrice = String.format("%,.0f$", price)
-    view.text = formattedPrice
-}
+
 
 
 @BindingAdapter("app:disableIfLoading")
@@ -374,10 +370,10 @@ fun bindImage(image: ImageView, imageURL: String?) {
     }
 }
 @BindingAdapter("FormatCurrency")
-fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
+fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
-    text = formattedAmount
+   View.text = formattedAmount
 }
 
 
@@ -396,4 +392,9 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
         )
         button.icon = icon
     }
+}
+
+@BindingAdapter("app:handleSummation")
+fun handleSummation(text: TextView, count: Int) {
+    text.text = if (count > 1) "$count items" else "$count item"
 }
