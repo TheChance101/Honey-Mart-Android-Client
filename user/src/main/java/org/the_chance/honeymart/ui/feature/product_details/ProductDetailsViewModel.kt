@@ -136,7 +136,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
-        _state.update { it.copy(isAddToCartLoading = false, error = error, isError = true) }
+         _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
         when (error) {
             is ErrorHandler.UnAuthorizedUser -> {
                 viewModelScope.launch {
@@ -217,8 +220,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
-        if (error is ErrorHandler.UnAuthorizedUser) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        } else if (error is ErrorHandler.UnAuthorizedUser) {
             viewModelScope.launch {
                 _effect.emit(
                     EventHandler(
@@ -279,8 +284,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
-        log("Delete From WishList Error : ${error}")
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
 }
