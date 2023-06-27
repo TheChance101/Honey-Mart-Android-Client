@@ -39,7 +39,9 @@
                     style="@style/Theme.HoneyMart.Image.ProductImage"
                     app:loadImage="@{item.images.get(0)}"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/fruite_image"
+                    android:scaleType="centerCrop"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_order_name"
@@ -48,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_8"
                     android:text="@{item.name}"
-                    android:textColor="@color/white_300"
+                    android:textColor="@color/white_30"
                     tool:text="order"
                     app:layout_constraintBottom_toTopOf="@+id/text_order_price"
                     app:layout_constraintStart_toStartOf="parent" />

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
@@ -22,14 +23,17 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
+
     init {
         getAllProcessingOrders()
     }
+
 
     fun getAllProcessingOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
+                isError = false,
                 orderStates = OrderStates.PROCESSING
             )
         }
@@ -47,16 +51,16 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetProcessingOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetProcessingOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun getAllDoneOrders() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                orderStates = OrderStates.DONE
-            )
+            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickDone))
@@ -72,17 +76,22 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetDoneOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetDoneOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun getAllCancelOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
-                orderStates = OrderStates.CANCELED
+                orderStates = OrderStates.CANCELED,
+                isError = false
             )
         }
+
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
         }
@@ -97,17 +106,16 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onGetCancelOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun onGetCancelOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun updateOrders(id: Long, stateOrder: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
-        _state.update {
-            it.copy(
-                isLoading = true,
-            )
-        }
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { updateOrderStateUseCase(orderId, stateOrder) },
             ::updateOrdersSuccess,
@@ -125,8 +133,11 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    private fun updateOrdersError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false) }
+    private fun updateOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun onClickDiscoverMarketsButton() {
@@ -139,6 +150,5 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
         }
-        log(orderId.toString())
     }
 }

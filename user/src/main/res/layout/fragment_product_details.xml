@@ -68,6 +68,8 @@
             android:clipToPadding="false"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/spacing_12"
+            android:paddingVertical="@dimen/spacing_2"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,28 +155,28 @@
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@id/card_increase_count"
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
-            tools:text="01" />
+            tools:text="0" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_decrease_count"
-            android:layout_width="@dimen/spacing_32"
-            android:layout_height="@dimen/spacing_32"
-            android:layout_margin="@dimen/spacing_16"
-            android:backgroundTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:gravity="center_horizontal|center_vertical"
             android:onClick="@{() -> viewModel.decreaseProductCount()}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
             app:shapeAppearanceOverlay="@style/Theme.HoneyMart.CircleShape"
-            app:strokeColor="@color/primary_100"
-            app:strokeWidth="@dimen/stroke_normal">
+            app:strokeWidth="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/icon_remove_product" />
+                app:srcCompat="@drawable/ic_minus" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
@@ -186,7 +188,6 @@
             android:layout_marginEnd="@dimen/spacing_16"
             android:ellipsize="end"
             android:maxLines="4"
-            android:onClick="@{() -> viewModel.decreaseProductCount()}"
             android:text="@{viewModel.state.product.productDescription}"
             android:textAlignment="textStart"
             app:hideIfLoading="@{viewModel.state.loading}"
@@ -204,15 +205,16 @@
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_32"
             android:background="@drawable/button_background"
-            app:loadingCartState="@{viewModel.state.isAddToCartLoading}"
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/spacing_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:loadingCartState="@{viewModel.state.isAddToCartLoading}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/add_to_cart_loading"
@@ -248,22 +250,36 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="76dp"
-            android:onClick="@{() -> viewModel.decreaseProductCount()}"
-            app:hideIfLoading="@{viewModel.state.loading}"
-            app:layout_constraintBottom_toTopOf="@+id/product_description"
-            app:layout_constraintEnd_toStartOf="@+id/text_product_quantity"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/text_product_name"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_product_images"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_minus" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/colorBackground"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:showIfTrue="@{viewModel.state.isError}">
+
+            <include
+                android:id="@+id/no_connection"
+                layout="@layout/layout_no_connection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_tyr_again"
+                style="@style/Theme.HoneyMart.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/spacing_16"
+                android:onClick="@{() -> viewModel.getData()}"
+                android:text="@string/try_again_text" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
@@ -25,7 +26,13 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun deleteProductFromWishList(productId: Long) {
-        _state.update { it.copy(products = updateProductFavoriteState(false, productId)) }
+        _state.update {
+            it.copy(
+                products = updateProductFavoriteState(false, productId),
+                isLoading = true,
+                isError = false
+            )
+        }
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteProductSuccess,
@@ -55,14 +62,17 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
 
-    private fun onDeleteProductError(exception: Exception, productId: Long) {
-        _state.update { it.copy(products = updateProductFavoriteState(true, productId)) }
-        // emit anything to observe on Fragment to show snackbar or to show vector something went wrong
-        // this based on caught exception(Very important , may be internet or timeout , or server error)
+    private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
+        _state.update {
+            it.copy(products = updateProductFavoriteState(true, productId), error = error)
+        }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
-    private fun getWishListProducts() {
-        _state.update { it.copy(isLoading = true) }
+   fun getWishListProducts() {
+       _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllWishListUseCase().map { it.toWishListProductUiState() } },
             ::onGetProductSuccess,
@@ -71,11 +81,14 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<WishListProductUiState>) {
-        _state.update { it.copy(isLoading = false, isError = false, products = products) }
+        _state.update { it.copy(isLoading = false, error = null, products = products) }
     }
 
-    private fun onGetProductError(throwable: Exception) {
-        _state.update { it.copy(isLoading = false, isError = true) }
+    private fun onGetProductError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun onClickDiscoverButton() {

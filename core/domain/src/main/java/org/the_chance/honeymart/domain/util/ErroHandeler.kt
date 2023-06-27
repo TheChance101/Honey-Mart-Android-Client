@@ -1,16 +1,69 @@
 package org.the_chance.honeymart.domain.util
 
-/**
- * Created by Asia sama on 6/17/2023.
- * sehunexo710@gmail.com
- */
+open class GeneralException : Exception()
+class InvalidDataException : GeneralException()
+class NotFoundException : GeneralException()
+class AlreadyExistException : GeneralException()
 
-class InvalidEmailException(message: String = "Email is not valid") : Exception(message)
-class ProductNotInSameCartMarketException(message: String = "this product not in same market, you should delete cart") :
-    Exception(message)
 
-class UnAuthorizedException(message: String = "UnAuthorized User") : Exception(message)
-class InvalidPasswordException(message: String = "Password should be at least has one letter, one special character, one number, and a total length between 8 to 14 characters") :
-    Exception(message)
+open class NetworkException : Exception()
+class NoConnectionException : NetworkException()
+class InternalServerException : NetworkException()
 
-class InvalidFullNameException(message: String = "Name is not valid") : Exception(message)
+
+open class AuthenticationException : Exception()
+class UnAuthorizedException : AuthenticationException()
+class EmailIsExistException : AuthenticationException()
+class ForbiddenException : AuthenticationException()
+
+
+sealed interface ErrorHandler {
+    object EmailIsExist : ErrorHandler
+
+    object NoConnection : ErrorHandler
+    object ServerError : ErrorHandler
+
+    object InvalidData : ErrorHandler
+    object NotFound : ErrorHandler
+    object UnAuthorizedUser : ErrorHandler
+    object AlreadyExist : ErrorHandler
+    object UnKnownError : ErrorHandler
+
+}
+
+
+fun handelNetworkException(
+    exception: NetworkException, onError: (ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is InternalServerException -> onError(ErrorHandler.ServerError)
+
+        is NoConnectionException -> onError(ErrorHandler.NoConnection)
+    }
+}
+
+fun handelAuthenticationException(
+    exception: AuthenticationException,
+    onError: (t: ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is EmailIsExistException -> onError(ErrorHandler.EmailIsExist)
+
+        is ForbiddenException -> onError(ErrorHandler.UnAuthorizedUser)
+
+        is UnAuthorizedException -> onError(ErrorHandler.UnAuthorizedUser)
+    }
+}
+
+fun handelGeneralException(
+    exception: GeneralException,
+    onError: (t: ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is InvalidDataException -> onError(ErrorHandler.InvalidData)
+
+        is NotFoundException -> onError(ErrorHandler.NotFound)
+
+        is AlreadyExistException -> onError(ErrorHandler.AlreadyExist)
+    }
+}

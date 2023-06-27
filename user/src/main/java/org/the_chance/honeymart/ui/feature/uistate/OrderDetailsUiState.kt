@@ -2,10 +2,12 @@ package org.the_chance.honeymart.ui.feature.uistate
 
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrderDetailsUiState(
     val isProductsLoading: Boolean = false,
     val isDetailsLoading: Boolean = false,
+    val error: ErrorHandler? = null,
     val isError: Boolean = false,
     val orderDetails: OrderParentDetailsUiState = OrderParentDetailsUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),

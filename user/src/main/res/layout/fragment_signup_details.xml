@@ -62,6 +62,7 @@
                 android:layout_height="86dp"
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:layout_marginTop="@dimen/spacing_64"
+                app:errorState="@{null}"
                 app:validationState="@{viewModel.state.fullNameState}"
                 android:hint="@string/full_name"
                 app:layout_constraintTop_toBottomOf="@+id/image_background">
@@ -85,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_32"
                 android:hint="@string/email"
+                app:errorState="@{null}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:validationState="@{viewModel.state.emailState}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,6 +118,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_field_input_email" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

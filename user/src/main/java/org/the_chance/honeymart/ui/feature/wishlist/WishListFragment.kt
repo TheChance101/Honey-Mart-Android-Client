@@ -5,9 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.honeymart.util.showSnackBar
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentWishListBinding
@@ -64,5 +62,10 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>() {
         val action = WishListFragmentDirections.actionWishListFragmentToMarketsFragment()
         findNavController().navigate(action)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getWishListProducts()
     }
 }

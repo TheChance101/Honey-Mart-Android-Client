@@ -19,6 +19,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        app:cardBackgroundColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:cardCornerRadius="@dimen/radius_16"

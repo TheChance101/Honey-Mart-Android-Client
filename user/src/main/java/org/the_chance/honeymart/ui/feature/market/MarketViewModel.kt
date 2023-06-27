@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
@@ -19,13 +20,13 @@ class MarketViewModel @Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
 
+
     init {
         getAllMarkets()
     }
 
-
-    private fun getAllMarkets() {
-        _state.update { it.copy(isLoading = true) }
+    fun getAllMarkets() {
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllMarket().map { it.toMarketUiState() } },
             ::onGetMarketSuccess,
@@ -34,12 +35,10 @@ class MarketViewModel @Inject constructor(
     }
 
 
-    private fun onGetMarketError(throwable: Exception) {
-        this._state.update {
-            it.copy(
-                isLoading = false,
-                isError = true,
-            )
+    private fun onGetMarketError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
@@ -47,7 +46,6 @@ class MarketViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
                 markets = markets
             )
         }
