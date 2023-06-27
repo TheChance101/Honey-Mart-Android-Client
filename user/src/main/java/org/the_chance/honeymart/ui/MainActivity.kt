@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.user.R
 import org.the_chance.user.databinding.ActivityMainBinding
 
-
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
