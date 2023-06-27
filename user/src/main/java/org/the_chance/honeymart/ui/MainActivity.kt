@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         setupNavigation(navController)
-        statusBarMode(this)
+       // statusBarMode(this)
 
     }
 
