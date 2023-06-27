@@ -28,7 +28,8 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
         setWindowVisibility(
             appBarVisibility = false,
             bottomNavVisibility = false,
-            isTransparentStatusBar = false
+            isTransparentStatusBar = false,
+            inAuthScreens = true
         )
     }
 

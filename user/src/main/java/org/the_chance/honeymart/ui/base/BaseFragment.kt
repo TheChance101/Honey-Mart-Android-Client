@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.base
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
@@ -63,79 +61,70 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     }
 
-//    protected fun hideAppBarAndBottomNavigation(
-//        hideAppBar: Boolean,
-//        hideBottomNavigation: Boolean,
-//        changeStatusBarColor: Boolean
-//    ) {
-//        val window: Window = requireActivity().window
-//
-//        if (changeStatusBarColor) {
-//            window.statusBarColor = ContextCompat.getColor(
-//                requireContext(),
-//                org.the_chance.design_system.R.color.primary_100
-//            )
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//
-//        } else {
-//            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//        }
-//        if (hideBottomNavigation) {
-//            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//                ?.let { navigateIcon ->
-//                    navigateIcon.visibility = View.GONE
-//                }
-//        }
-//
-//        if (hideAppBar) {
-//            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
-//                toolbar.visibility = View.GONE
-//            }
-//        }
-//    }
-//
-//
-//    protected fun setupMainFlowWindowVisibility() {
-//        val window: Window = requireActivity().window
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//            ?.let { navigateIcon ->
-//                navigateIcon.visibility = View.VISIBLE
-//            }
-//        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { toolbar ->
-//            toolbar.visibility = View.VISIBLE
-//        }
-//    }
-
-
     protected fun setWindowVisibility(
         appBarVisibility: Boolean = true,
         bottomNavVisibility: Boolean = true,
-        isTransparentStatusBar: Boolean = true
+        isTransparentStatusBar: Boolean = true,
+        inAuthScreens: Boolean = false
     ) {
         val window: Window = requireActivity().window
 
         if (isTransparentStatusBar) {
-            // make status bar transparent
-        }
-        else {
-            window.statusBarColor = ContextCompat.getColor(
-                requireContext(),
-                org.the_chance.design_system.R.color.primary_100
-            )
+            setTransparentStatusBar(window)
+        } else {
+            setStatusBarColor(window)
         }
 
-        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)?.let { appBarLayout ->
-            appBarLayout.visibility = if (appBarVisibility) View.VISIBLE else View.GONE
-        }
-
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            ?.let { bottomNavigationView ->
-                bottomNavigationView.visibility =
-                    if (bottomNavVisibility) View.VISIBLE else View.GONE
-            }
+        setAppBarVisibility(appBarVisibility)
+        setBottomNavVisibility(bottomNavVisibility, inAuthScreens)
     }
 
+    private fun setTransparentStatusBar(window: Window) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+    }
+
+    private fun setStatusBarColor(window: Window) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            org.the_chance.design_system.R.color.primary_100
+        )
+    }
+
+    private fun setAppBarVisibility(visible: Boolean) {
+        val appBarLayout = requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)
+        appBarLayout?.let { appBar ->
+            if (visible) {
+                appBar.visibility = View.VISIBLE
+                val window = requireActivity().window
+                window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            } else {
+                appBar.visibility = View.GONE
+                val window = requireActivity().window
+                window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            }
+        }
+    }
+
+    private fun setBottomNavVisibility(visible: Boolean, inAuthScreens: Boolean) {
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView?.let { bottomNav ->
+            if (visible) {
+                bottomNav.visibility = View.VISIBLE
+                val window = requireActivity().window
+                window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            } else {
+                bottomNav.visibility = View.GONE
+                val window = requireActivity().window
+                if (inAuthScreens) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+                }
+            }
+        }
+    }
 
     protected fun setupScrollListenerForRecyclerView(
         recyclerView: RecyclerView,
@@ -154,6 +143,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         super.onResume()
         setWindowVisibility()
     }
+
     protected fun log(value: Any) {
         Log.e(TAG, value.toString())
     }
