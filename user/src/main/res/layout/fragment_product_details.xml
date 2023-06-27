@@ -67,8 +67,9 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingVertical="@dimen/spacing_2"
             android:paddingHorizontal="@dimen/spacing_12"
+            android:paddingVertical="@dimen/spacing_2"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -203,17 +204,17 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_32"
-            app:hideIfLoading="@{viewModel.state.loading}"
             android:background="@drawable/button_background"
-            app:loadingCartState="@{viewModel.state.isAddToCartLoading}"
             android:gravity="center"
             android:onClick="@{() -> viewModel.addProductToCart(viewModel.state.product.productId,viewModel.state.quantity)}"
             app:disableIfNoQuantity="@{viewModel.state.quantity}"
+            app:hideIfLoading="@{viewModel.state.loading}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/spacing_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:loadingCartState="@{viewModel.state.isAddToCartLoading}" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/add_to_cart_loading"
