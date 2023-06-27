@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_8"
                     android:text="@{item.name}"
-                    android:textColor="@color/white_300"
+                    android:textColor="@color/white_30"
                     tool:text="order"
                     app:layout_constraintBottom_toTopOf="@+id/text_order_price"
                     app:layout_constraintStart_toStartOf="parent" />

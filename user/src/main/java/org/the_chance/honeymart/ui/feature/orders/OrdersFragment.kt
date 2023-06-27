@@ -93,8 +93,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawableResource(org.the_chance.design_system.R.drawable.round_corner_dialog)
-
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         buttonSure.setOnClickListener {
             execute()
             dialog.dismiss()
@@ -108,7 +107,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //showExitAlertDialog()
             findNavController().navigate(R.id.markets_graph)
         }
     }

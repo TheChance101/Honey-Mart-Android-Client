@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white_300">#333333</color>
+    <color name="white">#333333</color>
+ <color name="white_30">#FAFAFA</color>
 
 </resources>
