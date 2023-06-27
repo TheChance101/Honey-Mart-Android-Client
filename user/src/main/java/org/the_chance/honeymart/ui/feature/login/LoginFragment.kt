@@ -28,7 +28,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             appBarVisibility = false,
             bottomNavVisibility = false,
             isTransparentStatusBar = false,
-            inAuthScreens = true
+            isInAuthScreens = true
         )
     }
 

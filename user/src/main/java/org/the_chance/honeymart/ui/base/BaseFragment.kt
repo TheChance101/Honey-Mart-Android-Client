@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.base
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -65,31 +66,35 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         appBarVisibility: Boolean = true,
         bottomNavVisibility: Boolean = true,
         isTransparentStatusBar: Boolean = true,
-        inAuthScreens: Boolean = false
+        isInAuthScreens: Boolean = false
     ) {
         val window: Window = requireActivity().window
 
         if (isTransparentStatusBar) {
             setTransparentStatusBar(window)
         } else {
-            setStatusBarColor(window)
+            setStatusBarColor(window, isSystemInDarkTheme())
         }
 
         setAppBarVisibility(appBarVisibility)
-        setBottomNavVisibility(bottomNavVisibility, inAuthScreens)
+        setBottomNavVisibility(bottomNavVisibility, isInAuthScreens)
     }
 
     private fun setTransparentStatusBar(window: Window) {
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
-    private fun setStatusBarColor(window: Window) {
+    private fun setStatusBarColor(window: Window, isDarkTheme: Boolean) {
         window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        window.statusBarColor = ContextCompat.getColor(
-            requireContext(),
+        val colorResId = if (isDarkTheme) {
+            org.the_chance.design_system.R.color.dark_background_200
+        } else {
             org.the_chance.design_system.R.color.primary_100
-        )
+        }
+        val color = ContextCompat.getColor(requireContext(), colorResId)
+        window.statusBarColor = color
     }
+
 
     private fun setAppBarVisibility(visible: Boolean) {
         val appBarLayout = requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout)
@@ -141,12 +146,18 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        isSystemInDarkTheme()
         setWindowVisibility()
+    }
+
+    private fun isSystemInDarkTheme(): Boolean {
+        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            else -> false
+        }
     }
 
     protected fun log(value: Any) {
         Log.e(TAG, value.toString())
     }
 }
-
-

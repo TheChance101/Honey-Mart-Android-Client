@@ -26,7 +26,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
             appBarVisibility = false,
             bottomNavVisibility = false,
             isTransparentStatusBar = false,
-            inAuthScreens = true
+            isInAuthScreens = true
         )
     }
     private fun addCallbacks() {

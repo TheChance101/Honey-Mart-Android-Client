@@ -26,7 +26,7 @@ class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
             appBarVisibility = false,
             bottomNavVisibility = false,
             isTransparentStatusBar = false,
-            inAuthScreens = true
+            isInAuthScreens = true
         )
     }
 
