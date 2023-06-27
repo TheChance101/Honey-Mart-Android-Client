@@ -56,7 +56,7 @@ class ProductViewModel @Inject constructor(
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }
         )
-        Log.e("TAG", "getWishListProducts:$products ")
+
     }
 
     private fun onGetWishListProductSuccess(
@@ -189,12 +189,12 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductUiEffect.RemovedFromWishListEffect))
         }
-        log("Deleted Successfully : $successMessage")
+
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(error = error, isError = true) }
-        log("Delete From WishList Error : ${error}")
+
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -220,7 +220,7 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
         }
-        log("Added Successfully : $successMessage")
+
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {

@@ -72,8 +72,6 @@ class CartViewModel @Inject constructor(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
-        log(updatedProducts.toString())
-        log("${updatedProducts.find { it.productId == productId }?.productCount ?: 0}")
     }
 
     private fun decrementProductCountByOne(productId: Long) {
