@@ -61,7 +61,8 @@ dependencies {
     // coil
     implementation(Dependencies.coilDependency);
     //splash
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 
 
 }
