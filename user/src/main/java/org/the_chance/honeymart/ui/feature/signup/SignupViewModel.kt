@@ -10,8 +10,7 @@ import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
-import org.the_chance.honeymart.domain.util.EmailIsExistException
-import org.the_chance.honeymart.domain.util.InvalidDataException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
@@ -29,6 +28,7 @@ class SignupViewModel @Inject constructor(
 ) : BaseViewModel<SignupUiState, AuthUiEffect>(SignupUiState()) {
 
     override val TAG: String = this::class.simpleName.toString()
+
     private lateinit var args: SignupFragmentArgs
 
     fun saveArgs(args: SignupFragmentArgs){
@@ -81,20 +81,8 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
     }
 
-    private fun onError(exception: Exception) {
-        when (exception) {
-            is InvalidDataException -> {
-                _state.update { it.copy(isLoading = false, error = 1) }
-            }
-
-            is EmailIsExistException -> {
-                _state.update { it.copy(isLoading = false, error = 2) }
-            }
-
-            else -> {
-                _state.update { it.copy(isLoading = false, error = 3) }
-            }
-        }
+    private fun onError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     private fun login(email: String, password: String) {
@@ -115,8 +103,8 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
 
-    private fun onLoginError(exception: Exception) {
-        _state.update { it.copy(isLoading = false, error = 1) }
+    private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     fun onContinueClicked() {

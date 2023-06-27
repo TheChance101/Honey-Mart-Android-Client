@@ -2,17 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_no_connection_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="138dp"
-        android:layout_marginHorizontal="@dimen/spacing_32"
         app:srcCompat="@drawable/no_connection_placeholder" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -20,19 +17,9 @@
         style="@style/Theme.HoneyMart.Text.H3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
         android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/poppins_medium"
         android:text="@string/no_connection_text"
         android:textColor="@color/black_60" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_tyr_again"
-        style="@style/Theme.HoneyMart.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_16"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/try_again_text" />
 
 </LinearLayout>

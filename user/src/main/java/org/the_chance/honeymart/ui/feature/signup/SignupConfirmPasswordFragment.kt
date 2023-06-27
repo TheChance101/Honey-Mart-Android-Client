@@ -6,7 +6,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.ui.feature.login.LoginDialog
-import org.the_chance.honeymart.ui.feature.login.LoginFragmentDirections
 import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
 import org.the_chance.honeymart.util.AuthData
@@ -27,14 +26,10 @@ class SignupConfirmPasswordFragment : BaseFragment<FragmentSignupConformPassword
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { onEffect(it) }
-        }
-    }
-
-    private fun onEffect(effect: AuthUiEffect) {
-        when (effect) {
-            AuthUiEffect.ClickContinueEffect -> TODO()
-            is AuthUiEffect.ClickSignUpEffect -> navigateToMainNav(effect.authData)
+            effect.getContentIfHandled()?.let { AuthUiEffect ->
+                if (AuthUiEffect is AuthUiEffect.ClickSignUpEffect)
+                    navigateToMainNav(AuthUiEffect.authData)
+            }
         }
     }
 

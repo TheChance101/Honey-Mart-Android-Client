@@ -11,9 +11,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.util.AuthenticationException
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.GeneralException
 import org.the_chance.honeymart.domain.util.NetworkException
+import org.the_chance.honeymart.domain.util.handelAuthenticationException
+import org.the_chance.honeymart.domain.util.handelGeneralException
+import org.the_chance.honeymart.domain.util.handelNetworkException
 import org.the_chance.honeymart.util.EventHandler
+import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
@@ -32,7 +37,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
-        onError: (t: Exception) -> Unit,
+        onError: (t: ErrorHandler) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         viewModelScope.launch(dispatcher) {
@@ -40,37 +45,25 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 val result = function()
                 log("tryToExecute:$result ")
                 onSuccess(result)
-            } catch (exception: Exception) {
-                log("tryToExecute error InvalidRegisterException: ${exception.message}")
-                onError(exception)
             } catch (exception: GeneralException) {
-                log("tryToExecute error InvalidRegisterException: ${exception.message}")
-//                onError(ErrorHandler.InvalidRegister)
+                handelGeneralException(exception, onError)
+                log("tryToExecute error GeneralException: ${exception}")
             } catch (exception: NetworkException) {
-                log("tryToExecute error InvalidEmailException: ${exception.message}")
-//                onError(ErrorHandler.EmailIsExist)
+                handelNetworkException(exception, onError)
+                log("tryToExecute error NetworkException: ${exception}")
             } catch (exception: AuthenticationException) {
-                log("tryToExecute error InvalidEmailException: ${exception.message}")
-//                onError(ErrorHandler.NoNetwork)
-
-//            } catch (exception: InvalidEmailException) {
-//                log("tryToExecute error InvalidEmailException: ${exception.message}")
-//                onError(ErrorHandler.EmailIsExist)
-//            } catch (exception: NoNetworkException) {
-//                log("tryToExecute error InvalidEmailException: ${exception.message}")
-//                onError(ErrorHandler.NoNetwork)
-//            } catch (exception: UnAuthorizedException) {
-//                log("tryToExecute error Exception: ${exception.message}")
-//            } catch (exception: InvalidEmailOrPasswordException) {
-//                onError(ErrorHandler.InvalidEmailAndPassword)
-//                log("tryToExecute error InvalidEmailOrPasswordException: ${exception.message}")
-//            } catch (exception: IOException) {
-//                onError(ErrorHandler.NoNetwork)
-//                log("tryToExecute error Exception: ${exception.message}, ${exception.cause}")
-//            }
+                handelAuthenticationException(exception, onError)
+                log("tryToExecute error AuthenticationException: ${exception}")
+            } catch (exception: IOException) {
+                log("tryToExecute error IOException: ${exception}")
+                onError(ErrorHandler.NoConnection)
+            } catch (exception: Exception) {
+                log("tryToExecute error Exception: ${exception}")
+                onError(ErrorHandler.UnKnownError)
             }
         }
     }
+
 }
 
 

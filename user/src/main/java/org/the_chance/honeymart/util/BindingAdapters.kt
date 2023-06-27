@@ -312,15 +312,23 @@ fun TextView.formatCurrencyWithNearestFraction(amount: Double) {
 fun setError(view: View, error: ErrorHandler?) {
     error?.let {
         if (error is ErrorHandler.NoConnection) {
-            view.visibility = View.GONE
-            val context = view.context
-            val message = "No internet Connection"
-            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-        } else {
             view.visibility = View.VISIBLE
-            val context = view.context
-            val message = "Connection restored"
+        } else {
+            view.visibility = View.GONE
+            val message = view.context.getString(R.string.connection_restored)
             Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+        }
+    }
+}
+
+@BindingAdapter("app:emailErrorState")
+fun setEmailError(textInputLayout: TextInputLayout, error: ErrorHandler?) {
+    error?.let {
+        if (error is ErrorHandler.AlreadyExist) {
+            textInputLayout.error = textInputLayout.context.getString(R.string.email_exist)
+        } else {
+            textInputLayout.error = null
+            textInputLayout.isErrorEnabled = false
         }
     }
 }

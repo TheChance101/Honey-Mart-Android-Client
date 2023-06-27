@@ -20,9 +20,9 @@
             android:id="@+id/recycler_markets"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingHorizontal="@dimen/spacing_8"
             android:clipToPadding="false"
             android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_8"
             app:items="@{viewModel.state.markets}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,23 +31,50 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_market" />
 
-      <com.airbnb.lottie.LottieAnimationView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
             android:layout_width="100dp"
-          android:layout_height="100dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:lottie_autoPlay="true"
-          app:lottie_loop="true"
-          app:lottie_rawRes="@raw/loading"
-          app:showIfTrue="@{viewModel.state.isLoading}" />
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading"
+            app:showIfTrue="@{viewModel.state.isLoading}" />
 
-        <include
-            android:id="@+id/no_connection"
-            layout="@layout/no_connection_layout"
-            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/colorBackground"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:errorState="@{viewModel.state.error}">
+
+            <include
+                android:id="@+id/no_connection"
+                layout="@layout/layout_no_connection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_tyr_again"
+                style="@style/Theme.HoneyMart.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/spacing_16"
+                android:onClick="@{() -> viewModel.getAllMarkets()}"
+                android:text="@string/try_again_text" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

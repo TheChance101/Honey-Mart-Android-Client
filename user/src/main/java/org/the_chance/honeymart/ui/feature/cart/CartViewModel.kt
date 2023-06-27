@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -9,6 +8,7 @@ import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
@@ -42,24 +42,19 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
+                error = null,
                 products = cart.products,
                 total = cart.total
             )
         }
     }
 
-    private fun onGetAllCartError(
-        throwable: Exception,
-    ) {
-        this._state.update {
-            it.copy(isLoading = false, isError = true)
-        }
+    private fun onGetAllCartError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     private fun incrementProductCountByOne(productId: Long) {
         val currentState = _state.value
-
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
                 val newProductCount = (product.productCount ?: 0) + 1
@@ -78,8 +73,8 @@ class CartViewModel @Inject constructor(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
-        Log.e("Sara",updatedProducts.toString())
-        Log.e("Sara","${updatedProducts.find { it.productId ==productId }?.productCount?:0}")
+        log(updatedProducts.toString())
+        log("${updatedProducts.find { it.productId == productId }?.productCount ?: 0}")
     }
 
     private fun decrementProductCountByOne(productId: Long) {
@@ -115,15 +110,15 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
+                error = null,
             )
         }
         getChosenCartProducts()
     }
 
-    private fun onUpdateProductInCartError(exception: Exception) {
+    private fun onUpdateProductInCartError(error: ErrorHandler) {
         this._state.update {
-            it.copy(isLoading = false, isError = true)
+            it.copy(isLoading = false, error = error)
         }
     }
 
@@ -137,12 +132,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickOrderNowButton() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                isError = false,
-            )
-        }
+        _state.update { it.copy(isLoading = false) }
         viewModelScope.launch {
             _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect))
             checkout()
@@ -171,16 +161,16 @@ class CartViewModel @Inject constructor(
     private fun onDeleteFromCartSuccess(message: String) {
         _state.update {
             it.copy(
-                isError = false,
+                error = null,
                 products = emptyList()
             )
         }
         getChosenCartProducts()
     }
 
-    private fun onDeleteFromCartError(throwable: Exception) {
+    private fun onDeleteFromCartError(error: ErrorHandler) {
         this._state.update {
-            it.copy(isLoading = false, isError = true)
+            it.copy(isLoading = false, error = error)
         }
     }
 

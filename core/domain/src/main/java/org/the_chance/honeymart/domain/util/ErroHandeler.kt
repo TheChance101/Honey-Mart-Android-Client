@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.domain.util
 
 open class GeneralException : Exception()
-class UnAuthorizedException : GeneralException()//401
 class InvalidDataException : GeneralException()//400
 class NotFoundException : GeneralException()//404
 class AlreadyExistException : GeneralException()//409
@@ -13,6 +12,7 @@ class InternalServerException : NetworkException()//500
 
 
 open class AuthenticationException : Exception()
+class UnAuthorizedException : AuthenticationException()//401
 class EmailIsExistException : AuthenticationException()//1001
 class ForbiddenException : AuthenticationException()//403
 
@@ -32,21 +32,38 @@ sealed interface ErrorHandler {
 }
 
 
-//////httm code
-//Created 201 post
-// ok 200 delete update get
-// 404 notFound
-// 302 found get owner profile
+fun handelNetworkException(
+    exception: NetworkException, onError: (ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is InternalServerException -> onError(ErrorHandler.ServerError)
 
-//class ProductNotInSameCartMarketException(message: String = "this product not in same market, you should delete cart") :
-//    Exception(message)
-//
-//
-//open class RegisterException() : Exception()
-//class InvalidFullNameException : RegisterException()
-//class InvalidEmailException : RegisterException()
-//
-//class InvalidEmailOrPasswordException : RegisterException()
-//class InvalidRegisterException : RegisterException()
-//
-//class InvalidPasswordException : RegisterException()
+        is NoConnectionException -> onError(ErrorHandler.NoConnection)
+    }
+}
+
+fun handelAuthenticationException(
+    exception: AuthenticationException,
+    onError: (t: ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is EmailIsExistException -> onError(ErrorHandler.EmailIsExist)
+
+        is ForbiddenException -> onError(ErrorHandler.UnAuthorizedUser)
+
+        is UnAuthorizedException -> onError(ErrorHandler.UnAuthorizedUser)
+    }
+}
+
+fun handelGeneralException(
+    exception: GeneralException,
+    onError: (t: ErrorHandler) -> Unit,
+) {
+    when (exception) {
+        is InvalidDataException -> onError(ErrorHandler.InvalidData)
+
+        is NotFoundException -> onError(ErrorHandler.NotFound)
+
+        is AlreadyExistException -> onError(ErrorHandler.AlreadyExist)
+    }
+}
