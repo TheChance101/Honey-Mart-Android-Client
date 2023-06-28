@@ -1,12 +1,7 @@
 package org.the_chance.honeymart.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -34,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         setupNavigation(navController)
+
     }
 
     private fun setupNavigation(navController: NavController) {
