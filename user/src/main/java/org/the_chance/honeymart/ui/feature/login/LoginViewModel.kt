@@ -68,7 +68,7 @@ class LoginViewModel @Inject constructor(
         if (_state.value.emailState == ValidationState.VALID_EMAIL ||
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
-            login(_state.value.email, _state.value.password)
+            login(_state.value.email.trim(), _state.value.password.trim())
 
         }
     }
@@ -80,12 +80,12 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onEmailInputChange(email: CharSequence) {
-        val emailState = validateEmail(email.toString())
+        val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
     fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validatePassword(password.toString())
+        val passwordState = validatePassword(password.trim().toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
 
