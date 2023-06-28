@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.ui.feature.product
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -43,6 +43,7 @@ class ProductViewModel @Inject constructor(
         getData()
     }
 
+    private var job: Job? = null
     fun getData() {
         _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(args.categoryId)
@@ -51,7 +52,8 @@ class ProductViewModel @Inject constructor(
 
     private fun getWishListProducts(products: List<ProductUiState>) {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
-        tryToExecute(
+        job?.cancel()
+        job = tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }

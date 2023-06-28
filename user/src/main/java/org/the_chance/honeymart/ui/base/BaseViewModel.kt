@@ -42,8 +42,8 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         onSuccess: (T) -> Unit,
         onError: (t: ErrorHandler) -> Unit,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) {
-        viewModelScope.launch(dispatcher) {
+    ): Job {
+        return viewModelScope.launch(dispatcher) {
             try {
                 val result = function()
                 log("tryToExecute:$result ")
@@ -77,7 +77,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         job?.cancel()
         job = viewModelScope.launch(dispatcher) {
             try {
-                delay(2000)
+                delay(200)
                 val result = function()
                 log("tryToExecute:$result ")
                 onSuccess(result)

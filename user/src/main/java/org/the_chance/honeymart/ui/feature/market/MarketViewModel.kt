@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.market
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
@@ -25,9 +26,11 @@ class MarketViewModel @Inject constructor(
         getAllMarkets()
     }
 
+    private var job: Job? = null
     fun getAllMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
+        job?.cancel()
+        job = tryToExecute(
             { getAllMarket().map { it.toMarketUiState() } },
             ::onGetMarketSuccess,
             ::onGetMarketError
