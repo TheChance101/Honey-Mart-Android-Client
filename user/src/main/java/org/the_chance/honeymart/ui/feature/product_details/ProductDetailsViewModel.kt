@@ -47,7 +47,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
-       _state.update { it.copy(error = null, isError = false) }
+        _state.update { it.copy(error = null, isError = false) }
         tryToExecute(
             { deleteCartUseCase() },
             { onDeleteCartSuccess(it, productId, count) },
@@ -60,7 +60,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteCartError(error: ErrorHandler) {
-      _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -89,7 +89,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductError(error: ErrorHandler) {
-       _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -111,7 +111,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
-        val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
+        val newQuantity = if (currentQuantity > 1) currentQuantity - 1 else 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
@@ -136,11 +136,13 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
-         _state.update { it.copy(isLoading = false) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
+        _state.update { it.copy(isLoading = false, isAddToCartLoading = false) }
+
         when (error) {
+            is ErrorHandler.NoConnection -> {
+                _state.update { it.copy(isError = true) }
+            }
+
             is ErrorHandler.UnAuthorizedUser -> {
                 viewModelScope.launch {
                     _effect.emit(
@@ -191,7 +193,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetIfProductInWishListError(error: ErrorHandler) {
-         _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }

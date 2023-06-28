@@ -34,31 +34,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         setupNavigation(navController)
-       // statusBarMode(this)
-
     }
-
-    private fun statusBarMode(activity: Activity) {
-        activity.window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            when (context.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    decorView.systemUiVisibility =
-                        (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-                    statusBarColor = Color.BLACK
-                }
-
-                else -> {
-                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    decorView.systemUiVisibility =
-                        (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-                    statusBarColor = Color.WHITE
-                }
-            }
-        }
-    }
-
 
     private fun setupNavigation(navController: NavController) {
         val navView = binding.bottomNavigationView
