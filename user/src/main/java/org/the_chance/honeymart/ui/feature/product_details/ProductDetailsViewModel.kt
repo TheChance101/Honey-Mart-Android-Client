@@ -111,7 +111,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
-        val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 0
+        val newQuantity = if (currentQuantity > 0) currentQuantity - 1 else 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
