@@ -155,7 +155,7 @@
             app:layout_constraintBottom_toBottomOf="@id/card_increase_count"
             app:layout_constraintEnd_toStartOf="@id/card_increase_count"
             app:layout_constraintTop_toTopOf="@id/card_increase_count"
-            tools:text="0" />
+            tools:text="1" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_decrease_count"
