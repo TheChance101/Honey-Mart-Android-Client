@@ -326,4 +326,8 @@
         <item name="android:background">@color/white_100</item>
     </style>
 
+    <style name="AppBarStyle">
+        <item name="android:background">@color/white_300</item>
+    </style>
+
 </resources>

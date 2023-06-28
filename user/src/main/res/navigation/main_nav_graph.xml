@@ -58,7 +58,7 @@
             <action
                 android:id="@+id/action_productsFragment_to_user_nav_graph"
                 app:destination="@id/user_nav_graph"
-                app:exitAnim="@android:anim/slide_out_right">
+                >
                 <argument
                     android:name="AuthData"
                     app:argType="org.the_chance.honeymart.util.AuthData" />
