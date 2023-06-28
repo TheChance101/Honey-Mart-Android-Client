@@ -31,6 +31,36 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_market" />
 
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view_placeholder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/placeholder_wish_list"
+            android:visibility="gone"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfNoItems="@{viewModel.state.markets}" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_placeholder"
+            style="@style/Theme.HoneyMart.Text.H3.DarkModerate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_56"
+            android:gravity="center"
+            android:text="@string/no_categories"
+            android:visibility="gone"
+            app:hideIfLoading="@{viewModel.state.isLoading}"
+            app:layout_constraintEnd_toEndOf="@id/image_view_placeholder"
+            app:layout_constraintStart_toStartOf="@id/image_view_placeholder"
+            app:layout_constraintTop_toBottomOf="@id/image_view_placeholder"
+            app:showIfNoItems="@{viewModel.state.markets}" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading"
             android:layout_width="100dp"
