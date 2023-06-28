@@ -68,10 +68,4 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
             ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getCategoriesByMarketId()
-        viewModel.getProductsByCategoryId(viewModel.args.categoryId)
-    }
 }
