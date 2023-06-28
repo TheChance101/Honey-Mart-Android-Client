@@ -241,7 +241,7 @@ fun changeIfSelected(view: View, isSelected: Boolean) {
                 }
 
                 is MaterialTextView -> {
-                    val colorRes = if (isSelected) R.color.primary_100 else R.color.white_100
+                    val colorRes = if (isSelected) R.color.primary_100 else R.color.black_37
                     val color = ContextCompat.getColor(context, colorRes)
                     view.setTextColor(color)
                 }
