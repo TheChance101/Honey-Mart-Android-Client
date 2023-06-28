@@ -434,7 +434,7 @@ fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
 @BindingAdapter(value = ["app:loadingCartState", "app:disableIfNoQuantity"])
 fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?) {
     if (quantity != null) {
-        if (quantity > 0) {
+        if (quantity >= 1) {
             button.isEnabled = !isLoading
         } else {
             button.isEnabled = false
