@@ -10,5 +10,5 @@ data class ProductDetailsUiState(
     val product: ProductUiState = ProductUiState(),
     val image: String = "",
     val smallImages: List<String> = emptyList(),
-    val quantity: Int = 0,
+    val quantity: Int = 1,
 )
