@@ -1,19 +1,17 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.ui_effect.OrderUiEffect
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
 import org.the_chance.honeymart.util.Constant
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,9 +35,7 @@ class OrderViewModel @Inject constructor(
                 orderStates = OrderStates.PROCESSING
             )
         }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
-        }
+        executeAction(_effect, OrderUiEffect.ClickProcessing)
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
@@ -62,9 +58,7 @@ class OrderViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDone))
-        }
+        executeAction(_effect, OrderUiEffect.ClickDone)
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
@@ -91,10 +85,7 @@ class OrderViewModel @Inject constructor(
                 isError = false
             )
         }
-
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
-        }
+        executeAction(_effect, OrderUiEffect.ClickCanceled)
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
             ::onGetCancelOrdersSuccess,
@@ -141,14 +132,10 @@ class OrderViewModel @Inject constructor(
     }
 
     fun onClickDiscoverMarketsButton() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
-        }
+        executeAction(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
     }
 
     override fun onClickOrder(orderId: Long) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
-        }
+      executeAction(_effect, OrderUiEffect.ClickOrderEffect(orderId))
     }
 }

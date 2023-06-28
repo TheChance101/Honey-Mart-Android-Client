@@ -1,10 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
@@ -13,11 +11,11 @@ import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.ui_effect.ProductDetailsUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
 import org.the_chance.honeymart.util.AuthData
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -130,9 +128,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.AddToCartSuccess))
-        }
+        executeAction(_effect, ProductDetailsUiEffect.AddToCartSuccess)
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -144,28 +140,22 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(state.value.product.productId!!)
-                            )
-                        )
+                executeAction(
+                    _effect,
+                    ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                        AuthData.ProductDetails(state.value.product.productId!!)
                     )
-                }
+                )
             }
 
             is ErrorHandler.InvalidData -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(
-                                productId,
-                                count
-                            )
-                        )
+                executeAction(
+                    _effect,
+                    ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(
+                        productId,
+                        count
                     )
-                }
+                )
             }
 
             else -> {}
@@ -216,9 +206,7 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductDetailsUiEffect.AddProductToWishListEffectSuccess))
-        }
+        executeAction(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
@@ -226,15 +214,12 @@ class ProductDetailsViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         } else if (error is ErrorHandler.UnAuthorizedUser) {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                            AuthData.ProductDetails(state.value.product.productId!!)
-                        )
-                    )
+            executeAction(
+                _effect,
+                ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                    AuthData.ProductDetails(state.value.product.productId!!)
                 )
-            }
+            )
         }
         updateFavoriteState(false)
     }
@@ -277,11 +262,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        viewModelScope.launch {
-            _effect.emit(
-                EventHandler(ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
-            )
-        }
+    executeAction(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {

@@ -1,19 +1,16 @@
 package org.the_chance.honeymart.ui.feature.login
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
+import org.the_chance.honeymart.ui.feature.ui_effect.AuthenticationUiEffect
 import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,9 +41,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginSuccess(validationState: ValidationState) {
         if (validationState == ValidationState.SUCCESS) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(AuthenticationUiEffect.ClickLoginEffect(authData)))
-            }
+            executeAction(_effect, AuthenticationUiEffect.ClickLoginEffect(authData))
         }
         _state.update {
             it.copy(isLoading = false, error = null, validationState = validationState)
@@ -74,9 +69,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onClickSignUp() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(AuthenticationUiEffect.ClickSignUpEffect(authData)))
-        }
+        executeAction(_effect, AuthenticationUiEffect.ClickSignUpEffect(authData))
     }
 
     fun onEmailInputChange(email: CharSequence) {

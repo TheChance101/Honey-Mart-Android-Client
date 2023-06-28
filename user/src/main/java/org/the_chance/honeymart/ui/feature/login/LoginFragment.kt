@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
+import org.the_chance.honeymart.ui.feature.ui_effect.AuthenticationUiEffect
 import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
 import org.the_chance.honeymart.util.AuthData

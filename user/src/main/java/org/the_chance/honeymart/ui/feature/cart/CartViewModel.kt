@@ -1,18 +1,16 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.ui_effect.CartUiEffect
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -137,7 +135,7 @@ class CartViewModel @Inject constructor(
     }
  private fun onCheckOutSuccess(message: String) {
      _state.update { it.copy(isLoading = false, products = emptyList()) }
-     viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
+        executeAction(_effect, CartUiEffect.ClickOrderEffect)
  }
 
     private fun onCheckOutFailed(error: ErrorHandler) {
@@ -148,12 +146,11 @@ class CartViewModel @Inject constructor(
     }
 
     fun onClickDiscoverButton() {
-        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
+        executeAction(_effect, CartUiEffect.ClickDiscoverEffect)
     }
 
     fun deleteCart(position: Long) {
         val productId = state.value.products[position.toInt()].productId
-        viewModelScope.launch {
             if (productId != null) {
                 tryToExecute(
                     { deleteFromCart(productId) },
@@ -161,7 +158,6 @@ class CartViewModel @Inject constructor(
                     ::onDeleteFromCartError
                 )
             }
-        }
     }
 
     private fun onDeleteFromCartSuccess(message: String) {
