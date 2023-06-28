@@ -52,22 +52,22 @@ class CartViewModel @Inject constructor(
         }
     }
 
+
     private fun incrementProductCountByOne(productId: Long) {
         val currentState = _state.value
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
-                val newProductCount = (product.productCount ?: 0) + 1
+                val currentCount = product.productCount ?: 0
+                val newProductCount = if (currentCount >= 100) 100 else currentCount + 1
                 product.copy(productCount = newProductCount)
             } else {
                 product
             }
-
         }
 
         val updatedState = currentState.copy(products = updatedProducts)
         _state.value = updatedState
 
-        // Call the updateProductCart function with the updated productId and productCount
         updateProductCart(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
@@ -80,7 +80,7 @@ class CartViewModel @Inject constructor(
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
                 val currentCount = product.productCount ?: 0
-                val newProductCount = if (currentCount > 0) currentCount - 1 else 0
+                val newProductCount = if (currentCount > 0) currentCount - 1 else 1
                 product.copy(productCount = newProductCount)
             } else {
                 product
@@ -88,7 +88,6 @@ class CartViewModel @Inject constructor(
         }
         val updatedState = currentState.copy(products = updatedProducts)
         _state.value = updatedState
-        // Call the updateProductCart function with the updated productId and productCount
         updateProductCart(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
