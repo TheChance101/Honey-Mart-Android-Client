@@ -136,7 +136,7 @@ class ProductViewModel @Inject constructor(
             it.copy(
                 categories = updatedCategories,
                 products = emptyList(),
-                position = position.inc()
+                position = position
             )
         }
         getProductsByCategoryId(categoryId)
