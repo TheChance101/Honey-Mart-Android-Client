@@ -40,12 +40,12 @@ class SignupViewModel @Inject constructor(
     }
 
     fun onFullNameInputChange(fullName: CharSequence) {
-        val fullNameState = validateFullName(fullName.toString())
-        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
+        val fullNameState = validateFullName(fullName.trim().toString())
+        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.trim().toString()) }
     }
 
     fun onEmailInputChange(email: CharSequence) {
-        val emailState = validateEmail(email.toString())
+        val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
@@ -112,8 +112,8 @@ class SignupViewModel @Inject constructor(
     }
 
     fun onContinueClicked() {
-        val emailState = validateEmail(state.value.email)
-        val fullNameState = validateFullName(state.value.fullName)
+        val emailState = validateEmail(state.value.email.trim())
+        val fullNameState = validateFullName(state.value.fullName.trim())
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
             viewModelScope.launch {
                 _effect.emit(EventHandler(AuthUiEffect.ClickContinueEffect))
