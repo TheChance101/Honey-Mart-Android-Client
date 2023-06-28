@@ -42,7 +42,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         _binding = DataBindingUtil.inflate(
             inflater,
             layoutIdFragment,

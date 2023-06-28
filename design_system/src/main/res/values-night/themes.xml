@@ -316,6 +316,8 @@
         <item name="android:background">@color/dark_background_300</item>
     </style>
 
-
+    <style name="AppBarStyle">
+        <item name="android:background">@color/dark_background_200</item>
+    </style>
 
 </resources>
