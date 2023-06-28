@@ -4,6 +4,8 @@ plugins {
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_LIBRARY)
     id(Plugins.NAVIGATION_ARGS)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -42,6 +44,8 @@ dependencies {
     implementation(project(BuildModules.DESIGN_SYSTEM))
     implementation(project(BuildModules.CORE_DOMAIN))
     implementation(project(BuildModules.CORE_DATA))
+    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
+    implementation("com.google.firebase:firebase-analytics:21.2.0")
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
@@ -59,7 +63,7 @@ dependencies {
     //swipe
     implementation(Dependencies.swipeDependency)
     // coil
-    implementation(Dependencies.coilDependency);
+    implementation(Dependencies.coilDependency)
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
 
