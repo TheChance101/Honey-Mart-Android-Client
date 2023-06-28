@@ -77,7 +77,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         job?.cancel()
         job = viewModelScope.launch(dispatcher) {
             try {
-                delay(2000)//2s
+                delay(2000)
                 val result = function()
                 log("tryToExecute:$result ")
                 onSuccess(result)

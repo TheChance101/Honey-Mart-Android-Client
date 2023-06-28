@@ -7,7 +7,6 @@ import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
-import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -17,15 +16,12 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
-import org.the_chance.honeymart.domain.util.InvalidDataException
-import org.the_chance.honeymart.domain.util.UnAuthorizedException
-import retrofit2.Response
 import javax.inject.Inject
 
 
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
-) : HoneyMartRepository {
+) : BaseRepository(), HoneyMartRepository {
 
 
     override suspend fun checkout(): String {
@@ -79,24 +75,5 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }
-
-
-    private suspend fun <T : Any> wrap(function: suspend () -> Response<BaseResponse<T>>): T {
-        val response = function()
-        return if (response.isSuccessful) {
-            when (response.body()?.status?.code) {
-                400 -> {
-                    throw InvalidDataException()
-                }
-                else -> response.body()?.value!!
-            }
-        } else {
-            when (response.code()) {
-                401 -> throw UnAuthorizedException()
-                else -> throw Exception("Unknown error occurred")
-            }
-        }
-    }
-
 
 }
