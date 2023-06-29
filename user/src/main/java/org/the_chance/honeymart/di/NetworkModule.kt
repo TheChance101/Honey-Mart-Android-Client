@@ -1,24 +1,18 @@
 package org.the_chance.honeymart.di
 
 
-import android.app.Application
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
-import org.the_chance.honeymart.data.source.remote.network.CacheInterceptor
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.util.Constant
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import java.util.concurrent.TimeUnit
-
 import javax.inject.Singleton
 
 
@@ -54,16 +48,10 @@ internal object NetworkModule {
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         headerInterceptor: AuthInterceptor,
-        cacheInterceptor: CacheInterceptor,
-        application: Application
     ): OkHttpClient =
         OkHttpClient.Builder().apply {
-            val cacheDirectory = File(application.cacheDir, Constant.HTTP_CACHE)
-            val cache = Cache(cacheDirectory, Constant.MAX_SIZE)
             addInterceptor(loggingInterceptor)
             addInterceptor(headerInterceptor)
-            addNetworkInterceptor(cacheInterceptor)
-            cache(cache)
             connectTimeout(60, TimeUnit.SECONDS)
             writeTimeout(60, TimeUnit.SECONDS)
             readTimeout(60, TimeUnit.SECONDS)
@@ -85,7 +73,5 @@ internal object NetworkModule {
     fun provideHeaderInterceptor(dataStorePref: AuthDataStorePref): AuthInterceptor {
         return AuthInterceptor(dataStorePref)
     }
-    @Singleton
-    @Provides
-    fun provideCacheInterceptor(): CacheInterceptor = CacheInterceptor()
+
 }

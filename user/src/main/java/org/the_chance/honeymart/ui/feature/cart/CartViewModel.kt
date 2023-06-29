@@ -104,7 +104,6 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateProductCart(productId: Long, count: Int) {
-        _state.update { it.copy(isLoading = true, isError = false) }
         updateProductCartJob?.cancel()
         updateProductCartJob = tryToExecute(
             { addToCartUseCase(productId, count) },
