@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.login
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
@@ -28,10 +29,12 @@ class LoginViewModel @Inject constructor(
 
     private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
 
+    private var loginJob: Job? = null
 
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
+        loginJob?.cancel()
+        loginJob = tryToExecute(
             { loginUser(password = password, email = email) },
             ::onLoginSuccess,
             ::onLoginError,

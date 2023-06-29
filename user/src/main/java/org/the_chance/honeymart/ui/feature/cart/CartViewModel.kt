@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.cart
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
@@ -20,17 +21,25 @@ class CartViewModel @Inject constructor(
     private val getAllCart: GetAllCartUseCase,
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val checkout:CheckoutUseCase
+    private val checkout: CheckoutUseCase,
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
+    private var productJob: Job? = null
+    private var orderJob: Job? = null
+    private var deleteCartJob: Job? = null
+    private var updateProductCartJob: Job? = null
+
+
     fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
+        productJob?.cancel()
+        productJob = tryToExecute(
             { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
-            ::onGetAllCartError
+            ::onGetAllCartError,
+            1000
         )
     }
 
@@ -96,11 +105,12 @@ class CartViewModel @Inject constructor(
 
     private fun updateProductCart(productId: Long, count: Int) {
         _state.update { it.copy(isLoading = true, isError = false) }
-
-        tryToExecute(
+        updateProductCartJob?.cancel()
+        updateProductCartJob = tryToExecute(
             { addToCartUseCase(productId, count) },
             ::onUpdateProductInCartSuccess,
-            ::onUpdateProductInCartError
+            ::onUpdateProductInCartError,
+            200
         )
     }
 
@@ -129,16 +139,19 @@ class CartViewModel @Inject constructor(
 
     fun onClickOrderNowButton() {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
+        orderJob?.cancel()
+        orderJob = tryToExecute(
             { checkout() },
             ::onCheckOutSuccess,
-            ::onCheckOutFailed
+            ::onCheckOutFailed,
+            1000
         )
     }
- private fun onCheckOutSuccess(message: String) {
-     _state.update { it.copy(isLoading = false, products = emptyList()) }
-     viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
- }
+
+    private fun onCheckOutSuccess(message: String) {
+        _state.update { it.copy(isLoading = false, products = emptyList()) }
+        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
+    }
 
     private fun onCheckOutFailed(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
@@ -153,14 +166,14 @@ class CartViewModel @Inject constructor(
 
     fun deleteCart(position: Long) {
         val productId = state.value.products[position.toInt()].productId
-        viewModelScope.launch {
-            if (productId != null) {
-                tryToExecute(
-                    { deleteFromCart(productId) },
-                    ::onDeleteFromCartSuccess,
-                    ::onDeleteFromCartError
-                )
-            }
+        if (productId != null) {
+            deleteCartJob?.cancel()
+            deleteCartJob = tryToExecute(
+                { deleteFromCart(productId) },
+                ::onDeleteFromCartSuccess,
+                ::onDeleteFromCartError,
+                1000
+            )
         }
     }
 

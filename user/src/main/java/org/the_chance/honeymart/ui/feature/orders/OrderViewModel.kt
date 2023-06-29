@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.orders
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
@@ -23,6 +24,10 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
+    private var processingOrderJob: Job? = null
+    private var doneOrdersJob: Job? = null
+    private var cancelOrdersJob: Job? = null
+    private var updateOrdersJob: Job? = null
 
     init {
         getAllProcessingOrders()
@@ -37,13 +42,13 @@ class OrderViewModel @Inject constructor(
                 orderStates = OrderStates.PROCESSING
             )
         }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
-        }
-        tryToExecute(
+        viewModelScope.launch { _effect.emit(EventHandler(OrderUiEffect.ClickProcessing)) }
+        processingOrderJob?.cancel()
+        processingOrderJob = tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
-            ::onGetProcessingOrdersError
+            ::onGetProcessingOrdersError,
+            200
         )
     }
 
@@ -65,10 +70,12 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             _effect.emit(EventHandler(OrderUiEffect.ClickDone))
         }
-        tryToExecute(
+        doneOrdersJob?.cancel()
+        doneOrdersJob = tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
-            ::onGetDoneOrdersError
+            ::onGetDoneOrdersError,
+            200
         )
     }
 
@@ -92,13 +99,13 @@ class OrderViewModel @Inject constructor(
             )
         }
 
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
-        }
-        tryToExecute(
+        viewModelScope.launch { _effect.emit(EventHandler(OrderUiEffect.ClickCanceled)) }
+        cancelOrdersJob?.cancel()
+        cancelOrdersJob = tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
             ::onGetCancelOrdersSuccess,
-            ::onGetCancelOrdersError
+            ::onGetCancelOrdersError,
+            200
         )
     }
 
@@ -116,10 +123,12 @@ class OrderViewModel @Inject constructor(
     fun updateOrders(id: Long, stateOrder: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
+        updateOrdersJob?.cancel()
+        updateOrdersJob = tryToExecute(
             { updateOrderStateUseCase(orderId, stateOrder) },
             ::updateOrdersSuccess,
-            ::updateOrdersError
+            ::updateOrdersError,
+            200
         )
 
     }

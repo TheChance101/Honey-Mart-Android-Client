@@ -121,7 +121,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun addProductToCart(productId: Long, count: Int) {
         _state.update { it.copy(isAddToCartLoading = true, error = null, isError = false) }
-        tryToExecuteDebounced(
+        tryToExecute(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -205,7 +205,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isError = false) }
-        tryToExecuteDebounced(
+        tryToExecute(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
@@ -268,7 +268,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun deleteProductFromWishList(productId: Long) {
         _state.update { it.copy(error = null, isError = false) }
-        tryToExecuteDebounced(
+        tryToExecute(
             { deleteProductFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError

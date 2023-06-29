@@ -35,16 +35,17 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected val _effect = MutableSharedFlow<EventHandler<E>>()
     val effect = _effect.asSharedFlow()
 
-    private var job: Job? = null
 
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
         onError: (t: ErrorHandler) -> Unit,
+        delayTime: Long = 0L,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
     ): Job {
         return viewModelScope.launch(dispatcher) {
             try {
+                delay(delayTime)
                 val result = function()
                 log("tryToExecute:$result ")
                 onSuccess(result)
@@ -65,43 +66,6 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 onError(ErrorHandler.UnKnownError)
             }
         }
-    }
-
-
-    protected fun <T> tryToExecuteDebounced(
-        function: suspend () -> T,
-        onSuccess: (T) -> Unit,
-        onError: (t: ErrorHandler) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) {
-        job?.cancel()
-        job = viewModelScope.launch(dispatcher) {
-            try {
-                delay(200)
-                val result = function()
-                log("tryToExecute:$result ")
-                onSuccess(result)
-
-            } catch (exception: GeneralException) {
-                handelGeneralException(exception, onError)
-                log("tryToExecute error GeneralException: ${exception}")
-            } catch (exception: NetworkException) {
-                handelNetworkException(exception, onError)
-                log("tryToExecute error NetworkException: ${exception}")
-            } catch (exception: AuthenticationException) {
-                handelAuthenticationException(exception, onError)
-                log("tryToExecute error AuthenticationException: ${exception}")
-            } catch (exception: IOException) {
-                log("tryToExecute error IOException: ${exception}")
-                onError(ErrorHandler.NoConnection)
-            } catch (exception: Exception) {
-                log("tryToExecute error Exception: ${exception}")
-                onError(ErrorHandler.UnKnownError)
-            }
-        }
-        log("job isCompleted : ${job?.isCompleted} ")
-        log("job isCancelled : ${job?.isCancelled} ")
-        log("tryToExecute: job: $job")
     }
 
 }

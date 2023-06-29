@@ -39,11 +39,16 @@ class ProductViewModel @Inject constructor(
 
     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
+    private var wishLisjob: Job? = null
+    private var categoriesJob: Job? = null
+    private var productsJob: Job? = null
+    private var deleteProductJob: Job? = null
+    private var addProductJob: Job? = null
+
     init {
         getData()
     }
 
-    private var job: Job? = null
     fun getData() {
         _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(args.categoryId)
@@ -52,13 +57,12 @@ class ProductViewModel @Inject constructor(
 
     private fun getWishListProducts(products: List<ProductUiState>) {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
-        job?.cancel()
-        job = tryToExecute(
+
+        tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }
         )
-
     }
 
     private fun onGetWishListProductSuccess(
@@ -85,21 +89,24 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun getCategoriesByMarketId() {
+    private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true, isError = false) }
-        tryToExecute(
+        categoriesJob?.cancel()
+        categoriesJob = tryToExecute(
             { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
-            ::onGetCategoryError
+            ::onGetCategoryError,
         )
     }
 
-    fun getProductsByCategoryId(categoryId: Long) {
+    private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
-        tryToExecute(
+        productsJob?.cancel()
+        productsJob = tryToExecute(
             { getAllProducts(categoryId).map { it.toProductUiState() } },
             ::onGetProductSuccess,
-            ::onGetProductError
+            ::onGetProductError,
+            200
         )
     }
 
@@ -179,10 +186,12 @@ class ProductViewModel @Inject constructor(
 
 
     private fun deleteProductFromWishList(productId: Long) {
-        tryToExecute(
+        deleteProductJob?.cancel()
+        deleteProductJob = tryToExecute(
             { deleteFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
-            ::onDeleteWishListError
+            ::onDeleteWishListError,
+            500
         )
     }
 
@@ -195,24 +204,27 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isError = true) }
-
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(error = error, isError = true) }
+        }
     }
 
     private fun addProductToWishList(productId: Long) {
-        tryToExecute(
+        addProductJob?.cancel()
+        addProductJob = tryToExecute(
             { addToWishListUseCase(productId) },
             ::onAddToWishListSuccess,
-            { onAddToWishListError(it, productId) }
+            { onAddToWishListError(it, productId) },
+            500
         )
     }
 
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
-        val newProduct = _state.value.products.map {
-            if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite)
+        val newProduct = _state.value.products.map { product ->
+            if (product.productId == productId) {
+                product.copy(isFavorite = isFavorite)
             } else {
-                it
+                product
             }
         }
         _state.update { it.copy(products = newProduct) }
@@ -236,6 +248,8 @@ class ProductViewModel @Inject constructor(
                     )
                 )
             }
+        } else if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
         updateFavoriteState(productId, false)
     }
