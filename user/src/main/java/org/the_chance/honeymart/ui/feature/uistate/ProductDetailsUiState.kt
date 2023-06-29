@@ -6,7 +6,7 @@ data class ProductDetailsUiState(
     val isLoading: Boolean = true,
     val isAddToCartLoading: Boolean = false,
     val error: ErrorHandler? = null,
-    val isError: Boolean = false,
+    val isConnectionError: Boolean = false,
     val product: ProductUiState = ProductUiState(),
     val image: String = "",
     val smallImages: List<String> = emptyList(),

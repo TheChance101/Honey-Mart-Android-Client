@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -35,6 +36,7 @@ class ProductViewModel @Inject constructor(
 ) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener,
     CategoryProductInteractionListener {
 
+    private var job: Job? = null
     override val TAG: String = this::class.simpleName.toString()
 
     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
@@ -46,12 +48,12 @@ class ProductViewModel @Inject constructor(
     private var addProductJob: Job? = null
 
     init {
-        getData()
+        _state.update { it.copy(categoryId = args.categoryId, position = args.position) }
     }
 
     fun getData() {
         _state.update { it.copy(error = null, isError = false) }
-        getProductsByCategoryId(args.categoryId)
+        getProductsByCategoryId(state.value.categoryId)
         getCategoriesByMarketId()
     }
 
@@ -114,8 +116,8 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null, isLoadingCategory = false,
-                categories = updateCategorySelection(categories, args.categoryId),
-                position = args.position
+                categories = updateCategorySelection(categories, state.value.categoryId),
+                position = state.value.position
             )
         }
     }
@@ -138,14 +140,15 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCategoryProduct(categoryId: Long) {
+    override fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {
             it.copy(
                 categories = updatedCategories,
                 products = emptyList(),
-                position = position.inc()
+                position = position.inc(),
+                categoryId = categoryId
             )
         }
         getProductsByCategoryId(categoryId)
@@ -161,7 +164,9 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        viewModelScope.launch {
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(10)
             _effect.emit(
                 EventHandler(
                     ProductUiEffect.ClickProductEffect(productId, args.categoryId)
@@ -231,6 +236,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
+
         viewModelScope.launch {
             _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
         }

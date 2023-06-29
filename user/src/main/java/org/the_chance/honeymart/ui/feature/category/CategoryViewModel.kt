@@ -3,6 +3,8 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -20,10 +22,11 @@ class CategoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
     CategoryInteractionListener {
+
+    private var job: Job? = null
+    private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
     override val TAG: String = this::class.java.simpleName
 
-
-    private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
         getAllCategory()
@@ -58,8 +61,10 @@ class CategoryViewModel @Inject constructor(
 
 
     override fun onCategoryClicked(categoryId: Long) {
+        job?.cancel()
         val position = state.value.categories.indexOfFirst { it.categoryId == categoryId }
-        viewModelScope.launch {
+        job = viewModelScope.launch {
+            delay(10)
             _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId, position)))
         }
     }
