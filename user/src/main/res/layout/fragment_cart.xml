@@ -22,6 +22,7 @@
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginVertical="@dimen/spacing_12"
             android:clipToPadding="false"
+            app:hideRvIfLoading="@{viewModel.state.loading}"
             app:items="@{viewModel.state.products}"
             app:layout_constraintBottom_toTopOf="@id/product_container"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +41,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                app:hideIfLoading="@{viewModel.state.loading}"
                 android:layout_height="match_parent">
 
                 <TextView
