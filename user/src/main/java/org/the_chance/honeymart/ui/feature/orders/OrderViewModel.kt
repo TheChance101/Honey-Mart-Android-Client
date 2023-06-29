@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.feature.orders
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
@@ -22,7 +24,7 @@ class OrderViewModel @Inject constructor(
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
-
+    private var job: Job? = null
 
     init {
         getAllProcessingOrders()
@@ -147,7 +149,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun onClickOrder(orderId: Long) {
-        viewModelScope.launch {
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(10)
             _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
         }
     }

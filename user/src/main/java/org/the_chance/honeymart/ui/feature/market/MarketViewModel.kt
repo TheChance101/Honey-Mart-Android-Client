@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.feature.market
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
@@ -19,7 +21,7 @@ class MarketViewModel @Inject constructor(
 ) : BaseViewModel<MarketsUiState, Long>(MarketsUiState()), MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
-
+    private var job: Job? = null
 
     init {
         getAllMarkets()
@@ -52,6 +54,10 @@ class MarketViewModel @Inject constructor(
     }
 
     override fun onClickMarket(marketId: Long) {
-        viewModelScope.launch { _effect.emit(EventHandler(marketId)) }
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(10)
+            _effect.emit(EventHandler(marketId))
+        }
     }
 }

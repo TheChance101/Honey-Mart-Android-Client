@@ -47,7 +47,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
-        _state.update { it.copy(error = null, isError = false) }
+        _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
             { deleteCartUseCase() },
             { onDeleteCartSuccess(it, productId, count) },
@@ -62,14 +62,14 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onDeleteCartError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
 
 
     // region Product
     private fun getProductDetails(productId: Long) {
-        _state.update { it.copy(isLoading = true, error = null, isError = false) }
+        _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
         tryToExecute(
             { getProductDetailsUseCase(productId).toProductUiState() },
             ::onGetProductSuccess,
@@ -78,20 +78,20 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(product: ProductUiState) {
-        checkIfProductInWishList(args.productId)
         _state.update {
             it.copy(
-                isLoading = false, error = null, isError = false, product = product,
+                error = null, isConnectionError = false, product = product,
                 image = product.productImages?.first() ?: "",
                 smallImages = product.productImages?.drop(1) as List<String>
             )
         }
+        checkIfProductInWishList(args.productId)
     }
 
     private fun onGetProductError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
 
@@ -120,7 +120,13 @@ class ProductDetailsViewModel @Inject constructor(
     // region Cart
 
     fun addProductToCart(productId: Long, count: Int) {
-        _state.update { it.copy(isAddToCartLoading = true, error = null, isError = false) }
+        _state.update {
+            it.copy(
+                isAddToCartLoading = true,
+                error = null,
+                isConnectionError = false
+            )
+        }
         tryToExecuteDebounced(
             { addProductToCartUseCase(productId, count) },
             ::onAddProductToCartSuccess,
@@ -140,7 +146,7 @@ class ProductDetailsViewModel @Inject constructor(
 
         when (error) {
             is ErrorHandler.NoConnection -> {
-                _state.update { it.copy(isError = true) }
+                _state.update { it.copy(isConnectionError = true) }
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
@@ -180,7 +186,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Check If Product In Wishlist
 
     private fun checkIfProductInWishList(productId: Long) {
-        _state.update { it.copy(isLoading = true, error = null, isError = false) }
+        _state.update { it.copy( error = null, isConnectionError = false) }
         tryToExecute(
             { getIfProductInWishListUseCase(productId) },
             ::onGetIfProductInWishListSuccess,
@@ -189,13 +195,14 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetIfProductInWishListSuccess(isFavorite: Boolean) {
+        _state.update {  it.copy(isLoading = false) }
         updateFavoriteState(isFavorite)
     }
 
     private fun onGetIfProductInWishListError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
 
@@ -204,7 +211,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Add Product To Wishlist
 
     private fun addProductToWishList(productId: Long) {
-        _state.update { it.copy(isLoading = true, error = null, isError = false) }
+        _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
             { addProductToWishListUseCase(productId) },
             ::onAddProductToWishListSuccess,
@@ -222,19 +229,25 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
-        _state.update { it.copy(isLoading = false) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        } else if (error is ErrorHandler.UnAuthorizedUser) {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                            AuthData.ProductDetails(state.value.product.productId!!)
+        _state.update { it.copy(isLoading = false, error = error) }
+        when (error) {
+            is ErrorHandler.NoConnection -> {
+                _state.update { it.copy(isLoading = false, isConnectionError = true) }
+            }
+
+            is ErrorHandler.UnAuthorizedUser -> {
+                viewModelScope.launch {
+                    _effect.emit(
+                        EventHandler(
+                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
+                                AuthData.ProductDetails(state.value.product.productId!!)
+                            )
                         )
                     )
-                )
+                }
             }
+
+            else -> {}
         }
         updateFavoriteState(false)
     }
@@ -267,7 +280,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Delete Product From WishList
 
     private fun deleteProductFromWishList(productId: Long) {
-        _state.update { it.copy(error = null, isError = false) }
+        _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
             { deleteProductFromWishListUseCase(productId) },
             ::onDeleteWishListSuccess,
@@ -287,7 +300,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
 

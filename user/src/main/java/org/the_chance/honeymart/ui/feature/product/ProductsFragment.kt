@@ -68,4 +68,9 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>() {
             ProductsFragmentDirections.actionProductsFragmentToProductDetails(productId)
         findNavController().navigate(action)
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getData()
+    }
 }
