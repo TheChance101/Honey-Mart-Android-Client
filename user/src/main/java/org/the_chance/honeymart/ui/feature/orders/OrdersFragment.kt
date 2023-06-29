@@ -46,7 +46,8 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             ) = true
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.absoluteAdapterPosition
+                val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
+               // val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
                         showAlertOrderDialog {
