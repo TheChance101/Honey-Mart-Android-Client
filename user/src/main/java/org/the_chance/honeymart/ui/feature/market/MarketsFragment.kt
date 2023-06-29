@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.ui_effect.MarketUiEffect
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.showExitAlertDialog
 import org.the_chance.user.R
@@ -36,7 +37,13 @@ class MarketsFragment : BaseFragment<FragmentMarketsBinding>() {
 
     private fun collectAction() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToCategory(it) }
+            effect.getContentIfHandled()?.let { onEffect(it) }
+        }
+    }
+
+    private fun onEffect(effect: MarketUiEffect) {
+        when (effect) {
+            is MarketUiEffect.ClickDiscoverMarketsEffect -> navigateToCategory(effect.MarketId)
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.feature.ui_effect.CartUiEffect
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R

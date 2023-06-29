@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honeymart.ui.feature.ui_effect.CategoryUiEffect
 import org.the_chance.honeymart.util.collect
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentCategoriesBinding
@@ -29,11 +30,18 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
 
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()
-                ?.let { navigateToProduct(it.categoryId, it.marketId, it.position) }
+            effect.getContentIfHandled()?.let { onEffect(it) }
         }
     }
 
+    private fun onEffect(effect: CategoryUiEffect) {
+        when (effect) {
+            is CategoryUiEffect.OnCategoryClicked -> navigateToProduct(
+                effect.categoryId,
+                effect.marketId,
+                effect.position)
+        }
+    }
     private fun navigateToProduct(categoryId: Long, marketId: Long, position: Int) {
         val action = CategoriesFragmentDirections
             .actionCategoriesFragmentToProductsFragment(categoryId, marketId, position)

@@ -19,6 +19,7 @@ import org.the_chance.honeymart.domain.util.NetworkException
 import org.the_chance.honeymart.domain.util.handelAuthenticationException
 import org.the_chance.honeymart.domain.util.handelGeneralException
 import org.the_chance.honeymart.domain.util.handelNetworkException
+import org.the_chance.honeymart.ui.feature.ui_effect.BaseUiEffect
 import org.the_chance.honeymart.util.EventHandler
 import java.io.IOException
 
@@ -36,6 +37,17 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     val effect = _effect.asSharedFlow()
 
     private var job: Job? = null
+
+
+    protected fun <T : BaseUiEffect> executeAction(
+        _effect: MutableSharedFlow<EventHandler<T>>,
+        effect: T,
+    ) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(effect))
+        }
+    }
+
 
     protected fun <T> tryToExecute(
         function: suspend () -> T,

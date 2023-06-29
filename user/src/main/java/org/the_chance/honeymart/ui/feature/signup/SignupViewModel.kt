@@ -1,9 +1,7 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
@@ -12,9 +10,9 @@ import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.feature.ui_effect.AuthUiEffect
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -100,9 +98,7 @@ class SignupViewModel @Inject constructor(
 
     private fun onLoginSuccess(loginState: ValidationState) {
         if (loginState == ValidationState.SUCCESS) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(AuthUiEffect.ClickSignUpEffect(args.AuthData)))
-            }
+            executeAction(_effect, AuthUiEffect.ClickSignUpEffect(args.AuthData))
         }
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
@@ -115,9 +111,7 @@ class SignupViewModel @Inject constructor(
         val emailState = validateEmail(state.value.email.trim())
         val fullNameState = validateFullName(state.value.fullName.trim())
         if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(AuthUiEffect.ClickContinueEffect))
-            }
+            executeAction(_effect, AuthUiEffect.ClickContinueEffect)
         }
         _state.update {
             it.copy(emailState = emailState, fullNameState = fullNameState, isLoading = false)

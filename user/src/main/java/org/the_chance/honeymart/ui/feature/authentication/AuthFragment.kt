@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.authentication
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.feature.ui_effect.AuthenticationUiEffect
 import org.the_chance.honeymart.ui.base.BaseFragment
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
