@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
@@ -153,6 +154,24 @@ fun RecyclerView.addOnScrollListenerWithAppbarColor(
 
         snackBar.show()
     }
+fun Fragment.showExitAlertDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.alertDialogCustomStyle)
+        .setTitle(getString(R.string.dialog_title))
+        .setMessage(getString(R.string.confirm))
+        .setPositiveButton(
+            getString(R.string.exit)
+        ) { _, _ ->
+            activity?.moveTaskToBack(true)
+            activity?.finish()
+        }
+        .setNegativeButton(
+            getString(R.string.stay)
+        ) { _, _ ->
+            /*Snackbar.make(requireView(), getString(R.string.canceled), Snackbar.LENGTH_SHORT)
+                .show()*/
+            //TODO
+        }.show()
+}
 
 
 

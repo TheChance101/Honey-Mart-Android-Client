@@ -165,6 +165,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun deleteCart(position: Long) {
+          _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         if (productId != null) {
             deleteCartJob?.cancel()
