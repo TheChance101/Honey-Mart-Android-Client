@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
@@ -19,6 +21,8 @@ class WishListViewModel @javax.inject.Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
 ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
+
+    private var job: Job? = null
     override val TAG: String = this::class.java.simpleName
 
     init {
@@ -102,7 +106,9 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        viewModelScope.launch {
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(10)
             _effect.emit(
                 EventHandler(
                     WishListUiEffect.ClickProductEffect(
