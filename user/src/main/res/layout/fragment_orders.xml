@@ -65,6 +65,7 @@
             android:layout_marginHorizontal="@dimen/spacing_16"
             android:layout_marginTop="@dimen/spacing_16"
             android:clipToPadding="false"
+            app:hideRvIfLoading="@{viewModel.state.loading}"
             android:orientation="vertical"
             app:items="@{viewModel.state.orders}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

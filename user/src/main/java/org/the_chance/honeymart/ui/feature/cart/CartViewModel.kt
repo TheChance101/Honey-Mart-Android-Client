@@ -95,8 +95,6 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateProductCart(productId: Long, count: Int) {
-        _state.update { it.copy(isLoading = true, isError = false) }
-
         tryToExecute(
             { addToCartUseCase(productId, count) },
             ::onUpdateProductInCartSuccess,
@@ -152,6 +150,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun deleteCart(position: Long) {
+          _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
             if (productId != null) {

@@ -46,11 +46,11 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
             ) = true
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
-               // val position = viewHolder.absoluteAdapterPosition
+                //val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
+               val position = viewHolder.absoluteAdapterPosition
                 when (orderState) {
                     OrderStates.PROCESSING -> {
-                        showAlertOrderDialog {
+                        showAlertOrderDialog(position) {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 Constant.ORDER_STATE_3
@@ -61,7 +61,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
                     }
 
                     OrderStates.DONE, OrderStates.CANCELED -> {
-                        showAlertOrderDialog {
+                        showAlertOrderDialog(position) {
                             viewModel.updateOrders(
                                 position.toLong(),
                                 Constant.ORDER_STATE_4
@@ -83,7 +83,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         }
     }
 
-    private fun showAlertOrderDialog(execute: () -> Unit) {
+    private fun showAlertOrderDialog(position: Int,execute: () -> Unit) {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.layout_order_dialog)
         dialog.setCancelable(false)
@@ -95,6 +95,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
         dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         buttonSure.setOnClickListener {
+         ordersAdapter.removeItem(position)
             execute()
             dialog.dismiss()
         }

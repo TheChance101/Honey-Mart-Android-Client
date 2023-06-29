@@ -326,6 +326,15 @@ fun hideIfLoading(view: View, condition: Boolean) {
     view.isVisible = !condition
 }
 
+@BindingAdapter("hideRvIfLoading")
+fun hideRvIfLoading(recyclerView: RecyclerView, isLoading: Boolean) {
+    if (isLoading) {
+        recyclerView.visibility = View.GONE
+    } else {
+        recyclerView.visibility = View.VISIBLE
+    }
+}
+
 
 
 
@@ -442,7 +451,7 @@ fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?)
         button.text = if (isLoading) "" else button.context.getString(R.string.add_to_cart)
         val icon = if (isLoading) null else AppCompatResources.getDrawable(
             button.context,
-            R.drawable.icon_add_to_cart
+            R.drawable.icon_cart
         )
         button.icon = icon
     }
