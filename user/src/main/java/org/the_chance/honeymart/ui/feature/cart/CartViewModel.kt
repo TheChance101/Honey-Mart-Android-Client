@@ -79,8 +79,8 @@ class CartViewModel @Inject constructor(
 
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
-                val currentCount = product.productCount ?: 0
-                val newProductCount = if (currentCount > 0) currentCount - 1 else 1
+                val currentCount = product.productCount ?: 1
+                val newProductCount = if (currentCount > 1) currentCount - 1 else 1
                 product.copy(productCount = newProductCount)
             } else {
                 product
