@@ -6,6 +6,7 @@ plugins {
     id(Plugins.NAVIGATION_ARGS)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id(Plugins.SERIALIZATION)
 }
 
 android {
@@ -69,7 +70,12 @@ dependencies {
     implementation(Dependencies.coilDependency)
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
-
-
-
+    val ktor_version = "2.3.2"
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$ktor_version")
+    implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
 }

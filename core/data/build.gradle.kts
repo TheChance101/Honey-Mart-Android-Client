@@ -3,6 +3,7 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_LIBRARY)
+    id(Plugins.SERIALIZATION)
 }
 
 android {
@@ -46,6 +47,14 @@ dependencies {
     kapt(Dependencies.hiltCompiler)
     // DataStore
     implementation(Dependencies.dateStoreDependency)
+    val ktor_version = "2.3.2"
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$ktor_version")
+    implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
 }
 kapt {
     correctErrorTypes = true
