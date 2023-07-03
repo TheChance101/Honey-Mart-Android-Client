@@ -4,26 +4,27 @@ import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.repository.AuthRepository
+import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 
 /**
  * Created by Aziza Helmy on 6/16/2023.
  */
 class AuthRepositoryImp @Inject constructor(
-    private val honeyMartService: HoneyMartService,
     private val datastore: AuthDataStorePref,
+    private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), AuthRepository {
 
     override suspend fun createUserAccount(
         fullName: String,
         password: String,
         email: String,
-    ): String =
-        wrap { honeyMartService.addUser(fullName, password, email) }
+    ): Boolean =
+        wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
 
 
     override suspend fun loginUser(email: String, password: String): String =
-        wrap { honeyMartService.loginUser(email, password) }
+        wrap { honeyMartService.loginUser(email, password) }.value ?: throw NotFoundException()
 
     override suspend fun saveToken(token: String) {
         datastore.saveToken(token)

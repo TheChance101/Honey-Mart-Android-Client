@@ -1,187 +1,146 @@
 package org.the_chance.honeymart.data.source.remote.network
 
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
+import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
-import org.the_chance.honeymart.data.source.remote.models.*
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
 
+/**
+ * Created by Aziza Helmy on 7/2/2023.
+ */
 interface HoneyMartService {
 
     //region Market
-    @GET("/markets")
-    suspend fun getAllMarkets(): Response<BaseResponse<List<MarketDto>>>
+    suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
+    suspend fun addMarket(marketName: String): BaseResponse<MarketDto>
 
-    @POST("/markets")
-    suspend fun addMarket(@Body marketName: String): Response<BaseResponse<MarketDto>>
+    suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
-    @PUT("/markets/{id}")
-    suspend fun updateMarket(
-        @Path("id") marketId: Long,
-        @Body name: String,
-    ): Response<BaseResponse<MarketDto>>
-
-    @DELETE("/markets/{id}")
-    suspend fun deleteMarket(@Path("id") marketId: Long)
+    suspend fun deleteMarket(marketId: Long): BaseResponse<String>
 
     //endregion Market
 
     //region Category
-    @GET("/markets/{id}/categories")
-    suspend fun getCategoriesInMarket(
-        @Path("id") marketId: Long,
-    ): Response<BaseResponse<List<CategoryDto>>>
+    suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>>
 
-    @POST("/category")
-    suspend fun addCategory(
-        @Body marketID: Long,
-        @Body name: String,
-        @Body imageId: Int,
-    ): Response<BaseResponse<CategoryDto>>
+    suspend fun addCategory(marketID: Long, name: String, imageId: Int): BaseResponse<CategoryDto>
 
-    @PUT("/category")
     suspend fun updateCategory(
-        @Body id: Long,
-        @Body marketID: Long,
-        @Body name: String,
-        @Body imageId: Int,
-    )
+        id: Long,
+        marketID: Long,
+        name: String,
+        imageId: Int,
+    ): BaseResponse<CategoryDto>
 
-    @DELETE("/category/{id}")
-    suspend fun deleteCategory(@Path("id") id: Long)
-
-
+    suspend fun deleteCategory(id: Long): BaseResponse<String>
     //endregion Category
 
     //region Products
+    suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>>
 
-    @GET("/category/{categoryId}/allProduct")
-    suspend fun getAllProductsByCategory(
-        @Path("categoryId") categoryId: Long,
-    ): Response<BaseResponse<List<ProductDto>>>
-
-    @GET("/product/{productId}")
     suspend fun getCategoriesForSpecificProduct(
-        @Path("productId") productId: Long,
-    ): Response<BaseResponse<List<CategoryDto>>>
+        productId: Long,
+    ): BaseResponse<List<CategoryDto>>
 
-    @POST("/product")
+
     suspend fun addProduct(
-        @Body name: String,
-        @Body price: Double,
-        @Body description: String,
-        @Body categoriesId: List<Long>,
-    ): Response<BaseResponse<ProductDto>>
+        name: String,
+        price: Double,
+        description: String,
+        categoriesId: List<Long>,
+    ): BaseResponse<ProductDto>
 
-    @PUT("/product/{id}")
+
     suspend fun updateProduct(
-        @Path("id") productId: Long,
-        @Body name: String,
-        @Body price: Double,
-        @Body description: String,
-    )
+        productId: Long,
+        name: String,
+        price: Double,
+        description: String,
+    ): BaseResponse<ProductDto>
 
-    @PUT("/product/{id}/updateCategories")
     suspend fun updateCategoriesHasProduct(
-        @Path("id") productId: Long,
-        @Body categoriesId: List<Long>,
-    )
+        productId: Long,
+        categoriesId: List<Long>,
+    ): BaseResponse<CategoryDto>
 
-    @DELETE("/product/{id}")
-    suspend fun deleteProduct(@Path("id") productId: Long)
+
+    suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
     //endregion Product
-    @FormUrlEncoded
-    @POST("/user/login")
-    suspend fun loginUser(@Field("email") email: String, @Field("password") password: String)
-            : Response<BaseResponse<String>>
 
+    suspend fun loginUser(email: String, password: String): BaseResponse<String>
     //region WishList
-    @GET("/wishList")
-    suspend fun getWishList(): Response<BaseResponse<List<WishListDto>>>
 
-    @DELETE("/wishList/{id}")
-    suspend fun deleteFromWishList(@Path("id") productId: Long): Response<BaseResponse<String>>
+    suspend fun getWishList(): BaseResponse<List<WishListDto>>
 
-    @FormUrlEncoded
-    @POST("/wishList")
-    suspend fun addToWishList(@Field("productId") productId: Long): Response<BaseResponse<String>>
+
+    suspend fun deleteFromWishList(productId: Long): BaseResponse<String>
+
+
+    suspend fun addToWishList(productId: Long): BaseResponse<String>
 
     //endregion WishList
 
     //region Cart
-    @FormUrlEncoded
-    @POST("/cart/addProduct")
+
     suspend fun addProductToCart(
-        @Field("productId") productId: Long,
-        @Field("count") count: Long
-    ): Response<BaseResponse<String>>
+        productId: Long,
+        count: Long,
+    ): BaseResponse<String>
 
     //endregion Cart
 
 
     //region user
 
-    @GET("/order/{orderId}")
-    suspend fun getOrderDetails(@Path("orderId") orderId: Long): Response<BaseResponse<OrderDetailsDto>>
+    suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto>
 
-    @FormUrlEncoded
-    @POST("/user/signup")
     suspend fun addUser(
-        @Field("fullName") fullName: String,
-        @Field("password") password: String,
-        @Field("email") email: String,
-    ): Response<BaseResponse<String>>
+        fullName: String,
+        password: String,
+        email: String,
+    ): BaseResponse<String>
 
     //endregion user
-    @GET("order/userOrders")
-    suspend fun getAllOrders(
-        @Query("orderState") orderState: Int
-    ): Response<BaseResponse<List<OrderDto>>>
 
-    @FormUrlEncoded
-    @PUT("/order/{id}")
+    suspend fun getAllOrders(
+        orderState: Int,
+    ): BaseResponse<List<OrderDto>>
+
+
     suspend fun updateOrderState(
-        @Path("id") id: Long?,
-        @Field("state") state: Int
-    ): Response<BaseResponse<Boolean>>
+        id: Long?,
+        state: Int,
+    ): BaseResponse<Boolean>
 
     // region cart
-    @GET("/cart")
-    suspend fun getCart(): Response<BaseResponse<CartDto>>
 
-    @FormUrlEncoded
-    @POST("/cart/addProduct")
+    suspend fun getCart(): BaseResponse<CartDto>
+
+
     suspend fun addToCart(
-        @Field("productId") productId: Long,
-        @Field("count") count: Int
-    ): Response<BaseResponse<String>>
+        productId: Long,
+        count: Int,
+    ): BaseResponse<String>
 
-    @DELETE("/cart/{id}")
-    suspend fun deleteFromCart(@Path("id") productId: Long): Response<BaseResponse<String>>
 
-    @DELETE("/cart/deleteAll")
-    suspend fun deleteAllFromCart(): Response<BaseResponse<String>>
+    suspend fun deleteFromCart(productId: Long): BaseResponse<String>
 
-    @POST("/order/checkout")
-    suspend fun checkout(): Response<BaseResponse<String>>
+
+    suspend fun deleteAllFromCart(): BaseResponse<String>
+
+
+    suspend fun checkout(): BaseResponse<String>
 
     //endregion cart
     // region Product Details
-    @GET("/product/{productId}")
+
     suspend fun getProductDetails(
-        @Path("productId") productId: Long,
-    ): Response<BaseResponse<ProductDto>>
+        productId: Long,
+    ): BaseResponse<ProductDto>
     // endregion
 }
