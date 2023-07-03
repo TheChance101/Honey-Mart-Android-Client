@@ -8,7 +8,10 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Parameters
+import io.ktor.http.isSuccess
+import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -17,176 +20,198 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
+import org.the_chance.honeymart.domain.util.InternalServerException
+import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
 /**
  * Created by Aziza Helmy on 7/2/2023.
  */
-class HoneyMartServiceImp @Inject constructor(private val client: HttpClient) :
-    KtorHoneyMartService {
-    override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> =
-        client.get("/markets").body()
+class HoneyMartServiceImp @Inject constructor(
+    private val client: HttpClient,
+) : HoneyMartService {
+
+    override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {
+        return wrap(client.get("/markets"))
+    }
 
     override suspend fun addMarket(marketName: String): BaseResponse<MarketDto> =
-        client.post("/markets") {
-            //body = marketName
-            parameter("marketName", marketName)
-        }.body()
+        wrap(client.submitForm(
+            url = "/markets",
+            formParameters = Parameters.build {
+                append("marketName", marketName)
+            }
+        ))
 
     override suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto> =
-        client.put("/markets/$marketId") {
+        wrap(client.put("/markets/$marketId") {
             parameter("name", name)
-        }.body()
+        })
 
     override suspend fun deleteMarket(marketId: Long): BaseResponse<String> =
-        client.delete("/markets/$marketId").body()
+        wrap(client.delete("/markets/$marketId"))
 
     override suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>> =
-        client.get("/markets/{id}/categories").body()
+        wrap(client.get("/markets/$marketId/categories"))
 
     override suspend fun addCategory(
-        marketID: Long,
-        name: String,
-        imageId: Int
-    ): BaseResponse<CategoryDto> = client.post("/category") {
-        parameter("marketID", marketID)
-        parameter("name", name)
-        parameter("imageId", imageId)
-    }.body()
+        marketID: Long, name: String, imageId: Int,
+    ): BaseResponse<CategoryDto> = wrap(client.submitForm(
+        url = "/category",
+        formParameters = Parameters.build {
+            append("marketID", marketID.toString())
+            append("imageId", imageId.toString())
+            append("name", name)
+        }
+    ))
 
     override suspend fun updateCategory(
-        id: Long,
-        marketID: Long,
-        name: String,
-        imageId: Int
-    ): BaseResponse<CategoryDto> = client.put("/category") {
+        id: Long, marketID: Long, name: String, imageId: Int,
+    ): BaseResponse<CategoryDto> = wrap(client.put("/category") {
         parameter("marketID", marketID)
         parameter("id", id)
         parameter("name", name)
         parameter("imageId", imageId)
-    }.body()
+    })
 
     override suspend fun deleteCategory(id: Long): BaseResponse<String> =
-        client.delete("/category/{id}").body()
+        wrap(client.delete("/category/{id}"))
 
     override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
-        client.get("/category/{categoryId}/allProduct").body()
+        wrap(client.get("/category/$categoryId/allProduct"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
-        client.get("/product/{productId}").body()
+        wrap(client.get("/product/$productId"))
 
     override suspend fun addProduct(
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>
-    ): BaseResponse<ProductDto> = client.post("/product") {
-        parameter("price", price)
-        parameter("name", name)
-        parameter("description", description)
-        parameter("categoriesId", categoriesId)
-    }.body()
+        categoriesId: List<Long>,
+    ): BaseResponse<ProductDto> = wrap(client.submitForm(
+        url = "/product",
+        formParameters = Parameters.build {
+            append("price", price.toString())
+            append("categoriesId", categoriesId.toString())
+            append("description", description)
+            append("name", name)
+        }
+    )
+    )
 
     override suspend fun updateProduct(
         productId: Long,
         name: String,
         price: Double,
-        description: String
-    ): BaseResponse<ProductDto> = client.put("/product/$productId")
-    {
+        description: String,
+    ): BaseResponse<ProductDto> = wrap(client.put("/product/$productId") {
         parameter("price", price)
         parameter("name", name)
         parameter("description", description)
-    }.body()
+    })
 
     override suspend fun updateCategoriesHasProduct(
         productId: Long,
-        categoriesId: List<Long>
-    ): BaseResponse<CategoryDto> = client.put("/product/$productId/updateCategories")
-    {
+        categoriesId: List<Long>,
+    ): BaseResponse<CategoryDto> = wrap(client.put("/product/$productId/updateCategories") {
         parameter("categoriesId", categoriesId)
-    }.body()
+    })
 
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
-        client.delete("/product/$productId").body()
+        wrap(client.delete("/product/$productId"))
 
     override suspend fun loginUser(email: String, password: String): BaseResponse<String> =
-        client.post("/product") {
-            parameter("email", email)
-            parameter("password", password)
-        }.body()
+        wrap(client.submitForm(
+            url = "/user/login",
+            formParameters = Parameters.build {
+                append("email", email)
+                append("password", password)
+            }
+        ))
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
-        client.get("/wishList").body()
+        wrap(client.get("/wishList"))
 
     override suspend fun deleteFromWishList(productId: Long): BaseResponse<String> =
-        client.delete("/wishList/$productId").body()
+        wrap(client.delete("/wishList/$productId"))
 
     override suspend fun addToWishList(productId: Long): BaseResponse<String> =
-        client.post("/wishList") {
-            parameter("productId", productId)
-        }.body()
+        wrap(client.submitForm(
+            url = "/wishList",
+            formParameters = Parameters.build {
+                append("productId", productId.toString())
+            }
+        ))
 
     override suspend fun addProductToCart(productId: Long, count: Long): BaseResponse<String> =
-        client.submitForm(
+        wrap(client.submitForm(
             url = "/cart/addProduct",
             formParameters = Parameters.build {
                 append("productId", productId.toString())
                 append("count", count.toString())
             }
-        ).body()
+        ))
 
 
     override suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto> =
-        client.get("/order/$orderId").body()
+        wrap(client.get("/order/$orderId"))
 
     override suspend fun addUser(
-        fullName: String,
-        password: String,
-        email: String
-    ): BaseResponse<String> =
-        client.submitForm(
-            url = "/user/signup",
-            formParameters = Parameters.build {
-                append("fullName", fullName)
-                append("password", password)
-                append("email", email)
-            }
-        ).body()
+        fullName: String, password: String, email: String,
+    ): BaseResponse<String> = wrap(client.submitForm(
+        url = "/user/signup",
+        formParameters = Parameters.build {
+            append("fullName", fullName)
+            append("password", password)
+            append("email", email)
+        }
+    ))
 
 
     override suspend fun getAllOrders(orderState: Int): BaseResponse<List<OrderDto>> =
-        client.get("order/userOrders") {
+        wrap(client.get("order/userOrders") {
             parameter("orderState", orderState)
-        }.body()
+        })
 
+    @OptIn(InternalAPI::class)
     override suspend fun updateOrderState(id: Long?, state: Int): BaseResponse<Boolean> =
-        client.submitForm(
-            url = "/order/$id",
-            formParameters = Parameters.build {
-                append("state", state.toString())
-            }
-        ).body()
+        wrap(client.put("/order/updateorder/$id") {
+            body = state
+        })
 
-    override suspend fun getCart(): BaseResponse<CartDto> = client.get("/cart").body()
+
+    override suspend fun getCart(): BaseResponse<CartDto> = wrap(client.get("/cart"))
 
     override suspend fun addToCart(productId: Long, count: Int): BaseResponse<String> =
-        client.submitForm(
+        wrap(client.submitForm(
             url = "/cart/addProduct",
             formParameters = Parameters.build {
                 append("productId", productId.toString())
                 append("count", count.toString())
             }
-        ).body()
+        ))
 
     override suspend fun deleteFromCart(productId: Long): BaseResponse<String> =
-        client.delete("/cart/$productId").body()
+        wrap(client.delete("/cart/$productId"))
 
     override suspend fun deleteAllFromCart(): BaseResponse<String> =
-        client.delete("/cart/deleteAll").body()
+        wrap(client.delete("/cart/deleteAll"))
 
-    override suspend fun checkout(): BaseResponse<String> = client.post("/order/checkout").body()
+    override suspend fun checkout(): BaseResponse<String> = wrap(client.post("/order/checkout"))
 
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
-        client.get("/product/$productId").body()
+        wrap(client.get("/product/$productId"))
+
+
+    private suspend inline fun <reified T> wrap(response: HttpResponse): T {
+        if (response.status.isSuccess()) {
+            return response.body()
+        } else {
+            when (response.status.value) {
+                401 -> throw UnAuthorizedException()
+                500 -> throw InternalServerException()
+                else -> throw Exception(response.status.description)
+            }
+        }
+    }
 }
