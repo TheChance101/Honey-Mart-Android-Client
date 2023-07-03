@@ -5,15 +5,19 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.gson.gson
 import okhttp3.logging.HttpLoggingInterceptor
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import org.the_chance.honeymart.data.source.remote.network.HoneyMartServiceImp
 import java.util.concurrent.TimeUnit
-
 import javax.inject.Singleton
 
 
@@ -25,49 +29,45 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(
-        client: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory,
-    ): Retrofit {
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
-    }
-
-
-    @Singleton
-    @Provides
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
-    }
-
-    @Singleton
-    @Provides
-    fun provideOkHttpClient(
+    fun provideHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        headerInterceptor: AuthInterceptor,
-    ): OkHttpClient =
-        OkHttpClient.Builder().apply {
-            addInterceptor(loggingInterceptor)
-            addInterceptor(headerInterceptor)
-            connectTimeout(60, TimeUnit.SECONDS)
-            writeTimeout(60, TimeUnit.SECONDS)
-            readTimeout(60, TimeUnit.SECONDS)
-        }.build()
+        authInterceptor: AuthInterceptor,
+    ): HttpClient {
+        return HttpClient(OkHttp) {
+            expectSuccess = true
+
+            engine {
+                addInterceptor(loggingInterceptor)
+                addInterceptor(authInterceptor)
+                config {
+                    retryOnConnectionFailure(true)
+                    connectTimeout(1, TimeUnit.MINUTES)
+                    readTimeout(1, TimeUnit.MINUTES)
+                    writeTimeout(1, TimeUnit.MINUTES)
+                }
+            }
+            defaultRequest {
+                url(BASE_URL)
+                header(HttpHeaders.ContentType, "application/json")
+            }
+
+            install(ContentNegotiation) {
+                gson()
+            }
+        }
+    }
+
+    @Singleton
+    @Provides
+    fun provideHoneyMartService(httpClient: HttpClient): HoneyMartService {
+        return HoneyMartServiceImp(httpClient)
+    }
 
     @Singleton
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
-
-    @Singleton
-    @Provides
-    fun provideHoneyMartService(retrofit: Retrofit): HoneyMartService =
-        retrofit.create(HoneyMartService::class.java)
 
     @Singleton
     @Provides
