@@ -10,7 +10,6 @@ android {
     defaultConfig {
         minSdk = ConfigData.MIN_SDK_VERSION
         targetSdk = ConfigData.TARGET_SDK_VERSION
-
         testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -25,13 +24,21 @@ android {
         sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
         targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
+    }
+    buildFeatures {
+        compose = true
     }
 }
 
 dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.composeDependency.forEach { implementation(it) }
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha08")
 }

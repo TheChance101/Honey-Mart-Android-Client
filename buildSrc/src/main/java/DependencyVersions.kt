@@ -36,6 +36,13 @@ object DependencyVersions {
     const val COIL = "2.2.2"
     const val DATA_STORE = "1.0.0"
 
+    // compose
+    const val RUN_TIME_LIFECYCLE_COMPOSE = "2.3.1"
+    const val ACTIVITY_COMPOSE = "1.5.1"
+    const val BOM_COMPOSE = "2022.10.00"
+    const val FOUNDATION_COMPOSE = "1.4.3"
+    const val UI_UTIL_COMPOSE = "1.4.3"
+    const val CONSTRAINT_LAYOUT_COMPOSE = "1.0.1"
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"

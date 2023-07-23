@@ -18,7 +18,14 @@ object Dependencies {
     val androidTestDependencies by lazy {
         listOf(
             "androidx.test.espresso:espresso-core:${DependencyVersions.ESPRESSO}",
-            "androidx.test.ext:junit:${DependencyVersions.ANDROID_JUNIT}"
+            "androidx.test.ext:junit:${DependencyVersions.ANDROID_JUNIT}",
+            "androidx.compose.ui:ui-test-junit4"
+        )
+    }
+    val debugmplementation by lazy {
+        listOf(
+            "androidx.compose.ui:ui-tooling",
+            "androidx.compose.ui:ui-test-manifest"
         )
     }
 
@@ -53,7 +60,8 @@ object Dependencies {
         listOf(
             "androidx.lifecycle:lifecycle-livedata-ktx:${DependencyVersions.LIVE_DATA_LIFE_CYCLE}",
             "androidx.activity:activity-ktx:${DependencyVersions.LIVE_DATA_ACTIVITY}",
-            "androidx.fragment:fragment-ktx:${DependencyVersions.LIVE_DATA_FRAGMENT}"
+            "androidx.fragment:fragment-ktx:${DependencyVersions.LIVE_DATA_FRAGMENT}",
+            "androidx.lifecycle:lifecycle-runtime-ktx:${DependencyVersions.RUN_TIME_LIFECYCLE_COMPOSE}"
         )
     }
 
@@ -78,6 +86,21 @@ object Dependencies {
         "androidx.datastore:datastore-preferences:${DependencyVersions.DATA_STORE}"
     }
 
+    val composeDependency by lazy {
+        listOf(
+            "androidx.compose.material3:material3",
+            "androidx.activity:activity-compose:${DependencyVersions.ACTIVITY_COMPOSE}",
+          //  "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
+            "androidx.compose.ui:ui",
+            "androidx.compose.ui:ui-graphics",
+            "androidx.compose.ui:ui-tooling-preview",
+           // "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
+            "androidx.compose.foundation:foundation:${DependencyVersions.FOUNDATION_COMPOSE}",
+            "androidx.compose.ui:ui-util:${DependencyVersions.UI_UTIL_COMPOSE}",
+            "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}"
+        )
+
+    }
     object Classpath {
 
         val navigationClasspath by lazy {
