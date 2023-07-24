@@ -40,5 +40,5 @@ dependencies {
     Dependencies.composeDependency.forEach { implementation(it) }
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha08")
+    implementation("androidx.compose.material3:material3:1.1.1")
 }
