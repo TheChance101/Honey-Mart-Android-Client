@@ -42,11 +42,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate<VB>(
             inflater,
             layoutIdFragment,
             container, false
-        )
+        ).apply {
+            applyCompose()
+        }
 
         _binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -141,6 +143,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     }
 
     protected open fun setup() {
+    }
+
+    protected open fun applyCompose() {
     }
 
     override fun onResume() {

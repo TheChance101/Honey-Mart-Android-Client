@@ -1,5 +1,13 @@
 package org.the_chance.honeymart.ui.feature.login
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.material3.Text
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.sp
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -10,19 +18,41 @@ import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentLoginBinding
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-    override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_login
-    override val viewModel: LoginViewModel by viewModels()
-    override fun setup() {
-        collectAction()
+class LoginFragment : Fragment() {
+    /*override val TAG: String = this::class.simpleName.toString()
+    override val layoutIdFragment = R.layout.fragment_login*/
+    val viewModel: LoginViewModel by viewModels()
+    private lateinit var composeView: ComposeView
+    /* override fun setup() {
+         collectAction()
+     }*/
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireActivity()).also {
+            composeView = it
+        }
     }
 
-    override fun onResume() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        composeView.setContent {
+            // You're in Compose world!
+            HoneyMartTheme {
+                Text(text = "Nour", fontSize = 50.sp)
+            }
+        }
+    }
+
+    /*override fun onResume() {
         super.onResume()
         setWindowVisibility(
             appBarVisibility = false,
@@ -75,6 +105,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         navController.setGraph(R.navigation.main_nav_graph)
         return navController
     }
-
+*/
 
 }

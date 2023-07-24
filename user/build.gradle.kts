@@ -36,11 +36,15 @@ android {
         sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
         targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
     buildFeatures {
         dataBinding = true
+        compose = true
     }
 }
 
@@ -51,6 +55,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics:18.3.2")
     implementation("com.google.firebase:firebase-analytics:21.2.0")
     Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.composeDependency.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     //Navigation
@@ -80,4 +85,5 @@ dependencies {
     implementation("io.ktor:ktor-client-logging-jvm:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 }
