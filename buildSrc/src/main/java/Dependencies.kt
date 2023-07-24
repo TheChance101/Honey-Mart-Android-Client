@@ -99,7 +99,8 @@ object Dependencies {
             "androidx.compose.ui:ui-util:${DependencyVersions.UI_UTIL_COMPOSE}",
             "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}",
             "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}",
-            "io.coil-kt:coil-compose:${DependencyVersions.COIL_COMPOSE}"
+            "io.coil-kt:coil-compose:${DependencyVersions.COIL_COMPOSE}",
+            "androidx.appcompat:appcompat:1.3.0-beta01",
         )
 
     }
