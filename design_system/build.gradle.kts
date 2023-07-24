@@ -38,6 +38,10 @@ android {
 dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
     Dependencies.composeDependency.forEach { implementation(it) }
+    testImplementation(Dependencies.junitDependency)
+    Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.compose.material3:material3:1.1.1")
