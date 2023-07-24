@@ -32,9 +32,13 @@ data class Dimens(
     val itemProductImage: Dp = 88.dp,
 
 
-    val defaultSizeIcon: Dp = 24.dp,
     val smallButton: Dp = 32.dp,
     val heightPrimaryButton: Dp = 48.dp,
+
+    val iconSmall: Dp = 16.dp,
+    val iconMedium: Dp = 24.dp,
+    val iconLarge: Dp = 32.dp,
+    val iconXLarge: Dp = 48.dp,
 
 
     )

@@ -59,7 +59,7 @@ fun CustomButton(
                     contentDescription = stringResource(id = labelIdStringRes),
                     modifier = Modifier
                         .padding(end = MaterialTheme.dimens.space8)
-                        .size(MaterialTheme.dimens.defaultSizeIcon)
+                        .size(MaterialTheme.dimens.iconMedium)
                 )
 
             }
