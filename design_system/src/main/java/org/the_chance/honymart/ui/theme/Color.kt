@@ -22,6 +22,8 @@ val white300 = Color(0xFFFAFAFA)
 val white30 = Color(0xFFFAFAFA)
 val gray = Color(0xFFA7A7A7)
 
+val background = Color(0xFFFAFAFA)
+
 
 /* Dark Theme Color */
 

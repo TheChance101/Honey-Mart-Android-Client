@@ -22,9 +22,22 @@ import androidx.core.view.ViewCompat
 private val localDimens = compositionLocalOf { Dimens() }
 
 private val DarkColorScheme = darkColorScheme(
+    primary = primary100,
+    onPrimary = darkText87,
+    background = background,
+    onBackground = darkText60,
+
+    error = darkError
+
 )
 
 private val LightColorScheme = lightColorScheme(
+    primary = primary100,
+    onPrimary = white,
+    background = background,
+    onBackground = black60,
+
+    error = error
 )
 
 val MaterialTheme.dimens: Dimens
