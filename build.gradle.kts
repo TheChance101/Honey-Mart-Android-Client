@@ -8,6 +8,7 @@ buildscript {
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.8.0")
     }
+    val compose_version by extra("1.4.3")
 }
 
 plugins {

@@ -84,5 +84,7 @@
     <string name="no_market">There is no market here!!</string>
     <string name="no_categories">There is no category here!!</string>
 
+    <string name="order">Order #%1$s </string>
+    <string name="items">%1$s items</string>
 
 </resources>
