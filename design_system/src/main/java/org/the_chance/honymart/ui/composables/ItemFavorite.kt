@@ -16,8 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.modifier.brushBottomToTop
-import org.the_chance.honymart.ui.screens.composable.CustomSmallIconButton
+import org.the_chance.honymart.ui.modifier.overlayBottomToTop
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -41,7 +40,7 @@ fun ItemFavorite(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                imageUrlMarket, modifier = Modifier.brushBottomToTop()
+                imageUrlMarket, modifier = Modifier.overlayBottomToTop()
             )
             Column(
                 Modifier

@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 
-fun Modifier.brushBottomToTop(): Modifier {
+fun Modifier.overlayBottomToTop(): Modifier {
     return then(drawWithCache {
         onDrawWithContent {
             drawContent()

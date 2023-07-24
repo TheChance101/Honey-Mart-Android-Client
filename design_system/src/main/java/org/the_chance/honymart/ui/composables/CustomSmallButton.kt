@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.screens.composable
+package org.the_chance.honymart.ui.composables
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -52,7 +52,7 @@ fun CustomSmallIconButton(
 
 @Preview
 @Composable
-private fun CustomButtonPreview() {
+private fun CustomSmallIconPreview() {
     HoneyMartTheme {
         CustomSmallIconButton(
             idIconDrawableRes = R.drawable.icon_favorite_selected
