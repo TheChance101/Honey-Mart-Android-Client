@@ -44,8 +44,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.compose.material3:material3:1.1.1")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
-    implementation("io.coil-kt:coil-compose:2.4.0")
 }

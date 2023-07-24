@@ -88,20 +88,22 @@ object Dependencies {
 
     val composeDependency by lazy {
         listOf(
-            "androidx.compose.material3:material3",
+            "androidx.compose.material3:material3:${DependencyVersions.MATERIAL3_COMPOSE}",
             "androidx.activity:activity-compose:${DependencyVersions.ACTIVITY_COMPOSE}",
-          //  "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
+            //  "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
             "androidx.compose.ui:ui",
             "androidx.compose.ui:ui-graphics",
             "androidx.compose.ui:ui-tooling-preview",
-           // "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
+            // "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
             "androidx.compose.foundation:foundation:${DependencyVersions.FOUNDATION_COMPOSE}",
             "androidx.compose.ui:ui-util:${DependencyVersions.UI_UTIL_COMPOSE}",
             "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}",
-            "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}"
+            "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}",
+            "io.coil-kt:coil-compose:${DependencyVersions.COIL_COMPOSE}"
         )
 
     }
+
     object Classpath {
 
         val navigationClasspath by lazy {
