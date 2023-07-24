@@ -43,6 +43,7 @@ object DependencyVersions {
     const val FOUNDATION_COMPOSE = "1.4.3"
     const val UI_UTIL_COMPOSE = "1.4.3"
     const val CONSTRAINT_LAYOUT_COMPOSE = "1.0.1"
+    const val SYSTEM_UI_CONTROLLER = "0.28.0"
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"

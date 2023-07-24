@@ -97,7 +97,8 @@ object Dependencies {
            // "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
             "androidx.compose.foundation:foundation:${DependencyVersions.FOUNDATION_COMPOSE}",
             "androidx.compose.ui:ui-util:${DependencyVersions.UI_UTIL_COMPOSE}",
-            "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}"
+            "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}",
+            "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}"
         )
 
     }
