@@ -40,6 +40,8 @@ data class Dimens(
     val iconLarge: Dp = 32.dp,
     val iconXLarge: Dp = 48.dp,
 
+    val heightItemMarketCard: Dp = 164.dp,
+
 
     )
 
