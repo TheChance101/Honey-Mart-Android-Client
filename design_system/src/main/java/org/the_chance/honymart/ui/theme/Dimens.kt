@@ -31,11 +31,13 @@ data class Dimens(
     val addToCartLottieLoading: Dp = 50.dp,
     val itemProductImage: Dp = 88.dp,
 
+
+    val defaultSizeIcon: Dp = 24.dp,
     val smallButton: Dp = 32.dp,
+    val heightPrimaryButton: Dp = 48.dp,
 
 
-
-)
+    )
 
 
 
