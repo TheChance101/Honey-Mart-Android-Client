@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @Composable
 fun SideBarItem(
@@ -18,15 +19,17 @@ fun SideBarItem(
     icon: Int = 0,
     iconColor: Color = Color.White
 ) {
-    IconButton(
-        modifier = modifier.background(backgroundButton, shape = MaterialTheme.shapes.medium),
-        onClick = onClick
-    ) {
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = "icon",
-            tint = iconColor
-        )
+    HoneyMartTheme {
+        IconButton(
+            modifier = modifier.background(backgroundButton, shape = MaterialTheme.shapes.medium),
+            onClick = onClick
+        ) {
+            Icon(
+                painter = painterResource(id = icon),
+                contentDescription = "icon",
+                tint = iconColor
+            )
+        }
     }
 }
 

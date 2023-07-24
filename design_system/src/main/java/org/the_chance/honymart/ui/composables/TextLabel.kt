@@ -12,27 +12,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Typography
 
 @Composable
 fun TextLabel(
+    modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = MaterialTheme.shapes.medium,
     textColor: Color = Color.White,
     textStyle: TextStyle = Typography.bodySmall,
     text: String
 ) {
-    Row(
-        modifier = Modifier.background(background, shape),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = text,
-            color = textColor,
-            style = textStyle
-        )
+    HoneyMartTheme {
+        Row(
+            modifier = Modifier.background(background, shape),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = modifier,
+                text = text,
+                color = textColor,
+                style = textStyle
+            )
+        }
     }
+
 }
 
 @Preview
