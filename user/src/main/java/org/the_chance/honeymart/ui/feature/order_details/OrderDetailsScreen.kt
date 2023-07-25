@@ -64,7 +64,7 @@ private fun OrderDetailsContent(
                     OrderDetailsCard(
                         imageUrl = itemOrderDetails.images!![0],
                         orderName = itemOrderDetails.name!!,
-                        orderPrice = "$${itemOrderDetails.price}",
+                        orderPrice = "${itemOrderDetails.price}",
                         orderCount = "x${itemOrderDetails.count}"
                     )
                 }
