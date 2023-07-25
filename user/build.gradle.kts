@@ -58,6 +58,7 @@ dependencies {
     Dependencies.composeDependency.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //Glide
