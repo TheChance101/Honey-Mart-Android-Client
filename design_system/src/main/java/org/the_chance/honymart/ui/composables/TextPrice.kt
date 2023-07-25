@@ -16,13 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun TextPrice(
     price: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = primary100,
 ) {
     Surface(
         modifier = modifier
@@ -30,22 +32,19 @@ fun TextPrice(
             .height(26.dp)
             .clip(CircleShape)
             .border(
-                BorderStroke(2.dp, color),
+                BorderStroke(1.dp, color),
                 shape = CircleShape
             )
             .padding(
                 horizontal = MaterialTheme.dimens.space8,
                 vertical = MaterialTheme.dimens.space4,
             ),
-
-        ) {
-
+    ) {
         Text(
             text = "$price\$",
-            style = MaterialTheme.typography.displaySmall,
+            style = Typography.displaySmall,
             color = color
         )
-
     }
 }
 
