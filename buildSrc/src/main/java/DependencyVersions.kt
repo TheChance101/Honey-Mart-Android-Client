@@ -46,6 +46,7 @@ object DependencyVersions {
     const val SYSTEM_UI_CONTROLLER = "0.28.0"
     const val COIL_COMPOSE = "2.2.2"
     const val MATERIAL3_COMPOSE = "1.1.1"
+    const val HILT_COMPOSE = "1.0.0"
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"

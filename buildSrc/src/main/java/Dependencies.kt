@@ -101,6 +101,7 @@ object Dependencies {
             "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}",
             "io.coil-kt:coil-compose:${DependencyVersions.COIL_COMPOSE}",
             "androidx.appcompat:appcompat:1.3.0-beta01",
+            "androidx.hilt:hilt-navigation-compose:${DependencyVersions.HILT_COMPOSE}"
         )
 
     }
