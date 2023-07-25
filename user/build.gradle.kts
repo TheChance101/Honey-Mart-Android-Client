@@ -86,4 +86,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
 }
