@@ -77,6 +77,7 @@ private fun OrderDetailsContent(
                 .background(white)
                 .shadow(1.dp)
                 .fillMaxWidth()
+                .padding(end = MaterialTheme.dimens.space16)
         ) {
             Column(modifier = Modifier
                 .padding(
@@ -98,8 +99,9 @@ private fun OrderDetailsContent(
                 colors = CardDefaults.cardColors(white),
                 border = BorderStroke(0.dp, primary100) ,
                 modifier = Modifier.padding(
-                    top = MaterialTheme.dimens.space16,)
-            ) {
+                    top = MaterialTheme.dimens.space16,),
+
+                ) {
                 Text(
 //                    text = "${state.orderDetails.state}",
                     text = "Processing",
@@ -108,8 +110,8 @@ private fun OrderDetailsContent(
                     maxLines = 1,
                     modifier = Modifier
                         .padding(
-                            vertical = MaterialTheme.dimens.space4,
-                            horizontal = MaterialTheme.dimens.space8),
+                            vertical = MaterialTheme.dimens.space6,
+                            horizontal = MaterialTheme.dimens.space16),
                 )
             }
         }
