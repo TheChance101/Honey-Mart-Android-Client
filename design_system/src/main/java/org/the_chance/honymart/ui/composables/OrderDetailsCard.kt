@@ -31,6 +31,7 @@ import coil.request.ImageRequest
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.darkError
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -105,19 +106,19 @@ fun OrderDetailsCard(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Row {
+                Row (verticalAlignment = Alignment.CenterVertically){
                     Icon(
                         painter = painterResource(id = R.drawable.icon_cart_check),
                         contentDescription = "cart check icon",
-                        tint = white
+                        tint = white,
+                        modifier = Modifier.padding(end = MaterialTheme.dimens.space4)
                     )
-                    SpacerHorizontal4()
                     Text(
                         text = "x$orderCount",
                         style = MaterialTheme.typography.displaySmall,
                         color = MaterialTheme.colorScheme.onPrimary,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

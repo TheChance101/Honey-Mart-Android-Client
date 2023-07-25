@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -65,14 +66,15 @@ private fun OrderDetailsContent(
                         imageUrl = itemOrderDetails.images!![0],
                         orderName = itemOrderDetails.name!!,
                         orderPrice = "${itemOrderDetails.price}",
-                        orderCount = "x${itemOrderDetails.count}"
+                        orderCount = "${itemOrderDetails.count}"
                     )
                 }
             }
         )
         Spacer(modifier = Modifier.weight(1f))
-        Row(
-            Modifier
+        Row(horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .background(white)
                 .shadow(1.dp)
                 .fillMaxWidth()
         ) {
@@ -81,7 +83,7 @@ private fun OrderDetailsContent(
                     horizontal = MaterialTheme.dimens.space16,
                     vertical = MaterialTheme.dimens.space8)) {
                 Text(
-                    text = "${state.orderDetails.totalPrice}",
+                    text = "${state.orderDetails.totalPrice}$",
                     color = black60,
                     style = Typography.bodyMedium
                 )
@@ -96,13 +98,14 @@ private fun OrderDetailsContent(
                 colors = CardDefaults.cardColors(white),
                 border = BorderStroke(0.dp, primary100) ,
                 modifier = Modifier.padding(
-                    top = MaterialTheme.dimens.space16,
-                    start = 190.dp)
+                    top = MaterialTheme.dimens.space16,)
             ) {
                 Text(
-                    text = "${state.orderDetails.state}",
+//                    text = "${state.orderDetails.state}",
+                    text = "Processing",
                     color = primary100,
                     style = Typography.displayLarge,
+                    maxLines = 1,
                     modifier = Modifier
                         .padding(
                             vertical = MaterialTheme.dimens.space4,
