@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -51,7 +52,9 @@ private fun OrderDetailsContent(
     Column(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 160.dp),
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -67,7 +70,6 @@ private fun OrderDetailsContent(
                 }
             }
         )
-
         Spacer(modifier = Modifier.weight(1f))
         Row(
             Modifier
@@ -79,7 +81,7 @@ private fun OrderDetailsContent(
                     horizontal = MaterialTheme.dimens.space16,
                     vertical = MaterialTheme.dimens.space8)) {
                 Text(
-                    text = "$${state.orderDetails.totalPrice}",
+                    text = "${state.orderDetails.totalPrice}",
                     color = black60,
                     style = Typography.bodyMedium
                 )
