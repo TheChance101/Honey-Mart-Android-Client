@@ -1,22 +1,29 @@
 package org.the_chance.honymart.ui.composables
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Dialog
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
@@ -26,28 +33,29 @@ import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomAlertDialog(
     message: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
-    openDialogCustom: MutableState<Boolean>,
+    onDismissRequest: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = { openDialogCustom.value = false },
-        properties = DialogProperties(usePlatformDefaultWidth = true),
-        content = {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            shape = Shapes.extraLarge,
+            colors = CardDefaults.cardColors(white)
+        ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_warning),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_warning),
                     contentDescription = "Custom Icon",
                     modifier = Modifier
-                        .padding(bottom = 32.dp)
+                        .padding(bottom = 32.dp),
+                    tint = primary100
                 )
                 Text(
                     text = message,
@@ -64,11 +72,11 @@ fun CustomAlertDialog(
                     TextButton(
                         modifier = Modifier
                             .width(144.dp)
-                            .height(48.dp).padding(end = 8.dp),
+                            .height(48.dp)
+                            .padding(end = 8.dp),
                         onClick = onConfirm,
                         colors = ButtonDefaults.textButtonColors(primary100),
                         shape = Shapes.medium,
-                        border = BorderStroke(width = 1.dp, color = black16)
                     ) {
                         Text(
                             text = stringResource(id = R.string.yes_i_m_sure),
@@ -93,16 +101,11 @@ fun CustomAlertDialog(
                 }
             }
         }
-    )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewCustomAlertDialog() {
-    CustomAlertDialog(
-        message = "This is the dialog message.",
-        onConfirm = {},
-        onCancel = {},
-        openDialogCustom = remember { mutableStateOf(false) },
-    )
+
 }
