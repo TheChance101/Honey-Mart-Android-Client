@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -31,6 +33,7 @@ fun SideBarItem(
 ) {
     HoneyMartTheme {
         Column(
+            modifier = Modifier.width(56.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
         ) {
@@ -53,10 +56,10 @@ fun SideBarItem(
             Text(
                 text = categoryName,
                 style = MaterialTheme.typography.displaySmall,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else black37,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Start
             )
         }
     }
