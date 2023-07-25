@@ -20,7 +20,7 @@ class WishListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireActivity()).also {
-            composeView == it
+            composeView = it
         }
     }
 

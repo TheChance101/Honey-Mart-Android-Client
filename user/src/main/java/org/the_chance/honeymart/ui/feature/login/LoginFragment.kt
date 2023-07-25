@@ -23,36 +23,36 @@ import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentLoginBinding
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
-    /*override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_login*/
-    val viewModel: LoginViewModel by viewModels()
-    private lateinit var composeView: ComposeView
-    /* override fun setup() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
+    override val TAG: String = this::class.simpleName.toString()
+    override val layoutIdFragment = R.layout.fragment_login
+    override val viewModel: LoginViewModel by viewModels()
+//    private lateinit var composeView: ComposeView
+     override fun setup() {
          collectAction()
-     }*/
+     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return ComposeView(requireActivity()).also {
-            composeView = it
-        }
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?,
+//    ): View {
+//        return ComposeView(requireActivity()).also {
+//            composeView = it
+//        }
+//    }
+//
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        composeView.setContent {
+//            // You're in Compose world!
+//            HoneyMartTheme {
+//                Text(text = "Nour", fontSize = 50.sp)
+//            }
+//        }
+//    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        composeView.setContent {
-            // You're in Compose world!
-            HoneyMartTheme {
-                Text(text = "Nour", fontSize = 50.sp)
-            }
-        }
-    }
-
-    /*override fun onResume() {
+    override fun onResume() {
         super.onResume()
         setWindowVisibility(
             appBarVisibility = false,
@@ -105,6 +105,6 @@ class LoginFragment : Fragment() {
         navController.setGraph(R.navigation.main_nav_graph)
         return navController
     }
-*/
+
 
 }
