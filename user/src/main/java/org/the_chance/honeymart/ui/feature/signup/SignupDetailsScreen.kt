@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.TextField
@@ -27,16 +29,22 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun SignupScreen() {
+fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     SignupContent(
-        onClickContinue = {}
+        onClickContinue = viewModel::onContinueClicked,
+        onNameChange = viewModel::onFullNameInputChange,
+        onEmailChange = viewModel::onEmailInputChange,
+        onClickLogin = viewModel::onClickLogin
     )
 }
 
 @Composable
 fun SignupContent(
     modifier: Modifier = Modifier,
-    onClickContinue: () -> Unit
+    onClickContinue: () -> Unit,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onClickLogin: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,8 +75,16 @@ fun SignupContent(
                 )
             }
         }
-        TextField(hint = stringResource(R.string.full_name), idIconDrawableRes = R.drawable.ic_person)
-        TextField(hint = stringResource(R.string.email), idIconDrawableRes = R.drawable.ic_email)
+        TextField(
+            hint = stringResource(R.string.full_name),
+            idIconDrawableRes = R.drawable.ic_person,
+            onValueChange = onNameChange
+        )
+        TextField(
+            hint = stringResource(R.string.email),
+            idIconDrawableRes = R.drawable.ic_email,
+            onValueChange = onEmailChange
+        )
         CustomButton(
             labelIdStringRes = R.string.Continue,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
@@ -90,7 +106,8 @@ fun SignupContent(
                 text = stringResource(R.string.log_in),
                 color = primary100,
                 style = Typography.displayLarge,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.clickable { onClickLogin }
             )
         }
     }

@@ -4,5 +4,6 @@ import org.the_chance.honeymart.util.AuthData
 
 sealed class AuthUiEffect {
     data class ClickSignUpEffect(val authData: AuthData) : AuthUiEffect()
+    data class ClickLoginEffect(val authData: AuthData) : AuthUiEffect()
     object ClickContinueEffect : AuthUiEffect()
 }

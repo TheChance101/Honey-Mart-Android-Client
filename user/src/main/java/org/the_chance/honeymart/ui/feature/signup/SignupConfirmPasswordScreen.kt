@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.TextField
@@ -23,16 +24,20 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun SignupConfirmPasswordScreen() {
+fun SignupConfirmPasswordScreen(viewModel: SignupViewModel = hiltViewModel()) {
     SignupConfirmPasswordContent(
-        onClickSignup = {}
+        onClickSignup = viewModel::onClickSignup,
+        onPasswordChange = viewModel::onPasswordInputChanged,
+        onConfirmPasswordChange = viewModel::onConfirmPasswordChanged
     )
 }
 
 @Composable
 fun SignupConfirmPasswordContent(
     modifier: Modifier = Modifier,
-    onClickSignup: () -> Unit
+    onClickSignup: () -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,8 +68,16 @@ fun SignupConfirmPasswordContent(
                 )
             }
         }
-        TextField(hint = stringResource(R.string.password), idIconDrawableRes = R.drawable.ic_password)
-        TextField(hint = stringResource(R.string.confirm_password), idIconDrawableRes = R.drawable.ic_password)
+        TextField(
+            hint = stringResource(R.string.password),
+            idIconDrawableRes = R.drawable.ic_password,
+            onValueChange = onPasswordChange
+        )
+        TextField(
+            hint = stringResource(R.string.confirm_password),
+            idIconDrawableRes = R.drawable.ic_password,
+            onValueChange = onConfirmPasswordChange
+        )
         CustomButton(
             labelIdStringRes = R.string.sign_up,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
