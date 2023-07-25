@@ -33,7 +33,7 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private lateinit var args: SignupFragmentArgs
-    private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
+    //private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
 
     fun saveArgs(args: SignupFragmentArgs){
         args.also { this.args = it }
@@ -141,7 +141,7 @@ class SignupViewModel @Inject constructor(
 
     fun onClickLogin() {
         viewModelScope.launch {
-            _effect.emit(EventHandler(AuthUiEffect.ClickLoginEffect(authData)))
+            _effect.emit(EventHandler(AuthUiEffect.ClickLoginEffect(args.AuthData)))
         }
     }
 

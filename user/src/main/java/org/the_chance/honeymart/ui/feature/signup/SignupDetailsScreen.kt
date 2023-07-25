@@ -17,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -29,7 +28,11 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
+fun SignupScreen(
+    args: SignupFragmentArgs,
+    viewModel: SignupViewModel = hiltViewModel(),
+) {
+    viewModel.saveArgs(args)
     SignupContent(
         onClickContinue = viewModel::onContinueClicked,
         onNameChange = viewModel::onFullNameInputChange,
@@ -44,12 +47,12 @@ fun SignupContent(
     onClickContinue: () -> Unit,
     onNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onClickLogin: () -> Unit
+    onClickLogin: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ){
+    ) {
         Box(contentAlignment = Alignment.Center) {
             Image(
                 painter = painterResource(R.drawable.background_frame),
@@ -68,8 +71,10 @@ fun SignupContent(
                     style = Typography.headlineMedium,
                 )
                 Text(
-                    text = stringResource(R.string
-                        .create_your_account_and_enter_a_world_of_endless_shopping_possibilities),
+                    text = stringResource(
+                        R.string
+                            .create_your_account_and_enter_a_world_of_endless_shopping_possibilities
+                    ),
                     color = white,
                     style = Typography.bodyMedium,
                 )
@@ -113,8 +118,9 @@ fun SignupContent(
     }
 }
 
+/*
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun SignupPreview() {
     SignupScreen()
-}
+}*/

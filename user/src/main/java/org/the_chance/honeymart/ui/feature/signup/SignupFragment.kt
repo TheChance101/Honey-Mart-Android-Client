@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
 class SignupFragment : Fragment() {
-    val viewModel: SignupViewModel by activityViewModels()
     private lateinit var composeView: ComposeView
+    private val args : SignupFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +30,7 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             HoneyMartTheme {
-                SignupScreen()
+                SignupScreen(args)
             }
         }
     }

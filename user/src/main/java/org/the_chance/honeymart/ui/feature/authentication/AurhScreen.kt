@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.authentication
 
-import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,13 +16,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -31,14 +28,14 @@ import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun AuthScreen(view: AuthFragment, viewModel: AuthViewModel = hiltViewModel()) {
-     val authData = AuthFragmentArgs.fromSavedStateHandle(SavedStateHandle()).AuthData
+fun AuthScreen(view: AuthFragment, authData: AuthData, viewModel: AuthViewModel = hiltViewModel()) {
+    //val authData = AuthFragmentArgs.fromSavedStateHandle(SavedStateHandle()).AuthData
 
     AuthContent(
         onClickSignUp = {
             view.findNavController()
                 .navigate(AuthFragmentDirections.actionAuthFragmentToSignupFragment(authData))
-        } ,
+        },
         onClickLogin = viewModel::onClickLogin
     )
 }
@@ -46,7 +43,7 @@ fun AuthScreen(view: AuthFragment, viewModel: AuthViewModel = hiltViewModel()) {
 @Composable
 fun AuthContent(
     onClickSignUp: () -> Unit,
-    onClickLogin: () -> Unit
+    onClickLogin: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +57,7 @@ fun AuthContent(
         )
         Text(
             text = stringResource(R.string.welcome_to_honey_mart),
-            modifier = Modifier.padding(vertical = 16.dp),
+            modifier = Modifier.padding(),
             color = black60,
             style = Typography.displayMedium
         )
@@ -73,7 +70,7 @@ fun AuthContent(
         )
         CustomButton(
             labelIdStringRes = R.string.sign_up,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             onClick = onClickSignUp
         )
         Spacer(modifier = Modifier.weight(1f))

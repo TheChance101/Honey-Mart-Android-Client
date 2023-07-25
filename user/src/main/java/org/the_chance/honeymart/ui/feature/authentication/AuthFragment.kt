@@ -6,21 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.honeymart.ui.feature.login.LoginViewModel
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
-class AuthFragment : Fragment()  {
+class AuthFragment : Fragment() {
 
-    val viewModel: AuthViewModel by viewModels()
     private lateinit var composeView: ComposeView
-
-    val authData = AuthFragmentArgs.fromSavedStateHandle(SavedStateHandle()).AuthData
+    private val args: AuthFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +32,7 @@ class AuthFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             HoneyMartTheme {
-                AuthScreen(this,viewModel, authData)
+                AuthScreen(this, args.AuthData)
             }
         }
     }
