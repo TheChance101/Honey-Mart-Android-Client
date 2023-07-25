@@ -20,8 +20,6 @@ fun WishListScreen(
 ) {
     val state by viewModel.state.collectAsState()
     WishListContent(state = state)
-
-
 }
 
 @Composable
@@ -35,16 +33,16 @@ private fun WishListContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = {
-            items(state.products) {
+            items(state.products) { productState ->
                 ItemFavorite(
-                    imageUrlMarket =
-                    "https://m.media-amazon.com/images/I/51mmrjhqOqL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-                    name = "",
-                    price = "$34",
+                    imageUrlMarket = productState.productImages!![0],
+                    name = productState.productName!!,
+                    price = "$${productState.productPrice}",
                     description = "1",
-                    onClick = {})
-
+                    onClick = { }
+                )
             }
+
 
         })
 }
