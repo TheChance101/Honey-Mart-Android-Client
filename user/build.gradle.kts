@@ -86,4 +86,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
+
+    //Integration with Hilt
+    val daggerHiltVersion = "2.44"
+    implementation("com.google.dagger:hilt-android:$daggerHiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    kapt("com.google.dagger:hilt-compiler:$daggerHiltVersion")
+
+    // Compose Material
+    implementation("androidx.compose.material:material:1.4.3")
 }
