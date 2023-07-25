@@ -42,7 +42,7 @@ class ProductViewModel @Inject constructor(
     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-        // getData()
+         getData()
         _state.update { it.copy(categoryId = args.categoryId, position = args.position) }
     }
 
@@ -50,6 +50,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(state.value.categoryId)
         getCategoriesByMarketId()
+        log(_state.value.toString())
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
