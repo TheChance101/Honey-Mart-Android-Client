@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsViewModel" />
+            type="org.the_chance.honeymart.ui.feature.order_details.OrderDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment">
+        tools:context="org.the_chance.honeymart.ui.feature.order_details.OrderDetailsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_order_details"
