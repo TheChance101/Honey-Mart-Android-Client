@@ -12,10 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -37,8 +36,7 @@ fun CustomChip(
         Text(
             text = text,
             color = if (state) Color.White else primary100,
-            fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
+            style = Typography.displayLarge
         )
     }
 }
