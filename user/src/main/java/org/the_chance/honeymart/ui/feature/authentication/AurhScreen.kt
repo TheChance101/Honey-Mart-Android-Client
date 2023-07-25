@@ -57,7 +57,7 @@ fun AuthContent(
             textAlign = TextAlign.Center
         )
         CustomButton(
-            labelIdStringRes = R.string.Sign_up,
+            labelIdStringRes = R.string.sign_up,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
             onClick = onClickSignUp
         )
