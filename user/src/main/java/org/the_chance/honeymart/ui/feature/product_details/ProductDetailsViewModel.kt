@@ -13,7 +13,6 @@ import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
 import org.the_chance.honeymart.util.AuthData
@@ -30,7 +29,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
-    ProductImageInteractionListener {
+    ProductImageInteractionListener,ProductDetailsInteraction {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -95,7 +94,7 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    override fun onClickImage(url: String) {
+    override fun onClickSmallImage(url: String) {
         val newList = mutableListOf<String>()
         newList.addAll(_state.value.smallImages.filter { it != url })
         newList.add(0, _state.value.image)
@@ -261,7 +260,8 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(product = updatedProductUiState) }
     }
 
-    fun onClickFavIcon(productId: Long) {
+    override
+    fun onClickFavorite(productId: Long) {
         val currentProduct = _state.value.product
         val isFavorite = currentProduct.isFavorite ?: false
         val newFavoriteState = !isFavorite

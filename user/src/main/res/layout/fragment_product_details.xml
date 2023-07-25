@@ -31,7 +31,7 @@
             android:layout_width="@dimen/spacing_32"
             android:layout_height="@dimen/spacing_32"
             android:layout_margin="@dimen/spacing_16"
-            android:onClick="@{() -> viewModel.onClickFavIcon(viewModel.state.product.productId)}"
+            android:onClick="@{() -> viewModel.onClickFavorite(viewModel.state.product.productId)}"
             app:changeColorIfSelected="@{viewModel.state.product.isFavorite}"
             app:hideIfLoading="@{viewModel.state.loading}"
             app:layout_constraintEnd_toEndOf="parent"
