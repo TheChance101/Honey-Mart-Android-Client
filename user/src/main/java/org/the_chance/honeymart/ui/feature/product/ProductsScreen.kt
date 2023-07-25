@@ -15,10 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
 import org.the_chance.honymart.ui.composables.ProductCard
 import org.the_chance.honymart.ui.composables.SideBarItem
-import org.the_chance.user.R
+
 
 @Composable
 fun ProductsScreen(
@@ -27,35 +30,43 @@ fun ProductsScreen(
     val state by viewModel.state.collectAsState()
     ProductsContent(state = state)
 }
-
 @Composable
 private fun ProductsContent(state: ProductsUiState) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        LazyColumn(
-            contentPadding = PaddingValues(top = 24.dp, end = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(10) {
-                SideBarItem(icon = org.the_chance.design_system.R.drawable.ic_bed)
-            }
-        }
-        LazyColumn(
-            contentPadding = PaddingValues(top = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(10) {
-                ProductCard(
-                    imageUrl = "https://housing.com/news/wp-content/uploads/2022/11/living-room-furniture-design-compressed-1.jpg",
-                    furnitureName = "Sofa",
-                    furniturePrice = "30,000",
-                    secondaryText = "Secondary text"
-                )
+    if (state.isLoadingCategory || state.isLoadingProduct) {
+
+    } else if (state.isError) {
+
+    } else {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 16.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                LazyColumn(
+                    contentPadding = PaddingValues(top = 24.dp, end = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(state.categories.size) { index ->
+                        val category = state.categories[index]
+                        category.categoryImageId?.let { SideBarItem(icon = it) } // Use the appropriate icon property from CategoryUiState
+                    }
+                }
+                LazyColumn(
+                    contentPadding = PaddingValues(top = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(state.products.size) { index ->
+                        val product = state.products[index]
+                        ProductCard(
+                            imageUrl = product.productImages?.firstOrNull() ?: "",
+                            furnitureName = product.productName ?: "",
+                            furniturePrice = product.productPrice?.toString() ?: "",
+                            secondaryText = product.productDescription ?: ""
+                        )
+                    }
+                }
             }
         }
     }
@@ -64,5 +75,53 @@ private fun ProductsContent(state: ProductsUiState) {
 @Preview
 @Composable
 fun PreviewProducts() {
-    ProductsScreen()
+    val sampleState = ProductsUiState(
+        isLoadingCategory = false,
+        isLoadingProduct = false,
+        isError = false,
+        products = listOf(
+            ProductUiState(
+                productId = 1L,
+                productName = "Sofa",
+                productDescription = "Comfy sofa for your living room",
+                productPrice = 30000.0,
+                productImages = listOf("https://housing.com/news/wp-content/uploads/2022/11/living-room-furniture-design-compressed-1.jpg")
+            ),
+            ProductUiState(
+                productId = 1L,
+                productName = "Sofa",
+                productDescription = "Comfy sofa for your living room",
+                productPrice = 30000.0,
+                productImages = listOf("https://housing.com/news/wp-content/uploads/2022/11/living-room-furniture-design-compressed-1.jpg")
+            ),
+            ProductUiState(
+                productId = 1L,
+                productName = "Sofa",
+                productDescription = "Comfy sofa for your living room",
+                productPrice = 30000.0,
+                productImages = listOf("https://housing.com/news/wp-content/uploads/2022/11/living-room-furniture-design-compressed-1.jpg")
+            ),
+            ProductUiState(
+                productId = 1L,
+                productName = "Sofa",
+                productDescription = "Comfy sofa for your living room",
+                productPrice = 30000.0,
+                productImages = listOf("https://housing.com/news/wp-content/uploads/2022/11/living-room-furniture-design-compressed-1.jpg")
+            )
+        ),
+        categories = listOf(
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+            CategoryUiState(categoryImageId = R.drawable.ic_bed),
+        )
+    )
+    ProductsContent(state = sampleState)
 }
