@@ -45,20 +45,20 @@ fun AuthContent(
         )
         Text(
             text = stringResource(R.string.welcome_to_honey_mart),
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(vertical = 16.dp),
             color = black60,
             style = Typography.displayMedium
         )
         Text(
             text = stringResource(R.string.get_ready_to_a_shopping_experience_like_no_other),
-            modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             color = black37,
             style = Typography.bodySmall,
             textAlign = TextAlign.Center
         )
         CustomButton(
             labelIdStringRes = R.string.Sign_up,
-            modifier = Modifier.padding(horizontal = 32.dp, vertical = 40.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
             onClick = onClickSignUp
         )
         Spacer(modifier = Modifier.weight(1f))
