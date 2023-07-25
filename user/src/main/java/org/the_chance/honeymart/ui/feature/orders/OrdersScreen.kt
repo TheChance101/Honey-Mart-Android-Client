@@ -19,13 +19,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
+import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honymart.ui.composables.ItemOrder
+import org.the_chance.design_system.R
 
 @Composable
 fun OrdersScreen(
@@ -56,7 +60,7 @@ fun OrdersContent(
             CustomChip(state = false, text = "Cancel", onClick = { })
         }
         Spacer(modifier = Modifier.height(8.dp))
-        LazyColumn(
+        /*LazyColumn(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
@@ -80,14 +84,14 @@ fun OrdersContent(
                     )
                 }
             }
-        }
-        /*PlaceholderItem(
+        }*/
+        PlaceholderItem(
             modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
             image = painterResource(id = R.drawable.no_orders_placeholder),
-            title = "You Don't have any orders!!",
-            subtitle = "It's a catastrophe! Let's fix it by adding items that catch your eye!",
+            title = stringResource(R.string.placeholder_title),
+            subtitle = stringResource(R.string.placeholder_subtitle),
             onClickDiscoverMarkets = { }
-        )*/
+        )
     }
 }
 
