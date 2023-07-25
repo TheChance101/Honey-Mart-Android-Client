@@ -16,8 +16,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
+import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 
 @Composable
@@ -51,7 +57,10 @@ fun OrdersContent(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            CustomChip(state = true, text = "Processing", onClick = { })
+            CustomChip(
+                state = true,
+                text = "Processing",
+                onClick = { })
             CustomChip(state = false, text = "Done", onClick = { })
             CustomChip(state = false, text = "Cancel", onClick = { })
         }
@@ -65,7 +74,10 @@ fun OrdersContent(
                 items = FakeList.fakeData,
                 key = null
             ) { orderItem ->
+                var showDialog by remember { mutableStateOf(false) }
                 val dismissState = rememberDismissState()
+                val updatedDismissState = rememberUpdatedState(dismissState)
+
                 SwipeToDismiss(
                     state = dismissState,
                     background = { SwipeBackground(dismissState = dismissState) },
@@ -77,6 +89,29 @@ fun OrdersContent(
                         marketName = orderItem.marketName,
                         quantity = orderItem.quantity,
                         price = orderItem.orderPrice
+                    )
+                }
+                LaunchedEffect(updatedDismissState.value.dismissDirection) {
+                    if (updatedDismissState.value.dismissDirection == DismissDirection.EndToStart) {
+                        showDialog = true
+                    }
+                }
+                // Show the dialog
+                if (showDialog) {
+                    CustomAlertDialog(
+                        message = "This is the dialog message.",
+                        onConfirm = {
+                            // TODO() Handle confirm action
+                            showDialog = false
+                        },
+                        onCancel = {
+                            //TODO() Handle cancel action
+                            showDialog = false
+                        },
+                        onDismissRequest = {
+                            // TODO()Handle dismiss request (usually when the user clicks outside the dialog)
+                            showDialog = false
+                        }
                     )
                 }
             }
