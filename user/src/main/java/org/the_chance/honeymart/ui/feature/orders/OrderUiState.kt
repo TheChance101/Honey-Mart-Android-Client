@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.uistate
+package org.the_chance.honeymart.ui.feature.orders
 
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler

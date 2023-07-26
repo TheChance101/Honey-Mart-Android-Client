@@ -10,10 +10,6 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.OrderStates
-import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
-import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
-import org.the_chance.honeymart.ui.feature.uistate.toOrderUiState
 import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject

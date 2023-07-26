@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 
 abstract class SwipeToDeleteOrder(private val drawableType: OrderStates) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

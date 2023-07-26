@@ -22,7 +22,7 @@ import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.feature.uistate.OrderStates
+import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.ui.BaseAdapter
 
 @BindingAdapter(value = ["app:items"])

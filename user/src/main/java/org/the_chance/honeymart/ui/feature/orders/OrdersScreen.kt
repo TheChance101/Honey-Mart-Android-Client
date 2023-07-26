@@ -33,7 +33,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
-import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 
