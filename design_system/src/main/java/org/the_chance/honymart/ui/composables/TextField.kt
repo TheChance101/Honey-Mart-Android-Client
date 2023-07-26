@@ -33,7 +33,7 @@ fun TextField(
     hint: String ,
     @DrawableRes idIconDrawableRes: Int,
     errorMessage: String = "",
-    isError: Boolean = false,
+    isError: Boolean = errorMessage.isNotEmpty(),
 ) {
     Column() {
         OutlinedTextField(
