@@ -19,7 +19,7 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener,
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()),
     OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
     private var job: Job? = null

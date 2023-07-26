@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
@@ -67,11 +68,13 @@ fun PlaceholderItem(
 @Preview
 @Composable
 fun PreviewPlaceholderItem() {
-    PlaceholderItem(
-        modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-        image = painterResource(id = R.drawable.placeholder_order),
-        title = stringResource(R.string.placeholder_title),
-        subtitle = stringResource(R.string.placeholder_subtitle),
-        onClickDiscoverMarkets = { }
-    )
+    HoneyMartTheme {
+        PlaceholderItem(
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
+            image = painterResource(id = R.drawable.placeholder_order),
+            title = stringResource(R.string.placeholder_title),
+            subtitle = stringResource(R.string.placeholder_subtitle),
+            onClickDiscoverMarkets = { }
+        )
+    }
 }

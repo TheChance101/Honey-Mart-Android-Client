@@ -1,5 +1,11 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +42,7 @@ import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
+import org.the_chance.honymart.ui.composables.LoadingAnimation
 
 @Composable
 fun OrdersScreen(
@@ -42,17 +50,44 @@ fun OrdersScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    OrdersContent(
-        state = state,
-        onClickDiscoverMarketsButton = viewModel::onClickDiscoverMarketsButton
-    )
+    AnimatedVisibility(
+        visible = state.isLoading,
+        enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 500))
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            LoadingAnimation()
+        }
+    }
+    AnimatedVisibility(
+        visible = !state.isLoading,
+        enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
+        exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
+    ) {
+        OrdersContent(
+            state = state,
+            onClickOrder = viewModel::onClickOrder,
+            onClickDiscoverMarketsButton = viewModel::onClickDiscoverMarketsButton,
+            onClickProcessingOrder = viewModel::onClickProcessingOrder,
+            onClickDoneOrder = viewModel::onClickDoneOrder,
+            onClickCancelOrder = viewModel::onClickCancelOrder,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    onClickDiscoverMarketsButton:() -> Unit
+    onClickOrder: (Long) -> Unit,
+    onClickDiscoverMarketsButton: () -> Unit,
+    onClickProcessingOrder: () -> Unit,
+    onClickDoneOrder: () -> Unit,
+    onClickCancelOrder: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -64,9 +99,21 @@ fun OrdersContent(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            CustomChip(state = true, text = "Processing", onClick = { })
-            CustomChip(state = false, text = "Done", onClick = { })
-            CustomChip(state = false, text = "Cancel", onClick = { })
+            CustomChip(
+                state = state.orderStates == OrderStates.PROCESSING,
+                text = stringResource(id = R.string.processing),
+                onClick = onClickProcessingOrder
+            )
+            CustomChip(
+                state = state.orderStates == OrderStates.DONE,
+                text = stringResource(id = R.string.done),
+                onClick = onClickDoneOrder
+            )
+            CustomChip(
+                state = state.orderStates == OrderStates.CANCELED,
+                text = stringResource(id = R.string.cancel),
+                onClick = onClickCancelOrder
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         LazyColumn(
@@ -92,7 +139,8 @@ fun OrdersContent(
                         orderId = orderItem.orderId!!,
                         marketName = orderItem.marketName!!,
                         quantity = orderItem.quantity!!,
-                        price = orderItem.totalPrice!!
+                        price = orderItem.totalPrice!!,
+                        onClick = { onClickOrder(orderItem.orderId) }
                     )
                 }
                 LaunchedEffect(showDialog) {
@@ -108,26 +156,22 @@ fun OrdersContent(
                 if (showDialog) {
                     CustomAlertDialog(
                         message = "Oh no!!! you’re cancel this order....Are you sure?",
-                        onConfirm = {
-                            showDialog = false
-                        },
-                        onCancel = {
-                            showDialog = false
-                        },
-                        onDismissRequest = {
-                            showDialog = false
-                        }
+                        onConfirm = { showDialog = false },
+                        onCancel = { showDialog = false },
+                        onDismissRequest = { showDialog = false }
                     )
                 }
             }
         }
-        PlaceholderItem(
-            modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-            image = painterResource(id = R.drawable.placeholder_order),
-            title = stringResource(R.string.placeholder_title),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = onClickDiscoverMarketsButton
-        )
+        if (state.orders.isEmpty()) {
+            PlaceholderItem(
+                modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
+                image = painterResource(id = R.drawable.placeholder_order),
+                title = stringResource(R.string.placeholder_title),
+                subtitle = stringResource(R.string.placeholder_subtitle),
+                onClickDiscoverMarkets = onClickDiscoverMarketsButton
+            )
+        }
     }
 }
 
