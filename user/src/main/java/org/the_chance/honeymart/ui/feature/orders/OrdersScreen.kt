@@ -154,8 +154,13 @@ fun OrdersContent(
                     }
                 }
                 if (showDialog) {
+                    val textOrderStates = when(state.orderStates){
+                        OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                        OrderStates.DONE -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                        OrderStates.CANCELED -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                    }
                     CustomAlertDialog(
-                        message = "Oh no!!! you’re cancel this order....Are you sure?",
+                        message = textOrderStates,
                         onConfirm = { showDialog = false },
                         onCancel = { showDialog = false },
                         onDismissRequest = { showDialog = false }
