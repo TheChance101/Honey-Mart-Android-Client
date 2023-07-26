@@ -86,12 +86,12 @@ private fun OrderDetailsContent(
                 Text(
                     text = "${state.orderDetails.totalPrice}$",
                     color = black60,
-                    style = Typography.bodyMedium
+                    style = Typography.bodyMedium,
                 )
                 Text(
                     text = stringResource(id = org.the_chance.design_system.R.string.total_price),
                     color = black37,
-                    style = Typography.displaySmall
+                    style = Typography.displaySmall,
                 )
             }
             Card(
@@ -103,8 +103,8 @@ private fun OrderDetailsContent(
 
                 ) {
                 Text(
-//                    text = "${state.orderDetails.state}",
-                    text = "Processing",
+                    text = "${state.orderDetails.state}",
+//                    text = "Processing",
                     color = primary100,
                     style = Typography.displayLarge,
                     maxLines = 1,
@@ -118,7 +118,7 @@ private fun OrderDetailsContent(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview
 @Composable
 fun PreviewOrderDetails(){
     OrderDetailsScreen()

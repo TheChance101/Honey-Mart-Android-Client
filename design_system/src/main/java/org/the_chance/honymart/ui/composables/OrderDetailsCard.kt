@@ -50,24 +50,22 @@ fun OrderDetailsCard(
                 .clip(MaterialTheme.shapes.medium)
                 .clickable { onClickCard() }
         ) {
-
-            SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .crossfade(true)
-                    .build(),
-                loading = {
-                    CircularProgressIndicator()
-                },
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
-//            ImageNetwork(
-//                imageUrl = imageUrl
+//            SubcomposeAsyncImage(
+//                model = ImageRequest.Builder(LocalContext.current)
+//                    .data(imageUrl)
+//                    .crossfade(true)
+//                    .build(),
+//                loading = {
+//                    CircularProgressIndicator()
+//                },
+//                contentDescription = "",
+//                modifier = Modifier
+//                    .fillMaxSize(),
+//                contentScale = ContentScale.Crop,
 //            )
-
+            ImageNetwork(
+                imageUrl = imageUrl
+            )
             Box(
                 modifier = Modifier
                     .matchParentSize()
@@ -108,7 +106,7 @@ fun OrderDetailsCard(
 
                 Row (verticalAlignment = Alignment.CenterVertically){
                     Icon(
-                        painter = painterResource(id = R.drawable.icon_cart_check),
+                        painter = painterResource(id = R.drawable.icon_cart_details),
                         contentDescription = "cart check icon",
                         tint = white,
                         modifier = Modifier.padding(end = MaterialTheme.dimens.space4)
@@ -122,7 +120,6 @@ fun OrderDetailsCard(
                     )
                 }
             }
-
         }
     }
 }
