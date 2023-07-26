@@ -7,7 +7,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
  * Created by Aziza Helmy on 6/12/2023.
  */
 internal fun CategoryDto.toCategoryEntity() = CategoryEntity(
-    categoryId = categoryId,
-    categoryName = categoryName,
-    categoryImageId = imageId
+    categoryId = categoryId ?: 0L,
+    categoryName = categoryName ?: "",
+    categoryImageId = imageId ?: 0
 )
