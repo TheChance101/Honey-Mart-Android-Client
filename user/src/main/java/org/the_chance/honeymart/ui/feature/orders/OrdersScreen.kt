@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
+import org.the_chance.honeymart.ui.feature.uistate.OrdersStates
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
@@ -39,13 +40,21 @@ fun OrdersScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    OrdersContent(state = state)
+    OrdersContent(
+        state = state,
+        onClickProcessingOrder = viewModel::onClickProcessingOrder,
+        onClickDoneOrder = viewModel::onClickDoneOrder,
+        onClickCancelOrder = viewModel::onClickCancelOrder,
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OrdersContent(
-    state: OrdersUiState
+    state: OrdersUiState,
+    onClickProcessingOrder: () -> Unit,
+    onClickDoneOrder: () -> Unit,
+    onClickCancelOrder: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -57,9 +66,12 @@ fun OrdersContent(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            CustomChip(state = true, text = "Processing", onClick = { })
-            CustomChip(state = false, text = "Done", onClick = { })
-            CustomChip(state = false, text = "Cancel", onClick = { })
+            CustomChip(
+                state = false,
+                text = "Processing",
+                onClick = { onClickProcessingOrder() })
+            CustomChip(state = false, text = "Done", onClick = { onClickDoneOrder() })
+            CustomChip(state = false, text = "Cancel", onClick = { onClickCancelOrder() })
         }
         Spacer(modifier = Modifier.height(8.dp))
         LazyColumn(
@@ -68,7 +80,7 @@ fun OrdersContent(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             items(
-                items = FakeList.fakeData,
+                items = state.orders,
                 key = null
             ) { orderItem ->
                 var showDialog by remember { mutableStateOf(false) }
@@ -81,11 +93,11 @@ fun OrdersContent(
                     directions = setOf(DismissDirection.EndToStart),
                 ) {
                     ItemOrder(
-                        imageUrl = orderItem.imageUrl,
-                        orderId = orderItem.orderId,
-                        marketName = orderItem.marketName,
-                        quantity = orderItem.quantity,
-                        price = orderItem.orderPrice
+                        imageUrl = orderItem.imageUrl!!,
+                        orderId = orderItem.orderId!!,
+                        marketName = orderItem.marketName!!,
+                        quantity = orderItem.quantity!!,
+                        price = orderItem.totalPrice!!
                     )
                 }
                 LaunchedEffect(updatedDismissState.value.dismissDirection) {
@@ -102,11 +114,9 @@ fun OrdersContent(
                             showDialog = false
                         },
                         onCancel = {
-                            //TODO() Handle cancel action
                             showDialog = false
                         },
                         onDismissRequest = {
-                            // TODO()Handle dismiss request (usually when the user clicks outside the dialog)
                             showDialog = false
                         }
                     )
