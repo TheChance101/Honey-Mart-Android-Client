@@ -13,9 +13,9 @@ data class CategoriesUiState(
 )
 
 data class CategoryUiState(
-    val categoryId: Long? = 0L,
-    val categoryName: String? = "",
-    val categoryImageId: Int? = 0,
+    val categoryId: Long = 0L,
+    val categoryName: String = "",
+    val categoryImageId: Int = 0,
     val isCategorySelected: Boolean = false
 )
 
