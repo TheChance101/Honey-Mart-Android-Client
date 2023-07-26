@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.uistate.OrderStates
 import org.the_chance.honeymart.ui.feature.uistate.OrderUiState
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener {
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrderInteractionListener,
+    OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
     private var job: Job? = null
 
@@ -154,5 +156,50 @@ class OrderViewModel @Inject constructor(
             delay(10)
             _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
         }
+    }
+
+    override fun onClickProcessingOrder() {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isError = false,
+                orderStates = OrderStates.PROCESSING
+            )
+        }
+        tryToExecute(
+            { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
+            ::onGetProcessingOrdersSuccess,
+            ::onGetProcessingOrdersError
+        )
+    }
+
+    override fun onClickDoneOrder() {
+        _state.update {
+            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
+        }
+        tryToExecute(
+            { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
+            ::onGetDoneOrdersSuccess,
+            ::onGetDoneOrdersError
+        )
+    }
+
+    override fun onClickCancelOrder() {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                orderStates = OrderStates.CANCELED,
+                isError = false
+            )
+        }
+        tryToExecute(
+            { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
+            ::onGetCancelOrdersSuccess,
+            ::onGetCancelOrdersError
+        )
+    }
+
+    override fun onClickConfirmOrder() {
+        TODO("Not yet implemented")
     }
 }
