@@ -24,10 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
+import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honeymart.ui.feature.uistate.OrdersUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -73,7 +77,7 @@ fun OrdersContent(
             ) { orderItem ->
                 var showDialog by remember { mutableStateOf(false) }
                 val dismissState = rememberDismissState()
-                val updatedDismissState = rememberUpdatedState(dismissState)
+                val updatedDismissState by rememberUpdatedState(dismissState)
 
                 SwipeToDismiss(
                     state = dismissState,
@@ -88,38 +92,39 @@ fun OrdersContent(
                         price = orderItem.orderPrice
                     )
                 }
-                LaunchedEffect(updatedDismissState.value.dismissDirection) {
-                    if (updatedDismissState.value.dismissDirection == DismissDirection.EndToStart) {
+                LaunchedEffect(showDialog) {
+                    if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                        dismissState.reset()
+                    }
+                }
+                LaunchedEffect(updatedDismissState.dismissDirection) {
+                    if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
                         showDialog = true
                     }
                 }
-                // Show the dialog
                 if (showDialog) {
                     CustomAlertDialog(
-                        message = "This is the dialog message.",
+                        message = "Oh no!!! you’re cancel this order....Are you sure?",
                         onConfirm = {
-                            // TODO() Handle confirm action
                             showDialog = false
                         },
                         onCancel = {
-                            //TODO() Handle cancel action
                             showDialog = false
                         },
                         onDismissRequest = {
-                            // TODO()Handle dismiss request (usually when the user clicks outside the dialog)
                             showDialog = false
                         }
                     )
                 }
             }
         }
-        /*PlaceholderItem(
+        PlaceholderItem(
             modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-            image = painterResource(id = R.drawable.no_orders_placeholder),
+            image = painterResource(id = R.drawable.placeholder_order),
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
             onClickDiscoverMarkets = { }
-        )*/
+        )
     }
 }
 

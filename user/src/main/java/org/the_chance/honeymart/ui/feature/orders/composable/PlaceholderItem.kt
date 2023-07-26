@@ -66,7 +66,7 @@ fun PlaceholderItem(
 fun PreviewPlaceholderItem() {
     PlaceholderItem(
         modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-        image = painterResource(id = R.drawable.no_orders_placeholder),
+        image = painterResource(id = R.drawable.placeholder_order),
         title = stringResource(R.string.placeholder_title),
         subtitle = stringResource(R.string.placeholder_subtitle),
         onClickDiscoverMarkets = { }
