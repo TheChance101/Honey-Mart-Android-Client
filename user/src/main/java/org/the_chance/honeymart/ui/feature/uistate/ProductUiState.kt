@@ -15,12 +15,12 @@ data class ProductsUiState(
 )
 
 data class ProductUiState(
-    val productId: Long? = 0L,
-    val productName: String? = "",
-    val productDescription: String? = "",
-    val productPrice: Double? = 0.0,
-    val isFavorite: Boolean? = false,
-    val productImages:List<String>? = emptyList()
+    val productId: Long = 0L,
+    val productName: String = "",
+    val productDescription: String = "",
+    val productPrice: Double = 0.0,
+    val isFavorite: Boolean = false,
+    val productImages:List<String> = emptyList()
 )
 
 fun ProductEntity.toProductUiState(): ProductUiState {
