@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ fun PlaceholderItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
+            modifier =Modifier.size(160.dp) ,
             painter = image,
             contentDescription = stringResource(org.the_chance.user.R.string.content_desc_of_placeholder_image)
         )
