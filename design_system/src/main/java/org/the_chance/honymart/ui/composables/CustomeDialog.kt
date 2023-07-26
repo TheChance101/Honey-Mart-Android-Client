@@ -1,6 +1,7 @@
 package org.the_chance.honymart.ui.composables
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -50,12 +52,11 @@ fun CustomAlertDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_warning),
-                    contentDescription = "Custom Icon",
+                Image(
+                    painter = painterResource(id = R.drawable.ic_warning),
+                    contentDescription = "warning Icon",
                     modifier = Modifier
                         .padding(bottom = 32.dp),
-                    tint = primary100
                 )
                 Text(
                     text = message,
