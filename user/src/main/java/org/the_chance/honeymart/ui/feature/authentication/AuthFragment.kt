@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
@@ -35,10 +33,5 @@ class AuthFragment : Fragment() {
                 AuthScreen(this, args.AuthData)
             }
         }
-    }
-
-    private fun navigateToSignUp(authData: AuthData) {
-        val action = AuthFragmentDirections.actionAuthFragmentToSignupFragment(authData)
-        findNavController().navigate(action)
     }
 }
