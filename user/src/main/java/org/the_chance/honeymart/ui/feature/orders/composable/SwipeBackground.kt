@@ -33,10 +33,12 @@ fun SwipeBackground(dismissState: DismissState) {
             DismissValue.Default -> Color.LightGray
             DismissValue.DismissedToStart -> primary100
             DismissValue.DismissedToEnd -> white
-        }
+        },
+        label = "Color"
     )
     val scale by animateFloatAsState(
-        if (dismissState.targetValue == DismissValue.Default) 0.85f else 1f
+        if (dismissState.targetValue == DismissValue.Default) 0.85f else 1f,
+        label = "Scale"
     )
 
     Card(
