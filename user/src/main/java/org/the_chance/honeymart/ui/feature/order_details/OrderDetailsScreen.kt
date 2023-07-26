@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,12 +23,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
@@ -71,6 +75,13 @@ private fun OrderDetailsContent(
                 }
             }
         )
+        if(state.isProductsLoading && state.isDetailsLoading) {
+            Image(
+                painter = rememberAsyncImagePainter(model = org.the_chance.design_system.R.raw.loading),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize().align(Alignment.CenterHorizontally),
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
