@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,13 +44,15 @@ fun PlaceholderItem(
         ) {
             Text(
                 text = title,
-                style = Typography.bodyMedium.copy(color = black60),
                 textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.typography.bodyMedium.color.copy(.6F)
             )
             Text(
                 text = subtitle,
-                style = Typography.displayLarge.copy(color = black60),
                 textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.typography.displayLarge.color.copy(.6F)
             )
         }
         CustomButton(

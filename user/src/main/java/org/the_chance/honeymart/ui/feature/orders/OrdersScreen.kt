@@ -42,13 +42,17 @@ fun OrdersScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    OrdersContent(state = state)
+    OrdersContent(
+        state = state,
+        onClickDiscoverMarketsButton = viewModel::onClickDiscoverMarketsButton
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OrdersContent(
-    state: OrdersUiState
+    state: OrdersUiState,
+    onClickDiscoverMarketsButton:() -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -71,7 +75,7 @@ fun OrdersContent(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             items(
-                items = FakeList.fakeData,
+                items = state.orders,
                 key = null
             ) { orderItem ->
                 var showDialog by remember { mutableStateOf(false) }
@@ -84,11 +88,11 @@ fun OrdersContent(
                     directions = setOf(DismissDirection.EndToStart),
                 ) {
                     ItemOrder(
-                        imageUrl = orderItem.imageUrl,
-                        orderId = orderItem.orderId,
-                        marketName = orderItem.marketName,
-                        quantity = orderItem.quantity,
-                        price = orderItem.orderPrice
+                        imageUrl = orderItem.imageUrl!!,
+                        orderId = orderItem.orderId!!,
+                        marketName = orderItem.marketName!!,
+                        quantity = orderItem.quantity!!,
+                        price = orderItem.totalPrice!!
                     )
                 }
                 LaunchedEffect(showDialog) {
@@ -122,7 +126,7 @@ fun OrdersContent(
             image = painterResource(id = R.drawable.placeholder_order),
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = { }
+            onClickDiscoverMarkets = onClickDiscoverMarketsButton
         )
     }
 }
