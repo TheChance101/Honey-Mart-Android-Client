@@ -1,5 +1,6 @@
 package org.the_chance.honymart.ui.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,22 +66,29 @@ fun ItemOrder(
             ) {
                 Text(
                     text = stringResource(id = R.string.order, orderId),
-                    style = Typography.displayLarge.copy(color = black60),
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.typography.displayLarge.color.copy(.6F)
                 )
                 Text(
                     text = marketName,
-                    style = Typography.displaySmall.copy(color = black60),
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.typography.displayLarge.color.copy(.6F)
                 )
                 Row {
                     Image(
                         painter = painterResource(id = R.drawable.order),
                         contentDescription = marketName,
-                        colorFilter = ColorFilter.tint(color = black60)
+                        colorFilter = ColorFilter.tint(
+                            MaterialTheme.typography.displayLarge.color.copy(
+                                .6F
+                            )
+                        )
                     )
                     SpacerHorizontal4()
                     Text(
                         text = stringResource(id = R.string.items, quantity),
-                        style = Typography.displaySmall.copy(color = black60),
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.typography.displayLarge.color.copy(.6F)
                     )
                 }
             }
@@ -96,7 +104,7 @@ fun ItemOrder(
     }
 }
 
-@Preview
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ItemOrderPreview() {
     HoneyMartTheme {

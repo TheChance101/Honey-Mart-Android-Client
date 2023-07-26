@@ -57,10 +57,7 @@ fun OrdersContent(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            CustomChip(
-                state = true,
-                text = "Processing",
-                onClick = { })
+            CustomChip(state = true, text = "Processing", onClick = { })
             CustomChip(state = false, text = "Done", onClick = { })
             CustomChip(state = false, text = "Cancel", onClick = { })
         }

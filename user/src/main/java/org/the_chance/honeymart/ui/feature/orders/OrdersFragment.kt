@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
 
@@ -32,7 +33,9 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
-            OrdersScreen()
+            HoneyMartTheme {
+                OrdersScreen()
+            }
         }
     }
 }
