@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -36,7 +35,7 @@ fun EmptyProductScaffold(){
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
                 text = "There is no product here !!",
                 style = MaterialTheme.typography.bodyMedium,
-                color = black60,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
         }

@@ -21,14 +21,13 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
 @Composable
-fun HexagonItem(icon: Int, hexagonSize: Dp, isSelected: Boolean,onClick: () -> Unit) {
+fun HexagonItem(icon: Int, hexagonSize: Dp, isSelected: Boolean, onClick: () -> Unit) {
     val hexagonItemShape = object : Shape {
         override fun createOutline(
             size: Size,
@@ -56,7 +55,10 @@ fun HexagonItem(icon: Int, hexagonSize: Dp, isSelected: Boolean,onClick: () -> U
             modifier = Modifier
                 .size(hexagonSize)
                 .clip(hexagonItemShape)
-                .background(if (isSelected) MaterialTheme.colorScheme.primary else White)
+                .background(
+                    if (isSelected) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.secondaryContainer
+                )
                 .padding(bottom = MaterialTheme.dimens.space4)
                 .clickable { onClick() },
             contentAlignment = Alignment.Center
@@ -64,7 +66,7 @@ fun HexagonItem(icon: Int, hexagonSize: Dp, isSelected: Boolean,onClick: () -> U
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = "category item",
-                tint = if (isSelected) White else black37
+                tint = if (isSelected) White else MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
     }
