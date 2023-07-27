@@ -15,4 +15,5 @@ data class LoginUiState(
     val emailState: ValidationState = ValidationState.VALID_EMAIL,
     val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
     val validationState: ValidationState = ValidationState.SUCCESS,
+    val isLogin: Boolean = false
 )
