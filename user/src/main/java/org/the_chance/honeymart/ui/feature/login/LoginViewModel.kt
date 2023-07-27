@@ -26,7 +26,6 @@ class LoginViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     private lateinit var args: LoginFragmentArgs
-//    private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
 
     fun saveArgs(args: LoginFragmentArgs){
         args.also { this.args = it }
@@ -55,7 +54,6 @@ class LoginViewModel @Inject constructor(
             it.copy(isLoading = false, error = null,
                 validationState = validationState, isLogin = true)
         }
-
     }
 
     private fun onLoginError(error: ErrorHandler) {
@@ -73,7 +71,6 @@ class LoginViewModel @Inject constructor(
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
-
         }
     }
 

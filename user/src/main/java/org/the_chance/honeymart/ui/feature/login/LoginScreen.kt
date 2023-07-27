@@ -47,9 +47,8 @@ fun LoginScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    viewModel.saveArgs(args)
-    LoginContent(
-        onClickLogin = { viewModel.onLoginClick()
+    LaunchedEffect(key1 = state.isLogin){
+        if (state.isLogin){
             val action = when (authData) {
                 is AuthData.Products -> {
                     ProductsFragmentDirections.actionGlobalProductsFragment(
@@ -66,7 +65,12 @@ fun LoginScreen(
             }
             view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
             view.findNavController().navigate(action)
-        },
+        }
+    }
+
+    viewModel.saveArgs(args)
+    LoginContent(
+        onClickLogin = viewModel::onLoginClick,
 
         onClickSignup = {
             view.findNavController()
@@ -76,12 +80,6 @@ fun LoginScreen(
         onPasswordChange = viewModel::onPasswordInputChanged,
         state = state
     )
-
-    LaunchedEffect(key1 = state.isLogin){
-       if (state.isLogin) run {
-           viewModel::onLoginClick
-       }
-    }
 }
 
 @Composable
@@ -93,86 +91,90 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     state: LoginUiState,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Image(
-                painter = painterResource(R.drawable.background_frame),
-                contentDescription = "",
-                modifier = modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.welcome_back),
-                    color = white,
-                    style = Typography.headlineMedium,
-                )
-                Text(
-                    text = stringResource(
-                        R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
-                    ),
-                    color = white,
-                    style = Typography.bodyMedium,
-                )
-            }
-        }
-        TextField(
-            text = state.email,
-            hint = stringResource(R.string.email),
-            idIconDrawableRes = R.drawable.ic_email,
-            onValueChange = onEmailChange,
-            errorMessage = when (state.emailState) {
-                ValidationState.BLANK_EMAIL -> "email cannot be blank"
-                ValidationState.INVALID_EMAIL -> "Invalid email"
-                else -> ""
-            },
-        )
-        TextField(
-            text = state.password,
-            hint = stringResource(R.string.password),
-            idIconDrawableRes = R.drawable.ic_password,
-            onValueChange = onPasswordChange,
-            errorMessage = when (state.passwordState) {
-                ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
-                ValidationState.INVALID_PASSWORD -> "Invalid password"
-                ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
-                else -> ""
-            },
-        )
-        CustomButton(
-            labelIdStringRes = R.string.log_in,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-            onClick = onClickLogin,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 32.dp)
+    if (state.isLoading){
+        // loading animation
+    }else{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = stringResource(R.string.don_t_have_an_account),
-                color = black37,
-                style = Typography.displaySmall,
-                textAlign = TextAlign.Center
+            Box(contentAlignment = Alignment.Center) {
+                Image(
+                    painter = painterResource(R.drawable.background_frame),
+                    contentDescription = "",
+                    modifier = modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
+                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.welcome_back),
+                        color = white,
+                        style = Typography.headlineMedium,
+                    )
+                    Text(
+                        text = stringResource(
+                            R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
+                        ),
+                        color = white,
+                        style = Typography.bodyMedium,
+                    )
+                }
+            }
+            TextField(
+                text = state.email,
+                hint = stringResource(R.string.email),
+                idIconDrawableRes = R.drawable.ic_email,
+                onValueChange = onEmailChange,
+                errorMessage = when (state.emailState) {
+                    ValidationState.BLANK_EMAIL -> "email cannot be blank"
+                    ValidationState.INVALID_EMAIL -> "Invalid email"
+                    else -> ""
+                },
             )
-            TextButton(
-                onClick = onClickSignup,
-                colors = ButtonDefaults.textButtonColors(Color.Transparent)
+            TextField(
+                text = state.password,
+                hint = stringResource(R.string.password),
+                idIconDrawableRes = R.drawable.ic_password,
+                onValueChange = onPasswordChange,
+                errorMessage = when (state.passwordState) {
+                    ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
+                    ValidationState.INVALID_PASSWORD -> "Invalid password"
+                    ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
+                    else -> ""
+                },
+            )
+            CustomButton(
+                labelIdStringRes = R.string.log_in,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                onClick = onClickLogin,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 32.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.Sign_up),
-                    color = primary100,
-                    style = Typography.displayLarge,
-                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.don_t_have_an_account),
+                    color = black37,
+                    style = Typography.displaySmall,
+                    textAlign = TextAlign.Center
                 )
+                TextButton(
+                    onClick = onClickSignup,
+                    colors = ButtonDefaults.textButtonColors(Color.Transparent)
+                ) {
+                    Text(
+                        text = stringResource(R.string.Sign_up),
+                        color = primary100,
+                        style = Typography.displayLarge,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }
