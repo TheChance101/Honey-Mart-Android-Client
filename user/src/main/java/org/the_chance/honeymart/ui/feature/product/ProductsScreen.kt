@@ -9,19 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
 import org.the_chance.honymart.ui.composables.EmptyProductScaffold
 import org.the_chance.honymart.ui.composables.ErrorScaffold
 import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
 import org.the_chance.honymart.ui.composables.ProductCard
 import org.the_chance.honymart.ui.composables.SideBarItem
+import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
@@ -49,12 +49,18 @@ private fun ProductsContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
-                    .padding(start = 16.dp, end = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(
+                        start = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
             ) {
                 LazyColumn(
-                    contentPadding = PaddingValues(top = 24.dp, end = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    contentPadding = PaddingValues(
+                        top = MaterialTheme.dimens.space24,
+                        end = MaterialTheme.dimens.space12
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                 ) {
                     items(state.categories.size) { index ->
                         val category = state.categories[index]
@@ -72,8 +78,8 @@ private fun ProductsContent(
                     EmptyProductScaffold()
                 } else {
                     LazyColumn(
-                        contentPadding = PaddingValues(top = 24.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         items(state.products.size) { index ->
                             val product = state.products[index]
