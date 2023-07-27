@@ -50,7 +50,7 @@ fun NoConnectionError(
             textAlign = TextAlign.Center,
         )
         CustomButton(
-            labelIdStringRes = R.string.try_again,
+            labelIdStringRes = R.string.try_again_text,
             onClick = getWishListProducts,
             modifier = Modifier.padding(top = MaterialTheme.dimens.space16).wrapContentWidth()
 

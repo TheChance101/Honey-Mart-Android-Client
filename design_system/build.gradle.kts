@@ -46,6 +46,4 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
-    //lottie dependency
-    implementation ("com.airbnb.android:lottie-compose:6.0.0")
 }
