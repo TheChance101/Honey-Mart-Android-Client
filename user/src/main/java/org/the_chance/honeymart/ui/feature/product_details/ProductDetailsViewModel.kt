@@ -14,8 +14,8 @@ import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.ProductDetailsUiState
-import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
-import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
+import org.the_chance.honeymart.ui.feature.product.ProductUiState
+import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
