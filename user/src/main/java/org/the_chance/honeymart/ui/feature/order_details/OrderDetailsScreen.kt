@@ -107,6 +107,7 @@ private fun OrderDetailsContent(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+
 //                .background(
 //                    brush = Brush.verticalGradient(
 //                        colors = listOf(

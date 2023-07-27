@@ -40,7 +40,7 @@ class OrderDetailsFragment : Fragment() {
             // You're in Compose world!
             HoneyMartTheme {
                 OrderDetailsScreen(
-                    onClickItemOrderDetails = {navigateToProductsDetails(0)}
+                    onClickItemOrderDetails = {navigateToProductsDetails(it)}
                 )
             }
         }
