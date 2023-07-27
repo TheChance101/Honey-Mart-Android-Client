@@ -148,7 +148,7 @@
         </fragment>
         <fragment
             android:id="@+id/orderDetailsFragment"
-            android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.order_details.OrderDetailsFragment"
             android:label="OrderDetailsFragment">
             <argument
                 android:name="orderId"

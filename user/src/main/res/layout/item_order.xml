@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="org.the_chance.honeymart.ui.feature.uistate.OrderUiState" />
+            type="org.the_chance.honeymart.ui.feature.orders.OrderUiState" />
 
         <variable
             name="listener"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_4"
                 android:layout_marginTop="@dimen/spacing_4"
-                app:handleSummation="@{item.numItems}"
+                app:handleSummation="@{item.quantity}"
                 app:layout_constraintBottom_toBottomOf="@id/ic_cart_check"
                 app:layout_constraintStart_toEndOf="@id/ic_cart_check"
                 app:layout_constraintTop_toTopOf="@id/ic_cart_check"
