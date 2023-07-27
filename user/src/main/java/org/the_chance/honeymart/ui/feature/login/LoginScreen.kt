@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,18 +8,28 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.fragment.findNavController
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
+import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
+import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
@@ -29,13 +38,50 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(
+    view: LoginFragment,
+    authData: AuthData,
+    args: LoginFragmentArgs,
+    viewModel: LoginViewModel = hiltViewModel(),
+
+) {
+    val state by viewModel.state.collectAsState()
+
+    viewModel.saveArgs(args)
     LoginContent(
-        onClickLogin = viewModel::onLoginClick,
-        onClickSignup = viewModel::onClickSignUp,
+        onClickLogin = { viewModel.onLoginClick()
+            val action = when (authData) {
+                is AuthData.Products -> {
+                    ProductsFragmentDirections.actionGlobalProductsFragment(
+                        authData.categoryId,
+                        authData.marketId,
+                        authData.position
+                    )
+                }
+                is AuthData.ProductDetails -> {
+                    ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
+                        authData.productId
+                    )
+                }
+            }
+            view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
+            view.findNavController().navigate(action)
+        },
+
+        onClickSignup = {
+            view.findNavController()
+                .navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment(authData))
+        },
         onEmailChange = viewModel::onEmailInputChange,
-        onPasswordChange = viewModel::onPasswordInputChanged
+        onPasswordChange = viewModel::onPasswordInputChanged,
+        state = state
     )
+
+    LaunchedEffect(key1 = state.isLogin){
+       if (state.isLogin) run {
+           viewModel::onLoginClick
+       }
+    }
 }
 
 @Composable
@@ -45,6 +91,7 @@ fun LoginContent(
     onClickSignup: () -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    state: LoginUiState,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,19 +124,32 @@ fun LoginContent(
             }
         }
         TextField(
-            hint = "Email",
+            text = state.email,
+            hint = stringResource(R.string.email),
             idIconDrawableRes = R.drawable.ic_email,
-            onValueChange = onEmailChange
-            )
+            onValueChange = onEmailChange,
+            errorMessage = when (state.emailState) {
+                ValidationState.BLANK_EMAIL -> "email cannot be blank"
+                ValidationState.INVALID_EMAIL -> "Invalid email"
+                else -> ""
+            },
+        )
         TextField(
-            hint = "Password",
+            text = state.password,
+            hint = stringResource(R.string.password),
             idIconDrawableRes = R.drawable.ic_password,
-            onValueChange = onPasswordChange
+            onValueChange = onPasswordChange,
+            errorMessage = when (state.passwordState) {
+                ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
+                ValidationState.INVALID_PASSWORD -> "Invalid password"
+                ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
+                else -> ""
+            },
         )
         CustomButton(
             labelIdStringRes = R.string.log_in,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-            onClick = onClickLogin
+            onClick = onClickLogin,
         )
         Spacer(modifier = Modifier.weight(1f))
         Row(
@@ -103,19 +163,17 @@ fun LoginContent(
                 style = Typography.displaySmall,
                 textAlign = TextAlign.Center
             )
-            Text(
-                text = stringResource(R.string.Sign_up),
-                color = primary100,
-                style = Typography.displayLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.clickable { onClickSignup }
-            )
+            TextButton(
+                onClick = onClickSignup,
+                colors = ButtonDefaults.textButtonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = stringResource(R.string.Sign_up),
+                    color = primary100,
+                    style = Typography.displayLarge,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun LoginPreview() {
-    LoginScreen()
 }
