@@ -7,7 +7,7 @@ data class SignupUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isSignUp: Boolean = false,
-    val isLogin: ValidationState = ValidationState.SUCCESS,
+    val isLogin: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
     val fullName: String = "",
     val email: String = "",
     val password: String = "",

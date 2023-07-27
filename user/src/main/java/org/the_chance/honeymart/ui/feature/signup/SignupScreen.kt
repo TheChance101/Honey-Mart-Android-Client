@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,17 +51,8 @@ fun SignupScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    viewModel.saveArgs(args)
-    SignupContent(
-        onNameChange = viewModel::onFullNameInputChange,
-        onEmailChange = viewModel::onEmailInputChange,
-        onPasswordChange = viewModel::onPasswordInputChanged,
-        onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
-        onClickLogin = {
-            view.findNavController()
-                .navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment(authData))
-        },
-        onClickSignup = { viewModel.onClickSignup()
+    LaunchedEffect(key1 = state.isLogin ){
+        if (state.isLogin == ValidationState.SUCCESS){
             val action = when (authData) {
                 is AuthData.Products -> {
                     ProductsFragmentDirections.actionGlobalProductsFragment(
@@ -77,7 +69,20 @@ fun SignupScreen(
                 }
             }
             view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
-            view.findNavController().navigate(action) },
+            view.findNavController().navigate(action)
+        }
+    }
+    viewModel.saveArgs(args)
+    SignupContent(
+        onNameChange = viewModel::onFullNameInputChange,
+        onEmailChange = viewModel::onEmailInputChange,
+        onPasswordChange = viewModel::onPasswordInputChanged,
+        onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
+        onClickLogin = {
+            view.findNavController()
+                .navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment(authData))
+        },
+        onClickSignup = { viewModel.onClickSignup() },
         state = state
     )
 }
@@ -94,49 +99,52 @@ fun SignupContent(
     onConfirmPasswordChange: (String) -> Unit,
     state: SignupUiState
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Image(
-                painter = painterResource(R.drawable.background_frame),
-                contentDescription = "",
-                modifier = modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.sign_up),
-                    color = white,
-                    style = Typography.headlineMedium,
-                )
-                Text(
-                    text = stringResource(
-                        R.string
-                            .create_your_account_and_enter_a_world_of_endless_shopping_possibilities
-                    ),
-                    color = white,
-                    style = Typography.bodyMedium,
-                )
-            }
-        }
-        val pagerState = rememberPagerState()
-
+    if (state.isLoading){
+        // loading animation
+    }else{
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            HorizontalPager(state = pagerState, pageCount = 2, userScrollEnabled = false) { page ->
-                when(page){
-                    0 -> Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
+            Box(contentAlignment = Alignment.Center) {
+                Image(
+                    painter = painterResource(R.drawable.background_frame),
+                    contentDescription = "",
+                    modifier = modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
+                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.sign_up),
+                        color = white,
+                        style = Typography.headlineMedium,
+                    )
+                    Text(
+                        text = stringResource(
+                            R.string
+                                .create_your_account_and_enter_a_world_of_endless_shopping_possibilities
+                        ),
+                        color = white,
+                        style = Typography.bodyMedium,
+                    )
+                }
+            }
+            val pagerState = rememberPagerState()
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                HorizontalPager(state = pagerState, pageCount = 2, userScrollEnabled = false) { page ->
+                    when(page){
+                        0 -> Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
                             TextField(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
@@ -160,10 +168,10 @@ fun SignupContent(
                                 },
                             )
                         }
-                    1 -> Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
+                        1 -> Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
                             TextField(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
@@ -187,50 +195,51 @@ fun SignupContent(
                                 }
                             )
                         }
+                    }
+                }
+                val coroutineScope = rememberCoroutineScope()
+                when(pagerState.currentPage){
+                    0 -> CustomButton(
+                        labelIdStringRes = R.string.Continue,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                        onClick = {
+                            if (state.fullNameState == ValidationState.VALID_FULL_NAME
+                                && state.emailState == ValidationState.VALID_EMAIL &&
+                                state.email.isNotEmpty() && state.fullName.isNotEmpty()) {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(1)
+                                }
+                            }
+                        },
+                    )
+                    1 -> CustomButton(
+                        labelIdStringRes = R.string.sign_up,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                        onClick = onClickSignup
+                    )
                 }
             }
-            val coroutineScope = rememberCoroutineScope()
+            Spacer(modifier = Modifier.weight(1f))
             when(pagerState.currentPage){
-                0 -> CustomButton(
-                    labelIdStringRes = R.string.Continue,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-                    onClick = {
-                        if (state.fullNameState == ValidationState.VALID_FULL_NAME
-                            && state.emailState == ValidationState.VALID_EMAIL &&
-                            state.email.isNotEmpty() && state.fullName.isNotEmpty()) {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(1)
-                            }
-                        }
-                    },
-                )
-                1 -> CustomButton(
-                    labelIdStringRes = R.string.sign_up,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-                    onClick = onClickSignup
-                )
-            }
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        when(pagerState.currentPage){
-            0 -> Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 32.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.already_have_account),
-                    color = black37,
-                    style = Typography.displaySmall,
-                    textAlign = TextAlign.Center
-                )
-                TextButton(onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
+                0 -> Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 32.dp)
+                ) {
                     Text(
-                        text = stringResource(R.string.log_in),
-                        color = primary100,
-                        style = Typography.displayLarge,
-                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.already_have_account),
+                        color = black37,
+                        style = Typography.displaySmall,
+                        textAlign = TextAlign.Center
                     )
+                    TextButton(onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
+                        Text(
+                            text = stringResource(R.string.log_in),
+                            color = primary100,
+                            style = Typography.displayLarge,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
                 }
             }
         }
