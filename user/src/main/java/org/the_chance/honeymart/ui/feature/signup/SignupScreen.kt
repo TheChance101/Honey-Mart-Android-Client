@@ -54,7 +54,7 @@ fun SignupScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.emailState){
+    LaunchedEffect(key1 = state.emailState, key2 = state.fullNameState){
         if (state.emailState == ValidationState.INVALID_EMAIL
             || state.fullNameState == ValidationState.INVALID_FULL_NAME){
             Toast.makeText(context,"User name or email already exist",Toast.LENGTH_SHORT).show()

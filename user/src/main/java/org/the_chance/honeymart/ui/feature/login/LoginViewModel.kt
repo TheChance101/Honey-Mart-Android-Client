@@ -60,7 +60,9 @@ class LoginViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                error = error
+                error = error,
+                emailState = ValidationState.INVALID_EMAIL,
+                passwordState = ValidationState.INVALID_PASSWORD
             )
         }
     }

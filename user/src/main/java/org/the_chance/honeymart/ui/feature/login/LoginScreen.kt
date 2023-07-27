@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +48,8 @@ fun LoginScreen(
 
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
 
     LaunchedEffect(key1 = state.isLogin){
         if (state.isLogin){
@@ -65,6 +69,13 @@ fun LoginScreen(
             }
             view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
             view.findNavController().navigate(action)
+        }
+    }
+
+    LaunchedEffect(key1 = state.emailState, key2 = state.passwordState){
+        if (state.emailState == ValidationState.INVALID_EMAIL
+            || state.passwordState == ValidationState.INVALID_PASSWORD){
+            Toast.makeText(context,"Email or password not exist", Toast.LENGTH_SHORT).show()
         }
     }
 
