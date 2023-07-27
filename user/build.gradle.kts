@@ -95,4 +95,12 @@ dependencies {
 
     // Compose Material
     implementation("androidx.compose.material:material:1.4.3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//    debugImplementati on("androidx.compose.ui:ui-tooling:1.4.3")
+    //lottie dependency
+    implementation ("com.airbnb.android:lottie:6.0.0")
+    implementation("com.airbnb.android:lottie-compose:6.0.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+
+
 }

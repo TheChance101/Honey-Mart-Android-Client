@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.modifier.overlayBottomToTop
@@ -27,20 +29,21 @@ fun ItemFavorite(
     name: String,
     price: String,
     description: String,
-    onClick: () -> Unit,
+    onClickProduct: () -> Unit,
+    onClickFavoriteIcon :() ->Unit
 ) {
 
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(MaterialTheme.dimens.heightItemFavorite)
-            .clickable(onClick = onClick), shape = MaterialTheme.shapes.medium
+            .clickable(onClick = { onClickProduct() }), shape = MaterialTheme.shapes.medium
     ) {
         Box(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                imageUrlMarket, modifier = Modifier.overlayBottomToTop()
+                imageUrlMarket, modifier = Modifier.overlayBottomToTop(),
             )
             Column(
                 Modifier
@@ -53,8 +56,9 @@ fun ItemFavorite(
                     modifier = modifier.align(Alignment.End),
                     idIconDrawableRes = R.drawable.icon_favorite_selected,
                     background = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ) {}
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    onClick = onClickFavoriteIcon
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     name,
@@ -85,7 +89,7 @@ private fun ItemFavoritePreview() {
             imageUrlMarket = "https://m.media-amazon.com/images/I/51mmrjhqOqL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
             name = "Sofa",
             price = "30,000\$",
-            description = "Secondary text",
+            description = "Secondary text", onClickProduct = {}
         ) {}
     }
 }
