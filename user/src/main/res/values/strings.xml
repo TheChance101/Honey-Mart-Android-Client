@@ -3,4 +3,5 @@
     <string name="discover_markets_now">Discover Markets Now</string>
     <string name="order_now">order Now</string>
     <string name="you_re_delete_this_product_are_you_sure">" you’re delete this product....\nAre you sure?"</string>
+    <string name="content_desc_of_placeholder_image">PlaceHolder Image</string>
 </resources>
