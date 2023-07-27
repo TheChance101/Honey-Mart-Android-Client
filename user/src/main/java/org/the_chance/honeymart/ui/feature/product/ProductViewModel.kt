@@ -116,6 +116,19 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
+        if(products.isEmpty()){
+            _state.update {
+                it.copy(
+                    isEmptyProducts = true
+                )
+            }
+        }else{
+            _state.update {
+                it.copy(
+                    isEmptyProducts = false
+                )
+            }
+        }
         getWishListProducts(products)
     }
 

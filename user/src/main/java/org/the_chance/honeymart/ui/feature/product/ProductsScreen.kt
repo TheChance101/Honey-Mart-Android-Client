@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honymart.ui.composables.EmptyProductScaffold
 import org.the_chance.honymart.ui.composables.ErrorScaffold
 import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
 import org.the_chance.honymart.ui.composables.ProductCard
@@ -57,36 +58,40 @@ private fun ProductsContent(
                 ) {
                     items(state.categories.size) { index ->
                         val category = state.categories[index]
-                            SideBarItem(
-                                icon = R.drawable.ic_bed,
-                                categoryName = category.categoryName,
-                                isSelected = category.isCategorySelected,
-                                onClick = {
-                                    categoryProductInteractionListener.onClickCategory(category.categoryId)
-                                }
-                            )
-                    }
-                }
-                LazyColumn(
-                    contentPadding = PaddingValues(top = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.products.size) { index ->
-                        val product = state.products[index]
-                        ProductCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            imageUrl = product.productImages.firstOrNull() ?: "",
-                            productName = product.productName,
-                            productPrice = product.productPrice.toString(),
-                            secondaryText = product.productDescription,
-                            isFavoriteIconClicked = product.isFavorite,
-                            onClickCard = {
-                                productInteractionListener.onClickProduct(product.productId)
-                            },
-                            onClickFavorite = {
-                                productInteractionListener.onClickFavIcon(product.productId)
+                        SideBarItem(
+                            icon = R.drawable.ic_bed,
+                            categoryName = category.categoryName,
+                            isSelected = category.isCategorySelected,
+                            onClick = {
+                                categoryProductInteractionListener.onClickCategory(category.categoryId)
                             }
                         )
+                    }
+                }
+                if (state.isEmptyProducts) {
+                    EmptyProductScaffold()
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(top = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.products.size) { index ->
+                            val product = state.products[index]
+                            ProductCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                imageUrl = product.productImages.firstOrNull() ?: "",
+                                productName = product.productName,
+                                productPrice = product.productPrice.toString(),
+                                secondaryText = product.productDescription,
+                                isFavoriteIconClicked = product.isFavorite,
+                                onClickCard = {
+                                    productInteractionListener.onClickProduct(product.productId)
+                                },
+                                onClickFavorite = {
+                                    productInteractionListener.onClickFavIcon(product.productId)
+                                }
+                            )
+                        }
                     }
                 }
             }

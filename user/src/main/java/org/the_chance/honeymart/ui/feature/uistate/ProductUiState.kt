@@ -10,6 +10,7 @@ data class ProductsUiState(
     val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
+    val isEmptyProducts : Boolean = false,
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L
 )
