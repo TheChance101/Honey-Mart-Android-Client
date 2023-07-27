@@ -64,16 +64,10 @@ fun OrdersScreen(
             LoadingAnimation()
         }
     }
-    AnimatedVisibility(
-        visible = !state.isLoading,
-        enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
-        exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
-    ) {
         OrdersContent(
             state = state,
             ordersInteractionsListener = viewModel
         )
-    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -109,80 +103,86 @@ fun OrdersContent(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
+        AnimatedVisibility(
+            visible = !state.isLoading,
+            enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
         ) {
-            itemsIndexed(
-                items = state.orders,
-            ) { index, orderItem ->
-                // Log.d("Mohamed", "$index.toString() ##### ${orderItem}")
-                var showDialog by remember { mutableStateOf(false) }
-                val dismissState = rememberDismissState()
-                val updatedDismissState by rememberUpdatedState(dismissState)
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                itemsIndexed(
+                    items = state.orders,
+                ) { index, orderItem ->
+                    // Log.d("Mohamed", "$index.toString() ##### ${orderItem}")
+                    var showDialog by remember { mutableStateOf(false) }
+                    val dismissState = rememberDismissState()
+                    val updatedDismissState by rememberUpdatedState(dismissState)
 
-                SwipeToDismiss(
-                    state = dismissState,
-                    background = { SwipeBackground(dismissState = dismissState) },
-                    directions = setOf(DismissDirection.EndToStart),
-                ) {
-                    ItemOrder(
-                        imageUrl = orderItem.imageUrl!!,
-                        orderId = orderItem.orderId!!,
-                        marketName = orderItem.marketName!!,
-                        quantity = orderItem.quantity!!,
-                        price = orderItem.totalPrice!!,
-                        onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
-                    )
-                }
-                LaunchedEffect(showDialog) {
-                    if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                        dismissState.reset()
+                    SwipeToDismiss(
+                        state = dismissState,
+                        background = { SwipeBackground(dismissState = dismissState) },
+                        directions = setOf(DismissDirection.EndToStart),
+                    ) {
+                        ItemOrder(
+                            imageUrl = orderItem.imageUrl!!,
+                            orderId = orderItem.orderId!!,
+                            marketName = orderItem.marketName!!,
+                            quantity = orderItem.quantity!!,
+                            price = orderItem.totalPrice!!,
+                            onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
+                        )
                     }
-                }
-                LaunchedEffect(updatedDismissState.dismissDirection) {
-                    if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                        showDialog = true
-                    }
-                }
-                if (showDialog) {
-                    val textOrderStates = when (state.orderStates) {
-                        OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                        else -> {
-                            stringResource(id = R.string.order_dialog_Delete_Text)
+                    LaunchedEffect(showDialog) {
+                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            dismissState.reset()
                         }
                     }
-
-                    val buttonOrderStates = when (state.orderStates) {
-                        OrderStates.PROCESSING -> OrderStates.CANCELED.state
-                        else -> {
-                            OrderStates.DELETE.state
+                    LaunchedEffect(updatedDismissState.dismissDirection) {
+                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            showDialog = true
                         }
                     }
-                    CustomAlertDialog(
-                        message = textOrderStates,
-                        onConfirm = {
-                            ordersInteractionsListener.onClickConfirmOrder(
-                                index.toLong(),
-                                buttonOrderStates
-                            )
-                            showDialog = false
-                        },
-                        onCancel = { showDialog = false },
-                        onDismissRequest = { showDialog = false }
-                    )
+                    if (showDialog) {
+                        val textOrderStates = when (state.orderStates) {
+                            OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                            else -> {
+                                stringResource(id = R.string.order_dialog_Delete_Text)
+                            }
+                        }
+
+                        val buttonOrderStates = when (state.orderStates) {
+                            OrderStates.PROCESSING -> OrderStates.CANCELED.state
+                            else -> {
+                                OrderStates.DELETE.state
+                            }
+                        }
+                        CustomAlertDialog(
+                            message = textOrderStates,
+                            onConfirm = {
+                                ordersInteractionsListener.onClickConfirmOrder(
+                                    index.toLong(),
+                                    buttonOrderStates
+                                )
+                                showDialog = false
+                            },
+                            onCancel = { showDialog = false },
+                            onDismissRequest = { showDialog = false }
+                        )
+                    }
                 }
             }
-        }
-        if (state.orders.isEmpty()) {
-            PlaceholderItem(
-                modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-                image = painterResource(id = R.drawable.placeholder_order),
-                title = stringResource(R.string.placeholder_title),
-                subtitle = stringResource(R.string.placeholder_subtitle),
-                onClickDiscoverMarkets = { ordersInteractionsListener.onClickDiscoverMarkets() }
-            )
+            if (state.orders.isEmpty()) {
+                PlaceholderItem(
+                    modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
+                    image = painterResource(id = R.drawable.placeholder_order),
+                    title = stringResource(R.string.placeholder_title),
+                    subtitle = stringResource(R.string.placeholder_subtitle),
+                    onClickDiscoverMarkets = { ordersInteractionsListener.onClickDiscoverMarkets() }
+                )
+            }
         }
     }
 }
