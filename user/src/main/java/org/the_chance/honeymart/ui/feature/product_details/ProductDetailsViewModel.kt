@@ -102,13 +102,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(image = url) }
     }
 
-    fun increaseProductCount() {
+    override fun increaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity >= 100) 100 else currentQuantity + 1
         _state.update { it.copy(quantity = newQuantity) }
     }
 
-    fun decreaseProductCount() {
+    override fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity > 1) currentQuantity - 1 else 1
         _state.update { it.copy(quantity = newQuantity) }
@@ -118,7 +118,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     // region Cart
 
-    fun addProductToCart(productId: Long, count: Int) {
+    override fun addProductToCart(productId: Long, count: Int) {
         _state.update {
             it.copy(
                 isAddToCartLoading = true,

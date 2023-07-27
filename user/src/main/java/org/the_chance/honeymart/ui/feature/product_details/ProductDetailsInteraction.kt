@@ -4,4 +4,10 @@ interface ProductDetailsInteraction {
     fun onClickFavorite(idProduct: Long)
     fun onClickSmallImage(url: String)
 
+    fun increaseProductCount()
+    fun decreaseProductCount()
+
+    fun addProductToCart(productId: Long, count: Int)
+
+
 }
