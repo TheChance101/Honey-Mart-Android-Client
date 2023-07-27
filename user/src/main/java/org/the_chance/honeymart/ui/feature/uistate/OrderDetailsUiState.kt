@@ -17,7 +17,9 @@ data class OrderParentDetailsUiState(
     val totalPrice: Double? = 0.0,
     val date: String? = "",
     val state: Int? = 1,
-)
+){
+    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
+}
 
 data class OrderDetailsProductUiState(
     val id: Long? = 0L,

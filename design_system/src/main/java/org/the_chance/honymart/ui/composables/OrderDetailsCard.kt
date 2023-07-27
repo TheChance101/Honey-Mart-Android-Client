@@ -32,14 +32,15 @@ fun OrderDetailsCard(
     orderName: String,
     orderPrice: String,
     orderCount: String,
-    onClickCard: () -> Unit = {}
+    orderId : Long,
+    onClickCard: (orderId: Long) -> Unit = {},
 ) {
     HoneyMartTheme {
         Box(
             modifier = Modifier
                 .size(width = 160.dp, height = 192.dp)
                 .clip(MaterialTheme.shapes.medium)
-                .clickable { onClickCard() }
+                .clickable { onClickCard(orderId) }
         ) {
             ImageNetwork(
                 imageUrl = imageUrl,
@@ -109,6 +110,7 @@ fun OrderDetailsCardPreview() {
         imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
         orderName = "To Kill a Mockingbird",
         orderPrice = "30,000",
-        orderCount = "3"
+        orderCount = "3",
+        orderId =0,
     )
 }
