@@ -14,19 +14,20 @@ data class OrderDetailsUiState(
 )
 
 data class OrderParentDetailsUiState(
-    val totalPrice: Double? = 0.0,
-    val date: String? = "",
-    val state: Int? = 1,
-){
-    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
-}
+    val totalPrice: Double = 0.0,
+    val date: String = "",
+    val state: Int = 1,
+)
+// {
+//    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
+//}
 
 data class OrderDetailsProductUiState(
-    val id: Long? = 0L,
-    val name: String? = "",
-    val count: Int? = 0,
-    val price: Double? = 0.0,
-    val images: List<String>? = emptyList(),
+    val id: Long = 0L,
+    val name: String = "",
+    val count: Int = 0,
+    val price: Double = 0.0,
+    val images: List<String> = emptyList(),
 )
 
 fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
