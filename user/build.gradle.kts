@@ -23,6 +23,15 @@ android {
         testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
     }
 
+    buildFeatures{
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
+    }
+
+
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("debug")
@@ -49,6 +58,32 @@ android {
 }
 
 dependencies {
+
+    val composeBom = platform("androidx.compose:compose-bom:2023.06.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    // Choose one of the following:
+    // Material Design 3
+    implementation("androidx.compose.material3:material3")
+
+    // such as input and measurement/layout
+    implementation("androidx.compose.ui:ui")
+
+    // Android Studio Preview support
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    //hiltViewModel
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    //lottie animation
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+
     implementation(project(BuildModules.DESIGN_SYSTEM))
     implementation(project(BuildModules.CORE_DOMAIN))
     implementation(project(BuildModules.CORE_DATA))

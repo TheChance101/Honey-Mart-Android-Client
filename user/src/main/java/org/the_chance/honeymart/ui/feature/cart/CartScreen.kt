@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -19,46 +18,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartItem
-import org.the_chance.honeymart.ui.feature.cart.Composeables.CartPlaceholder
 import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
 import org.the_chance.honeymart.ui.feature.cart.Composeables.NoConnectionLayout
 import org.the_chance.honeymart.ui.feature.cart.Composeables.SwipeDelete
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun cartScreen(
-    viewModel: CartViewModel = hiltViewModel()
+    viewModel: CartViewModel = hiltViewModel(),
+    onClickButtonOrderDetails: () -> Unit ={},
+    onClickButtonDiscover : () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
 
     when {
         state.isLoading -> Loading()
         state.isError -> NoConnectionLayout()
-        state.products.isEmpty() -> CartPlaceholder()
-        else -> BottomSheetCompleteOrderContent(
+        state.products.isEmpty() -> BottomSheetCompleteOrderContent(
             state = state,
-            onClickMinusOrder = {
-                viewModel.onClickMinusCountProductInCart(it!!)
+            onClick = onClickButtonOrderDetails,
+            onClickButtonDiscover = onClickButtonDiscover
+        )
+        else -> CartContent(
+            state = state,
+            onClickPlusOrder = {
+                viewModel.onClickAddCountProductInCart(it ?: 0)
             },
-            onClickPlusOrder ={
-                viewModel.onClickAddCountProductInCart(it!!)
+            onClickMinusOrder = {
+                viewModel.onClickMinusCountProductInCart(it ?: 0)
             }
         )
-
-//            CartContent(
-//            state = state,
-//            onClickPlusOrder = {
-//                viewModel.onClickAddCountProductInCart(it!!)
-//            },
-//            onClickMinusOrder = {
-//                viewModel.onClickMinusCountProductInCart(it!!)
-//            }
-//        )
     }
 }
 
@@ -66,9 +59,8 @@ fun cartScreen(
 @Composable
 fun CartContent(
     state: CartUiState,
-    sheetState: SheetState? = null,
-    onClickPlusOrder: (productId: Long?) -> Unit,
-    onClickMinusOrder: (productId: Long?) -> Unit
+    onClickPlusOrder: (Long?) -> Unit = {},
+    onClickMinusOrder: (Long?) -> Unit = {}
 ) {
     Box {
         Column(
@@ -99,8 +91,7 @@ fun CartContent(
                 }
             }
             CartCardView(
-                totalPrice = state.total.toString(),
-                sheetState = sheetState!!
+                totalPrice = state.total.toString()
             )
 
         }

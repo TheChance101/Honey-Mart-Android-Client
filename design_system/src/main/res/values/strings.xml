@@ -66,6 +66,7 @@
     <string name="order_now">Order Now</string>
     <string name="_300000">300000$</string>
     <string name="order_complete">Order complete! \n Thank you for shopping with us</string>
+    <string name="thank_you_for_shopping_with_us">Thank you for shopping with us</string>
     <string name="success_sign_up_description">High five! You\'ve joined our market app. Get ready for an amazing shopping experience</string>
     <string name="dialog_title">Do you want Exit ?</string>
     <string name="confirm">confirm</string>

@@ -24,18 +24,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberAsyncImagePainter
+import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.user.R
 
-@Preview
 @Composable
-fun CartItem() {
+fun CartItem(
+    product: CartListProductUiState,
+    onClickMinus: (Long?) -> Unit = {},
+    onClickPlus: (Long?) -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,7 +54,7 @@ fun CartItem() {
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
 
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = rememberAsyncImagePainter(model = product.productImage!![0]),
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentHeight()
@@ -65,7 +68,7 @@ fun CartItem() {
             )
 
             Text(
-                text = "ArmChair",
+                text = product.productName ?: "",
                 color = black87,
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge,
                 modifier = Modifier.constrainAs(textOrderNumber) {
@@ -76,7 +79,7 @@ fun CartItem() {
             )
 
             Text(
-                text = "10000$",
+                text = "${product.productPrice}$",
                 color = primary100,
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge,
 
@@ -102,7 +105,7 @@ fun CartItem() {
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
-                    },
+                    }.clickable { onClickMinus(product.productId) },
                 colors = CardDefaults.cardColors(containerColor = Color.Transparent)
             ) {
                 Image(
@@ -114,7 +117,7 @@ fun CartItem() {
                 )
             }
             Text(
-                text = "1",
+                text = product.productCount.toString(),
                 style = org.the_chance.honymart.ui.theme.Typography.displayMedium,
                 color = black60,
                 modifier = Modifier.constrainAs(textViewNumberOfItems) {
@@ -134,7 +137,7 @@ fun CartItem() {
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end, margin = 16.dp)
-                    },
+                    }.clickable { onClickPlus(product.productId) },
                 colors = CardDefaults.cardColors(containerColor = primary100)
             ) {
                 Icon(
