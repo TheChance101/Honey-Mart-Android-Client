@@ -86,5 +86,6 @@
 
     <string name="order">Order #%1$s </string>
     <string name="items">%1$s items</string>
+    <string name="try_again">Try Again</string>
 
 </resources>
