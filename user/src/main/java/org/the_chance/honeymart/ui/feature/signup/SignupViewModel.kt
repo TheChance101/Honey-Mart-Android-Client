@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -14,14 +13,11 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.login.LoginFragmentArgs
-import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val createAccount: AddUserUseCase,
     private val loginUser: LoginUserUseCase,
     private val validateFullName: ValidateFullNameUseCase,
@@ -33,7 +29,6 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private lateinit var args: SignupFragmentArgs
-    //private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
 
     fun saveArgs(args: SignupFragmentArgs){
         args.also { this.args = it }
@@ -45,7 +40,7 @@ class SignupViewModel @Inject constructor(
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.trim().toString())
-        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.trim().toString()) }
+        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
     }
 
     fun onEmailInputChange(email: CharSequence) {
@@ -62,7 +57,10 @@ class SignupViewModel @Inject constructor(
         val passwordState =
             validateConfirmPassword(state.value.password, confirmPassword.toString())
         if (!passwordState) {
-            _state.update { it.copy(confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD) }
+            _state.update { it.copy(
+                confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD,
+                confirmPassword = confirmPassword.toString()
+            ) }
         } else {
             _state.update {
                 it.copy(
