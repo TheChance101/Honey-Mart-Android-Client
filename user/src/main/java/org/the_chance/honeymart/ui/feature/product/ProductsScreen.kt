@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
+import org.the_chance.honymart.ui.composables.ErrorScaffold
 import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
 import org.the_chance.honymart.ui.composables.ProductCard
 import org.the_chance.honymart.ui.composables.SideBarItem
@@ -41,7 +41,7 @@ private fun ProductsContent(
     if (state.isLoadingCategory || state.isLoadingProduct) {
         LottieLoadingAnimation()
     } else if (state.isError) {
-        Text(text = "Error")
+        ErrorScaffold()
     } else {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(

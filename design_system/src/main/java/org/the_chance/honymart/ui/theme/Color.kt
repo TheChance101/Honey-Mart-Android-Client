@@ -12,7 +12,7 @@ val black8 = Color(0x14121212)
 val black16 = Color(0x29121212)
 val black37 = Color(0x5E121212)
 val black55 = Color(0x8C121212)
-val black60 = Color(99121212)
+val black60 = Color(0x99000000)
 val black87 = Color(0xDE121212)
 
 val white = Color(0xFFFFFFFF)
