@@ -83,9 +83,8 @@
     <string name="try_again_text">Try Again</string>
     <string name="no_market">There is no market here!!</string>
     <string name="no_categories">There is no category here!!</string>
+
     <string name="order">Order #%1$s </string>
     <string name="items">%1$s items</string>
-    <string name="placeholder_title">You Don\'t have any orders!!</string>
-    <string name="placeholder_subtitle">It\'s a catastrophe! Let\'s fix it by adding items that catch your eye!</string>
-    <string name="discover_market_now">Discover Market Now</string>
+
 </resources>
