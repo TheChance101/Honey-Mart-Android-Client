@@ -25,10 +25,6 @@ class WishListViewModel @javax.inject.Inject constructor(
     private var job: Job? = null
     override val TAG: String = this::class.java.simpleName
 
-    init {
-        getWishListProducts()
-    }
-
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
@@ -75,7 +71,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
     }
 
-   fun getWishListProducts() {
+   override fun getWishListProducts() {
        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllWishListUseCase().map { it.toWishListProductUiState() } },
@@ -95,7 +91,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
     }
 
-    fun onClickDiscoverButton() {
+    override fun onClickDiscoverButton() {
         viewModelScope.launch {
             _effect.emit(EventHandler(WishListUiEffect.ClickDiscoverEffect))
         }

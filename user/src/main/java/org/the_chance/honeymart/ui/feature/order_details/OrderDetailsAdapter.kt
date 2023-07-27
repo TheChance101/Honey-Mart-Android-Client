@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.orderdetails
+package org.the_chance.honeymart.ui.feature.order_details
 
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsProductUiState
 import org.the_chance.ui.BaseAdapter

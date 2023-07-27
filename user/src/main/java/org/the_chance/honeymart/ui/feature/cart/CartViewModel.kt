@@ -134,7 +134,7 @@ class CartViewModel @Inject constructor(
         )
     }
  private fun onCheckOutSuccess(message: String) {
-     _state.update { it.copy(isLoading = false, products = emptyList()) }
+     _state.update { it.copy(isLoading = false, products = emptyList(), bottomSheetIsDisplayed = true) }
      viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
  }
 
@@ -177,5 +177,8 @@ class CartViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
+    fun changeBottomSheetValue(){
+        _state.update { it.copy( bottomSheetIsDisplayed = false) }
+    }
 
 }

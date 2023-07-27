@@ -61,6 +61,8 @@ class ProductsFragment : Fragment(){
                 showSnackBar(getString(org.the_chance.design_system.R.string.removedFromWishListSuccessMessage))
 
             }
+
+            else -> {}
         }
     }
 
