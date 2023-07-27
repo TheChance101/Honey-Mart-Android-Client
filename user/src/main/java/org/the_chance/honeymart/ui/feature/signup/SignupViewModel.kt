@@ -88,7 +88,9 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, error = error,
+        fullNameState = ValidationState.INVALID_FULL_NAME,
+        emailState = ValidationState.INVALID_EMAIL) }
     }
 
     private fun login(email: String, password: String) {

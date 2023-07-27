@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +52,14 @@ fun SignupScreen(
     viewModel: SignupViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = state.emailState){
+        if (state.emailState == ValidationState.INVALID_EMAIL
+            || state.fullNameState == ValidationState.INVALID_FULL_NAME){
+            Toast.makeText(context,"User name or email already exist",Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LaunchedEffect(key1 = state.isLogin ){
         if (state.isLogin == ValidationState.SUCCESS){
