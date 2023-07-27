@@ -39,64 +39,64 @@ private fun ProductsContent(
     productInteractionListener: ProductInteractionListener,
     categoryProductInteractionListener: CategoryProductInteractionListener
 ) {
-    if (state.isLoadingCategory || state.isLoadingProduct) {
-        LottieLoadingAnimation()
-    } else if (state.isError) {
-        ErrorScaffold()
-    } else {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-                    .padding(
-                        start = MaterialTheme.dimens.space16,
-                        end = MaterialTheme.dimens.space16
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
-            ) {
-                LazyColumn(
-                    contentPadding = PaddingValues(
-                        top = MaterialTheme.dimens.space24,
-                        end = MaterialTheme.dimens.space12
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+    when {
+        state.isLoadingProduct || state.isLoadingCategory -> LottieLoadingAnimation()
+        state.isError -> ErrorScaffold()
+        else -> {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .padding(
+                            start = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16
+                        ),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
                 ) {
-                    items(state.categories.size) { index ->
-                        val category = state.categories[index]
-                        SideBarItem(
-                            icon = R.drawable.ic_bed,
-                            categoryName = category.categoryName,
-                            isSelected = category.isCategorySelected,
-                            onClick = {
-                                categoryProductInteractionListener.onClickCategory(category.categoryId)
-                            }
-                        )
-                    }
-                }
-                if (state.isEmptyProducts) {
-                    EmptyProductScaffold()
-                } else {
                     LazyColumn(
-                        contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                        contentPadding = PaddingValues(
+                            top = MaterialTheme.dimens.space24,
+                            end = MaterialTheme.dimens.space12
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                     ) {
-                        items(state.products.size) { index ->
-                            val product = state.products[index]
-                            ProductCard(
-                                modifier = Modifier.fillMaxWidth(),
-                                imageUrl = product.productImages.firstOrNull() ?: "",
-                                productName = product.productName,
-                                productPrice = product.productPrice.toString(),
-                                secondaryText = product.productDescription,
-                                isFavoriteIconClicked = product.isFavorite,
-                                onClickCard = {
-                                    productInteractionListener.onClickProduct(product.productId)
-                                },
-                                onClickFavorite = {
-                                    productInteractionListener.onClickFavIcon(product.productId)
+                        items(state.categories.size) { index ->
+                            val category = state.categories[index]
+                            SideBarItem(
+                                icon = R.drawable.ic_bed,
+                                categoryName = category.categoryName,
+                                isSelected = category.isCategorySelected,
+                                onClick = {
+                                    categoryProductInteractionListener.onClickCategory(category.categoryId)
                                 }
                             )
+                        }
+                    }
+                    if (state.isEmptyProducts) {
+                        EmptyProductScaffold()
+                    } else {
+                        LazyColumn(
+                            contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                        ) {
+                            items(state.products.size) { index ->
+                                val product = state.products[index]
+                                ProductCard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    imageUrl = product.productImages.firstOrNull() ?: "",
+                                    productName = product.productName,
+                                    productPrice = product.productPrice.toString(),
+                                    secondaryText = product.productDescription,
+                                    isFavoriteIconClicked = product.isFavorite,
+                                    onClickCard = {
+                                        productInteractionListener.onClickProduct(product.productId)
+                                    },
+                                    onClickFavorite = {
+                                        productInteractionListener.onClickFavIcon(product.productId)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -104,5 +104,6 @@ private fun ProductsContent(
         }
     }
 }
+
 
 
