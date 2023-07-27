@@ -16,6 +16,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.black55
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -39,7 +40,7 @@ fun PlaceHolderWishList(
             text = "Your Wish List is empty!! ",
             modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
             style = Typography.bodyMedium,
-            color = black60,
+            color = black55,
             textAlign = TextAlign.Center
         )
         Text(

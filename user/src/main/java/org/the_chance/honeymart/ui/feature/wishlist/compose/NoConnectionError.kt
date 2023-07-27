@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,11 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.black55
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -37,19 +38,22 @@ fun NoConnectionError(
             painter = painterResource(
                 id = R.drawable.no_connection_placeholder
             ),
-            contentDescription = " "
+            contentDescription = " ",
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
         )
         Text(
             text = "Oops, No connection!!!",
             style = Typography.bodyMedium,
-            color = black60,
+            color = black55,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space8)
-
         )
         CustomButton(
             labelIdStringRes = R.string.try_again,
-            onClick = getWishListProducts
+            onClick = getWishListProducts,
+            modifier = Modifier.padding(top = MaterialTheme.dimens.space16).wrapContentWidth()
+
         )
     }
 }

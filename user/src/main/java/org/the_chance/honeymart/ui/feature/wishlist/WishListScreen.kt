@@ -31,20 +31,21 @@ fun WishListScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     when {
-//        state.isLoading -> LoadingAnimation()
-        state.isError -> NoConnectionError{viewModel.getWishListProducts()}
+        state.products.isNotEmpty() -> {
+            LaunchedEffect(lifecycleOwner) {
+                viewModel.getWishListProducts()
+            }
+            WishListContent(
+                state = state,
+                onClickFavoriteIcon = viewModel::onClickFavoriteIcon,
+                onClickProduct = viewModel::onClickProduct
+            )
+        }
+        state.isLoading -> LoadingAnimation()
+        state.isError -> NoConnectionError { viewModel.getWishListProducts() }
         state.products.isEmpty() -> PlaceHolderWishList { viewModel.onClickDiscoverButton() }
-        else -> {LaunchedEffect(lifecycleOwner) {
-            viewModel.getWishListProducts()
-        }
 
-        }
     }
-    WishListContent(
-        state = state,
-        onClickFavoriteIcon = viewModel::onClickFavoriteIcon,
-        onClickProduct = viewModel::onClickProduct
-    )
 
 }
 
@@ -55,9 +56,9 @@ private fun WishListContent(
     onClickProduct: (Long) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        if(state.isLoading){
-            LoadingAnimation()
-        }
+//        if(state.isLoading){
+//            LoadingAnimation()
+//        }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 160.dp),
             modifier = Modifier.fillMaxSize(),
