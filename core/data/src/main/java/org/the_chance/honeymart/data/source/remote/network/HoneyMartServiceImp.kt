@@ -3,6 +3,7 @@ package org.the_chance.honeymart.data.source.remote.network
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
+import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -10,6 +11,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Parameters
+import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
@@ -36,12 +38,9 @@ class HoneyMartServiceImp @Inject constructor(
     }
 
     override suspend fun addMarket(marketName: String): BaseResponse<MarketDto> =
-        wrap(client.submitForm(
-            url = "/markets",
-            formParameters = Parameters.build {
-                append("marketName", marketName)
-            }
-        ))
+        wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
+            append("marketName", marketName)
+        }))
 
     override suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto> =
         wrap(client.put("/markets/$marketId") {
@@ -56,14 +55,12 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun addCategory(
         marketID: Long, name: String, imageId: Int,
-    ): BaseResponse<CategoryDto> = wrap(client.submitForm(
-        url = "/category",
-        formParameters = Parameters.build {
+    ): BaseResponse<CategoryDto> =
+        wrap(client.submitForm(url = "/category", formParameters = Parameters.build {
             append("marketID", marketID.toString())
             append("imageId", imageId.toString())
             append("name", name)
-        }
-    ))
+        }))
 
     override suspend fun updateCategory(
         id: Long, marketID: Long, name: String, imageId: Int,
@@ -88,16 +85,13 @@ class HoneyMartServiceImp @Inject constructor(
         price: Double,
         description: String,
         categoriesId: List<Long>,
-    ): BaseResponse<ProductDto> = wrap(client.submitForm(
-        url = "/product",
-        formParameters = Parameters.build {
+    ): BaseResponse<ProductDto> =
+        wrap(client.submitForm(url = "/product", formParameters = Parameters.build {
             append("price", price.toString())
             append("categoriesId", categoriesId.toString())
             append("description", description)
             append("name", name)
-        }
-    )
-    )
+        }))
 
     override suspend fun updateProduct(
         productId: Long,
@@ -121,13 +115,10 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.delete("/product/$productId"))
 
     override suspend fun loginUser(email: String, password: String): BaseResponse<String> =
-        wrap(client.submitForm(
-            url = "/user/login",
-            formParameters = Parameters.build {
-                append("email", email)
-                append("password", password)
-            }
-        ))
+        wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
         wrap(client.get("/wishList"))
@@ -136,21 +127,15 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.delete("/wishList/$productId"))
 
     override suspend fun addToWishList(productId: Long): BaseResponse<String> =
-        wrap(client.submitForm(
-            url = "/wishList",
-            formParameters = Parameters.build {
-                append("productId", productId.toString())
-            }
-        ))
+        wrap(client.submitForm(url = "/wishList", formParameters = Parameters.build {
+            append("productId", productId.toString())
+        }))
 
     override suspend fun addProductToCart(productId: Long, count: Long): BaseResponse<String> =
-        wrap(client.submitForm(
-            url = "/cart/addProduct",
-            formParameters = Parameters.build {
-                append("productId", productId.toString())
-                append("count", count.toString())
-            }
-        ))
+        wrap(client.submitForm(url = "/cart/addProduct", formParameters = Parameters.build {
+            append("productId", productId.toString())
+            append("count", count.toString())
+        }))
 
 
     override suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto> =
@@ -158,14 +143,12 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun addUser(
         fullName: String, password: String, email: String,
-    ): BaseResponse<String> = wrap(client.submitForm(
-        url = "/user/signup",
-        formParameters = Parameters.build {
+    ): BaseResponse<String> =
+        wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
             append("fullName", fullName)
             append("password", password)
             append("email", email)
-        }
-    ))
+        }))
 
 
     override suspend fun getAllOrders(orderState: Int): BaseResponse<List<OrderDto>> =
@@ -173,23 +156,28 @@ class HoneyMartServiceImp @Inject constructor(
             parameter("orderState", orderState)
         })
 
+
     @OptIn(InternalAPI::class)
-    override suspend fun updateOrderState(id: Long?, state: Int): BaseResponse<Boolean> =
-        wrap(client.put("/order/updateorder/$id") {
-            body = state
+    override suspend fun updateOrderState(id: Long?, state: Int): BaseResponse<Boolean> {
+        val url = "/order/$id"
+        val formData = Parameters.build {
+            append("state", "$state")
+        }
+        val response = wrap<BaseResponse<Boolean>>(client.put(url) {
+            contentType(io.ktor.http.ContentType.Application.Json)
+            body = FormDataContent(formData)
         })
+        return response
+    }
 
 
     override suspend fun getCart(): BaseResponse<CartDto> = wrap(client.get("/cart"))
 
     override suspend fun addToCart(productId: Long, count: Int): BaseResponse<String> =
-        wrap(client.submitForm(
-            url = "/cart/addProduct",
-            formParameters = Parameters.build {
-                append("productId", productId.toString())
-                append("count", count.toString())
-            }
-        ))
+        wrap(client.submitForm(url = "/cart/addProduct", formParameters = Parameters.build {
+            append("productId", productId.toString())
+            append("count", count.toString())
+        }))
 
     override suspend fun deleteFromCart(productId: Long): BaseResponse<String> =
         wrap(client.delete("/cart/$productId"))
