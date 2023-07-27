@@ -4,105 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.Text
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
-import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
-import org.the_chance.honeymart.util.AuthData
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.user.R
-import org.the_chance.user.databinding.FragmentLoginBinding
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-    override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_login
-    override val viewModel: LoginViewModel by viewModels()
+class LoginFragment : Fragment() {
     private lateinit var composeView: ComposeView
-   override fun setup() {
-         collectAction()
-     }
+    private val args : LoginFragmentArgs by navArgs()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?,
-//    ): View {
-//        return ComposeView(requireActivity()).also {
-//            composeView = it
-//        }
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        composeView.setContent {
-//            // You're in Compose world!
-//            HoneyMartTheme {
-//                Text(text = "Nour", fontSize = 50.sp)
-//            }
-//        }
-//    }
-
-    override fun onResume() {
-        super.onResume()
-        setWindowVisibility(
-            appBarVisibility = false,
-            bottomNavVisibility = false,
-            isTransparentStatusBar = false,
-            isInAuthScreens = true
-        )
-    }
-
-
-    private fun collectAction() {
-        collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { onEffect(it) }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireActivity()).also {
+            composeView = it
         }
     }
 
-    private fun onEffect(effect: AuthenticationUiEffect) {
-        when (effect) {
-            is AuthenticationUiEffect.ClickLoginEffect -> navigateToLogin(effect.authData)
-            is AuthenticationUiEffect.ClickSignUpEffect -> navigateToSignUp(effect.authData)
-        }
-    }
-
-    private fun navigateToLogin(authData: AuthData) {
-        val action = when (authData) {
-            is AuthData.Products -> {
-                ProductsFragmentDirections.actionGlobalProductsFragment(
-                    authData.categoryId,
-                    authData.marketId,
-                    authData.position
-                )
-            }
-
-            is AuthData.ProductDetails -> {
-                ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
-                    authData.productId
-                )
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        composeView.setContent {
+            HoneyMartTheme {
+                LoginScreen(this, args.authData, args)
             }
         }
-        changeNavGraphToMain().navigate(action)
-    }
-
-    private fun navigateToSignUp(authData: AuthData) {
-        val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment(authData)
-        findNavController().navigate(action)
-    }
-
-    private fun changeNavGraphToMain(): NavController {
-        val navController = findNavController()
-        navController.setGraph(R.navigation.main_nav_graph)
-        return navController
     }
 }
