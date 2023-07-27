@@ -1,8 +1,6 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,15 +21,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
@@ -39,7 +35,6 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderDetailsScreen(
@@ -65,7 +60,7 @@ private fun OrderDetailsContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             state = rememberLazyGridState(),
             content = {
-                items(state.products){itemOrderDetails ->
+                items(state.products) { itemOrderDetails ->
                     OrderDetailsCard(
                         imageUrl = itemOrderDetails.images!![0],
                         orderName = itemOrderDetails.name!!,
@@ -75,25 +70,22 @@ private fun OrderDetailsContent(
                 }
             }
         )
-        if(state.isProductsLoading && state.isDetailsLoading) {
-            Image(
-                painter = rememberAsyncImagePainter(model = org.the_chance.design_system.R.raw.loading),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize().align(Alignment.CenterHorizontally),
-            )
-        }
+
         Spacer(modifier = Modifier.weight(1f))
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .background(white)
-                .shadow(1.dp)
+                .shadow(0.5.dp)
                 .fillMaxWidth()
                 .padding(end = MaterialTheme.dimens.space16)
         ) {
-            Column(modifier = Modifier
-                .padding(
-                    horizontal = MaterialTheme.dimens.space16,
-                    vertical = MaterialTheme.dimens.space8)) {
+            Column(
+                modifier = Modifier
+                    .padding(
+                        horizontal = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8
+                    )
+            ) {
                 Text(
                     text = "${state.orderDetails.totalPrice}$",
                     color = black60,
@@ -107,10 +99,11 @@ private fun OrderDetailsContent(
             }
             Card(
                 shape = RoundedCornerShape(MaterialTheme.dimens.space24),
-                colors = CardDefaults.cardColors(white),
-                border = BorderStroke(0.dp, primary100) ,
+                colors = CardDefaults.cardColors(Color.Transparent),
+                border = BorderStroke(0.dp, primary100),
                 modifier = Modifier.padding(
-                    top = MaterialTheme.dimens.space16,),
+                    top = MaterialTheme.dimens.space16,
+                ),
 
                 ) {
                 Text(
@@ -122,15 +115,27 @@ private fun OrderDetailsContent(
                     modifier = Modifier
                         .padding(
                             vertical = MaterialTheme.dimens.space6,
-                            horizontal = MaterialTheme.dimens.space16),
+                            horizontal = MaterialTheme.dimens.space16
+                        ),
                 )
             }
         }
     }
+//    Box(modifier = Modifier) {
+//        if (state.isProductsLoading && state.isDetailsLoading) {
+//            Image(
+//                painter = rememberAsyncImagePainter(model = org.the_chance.design_system.R.raw.loading),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .align(Alignment.Center),
+//            )
+//        }
+//    }
 }
 
 @Preview
 @Composable
-fun PreviewOrderDetails(){
+fun PreviewOrderDetails() {
     OrderDetailsScreen()
 }
