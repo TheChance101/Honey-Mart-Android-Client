@@ -25,7 +25,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = primary100,
     onPrimary = darkText87,
     background = background,
-    onBackground = darkText60,
+    onBackground = darkBackground300,
 
     error = darkError
 
@@ -35,7 +35,7 @@ private val LightColorScheme = lightColorScheme(
     primary = primary100,
     onPrimary = white,
     background = background,
-    onBackground = black60,
+    onBackground = white,
 
 
     error = error

@@ -23,6 +23,7 @@ val white30 = Color(0xFFFAFAFA)
 val gray = Color(0xFFA7A7A7)
 
 val background = Color(0xFFFAFAFA)
+val backgroundNav = Color(0xFF333333)
 
 
 /* Dark Theme Color */
