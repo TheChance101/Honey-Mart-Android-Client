@@ -70,9 +70,9 @@ class ProductsFragment : Fragment(){
         val action = ProductsFragmentDirections.actionProductsFragmentToUserNavGraph(
             authData
         )
-        log(authData.categoryId)
+/*        log(authData.categoryId)
         log(authData.marketId)
-        log(authData.position)
+        log(authData.position)*/
         findNavController().navigate(action)
 
     }
