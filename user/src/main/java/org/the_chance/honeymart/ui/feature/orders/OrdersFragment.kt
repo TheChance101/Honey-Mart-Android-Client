@@ -1,18 +1,14 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import android.app.Dialog
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.activity.addCallback
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.ui.feature.uistate.OrderStates
-import org.the_chance.honeymart.util.Constant
-import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.user.R
 import org.the_chance.user.databinding.FragmentOrdersBinding
 
@@ -21,124 +17,25 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>() {
     override val TAG: String = this::class.simpleName.toString()
     override val layoutIdFragment = R.layout.fragment_orders
     override val viewModel: OrderViewModel by viewModels()
-    private val ordersAdapter: OrdersAdapter by lazy { OrdersAdapter(viewModel) }
-    private lateinit var swipe: SwipeToDeleteOrder
-    private lateinit var touchHelper: ItemTouchHelper
 
-    override fun setup() {
-        initAdapter()
-        handleOnBackPressed()
-        collectEffect()
-        attachSwipe(OrderStates.PROCESSING)
+    private val composeView: ComposeView by lazy {
+        ComposeView(requireActivity())
     }
 
-    private fun initAdapter() {
-        binding.recyclerOrder.adapter = ordersAdapter
-        setupScrollListenerForRecyclerView(binding.recyclerOrder)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return composeView
     }
 
-    private fun attachSwipe(orderState: OrderStates) {
-        swipe = object : SwipeToDeleteOrder(orderState) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder,
-            ) = true
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                //val position = binding.recyclerOrder.getChildAdapterPosition(viewHolder.itemView)
-               val position = viewHolder.absoluteAdapterPosition
-                when (orderState) {
-                    OrderStates.PROCESSING -> {
-                        showAlertOrderDialog(position) {
-                            viewModel.updateOrders(
-                                position.toLong(),
-                                Constant.ORDER_STATE_3
-                            )
-                        }
-                        ordersAdapter.notifyItemChanged(position)
-
-                    }
-
-                    OrderStates.DONE, OrderStates.CANCELED -> {
-                        showAlertOrderDialog(position) {
-                            viewModel.updateOrders(
-                                position.toLong(),
-                                Constant.ORDER_STATE_4
-                            )
-                        }
-                        ordersAdapter.notifyItemChanged(position)
-
-                    }
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        composeView.setContent {
+            HoneyMartTheme {
+                OrdersScreen()
             }
         }
-        if (::touchHelper.isInitialized) {
-            touchHelper.attachToRecyclerView(null)
-            touchHelper = ItemTouchHelper(swipe)
-            touchHelper.attachToRecyclerView(binding.recyclerOrder)
-        } else {
-            touchHelper = ItemTouchHelper(swipe)
-            touchHelper.attachToRecyclerView(binding.recyclerOrder)
-        }
-    }
-
-    private fun showAlertOrderDialog(position: Int,execute: () -> Unit) {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.layout_order_dialog)
-        dialog.setCancelable(false)
-        dialog.show()
-        val buttonSure = dialog.findViewById<Button>(R.id.button_sure)
-        val buttonCancel = dialog.findViewById<Button>(R.id.button_cancel)
-
-        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        buttonSure.setOnClickListener {
-         ordersAdapter.removeItem(position)
-            execute()
-            dialog.dismiss()
-        }
-
-        buttonCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-
-
-    private fun handleOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.markets_graph)
-        }
-    }
-
-    private fun collectEffect() {
-        collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { onEffect(it) }
-        }
-    }
-
-    private fun onEffect(effect: OrderUiEffect) {
-        when (effect) {
-            OrderUiEffect.UnAuthorizedUserEffect -> navigateToAuthenticate()
-            is OrderUiEffect.ClickDiscoverMarketsEffect -> navigateToMarkets()
-            is OrderUiEffect.ClickOrderEffect -> navigateToOrdersDetails(effect.orderId)
-            OrderUiEffect.ClickCanceled -> attachSwipe(OrderStates.CANCELED)
-            OrderUiEffect.ClickDone -> attachSwipe(OrderStates.DONE)
-            OrderUiEffect.ClickProcessing -> attachSwipe(OrderStates.PROCESSING)
-        }
-    }
-
-    private fun navigateToAuthenticate() {
-        //TODO
-    }
-
-    private fun navigateToMarkets() {
-        findNavController().navigate(R.id.markets_graph)
-    }
-
-    private fun navigateToOrdersDetails(orderId: Long) {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailsFragment(orderId)
-        findNavController().navigate(action)
     }
 }

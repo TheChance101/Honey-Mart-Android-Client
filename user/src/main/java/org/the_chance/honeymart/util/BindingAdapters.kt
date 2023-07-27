@@ -22,7 +22,7 @@ import com.google.android.material.textview.MaterialTextView
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.feature.uistate.OrderStates
+import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.ui.BaseAdapter
 
 @BindingAdapter(value = ["app:items"])
@@ -172,6 +172,8 @@ fun setOrderPlaceHolderText(view: TextView, orderStates: OrderStates) {
             view.context.getString(R.string.you_dont_have_any_completed_orders)
 
         OrderStates.CANCELED -> view.text =
+            view.context.getString(R.string.you_don_t_have_any_canceled_orders)
+        OrderStates.DELETE -> view.text =
             view.context.getString(R.string.you_don_t_have_any_canceled_orders)
     }
 }
