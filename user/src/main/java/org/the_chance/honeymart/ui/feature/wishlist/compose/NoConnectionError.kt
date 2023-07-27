@@ -17,12 +17,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun NoConnectionError() {
+fun NoConnectionError(
+    getWishListProducts: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,20 +39,22 @@ fun NoConnectionError() {
             ),
             contentDescription = " "
         )
-
         Text(
             text = "Oops, No connection!!!",
             style = Typography.bodyMedium,
             color = black60,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = MaterialTheme.dimens.space8)
+
+        )
+        CustomButton(
+            labelIdStringRes = R.string.try_again,
+            onClick = getWishListProducts
         )
     }
 }
 @Preview
 @Composable
 fun PreviewNoConnectionError(){
-    NoConnectionError()
+    NoConnectionError({})
 }
