@@ -31,6 +31,7 @@ abstract class SwipeToDeleteOrder(private val drawableType: OrderStates) :
                     OrderStates.PROCESSING -> org.the_chance.design_system.R.drawable.ic_cancel
                     OrderStates.DONE -> org.the_chance.design_system.R.drawable.cart_delete
                     OrderStates.CANCELED -> org.the_chance.design_system.R.drawable.cart_delete
+                    OrderStates.DELETE -> org.the_chance.design_system.R.drawable.cart_delete
                 }
             )
             .create()

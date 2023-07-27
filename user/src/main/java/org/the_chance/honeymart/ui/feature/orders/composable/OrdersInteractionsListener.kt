@@ -6,5 +6,6 @@ interface OrdersInteractionsListener {
     fun onClickProcessingOrder()
     fun onClickDoneOrder()
     fun onClickCancelOrder()
-    fun onClickConfirmOrder()
+    fun onClickConfirmOrder(position:Long,orderState:Int)
+    fun onClickDiscoverMarkets()
 }

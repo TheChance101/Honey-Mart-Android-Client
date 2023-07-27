@@ -34,8 +34,9 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
     )
 }
 
-enum class OrderStates {
-    PROCESSING,
-    DONE,
-    CANCELED
+enum class OrderStates(val state:Int) {
+    PROCESSING(1),
+    DONE(2),
+    CANCELED(3),
+    DELETE(4)
 }

@@ -113,15 +113,14 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun updateOrders(id: Long, stateOrder: Int) {
+     private fun updateOrders(id: Long, orderState: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { updateOrderStateUseCase(orderId, stateOrder) },
+            { updateOrderStateUseCase(orderId, orderState) },
             ::updateOrdersSuccess,
             ::updateOrdersError
         )
-
     }
 
     private fun updateOrdersSuccess(state: Boolean) {
@@ -130,6 +129,7 @@ class OrderViewModel @Inject constructor(
             OrderStates.PROCESSING -> getAllProcessingOrders()
             OrderStates.DONE -> getAllDoneOrders()
             OrderStates.CANCELED -> getAllCancelOrders()
+            else -> {}
         }
     }
 
@@ -163,7 +163,7 @@ class OrderViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.PROCESSING.state).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
@@ -174,7 +174,7 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.DONE.state).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -189,13 +189,19 @@ class OrderViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.CANCELED.state).map { it.toOrderUiState() } },
             ::onGetCancelOrdersSuccess,
             ::onGetCancelOrdersError
         )
     }
 
-    override fun onClickConfirmOrder() {
-        TODO("Not yet implemented")
+    override fun onClickConfirmOrder(position: Long, orderState: Int) {
+        updateOrders(position, orderState)
+    }
+
+    override fun onClickDiscoverMarkets() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
+        }
     }
 }

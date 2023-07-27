@@ -173,6 +173,8 @@ fun setOrderPlaceHolderText(view: TextView, orderStates: OrderStates) {
 
         OrderStates.CANCELED -> view.text =
             view.context.getString(R.string.you_don_t_have_any_canceled_orders)
+        OrderStates.DELETE -> view.text =
+            view.context.getString(R.string.you_don_t_have_any_canceled_orders)
     }
 }
 

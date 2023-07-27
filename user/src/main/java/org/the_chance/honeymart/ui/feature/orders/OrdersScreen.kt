@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeToDismiss
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
+import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -70,11 +71,7 @@ fun OrdersScreen(
     ) {
         OrdersContent(
             state = state,
-            onClickOrder = viewModel::onClickOrder,
-            onClickDiscoverMarketsButton = viewModel::onClickDiscoverMarketsButton,
-            onClickProcessingOrder = viewModel::onClickProcessingOrder,
-            onClickDoneOrder = viewModel::onClickDoneOrder,
-            onClickCancelOrder = viewModel::onClickCancelOrder,
+            ordersInteractionsListener = viewModel
         )
     }
 }
@@ -83,11 +80,7 @@ fun OrdersScreen(
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    onClickOrder: (Long) -> Unit,
-    onClickDiscoverMarketsButton: () -> Unit,
-    onClickProcessingOrder: () -> Unit,
-    onClickDoneOrder: () -> Unit,
-    onClickCancelOrder: () -> Unit,
+    ordersInteractionsListener : OrdersInteractionsListener
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -102,17 +95,17 @@ fun OrdersContent(
             CustomChip(
                 state = state.orderStates == OrderStates.PROCESSING,
                 text = stringResource(id = R.string.processing),
-                onClick = onClickProcessingOrder
+                onClick = { ordersInteractionsListener.onClickProcessingOrder() }
             )
             CustomChip(
                 state = state.orderStates == OrderStates.DONE,
                 text = stringResource(id = R.string.done),
-                onClick = onClickDoneOrder
+                onClick = { ordersInteractionsListener.onClickDoneOrder() }
             )
             CustomChip(
                 state = state.orderStates == OrderStates.CANCELED,
                 text = stringResource(id = R.string.cancel),
-                onClick = onClickCancelOrder
+                onClick = { ordersInteractionsListener.onClickCancelOrder() }
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -121,10 +114,10 @@ fun OrdersContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            items(
+            itemsIndexed(
                 items = state.orders,
-                key = null
-            ) { orderItem ->
+            ) { index, orderItem ->
+                // Log.d("Mohamed", "$index.toString() ##### ${orderItem}")
                 var showDialog by remember { mutableStateOf(false) }
                 val dismissState = rememberDismissState()
                 val updatedDismissState by rememberUpdatedState(dismissState)
@@ -140,7 +133,7 @@ fun OrdersContent(
                         marketName = orderItem.marketName!!,
                         quantity = orderItem.quantity!!,
                         price = orderItem.totalPrice!!,
-                        onClick = { onClickOrder(orderItem.orderId) }
+                        onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
                     )
                 }
                 LaunchedEffect(showDialog) {
@@ -154,14 +147,28 @@ fun OrdersContent(
                     }
                 }
                 if (showDialog) {
-                    val textOrderStates = when(state.orderStates){
+                    val textOrderStates = when (state.orderStates) {
                         OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                        OrderStates.DONE -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                        OrderStates.CANCELED -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                        else -> {
+                            stringResource(id = R.string.order_dialog_Delete_Text)
+                        }
+                    }
+
+                    val buttonOrderStates = when (state.orderStates) {
+                        OrderStates.PROCESSING -> OrderStates.CANCELED.state
+                        else -> {
+                            OrderStates.DELETE.state
+                        }
                     }
                     CustomAlertDialog(
                         message = textOrderStates,
-                        onConfirm = { showDialog = false },
+                        onConfirm = {
+                            ordersInteractionsListener.onClickConfirmOrder(
+                                index.toLong(),
+                                buttonOrderStates
+                            )
+                            showDialog = false
+                        },
                         onCancel = { showDialog = false },
                         onDismissRequest = { showDialog = false }
                     )
@@ -174,7 +181,7 @@ fun OrdersContent(
                 image = painterResource(id = R.drawable.placeholder_order),
                 title = stringResource(R.string.placeholder_title),
                 subtitle = stringResource(R.string.placeholder_subtitle),
-                onClickDiscoverMarkets = onClickDiscoverMarketsButton
+                onClickDiscoverMarkets = { ordersInteractionsListener.onClickDiscoverMarkets() }
             )
         }
     }
