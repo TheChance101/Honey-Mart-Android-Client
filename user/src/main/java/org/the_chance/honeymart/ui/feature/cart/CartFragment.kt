@@ -9,7 +9,6 @@ import androidx.activity.addCallback
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +42,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {
             HoneyMartTheme {
-               cartScreen(
+               CartScreen(
                    onClickButtonOrderDetails = { navigateToOrders() },
                    onClickButtonDiscover = { navigateToMarkets() }
                )
@@ -126,7 +125,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
     }
 
     private fun navigateToOrders() {
-        val action = CartFragmentDirections.actionCartFragmentToCartBottomFragment()
+        val action = CartBottomFragmentDirections.actionGlobalCartToOrders()
         findNavController().navigate(action)
     }
 

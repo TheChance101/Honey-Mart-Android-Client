@@ -71,9 +71,8 @@ fun CartPlaceholder(
             idIconDrawableRes = org.the_chance.design_system.R.drawable.icon_cart,
             modifier = Modifier.padding(top = 16.dp),
             background = primary100,
-        ) {
-            onClickButtonDiscover
-        }
+            onClick = onClickButtonDiscover
+        )
 
         LaunchedEffect(key1 = state.products){
             if (state.bottomSheetIsDisplayed) sheetState.expand() else sheetState.hide()

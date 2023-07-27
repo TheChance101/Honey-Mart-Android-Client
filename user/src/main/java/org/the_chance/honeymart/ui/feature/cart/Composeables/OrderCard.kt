@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart.Composeables
 
 
+import android.icu.text.DecimalFormat
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,7 +46,7 @@ fun CartCardView(
         ) {
             val (priceInDollars, orderNowButton, TotalPrice) = createRefs()
             Text(
-                text = totalPrice,
+                text = formatCurrencyWithNearestFraction(totalPrice.toDouble()),
                 color = black60,
                 style = org.the_chance.honymart.ui.theme.Typography.bodyMedium,
                 modifier = Modifier.constrainAs(priceInDollars) {
@@ -80,6 +81,14 @@ fun CartCardView(
         }
     }
 }
+
+
+fun formatCurrencyWithNearestFraction(amount: Double):String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(amount)
+}
+
+
 
 @Preview
 @Composable

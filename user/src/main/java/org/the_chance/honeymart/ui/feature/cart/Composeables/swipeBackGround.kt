@@ -1,17 +1,24 @@
-package org.the_chance.honeymart.ui.feature.cart.Composeables
-
-import androidx.compose.material3.Card
-import androidx.compose.material3.DismissState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import org.the_chance.design_system.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SwipeDelete(state: DismissState) {
-Card {
-    Icon(painter = painterResource(id = org.the_chance.design_system.R.drawable.cart_delete),
-        contentDescription = "DeleteIcon")
-}
+fun SwipeBackGround() {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = 16.dp, end = 8.dp)) {
+        Image(
+            painter =
+            painterResource(id = R.drawable.cart_delete),
+            contentDescription = "DeleteIcon",
+            modifier = Modifier.align(Alignment.CenterEnd)
+        )
+    }
 }

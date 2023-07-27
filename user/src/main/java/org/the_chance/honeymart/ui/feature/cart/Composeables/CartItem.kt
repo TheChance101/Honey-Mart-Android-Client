@@ -79,7 +79,7 @@ fun CartItem(
             )
 
             Text(
-                text = "${product.productPrice}$",
+                text = "${formatCurrencyWithNearestFraction(product.productPrice!!.toDouble())}",
                 color = primary100,
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge,
 
@@ -149,5 +149,6 @@ fun CartItem(
             }
         }
     }
+
 }
 

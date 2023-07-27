@@ -432,13 +432,14 @@ fun bindImage(image: ImageView, imageURL: String?) {
     }
 }
 
+
+
 @BindingAdapter("FormatCurrency")
 fun formatCurrencyWithNearestFraction(View:TextView, amount: Double) {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     val formattedAmount = decimalFormat.format(amount)
-   View.text = formattedAmount
+    View.text = formattedAmount
 }
-
 
 @BindingAdapter(value = ["app:loadingCartState", "app:disableIfNoQuantity"])
 fun loadingCartState(button: MaterialButton, isLoading: Boolean, quantity: Int?) {
