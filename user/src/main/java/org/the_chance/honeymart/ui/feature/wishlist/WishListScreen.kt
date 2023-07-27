@@ -30,67 +30,72 @@ fun WishListScreen(
     val state = viewModel.state.collectAsState().value
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    when {
-        state.products.isNotEmpty() -> {
-            LaunchedEffect(lifecycleOwner) {
-                viewModel.getWishListProducts()
-            }
-            WishListContent(
-                state = state,
-                onClickFavoriteIcon = viewModel::onClickFavoriteIcon,
-                onClickProduct = viewModel::onClickProduct
-            )
-        }
-        state.isLoading -> LoadingAnimation()
-        state.isError -> NoConnectionError { viewModel.getWishListProducts() }
-        state.products.isEmpty() -> PlaceHolderWishList { viewModel.onClickDiscoverButton() }
-
+    LaunchedEffect(lifecycleOwner) {
+        viewModel.getWishListProducts()
     }
+
+    WishListContent(
+        state = state,
+        wishListInteractionListener = viewModel
+    )
 
 }
 
 @Composable
 private fun WishListContent(
     state: WishListUiState,
-    onClickFavoriteIcon: (Long) -> Unit,
-    onClickProduct: (Long) -> Unit,
+    wishListInteractionListener: WishListInteractionListener,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-//        if(state.isLoading){
-//            LoadingAnimation()
-//        }
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 160.dp),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            content = {
-                items(state.products) { productState ->
-                    ItemFavorite(
-                        imageUrlMarket = productState.productImages!![0],
-                        name = productState.productName!!,
-                        price = "${productState.productPrice}",
-                        description = "${productState.description} ",
-                        onClickProduct = { onClickProduct(productState.productId!!) },
-                        onClickFavoriteIcon = { onClickFavoriteIcon(productState.productId!!) }
-                    )
-                }
 
+    when {
+        state.isLoading -> {
+            LoadingAnimation()
+        }
 
-            })
+        state.isError -> {
+            NoConnectionError {
+                wishListInteractionListener.getWishListProducts()
+            }
+        }
+
+        state.products.isNotEmpty() -> {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    content = {
+                        items(state.products) { productState ->
+                            ItemFavorite(
+                                imageUrlMarket = productState.productImages!![0],
+                                name = productState.productName!!,
+                                price = "${productState.productPrice}",
+                                description = "${productState.description} ",
+                                onClickProduct = {
+                                    wishListInteractionListener.onClickProduct(
+                                        productState.productId!!
+                                    )
+                                },
+                                onClickFavoriteIcon = {
+                                    wishListInteractionListener.onClickFavoriteIcon(
+                                        productState.productId!!
+                                    )
+                                }
+                            )
+                        }
+                    })
+            }
+        }
+
+        else -> {
+            PlaceHolderWishList {
+                wishListInteractionListener.onClickDiscoverButton()
+            }
+
+        }
     }
-//    if (state.isError) {
-//        NoConnectionError()
-//    } else if (state.isLoading) {
-//        Image(
-//            painter = rememberAsyncImagePainter(model = org.the_chance.design_system.R.raw.loading),
-//            contentDescription = ""
-//        )
-//    } else if (state.products.isEmpty()) {
-//        PlaceHolderWishList(vi)
-//    }
-
 }
 
 @Preview(showSystemUi = true)
