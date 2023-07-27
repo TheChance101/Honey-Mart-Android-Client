@@ -1,16 +1,11 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
-import android.text.Layout
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,21 +27,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
+import org.the_chance.honeymart.ui.feature.order_details.composable.LoadingAnimation
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
-import org.the_chance.honymart.ui.composables.LoadingAnimation
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
@@ -87,16 +77,16 @@ private fun OrderDetailsContent(
                 .wrapContentHeight(),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             state = rememberLazyGridState(),
             content = {
                 items(state.products) { itemOrderDetails ->
                     OrderDetailsCard(
-                        imageUrl = itemOrderDetails.images!![0],
-                        orderName = itemOrderDetails.name!!,
+                        imageUrl = itemOrderDetails.images[0],
+                        orderName = itemOrderDetails.name,
                         orderPrice = "${itemOrderDetails.price}",
                         orderCount = "${itemOrderDetails.count}",
-                        orderId = itemOrderDetails.id ?: 0,
+                        orderId = itemOrderDetails.id,
                         onClickCard = onClickItemOrderDetails,
                     )
                 }
@@ -107,17 +97,8 @@ private fun OrderDetailsContent(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-
-//                .background(
-//                    brush = Brush.verticalGradient(
-//                        colors = listOf(
-//                            black87,
-//                            black37,
-//                        ),
-//                        startY = 0.1f,
-//                        endY = .2f
-//                    )
-//                )
+                .graphicsLayer(shadowElevation = 1f)
+//                    .background(MaterialTheme.colorScheme.onSurface)
                 .fillMaxWidth()
                 .padding(end = MaterialTheme.dimens.space16)
         ) {
@@ -130,17 +111,15 @@ private fun OrderDetailsContent(
             ) {
                 Text(
                     text = "${state.orderDetails.totalPrice}$",
-                    color = black60,
+                    color = MaterialTheme.colorScheme.background,
                     style = Typography.bodyMedium,
                 )
                 Text(
                     text = stringResource(id = org.the_chance.design_system.R.string.total_price),
-                    color = black37,
+                    color = MaterialTheme.colorScheme.background,
                     style = Typography.displaySmall,
                 )
             }
-
-
             Card(
                 shape = RoundedCornerShape(MaterialTheme.dimens.space24),
                 colors = CardDefaults.cardColors(Color.Transparent),
@@ -148,10 +127,9 @@ private fun OrderDetailsContent(
                 modifier = Modifier.padding(
                     top = MaterialTheme.dimens.space16,
                 ),
-
-                ) {
+            ) {
                 Text(
-                    text = "${state.orderDetails.stateText}",
+                    text = state.orderDetails.stateText,
                     color = primary100,
                     style = Typography.displayLarge,
                     maxLines = 1,
@@ -165,6 +143,7 @@ private fun OrderDetailsContent(
         }
     }
 }
+
 
 @Preview
 @Composable

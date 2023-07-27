@@ -6,16 +6,16 @@ import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 
 fun OrderDetailsDto.toOrderDetailsEntity() = OrderDetailsEntity(
-    products = products?.map { it.toOrderProductDetailsEntity() },
-    totalPrice = totalPrice,
-    date = date,
-    state = state
+    products = products?.map { it.toOrderProductDetailsEntity() }?: emptyList(),
+    totalPrice = totalPrice?: 0.0,
+    date = date?: "",
+    state = state?: 0
 )
 
 fun OrderProductDto.toOrderProductDetailsEntity() = OrderProductDetailsEntity(
-    id = id,
-    name = name,
-    count = count,
-    price = price,
-    images = images
+    id = id?: 0,
+    name = name?: "",
+    count = count?: 0,
+    price = price?: 0.0,
+    images = images?: emptyList()
 )
