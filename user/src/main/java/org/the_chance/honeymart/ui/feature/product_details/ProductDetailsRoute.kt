@@ -32,6 +32,6 @@ class ProductDetailsArgs(savedStateHandle: SavedStateHandle) {
     val productId: String = checkNotNull(savedStateHandle[PRODUCT_ID])
 
     companion object {
-        const val PRODUCT_ID = "orderId"
+        const val PRODUCT_ID = "productId"
     }
 }
