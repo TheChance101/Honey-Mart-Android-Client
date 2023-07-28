@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.uistate
+package org.the_chance.honeymart.ui.feature.category
 
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
