@@ -1,0 +1,15 @@
+package org.the_chance.honeymart.ui.feature.login
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import org.the_chance.honeymart.ui.navigation.Screen
+
+private val ROUTE = Screen.LoginScreen.route
+
+fun NavController.navigateToLogin() {
+    navigate(ROUTE)
+}
+
+fun NavGraphBuilder.loginRoute() {
+//    composable(ROUTE) { LoginScreen() }
+}
