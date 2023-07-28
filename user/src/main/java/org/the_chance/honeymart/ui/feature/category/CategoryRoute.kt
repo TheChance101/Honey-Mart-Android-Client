@@ -19,12 +19,12 @@ fun NavGraphBuilder.categoryRoute() {
         "${ROUTE}/{${MarketArgs.MARKET_ID}}",
         arguments = listOf(
             navArgument(MarketArgs.MARKET_ID) {
-                NavType.StringType
+                NavType.LongType
             }
 
         )
     ) {
-        CategoryScreen()
+        CategoriesScreen()
     }
 }
 
