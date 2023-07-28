@@ -19,7 +19,6 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -30,8 +29,6 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme() {
-                    val systemUiController = rememberSystemUiController()
-                    systemUiController.isSystemBarsVisible = false
                     Scaffold(
                         bottomBar = {
                             BottomBar()
