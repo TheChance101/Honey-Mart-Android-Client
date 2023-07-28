@@ -12,7 +12,7 @@ import org.the_chance.honeymart.ui.navigation.Graph
 fun NavGraphBuilder.bottomNavGraph() {
 
     navigation(
-        route = Graph.route,
+        route = Graph.bottomRoute,
         startDestination = BottomBarScreen.Market.route
     ) {
         composable(route = BottomBarScreen.Market.route){

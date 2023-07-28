@@ -1,19 +1,22 @@
 package org.the_chance.honeymart.ui.feature.bottom_navigation
 
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.honymart.ui.theme.white
 
+@Preview
 @Composable
 fun BottomBar() {
     val navController = LocalNavigationProvider.current
@@ -35,7 +38,7 @@ fun BottomBar() {
         selectedScreen == Screen.WishListScreen.route
     ) {
         NavigationBar(
-            containerColor = Color.White,
+            containerColor = white,
         ) {
             screens.forEach { screen ->
                 val selected =
@@ -54,9 +57,9 @@ fun BottomBar() {
                         navController.navigate(screen.route)
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
-                        indicatorColor = Color.White,
-                        unselectedIconColor = MaterialTheme.colorScheme.primary
+                        selectedIconColor = white,
+                        indicatorColor = primary100,
+                        unselectedIconColor = black60
                     )
                 )
             }
