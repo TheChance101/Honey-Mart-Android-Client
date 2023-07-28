@@ -3,7 +3,12 @@ package org.the_chance.honeymart.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.authentication.authRoute
 import org.the_chance.honeymart.ui.feature.bottom_navigation.bottomNavGraph
+import org.the_chance.honeymart.ui.feature.cart.cartRoute
+import org.the_chance.honeymart.ui.feature.category.categoryRoute
+import org.the_chance.honeymart.ui.feature.login.loginRoute
+import org.the_chance.honeymart.ui.feature.market.marketRoute
 import org.the_chance.honeymart.ui.feature.order_details.orderDetailsRoute
 import org.the_chance.honeymart.ui.feature.orders.orderRoute
 import org.the_chance.honeymart.ui.feature.product.productRoute
@@ -26,6 +31,11 @@ fun HoneyMartAppNavGraph() {
         productDetailsRoute()
         wishListRoute()
         signupRoute()
+        authRoute()
+        cartRoute()
+        categoryRoute()
+        loginRoute()
+        marketRoute()
     }
 }
 
