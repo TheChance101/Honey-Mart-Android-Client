@@ -28,11 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.feature.cart.Composeables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartItem
 import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
 import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
+import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.user.R
@@ -52,7 +52,6 @@ fun CartScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun CartContent(
     state: CartUiState,
@@ -60,79 +59,88 @@ fun CartContent(
     onClickButtonOrderDetails: () -> Unit = {},
     onClickButtonDiscover: () -> Unit = {}
 ) {
-    AnimatedVisibility(visible = state.products.isNotEmpty()) {
-        Box {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-            ) {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    itemsIndexed(state.products) { index, _ ->
-                        var showDialog by remember { mutableStateOf(false) }
-                        val dismissState = rememberDismissState(
-                            confirmValueChange = { it == DismissValue.DismissedToStart })
-                        SwipeToDismiss(
-                            modifier = Modifier.animateItemPlacement(),
-                            state = dismissState,
-                            background = { SwipeBackGround() },
-                            directions = setOf(DismissDirection.EndToStart),
-                            dismissContent = {
-                                CartItem(
-                                    product = state.products[index],
-                                    onClickMinus = {
-                                        cartInteractionListener.onClickMinusCountProductInCart(
-                                            productId = state.products[index].productId!!
-                                        )
-                                    },
-                                    onClickPlus = {
-                                        cartInteractionListener.onClickAddCountProductInCart(
-                                            productId = state.products[index].productId!!
-                                        )
-                                    }
-                                )
-                            }
-                        )
+    AnimatedVisibility(visible = state.isLoading || state.isError || state.products.isEmpty()) {
+        when {
+            state.isLoading -> Loading()
+            state.isError -> ErrorPlaceHolder()
+            state.products.isEmpty() -> BottomSheetCompleteOrderContent(
+                state = state,
+                onClick = { onClickButtonOrderDetails() },
+                onClickButtonDiscover = { onClickButtonDiscover() })
+            else ->
+                CartSuccessScreen(state = state, cartInteractionListener = cartInteractionListener)
+        }
+    }
+}
 
-                        if (showDialog) {
-                            CustomAlertDialog(
-                                message = stringResource(R.string.you_re_delete_this_product_are_you_sure),
-                                onConfirm = {
-                                    cartInteractionListener.deleteCart(index.toLong())
-                                    showDialog = false
+@Composable
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+private fun CartSuccessScreen(
+    state: CartUiState,
+    cartInteractionListener: CartInteractionListener
+) {
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                itemsIndexed(state.products) { index, _ ->
+                    var showDialog by remember { mutableStateOf(false) }
+                    val dismissState = rememberDismissState(
+                        confirmValueChange = { it == DismissValue.DismissedToStart })
+                    SwipeToDismiss(
+                        modifier = Modifier.animateItemPlacement(),
+                        state = dismissState,
+                        background = { SwipeBackGround() },
+                        directions = setOf(DismissDirection.EndToStart),
+                        dismissContent = {
+                            CartItem(
+                                product = state.products[index],
+                                onClickMinus = {
+                                    cartInteractionListener.onClickMinusCountProductInCart(
+                                        productId = state.products[index].productId!!
+                                    )
                                 },
-                                onCancel = { showDialog = false },
-                                onDismissRequest = { showDialog = false }
+                                onClickPlus = {
+                                    cartInteractionListener.onClickAddCountProductInCart(
+                                        productId = state.products[index].productId!!
+                                    )
+                                }
                             )
                         }
-                        LaunchedEffect(showDialog) {
-                            if (!showDialog) {
-                                dismissState.reset()
-                            }
+                    )
+
+                    if (showDialog) {
+                        CustomAlertDialog(
+                            message = stringResource(R.string.you_re_delete_this_product_are_you_sure),
+                            onConfirm = {
+                                cartInteractionListener.deleteCart(index.toLong())
+                                showDialog = false
+                            },
+                            onCancel = { showDialog = false },
+                            onDismissRequest = { showDialog = false }
+                        )
+                    }
+                    LaunchedEffect(showDialog) {
+                        if (!showDialog) {
+                            dismissState.reset()
                         }
-                        LaunchedEffect(dismissState.dismissDirection) {
-                            if (dismissState.dismissDirection == DismissDirection.EndToStart) {
-                                showDialog = true
-                            }
+                    }
+                    LaunchedEffect(dismissState.dismissDirection) {
+                        if (dismissState.dismissDirection == DismissDirection.EndToStart) {
+                            showDialog = true
                         }
                     }
                 }
-                CartCardView(totalPrice = state.total.toString())
-
             }
+            CartCardView(totalPrice = state.total.toString())
+
         }
     }
-            AnimatedVisibility(visible = state.isLoading) { Loading() }
-            AnimatedVisibility(visible = state.isError) { ErrorPlaceHolder() }
-            AnimatedVisibility(visible = state.products.isEmpty()) {
-                BottomSheetCompleteOrderContent(
-                    state = state,
-                    onClick = { onClickButtonOrderDetails() },
-                    onClickButtonDiscover = { onClickButtonDiscover() }
-                )
-            }
-        }
+}
