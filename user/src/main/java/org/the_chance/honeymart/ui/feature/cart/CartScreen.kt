@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import SwipeBackGround
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -59,9 +58,7 @@ fun CartContent(
     onClickButtonOrderDetails: () -> Unit = {},
     onClickButtonDiscover: () -> Unit = {}
 ) {
-    AnimatedVisibility(
-        visible = state.isLoading || state.isError || state.products.isEmpty()
-    ) {
+
         when {
             state.isLoading -> Loading()
             state.isError -> ErrorPlaceHolder()
@@ -76,7 +73,7 @@ fun CartContent(
             )
         }
     }
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
