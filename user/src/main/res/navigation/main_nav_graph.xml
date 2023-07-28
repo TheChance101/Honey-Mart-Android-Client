@@ -148,7 +148,7 @@
         </fragment>
         <fragment
             android:id="@+id/orderDetailsFragment"
-            android:name="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsFragment"
+            android:name="org.the_chance.honeymart.ui.feature.order_details.OrderDetailsFragment"
             android:label="OrderDetailsFragment">
             <argument
                 android:name="orderId"
@@ -208,19 +208,14 @@
             android:name="org.the_chance.honeymart.ui.feature.signup.SignupFragment"
             android:label="SignupFragment"
             tools:layout="@layout/fragment_signup_details">
-            <action
-                android:id="@+id/action_signupFragment_to_signupConfirmPasswordFragment"
-                app:destination="@id/signupConfirmPasswordFragment"
-                app:popUpTo="@id/signupFragment" />
             <argument
                 android:name="AuthData"
                 app:argType="org.the_chance.honeymart.util.AuthData" />
-        </fragment>
-        <fragment
-            android:id="@+id/signupConfirmPasswordFragment"
-            android:name="org.the_chance.honeymart.ui.feature.signup.SignupConfirmPasswordFragment"
-            android:label="SignupConfirmPasswordFragment"
-            tools:layout="@layout/fragment_signup_conform_password">
+            <action
+                android:id="@+id/action_signupFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/signupFragment"
+                app:popUpToInclusive="true"/>
         </fragment>
     </navigation>
     <fragment

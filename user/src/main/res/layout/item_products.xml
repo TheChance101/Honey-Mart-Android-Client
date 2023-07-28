@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="org.the_chance.honeymart.ui.feature.uistate.ProductUiState" />
+            type="org.the_chance.honeymart.ui.feature.product.ProductUiState" />
 
         <variable
             name="listener"

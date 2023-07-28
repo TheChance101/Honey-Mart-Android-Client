@@ -6,7 +6,7 @@
     <data>
         <variable
             name="listener"
-            type="org.the_chance.honeymart.ui.feature.orderdetails.OrderDetailsInteractionListener" />
+            type="org.the_chance.honeymart.ui.feature.order_details.OrderDetailsInteractionListener" />
 
         <variable
             name="item"

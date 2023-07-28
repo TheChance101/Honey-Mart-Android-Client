@@ -5,9 +5,6 @@ import okhttp3.Response
 import org.the_chance.honeymart.data.source.local.AuthDataStorePref
 import javax.inject.Inject
 
-/**
- * Created by Aziza Helmy on 6/16/2023.
- */
 class AuthInterceptor @Inject constructor(
     private val dataStorePref: AuthDataStorePref
 ) : Interceptor {
@@ -17,7 +14,7 @@ class AuthInterceptor @Inject constructor(
         val newRequest = chain
             .request()
             .newBuilder()
-            .addHeader(AUTHORIZATION, "Bearer $token")
+            .addHeader(AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDIxM2JkM2Q1IiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0AzYjJmNGE5MyIsImV4cCI6MTY5MDQ3NDgzNX0.jiSbEUFCQEN07svx-wrzfCwiaJxAxPqxfI_8N505XHk")
             .build()
         return chain.proceed(newRequest)
     }

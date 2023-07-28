@@ -52,10 +52,10 @@ dependencies {
     implementation(project(BuildModules.DESIGN_SYSTEM))
     implementation(project(BuildModules.CORE_DOMAIN))
     implementation(project(BuildModules.CORE_DATA))
-    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
-    implementation("com.google.firebase:firebase-analytics:21.2.0")
+    Dependencies.firebaseDependency.forEach { implementation(it) }
     Dependencies.uiDependencies.forEach { implementation(it) }
     Dependencies.composeDependency.forEach { implementation(it) }
+    Dependencies.ktorDependency.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     //Navigation
@@ -74,22 +74,6 @@ dependencies {
     // coil
     implementation(Dependencies.coilDependency)
     //splash
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    val ktor_version = "2.3.2"
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-android:$ktor_version")
-    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-client-serialization:$ktor_version")
-    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
-    implementation("io.ktor:ktor-client-logging-jvm:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-
-
-
-
+    implementation(Dependencies.splashDependency)
+    debugImplementation(Dependencies.composeUiDependency)
 }

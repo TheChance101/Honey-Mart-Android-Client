@@ -7,5 +7,6 @@ fun WishListDto.toWishListEntity() = WishListEntity(
     productId = productId,
     name = name,
     price = price,
-    images = images
+    images = images ,
+    description = description
 )

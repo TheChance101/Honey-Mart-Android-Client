@@ -125,6 +125,8 @@ class CartViewModel @Inject constructor(
 
     }
 
+
+
     fun onClickOrderNowButton() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -134,7 +136,7 @@ class CartViewModel @Inject constructor(
         )
     }
  private fun onCheckOutSuccess(message: String) {
-     _state.update { it.copy(isLoading = false, products = emptyList()) }
+     _state.update { it.copy(isLoading = false, products = emptyList(), bottomSheetIsDisplayed = true) }
      viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
  }
 
@@ -149,7 +151,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
     }
 
-    fun deleteCart(position: Long) {
+     override fun deleteCart(position: Long) {
           _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
@@ -177,5 +179,8 @@ class CartViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
+    fun changeBottomSheetValue(){
+        _state.update { it.copy( bottomSheetIsDisplayed = false) }
+    }
 
 }

@@ -10,9 +10,9 @@ val error = Color(0xFFFF4E33)
 val black = Color(0xFF000000)
 val black8 = Color(0x14121212)
 val black16 = Color(0x29121212)
-val black37 = Color(0x5E121212)
+val black37 = Color(0xFFA4A4A4)
 val black55 = Color(0x8C121212)
-val black60 = Color(99121212)
+val black60 = Color(0xFF717171)
 val black87 = Color(0xDE121212)
 
 val white = Color(0xFFFFFFFF)
@@ -23,6 +23,7 @@ val white30 = Color(0xFFFAFAFA)
 val gray = Color(0xFFA7A7A7)
 
 val background = Color(0xFFFAFAFA)
+val backgroundNav = Color(0xFF333333)
 
 
 /* Dark Theme Color */

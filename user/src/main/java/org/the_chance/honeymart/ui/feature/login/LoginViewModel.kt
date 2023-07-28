@@ -12,7 +12,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
-import org.the_chance.honeymart.ui.feature.uistate.LoginUiState
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -26,8 +25,11 @@ class LoginViewModel @Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
 
-    private val authData = LoginFragmentArgs.fromSavedStateHandle(savedStateHandle).authData
+    private lateinit var args: LoginFragmentArgs
 
+    fun saveArgs(args: LoginFragmentArgs){
+        args.also { this.args = it }
+    }
 
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
@@ -45,20 +47,22 @@ class LoginViewModel @Inject constructor(
     private fun onLoginSuccess(validationState: ValidationState) {
         if (validationState == ValidationState.SUCCESS) {
             viewModelScope.launch {
-                _effect.emit(EventHandler(AuthenticationUiEffect.ClickLoginEffect(authData)))
+                _effect.emit(EventHandler(AuthenticationUiEffect.ClickLoginEffect(args.authData)))
             }
         }
         _state.update {
-            it.copy(isLoading = false, error = null, validationState = validationState)
+            it.copy(isLoading = false, error = null,
+                validationState = validationState, isLogin = true)
         }
-
     }
 
     private fun onLoginError(error: ErrorHandler) {
         _state.update {
             it.copy(
                 isLoading = false,
-                error = error
+                error = error,
+                emailState = ValidationState.INVALID_EMAIL,
+                passwordState = ValidationState.INVALID_PASSWORD
             )
         }
     }
@@ -69,13 +73,12 @@ class LoginViewModel @Inject constructor(
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
-
         }
     }
 
     fun onClickSignUp() {
         viewModelScope.launch {
-            _effect.emit(EventHandler(AuthenticationUiEffect.ClickSignUpEffect(authData)))
+            _effect.emit(EventHandler(AuthenticationUiEffect.ClickSignUpEffect(args.authData)))
         }
     }
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -66,7 +67,7 @@ fun CustomButton(
 
             Text(
                 text = stringResource(id = labelIdStringRes),
-                style = MaterialTheme.typography.bodyMedium,
+                style = Typography.bodyMedium,
                 color = contentColor
             )
         }

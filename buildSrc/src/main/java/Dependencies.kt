@@ -101,8 +101,38 @@ object Dependencies {
             "com.google.accompanist:accompanist-systemuicontroller:${DependencyVersions.SYSTEM_UI_CONTROLLER}",
             "io.coil-kt:coil-compose:${DependencyVersions.COIL_COMPOSE}",
             "androidx.appcompat:appcompat:1.3.0-beta01",
+            "androidx.hilt:hilt-navigation-compose:${DependencyVersions.HILT_COMPOSE}",
+            "com.airbnb.android:lottie-compose:${DependencyVersions.LOTTIE_COMPOSE}",
+            "androidx.compose.material:material:${DependencyVersions.MATERIAL_COMPOSE}",
+            "androidx.lifecycle:lifecycle-runtime-ktx:${DependencyVersions.RUN_TIME_LIFECYCLE_COMPOSE}"
         )
+    }
+    val ktorDependency by lazy {
+        listOf(
+            "io.ktor:ktor-client-core:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-client-android:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-client-okhttp:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-client-content-negotiation:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-client-serialization:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-serialization-gson:${DependencyVersions.KTOR_VERSION}",
+            "io.ktor:ktor-client-logging-jvm:${DependencyVersions.KTOR_LOGGING}",
+            "org.jetbrains.kotlinx:kotlinx-serialization-json:${DependencyVersions.KTOR_SERIALIZATION}",
+            "com.squareup.okhttp3:logging-interceptor:${DependencyVersions.OKHTTP_INTERCEPTOR}",
+        )
+    }
 
+    val splashDependency by lazy {
+        "androidx.core:core-splashscreen:${DependencyVersions.SPLASH_SCREEN}"
+    }
+
+    val firebaseDependency by lazy {
+        listOf(
+            "com.google.firebase:firebase-crashlytics:${DependencyVersions.FIREBASE_CRASH}",
+            "com.google.firebase:firebase-analytics:${DependencyVersions.FIREBASE_ANALYTICS}",
+        )
+    }
+    val composeUiDependency by lazy {
+            "androidx.compose.ui:ui-tooling:${DependencyVersions.MATERIAL_COMPOSE}"
     }
 
     object Classpath {
