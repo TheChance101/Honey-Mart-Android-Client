@@ -3,7 +3,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import org.the_chance.honeymart.ui.feature.cart.CartScreen
-import org.the_chance.honeymart.ui.feature.market.MarketsFragment
+import org.the_chance.honeymart.ui.feature.market.MarketScreen
 import org.the_chance.honeymart.ui.feature.orders.OrdersScreen
 import org.the_chance.honeymart.ui.feature.wishlist.WishListScreen
 import org.the_chance.honeymart.ui.navigation.Graph
@@ -16,7 +16,7 @@ fun NavGraphBuilder.bottomNavGraph() {
         startDestination = BottomBarScreen.Market.route
     ) {
         composable(route = BottomBarScreen.Market.route){
-            MarketsFragment()
+            MarketScreen()
         }
 
         composable(route = BottomBarScreen.Cart.route){

@@ -2,6 +2,7 @@ package org.the_chance.honymart.ui.composables
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,16 +39,16 @@ fun ItemOrder(
     marketName: String,
     quantity: Int,
     price: Double,
-    onClick: () -> Unit = {}
+    onClickCard: (orderId: Long) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(105.dp),
+            .height(105.dp)
+            .clickable { onClickCard(orderId) },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary
         ),
-        onClick = onClick
     ) {
         Row(
             verticalAlignment = Alignment.Bottom
