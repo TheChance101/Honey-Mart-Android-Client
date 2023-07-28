@@ -53,11 +53,31 @@ class MarketsFragment : Fragment() {
     @SuppressLint("StateFlowValueCalledInComposition")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setup()
         composeView.setContent {
             HoneyMartTheme {
                 MarketScreen()
             }
         }
     }
+
+
+
+
+     fun setup() {
+        collectAction()
+    }
+
+    private fun collectAction() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let { navigateToCategory(it) }
+        }
+    }
+
+    private fun navigateToCategory(marketId: Long) {
+        val action = MarketsFragmentDirections.actionMarketsFragmentToCategoriesFragment(marketId)
+        findNavController().navigate(action)
+    }
+
 
 }

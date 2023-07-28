@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.market
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -59,11 +60,11 @@ class MarketViewModel @Inject constructor(
     override fun onClickMarket(marketId: Long) {
         // navigation
 
-//        job?.cancel()
-//        job = viewModelScope.launch {
-//            delay(10)
-//            _effect.emit(EventHandler(marketId))
-//        }
+        job?.cancel()
+        job = viewModelScope.launch {
+            delay(10)
+            _effect.emit(EventHandler(marketId))
+        }
 
     }
 }
