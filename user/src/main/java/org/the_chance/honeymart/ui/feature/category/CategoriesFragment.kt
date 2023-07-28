@@ -43,17 +43,6 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding>() {
         }
     }
 
-    override fun setup() {
-//        initiateAdapter()
-//        collectEffect()
-    }
-
-    private fun initiateAdapter() {
-        val adapter = CategoryAdapter(viewModel)
-        binding.recyclerCategories.adapter = adapter
-        setupScrollListenerForRecyclerView(binding.recyclerCategories)
-    }
-
     private fun collectEffect() {
         collect(viewModel.effect) { effect ->
             effect.getContentIfHandled()

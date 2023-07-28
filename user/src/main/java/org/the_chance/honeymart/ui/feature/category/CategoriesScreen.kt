@@ -20,11 +20,11 @@ import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
 @Composable
 fun CategoriesScreen(viewModel: CategoryViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
-    CategoryContent(state)
+    CategoryContent(state, viewModel)
 }
 
 @Composable
-fun CategoryContent(state: CategoriesUiState) {
+fun CategoryContent(state: CategoriesUiState, listener: CategoryInteractionListener) {
     when {
         state.isLoading -> Loading()
         state.isError -> ErrorPlaceHolder()
@@ -36,7 +36,7 @@ fun CategoryContent(state: CategoriesUiState) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 itemsIndexed(state.categories) { index, item ->
-                    CategoryItem(state = item)
+                    CategoryItem(state = item, onCategoryClicked = {})
                 }
             }
     }
