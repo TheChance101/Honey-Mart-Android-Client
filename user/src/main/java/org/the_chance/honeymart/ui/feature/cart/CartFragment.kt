@@ -1,12 +1,10 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,8 +34,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
             composeView = it
         }
     }
-    @OptIn(ExperimentalMaterial3Api::class)
-    @SuppressLint("StateFlowValueCalledInComposition")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         composeView.setContent {

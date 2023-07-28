@@ -36,8 +36,8 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun CartItem(
     product: CartListProductUiState,
-    onClickMinus: (Long?) -> Unit = {},
-    onClickPlus: (Long?) -> Unit = {}
+    onClickMinus: () -> Unit = {},
+    onClickPlus: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -69,8 +69,7 @@ fun CartItem(
 
             Text(
                 text = product.productName ?: "",
-                color = black87,
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge,
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(black87),
                 modifier = Modifier.constrainAs(textOrderNumber) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom, margin = 32.dp)
@@ -79,9 +78,8 @@ fun CartItem(
             )
 
             Text(
-                text = "${formatCurrencyWithNearestFraction(product.productPrice!!.toDouble())}",
-                color = primary100,
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge,
+                text = formatCurrencyWithNearestFraction(product.productPrice!!.toDouble()),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(primary100),
 
                 modifier = Modifier
                     .border(1.dp, primary100, CircleShape)
@@ -105,7 +103,7 @@ fun CartItem(
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
-                    }.clickable { onClickMinus(product.productId) },
+                    }.clickable { onClickMinus() },
                 colors = CardDefaults.cardColors(containerColor = Color.Transparent)
             ) {
                 Image(
@@ -118,8 +116,7 @@ fun CartItem(
             }
             Text(
                 text = product.productCount.toString(),
-                style = org.the_chance.honymart.ui.theme.Typography.displayMedium,
-                color = black60,
+                style = org.the_chance.honymart.ui.theme.Typography.displayMedium.copy(black60),
                 modifier = Modifier.constrainAs(textViewNumberOfItems) {
                     top.linkTo(parent.top, margin = 32.dp)
                     bottom.linkTo(parent.bottom)
@@ -137,7 +134,7 @@ fun CartItem(
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end, margin = 16.dp)
-                    }.clickable { onClickPlus(product.productId) },
+                    }.clickable { onClickPlus() },
                 colors = CardDefaults.cardColors(containerColor = primary100)
             ) {
                 Icon(
