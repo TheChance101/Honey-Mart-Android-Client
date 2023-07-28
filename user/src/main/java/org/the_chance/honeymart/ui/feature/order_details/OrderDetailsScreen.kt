@@ -47,10 +47,9 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun OrderDetailsScreen(
     viewModel: OrderDetailsViewModel = hiltViewModel(),
-//    onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
     val state = viewModel.state.collectAsState().value
-
+    val navController = LocalNavigationProvider.current
     AnimatedVisibility(
         visible = state.isProductsLoading,
         enter = fadeIn(animationSpec = tween(durationMillis = 500)),
@@ -66,7 +65,7 @@ fun OrderDetailsScreen(
     }
 
     OrderDetailsContent(state = state,
-//        onClickItemOrderDetails = navController::navigateToProductDetailsScreen(orderId: Long)
+        onClickItemOrderDetails =  navController::navigateToProductDetailsScreen
     )
 }
 
@@ -75,7 +74,6 @@ private fun OrderDetailsContent(
     state: OrderDetailsUiState,
     onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
-    val navController = LocalNavigationProvider.current
     Column(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 160.dp),
@@ -94,7 +92,7 @@ private fun OrderDetailsContent(
                         orderPrice = "${itemOrderDetails.price}",
                         orderCount = "${itemOrderDetails.count}",
                         orderId = itemOrderDetails.id,
-                        onClickCard = { navController.navigateToProductDetailsScreen()},
+                        onClickCard = { onClickItemOrderDetails(itemOrderDetails.id)},
                     )
                 }
             }

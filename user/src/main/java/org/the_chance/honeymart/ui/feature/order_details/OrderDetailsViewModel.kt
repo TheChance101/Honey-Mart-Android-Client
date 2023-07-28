@@ -22,8 +22,7 @@ class OrderDetailsViewModel @Inject constructor(
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
     private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
-    OrderDetailsInteractionListener {
+) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()) {
     override val TAG: String = this::class.java.simpleName
 
 
@@ -76,7 +75,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
 
-    override fun onClickOrder(orderId: Long) {
+    fun onClickOrder(orderId: Long) {
         viewModelScope.launch {
             _effect.emit(
                 EventHandler(
@@ -85,6 +84,4 @@ class OrderDetailsViewModel @Inject constructor(
             )
         }
     }
-
-
 }

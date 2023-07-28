@@ -44,6 +44,7 @@ import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.LoadingAnimation
@@ -53,6 +54,7 @@ fun OrdersScreen(
     viewModel: OrderViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val navController = LocalNavigationProvider.current
 
     AnimatedVisibility(
         visible = state.isLoading,
@@ -69,7 +71,8 @@ fun OrdersScreen(
     }
         OrdersContent(
             state = state,
-            ordersInteractionsListener = viewModel
+            ordersInteractionsListener = viewModel,
+            onClickItemOrder =  navController::navigateToOrderDetailsScreen
         )
 }
 
@@ -77,7 +80,8 @@ fun OrdersScreen(
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    ordersInteractionsListener : OrdersInteractionsListener
+    ordersInteractionsListener : OrdersInteractionsListener,
+    onClickItemOrder: (orderId: Long) -> Unit = {},
 ) {
     val navController = LocalNavigationProvider.current
     Column(
@@ -135,7 +139,7 @@ fun OrdersContent(
                             marketName = orderItem.marketName!!,
                             quantity = orderItem.quantity!!,
                             price = orderItem.totalPrice!!,
-                            onClickCard = { navController.navigateToOrderDetailsScreen() }
+                            onClickCard = { onClickItemOrder(orderItem.orderId!!)}
                         )
                     }
                     LaunchedEffect(showDialog) {
