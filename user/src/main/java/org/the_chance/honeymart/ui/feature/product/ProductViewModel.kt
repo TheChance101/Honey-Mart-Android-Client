@@ -14,9 +14,9 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
-import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
