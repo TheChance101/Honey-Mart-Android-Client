@@ -46,7 +46,7 @@ fun LoginScreen(
     args: LoginFragmentArgs,
     viewModel: LoginViewModel = hiltViewModel(),
 
-) {
+    ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
