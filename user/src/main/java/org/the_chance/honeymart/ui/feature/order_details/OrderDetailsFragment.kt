@@ -39,7 +39,9 @@ class OrderDetailsFragment : Fragment() {
         composeView.setContent {
             // You're in Compose world!
             HoneyMartTheme {
-                OrderDetailsScreen()
+                OrderDetailsScreen(
+                    onClickItemOrderDetails = {navigateToProductsDetails(it)}
+                )
             }
         }
     }
@@ -61,22 +63,22 @@ class OrderDetailsFragment : Fragment() {
 //        binding.recyclerOrderDetails.adapter = orderDetailsAdapter
 //    }
 //
-//    private fun collectEffect() {
-//        collect(viewModel.effect) { effect ->
-//            effect.getContentIfHandled()?.let {
-//                onEffect(it)
-//            }
-//        }
-//    }
+    private fun collectEffect() {
+        collect(viewModel.effect) { effect ->
+            effect.getContentIfHandled()?.let {
+                onEffect(it)
+            }
+        }
+    }
 //
-//    private fun onEffect(effect: OrderDetailsUiEffect) {
-//        when (effect) {
-//            is OrderDetailsUiEffect.ClickProductEffect ->navigateToProductsDetails(effect.orderId)
-//        }
-//    }
+    private fun onEffect(effect: OrderDetailsUiEffect) {
+        when (effect) {
+            is OrderDetailsUiEffect.ClickProductEffect ->navigateToProductsDetails(effect.orderId)
+        }
+    }
 //
-//    private fun navigateToProductsDetails(orderId: Long) {
-//        val action = OrderDetailsFragmentDirections.actionGlobalProductDetailsFragment(orderId)
-//        findNavController().navigate(action)
-//    }
+    private fun navigateToProductsDetails(orderId: Long) {
+        val action = OrderDetailsFragmentDirections.actionGlobalProductDetailsFragment(orderId)
+        findNavController().navigate(action)
+    }
 }
