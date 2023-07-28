@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBar
+import org.the_chance.honeymart.ui.navigation.UserNavGraph
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                             BottomBar()
                         }
                     ) {
-                        UserNavigationApp()
+                        UserNavGraph()
                     }
                 }
             }
