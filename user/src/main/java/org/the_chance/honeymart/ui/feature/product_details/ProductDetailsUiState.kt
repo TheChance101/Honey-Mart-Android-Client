@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
+import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class ProductDetailsUiState(
     val isLoading: Boolean = true,

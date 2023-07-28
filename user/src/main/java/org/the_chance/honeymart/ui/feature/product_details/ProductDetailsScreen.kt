@@ -75,7 +75,7 @@ private fun ProductDetailsContent(
                         .padding(MaterialTheme.dimens.space16),
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
-                        state.product.productId?.let {
+                        state.product.productId.let {
                             interaction.addProductToCart(
                                 it,
                                 state.quantity
@@ -135,7 +135,7 @@ private fun ProductDetailsContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = state.product.productName!!,
+                                text = state.product.productName,
                                 style = MaterialTheme.typography.displayMedium,
                                 color = MaterialTheme.typography.displayMedium.color.opacity87(),
 
@@ -173,15 +173,14 @@ private fun ProductDetailsContent(
                         }
                         SpacerVertical8()
                         TextPrice(state.product.productPrice.toString())
-                        if (state.product.productDescription != null)
-                            Text(
-                                state.product.productDescription,
-                                style = MaterialTheme.typography.displayMedium,
-                                color = MaterialTheme.typography.displayMedium.color.opacity37(),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = MaterialTheme.dimens.space24)
-                            )
+                        Text(
+                            state.product.productDescription,
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.typography.displayMedium.color.opacity37(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = MaterialTheme.dimens.space24)
+                        )
 
 
                     }
