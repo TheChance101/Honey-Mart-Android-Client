@@ -1,5 +1,6 @@
 package org.the_chance.honymart.ui.composables
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
@@ -16,7 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun TextPrice(
@@ -30,26 +33,23 @@ fun TextPrice(
             .height(26.dp)
             .clip(CircleShape)
             .border(
-                BorderStroke(2.dp, color),
+                BorderStroke(1.dp, color),
                 shape = CircleShape
             )
             .padding(
                 horizontal = MaterialTheme.dimens.space8,
                 vertical = MaterialTheme.dimens.space4,
             ),
-
-        ) {
-
+    ) {
         Text(
             text = "$price\$",
             style = MaterialTheme.typography.displaySmall,
             color = color
         )
-
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun TextPricePreview() {
     HoneyMartTheme {

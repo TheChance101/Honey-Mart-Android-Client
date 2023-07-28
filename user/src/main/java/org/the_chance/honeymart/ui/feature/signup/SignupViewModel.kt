@@ -13,7 +13,6 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.SignupUiState
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -41,7 +40,7 @@ class SignupViewModel @Inject constructor(
 
     fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.trim().toString())
-        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.trim().toString()) }
+        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
     }
 
     fun onEmailInputChange(email: CharSequence) {
@@ -58,7 +57,10 @@ class SignupViewModel @Inject constructor(
         val passwordState =
             validateConfirmPassword(state.value.password, confirmPassword.toString())
         if (!passwordState) {
-            _state.update { it.copy(confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD) }
+            _state.update { it.copy(
+                confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD,
+                confirmPassword = confirmPassword.toString()
+            ) }
         } else {
             _state.update {
                 it.copy(
@@ -86,7 +88,9 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, error = error,
+        fullNameState = ValidationState.INVALID_FULL_NAME,
+        emailState = ValidationState.INVALID_EMAIL) }
     }
 
     private fun login(email: String, password: String) {
@@ -132,6 +136,12 @@ class SignupViewModel @Inject constructor(
                 fullName = state.value.fullName, password = state.value.password,
                 email = state.value.email
             )
+        }
+    }
+
+    fun onClickLogin() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(AuthUiEffect.ClickLoginEffect(args.AuthData)))
         }
     }
 

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.uistate
+package org.the_chance.honeymart.ui.feature.orders
 
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -13,27 +13,30 @@ data class OrdersUiState(
 )
 
 data class OrderUiState(
-    val orderId: Long?= 1,
+    val orderId: Long? = 1,
     val totalPrice: Double? = 0.0,
-    val state: Int?= 0,
-    val date: Long?= 1687259600016,
-    val marketName: String?="",
-    val imageUrl: String?="",
-    val numItems:Int?=1
+    val state: Int? = 0,
+    val date: Long? = 1687259600016,
+    val marketName: String? = "",
+    val imageUrl: String? = "",
+    val quantity: Int? = 1
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
-        totalPrice = totalPrice ,
+        totalPrice = totalPrice,
         state = state,
         date = date,
         marketName = market.marketName,
         imageUrl = market.imageUrl,
-        numItems=numItems
+        quantity = numItems
     )
 }
 
-enum class OrderStates{
-    PROCESSING,DONE,CANCELED
+enum class OrderStates(val state:Int) {
+    PROCESSING(1),
+    DONE(2),
+    CANCELED(3),
+    DELETE(4)
 }

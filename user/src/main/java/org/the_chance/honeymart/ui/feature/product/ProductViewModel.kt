@@ -15,11 +15,8 @@ import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
-import org.the_chance.honeymart.ui.feature.uistate.ProductUiState
-import org.the_chance.honeymart.ui.feature.uistate.ProductsUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toCategoryUiState
-import org.the_chance.honeymart.ui.feature.uistate.toProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
 import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
@@ -42,7 +39,7 @@ class ProductViewModel @Inject constructor(
     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-        // getData()
+         getData()
         _state.update { it.copy(categoryId = args.categoryId, position = args.position) }
     }
 
@@ -50,6 +47,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId(state.value.categoryId)
         getCategoriesByMarketId()
+        log(_state.value.toString())
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
@@ -115,6 +113,19 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
+        if(products.isEmpty()){
+            _state.update {
+                it.copy(
+                    isEmptyProducts = true
+                )
+            }
+        }else{
+            _state.update {
+                it.copy(
+                    isEmptyProducts = false
+                )
+            }
+        }
         getWishListProducts(products)
     }
 

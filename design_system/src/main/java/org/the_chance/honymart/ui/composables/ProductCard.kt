@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,34 +29,45 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ProductCard(
+    modifier: Modifier = Modifier,
     imageUrl: String,
-    furnitureName: String,
-    furniturePrice: String,
+    productName: String,
+    productPrice: String,
     secondaryText: String,
+    isFavoriteIconClicked: Boolean,
     onClickFavorite: () -> Unit = {},
     onClickCard: () -> Unit = {}
 ) {
     HoneyMartTheme {
         Box(
-            modifier = Modifier
-                .size(width = 256.dp, height = 200.dp)
+            modifier = modifier
+                .height(height = 200.dp)
+                .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
                 .clickable { onClickCard() }
         ) {
             ImageNetwork(
+                modifier = Modifier.fillMaxSize(),
                 imageUrl = imageUrl
             )
             IconButton(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(end = MaterialTheme.dimens.space8, top = MaterialTheme.dimens.space8),
-                backgroundColor = MaterialTheme.colorScheme.primary,
+                    .padding(
+                        end = MaterialTheme.dimens.space8,
+                        top = MaterialTheme.dimens.space8
+                    ),
+                backgroundColor = if (isFavoriteIconClicked) white
+                else MaterialTheme.colorScheme.primary,
                 onClick = onClickFavorite
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.icon_favorite_unselected),
+                    painter = painterResource(
+                        id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                        else R.drawable.icon_favorite_unselected
+                    ),
                     contentDescription = "favorite icon",
-                    tint = white
+                    tint = if (isFavoriteIconClicked) MaterialTheme.colorScheme.primary else white
                 )
             }
             Box(
@@ -66,8 +79,7 @@ fun ProductCard(
                                 Color.Transparent,
                                 black37,
                             ),
-                            startY = 0f,
-                            endY = 300f
+                            startY = 300f,
                         )
                     )
             )
@@ -81,14 +93,14 @@ fun ProductCard(
                     )
             ) {
                 Text(
-                    text = furnitureName,
+                    text = productName,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "$furniturePrice$",
+                    text = "$productPrice$",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimary,
                     maxLines = 1,
@@ -112,8 +124,9 @@ fun ProductCard(
 fun ProductCardPreview() {
     ProductCard(
         imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
-        furnitureName = "To Kill a Mockingbird",
-        furniturePrice = "30,000",
-        secondaryText = "Secondary Text"
+        productName = "To Kill a Mockingbird",
+        productPrice = "30,000",
+        secondaryText = "Secondary Text",
+        isFavoriteIconClicked = true
     )
 }

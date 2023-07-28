@@ -10,5 +10,7 @@ data class WishListDto(
     @SerializedName("price")
     val price: Double? = null,
     @SerializedName("images")
-    val images: List<String>? = null
+    val images: List<String>? = null,
+    @SerializedName("description")
+    val description: String? = null,
 )

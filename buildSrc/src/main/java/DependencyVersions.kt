@@ -37,7 +37,7 @@ object DependencyVersions {
     const val DATA_STORE = "1.0.0"
 
     // compose
-    const val RUN_TIME_LIFECYCLE_COMPOSE = "2.3.1"
+    const val RUN_TIME_LIFECYCLE_COMPOSE = "2.6.1"
     const val ACTIVITY_COMPOSE = "1.5.1"
     const val BOM_COMPOSE = "2022.10.00"
     const val FOUNDATION_COMPOSE = "1.4.3"
@@ -46,6 +46,22 @@ object DependencyVersions {
     const val SYSTEM_UI_CONTROLLER = "0.28.0"
     const val COIL_COMPOSE = "2.2.2"
     const val MATERIAL3_COMPOSE = "1.1.1"
+    const val HILT_COMPOSE = "1.0.0"
+    const val LOTTIE_COMPOSE = "6.0.0"
+    const val MATERIAL_COMPOSE = "1.4.3"
+
+    //ktor
+    const val KTOR_VERSION = "2.3.2"
+    const val KTOR_LOGGING= "1.5.0"
+    const val KTOR_SERIALIZATION= "1.3.0"
+
+    //firebase
+    const val FIREBASE_CRASH= "18.4.0"
+    const val FIREBASE_ANALYTICS= "21.3.0"
+
+    //splash
+    const val SPLASH_SCREEN= "1.0.1"
+
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"

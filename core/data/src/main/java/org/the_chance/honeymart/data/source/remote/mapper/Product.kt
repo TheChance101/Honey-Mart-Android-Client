@@ -4,11 +4,9 @@ import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.domain.model.ProductEntity
 
 fun ProductDto.toProductEntity() = ProductEntity(
-    productId = id,
-    productName = name,
-    productDescription = description,
-    ProductPrice = price,
-    productImages = images?.ifEmpty { listOf("") }
-
-
+    productId = id ?: 0L,
+    productName =  name ?: "",
+    productDescription = description ?: "",
+    ProductPrice = price ?: 0.0,
+    productImages = images ?: emptyList()
 )

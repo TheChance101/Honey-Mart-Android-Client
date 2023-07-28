@@ -1,43 +1,36 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.honeymart.ui.base.BaseFragment
-import org.the_chance.honeymart.util.collect
-import org.the_chance.user.R
-import org.the_chance.user.databinding.FragmentSignupDetailsBinding
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
-class SignupFragment : BaseFragment<FragmentSignupDetailsBinding>() {
-    override val TAG: String = this::class.simpleName.toString()
-    override val layoutIdFragment = R.layout.fragment_signup_details
-    override val viewModel: SignupViewModel by activityViewModels()
+class SignupFragment : Fragment() {
+    private lateinit var composeView: ComposeView
     private val args : SignupFragmentArgs by navArgs()
-    override fun setup() {
-        collectAction()
-        viewModel.saveArgs(args)
-    }
 
-    override fun onResume() {
-        super.onResume()
-        setWindowVisibility(
-            appBarVisibility = false,
-            bottomNavVisibility = false,
-            isTransparentStatusBar = false,
-            isInAuthScreens = true
-        )
-    }
-
-    private fun collectAction() {
-        collect(viewModel.effect) { effect ->
-            effect.getContentIfHandled()?.let { navigateToConfirmPassword() }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireActivity()).also {
+            composeView = it
         }
     }
 
-    private fun navigateToConfirmPassword() {
-        val action = SignupFragmentDirections.actionSignupFragmentToSignupConfirmPasswordFragment()
-        findNavController().navigate(action)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        composeView.setContent {
+            HoneyMartTheme {
+                SignupScreen(this,args.AuthData, args)
+            }
+        }
     }
 }
