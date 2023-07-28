@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -39,8 +38,19 @@ class ProductViewModel @Inject constructor(
     val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     init {
-         getData()
+        getData()
         _state.update { it.copy(categoryId = args.categoryId, position = args.position) }
+    }
+
+    fun resetNavigation() {
+        _state.update {
+            it.copy(
+                navigateToProductDetailsState = NavigateToProductDetailsState(
+                    isNavigate = false,
+                    id = 0L
+                )
+            )
+        }
     }
 
     fun getData() {
@@ -113,13 +123,13 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<ProductUiState>) {
-        if(products.isEmpty()){
+        if (products.isEmpty()) {
             _state.update {
                 it.copy(
                     isEmptyProducts = true
                 )
             }
-        }else{
+        } else {
             _state.update {
                 it.copy(
                     isEmptyProducts = false
@@ -167,12 +177,20 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        job?.cancel()
-        job = viewModelScope.launch {
-            delay(10)
-            _effect.emit(
-                EventHandler(
-                    ProductUiEffect.ClickProductEffect(productId, args.categoryId)
+//        job?.cancel()
+//        job = viewModelScope.launch {
+//            delay(10)
+//            _effect.emit(
+//                EventHandler(
+//                    ProductUiEffect.ClickProductEffect(productId, args.categoryId)
+//                )
+//            )
+//        }
+        _state.update {
+            it.copy(
+                navigateToProductDetailsState = NavigateToProductDetailsState(
+                    isNavigate = true,
+                    id = productId
                 )
             )
         }
