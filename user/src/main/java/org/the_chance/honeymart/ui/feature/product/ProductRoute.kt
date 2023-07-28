@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import org.the_chance.honeymart.ui.navigation.Screen
 
 
-private val ROUTE = Screen.OrderScreen.route
+private val ROUTE = Screen.ProductScreen.route
 
 fun NavController.navigateToProductScreen() {
     navigate(ROUTE)
