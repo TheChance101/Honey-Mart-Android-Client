@@ -30,13 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
-import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
@@ -45,12 +43,8 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun SignupScreen(
-    view: SignupFragment,
-    authData: AuthData,
-    args: SignupFragmentArgs,
-    viewModel: SignupViewModel = hiltViewModel(),
-) {
+fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
+    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
@@ -61,38 +55,35 @@ fun SignupScreen(
         }
     }
 
-    LaunchedEffect(key1 = state.isLogin ){
-        if (state.isLogin == ValidationState.SUCCESS){
-            val action = when (authData) {
-                is AuthData.Products -> {
-                    ProductsFragmentDirections.actionGlobalProductsFragment(
-                        authData.categoryId,
-                        authData.marketId,
-                        authData.position
-                    )
-                }
-
-                is AuthData.ProductDetails -> {
-                    ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
-                        authData.productId
-                    )
-                }
-            }
-            view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
-            view.findNavController().navigate(action)
-        }
-    }
-    viewModel.saveArgs(args)
+//    LaunchedEffect(key1 = state.isLogin ){
+//        if (state.isLogin == ValidationState.SUCCESS){
+//            val action = when (authData) {
+//                is AuthData.Products -> {
+//                    ProductsFragmentDirections.actionGlobalProductsFragment(
+//                        authData.categoryId,
+//                        authData.marketId,
+//                        authData.position
+//                    )
+//                }
+//
+//                is AuthData.ProductDetails -> {
+//                    ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
+//                        authData.productId
+//                    )
+//                }
+//            }
+//            view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
+//            view.findNavController().navigate(action)
+//        }
+//    }
+//    viewModel.saveArgs(args)
     SignupContent(
         onNameChange = viewModel::onFullNameInputChange,
         onEmailChange = viewModel::onEmailInputChange,
         onPasswordChange = viewModel::onPasswordInputChanged,
         onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
-        onClickLogin = {
-            view.findNavController()
-                .navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment(authData))
-        },
-        onClickSignup = { viewModel.onClickSignup() },
+        onClickLogin = { navController.navigateToLogin() },
+        onClickSignup = viewModel::onClickSignup,
         state = state
     )
 }
