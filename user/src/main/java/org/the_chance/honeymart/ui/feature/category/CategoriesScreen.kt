@@ -36,7 +36,7 @@ fun CategoryContent(state: CategoriesUiState, listener: CategoryInteractionListe
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 itemsIndexed(state.categories) { index, item ->
-                    CategoryItem(state = item, onCategoryClicked = {})
+                    CategoryItem(state = item, onCategoryClicked = listener::onCategoryClicked)
                 }
             }
     }
