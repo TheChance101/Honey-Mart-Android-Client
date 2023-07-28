@@ -11,5 +11,5 @@ class ProductDetailsAdapter(listener: ProductImageInteractionListener) :
 }
 
 interface ProductImageInteractionListener : BaseInteractionListener {
-    fun onClickImage(url:String)
+    fun onClickSmallImage(url:String)
 }
