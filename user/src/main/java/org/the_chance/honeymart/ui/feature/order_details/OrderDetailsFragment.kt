@@ -39,9 +39,7 @@ class OrderDetailsFragment : Fragment() {
         composeView.setContent {
             // You're in Compose world!
             HoneyMartTheme {
-                OrderDetailsScreen(
-                    onClickItemOrderDetails = {navigateToProductsDetails(it)}
-                )
+                OrderDetailsScreen()
             }
         }
     }

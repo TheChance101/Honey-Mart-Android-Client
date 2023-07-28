@@ -37,6 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
@@ -76,6 +79,7 @@ fun OrdersContent(
     state: OrdersUiState,
     ordersInteractionsListener : OrdersInteractionsListener
 ) {
+    val navController = LocalNavigationProvider.current
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -116,7 +120,6 @@ fun OrdersContent(
                 itemsIndexed(
                     items = state.orders,
                 ) { index, orderItem ->
-                    // Log.d("Mohamed", "$index.toString() ##### ${orderItem}")
                     var showDialog by remember { mutableStateOf(false) }
                     val dismissState = rememberDismissState()
                     val updatedDismissState by rememberUpdatedState(dismissState)
@@ -132,7 +135,7 @@ fun OrdersContent(
                             marketName = orderItem.marketName!!,
                             quantity = orderItem.quantity!!,
                             price = orderItem.totalPrice!!,
-                            onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
+                            onClickCard = { navController.navigateToOrderDetailsScreen() }
                         )
                     }
                     LaunchedEffect(showDialog) {
@@ -180,7 +183,7 @@ fun OrdersContent(
                     image = painterResource(id = R.drawable.placeholder_order),
                     title = stringResource(R.string.placeholder_title),
                     subtitle = stringResource(R.string.placeholder_subtitle),
-                    onClickDiscoverMarkets = { ordersInteractionsListener.onClickDiscoverMarkets() }
+                    onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
                 )
             }
         }
