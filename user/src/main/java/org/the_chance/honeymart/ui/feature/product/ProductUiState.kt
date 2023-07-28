@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.product
 
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.uistate.CategoryUiState
+import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 
 data class ProductsUiState(
     val isLoadingCategory: Boolean = false,

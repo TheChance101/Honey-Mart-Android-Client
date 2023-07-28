@@ -1,8 +1,12 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import android.app.Dialog
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +22,23 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
     override val TAG: String = this::class.java.simpleName
     override val layoutIdFragment: Int = R.layout.fragment_product_details
     override val viewModel: ProductDetailsViewModel by viewModels()
+
+    private lateinit var composeView: ComposeView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return ComposeView(requireActivity()).also {
+            composeView = it
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        composeView.setContent {
+            ProductDetailsScreen()
+        }
+    }
 
     override fun setup() {
         initiateAdapter()
