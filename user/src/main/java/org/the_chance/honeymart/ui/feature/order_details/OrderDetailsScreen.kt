@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
 import org.the_chance.honymart.ui.composables.LoadingAnimation
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
@@ -45,7 +47,7 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun OrderDetailsScreen(
     viewModel: OrderDetailsViewModel = hiltViewModel(),
-    onClickItemOrderDetails: (orderId: Long) -> Unit = {},
+//    onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
     val state = viewModel.state.collectAsState().value
 
@@ -63,7 +65,9 @@ fun OrderDetailsScreen(
         }
     }
 
-    OrderDetailsContent(state = state, onClickItemOrderDetails = onClickItemOrderDetails)
+    OrderDetailsContent(state = state,
+//        onClickItemOrderDetails = navController::navigateToProductDetailsScreen(orderId: Long)
+    )
 }
 
 @Composable
@@ -71,6 +75,7 @@ private fun OrderDetailsContent(
     state: OrderDetailsUiState,
     onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
+    val navController = LocalNavigationProvider.current
     Column(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 160.dp),
@@ -89,7 +94,7 @@ private fun OrderDetailsContent(
                         orderPrice = "${itemOrderDetails.price}",
                         orderCount = "${itemOrderDetails.count}",
                         orderId = itemOrderDetails.id,
-                        onClickCard = onClickItemOrderDetails,
+                        onClickCard = { navController.navigateToProductDetailsScreen()},
                     )
                 }
             }

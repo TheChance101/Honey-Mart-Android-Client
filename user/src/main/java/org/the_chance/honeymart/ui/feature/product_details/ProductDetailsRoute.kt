@@ -10,8 +10,8 @@ import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.ProductDetailsScreen.route
 
-fun NavController.navigateToProductDetailsScreen() {
-    navigate(ROUTE)
+fun NavController.navigateToProductDetailsScreen(productId: Long) {
+    navigate("$ROUTE/$productId")
 }
 
 

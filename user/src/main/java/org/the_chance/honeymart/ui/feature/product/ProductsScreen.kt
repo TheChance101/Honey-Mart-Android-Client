@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.EmptyProductScaffold
 import org.the_chance.honymart.ui.composables.ErrorScaffold
 import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
@@ -28,16 +31,28 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel()
 ) {
+    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
-    ProductsContent(state = state, viewModel, viewModel)
+
+    ProductsContent(
+        state = state,
+        viewModel = viewModel,
+        productInteractionListener = viewModel,
+        categoryProductInteractionListener = viewModel,
+        navigateToProductScreen = { productId ->
+            navController.navigateToProductDetailsScreen(productId)
+        }
+    )
 }
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
+    viewModel: ProductViewModel,
     productInteractionListener: ProductInteractionListener,
-    categoryProductInteractionListener: CategoryProductInteractionListener
+    categoryProductInteractionListener: CategoryProductInteractionListener,
+    navigateToProductScreen: (productId: Long) -> Unit
 ) {
     when {
         state.isLoadingProduct || state.isLoadingCategory -> LottieLoadingAnimation()
@@ -101,6 +116,12 @@ private fun ProductsContent(
                     }
                 }
             }
+        }
+    }
+    LaunchedEffect(key1 = state.navigateToProductDetailsState.isNavigate) {
+        if (state.navigateToProductDetailsState.isNavigate) {
+            navigateToProductScreen(state.navigateToProductDetailsState.id)
+            viewModel.resetNavigation()
         }
     }
 }
