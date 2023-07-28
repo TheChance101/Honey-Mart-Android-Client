@@ -20,9 +20,7 @@ fun MarketScreen(
     val navController = LocalNavigationProvider.current
     MarketContent(
         state = state,
-        marketInteractionListener = { marketId ->
-            navController.navigateToCategoryScreen(marketId)
-        }
+        marketInteractionListener = navController::navigateToCategoryScreen
     )
 }
 
@@ -41,7 +39,7 @@ fun MarketContent(
         state.markets.isNotEmpty() -> {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp)
+                contentPadding = PaddingValues(horizontal = 16.dp),
             ){
                 items (state.markets.size){position ->
                     val market = state.markets[position]
