@@ -19,7 +19,7 @@ import org.the_chance.honymart.ui.theme.black60
 
 @Preview
 @Composable
-fun NoConnectionLayout() {
+fun ErrorPlaceHolder() {
     Column(
         modifier = Modifier
             .fillMaxSize()
