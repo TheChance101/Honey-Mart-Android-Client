@@ -3,7 +3,11 @@ package org.the_chance.honeymart.ui.feature.market
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,33 +16,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
-import org.the_chance.honymart.ui.theme.background
-import org.the_chance.user.R
 
 
 @Composable
 fun MarketItem(
     state: MarketUiState,
-    onClickItem : () -> Unit
+    onClickItem: (Long?) -> Unit
 ){
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(16.dp))
-            .height(164.dp).clickable (onClick = onClickItem)  ,
+            .height(164.dp)
+            .clickable(onClick = { onClickItem(state.marketId) }),
 
-    ) {
+        ) {
 
         Image(
             painter = rememberAsyncImagePainter(model = state.marketImage),
