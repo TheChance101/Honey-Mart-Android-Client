@@ -27,7 +27,7 @@ fun MarketScreen(
 @Composable
 fun MarketContent(
     state : MarketsUiState,
-    marketInteractionListener: (Long?) -> Unit
+    marketInteractionListener: (Long) -> Unit
 ) {
 
     when{

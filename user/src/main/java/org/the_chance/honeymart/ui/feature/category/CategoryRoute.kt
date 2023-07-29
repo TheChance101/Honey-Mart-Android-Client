@@ -10,25 +10,24 @@ import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.CategoryScreen.route
 
-fun NavController.navigateToCategoryScreen(marketId: Long?) {
+fun NavController.navigateToCategoryScreen(marketId: Long) {
     navigate("${ROUTE}/${marketId}")
 }
 
 fun NavGraphBuilder.categoryRoute() {
     composable(
-        "${ROUTE}/{${MarketArgs.MARKET_ID}}",
+        "${ROUTE}/{${CategoryArgs.MARKET_ID}}",
         arguments = listOf(
-            navArgument(MarketArgs.MARKET_ID) {
+            navArgument(CategoryArgs.MARKET_ID) {
                 NavType.LongType
             }
-
         )
     ) {
         CategoriesScreen()
     }
 }
 
-class MarketArgs(savedStateHandle: SavedStateHandle) {
+class CategoryArgs(savedStateHandle: SavedStateHandle) {
     val marketId: String = checkNotNull(savedStateHandle[MARKET_ID])
 
     companion object {
