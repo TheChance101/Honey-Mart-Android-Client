@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -10,6 +11,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.category.CategoryArgs
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.EventHandler
@@ -19,17 +21,21 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()),
+    savedStateHandle: SavedStateHandle,
+    ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()),
     OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
     private var job: Job? = null
+
+//    private val orderArgs: OrderArgs = OrderArgs(savedStateHandle)
+
 
     init {
         getAllProcessingOrders()
     }
 
 
-    fun getAllProcessingOrders() {
+    private fun getAllProcessingOrders() {
         _state.update {
             it.copy(
                 isLoading = true,
