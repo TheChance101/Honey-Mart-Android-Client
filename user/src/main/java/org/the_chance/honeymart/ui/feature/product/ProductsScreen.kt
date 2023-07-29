@@ -38,7 +38,7 @@ fun ProductsScreen(
         state = state,
         viewModel = viewModel,
         productInteractionListener = viewModel,
-        categoryProductInteractionListener = viewModel,
+//        categoryProductInteractionListener = viewModel,
         navigateToProductScreen = { productId ->
             navController.navigateToProductDetailsScreen(productId)
         }
@@ -51,7 +51,7 @@ private fun ProductsContent(
     state: ProductsUiState,
     viewModel: ProductViewModel,
     productInteractionListener: ProductInteractionListener,
-    categoryProductInteractionListener: CategoryProductInteractionListener,
+//    categoryProductInteractionListener: CategoryProductInteractionListener,
     navigateToProductScreen: (productId: Long) -> Unit
 ) {
     when {
@@ -83,7 +83,7 @@ private fun ProductsContent(
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
                                 onClick = {
-                                    categoryProductInteractionListener.onClickCategory(category.categoryId)
+//                                    categoryProductInteractionListener.onClickCategory(category.categoryId)
                                 }
                             )
                         }

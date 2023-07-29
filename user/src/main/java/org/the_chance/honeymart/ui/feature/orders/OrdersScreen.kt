@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
+//import androidx.compose.material.DismissDirection
+//import androidx.compose.material.ExperimentalMaterialApi
+//import androidx.compose.material.SwipeToDismiss
+//import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -76,7 +76,7 @@ fun OrdersScreen(
         )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+//@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
@@ -125,33 +125,33 @@ fun OrdersContent(
                     items = state.orders,
                 ) { index, orderItem ->
                     var showDialog by remember { mutableStateOf(false) }
-                    val dismissState = rememberDismissState()
-                    val updatedDismissState by rememberUpdatedState(dismissState)
-
-                    SwipeToDismiss(
-                        state = dismissState,
-                        background = { SwipeBackground(dismissState = dismissState) },
-                        directions = setOf(DismissDirection.EndToStart),
-                    ) {
-                        ItemOrder(
-                            imageUrl = orderItem.imageUrl!!,
-                            orderId = orderItem.orderId!!,
-                            marketName = orderItem.marketName!!,
-                            quantity = orderItem.quantity!!,
-                            price = orderItem.totalPrice!!,
-                            onClickCard = { onClickItemOrder(orderItem.orderId!!)}
-                        )
-                    }
-                    LaunchedEffect(showDialog) {
-                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                            dismissState.reset()
-                        }
-                    }
-                    LaunchedEffect(updatedDismissState.dismissDirection) {
-                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                            showDialog = true
-                        }
-                    }
+//                    val dismissState = rememberDismissState()
+//                    val updatedDismissState by rememberUpdatedState(dismissState)
+//
+//                    SwipeToDismiss(
+//                        state = dismissState,
+//                        background = { SwipeBackground(dismissState = dismissState) },
+//                        directions = setOf(DismissDirection.EndToStart),
+//                    ) {
+//                        ItemOrder(
+//                            imageUrl = orderItem.imageUrl!!,
+//                            orderId = orderItem.orderId!!,
+//                            marketName = orderItem.marketName!!,
+//                            quantity = orderItem.quantity!!,
+//                            price = orderItem.totalPrice!!,
+//                            onClickCard = { onClickItemOrder(orderItem.orderId!!)}
+//                        )
+//                    }
+//                    LaunchedEffect(showDialog) {
+//                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+//                            dismissState.reset()
+//                        }
+//                    }
+//                    LaunchedEffect(updatedDismissState.dismissDirection) {
+//                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+//                            showDialog = true
+//                        }
+//                    }
                     if (showDialog) {
                         val textOrderStates = when (state.orderStates) {
                             OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)

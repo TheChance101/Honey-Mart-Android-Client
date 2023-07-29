@@ -12,7 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
-import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
+import org.the_chance.honymart.ui.composables.Loading
+
+//import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
 
 /**
  * Created by Aziza Helmy on 7/27/2023.

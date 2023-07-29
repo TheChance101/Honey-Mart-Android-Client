@@ -4,6 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.authentication.authNavGraph
+import org.the_chance.honeymart.ui.feature.bottom_navigation.bottomNavGraph
+import org.the_chance.honeymart.ui.feature.cart.cartRoute
+import org.the_chance.honeymart.ui.feature.category.categoryRoute
+import org.the_chance.honeymart.ui.feature.market.marketRoute
+import org.the_chance.honeymart.ui.feature.order_details.orderDetailsRoute
+import org.the_chance.honeymart.ui.feature.orders.orderRoute
+import org.the_chance.honeymart.ui.feature.product.productRoute
+import org.the_chance.honeymart.ui.feature.product_details.productDetailsRoute
+import org.the_chance.honeymart.ui.feature.wishlist.wishListRoute
 
 @Composable
 fun UserNavGraph() {
@@ -11,19 +20,21 @@ fun UserNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Graph.mainRoute
+        startDestination = Screen.MarketScreen.route
     ) {
         authNavGraph()
-        mainNavGraph()
-//        bottomNavGraph()
-//        orderDetailsRoute()
-//        orderRoute()
-//        productRoute()
-//        productDetailsRoute()
-//        wishListRoute()
-//        cartRoute()
-//        categoryRoute()
-//        marketRoute()
+        bottomNavGraph()
+        orderDetailsRoute()
+        orderRoute()
+        productRoute()
+        productDetailsRoute()
+        wishListRoute()
+        cartRoute()
+        categoryRoute()
+        marketRoute()
+//        signupRoute()
+//        authRoute()
+//        loginRoute()
     }
 }
 

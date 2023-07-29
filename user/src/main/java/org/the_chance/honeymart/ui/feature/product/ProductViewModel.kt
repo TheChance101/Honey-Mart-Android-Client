@@ -29,8 +29,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener,
-    CategoryProductInteractionListener {
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener{
 
     private var job: Job? = null
     override val TAG: String = this::class.simpleName.toString()
@@ -153,7 +152,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCategory(categoryId: Long) {
+    fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {

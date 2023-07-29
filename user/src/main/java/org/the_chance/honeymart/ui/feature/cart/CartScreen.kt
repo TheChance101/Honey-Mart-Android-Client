@@ -26,28 +26,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartItem
 import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
-import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
 
 @Composable
 fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
-    onClickButtonOrderDetails: () -> Unit = {},
-    onClickButtonDiscover: () -> Unit = {}
 ) {
+    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
 
     CartContent(
         state = state,
         cartInteractionListener = viewModel,
-        onClickButtonOrderDetails = onClickButtonOrderDetails,
-        onClickButtonDiscover = onClickButtonDiscover
+        onClickButtonOrderDetails = { navController.navigateToOrderScreen() },
+        onClickButtonDiscover = { navController.navigateToMarketScreen() }
     )
 }
 
@@ -81,7 +83,9 @@ private fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener
 ) {
-    Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
