@@ -29,7 +29,9 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductsScreen(
-    viewModel: ProductViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel(),
+//    marketId:String,
+//    position:String,
 ) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()

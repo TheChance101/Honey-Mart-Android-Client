@@ -28,6 +28,7 @@ class CategoryViewModel @Inject constructor(
 
     init {
         getAllCategory()
+        _state.update { it.copy(marketId = categoryArgs.marketId.toLong()) }
     }
 
 
@@ -63,7 +64,15 @@ class CategoryViewModel @Inject constructor(
         val position = state.value.categories.indexOfFirst { it.categoryId == categoryId }
         job = viewModelScope.launch {
             delay(10)
-            _effect.emit(EventHandler(CategoryUiEffect(categoryId, categoryArgs.marketId.toLong(), position)))
+            _effect.emit(
+                EventHandler(
+                    CategoryUiEffect(
+                        categoryId,
+                        categoryArgs.marketId.toLong(),
+                        position
+                    )
+                )
+            )
         }
     }
 }

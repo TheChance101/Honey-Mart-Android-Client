@@ -13,6 +13,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.category.CategoryArgs
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
@@ -34,11 +35,12 @@ class ProductViewModel @Inject constructor(
     private var job: Job? = null
     override val TAG: String = this::class.simpleName.toString()
 
-    val args = ProductsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val args: ProductArgs = ProductArgs(savedStateHandle)
+
 
     init {
         getData()
-        _state.update { it.copy(categoryId = args.categoryId, position = args.position) }
+        _state.update { it.copy(categoryId = args.categoryId.toLong(), position = 3) }
     }
 
     fun resetNavigation() {
@@ -96,7 +98,7 @@ class ProductViewModel @Inject constructor(
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true, isError = false) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId).map { it.toCategoryUiState() } },
+            { getMarketAllCategories(args.marketId.toLong()).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -264,7 +266,7 @@ class ProductViewModel @Inject constructor(
                 _effect.emit(
                     EventHandler(
                         ProductUiEffect.UnAuthorizedUserEffect(
-                            AuthData.Products(args.marketId, state.value.position, args.categoryId)
+                            AuthData.Products(  args.marketId.toLong(), state.value.position, args.categoryId.toLong())
                         )
                     )
                 )
