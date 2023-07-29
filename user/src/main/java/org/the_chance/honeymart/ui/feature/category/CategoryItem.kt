@@ -30,13 +30,13 @@ import org.the_chance.honymart.ui.theme.white100
  * Created by Aziza Helmy on 7/27/2023.
  */
 @Composable
-fun CategoryItem(state: CategoryUiState, onCategoryClicked: (Long) -> Unit) {
+fun CategoryItem(state: CategoryUiState, categoryId: Long, onCategoryClicked: (Long) -> Unit) {
     Column(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .padding(vertical = 8.dp)
-            .clickable { onCategoryClicked }
+            .clickable { onCategoryClicked(categoryId) }
     ) {
         Box(
             modifier = Modifier
@@ -69,5 +69,5 @@ fun CategoryItem(state: CategoryUiState, onCategoryClicked: (Long) -> Unit) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewCategoryItem() {
-    CategoryItem(CategoryUiState(categoryName = "Honey"), onCategoryClicked = {})
+    CategoryItem(CategoryUiState(categoryName = "Honey"), onCategoryClicked = {}, categoryId = 1)
 }

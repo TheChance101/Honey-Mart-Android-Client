@@ -9,9 +9,13 @@ import org.the_chance.honeymart.ui.navigation.Screen
 private val ROUTE = Screen.OrderScreen.route
 
 fun NavController.navigateToOrderScreen() {
-    navigate(ROUTE)
+    navigate("$ROUTE")
 }
 
 fun NavGraphBuilder.orderRoute() {
-    composable(ROUTE) { OrdersScreen() }
+    composable(
+        route = "$ROUTE",
+    ) {
+        OrdersScreen()
+    }
 }
