@@ -21,7 +21,8 @@ class CategoryViewModel @Inject constructor(
     CategoryInteractionListener {
 
     private var job: Job? = null
-    private val args = CategoriesFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val categoryArgs: CategoryArgs = CategoryArgs(savedStateHandle)
+
     override val TAG: String = this::class.java.simpleName
 
 
@@ -30,10 +31,10 @@ class CategoryViewModel @Inject constructor(
     }
 
 
-    fun getAllCategory() {
+    private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(args.marketId).map { it.toCategoryUiState() } },
+            { getAllCategories(categoryArgs.marketId.toLong()).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -62,7 +63,7 @@ class CategoryViewModel @Inject constructor(
         val position = state.value.categories.indexOfFirst { it.categoryId == categoryId }
         job = viewModelScope.launch {
             delay(10)
-            _effect.emit(EventHandler(CategoryUiEffect(categoryId, args.marketId, position)))
+            _effect.emit(EventHandler(CategoryUiEffect(categoryId, categoryArgs.marketId.toLong(), position)))
         }
     }
 }

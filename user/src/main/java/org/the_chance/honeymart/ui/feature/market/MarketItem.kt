@@ -28,7 +28,7 @@ import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
 @Composable
 fun MarketItem(
     state: MarketUiState,
-    onClickItem: (Long?) -> Unit
+    onClickItem: (Long) -> Unit
 ){
 
     Box(
@@ -36,7 +36,7 @@ fun MarketItem(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(16.dp))
             .height(164.dp)
-            .clickable(onClick = { onClickItem(state.marketId) }),
+            .clickable(onClick = { onClickItem(state.marketId!!) }),
 
         ) {
 

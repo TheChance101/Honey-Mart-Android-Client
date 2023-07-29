@@ -48,6 +48,4 @@ class MarketViewModel @Inject constructor(
             )
         }
     }
-
-
 }

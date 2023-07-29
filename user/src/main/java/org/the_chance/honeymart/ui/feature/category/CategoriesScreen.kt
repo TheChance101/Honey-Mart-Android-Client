@@ -18,13 +18,18 @@ import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
  * Created by Aziza Helmy on 7/27/2023.
  */
 @Composable
-fun CategoriesScreen(viewModel: CategoryViewModel = hiltViewModel()) {
+fun CategoriesScreen(
+    viewModel: CategoryViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsState()
     CategoryContent(state, viewModel)
 }
 
 @Composable
-fun CategoryContent(state: CategoriesUiState, listener: CategoryInteractionListener) {
+fun CategoryContent(
+    state: CategoriesUiState,
+    listener: CategoryInteractionListener
+) {
     when {
         state.isLoading -> Loading()
         state.isError -> ErrorPlaceHolder()
