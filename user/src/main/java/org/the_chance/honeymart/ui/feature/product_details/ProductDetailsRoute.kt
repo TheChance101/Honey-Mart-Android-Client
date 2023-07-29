@@ -24,7 +24,7 @@ fun NavGraphBuilder.productDetailsRoute() {
             }
         )
     ) {
-        ProductDetailsFragment()
+        ProductDetailsScreen()
     }
 }
 
