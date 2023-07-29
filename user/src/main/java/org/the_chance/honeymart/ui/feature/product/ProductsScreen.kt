@@ -30,8 +30,6 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-//    marketId:String,
-//    position:String,
 ) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
@@ -40,7 +38,6 @@ fun ProductsScreen(
         state = state,
         viewModel = viewModel,
         productInteractionListener = viewModel,
-//        categoryProductInteractionListener = viewModel,
         navigateToProductScreen = { productId ->
             navController.navigateToProductDetailsScreen(productId)
         }
@@ -53,8 +50,7 @@ private fun ProductsContent(
     state: ProductsUiState,
     viewModel: ProductViewModel,
     productInteractionListener: ProductInteractionListener,
-//    categoryProductInteractionListener: CategoryProductInteractionListener,
-    navigateToProductScreen: (productId: Long) -> Unit
+    navigateToProductScreen: (productId: Long) -> Unit,
 ) {
     when {
         state.isLoadingProduct || state.isLoadingCategory -> LottieLoadingAnimation()
@@ -85,7 +81,7 @@ private fun ProductsContent(
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
                                 onClick = {
-//                                    categoryProductInteractionListener.onClickCategory(category.categoryId)
+                                    productInteractionListener.onClickCategory(category.categoryId)
                                 }
                             )
                         }

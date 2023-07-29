@@ -154,7 +154,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun onClickCategory(categoryId: Long) {
+    override fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
         _state.update {

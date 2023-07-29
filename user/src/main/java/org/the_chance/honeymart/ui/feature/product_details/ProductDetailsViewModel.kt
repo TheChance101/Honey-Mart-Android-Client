@@ -29,11 +29,11 @@ class ProductDetailsViewModel @Inject constructor(
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
-    ProductImageInteractionListener,ProductDetailsInteraction {
+    ProductImageInteractionListener, ProductDetailsInteraction {
 
     override val TAG: String = this::class.simpleName.toString()
 
-    private val args = ProductDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val args = ProductDetailsArgs(savedStateHandle)
 
 
     init {
@@ -41,7 +41,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun getData() {
-        getProductDetails(args.productId)
+        getProductDetails(args.productId.toLong())
     }
 
 
@@ -80,11 +80,11 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null, isConnectionError = false, product = product,
-                image = product.productImages?.first() ?: "",
-                smallImages = product.productImages?.drop(1) as List<String>
+                image = product.productImages.first() ?: "",
+                smallImages = product.productImages.drop(1) as List<String>
             )
         }
-        checkIfProductInWishList(args.productId)
+        checkIfProductInWishList(args.productId.toLong())
     }
 
     private fun onGetProductError(error: ErrorHandler) {
@@ -185,7 +185,7 @@ class ProductDetailsViewModel @Inject constructor(
     // region Check If Product In Wishlist
 
     private fun checkIfProductInWishList(productId: Long) {
-        _state.update { it.copy( error = null, isConnectionError = false) }
+        _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
             { getIfProductInWishListUseCase(productId) },
             ::onGetIfProductInWishListSuccess,
@@ -194,7 +194,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetIfProductInWishListSuccess(isFavorite: Boolean) {
-        _state.update {  it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false) }
         updateFavoriteState(isFavorite)
     }
 

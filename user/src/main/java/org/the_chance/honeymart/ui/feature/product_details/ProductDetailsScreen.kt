@@ -45,6 +45,7 @@ fun ProductDetailsScreen(
     viewModel: ProductDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
     HoneyMartTheme {
         ProductDetailsContent(state = state,
             interaction = viewModel,

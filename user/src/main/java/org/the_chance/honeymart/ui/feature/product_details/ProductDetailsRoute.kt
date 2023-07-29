@@ -17,7 +17,7 @@ fun NavController.navigateToProductDetailsScreen(productId: Long) {
 
 fun NavGraphBuilder.productDetailsRoute() {
     composable(
-        route = "$ROUTE/${ProductDetailsArgs.PRODUCT_ID}",
+        route = "$ROUTE/{${ProductDetailsArgs.PRODUCT_ID}}",
         arguments = listOf(
             navArgument(name = ProductDetailsArgs.PRODUCT_ID) {
                 NavType.LongType
