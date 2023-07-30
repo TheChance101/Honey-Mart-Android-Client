@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,8 +41,8 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CartItem(
-    product: CartListProductUiState ,
-    isLoading: Boolean ,
+    product: CartListProductUiState,
+    isLoading: Boolean,
     onClickMinus: () -> Unit = {},
     onClickPlus: () -> Unit = {}
 ) {
@@ -61,25 +61,25 @@ fun CartItem(
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
 
             Image(
-                painter = rememberAsyncImagePainter(model = product.productImage!![0]),
+                painter = rememberAsyncImagePainter(model = product.productImage?.get(0)),
                 contentDescription = null,
                 modifier = Modifier
-                    .wrapContentHeight()
+                    .wrapContentSize()
                     .width(100.dp)
+                    .height(100.dp)
                     .constrainAs(imageOrder) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
-                    },
-                contentScale = ContentScale.Crop
+                    }
+                , contentScale = ContentScale.Crop
             )
 
             Text(
                 text = product.productName ?: "",
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(black87),
                 modifier = Modifier.constrainAs(textOrderNumber) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom, margin = 32.dp)
+                    top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(imageOrder.end, margin = 8.dp)
                 }
             )
@@ -93,8 +93,8 @@ fun CartItem(
                     .background(Color.Transparent, CircleShape)
                     .padding(horizontal = 8.dp, vertical = 4.dp)
                     .constrainAs(textItemPrice) {
-                        top.linkTo(textOrderNumber.bottom)
-                        bottom.linkTo(parent.bottom, margin = 8.dp)
+                        top.linkTo(textOrderNumber.bottom, margin = 16.dp)
+                        bottom.linkTo(parent.bottom, margin = 16.dp)
                         start.linkTo(imageOrder.end, margin = 8.dp)
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
@@ -102,7 +102,7 @@ fun CartItem(
             )
 
             Button(
-                onClick = {onClickMinus()},
+                onClick = { onClickMinus() },
                 shape = CircleShape,
                 enabled = !isLoading,
                 colors = buttonColors(
@@ -115,44 +115,44 @@ fun CartItem(
                     width = 1.dp
                 ),
                 modifier = Modifier
-                    .paint(painter = painterResource(id = org.the_chance.design_system.R.drawable.minus_1))
-                    .size(32.dp)
+                    .paint(painter = painterResource(id = org.the_chance.design_system.R.drawable.minus_1), contentScale = ContentScale.Inside)
+                    .size(24.dp)
                     .constrainAs(imageViewMinusOrder) {
-                        top.linkTo(parent.top, margin = 32.dp)
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(parent.bottom, margin = 16.dp)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
                     },
-            ) {
-
-            }
+                ) {}
 
 
             Text(
                 text = product.productCount.toString(),
-                style = org.the_chance.honymart.ui.theme.Typography.displayMedium.copy(black60),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                    black60
+                ),
                 modifier = Modifier.constrainAs(textViewNumberOfItems) {
-                    top.linkTo(parent.top, margin = 32.dp)
-                    bottom.linkTo(parent.bottom)
+                    bottom.linkTo(parent.bottom, margin = 16.dp)
                     end.linkTo(imageViewAddItem.start, margin = 16.dp)
                 }
+
             )
+
+
             IconButton(
-                onClick = { onClickPlus()},
+                onClick = { onClickPlus() },
                 enabled = !isLoading,
                 modifier = Modifier
                     .background(primary100, CircleShape)
-                    .size(32.dp)
+                    .size(24.dp)
                     .constrainAs(imageViewAddItem) {
-                        top.linkTo(parent.top, margin = 32.dp)
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(parent.bottom, margin = 16.dp)
                         end.linkTo(parent.end, margin = 16.dp)
                     },
             ) {
-             Icon(
-                 imageVector = Icons.Default.Add,
-                 contentDescription = null,
-                 tint = white,
-             )
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    tint = white,
+                )
             }
         }
     }

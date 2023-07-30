@@ -25,7 +25,7 @@ class CartViewModel @Inject constructor(
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-    fun getChosenCartProducts() {
+     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCart().toCartListProductUiState() },
@@ -137,7 +137,7 @@ class CartViewModel @Inject constructor(
         )
     }
  private fun onCheckOutSuccess(message: String) {
-     _state.update { it.copy(isLoading = false, products = emptyList(), bottomSheetIsDisplayed = true) }
+     _state.update { it.copy(isLoading = false, products = emptyList(),bottomSheetIsDisplayed = true) }
      viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
  }
 
@@ -166,6 +166,10 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    override fun changeBottomSheetValue() {
+        _state.update { it.copy(bottomSheetIsDisplayed = false) }
+    }
+
     private fun onDeleteFromCartSuccess(message: String) {
         _state.update {
             it.copy(
@@ -180,8 +184,5 @@ class CartViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
-    fun changeBottomSheetValue(){
-        _state.update { it.copy( bottomSheetIsDisplayed = false) }
-    }
 
 }

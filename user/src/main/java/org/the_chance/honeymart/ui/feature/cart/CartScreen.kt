@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import SwipeBackGround
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,12 +30,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.Composeables.CartItem
-import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
+import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
+import org.the_chance.honeymart.ui.feature.wishlist.compose.NoConnectionError
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.theme.white300
 import org.the_chance.user.R
 
 @Composable
@@ -63,16 +65,22 @@ fun CartContent(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
     onClickButtonOrderDetails: () -> Unit = {},
-    onClickButtonDiscover: () -> Unit = {}
-) {
+    onClickButtonDiscover: () -> Unit = {},
+
+    ) {
 
     when {
-        state.isError -> ErrorPlaceHolder()
-        state.products.isEmpty() -> BottomSheetCompleteOrderContent(
-            state = state,
-            onClick = onClickButtonOrderDetails,
-            onClickButtonDiscover = onClickButtonDiscover
-        )
+        state.isLoading && state.products.isEmpty() -> LoadingAnimation()
+        state.isError -> NoConnectionError(
+            getWishListProducts = { cartInteractionListener.getChosenCartProducts() })
+
+        state.products.isEmpty() -> {
+            BottomSheetCompleteOrderContent(
+                state = state,
+                onClick = onClickButtonOrderDetails,
+                onClickButtonDiscover = onClickButtonDiscover
+            )
+        }
 
         else -> CartSuccessScreen(
             state = state,
@@ -91,7 +99,7 @@ private fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(white300)
     ) {
         LazyColumn(
             modifier = Modifier.weight(1f),
@@ -150,7 +158,11 @@ private fun CartSuccessScreen(
                 }
             }
         }
+
         CartCardView(totalPrice = state.total.toString(), isLoading = state.isLoading)
+    }
+    AnimatedVisibility(visible = state.isLoading) {
+        LoadingAnimation()
     }
 }
 

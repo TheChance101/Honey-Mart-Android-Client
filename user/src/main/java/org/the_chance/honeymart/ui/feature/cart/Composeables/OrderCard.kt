@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +22,7 @@ import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.user.R
 
 @Composable
 fun CartCardView(
@@ -70,7 +72,7 @@ fun CartCardView(
                 background = primary100,
             )
             Text(
-                text = "Total Price",
+                text = stringResource(R.string.total_price),
                 color = black16,
                 style = org.the_chance.honymart.ui.theme.Typography.displaySmall,
                 modifier = Modifier.constrainAs(TotalPrice) {
