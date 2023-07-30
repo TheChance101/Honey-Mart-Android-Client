@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +36,7 @@ import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.login.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.CustomButton
@@ -108,6 +111,7 @@ fun SignupContent(
                         text = stringResource(R.string.sign_up),
                         color = white,
                         style = Typography.headlineMedium,
+                        textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(
@@ -116,6 +120,7 @@ fun SignupContent(
                         ),
                         color = white,
                         style = Typography.bodyMedium,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -239,5 +244,8 @@ fun SignupContent(
                 }
             }
         }
+    }
+    if(state.isLogin == ValidationState.SUCCESS){
+        CustomDialog(openDialogCustom = remember { mutableStateOf(true) })
     }
 }
