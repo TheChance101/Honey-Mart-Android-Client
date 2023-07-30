@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.EmptyProductScaffold
 import org.the_chance.honymart.ui.composables.ErrorScaffold
@@ -40,6 +41,9 @@ fun ProductsScreen(
         productInteractionListener = viewModel,
         navigateToProductScreen = { productId ->
             navController.navigateToProductDetailsScreen(productId)
+        },
+        navigateToAuth = {
+            navController.navigateToAuth()
         }
     )
 }
@@ -51,6 +55,7 @@ private fun ProductsContent(
     viewModel: ProductViewModel,
     productInteractionListener: ProductInteractionListener,
     navigateToProductScreen: (productId: Long) -> Unit,
+    navigateToAuth: () -> Unit,
 ) {
     when {
         state.isLoadingProduct || state.isLoadingCategory -> LottieLoadingAnimation()
@@ -119,6 +124,12 @@ private fun ProductsContent(
     LaunchedEffect(key1 = state.navigateToProductDetailsState.isNavigate) {
         if (state.navigateToProductDetailsState.isNavigate) {
             navigateToProductScreen(state.navigateToProductDetailsState.id)
+            viewModel.resetNavigation()
+        }
+    }
+    LaunchedEffect(key1 = state.navigateToAuthGraph) {
+        if (state.navigateToAuthGraph.isNavigate) {
+            navigateToAuth()
             viewModel.resetNavigation()
         }
     }

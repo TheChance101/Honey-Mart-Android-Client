@@ -103,11 +103,6 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(loginState: ValidationState) {
-        if (loginState == ValidationState.SUCCESS) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(AuthUiEffect.ClickSignUpEffect(args.AuthData)))
-            }
-        }
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
 

@@ -23,7 +23,6 @@ fun NavGraphBuilder.categoryRoute() {
             }
         )
     ) {
-//     val marketId = navBackStackEntry.arguments?.getString(CategoryArgs.MARKET_ID)
         CategoriesScreen()
     }
 }

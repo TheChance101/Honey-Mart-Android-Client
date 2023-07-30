@@ -30,8 +30,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
-import org.the_chance.honeymart.ui.navigation.Graph
+import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -44,45 +45,20 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.isLogin){
-        if (state.isLogin){
-            navController.navigate(Graph.mainRoute){
-                popUpTo(Graph.authRoute){
-                    inclusive = true
-                }
-            }
+    LaunchedEffect(key1 = state.isLogin) {
+        if (state.isLogin) {
+            navController.popBackStack(Screen.AuthenticationScreen.route, true)
         }
     }
 
-//    LaunchedEffect(key1 = state.isLogin){
-//        if (state.isLogin){
-//            val action = when (authData) {
-//                is AuthData.Products -> {
-//                    ProductsFragmentDirections.actionGlobalProductsFragment(
-//                        authData.categoryId,
-//                        authData.marketId,
-//                        authData.position
-//                    )
-//                }
-//                is AuthData.ProductDetails -> {
-//                    ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
-//                        authData.productId
-//                    )
-//                }
-//            }
-//            view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
-//            view.findNavController().navigate(action)
-//        }
-//    }
-
-    LaunchedEffect(key1 = state.emailState, key2 = state.passwordState){
+    LaunchedEffect(key1 = state.emailState, key2 = state.passwordState) {
         if (state.emailState == ValidationState.INVALID_EMAIL
-            || state.passwordState == ValidationState.INVALID_PASSWORD){
-            Toast.makeText(context,"Email or password not exist", Toast.LENGTH_SHORT).show()
+            || state.passwordState == ValidationState.INVALID_PASSWORD
+        ) {
+            Toast.makeText(context, "Email or password not exist", Toast.LENGTH_SHORT).show()
         }
     }
 
-//    viewModel.saveArgs(args)
     LoginContent(
         onClickLogin = viewModel::onLoginClick,
 
@@ -102,9 +78,9 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     state: LoginUiState,
 ) {
-    if (state.isLoading){
-        // loading animation
-    }else{
+    if (state.isLoading) {
+        Loading()
+    } else {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)

@@ -38,7 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
-import org.the_chance.honymart.ui.composables.LoadingAnimation
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
@@ -60,12 +60,13 @@ fun OrderDetailsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            LoadingAnimation()
+            Loading()
         }
     }
 
-    OrderDetailsContent(state = state,
-        onClickItemOrderDetails =  navController::navigateToProductDetailsScreen
+    OrderDetailsContent(
+        state = state,
+        onClickItemOrderDetails = navController::navigateToProductDetailsScreen
     )
 }
 
@@ -92,7 +93,7 @@ private fun OrderDetailsContent(
                         orderPrice = "${itemOrderDetails.price}",
                         orderCount = "${itemOrderDetails.count}",
                         orderId = itemOrderDetails.id,
-                        onClickCard = { onClickItemOrderDetails(itemOrderDetails.id)},
+                        onClickCard = { onClickItemOrderDetails(itemOrderDetails.id) },
                     )
                 }
             }

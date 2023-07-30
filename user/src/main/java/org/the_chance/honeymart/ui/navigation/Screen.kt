@@ -11,8 +11,11 @@ sealed class Screen(val route: String) {
     object WishListScreen : Screen("wishListScreen")
 
     object CategoryScreen : Screen("categoryScreen")
+    object CategoryScreenWithArgs : Screen("categoryScreen/{marketId}")
     object OrderDetailsScreen : Screen("orderDetailsScreen")
+    object OrderDetailsScreenWithArgs : Screen("orderDetailsScreen/{orderId}")
     object ProductScreen : Screen("ProductScreen")
+    object ProductScreenWithArgs : Screen("ProductScreen/{categoryId}/{marketId}/{position}")
     object ProductDetailsScreen : Screen("productDetailsScreen")
 
 

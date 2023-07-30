@@ -1,5 +1,9 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.rememberDismissState
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -17,10 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-//import androidx.compose.material.DismissDirection
-//import androidx.compose.material.ExperimentalMaterialApi
-//import androidx.compose.material.SwipeToDismiss
-//import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -44,43 +44,27 @@ import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
-import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
-import org.the_chance.honymart.ui.composables.LoadingAnimation
+import org.the_chance.honymart.ui.composables.Loading
 
 @Composable
 fun OrdersScreen(
-    viewModel: OrderViewModel = hiltViewModel()
+    viewModel: OrderViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
-
-    AnimatedVisibility(
-        visible = state.isLoading,
-        enter = fadeIn(animationSpec = tween(durationMillis = 500)),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            LoadingAnimation()
-        }
-    }
-        OrdersContent(
-            state = state,
-            ordersInteractionsListener = viewModel,
-            onClickItemOrder =  navController::navigateToOrderDetailsScreen
-        )
+    OrdersContent(
+        state = state,
+        ordersInteractionsListener = viewModel,
+        onClickItemOrder = navController::navigateToOrderDetailsScreen
+    )
 }
-
-//@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    ordersInteractionsListener : OrdersInteractionsListener,
+    ordersInteractionsListener: OrdersInteractionsListener,
     onClickItemOrder: (orderId: Long) -> Unit = {},
 ) {
     val navController = LocalNavigationProvider.current
@@ -112,6 +96,19 @@ fun OrdersContent(
         }
         Spacer(modifier = Modifier.height(8.dp))
         AnimatedVisibility(
+            visible = state.isLoading,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500))
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Loading()
+            }
+        }
+        AnimatedVisibility(
             visible = !state.isLoading,
             enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
             exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
@@ -125,33 +122,33 @@ fun OrdersContent(
                     items = state.orders,
                 ) { index, orderItem ->
                     var showDialog by remember { mutableStateOf(false) }
-//                    val dismissState = rememberDismissState()
-//                    val updatedDismissState by rememberUpdatedState(dismissState)
-//
-//                    SwipeToDismiss(
-//                        state = dismissState,
-//                        background = { SwipeBackground(dismissState = dismissState) },
-//                        directions = setOf(DismissDirection.EndToStart),
-//                    ) {
-//                        ItemOrder(
-//                            imageUrl = orderItem.imageUrl!!,
-//                            orderId = orderItem.orderId!!,
-//                            marketName = orderItem.marketName!!,
-//                            quantity = orderItem.quantity!!,
-//                            price = orderItem.totalPrice!!,
-//                            onClickCard = { onClickItemOrder(orderItem.orderId!!)}
-//                        )
-//                    }
-//                    LaunchedEffect(showDialog) {
-//                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-//                            dismissState.reset()
-//                        }
-//                    }
-//                    LaunchedEffect(updatedDismissState.dismissDirection) {
-//                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-//                            showDialog = true
-//                        }
-//                    }
+                    val dismissState = rememberDismissState()
+                    val updatedDismissState by rememberUpdatedState(dismissState)
+
+                    SwipeToDismiss(
+                        state = dismissState,
+                        background = { SwipeBackground(dismissState = dismissState) },
+                        directions = setOf(DismissDirection.EndToStart),
+                    ) {
+                        ItemOrder(
+                            imageUrl = orderItem.imageUrl!!,
+                            orderId = orderItem.orderId!!,
+                            marketName = orderItem.marketName!!,
+                            quantity = orderItem.quantity!!,
+                            price = orderItem.totalPrice!!,
+                            onClickCard = { onClickItemOrder(orderItem.orderId)}
+                        )
+                    }
+                    LaunchedEffect(showDialog) {
+                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            dismissState.reset()
+                        }
+                    }
+                    LaunchedEffect(updatedDismissState.dismissDirection) {
+                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            showDialog = true
+                        }
+                    }
                     if (showDialog) {
                         val textOrderStates = when (state.orderStates) {
                             OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)

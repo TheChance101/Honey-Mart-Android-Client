@@ -17,7 +17,7 @@ fun NavController.navigateToOrderDetailsScreen(orderId:Long) {
 
 fun NavGraphBuilder.orderDetailsRoute() {
     composable(
-        route = "$ROUTE/${OrderDetailsArgs.ORDER_ID}",
+        route = "$ROUTE/{${OrderDetailsArgs.ORDER_ID}}",
         arguments = listOf(
             navArgument(name = OrderDetailsArgs.ORDER_ID) {
                 NavType.LongType

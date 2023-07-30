@@ -12,15 +12,13 @@ data class ProductsUiState(
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
     val isEmptyProducts: Boolean = false,
-    val navigateToProductDetailsState: NavigateToProductDetailsState = NavigateToProductDetailsState(
-        isNavigate = false,
-        id = 0L
-    ),
+    val navigateToProductDetailsState: NavigationState = NavigationState(),
+    val navigateToAuthGraph: NavigationState = NavigationState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L
 )
 
-data class NavigateToProductDetailsState(
+data class NavigationState(
     val isNavigate: Boolean = false,
     val id: Long = 0L
 )

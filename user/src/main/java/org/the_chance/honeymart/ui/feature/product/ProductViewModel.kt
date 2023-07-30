@@ -13,12 +13,10 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoryArgs
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
-import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -30,7 +28,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener{
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
 
     private var job: Job? = null
     override val TAG: String = this::class.simpleName.toString()
@@ -46,9 +44,12 @@ class ProductViewModel @Inject constructor(
     fun resetNavigation() {
         _state.update {
             it.copy(
-                navigateToProductDetailsState = NavigateToProductDetailsState(
+                navigateToProductDetailsState = NavigationState(
                     isNavigate = false,
                     id = 0L
+                ),
+                navigateToAuthGraph = NavigationState(
+                    isNavigate = false
                 )
             )
         }
@@ -189,7 +190,7 @@ class ProductViewModel @Inject constructor(
 //        }
         _state.update {
             it.copy(
-                navigateToProductDetailsState = NavigateToProductDetailsState(
+                navigateToProductDetailsState = NavigationState(
                     isNavigate = true,
                     id = productId
                 )
@@ -262,12 +263,10 @@ class ProductViewModel @Inject constructor(
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser) {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        ProductUiEffect.UnAuthorizedUserEffect(
-                            AuthData.Products(  args.marketId.toLong(), state.value.position, args.categoryId.toLong())
-                        )
+            _state.update {
+                it.copy(
+                    navigateToAuthGraph = NavigationState(
+                        isNavigate = true
                     )
                 )
             }
