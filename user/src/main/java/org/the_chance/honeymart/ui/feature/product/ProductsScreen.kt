@@ -58,7 +58,7 @@ private fun ProductsContent(
     navigateToAuth: () -> Unit,
 ) {
     when {
-        state.isLoadingProduct || state.isLoadingCategory -> LottieLoadingAnimation()
+        state.isLoadingCategory -> LottieLoadingAnimation()
         state.isError -> ErrorScaffold()
         else -> {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -94,26 +94,30 @@ private fun ProductsContent(
                     if (state.isEmptyProducts) {
                         EmptyProductScaffold()
                     } else {
-                        LazyColumn(
-                            contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-                        ) {
-                            items(state.products.size) { index ->
-                                val product = state.products[index]
-                                ProductCard(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
-                                    productName = product.productName,
-                                    productPrice = product.productPrice.toString(),
-                                    secondaryText = product.productDescription,
-                                    isFavoriteIconClicked = product.isFavorite,
-                                    onClickCard = {
-                                        productInteractionListener.onClickProduct(product.productId)
-                                    },
-                                    onClickFavorite = {
-                                        productInteractionListener.onClickFavIcon(product.productId)
-                                    }
-                                )
+                        if(state.isLoadingProduct){
+                            LottieLoadingAnimation()
+                        }else{
+                            LazyColumn(
+                                contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                            ) {
+                                items(state.products.size) { index ->
+                                    val product = state.products[index]
+                                    ProductCard(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        imageUrl = product.productImages.firstOrNull() ?: "",
+                                        productName = product.productName,
+                                        productPrice = product.productPrice.toString(),
+                                        secondaryText = product.productDescription,
+                                        isFavoriteIconClicked = product.isFavorite,
+                                        onClickCard = {
+                                            productInteractionListener.onClickProduct(product.productId)
+                                        },
+                                        onClickFavorite = {
+                                            productInteractionListener.onClickFavIcon(product.productId)
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
