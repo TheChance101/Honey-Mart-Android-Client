@@ -36,7 +36,6 @@ import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
 
 @Composable
@@ -67,20 +66,20 @@ fun CartContent(
     onClickButtonDiscover: () -> Unit = {}
 ) {
 
-        when {
-            state.isLoading -> Loading()
-            state.isError -> ErrorPlaceHolder()
-            state.products.isEmpty() -> BottomSheetCompleteOrderContent(
-                state = state,
-                onClick = onClickButtonOrderDetails,
-                onClickButtonDiscover = onClickButtonDiscover
-            )
-            else -> CartSuccessScreen(
-                state = state,
-                cartInteractionListener = cartInteractionListener
-            )
-        }
+    when {
+        state.isError -> ErrorPlaceHolder()
+        state.products.isEmpty() -> BottomSheetCompleteOrderContent(
+            state = state,
+            onClick = onClickButtonOrderDetails,
+            onClickButtonDiscover = onClickButtonDiscover
+        )
+
+        else -> CartSuccessScreen(
+            state = state,
+            cartInteractionListener = cartInteractionListener
+        )
     }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -89,9 +88,11 @@ private fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
@@ -119,7 +120,8 @@ private fun CartSuccessScreen(
                                 cartInteractionListener.onClickAddCountProductInCart(
                                     productId = product.productId!!
                                 )
-                            }
+                            },
+                            isLoading = state.isLoading
                         )
                     }
                 )
@@ -148,7 +150,7 @@ private fun CartSuccessScreen(
                 }
             }
         }
-        CartCardView(totalPrice = state.total.toString())
+        CartCardView(totalPrice = state.total.toString(), isLoading = state.isLoading)
     }
 }
 

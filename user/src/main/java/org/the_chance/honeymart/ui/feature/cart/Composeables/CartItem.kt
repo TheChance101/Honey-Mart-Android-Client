@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.ui.feature.cart.Composeables
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,15 +15,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -32,10 +37,12 @@ import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CartItem(
-    product: CartListProductUiState,
+    product: CartListProductUiState ,
+    isLoading: Boolean ,
     onClickMinus: () -> Unit = {},
     onClickPlus: () -> Unit = {}
 ) {
@@ -78,7 +85,7 @@ fun CartItem(
             )
 
             Text(
-                text = formatCurrencyWithNearestFraction(product.productPrice!!.toDouble()),
+                text = formatCurrencyWithNearestFraction(product.productPrice!!),
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(primary100),
 
                 modifier = Modifier
@@ -94,26 +101,32 @@ fun CartItem(
                     }
             )
 
-            Card(
+            Button(
+                onClick = {onClickMinus()},
                 shape = CircleShape,
+                enabled = !isLoading,
+                colors = buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = primary100,
+                    disabledContainerColor = Color.Transparent,
+                ),
+                border = BorderStroke(
+                    color = primary100,
+                    width = 1.dp
+                ),
                 modifier = Modifier
-                    .clickable { }
+                    .paint(painter = painterResource(id = org.the_chance.design_system.R.drawable.minus_1))
                     .size(32.dp)
                     .constrainAs(imageViewMinusOrder) {
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
-                    }.clickable { onClickMinus() },
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                    },
             ) {
-                Image(
 
-                    painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_minus),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
             }
+
+
             Text(
                 text = product.productCount.toString(),
                 style = org.the_chance.honymart.ui.theme.Typography.displayMedium.copy(black60),
@@ -123,29 +136,41 @@ fun CartItem(
                     end.linkTo(imageViewAddItem.start, margin = 16.dp)
                 }
             )
-
-            // Plus Button
-            Card(
-                shape = CircleShape,
+            IconButton(
+                onClick = { onClickPlus()},
+                enabled = !isLoading,
                 modifier = Modifier
-                    .clickable { }
+                    .background(primary100, CircleShape)
                     .size(32.dp)
                     .constrainAs(imageViewAddItem) {
                         top.linkTo(parent.top, margin = 32.dp)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end, margin = 16.dp)
-                    }.clickable { onClickPlus() },
-                colors = CardDefaults.cardColors(containerColor = primary100)
+                    },
             ) {
-                Icon(
-                    modifier = Modifier.padding(8.dp),
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    tint = Color.White,
-                )
+             Icon(
+                 imageVector = Icons.Default.Add,
+                 contentDescription = null,
+                 tint = white,
+             )
             }
         }
     }
-
 }
 
+
+@Preview
+@Composable
+fun CartItemPreview() {
+    CartItem(
+        product = CartListProductUiState(
+            productImage = listOf("https://i.ibb.co/0jZGZJd/Rectangle-1.png"),
+            productName = "Product Name",
+            productPrice = 10000.0,
+            productCount = 1
+        ),
+        isLoading = false,
+        onClickMinus = {},
+        onClickPlus = {},
+    )
+}

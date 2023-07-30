@@ -117,12 +117,13 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickAddCountProductInCart(productId: Long) {
+        _state.update { it.copy(isLoading = true) }
         incrementProductCountByOne(productId)
     }
 
     override fun onClickMinusCountProductInCart(productId: Long) {
+        _state.update { it.copy(isLoading = true) }
         decrementProductCountByOne(productId)
-
     }
 
 
