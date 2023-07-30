@@ -38,7 +38,8 @@ dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    implementation(platform(Dependencies.composePlatformBom))
+    androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
-
 }

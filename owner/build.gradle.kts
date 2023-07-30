@@ -41,6 +41,8 @@ dependencies {
     Dependencies.uiDependencies.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
+    implementation(platform(Dependencies.composePlatformBom))
+    androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
