@@ -22,12 +22,11 @@ class OrderDetailsViewModel @Inject constructor(
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
     private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
-    OrderDetailsInteractionListener {
+) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()) {
     override val TAG: String = this::class.java.simpleName
 
 
-    private val args = OrderDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val orderArgs: OrderDetailsArgs = OrderDetailsArgs(savedStateHandle)
 
     init {
         getData()
@@ -41,7 +40,7 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderProducts() {
         _state.update { it.copy(isProductsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderProductsDetailsUseCase(args.orderId).map { it.toOrderDetailsProductUiState() } },
+            { getOrderProductsDetailsUseCase(orderArgs.orderId.toLong()).map { it.toOrderDetailsProductUiState() } },
             ::onGetOrderProductsSuccess,
             ::onGetOrderProductsError
         )
@@ -61,7 +60,7 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderDetails() {
         _state.update { it.copy(isDetailsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderDetailsUseCase(args.orderId).toOrderParentDetailsUiState() },
+            { getOrderDetailsUseCase(orderArgs.orderId.toLong()).toOrderParentDetailsUiState() },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )
@@ -76,7 +75,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
 
-    override fun onClickOrder(orderId: Long) {
+    fun onClickOrder(orderId: Long) {
         viewModelScope.launch {
             _effect.emit(
                 EventHandler(
@@ -85,6 +84,4 @@ class OrderDetailsViewModel @Inject constructor(
             )
         }
     }
-
-
 }

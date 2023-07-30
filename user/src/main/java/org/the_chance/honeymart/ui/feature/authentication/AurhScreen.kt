@@ -19,10 +19,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.fragment.findNavController
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -30,20 +30,12 @@ import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun AuthScreen(
-    view: AuthFragment,
-    authData: AuthData,
-    viewModel: AuthViewModel = hiltViewModel()
-) {
+fun AuthScreen() {
+    val navController = LocalNavigationProvider.current
+
     AuthContent(
-        onClickSignUp = {
-            view.findNavController()
-                .navigate(AuthFragmentDirections.actionAuthFragmentToSignupFragment(authData))
-        },
-        onClickLogin = {
-            view.findNavController()
-                .navigate(AuthFragmentDirections.actionAuthFragmentToLoginFragment(authData))
-        },
+        onClickSignUp = { navController.navigateToSignupScreen() },
+        onClickLogin = { navController.navigateToLogin() },
     )
 }
 

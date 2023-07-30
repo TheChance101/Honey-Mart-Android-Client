@@ -11,9 +11,16 @@ data class ProductsUiState(
     val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
-    val isEmptyProducts : Boolean = false,
+    val isEmptyProducts: Boolean = false,
+    val navigateToProductDetailsState: NavigationState = NavigationState(),
+    val navigateToAuthGraph: NavigationState = NavigationState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L
+)
+
+data class NavigationState(
+    val isNavigate: Boolean = false,
+    val id: Long = 0L
 )
 
 data class ProductUiState(
@@ -22,7 +29,7 @@ data class ProductUiState(
     val productDescription: String = "",
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = false,
-    val productImages:List<String> = emptyList()
+    val productImages: List<String> = emptyList()
 )
 
 fun ProductEntity.toProductUiState(): ProductUiState {

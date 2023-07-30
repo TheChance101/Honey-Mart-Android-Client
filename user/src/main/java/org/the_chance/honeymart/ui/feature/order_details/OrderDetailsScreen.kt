@@ -35,8 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
-import org.the_chance.honymart.ui.composables.LoadingAnimation
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
@@ -45,10 +47,9 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun OrderDetailsScreen(
     viewModel: OrderDetailsViewModel = hiltViewModel(),
-    onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
     val state = viewModel.state.collectAsState().value
-
+    val navController = LocalNavigationProvider.current
     AnimatedVisibility(
         visible = state.isProductsLoading,
         enter = fadeIn(animationSpec = tween(durationMillis = 500)),
@@ -59,11 +60,14 @@ fun OrderDetailsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            LoadingAnimation()
+            Loading()
         }
     }
 
-    OrderDetailsContent(state = state, onClickItemOrderDetails = onClickItemOrderDetails)
+    OrderDetailsContent(
+        state = state,
+        onClickItemOrderDetails = navController::navigateToProductDetailsScreen
+    )
 }
 
 @Composable
@@ -89,7 +93,7 @@ private fun OrderDetailsContent(
                         orderPrice = "${itemOrderDetails.price}",
                         orderCount = "${itemOrderDetails.count}",
                         orderId = itemOrderDetails.id,
-                        onClickCard = onClickItemOrderDetails,
+                        onClickCard = { onClickItemOrderDetails(itemOrderDetails.id) },
                     )
                 }
             }

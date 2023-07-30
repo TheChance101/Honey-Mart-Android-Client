@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
 
 
@@ -17,16 +17,17 @@ fun MarketScreen(
     viewModel: MarketViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
+    val navController = LocalNavigationProvider.current
     MarketContent(
         state = state,
-        marketInteractionListener = viewModel
+        marketInteractionListener = navController::navigateToCategoryScreen
     )
 }
 
 @Composable
 fun MarketContent(
-     state : MarketsUiState,
-     marketInteractionListener : MarketInteractionListener
+    state : MarketsUiState,
+    marketInteractionListener: (Long) -> Unit
 ) {
 
     when{
@@ -38,13 +39,13 @@ fun MarketContent(
         state.markets.isNotEmpty() -> {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp)
+                contentPadding = PaddingValues(horizontal = 16.dp),
             ){
                 items (state.markets.size){position ->
                     val market = state.markets[position]
                     MarketItem(
                         market,
-                        onClickItem = {marketInteractionListener.onClickMarket(market.marketId!!)}
+                        onClickItem = marketInteractionListener
                     )
                 }
             }

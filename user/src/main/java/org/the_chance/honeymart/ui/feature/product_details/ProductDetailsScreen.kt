@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,6 +46,7 @@ fun ProductDetailsScreen(
     viewModel: ProductDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
     HoneyMartTheme {
         ProductDetailsContent(state = state,
             interaction = viewModel,
@@ -60,7 +62,7 @@ private fun ProductDetailsContent(
     interaction: ProductDetailsInteraction,
     onBackClick: () -> Unit,
 ) {
-
+    Log.e("ProductDetailsContent", "ProductDetailsContent: ${state.isLoading}", )
     if (state.isLoading) {
         Loading()
     } else {

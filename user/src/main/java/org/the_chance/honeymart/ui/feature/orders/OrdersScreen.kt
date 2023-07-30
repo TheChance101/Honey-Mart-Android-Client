@@ -39,6 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
@@ -46,12 +49,19 @@ import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
+import org.the_chance.honymart.ui.composables.Loading
 
 @Composable
 fun OrdersScreen(
-    viewModel: OrderViewModel = hiltViewModel()
+    viewModel: OrderViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val navController = LocalNavigationProvider.current
+    OrdersContent(
+        state = state,
+        ordersInteractionsListener = viewModel,
+        onClickItemOrder = navController::navigateToOrderDetailsScreen
+    )
 
     AnimatedVisibility(
         visible = state.isLoading,
@@ -79,8 +89,11 @@ fun OrdersScreen(
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
+    ordersInteractionsListener: OrdersInteractionsListener,
+    onClickItemOrder: (orderId: Long) -> Unit = {},
     ordersInteractionsListener: OrdersInteractionsListener
 ) {
+    val navController = LocalNavigationProvider.current
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -108,6 +121,19 @@ fun OrdersContent(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
+        AnimatedVisibility(
+            visible = state.isLoading,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500))
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Loading()
+            }
+        }
         AnimatedVisibility(
             visible = !state.isLoading,
             enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
@@ -186,7 +212,7 @@ fun OrdersContent(
                     image = painterResource(id = R.drawable.placeholder_order),
                     title = stringResource(R.string.placeholder_title),
                     subtitle = stringResource(R.string.placeholder_subtitle),
-                    onClickDiscoverMarkets = { ordersInteractionsListener.onClickDiscoverMarkets() }
+                    onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
                 )
             }
         }
