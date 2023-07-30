@@ -46,7 +46,6 @@ import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
-import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
@@ -62,24 +61,6 @@ fun OrdersScreen(
         ordersInteractionsListener = viewModel,
         onClickItemOrder = navController::navigateToOrderDetailsScreen
     )
-
-    AnimatedVisibility(
-        visible = state.isLoading,
-        enter = fadeIn(animationSpec = tween(durationMillis = 500)),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500))
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            LoadingAnimation()
-        }
-    }
-    OrdersContent(
-        state = state,
-        ordersInteractionsListener = viewModel
-    )
 }
 
 @OptIn(
@@ -91,17 +72,18 @@ fun OrdersContent(
     state: OrdersUiState,
     ordersInteractionsListener: OrdersInteractionsListener,
     onClickItemOrder: (orderId: Long) -> Unit = {},
-    ordersInteractionsListener: OrdersInteractionsListener
 ) {
     val navController = LocalNavigationProvider.current
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             CustomChip(
@@ -164,7 +146,7 @@ fun OrdersContent(
                                 marketName = orderItem.marketName!!,
                                 quantity = orderItem.quantity!!,
                                 price = orderItem.totalPrice!!,
-                                onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
+                                onClickCard = { onClickItemOrder(orderItem.orderId) }
                             )
                         })
                     LaunchedEffect(showDialog) {
