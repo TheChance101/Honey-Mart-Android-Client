@@ -43,6 +43,7 @@ import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderDetailsScreen(
@@ -106,7 +107,7 @@ private fun OrderDetailsContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                    .background(color = white)
             ) {
                 Column(
                     modifier = Modifier
