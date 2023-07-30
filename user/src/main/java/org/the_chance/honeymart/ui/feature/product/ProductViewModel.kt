@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
@@ -13,7 +12,6 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoryArgs
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
@@ -30,69 +28,27 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener{
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
 
-    private var job: Job? = null
     override val TAG: String = this::class.simpleName.toString()
 
-    private val args: ProductArgs = ProductArgs(savedStateHandle)
-
+    private val args = ProductArgs(savedStateHandle)
 
     init {
-        getData()
-        _state.update { it.copy(categoryId = args.categoryId.toLong(), position = 3) }
-    }
-
-    fun resetNavigation() {
         _state.update {
             it.copy(
-                navigateToProductDetailsState = NavigateToProductDetailsState(
-                    isNavigate = false,
-                    id = 0L
-                )
+                categoryId = args.categoryId.toLong(),
+                position = args.position.toInt()
             )
         }
+        getData()
     }
 
-    fun getData() {
+    private fun getData() {
         _state.update { it.copy(error = null, isError = false) }
-        getProductsByCategoryId(state.value.categoryId)
+        getProductsByCategoryId()
         getCategoriesByMarketId()
-        log(_state.value.toString())
-    }
-
-    private fun getWishListProducts(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
-        tryToExecute(
-            { getWishListUseCase().map { it.toWishListProductUiState() } },
-            { onGetWishListProductSuccess(it, products) },
-            { onGetWishListProductError(it, products) }
-        )
-
-    }
-
-    private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
-    ) {
-        _state.update { productsUiState ->
-            productsUiState.copy(
-                isLoadingProduct = false, products = updateProducts(products, wishListProducts)
-            )
-        }
-    }
-
-    private fun updateProducts(
-        products: List<ProductUiState>,
-        wishListProducts: List<WishListProductUiState>,
-    ) = products.map { product ->
-        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-    }
-
-    private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
-        _state.update { it.copy(isLoadingProduct = false, error = error, products = products) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
+       // log(_state.value.toString())
     }
 
     private fun getCategoriesByMarketId() {
@@ -101,15 +57,6 @@ class ProductViewModel @Inject constructor(
             { getMarketAllCategories(args.marketId.toLong()).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
-        )
-    }
-
-    private fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
-        tryToExecute(
-            { getAllProducts(categoryId).map { it.toProductUiState() } },
-            ::onGetProductSuccess,
-            ::onGetProductError
         )
     }
 
@@ -122,38 +69,12 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-
-    private fun onGetProductSuccess(products: List<ProductUiState>) {
-        if (products.isEmpty()) {
-            _state.update {
-                it.copy(
-                    isEmptyProducts = true
-                )
-            }
-        } else {
-            _state.update {
-                it.copy(
-                    isEmptyProducts = false
-                )
-            }
-        }
-        getWishListProducts(products)
-    }
-
     private fun onGetCategoryError(error: ErrorHandler) {
         _state.update { it.copy(isLoadingCategory = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
-
-    private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(isLoadingProduct = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
-
     override fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
@@ -162,12 +83,13 @@ class ProductViewModel @Inject constructor(
                 categories = updatedCategories,
                 products = emptyList(),
                 position = position.inc(),
-                categoryId = categoryId
+                categoryId = categoryId,
+                isLoadingProduct = true,
+                isEmptyProducts = false
             )
         }
-        getProductsByCategoryId(categoryId)
+        getProductsByCategoryId()
     }
-
     private fun updateCategorySelection(
         categories: List<CategoryUiState>,
         selectedCategoryId: Long,
@@ -177,16 +99,39 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    private fun getProductsByCategoryId() {
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        tryToExecute(
+            { getAllProducts(state.value.categoryId).map { it.toProductUiState() } },
+            ::onGetProductSuccess,
+            ::onGetProductError
+        )
+    }
+    private fun onGetProductSuccess(products: List<ProductUiState>) {
+        if (products.isEmpty()) {
+            _state.update {
+                it.copy(
+                    isEmptyProducts = true,
+                    products = products
+                )
+            }
+        } else {
+            _state.update {
+                it.copy(
+                    isEmptyProducts = false,
+                    products = products
+                )
+            }
+        }
+        getWishListProducts(products)
+    }
+    private fun onGetProductError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingProduct = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
     override fun onClickProduct(productId: Long) {
-//        job?.cancel()
-//        job = viewModelScope.launch {
-//            delay(10)
-//            _effect.emit(
-//                EventHandler(
-//                    ProductUiEffect.ClickProductEffect(productId, args.categoryId)
-//                )
-//            )
-//        }
         _state.update {
             it.copy(
                 navigateToProductDetailsState = NavigateToProductDetailsState(
@@ -194,6 +139,37 @@ class ProductViewModel @Inject constructor(
                     id = productId
                 )
             )
+        }
+    }
+    private fun updateProducts(
+        products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
+    ) = products.map { product ->
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+    }
+
+    private fun getWishListProducts(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        tryToExecute(
+            { getWishListUseCase().map { it.toWishListProductUiState() } },
+            { onGetWishListProductSuccess(it, products) },
+            { onGetWishListProductError(it, products) }
+        )
+
+    }
+    private fun onGetWishListProductSuccess(
+        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
+    ) {
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                isLoadingProduct = false, products = updateProducts(products, wishListProducts)
+            )
+        }
+    }
+    private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
+        _state.update { it.copy(isLoadingProduct = false, error = error, products = products) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
     }
 
@@ -266,13 +242,24 @@ class ProductViewModel @Inject constructor(
                 _effect.emit(
                     EventHandler(
                         ProductUiEffect.UnAuthorizedUserEffect(
-                            AuthData.Products(  args.marketId.toLong(), state.value.position, args.categoryId.toLong())
+                            AuthData.Products(args.marketId.toLong(), state.value.position, args.categoryId.toLong())
                         )
                     )
                 )
             }
         }
         updateFavoriteState(productId, false)
+    }
+
+    fun resetNavigation() {
+        _state.update {
+            it.copy(
+                navigateToProductDetailsState = NavigateToProductDetailsState(
+                    isNavigate = false,
+                    id = 0L
+                )
+            )
+        }
     }
 
 }
