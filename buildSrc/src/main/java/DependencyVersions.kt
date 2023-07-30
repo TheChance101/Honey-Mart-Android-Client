@@ -49,6 +49,7 @@ object DependencyVersions {
     const val HILT_COMPOSE = "1.0.0"
     const val LOTTIE_COMPOSE = "6.0.0"
     const val MATERIAL_COMPOSE = "1.4.3"
+    const val PLATFORM_BOM_COMPOSE = "2023.03.00"
 
     //ktor
     const val KTOR_VERSION = "2.3.2"
@@ -65,5 +66,9 @@ object DependencyVersions {
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"
+        const val TOOLS_BUILD_CLASSPATH = "4.3.15"
+        const val GOOGLE_SERVICES_CLASSPATH = "4.3.15"
+        const val FIREBASE_CRASH_CLASSPATH = "2.9.7"
+        const val KOTLIN_SERIALZATION_CLASSPATH = "1.8.10"
     }
 }

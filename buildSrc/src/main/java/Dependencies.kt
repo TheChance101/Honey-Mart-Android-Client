@@ -90,11 +90,9 @@ object Dependencies {
         listOf(
             "androidx.compose.material3:material3:${DependencyVersions.MATERIAL3_COMPOSE}",
             "androidx.activity:activity-compose:${DependencyVersions.ACTIVITY_COMPOSE}",
-            //  "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
             "androidx.compose.ui:ui",
             "androidx.compose.ui:ui-graphics",
             "androidx.compose.ui:ui-tooling-preview",
-            // "androidx.compose:compose-bom:${DependencyVersions.BOM_COMPOSE}",
             "androidx.compose.foundation:foundation:${DependencyVersions.FOUNDATION_COMPOSE}",
             "androidx.compose.ui:ui-util:${DependencyVersions.UI_UTIL_COMPOSE}",
             "androidx.constraintlayout:constraintlayout-compose:${DependencyVersions.CONSTRAINT_LAYOUT_COMPOSE}",
@@ -132,13 +130,31 @@ object Dependencies {
         )
     }
     val composeUiDependency by lazy {
-            "androidx.compose.ui:ui-tooling:${DependencyVersions.MATERIAL_COMPOSE}"
+        "androidx.compose.ui:ui-tooling:${DependencyVersions.MATERIAL_COMPOSE}"
+    }
+    val composePlatformBom by lazy {
+        "androidx.compose:compose-bom:${DependencyVersions.PLATFORM_BOM_COMPOSE}"
+    }
+    val composePlatformBomAndroidTest by lazy {
+        "androidx.compose:compose-bom:${DependencyVersions.PLATFORM_BOM_COMPOSE}"
     }
 
     object Classpath {
 
         val navigationClasspath by lazy {
             "androidx.navigation:navigation-safe-args-gradle-plugin:${DependencyVersions.ClasspathVersions.NAVIGATION_CLASSPATH}"
+        }
+        val toolsBuildClasspath by lazy {
+            "com.android.tools.build:gradle:${DependencyVersions.ClasspathVersions.TOOLS_BUILD_CLASSPATH}"
+        }
+        val googleServiceClasspath by lazy {
+            "com.google.gms:google-services:${DependencyVersions.ClasspathVersions.GOOGLE_SERVICES_CLASSPATH}"
+        }
+        val googleFirebaseCrashClasspath by lazy {
+            "com.google.firebase:firebase-crashlytics-gradle:${DependencyVersions.ClasspathVersions.FIREBASE_CRASH_CLASSPATH}"
+        }
+        val kotlinSerializationClasspath by lazy {
+            "org.jetbrains.kotlin:kotlin-serialization:${DependencyVersions.ClasspathVersions.KOTLIN_SERIALZATION_CLASSPATH}"
         }
     }
 
