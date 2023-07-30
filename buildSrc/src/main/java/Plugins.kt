@@ -8,4 +8,5 @@ object Plugins {
     const val JAVA_LIBRARY = "java-library"
     const val NAVIGATION_ARGS = "androidx.navigation.safeargs.kotlin"
     const val SERIALIZATION = "org.jetbrains.kotlin.plugin.serialization"
+    const val PLUGIN_SERIALIZATION = "plugin.serialization"
 }
