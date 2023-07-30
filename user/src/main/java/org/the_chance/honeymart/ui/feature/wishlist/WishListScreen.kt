@@ -16,6 +16,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
 import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
 import org.the_chance.honeymart.ui.feature.wishlist.compose.NoConnectionError
@@ -29,6 +32,7 @@ fun WishListScreen(
 ) {
     val state = viewModel.state.collectAsState().value
     val lifecycleOwner = LocalLifecycleOwner.current
+    val navController = LocalNavigationProvider.current
 
     LaunchedEffect(lifecycleOwner) {
         viewModel.getWishListProducts()
@@ -36,7 +40,11 @@ fun WishListScreen(
 
     WishListContent(
         state = state,
-        wishListInteractionListener = viewModel
+        wishListInteractionListener = navController::navigateToProductDetailsScreen,
+        onClickDesCover = {
+            navController.navigateToMarketScreen()
+        },
+        onClickIconFavorite = viewModel::onClickFavoriteIcon
     )
 
 }
@@ -44,7 +52,9 @@ fun WishListScreen(
 @Composable
 private fun WishListContent(
     state: WishListUiState,
-    wishListInteractionListener: WishListInteractionListener,
+    wishListInteractionListener: (ProductId: Long) -> Unit,
+    onClickDesCover: () -> Unit,
+    onClickIconFavorite: (ProductId: Long) -> Unit
 ) {
 
     when {
@@ -54,7 +64,7 @@ private fun WishListContent(
 
         state.isError -> {
             NoConnectionError {
-                wishListInteractionListener.getWishListProducts()
+//                wishListInteractionListener
             }
         }
 
@@ -73,16 +83,10 @@ private fun WishListContent(
                                 name = productState.productName!!,
                                 price = "${productState.productPrice}",
                                 description = "${productState.description} ",
-                                onClickProduct = {
-                                    wishListInteractionListener.onClickProduct(
-                                        productState.productId!!
-                                    )
-                                },
-                                onClickFavoriteIcon = {
-                                    wishListInteractionListener.onClickFavoriteIcon(
-                                        productState.productId!!
-                                    )
-                                }
+                                productId = productState.productId!!,
+                                onClickProduct = { wishListInteractionListener(productState.productId) },
+                                onClickFavoriteIcon = { onClickIconFavorite(productState.productId) }
+
                             )
                         }
                     })
@@ -91,7 +95,7 @@ private fun WishListContent(
 
         else -> {
             PlaceHolderWishList {
-                wishListInteractionListener.onClickDiscoverButton()
+                onClickDesCover()
             }
 
         }

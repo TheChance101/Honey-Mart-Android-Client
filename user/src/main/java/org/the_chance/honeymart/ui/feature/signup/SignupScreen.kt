@@ -30,14 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.feature.product.ProductsFragmentDirections
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsFragmentDirections
-import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -45,54 +45,30 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun SignupScreen(
-    view: SignupFragment,
-    authData: AuthData,
-    args: SignupFragmentArgs,
-    viewModel: SignupViewModel = hiltViewModel(),
-) {
+fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
+    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.emailState, key2 = state.fullNameState){
+    LaunchedEffect(key1 = state.emailState, key2 = state.fullNameState) {
         if (state.emailState == ValidationState.INVALID_EMAIL
-            || state.fullNameState == ValidationState.INVALID_FULL_NAME){
-            Toast.makeText(context,"User name or email already exist",Toast.LENGTH_SHORT).show()
+            || state.fullNameState == ValidationState.INVALID_FULL_NAME
+        ) {
+            Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT).show()
         }
     }
-
-    LaunchedEffect(key1 = state.isLogin ){
-        if (state.isLogin == ValidationState.SUCCESS){
-            val action = when (authData) {
-                is AuthData.Products -> {
-                    ProductsFragmentDirections.actionGlobalProductsFragment(
-                        authData.categoryId,
-                        authData.marketId,
-                        authData.position
-                    )
-                }
-
-                is AuthData.ProductDetails -> {
-                    ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(
-                        authData.productId
-                    )
-                }
-            }
-            view.findNavController().setGraph(org.the_chance.user.R.navigation.main_nav_graph)
-            view.findNavController().navigate(action)
+    LaunchedEffect(key1 = state.isLogin) {
+        if (state.isLogin == ValidationState.SUCCESS) {
+            navController.popBackStack(Screen.AuthenticationScreen.route, true)
         }
     }
-    viewModel.saveArgs(args)
     SignupContent(
         onNameChange = viewModel::onFullNameInputChange,
         onEmailChange = viewModel::onEmailInputChange,
         onPasswordChange = viewModel::onPasswordInputChanged,
         onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
-        onClickLogin = {
-            view.findNavController()
-                .navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment(authData))
-        },
-        onClickSignup = { viewModel.onClickSignup() },
+        onClickLogin = { navController.navigateToLogin() },
+        onClickSignup = viewModel::onClickSignup,
         state = state
     )
 }
@@ -107,11 +83,11 @@ fun SignupContent(
     onClickSignup: () -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
-    state: SignupUiState
+    state: SignupUiState,
 ) {
-    if (state.isLoading){
-        // loading animation
-    }else{
+    if (state.isLoading) {
+        Loading()
+    } else {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -149,8 +125,12 @@ fun SignupContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                HorizontalPager(state = pagerState, pageCount = 2, userScrollEnabled = false) { page ->
-                    when(page){
+                HorizontalPager(
+                    state = pagerState,
+                    pageCount = 2,
+                    userScrollEnabled = false
+                ) { page ->
+                    when (page) {
                         0 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -178,6 +158,7 @@ fun SignupContent(
                                 },
                             )
                         }
+
                         1 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -199,7 +180,7 @@ fun SignupContent(
                                 hint = stringResource(R.string.confirm_password),
                                 idIconDrawableRes = R.drawable.ic_password,
                                 onValueChange = onConfirmPasswordChange,
-                                errorMessage = when(state.confirmPasswordState) {
+                                errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
                                 }
@@ -208,20 +189,22 @@ fun SignupContent(
                     }
                 }
                 val coroutineScope = rememberCoroutineScope()
-                when(pagerState.currentPage){
+                when (pagerState.currentPage) {
                     0 -> CustomButton(
                         labelIdStringRes = R.string.Continue,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
                         onClick = {
                             if (state.fullNameState == ValidationState.VALID_FULL_NAME
                                 && state.emailState == ValidationState.VALID_EMAIL &&
-                                state.email.isNotEmpty() && state.fullName.isNotEmpty()) {
+                                state.email.isNotEmpty() && state.fullName.isNotEmpty()
+                            ) {
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(1)
                                 }
                             }
                         },
                     )
+
                     1 -> CustomButton(
                         labelIdStringRes = R.string.sign_up,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
@@ -230,7 +213,7 @@ fun SignupContent(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            when(pagerState.currentPage){
+            when (pagerState.currentPage) {
                 0 -> Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
@@ -242,7 +225,10 @@ fun SignupContent(
                         style = Typography.displaySmall,
                         textAlign = TextAlign.Center
                     )
-                    TextButton(onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
+                    TextButton(
+                        onClick = onClickLogin,
+                        colors = ButtonDefaults.textButtonColors(Color.Transparent)
+                    ) {
                         Text(
                             text = stringResource(R.string.log_in),
                             color = primary100,

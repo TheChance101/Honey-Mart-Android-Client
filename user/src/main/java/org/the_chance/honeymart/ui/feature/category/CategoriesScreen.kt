@@ -11,20 +11,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
-import org.the_chance.honeymart.ui.feature.cart.Composeables.Loading
+import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
+import org.the_chance.honymart.ui.composables.Loading
 
 /**
  * Created by Aziza Helmy on 7/27/2023.
  */
 @Composable
-fun CategoriesScreen(viewModel: CategoryViewModel = hiltViewModel()) {
+fun CategoriesScreen(
+    viewModel: CategoryViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsState()
-    CategoryContent(state, viewModel)
+    val navController = LocalNavigationProvider.current
+    CategoryContent(state, listener = navController::navigateToProductScreen)
 }
 
 @Composable
-fun CategoryContent(state: CategoriesUiState, listener: CategoryInteractionListener) {
+fun CategoryContent(
+    state: CategoriesUiState,
+    listener: (categoryId: Long , marketId: Long , position:Int) -> Unit,
+) {
     when {
         state.isLoading -> Loading()
         state.isError -> ErrorPlaceHolder()
@@ -36,7 +44,13 @@ fun CategoryContent(state: CategoriesUiState, listener: CategoryInteractionListe
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 itemsIndexed(state.categories) { index, item ->
-                    CategoryItem(state = item, onCategoryClicked = listener::onCategoryClicked)
+                    CategoryItem(
+                        state = item,
+                        onCategoryClicked =  listener ,
+                        categoryId = item.categoryId,
+                        marketId = state.marketId,
+                        position = index,
+                    )
                 }
             }
     }

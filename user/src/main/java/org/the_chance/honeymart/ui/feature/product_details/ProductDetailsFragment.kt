@@ -40,13 +40,13 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         }
     }
 
-    override fun setup() {
+    /*override fun setup() {
         initiateAdapter()
         navigateBack()
         collectEffect()
-    }
+    }*/
 
-    override fun onResume() {
+   /* override fun onResume() {
         super.onResume()
         setWindowVisibility(
             appBarVisibility = false,
@@ -133,5 +133,5 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding>() {
         }
         dialog.setCancelable(false)
         dialog.show()
-    }
+    }*/
 }

@@ -2,98 +2,78 @@ package org.the_chance.honeymart.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.user.R
-import org.the_chance.user.databinding.ActivityMainBinding
+import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBar
+import org.the_chance.honeymart.ui.navigation.MainNavGraph
+import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    @SuppressLint("AppCompatMethod")
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragment_host) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        setupNavigation(navController)
-
-    }
-
-    private fun setupNavigation(navController: NavController) {
-        val navView = binding.bottomNavigationView
-        val cart = setOf(
-            R.id.cartFragment,
-            R.id.cartBottomFragment
-        )
-        val wishList = setOf(
-            R.id.wishListFragment
-        )
-        val orders = setOf(
-            R.id.ordersFragment,
-            R.id.orderDetailsFragment
-        )
-
-        setOnBottomNavigationListener(navView, navController, cart, orders, wishList)
-
-        navView.setupWithNavController(navController)
-    }
-
-    private fun setOnBottomNavigationListener(
-        navView: BottomNavigationView,
-        navController: NavController,
-        cart: Set<Int>,
-        orders: Set<Int>,
-        wishList: Set<Int>,
-    ) {
-        navView.setOnNavigationItemReselectedListener { item ->
-            when (item.itemId) {
-                R.id.markets_graph -> {
-                    navController.popBackStack(R.id.marketsFragment, false)
-                }
-
-                R.id.cart_graph -> {
-                    if (navController.currentDestination?.id in cart) {
-                        navController.popBackStack(R.id.cartFragment, false)
-                    } else {
-                        navController.popBackStack(R.id.markets_graph, false)
-                    }
-                }
-
-                R.id.orders_graph -> {
-                    if (navController.currentDestination?.id in orders) {
-                        navController.popBackStack(R.id.ordersFragment, false)
-                    } else {
-                        navController.popBackStack(R.id.markets_graph, false)
-                    }
-                }
-
-                R.id.wish_list_graph -> {
-                    if (navController.currentDestination?.id in wishList) {
-                        navController.popBackStack(R.id.wishListFragment, false)
-                    } else {
-                        navController.popBackStack(R.id.markets_graph, false)
+        setContent {
+            CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
+                HoneyMartTheme {
+                    val bottomNavState = checkBottomBarState()
+                    Scaffold(
+                        bottomBar = {
+                            BottomBar(bottomNavState)
+                        }
+                    ) { innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            MainNavGraph()
+                        }
                     }
                 }
             }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.fragment_host)
-        return navController.navigateUp() || super.onSupportNavigateUp()
+    @Composable
+    private fun checkBottomBarState(): MutableState<Boolean> {
+        val navController = LocalNavigationProvider.current
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
+        val bottomBarScreens = listOf(
+            Screen.MarketScreen.route,
+            Screen.CategoryScreenWithArgs.route,
+            Screen.ProductScreenWithArgs.route,
+            Screen.CartScreen.route,
+            Screen.OrderScreen.route,
+            Screen.OrderDetailsScreenWithArgs.route,
+            Screen.WishListScreen.route,
+        )
+        when (navBackStackEntry?.destination?.route) {
+            in bottomBarScreens -> {
+                // Show BottomBar
+                bottomBarState.value = true
+            }
+
+            else -> {
+                // Hide BottomBar
+                bottomBarState.value = false
+            }
+        }
+        return bottomBarState
     }
 }
 

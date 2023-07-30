@@ -14,8 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.modifier.overlayBottomToTop
@@ -29,15 +27,16 @@ fun ItemFavorite(
     name: String,
     price: String,
     description: String,
-    onClickProduct: () -> Unit,
-    onClickFavoriteIcon :() ->Unit
+    onClickProduct: (ProductId: Long) -> Unit,
+    productId: Long,
+    onClickFavoriteIcon: (ProductId: Long) -> Unit,
 ) {
 
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(MaterialTheme.dimens.heightItemFavorite)
-            .clickable(onClick = { onClickProduct() }), shape = MaterialTheme.shapes.medium
+            .clickable(onClick = { onClickProduct(productId) }), shape = MaterialTheme.shapes.medium
     ) {
         Box(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
@@ -57,7 +56,7 @@ fun ItemFavorite(
                     idIconDrawableRes = R.drawable.icon_favorite_selected,
                     background = MaterialTheme.colorScheme.onPrimary,
                     contentColor = MaterialTheme.colorScheme.primary,
-                    onClick = onClickFavoriteIcon
+                    onClick = { onClickFavoriteIcon(productId) }
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -89,8 +88,11 @@ private fun ItemFavoritePreview() {
             imageUrlMarket = "https://m.media-amazon.com/images/I/51mmrjhqOqL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
             name = "Sofa",
             price = "30,000\$",
-            description = "Secondary text", onClickProduct = {}
-        ) {}
+            description = "Secondary text",
+            onClickProduct = {},
+            onClickFavoriteIcon = {},
+            productId = 1
+        )
     }
 }
 
