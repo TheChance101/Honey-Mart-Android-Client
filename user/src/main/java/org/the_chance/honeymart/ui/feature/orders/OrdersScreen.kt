@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,10 +18,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,9 +43,9 @@ import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
+import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
-import org.the_chance.honymart.ui.composables.LoadingAnimation
 
 @Composable
 fun OrdersScreen(
@@ -64,17 +66,20 @@ fun OrdersScreen(
             LoadingAnimation()
         }
     }
-        OrdersContent(
-            state = state,
-            ordersInteractionsListener = viewModel
-        )
+    OrdersContent(
+        state = state,
+        ordersInteractionsListener = viewModel
+    )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    ordersInteractionsListener : OrdersInteractionsListener
+    ordersInteractionsListener: OrdersInteractionsListener
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -116,25 +121,26 @@ fun OrdersContent(
                 itemsIndexed(
                     items = state.orders,
                 ) { index, orderItem ->
-                    // Log.d("Mohamed", "$index.toString() ##### ${orderItem}")
                     var showDialog by remember { mutableStateOf(false) }
-                    val dismissState = rememberDismissState()
+                    val dismissState = rememberDismissState(
+                        confirmValueChange = { it == DismissValue.DismissedToStart })
                     val updatedDismissState by rememberUpdatedState(dismissState)
 
                     SwipeToDismiss(
+                        modifier = Modifier.animateItemPlacement(),
                         state = dismissState,
                         background = { SwipeBackground(dismissState = dismissState) },
                         directions = setOf(DismissDirection.EndToStart),
-                    ) {
-                        ItemOrder(
-                            imageUrl = orderItem.imageUrl!!,
-                            orderId = orderItem.orderId!!,
-                            marketName = orderItem.marketName!!,
-                            quantity = orderItem.quantity!!,
-                            price = orderItem.totalPrice!!,
-                            onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
-                        )
-                    }
+                        dismissContent = {
+                            ItemOrder(
+                                imageUrl = orderItem.imageUrl!!,
+                                orderId = orderItem.orderId!!,
+                                marketName = orderItem.marketName!!,
+                                quantity = orderItem.quantity!!,
+                                price = orderItem.totalPrice!!,
+                                onClick = { ordersInteractionsListener.onClickOrder(orderItem.orderId) }
+                            )
+                        })
                     LaunchedEffect(showDialog) {
                         if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
                             dismissState.reset()
