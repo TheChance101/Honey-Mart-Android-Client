@@ -1,6 +1,7 @@
 package org.the_chance.honymart.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import org.the_chance.honymart.ui.extension.opacity37
 
 val primary100 = Color(0xFFFEBC33)
 val primary200 = Color(0xFFE79C00)
@@ -10,7 +11,7 @@ val error = Color(0xFFFF4E33)
 val black = Color(0xFF000000)
 val black8 = Color(0x14121212)
 val black16 = Color(0x29121212)
-val black37 = Color(0xFFA4A4A4)
+val black37 = black.opacity37()
 val black55 = Color(0x8C121212)
 val black60 = Color(0xFF717171)
 val black87 = Color(0xDE121212)
@@ -23,7 +24,7 @@ val white30 = Color(0xFFFAFAFA)
 val gray = Color(0xFFA7A7A7)
 
 val background = Color(0xFFFAFAFA)
-val backgroundNav = Color(0xFF333333)
+val darkBackground = Color(0xFF333333)
 
 
 /* Dark Theme Color */
