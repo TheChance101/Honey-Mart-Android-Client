@@ -29,7 +29,7 @@ private val DarkColorScheme = darkColorScheme(
     background = darkBackground,
     onBackground = darkText60,
     error = darkError,
-    secondaryContainer = darkBackground400,
+    secondaryContainer = darkBackground300,
     onSecondaryContainer = darkText37,
 
 )

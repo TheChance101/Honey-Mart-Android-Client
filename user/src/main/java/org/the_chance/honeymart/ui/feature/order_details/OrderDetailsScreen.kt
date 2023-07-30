@@ -106,7 +106,7 @@ private fun OrderDetailsContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onBackground)
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
             ) {
                 Column(
                     modifier = Modifier
@@ -117,22 +117,21 @@ private fun OrderDetailsContent(
                 ) {
                     Text(
                         text = "${state.orderDetails.totalPrice}$",
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = Typography.bodyMedium,
                     )
                     Text(
                         text = stringResource(id = org.the_chance.design_system.R.string.total_price),
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = Typography.displaySmall,
                     )
                 }
 
                 Card(
-                    shape = RoundedCornerShape(MaterialTheme.dimens.space24),
                     colors = CardDefaults.cardColors(Color.Transparent),
-                    border = BorderStroke(0.dp, primary100),
                     modifier = Modifier.padding(
-                        top = MaterialTheme.dimens.space16, end = MaterialTheme.dimens.space16
+                        top = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16,
                     ),
                 ) {
                     Text(
