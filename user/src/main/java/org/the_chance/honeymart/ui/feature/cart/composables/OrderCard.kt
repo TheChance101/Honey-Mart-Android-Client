@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.cart.Composeables
+package org.the_chance.honeymart.ui.feature.cart.composables
 
 
 import android.icu.text.DecimalFormat
