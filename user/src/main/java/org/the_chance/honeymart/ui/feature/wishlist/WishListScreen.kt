@@ -22,9 +22,9 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
-import org.the_chance.honeymart.ui.feature.wishlist.compose.LoadingAnimation
 import org.the_chance.honymart.ui.composables.ConnectionErrorScaffold
 import org.the_chance.honymart.ui.composables.ItemFavorite
+import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
 import org.the_chance.honymart.ui.composables.PlaceholderScaffold
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -61,7 +61,7 @@ private fun WishListContent(
     onClickTryAgain: () -> Unit,
 ) = when {
     state.isLoading -> {
-        LoadingAnimation()
+        LottieLoadingAnimation()
     }
 
     state.isError -> {
