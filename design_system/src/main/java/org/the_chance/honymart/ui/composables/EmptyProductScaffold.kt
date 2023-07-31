@@ -1,5 +1,14 @@
 package org.the_chance.honymart.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,32 +27,42 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyProductScaffold(){
+fun EmptyProductScaffold(state: Boolean){
     HoneyMartTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        AnimatedVisibility(
+            visible = state,
+            enter = fadeIn(
+                animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
+            exit = fadeOut(
+                animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.placeholder_wish_list),
-                contentDescription = "network error",
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
-                text = "There is no product here !!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.placeholder_wish_list),
+                    contentDescription = "network error",
+                    contentScale = ContentScale.Crop
+                )
+                Text(
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
+                    text = "There is no product here !!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
+
     }
 }
 
 @Preview
 @Composable
 fun PreviewEmptyProductScaffold(){
-    EmptyProductScaffold()
+    EmptyProductScaffold(true)
 }

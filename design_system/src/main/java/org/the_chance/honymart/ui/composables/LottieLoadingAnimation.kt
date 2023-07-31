@@ -1,5 +1,9 @@
 package org.the_chance.honymart.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,17 +19,24 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
-fun LottieLoadingAnimation() {
+fun LottieLoadingAnimation(state: Boolean) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(org.the_chance.design_system.R.raw.loading))
-    Column(
-        Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    AnimatedVisibility(
+        visible = state,
+        enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+        exit = fadeOut(animationSpec = tween(durationMillis = 500))
+    ) {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-        LottieAnimation(
-            composition,
-            iterations = LottieConstants.IterateForever,
-            modifier = Modifier.size(100.dp)
-        )
+            LottieAnimation(
+                composition,
+                iterations = LottieConstants.IterateForever,
+                modifier = Modifier.size(100.dp)
+            )
+        }
     }
+
 }
