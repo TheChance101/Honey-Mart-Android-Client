@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name="org.the_chance.honeymart.UserApplication"
+        android:windowSoftInputMode="adjustResize"
         android:theme="@style/Theme.HoneyMart"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
