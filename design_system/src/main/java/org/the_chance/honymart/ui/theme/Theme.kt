@@ -29,7 +29,7 @@ private val DarkColorScheme = darkColorScheme(
     background = darkBackground,
     onBackground = darkText60,
     error = darkError,
-    secondaryContainer = darkBackground400,
+    secondaryContainer = darkBackground300,
     onSecondaryContainer = darkText37,
 
 )
@@ -75,7 +75,7 @@ fun HoneyMartTheme(
             val window = (view.context as Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
 
-            ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
+            /*ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
                 val insets = windowInsets.getInsets(
                     WindowInsetsCompat.Type.systemGestures()
                 )
@@ -83,7 +83,7 @@ fun HoneyMartTheme(
                     bottom = insets.bottom
                 )
                 WindowInsetsCompat.CONSUMED
-            }
+            }*/
         }
     }
 

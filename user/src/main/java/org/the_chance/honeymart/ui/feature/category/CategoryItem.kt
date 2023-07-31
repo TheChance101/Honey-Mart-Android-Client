@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
@@ -33,21 +32,21 @@ import org.the_chance.honymart.ui.theme.white100
 fun CategoryItem(
     state: CategoryUiState,
     categoryId: Long,
-    onCategoryClicked: (categoryId: Long , marketId: Long , position:Int) -> Unit,
-    marketId:Long,
-    position :Int,
+    onCategoryClicked: (categoryId: Long, marketId: Long, position: Int) -> Unit,
+    marketId: Long,
+    position: Int,
 ) {
     Column(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .padding(vertical = 8.dp)
-            .clickable { onCategoryClicked(categoryId , marketId, position) }
     ) {
         Box(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(white100)
+                .clickable { onCategoryClicked(categoryId, marketId, position) }
                 .size(120.dp), contentAlignment = Center
         ) {
             Image(

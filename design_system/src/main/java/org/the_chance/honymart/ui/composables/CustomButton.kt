@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -74,12 +75,49 @@ fun CustomButton(
 
     }
 }
-
 @Preview
 @Composable
 private fun CustomButtonPreview() {
     HoneyMartTheme {
         CustomButton(labelIdStringRes = R.string.Sign_up) {}
+    }
+}
+
+@Composable
+fun CustomSmallButton(
+    modifier: Modifier = Modifier,
+    isEnable: Boolean = true,
+    @StringRes labelIdStringRes: Int,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    background: Color = MaterialTheme.colorScheme.primary,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        enabled = isEnable,
+        modifier = modifier
+            .wrapContentWidth()
+            .height(MaterialTheme.dimens.heightPrimaryButton),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = background,
+            contentColor = contentColor,
+            disabledContentColor = contentColor,
+            disabledContainerColor = background.copy(.5F),
+        )
+    ) {
+            Text(
+                text = stringResource(id = labelIdStringRes),
+                style = Typography.bodyMedium,
+                color = contentColor
+            )
+        }
+
+    }
+@Preview
+@Composable
+private fun CustomButtonSmallPreview() {
+    HoneyMartTheme {
+        CustomSmallButton(labelIdStringRes = R.string.Sign_up) {}
     }
 }
 

@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.cart.Composeables.CartPlaceholder
+import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
@@ -33,7 +34,7 @@ import org.the_chance.honymart.ui.theme.white
 fun BottomSheetCompleteOrderContent(
     state: CartUiState,
     onClick: () -> Unit = {},
-    onClickButtonDiscover : () -> Unit = {}
+    onClickButtonDiscover: () -> Unit = {}
 ){
     val sheetState = rememberModalBottomSheetState(
         confirmValueChange = { it != SheetValue.PartiallyExpanded },
@@ -77,6 +78,9 @@ fun BottomSheetCompleteOrderContent(
         sheetContainerColor = white,
         sheetPeekHeight = 0.dp
     ) {
-        CartPlaceholder(sheetState, state, onClickButtonDiscover = onClickButtonDiscover)
+         CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
+        LaunchedEffect(key1 = state.bottomSheetIsDisplayed) {
+            if (state.bottomSheetIsDisplayed) sheetState.expand() else sheetState.hide()
+        }
     }
 }
