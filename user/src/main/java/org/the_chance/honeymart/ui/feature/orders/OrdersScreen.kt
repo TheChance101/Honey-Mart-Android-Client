@@ -113,7 +113,7 @@ fun OrdersContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Loading()
+                Loading(state.isLoading)
             }
         }
         AnimatedVisibility(
