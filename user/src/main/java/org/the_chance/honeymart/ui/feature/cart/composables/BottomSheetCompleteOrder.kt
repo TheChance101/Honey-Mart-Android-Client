@@ -22,8 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
-import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -32,7 +30,7 @@ import org.the_chance.honymart.ui.theme.white
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetCompleteOrderContent(
-    state: CartUiState,
+    state: Boolean = false,
     onClick: () -> Unit = {},
     onClickButtonDiscover: () -> Unit = {}
 ){
@@ -78,9 +76,9 @@ fun BottomSheetCompleteOrderContent(
         sheetContainerColor = white,
         sheetPeekHeight = 0.dp
     ) {
-         CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
-        LaunchedEffect(key1 = state.bottomSheetIsDisplayed) {
-            if (state.bottomSheetIsDisplayed) sheetState.expand() else sheetState.hide()
+         LaunchedEffect(key1 = state) {
+            if (state) sheetState.expand() else sheetState.hide()
         }
     }
+
 }
