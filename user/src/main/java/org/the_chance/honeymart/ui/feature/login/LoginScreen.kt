@@ -101,6 +101,7 @@ fun LoginContent(
                         text = stringResource(R.string.welcome_back),
                         color = white,
                         style = Typography.headlineMedium,
+                        textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(
@@ -108,6 +109,7 @@ fun LoginContent(
                         ),
                         color = white,
                         style = Typography.bodyMedium,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
