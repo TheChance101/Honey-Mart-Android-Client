@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
@@ -33,21 +34,24 @@ fun MarketContent(
     state: MarketsUiState,
     marketInteractionListener: (Long) -> Unit,
 ) {
-    Loading(state.isLoading)
+    AppBarScaffold { listState ->
+        Loading(state.isLoading)
 
-    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
+        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
 
-    ContentVisibility(state = state.markets.isNotEmpty()) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-        ) {
-            items(state.markets.size) { position ->
-                val market = state.markets[position]
-                MarketItem(
-                    market,
-                    onClickItem = marketInteractionListener
-                )
+        ContentVisibility(state = state.markets.isNotEmpty()) {
+            LazyColumn(
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            ) {
+                items(state.markets.size) { position ->
+                    val market = state.markets[position]
+                    MarketItem(
+                        market,
+                        onClickItem = marketInteractionListener
+                    )
+                }
             }
         }
     }

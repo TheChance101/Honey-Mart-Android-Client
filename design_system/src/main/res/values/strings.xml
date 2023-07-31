@@ -90,4 +90,7 @@
     <string name="discover_market_now">Discover Market Now</string>
     <string name="subtitle_placeholder_wishList">Unlock the power of favorites and indulge in a world of personalized shopping.</string>
     <string name="your_wish_list_is_empty">Your Wish List is empty!!</string>
+    <string name="title_icon">Title Icon</string>
+    <string name="honey">Honey</string>
+    <string name="mart">Mart</string>
 </resources>
