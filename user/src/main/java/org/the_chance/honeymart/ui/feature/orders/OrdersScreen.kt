@@ -46,7 +46,6 @@ import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsS
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
-import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
