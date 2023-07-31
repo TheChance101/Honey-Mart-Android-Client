@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
+import org.the_chance.honeymart.ui.feature.cart.composables.ErrorPlaceHolder
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.Loading
 

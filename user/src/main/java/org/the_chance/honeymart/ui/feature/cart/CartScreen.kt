@@ -28,8 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.cart.Composeables.CartCardView
-import org.the_chance.honeymart.ui.feature.cart.Composeables.CartItem
+import org.the_chance.honeymart.ui.feature.cart.composables.CartCardView
+import org.the_chance.honeymart.ui.feature.cart.composables.CartItem
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen

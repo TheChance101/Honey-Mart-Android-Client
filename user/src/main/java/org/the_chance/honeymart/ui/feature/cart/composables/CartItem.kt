@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.cart.Composeables
+package org.the_chance.honeymart.ui.feature.cart.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -38,6 +38,7 @@ import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.design_system.R
 
 @Composable
 fun CartItem(
@@ -115,7 +116,7 @@ fun CartItem(
                     width = 1.dp
                 ),
                 modifier = Modifier
-                    .paint(painter = painterResource(id = org.the_chance.design_system.R.drawable.minus_1), contentScale = ContentScale.Inside)
+                    .paint(painter = painterResource(id = R.drawable.minus_1), contentScale = ContentScale.Inside)
                     .size(24.dp)
                     .constrainAs(imageViewMinusOrder) {
                         bottom.linkTo(parent.bottom, margin = 16.dp)
