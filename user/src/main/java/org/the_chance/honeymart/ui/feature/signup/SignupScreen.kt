@@ -89,7 +89,7 @@ fun SignupContent(
     state: SignupUiState,
 ) {
     if (state.isLoading) {
-        Loading()
+        Loading(state.isLoading)
     } else {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

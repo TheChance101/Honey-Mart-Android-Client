@@ -64,7 +64,7 @@ private fun ProductDetailsContent(
 ) {
     Log.e("ProductDetailsContent", "ProductDetailsContent: ${state.isLoading}", )
     if (state.isLoading) {
-        Loading()
+        Loading(state.isLoading)
     } else {
         Scaffold(
             bottomBar = {

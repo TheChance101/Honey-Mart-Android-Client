@@ -60,7 +60,7 @@ fun OrderDetailsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Loading()
+            Loading(state.isProductsLoading)
         }
     }
 

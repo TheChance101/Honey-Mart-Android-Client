@@ -35,7 +35,7 @@ fun MarketContent(
     when {
 
         state.isLoading -> {
-            Loading()
+            Loading(state.isLoading)
         }
 
         state.markets.isNotEmpty() -> {

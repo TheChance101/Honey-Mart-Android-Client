@@ -22,10 +22,10 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
-import org.the_chance.honymart.ui.composables.ConnectionErrorScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ItemFavorite
-import org.the_chance.honymart.ui.composables.LottieLoadingAnimation
-import org.the_chance.honymart.ui.composables.PlaceholderScaffold
+import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -61,11 +61,11 @@ private fun WishListContent(
     onClickTryAgain: () -> Unit,
 ) = when {
     state.isLoading -> {
-        LottieLoadingAnimation()
+        Loading(state.isLoading)
     }
 
     state.isError -> {
-        ConnectionErrorScaffold(onClickTryAgain = onClickTryAgain)
+        ConnectionErrorPlaceholder(state = state.isError,onClickTryAgain = onClickTryAgain)
     }
 
     state.products.isNotEmpty() -> {
@@ -94,7 +94,7 @@ private fun WishListContent(
     }
 
     else -> {
-        PlaceholderScaffold(
+        EmptyOrdersPlaceholder(
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),

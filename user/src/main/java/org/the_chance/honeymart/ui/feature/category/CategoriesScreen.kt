@@ -12,8 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.cart.Composeables.ErrorPlaceHolder
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 
 /**
@@ -34,8 +34,8 @@ fun CategoryContent(
     listener: (categoryId: Long , marketId: Long , position:Int) -> Unit,
 ) {
     when {
-        state.isLoading -> Loading()
-        state.isError -> ErrorPlaceHolder()
+        state.isLoading -> Loading(state.isLoading)
+        state.isError -> ConnectionErrorPlaceholder(state.isError,{})
         else ->
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 100.dp),

@@ -22,7 +22,7 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun PlaceholderScaffold(
+fun EmptyOrdersPlaceholder(
     image: Int,
     title: String,
     subtitle: String,
@@ -70,7 +70,7 @@ fun PlaceholderScaffold(
 @Composable
 fun PreviewPlaceholderItem() {
     HoneyMartTheme {
-        PlaceholderScaffold(
+        EmptyOrdersPlaceholder(
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
