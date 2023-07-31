@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.cart.Composeables.CartPlaceholder
+import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
