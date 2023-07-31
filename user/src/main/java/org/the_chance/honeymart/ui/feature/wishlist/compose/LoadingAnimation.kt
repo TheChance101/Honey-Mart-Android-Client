@@ -20,7 +20,9 @@ import org.the_chance.design_system.R
 
 @SuppressLint("RememberReturnType", "StateFlowValueCalledInComposition")
 @Composable
-fun LoadingAnimation() {
+fun LoadingAnimation(
+    modifier: Modifier = Modifier
+) {
 
     val animationSpeed by remember { mutableStateOf(MutableStateFlow(.7f)) }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))

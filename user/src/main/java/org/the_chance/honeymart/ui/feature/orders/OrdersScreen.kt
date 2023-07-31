@@ -1,9 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
+import SwipeBackGround
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -21,6 +18,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,7 +44,6 @@ import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsS
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
-import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
@@ -127,7 +127,7 @@ fun OrdersContent(
 
                     SwipeToDismiss(
                         state = dismissState,
-                        background = { SwipeBackground(dismissState = dismissState) },
+                        background = { SwipeBackGround() },
                         directions = setOf(DismissDirection.EndToStart),
                     ) {
                         ItemOrder(

@@ -18,7 +18,9 @@ import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
-fun Loading() {
+fun Loading(
+    modifier: Modifier = Modifier
+) {
 
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.loading)
