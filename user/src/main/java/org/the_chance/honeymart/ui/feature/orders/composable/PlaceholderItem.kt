@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,8 +18,6 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -37,7 +34,6 @@ fun PlaceholderItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            modifier =Modifier.size(160.dp) ,
             painter = image,
             contentDescription = stringResource(org.the_chance.user.R.string.content_desc_of_placeholder_image)
         )

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,8 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,10 +72,11 @@ fun ItemOrder(
                 Text(
                     text = marketName,
                     style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.typography.displayLarge.color.copy(.6F)
+                    color = MaterialTheme.typography.displaySmall.color.copy(.6F)
                 )
                 Row {
                     Image(
+                        modifier = Modifier.size(18.dp),
                         painter = painterResource(id = R.drawable.order),
                         contentDescription = marketName,
                         colorFilter = ColorFilter.tint(
