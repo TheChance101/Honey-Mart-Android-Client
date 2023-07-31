@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.cart.Composeables
+package org.the_chance.honeymart.ui.feature.cart.composables
 
 
 import android.icu.text.DecimalFormat
@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,18 +22,20 @@ import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.user.R
 
 @Composable
 fun CartCardView(
     modifier: Modifier = Modifier,
     totalPrice: String = "300,000 $",
+    isLoading: Boolean ,
     viewModel: CartViewModel = hiltViewModel()
 ) {
     Card(
         shape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
     modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
+        .fillMaxWidth()
+        .height(100.dp)
         ,
         colors =CardDefaults.cardColors(
             containerColor = Color.White,
@@ -58,6 +60,7 @@ fun CartCardView(
             CustomButton(
                 onClick = { viewModel.onClickOrderNowButton() },
                 labelIdStringRes = org.the_chance.design_system.R.string.order_now,
+                isEnable = !isLoading,
                 idIconDrawableRes = org.the_chance.design_system.R.drawable.icon_cart,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -69,7 +72,7 @@ fun CartCardView(
                 background = primary100,
             )
             Text(
-                text = "Total Price",
+                text = stringResource(R.string.total_price),
                 color = black16,
                 style = org.the_chance.honymart.ui.theme.Typography.displaySmall,
                 modifier = Modifier.constrainAs(TotalPrice) {
@@ -90,8 +93,3 @@ fun formatCurrencyWithNearestFraction(amount: Double):String {
 
 
 
-@Preview
-@Composable
-private fun CartCardViewPreview() {
-    CartCardView()
-}

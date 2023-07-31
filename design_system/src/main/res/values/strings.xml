@@ -88,4 +88,6 @@
     <string name="placeholder_title">You Don\'t have any orders!!</string>
     <string name="placeholder_subtitle">It\'s a catastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="discover_market_now">Discover Market Now</string>
+    <string name="subtitle_placeholder_wishList">Unlock the power of favorites and indulge in a world of personalized shopping.</string>
+    <string name="your_wish_list_is_empty">Your Wish List is empty!!</string>
 </resources>

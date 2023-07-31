@@ -10,11 +10,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
+import org.the_chance.honeymart.ui.feature.wishlist.compose.NoConnectionError
+import org.the_chance.honymart.ui.composables.Loading
 
 
 @Composable
 fun MarketScreen(
-    viewModel: MarketViewModel = hiltViewModel()
+    viewModel: MarketViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
     val navController = LocalNavigationProvider.current
@@ -26,22 +28,22 @@ fun MarketScreen(
 
 @Composable
 fun MarketContent(
-    state : MarketsUiState,
-    marketInteractionListener: (Long) -> Unit
+    state: MarketsUiState,
+    marketInteractionListener: (Long) -> Unit,
 ) {
 
-    when{
+    when {
 
         state.isLoading -> {
-            //LoadingAnimation()
+            Loading()
         }
 
         state.markets.isNotEmpty() -> {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
-            ){
-                items (state.markets.size){position ->
+            ) {
+                items(state.markets.size) { position ->
                     val market = state.markets[position]
                     MarketItem(
                         market,
@@ -52,7 +54,7 @@ fun MarketContent(
         }
 
         state.isError -> {
-
+            NoConnectionError {}
         }
 
     }
