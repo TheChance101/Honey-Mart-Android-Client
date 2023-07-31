@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import SwipeBackGround
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -45,7 +46,6 @@ import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsS
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
-import org.the_chance.honeymart.ui.feature.orders.composable.SwipeBackground
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
@@ -137,7 +137,7 @@ fun OrdersContent(
                     SwipeToDismiss(
                         modifier = Modifier.animateItemPlacement(),
                         state = dismissState,
-                        background = { SwipeBackground(dismissState = dismissState) },
+                        background = { SwipeBackGround() },
                         directions = setOf(DismissDirection.EndToStart),
                         dismissContent = {
                             ItemOrder(
