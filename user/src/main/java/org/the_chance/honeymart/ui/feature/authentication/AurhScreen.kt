@@ -3,9 +3,11 @@ package org.the_chance.honeymart.ui.feature.authentication
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -72,11 +74,10 @@ fun AuthContent(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
             onClick = onClickSignUp
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 32.dp)
         ) {
             Text(
                 text = stringResource(R.string.already_have_account),
@@ -84,7 +85,9 @@ fun AuthContent(
                 style = Typography.displaySmall,
                 textAlign = TextAlign.Center
             )
-            TextButton(onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
+            TextButton(
+                contentPadding = PaddingValues(0.dp),
+                onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
                 Text(
                     text = stringResource(R.string.log_in),
                     color = primary100,
