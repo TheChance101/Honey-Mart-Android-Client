@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.wishlist
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +24,7 @@ import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.ItemFavorite
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
@@ -59,16 +61,20 @@ private fun WishListContent(
     onClickDesCover: () -> Unit,
     onClickIconFavorite: (ProductId: Long) -> Unit,
     onClickTryAgain: () -> Unit,
-) = when {
-    state.isLoading -> {
-        Loading(state.isLoading)
-    }
+) {
+    Loading(state = state.isLoading)
 
-    state.isError -> {
-        ConnectionErrorPlaceholder(state = state.isError,onClickTryAgain = onClickTryAgain)
-    }
+    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
 
-    state.products.isNotEmpty() -> {
+    EmptyOrdersPlaceholder(
+        state = state.products.isEmpty(),
+        image = R.drawable.placeholder_wish_list,
+        title = stringResource(R.string.your_wish_list_is_empty),
+        subtitle = stringResource(R.string.subtitle_placeholder_wishList),
+        onClickDiscoverMarkets = onClickDesCover
+    )
+
+    ContentVisibility(state = state.products.isNotEmpty()) {
         Column(modifier = Modifier.fillMaxSize()) {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 160.dp),
@@ -91,16 +97,6 @@ private fun WishListContent(
                     }
                 })
         }
-    }
-
-    else -> {
-        EmptyOrdersPlaceholder(
-            image = R.drawable.placeholder_wish_list,
-            title = stringResource(R.string.your_wish_list_is_empty),
-            subtitle = stringResource(R.string.subtitle_placeholder_wishList),
-            onClickDiscoverMarkets = onClickDesCover
-        )
-
     }
 }
 

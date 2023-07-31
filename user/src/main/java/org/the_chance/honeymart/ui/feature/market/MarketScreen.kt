@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.market
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +11,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
-import org.the_chance.honeymart.ui.feature.wishlist.compose.NoConnectionError
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
 
 
@@ -31,32 +33,22 @@ fun MarketContent(
     state: MarketsUiState,
     marketInteractionListener: (Long) -> Unit,
 ) {
+    Loading(state.isLoading)
 
-    when {
+    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
 
-        state.isLoading -> {
-            Loading(state.isLoading)
-        }
-
-        state.markets.isNotEmpty() -> {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-            ) {
-                items(state.markets.size) { position ->
-                    val market = state.markets[position]
-                    MarketItem(
-                        market,
-                        onClickItem = marketInteractionListener
-                    )
-                }
+    ContentVisibility(state = state.markets.isNotEmpty()) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            items(state.markets.size) { position ->
+                val market = state.markets[position]
+                MarketItem(
+                    market,
+                    onClickItem = marketInteractionListener
+                )
             }
         }
-
-        state.isError -> {
-            NoConnectionError {}
-        }
-
     }
-
 }

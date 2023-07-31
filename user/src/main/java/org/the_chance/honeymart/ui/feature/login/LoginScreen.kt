@@ -31,6 +31,7 @@ import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
@@ -78,9 +79,9 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     state: LoginUiState,
 ) {
-    if (state.isLoading) {
-        Loading(state.isLogin)
-    } else {
+    Loading(state.isLoading)
+
+    ContentVisibility(state = !state.isLoading) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)

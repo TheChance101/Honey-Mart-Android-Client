@@ -39,6 +39,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
@@ -88,9 +89,8 @@ fun SignupContent(
     onConfirmPasswordChange: (String) -> Unit,
     state: SignupUiState,
 ) {
-    if (state.isLoading) {
-        Loading(state.isLoading)
-    } else {
+    Loading(state = state.isLoading)
+    ContentVisibility(state = !state.isLoading) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -245,7 +245,7 @@ fun SignupContent(
             }
         }
     }
-    if(state.isLogin == ValidationState.SUCCESS){
+    if (state.isLogin == ValidationState.SUCCESS) {
         CustomDialog(openDialogCustom = remember { mutableStateOf(true) })
     }
 }

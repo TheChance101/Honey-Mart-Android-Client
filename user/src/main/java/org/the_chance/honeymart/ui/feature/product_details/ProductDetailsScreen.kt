@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-import android.util.Log
-import androidx.compose.animation.ExperimentalAnimationApi
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.product_details.composeable.AppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.CustomSmallIconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -56,16 +57,16 @@ fun ProductDetailsScreen(
 }
 
 @Composable
-@OptIn(ExperimentalAnimationApi::class)
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
     interaction: ProductDetailsInteraction,
     onBackClick: () -> Unit,
 ) {
-    Log.e("ProductDetailsContent", "ProductDetailsContent: ${state.isLoading}", )
-    if (state.isLoading) {
-        Loading(state.isLoading)
-    } else {
+    Loading(state.isLoading)
+
+    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
+
+    ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
         Scaffold(
             bottomBar = {
                 CustomButton(
@@ -207,10 +208,7 @@ private fun ProductDetailsContent(
             }
         }
     }
-
 }
-
-
 
 
 //@Preview

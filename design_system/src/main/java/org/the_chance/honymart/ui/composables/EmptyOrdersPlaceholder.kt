@@ -23,46 +23,49 @@ import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun EmptyOrdersPlaceholder(
+    state:Boolean,
     image: Int,
     title: String,
     subtitle: String,
     onClickDiscoverMarkets: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.dimens.space16),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = image),
-            contentDescription = "",
-        )
-        Text(
-            text = title,
+    ContentVisibility(state = state) {
+        Column(
             modifier = Modifier
-                .padding(top = MaterialTheme.dimens.space32),
-            style = MaterialTheme.typography.bodyMedium,
-            color = black60,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = subtitle,
-            modifier = Modifier
-                .padding(top = MaterialTheme.dimens.space16),
-            style = MaterialTheme.typography.displayLarge,
-            color = black37,
-            textAlign = TextAlign.Center,
-        )
+                .fillMaxSize()
+                .padding(MaterialTheme.dimens.space16),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = "",
+            )
+            Text(
+                text = title,
+                modifier = Modifier
+                    .padding(top = MaterialTheme.dimens.space32),
+                style = MaterialTheme.typography.bodyMedium,
+                color = black60,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = subtitle,
+                modifier = Modifier
+                    .padding(top = MaterialTheme.dimens.space16),
+                style = MaterialTheme.typography.displayLarge,
+                color = black37,
+                textAlign = TextAlign.Center,
+            )
 
-        CustomButton(
-            labelIdStringRes = R.string.discover_market_now,
-            onClick = onClickDiscoverMarkets,
-            idIconDrawableRes = R.drawable.icon_cart,
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
-            background = primary100
-        )
+            CustomButton(
+                labelIdStringRes = R.string.discover_market_now,
+                onClick = onClickDiscoverMarkets,
+                idIconDrawableRes = R.drawable.icon_cart,
+                modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
+                background = primary100
+            )
+        }
     }
 }
 
@@ -71,6 +74,7 @@ fun EmptyOrdersPlaceholder(
 fun PreviewPlaceholderItem() {
     HoneyMartTheme {
         EmptyOrdersPlaceholder(
+            state = true,
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),

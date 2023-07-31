@@ -2,14 +2,11 @@ package org.the_chance.honeymart.ui.feature.product
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +27,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.ProductCard
@@ -57,7 +55,7 @@ fun ProductsScreen(
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @SuppressLint("SuspiciousIndentation")
 @Composable
 private fun ProductsContent(
@@ -68,13 +66,10 @@ private fun ProductsContent(
     navigateToAuth: () -> Unit,
 ) {
     Loading(state.isLoadingCategory)
+
     ConnectionErrorPlaceholder(state.isError, {})
 
-    AnimatedVisibility(
-        visible = !state.isLoadingCategory && !state.isError,
-        enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInHorizontally(),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically()
-    ) {
+    ContentVisibility(state = !state.isLoadingCategory && !state.isError) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
