@@ -26,7 +26,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,12 +44,12 @@ fun AppBarScaffold(
         isNavigationBarContrastEnforced = false
     )
     val topAppBarContainerColor = if (isScrolled.value) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.inverseOnSurface
     } else {
-        MaterialTheme.colorScheme.surface
+        MaterialTheme.colorScheme.onSurface
     }
     val topAppBarTitleColor = if (isScrolled.value) {
-        white
+        MaterialTheme.colorScheme.onError
     } else {
         primary100
     }
@@ -100,7 +99,8 @@ fun AppBarTitle(
         )
         Text(
             text = stringResource(R.string.mart),
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondary),
+
         )
     }
 }

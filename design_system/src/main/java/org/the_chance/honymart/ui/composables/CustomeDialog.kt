@@ -12,16 +12,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +29,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
@@ -45,7 +43,7 @@ fun CustomAlertDialog(
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             shape = Shapes.extraLarge,
-            colors = CardDefaults.cardColors(white)
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -89,14 +87,14 @@ fun CustomAlertDialog(
                             .width(144.dp)
                             .height(48.dp),
                         onClick = onCancel,
-                        colors = ButtonDefaults.textButtonColors(white),
+                        colors = ButtonDefaults.textButtonColors(Color.Transparent),
                         shape = Shapes.medium,
                         border = BorderStroke(width = 1.dp, color = black16)
                     )
                     {
                         Text(
                             text = stringResource(id = R.string.cancel),
-                            style = Typography.displayLarge.copy(color = black37)
+                            style = Typography.displayLarge.copy(color = MaterialTheme.colorScheme.onTertiaryContainer)
                         )
                     }
                 }

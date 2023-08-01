@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -40,7 +41,6 @@ import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.white300
 import org.the_chance.user.R
 
 @Composable
@@ -109,7 +109,7 @@ private fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(white300)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         LazyColumn(
             state = rememberLazyListState(),

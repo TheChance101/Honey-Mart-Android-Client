@@ -14,12 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CustomChip(
@@ -37,7 +35,7 @@ fun CustomChip(
             onClick()
         },
         colors = if (state) CardDefaults.cardColors(primary100)
-        else CardDefaults.cardColors(white),
+        else CardDefaults.cardColors(Transparent),
         border = if (state) BorderStroke(width = 0.dp, color = Transparent)
         else BorderStroke(width = 1.dp, color = primary100),
         shape = CircleShape
@@ -45,7 +43,7 @@ fun CustomChip(
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
             text = text,
-            color = if (state) Color.White else primary100,
+            color = if (state) MaterialTheme.colorScheme.onSurfaceVariant else primary100,
             style = MaterialTheme.typography.displayLarge
         )
     }

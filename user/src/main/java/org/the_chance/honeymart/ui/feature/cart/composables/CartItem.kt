@@ -21,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,17 +29,15 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
-import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
-import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black87
-import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
+import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun CartItem(
@@ -57,6 +56,8 @@ fun CartItem(
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
+                .background(MaterialTheme.colorScheme.onTertiary)
+
         ) {
             val (imageOrder, textOrderNumber, textItemPrice, imageViewMinusOrder,
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
@@ -78,7 +79,7 @@ fun CartItem(
 
             Text(
                 text = product.productName ?: "",
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(black87),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(MaterialTheme.colorScheme.onSecondary),
                 modifier = Modifier.constrainAs(textOrderNumber) {
                     top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(imageOrder.end, margin = 8.dp)
@@ -152,26 +153,10 @@ fun CartItem(
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
-                    tint = white,
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
             }
         }
     }
 }
 
-
-@Preview
-@Composable
-fun CartItemPreview() {
-    CartItem(
-        product = CartListProductUiState(
-            productImage = listOf("https://i.ibb.co/0jZGZJd/Rectangle-1.png"),
-            productName = "Product Name",
-            productPrice = 10000.0,
-            productCount = 1
-        ),
-        isLoading = false,
-        onClickMinus = {},
-        onClickPlus = {},
-    )
-}

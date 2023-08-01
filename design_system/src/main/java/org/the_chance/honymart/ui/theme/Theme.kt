@@ -13,12 +13,8 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val localDimens = compositionLocalOf { Dimens() }
@@ -26,22 +22,45 @@ private val localDimens = compositionLocalOf { Dimens() }
 private val DarkColorScheme = darkColorScheme(
     primary = primary100,
     onPrimary = darkText87,
+    secondary = darkBackground200,
+    onSecondary = white,
     background = darkBackground,
-    onBackground = darkText60,
+    onBackground = black60,
     error = darkError,
-    secondaryContainer = darkBackground300,
+    secondaryContainer = darkBackground400,
     onSecondaryContainer = darkText37,
+    tertiary = darkBackground400,
+    onTertiary = darkBackground300,
+    onTertiaryContainer = black37,
+    tertiaryContainer = darkBackground300,
+    onSurfaceVariant = black60,
+    errorContainer = darkBackground400,
+    inverseOnSurface = darkBackground300,
+    onSurface = darkBackground200,
+    onError = primary100
 
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = primary100,
     onPrimary = white,
+    secondary = white,
+    onSecondary = black87,
     background = background,
     onBackground = black60,
     error = error,
     secondaryContainer = white100,
     onSecondaryContainer = black37,
+    tertiary = white,
+    onTertiary = white,
+    onTertiaryContainer = black16,
+    tertiaryContainer = white30,
+    onSurfaceVariant = white,
+    errorContainer = primary100,
+    inverseOnSurface = primary100,
+    onSurface = white,
+    onError = white
+
 )
 
 val MaterialTheme.dimens: Dimens
@@ -53,7 +72,7 @@ val MaterialTheme.dimens: Dimens
 fun HoneyMartTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    useDarkIcons :Boolean = true,
+    useDarkIcons: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
@@ -94,7 +113,7 @@ fun HoneyMartTheme(
             shapes = Shapes,
             content = content,
 
-        )
+            )
     }
 }
 

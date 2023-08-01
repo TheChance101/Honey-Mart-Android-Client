@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -25,7 +26,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.white
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +73,7 @@ fun BottomSheetCompleteOrderContent(
                 )
             }
         },
-        sheetContainerColor = white,
+        sheetContainerColor = MaterialTheme.colorScheme.onTertiary,
         sheetPeekHeight = 0.dp
     ) {
          LaunchedEffect(key1 = state) {

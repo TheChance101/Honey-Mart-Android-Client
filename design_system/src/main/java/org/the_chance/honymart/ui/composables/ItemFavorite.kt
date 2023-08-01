@@ -55,8 +55,7 @@ fun ItemFavorite(
                 CustomSmallIconButton(
                     modifier = modifier.align(Alignment.End),
                     idIconDrawableRes = R.drawable.icon_favorite_selected,
-                    background = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    background = MaterialTheme.colorScheme.tertiary,
                     onClick = { onClickFavoriteIcon(productId) }
                 )
                 Spacer(modifier = Modifier.weight(1f))

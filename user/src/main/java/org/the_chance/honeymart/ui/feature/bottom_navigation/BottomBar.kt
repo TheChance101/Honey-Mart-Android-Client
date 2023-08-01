@@ -44,7 +44,8 @@ fun BottomBar(bottomNavState: MutableState<Boolean>) {
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
             NavigationBar(
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = MaterialTheme.colorScheme.onTertiary,
+                contentColor = MaterialTheme.colorScheme.onError
             ) {
                 screens.forEach { screen ->
                     AddItem(

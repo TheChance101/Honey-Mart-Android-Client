@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,9 +41,6 @@ import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SpacerVertical8
 import org.the_chance.honymart.ui.composables.TextPrice
-import org.the_chance.honymart.ui.extension.opacity37
-import org.the_chance.honymart.ui.extension.opacity60
-import org.the_chance.honymart.ui.extension.opacity87
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -118,6 +119,7 @@ private fun ProductDetailsContent(
 
                     Column(modifier = Modifier
                         .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.secondary)
                         .fillMaxHeight(0.5F)
                         .padding(top = MaterialTheme.dimens.space48)
                         .padding(
@@ -143,15 +145,15 @@ private fun ProductDetailsContent(
                         ) {
                             Text(
                                 text = state.product.productName,
-                                style = MaterialTheme.typography.displayMedium,
-                                color = MaterialTheme.typography.displayMedium.color.opacity87(),
+                                style = MaterialTheme.typography.displayMedium.copy(
+                                    color = MaterialTheme.colorScheme.onSecondary
+                                ),
 
                                 )
 
                             Row {
                                 CustomSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_remove_from_cart,
-                                    contentColor = MaterialTheme.colorScheme.primary,
                                     background = MaterialTheme.colorScheme.background,
                                     modifier = Modifier
                                         .clip(CircleShape)
@@ -165,26 +167,31 @@ private fun ProductDetailsContent(
 
                                 Text(
                                     text = state.quantity.toString(),
-                                    style = MaterialTheme.typography.displayMedium,
-                                    color = MaterialTheme.typography.displayMedium.color.opacity60(),
+                                    style = MaterialTheme.typography.displayMedium.copy(
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    ),
                                     modifier = Modifier
                                         .padding(horizontal = MaterialTheme.dimens.space12)
                                 )
-                                CustomSmallIconButton(
-                                    idIconDrawableRes = R.drawable.icon_add_to_cart,
-                                    background = MaterialTheme.colorScheme.primary,
-                                    onClick = interaction::increaseProductCount
-                                )
+                                Icon(
+                                    painter = painterResource(id = R.drawable.icon_add_to_cart),
+                                    modifier = Modifier
+                                        .size(MaterialTheme.dimens.smallButton)
+                                        .background(MaterialTheme.colorScheme.primary, CircleShape)
+                                        .clickable { interaction.increaseProductCount()}.padding(8.dp),
+                                    contentDescription = null,
+
+                                    )
 
                             }
                         }
                         SpacerVertical8()
-                        TextPrice(state.product.productPrice.toString())
+                        TextPrice(state.product.productPrice.toString() + "$")
                         Text(
                             state.product.productDescription,
-                            style = MaterialTheme.typography.displayMedium,
-                            color = MaterialTheme.typography.displayMedium.color.opacity37(),
-                            modifier = Modifier
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            ), modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = MaterialTheme.dimens.space24)
                         )
@@ -215,11 +222,4 @@ private fun ProductDetailsContent(
 }
 
 
-//@Preview
-//@Composable
-//private fun ProductDetails(){
-//    HoneyMartTheme {
-//        ProductDetailsContent()
-//    }
-//}
 

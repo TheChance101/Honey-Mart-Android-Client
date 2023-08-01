@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,15 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -32,7 +28,7 @@ fun OrderDetailsCard(
     orderName: String,
     orderPrice: String,
     orderCount: String,
-    orderId : Long,
+    orderId: Long,
     onClickCard: (orderId: Long) -> Unit = {},
 ) {
     HoneyMartTheme {
@@ -44,21 +40,12 @@ fun OrderDetailsCard(
         ) {
             ImageNetwork(
                 imageUrl = imageUrl,
-                )
+            )
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                black37,
-                            ),
-                            startY = 0f,
-                            endY = 300f
-                        )
-                    )
             )
+
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -83,7 +70,7 @@ fun OrderDetailsCard(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Row (verticalAlignment = Alignment.CenterVertically){
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_cart_details),
                         contentDescription = "cart check icon",
@@ -111,6 +98,6 @@ fun OrderDetailsCardPreview() {
         orderName = "To Kill a Mockingbird",
         orderPrice = "30,000",
         orderCount = "3",
-        orderId =0,
+        orderId = 0,
     )
 }

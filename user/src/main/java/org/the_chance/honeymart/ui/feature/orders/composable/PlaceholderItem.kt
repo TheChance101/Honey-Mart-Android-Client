@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -45,13 +46,13 @@ fun PlaceholderItem(
                 text = title,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.typography.bodyMedium.color.copy(.6F)
+                color = black60
             )
             Text(
                 text = subtitle,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.typography.displayLarge.color.copy(.6F)
+                color = black60
             )
         }
         CustomButton(
