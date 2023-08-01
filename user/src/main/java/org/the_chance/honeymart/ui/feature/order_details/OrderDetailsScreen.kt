@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.OrderDetailsUiState
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
@@ -61,76 +62,78 @@ private fun OrderDetailsContent(
     state: OrderDetailsUiState,
     onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 160.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            state = rememberLazyGridState(),
-            content = {
-                items(state.products) { itemOrderDetails ->
-                    OrderDetailsCard(
-                        imageUrl = itemOrderDetails.images[0],
-                        orderName = itemOrderDetails.name,
-                        orderPrice = "${itemOrderDetails.price}",
-                        orderCount = "${itemOrderDetails.count}",
-                        orderId = itemOrderDetails.id,
-                        onClickCard = { onClickItemOrderDetails(itemOrderDetails.id) },
-                    )
-                }
-            }
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Box(modifier = Modifier.shadow(elevation = 20.dp)) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+    AppBarScaffold {
+        Column(modifier = Modifier.fillMaxSize()) {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 160.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.background)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            horizontal = MaterialTheme.dimens.space16,
-                            vertical = MaterialTheme.dimens.space8
+                    .wrapContentHeight(),
+                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                state = rememberLazyGridState(),
+                content = {
+                    items(state.products) { itemOrderDetails ->
+                        OrderDetailsCard(
+                            imageUrl = itemOrderDetails.images[0],
+                            orderName = itemOrderDetails.name,
+                            orderPrice = "${itemOrderDetails.price}",
+                            orderCount = "${itemOrderDetails.count}",
+                            orderId = itemOrderDetails.id,
+                            onClickCard = { onClickItemOrderDetails(itemOrderDetails.id) },
                         )
-                ) {
-                    Text(
-                        text = "${state.orderDetails.totalPrice}$",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = Typography.bodyMedium,
-                    )
-                    Text(
-                        text = stringResource(id = org.the_chance.design_system.R.string.total_price),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        style = Typography.displaySmall,
-                    )
+                    }
                 }
+            )
 
-                Card(
-                    colors = CardDefaults.cardColors(Color.Transparent),
-                    modifier = Modifier.padding(
-                        top = MaterialTheme.dimens.space16,
-                        end = MaterialTheme.dimens.space16,
-                    ),
+            Spacer(modifier = Modifier.weight(1f))
+
+            Box(modifier = Modifier.shadow(elevation = 20.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    Text(
-                        text = state.orderDetails.stateText,
-                        color = primary100,
-                        style = Typography.displayLarge,
-                        maxLines = 1,
+                    Column(
                         modifier = Modifier
                             .padding(
-                                vertical = MaterialTheme.dimens.space6,
-                                horizontal = MaterialTheme.dimens.space16
-                            ),
-                    )
+                                horizontal = MaterialTheme.dimens.space16,
+                                vertical = MaterialTheme.dimens.space8
+                            )
+                    ) {
+                        Text(
+                            text = "${state.orderDetails.totalPrice}$",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = Typography.bodyMedium,
+                        )
+                        Text(
+                            text = stringResource(id = org.the_chance.design_system.R.string.total_price),
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            style = Typography.displaySmall,
+                        )
+                    }
+
+                    Card(
+                        colors = CardDefaults.cardColors(Color.Transparent),
+                        modifier = Modifier.padding(
+                            top = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16,
+                        ),
+                    ) {
+                        Text(
+                            text = state.orderDetails.stateText,
+                            color = primary100,
+                            style = Typography.displayLarge,
+                            maxLines = 1,
+                            modifier = Modifier
+                                .padding(
+                                    vertical = MaterialTheme.dimens.space6,
+                                    horizontal = MaterialTheme.dimens.space16
+                                ),
+                        )
+                    }
                 }
             }
         }

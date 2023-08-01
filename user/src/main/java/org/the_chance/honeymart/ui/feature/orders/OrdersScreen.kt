@@ -46,6 +46,7 @@ import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsS
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
@@ -73,129 +74,130 @@ fun OrdersContent(
     ordersInteractionsListener: OrdersInteractionsListener,
     onClickItemOrder: (orderId: Long) -> Unit = {},
 ) {
-    val navController = LocalNavigationProvider.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 24.dp)
-    ) {
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
+    AppBarScaffold {
+        val navController = LocalNavigationProvider.current
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .fillMaxSize()
         ) {
-            CustomChip(
-                state = state.orderStates == OrderStates.PROCESSING,
-                text = stringResource(id = R.string.processing),
-                onClick = { ordersInteractionsListener.onClickProcessingOrder() }
-            )
-            CustomChip(
-                state = state.orderStates == OrderStates.DONE,
-                text = stringResource(id = R.string.done),
-                onClick = { ordersInteractionsListener.onClickDoneOrder() }
-            )
-            CustomChip(
-                state = state.orderStates == OrderStates.CANCELED,
-                text = stringResource(id = R.string.cancel),
-                onClick = { ordersInteractionsListener.onClickCancelOrder() }
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        AnimatedVisibility(
-            visible = state.isLoading,
-            enter = fadeIn(animationSpec = tween(durationMillis = 500)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 500))
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Spacer(modifier = Modifier.height(24.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Loading(state.isLoading)
+                CustomChip(
+                    state = state.orderStates == OrderStates.PROCESSING,
+                    text = stringResource(id = R.string.processing),
+                    onClick = { ordersInteractionsListener.onClickProcessingOrder() }
+                )
+                CustomChip(
+                    state = state.orderStates == OrderStates.DONE,
+                    text = stringResource(id = R.string.done),
+                    onClick = { ordersInteractionsListener.onClickDoneOrder() }
+                )
+                CustomChip(
+                    state = state.orderStates == OrderStates.CANCELED,
+                    text = stringResource(id = R.string.cancel),
+                    onClick = { ordersInteractionsListener.onClickCancelOrder() }
+                )
             }
-        }
-        AnimatedVisibility(
-            visible = !state.isLoading,
-            enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
-            exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
-        ) {
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(vertical = 16.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+            AnimatedVisibility(
+                visible = state.isLoading,
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 500))
             ) {
-                itemsIndexed(
-                    items = state.orders,
-                ) { index, orderItem ->
-                    var showDialog by remember { mutableStateOf(false) }
-                    val dismissState = rememberDismissState(
-                        confirmValueChange = { it == DismissValue.DismissedToStart })
-                    val updatedDismissState by rememberUpdatedState(dismissState)
-
-                    SwipeToDismiss(
-                        modifier = Modifier.animateItemPlacement(),
-                        state = dismissState,
-                        background = { SwipeBackGround() },
-                        directions = setOf(DismissDirection.EndToStart),
-                        dismissContent = {
-                            ItemOrder(
-                                imageUrl = orderItem.imageUrl!!,
-                                orderId = orderItem.orderId!!,
-                                marketName = orderItem.marketName!!,
-                                quantity = orderItem.quantity!!,
-                                price = orderItem.totalPrice!!,
-                                onClickCard = { onClickItemOrder(orderItem.orderId) }
-                            )
-                        })
-                    LaunchedEffect(showDialog) {
-                        if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                            dismissState.reset()
-                        }
-                    }
-                    LaunchedEffect(updatedDismissState.dismissDirection) {
-                        if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                            showDialog = true
-                        }
-                    }
-                    if (showDialog) {
-                        val textOrderStates = when (state.orderStates) {
-                            OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                            else -> {
-                                stringResource(id = R.string.order_dialog_Delete_Text)
-                            }
-                        }
-
-                        val buttonOrderStates = when (state.orderStates) {
-                            OrderStates.PROCESSING -> OrderStates.CANCELED.state
-                            else -> {
-                                OrderStates.DELETE.state
-                            }
-                        }
-                        CustomAlertDialog(
-                            message = textOrderStates,
-                            onConfirm = {
-                                ordersInteractionsListener.onClickConfirmOrder(
-                                    index.toLong(),
-                                    buttonOrderStates
-                                )
-                                showDialog = false
-                            },
-                            onCancel = { showDialog = false },
-                            onDismissRequest = { showDialog = false }
-                        )
-                    }
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Loading(state.isLoading)
                 }
             }
-            if (state.orders.isEmpty()) {
-                PlaceholderItem(
-                    modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-                    image = painterResource(id = R.drawable.placeholder_order),
-                    title = stringResource(R.string.placeholder_title),
-                    subtitle = stringResource(R.string.placeholder_subtitle),
-                    onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
-                )
+            AnimatedVisibility(
+                visible = !state.isLoading,
+                enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
+                exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
+                    itemsIndexed(
+                        items = state.orders,
+                    ) { index, orderItem ->
+                        var showDialog by remember { mutableStateOf(false) }
+                        val dismissState = rememberDismissState(
+                            confirmValueChange = { it == DismissValue.DismissedToStart })
+                        val updatedDismissState by rememberUpdatedState(dismissState)
+
+                        SwipeToDismiss(
+                            modifier = Modifier.animateItemPlacement(),
+                            state = dismissState,
+                            background = { SwipeBackGround() },
+                            directions = setOf(DismissDirection.EndToStart),
+                            dismissContent = {
+                                ItemOrder(
+                                    imageUrl = orderItem.imageUrl!!,
+                                    orderId = orderItem.orderId!!,
+                                    marketName = orderItem.marketName!!,
+                                    quantity = orderItem.quantity!!,
+                                    price = orderItem.totalPrice!!,
+                                    onClickCard = { onClickItemOrder(orderItem.orderId) }
+                                )
+                            })
+                        LaunchedEffect(showDialog) {
+                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                                dismissState.reset()
+                            }
+                        }
+                        LaunchedEffect(updatedDismissState.dismissDirection) {
+                            if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                                showDialog = true
+                            }
+                        }
+                        if (showDialog) {
+                            val textOrderStates = when (state.orderStates) {
+                                OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                                else -> {
+                                    stringResource(id = R.string.order_dialog_Delete_Text)
+                                }
+                            }
+
+                            val buttonOrderStates = when (state.orderStates) {
+                                OrderStates.PROCESSING -> OrderStates.CANCELED.state
+                                else -> {
+                                    OrderStates.DELETE.state
+                                }
+                            }
+                            CustomAlertDialog(
+                                message = textOrderStates,
+                                onConfirm = {
+                                    ordersInteractionsListener.onClickConfirmOrder(
+                                        index.toLong(),
+                                        buttonOrderStates
+                                    )
+                                    showDialog = false
+                                },
+                                onCancel = { showDialog = false },
+                                onDismissRequest = { showDialog = false }
+                            )
+                        }
+                    }
+                }
+                if (state.orders.isEmpty()) {
+                    PlaceholderItem(
+                        modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
+                        image = painterResource(id = R.drawable.placeholder_order),
+                        title = stringResource(R.string.placeholder_title),
+                        subtitle = stringResource(R.string.placeholder_subtitle),
+                        onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
+                    )
+                }
             }
         }
     }

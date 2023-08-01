@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +35,7 @@ import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderC
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.uistate.CartUiState
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -68,35 +70,33 @@ fun CartContent(
     onClickButtonOrderDetails: () -> Unit = {},
     onClickButtonDiscover: () -> Unit = {},
 ) {
+    AppBarScaffold {
+        Loading((state.isLoading && state.products.isEmpty()))
 
-    Loading((state.isLoading && state.products.isEmpty()))
-
-    ConnectionErrorPlaceholder(
-        state = state.isError,
-        onClickTryAgain = cartInteractionListener::getChosenCartProducts
-    )
-    ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
-    {
-        CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
-    }
-
-    BottomSheetCompleteOrderContent(
-        state = state.bottomSheetIsDisplayed,
-        onClick = onClickButtonOrderDetails,
-        onClickButtonDiscover = onClickButtonDiscover
-    )
-
-
-
-
-    ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
-        CartSuccessScreen(
-            state = state,
-            cartInteractionListener = cartInteractionListener
+        ConnectionErrorPlaceholder(
+            state = state.isError,
+            onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
-    }
-    Loading(state = state.isLoading && state.products.isNotEmpty())
+        ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
+        {
+            CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
+        }
 
+        BottomSheetCompleteOrderContent(
+            state = state.bottomSheetIsDisplayed,
+            onClick = onClickButtonOrderDetails,
+            onClickButtonDiscover = onClickButtonDiscover
+        )
+
+        ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
+            CartSuccessScreen(
+                state = state,
+                cartInteractionListener = cartInteractionListener
+            )
+        }
+        Loading(state = state.isLoading && state.products.isNotEmpty())
+
+    }
 }
 
 
@@ -104,7 +104,7 @@ fun CartContent(
 @Composable
 private fun CartSuccessScreen(
     state: CartUiState,
-    cartInteractionListener: CartInteractionListener
+    cartInteractionListener: CartInteractionListener,
 ) {
     Column(
         modifier = Modifier
@@ -112,6 +112,7 @@ private fun CartSuccessScreen(
             .background(white300)
     ) {
         LazyColumn(
+            state = rememberLazyListState(),
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
