@@ -64,12 +64,10 @@ private fun WishListContent(
     onClickTryAgain: () -> Unit,
 ) {
     AppBarScaffold {
-        Loading(state = state.isLoading)
-
         ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
 
         EmptyOrdersPlaceholder(
-            state = state.products.isEmpty(),
+            state = state.products.isEmpty() && !state.isLoading,
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),
@@ -100,6 +98,7 @@ private fun WishListContent(
                     })
             }
         }
+        Loading(state = state.isLoading)
     }
 }
 
