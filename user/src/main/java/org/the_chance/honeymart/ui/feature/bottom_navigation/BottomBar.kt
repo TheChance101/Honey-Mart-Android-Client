@@ -45,7 +45,6 @@ fun BottomBar(bottomNavState: MutableState<Boolean>) {
         content = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.onTertiary,
-                contentColor = MaterialTheme.colorScheme.onError
             ) {
                 screens.forEach { screen ->
                     AddItem(

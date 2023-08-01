@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -53,6 +54,7 @@ fun TextField(
             shape = Shapes.medium,
             maxLines = 1,
             colors = TextFieldDefaults.outlinedTextFieldColors(
+                containerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) error else black16,
                 unfocusedBorderColor = if (isError) error else black16
             ),
