@@ -4,8 +4,10 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
@@ -35,25 +38,28 @@ fun CategoryContent(
     state: CategoriesUiState,
     listener: (categoryId: Long, marketId: Long, position: Int) -> Unit,
 ) {
-    Loading(state.isLoading)
+    AppBarScaffold {
+        Loading(state.isLoading)
 
-    ConnectionErrorPlaceholder(state.isError, {})
+        ConnectionErrorPlaceholder(state.isError, {})
 
-    ContentVisibility(state = !state.isLoading && !state.isError) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 100.dp),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            itemsIndexed(state.categories) { index, item ->
-                CategoryItem(
-                    state = item,
-                    onCategoryClicked = listener,
-                    categoryId = item.categoryId,
-                    marketId = state.marketId,
-                    position = index,
-                )
+        ContentVisibility(state = !state.isLoading && !state.isError) {
+            LazyVerticalGrid(
+                state = rememberLazyGridState(),
+                columns = GridCells.Adaptive(minSize = 100.dp),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                itemsIndexed(state.categories) { index, item ->
+                    CategoryItem(
+                        state = item,
+                        onCategoryClicked = listener,
+                        categoryId = item.categoryId,
+                        marketId = state.marketId,
+                        position = index,
+                    )
+                }
             }
         }
     }

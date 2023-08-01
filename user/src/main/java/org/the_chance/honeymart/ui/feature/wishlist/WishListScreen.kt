@@ -23,11 +23,12 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.composables.ItemFavorite
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -62,40 +63,42 @@ private fun WishListContent(
     onClickIconFavorite: (ProductId: Long) -> Unit,
     onClickTryAgain: () -> Unit,
 ) {
-    Loading(state = state.isLoading)
+    AppBarScaffold {
+        Loading(state = state.isLoading)
 
-    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
+        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
 
-    EmptyOrdersPlaceholder(
-        state = state.products.isEmpty(),
-        image = R.drawable.placeholder_wish_list,
-        title = stringResource(R.string.your_wish_list_is_empty),
-        subtitle = stringResource(R.string.subtitle_placeholder_wishList),
-        onClickDiscoverMarkets = onClickDesCover
-    )
+        EmptyOrdersPlaceholder(
+            state = state.products.isEmpty(),
+            image = R.drawable.placeholder_wish_list,
+            title = stringResource(R.string.your_wish_list_is_empty),
+            subtitle = stringResource(R.string.subtitle_placeholder_wishList),
+            onClickDiscoverMarkets = onClickDesCover
+        )
 
-    ContentVisibility(state = state.products.isNotEmpty()) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 160.dp),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                content = {
-                    items(state.products) { productState ->
-                        ItemFavorite(
-                            imageUrlMarket = productState.productImages!![0],
-                            name = productState.productName!!,
-                            price = "${productState.productPrice}",
-                            description = "${productState.description} ",
-                            productId = productState.productId!!,
-                            onClickProduct = { wishListInteractionListener(productState.productId) },
-                            onClickFavoriteIcon = { onClickIconFavorite(productState.productId) }
+        ContentVisibility(state = state.products.isNotEmpty()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    content = {
+                        items(state.products) { productState ->
+                            ItemFavorite(
+                                imageUrlMarket = productState.productImages!![0],
+                                name = productState.productName!!,
+                                price = "${productState.productPrice}",
+                                description = "${productState.description} ",
+                                productId = productState.productId!!,
+                                onClickProduct = { wishListInteractionListener(productState.productId) },
+                                onClickFavoriteIcon = { onClickIconFavorite(productState.productId) }
 
-                        )
-                    }
-                })
+                            )
+                        }
+                    })
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ package org.the_chance.honeymart.ui.feature.market
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
@@ -34,14 +35,14 @@ fun MarketContent(
     state: MarketsUiState,
     marketInteractionListener: (Long) -> Unit,
 ) {
-    AppBarScaffold { listState ->
+    AppBarScaffold {
         Loading(state.isLoading)
 
         ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
 
         ContentVisibility(state = state.markets.isNotEmpty()) {
             LazyColumn(
-                state = listState,
+                state = rememberLazyListState(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {

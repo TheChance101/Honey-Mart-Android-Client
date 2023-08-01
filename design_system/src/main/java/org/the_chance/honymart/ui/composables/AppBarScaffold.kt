@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,10 +32,9 @@ import org.the_chance.honymart.ui.theme.white
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarScaffold(
-    content: @Composable (LazyListState: LazyListState) -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val listState = rememberLazyListState()
     val isScrolled =
         remember { derivedStateOf { scrollBehavior.state.contentOffset < -100f } }
 
@@ -79,7 +76,7 @@ fun AppBarScaffold(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
         ) {
-            content(listState)
+            content()
         }
     }
 }
