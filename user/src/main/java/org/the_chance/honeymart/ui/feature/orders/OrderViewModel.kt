@@ -11,7 +11,6 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoryArgs
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.util.Constant
 import org.the_chance.honeymart.util.EventHandler
@@ -40,7 +39,8 @@ class OrderViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 isError = false,
-                orderStates = OrderStates.PROCESSING
+                orderStates = OrderStates.PROCESSING,
+
             )
         }
         viewModelScope.launch {

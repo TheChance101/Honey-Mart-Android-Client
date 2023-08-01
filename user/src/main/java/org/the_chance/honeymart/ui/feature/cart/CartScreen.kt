@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.cart.composables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.composables.CartItem
+import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
@@ -67,26 +68,35 @@ fun CartContent(
     onClickButtonOrderDetails: () -> Unit = {},
     onClickButtonDiscover: () -> Unit = {},
 ) {
-    Loading(state.isLoading && state.products.isEmpty())
+
+    Loading((state.isLoading && state.products.isEmpty()))
 
     ConnectionErrorPlaceholder(
         state = state.isError,
         onClickTryAgain = cartInteractionListener::getChosenCartProducts
     )
-
-    ContentVisibility(state = state.products.isEmpty()) {
-        BottomSheetCompleteOrderContent(
-            state = state,
-            onClick = onClickButtonOrderDetails,
-            onClickButtonDiscover = onClickButtonDiscover
-        )
+    ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
+    {
+        CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
     }
-    ContentVisibility(state = state.products.isNotEmpty() && !state.isLoading && !state.isError) {
+
+    BottomSheetCompleteOrderContent(
+        state = state.bottomSheetIsDisplayed,
+        onClick = onClickButtonOrderDetails,
+        onClickButtonDiscover = onClickButtonDiscover
+    )
+
+
+
+
+    ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
         CartSuccessScreen(
             state = state,
             cartInteractionListener = cartInteractionListener
         )
     }
+    Loading(state = state.isLoading && state.products.isNotEmpty())
+
 }
 
 
@@ -161,6 +171,6 @@ private fun CartSuccessScreen(
 
         CartCardView(totalPrice = state.total.toString(), isLoading = state.isLoading)
     }
-    Loading(state = state.isLoading)
+
 }
 

@@ -26,7 +26,7 @@ class CartViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
      override fun getChosenCartProducts() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = true, isError = false,bottomSheetIsDisplayed = false) }
         tryToExecute(
             { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
@@ -40,7 +40,7 @@ class CartViewModel @Inject constructor(
                 isLoading = false,
                 error = null,
                 products = cart.products,
-                total = cart.total
+                total = cart.total,
             )
         }
     }
