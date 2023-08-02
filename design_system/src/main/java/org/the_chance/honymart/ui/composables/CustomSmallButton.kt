@@ -33,7 +33,6 @@ fun CustomSmallIconButton(
             .clip(shape)
             .size(MaterialTheme.dimens.smallButton)
             .background(background),
-
         ) {
 
         Image(

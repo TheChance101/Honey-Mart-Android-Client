@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -79,8 +80,9 @@ private fun ProductDetailsContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .shadow(elevation = 8.dp)
-                        .background(MaterialTheme.colorScheme.background)
+                        .background(MaterialTheme.colorScheme.tertiaryContainer)
                         .padding(MaterialTheme.dimens.space16),
+                    idIconDrawableRes = R.drawable.icon_cart,
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
                         state.product.productId.let {
@@ -105,6 +107,7 @@ private fun ProductDetailsContent(
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }) {
+
                         ImageNetwork(
                             imageUrl = state.image, modifier = Modifier.fillMaxSize()
                         )
@@ -113,8 +116,6 @@ private fun ProductDetailsContent(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             onBackClick = onBackClick, onFavoriteClick = {},
                         )
-
-
                     }
 
                     Column(modifier = Modifier
@@ -126,20 +127,16 @@ private fun ProductDetailsContent(
                             top = MaterialTheme.dimens.space24,
                             start = MaterialTheme.dimens.space16,
                             end = MaterialTheme.dimens.space16,
-
-                            )
+                        )
                         .constrainAs(info) {
                             top.linkTo(imageProduct.bottom)
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
-
                     ) {
-
                         Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -148,13 +145,12 @@ private fun ProductDetailsContent(
                                 style = MaterialTheme.typography.displayMedium.copy(
                                     color = MaterialTheme.colorScheme.onSecondary
                                 ),
-
-                                )
+                            )
 
                             Row {
                                 CustomSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_remove_from_cart,
-                                    background = MaterialTheme.colorScheme.background,
+                                    background = Color.Transparent,
                                     modifier = Modifier
                                         .clip(CircleShape)
                                         .border(
@@ -183,23 +179,20 @@ private fun ProductDetailsContent(
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
-
                             }
                         }
                         SpacerVertical8()
                         TextPrice(state.product.productPrice.toString() + "$")
                         Text(
-                            state.product.productDescription,
-                            style = MaterialTheme.typography.displayMedium.copy(
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
-                            ), modifier = Modifier
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = MaterialTheme.dimens.space24)
+                                .padding(vertical = MaterialTheme.dimens.space24),
+                            text = state.product.productDescription,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         )
-
-
                     }
-
 
                     SmallProductImages(
                         state = state.smallImages,
@@ -212,10 +205,7 @@ private fun ProductDetailsContent(
                         onClickImage = { index ->
                             interaction.onClickSmallImage(state.smallImages[index])
                         }
-
                     )
-
-
                 }
             }
         }
