@@ -37,7 +37,6 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
-import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
@@ -55,7 +54,7 @@ fun OrdersScreen(
     val navController = LocalNavigationProvider.current
 
     LaunchedEffect(lifecycleOwner) {
-        viewModel.onClickProcessingOrder()
+        viewModel.getAllProcessingOrders()
     }
 
     OrdersContent(
@@ -74,11 +73,9 @@ fun OrdersContent(
 ) {
     AppBarScaffold {
         val navController = LocalNavigationProvider.current
-
-        Loading(state = state.isLoading)
         ConnectionErrorPlaceholder(
             state = state.isError,
-            onClickTryAgain = ordersInteractionsListener::onClickProcessingOrder
+            onClickTryAgain = ordersInteractionsListener::getAllProcessingOrders
         )
         EmptyOrdersPlaceholder(
             state = state.orders.isEmpty() && !state.isError && !state.isLoading,
@@ -101,23 +98,23 @@ fun OrdersContent(
                 CustomChip(
                     state = state.orderStates == OrderStates.PROCESSING,
                     text = stringResource(id = R.string.processing),
-                    onClick = { ordersInteractionsListener.onClickProcessingOrder() }
+                    onClick = ordersInteractionsListener::getAllProcessingOrders
                 )
                 CustomChip(
                     state = state.orderStates == OrderStates.DONE,
                     text = stringResource(id = R.string.done),
-                    onClick = { ordersInteractionsListener.onClickDoneOrder() }
+                    onClick = ordersInteractionsListener::getAllDoneOrders
                 )
                 CustomChip(
                     state = state.orderStates == OrderStates.CANCELED,
                     text = stringResource(id = R.string.cancel),
-                    onClick = { ordersInteractionsListener.onClickCancelOrder() }
+                    onClick = ordersInteractionsListener::getAllCancelOrders
                 )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-
-            ContentVisibility(state.orders.isNotEmpty() && !state.isError && !state.isLoading) {
+            Loading(state = state.isLoading)
+            ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -168,7 +165,7 @@ fun OrdersContent(
                             CustomAlertDialog(
                                 message = textOrderStates,
                                 onConfirm = {
-                                    ordersInteractionsListener.onClickConfirmOrder(
+                                    ordersInteractionsListener.updateOrders(
                                         index.toLong(),
                                         buttonOrderStates
                                     )
