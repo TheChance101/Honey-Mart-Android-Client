@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,13 +24,12 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextField(
     modifier: Modifier = Modifier,
     text: String = "",
     onValueChange: (String) -> Unit = {},
-    hint: String ,
+    hint: String,
     @DrawableRes idIconDrawableRes: Int,
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
@@ -45,18 +43,20 @@ fun TextField(
             value = text,
             onValueChange = onValueChange,
             label = {
-                Text(
-                    text = hint,
-                    color =  if (isError) error else black37,
-                    style = Typography.displaySmall
-                )
+                    Text(
+                        text = hint,
+                        color = if (isError) error else black37,
+                        style = Typography.displaySmall,
+                    )
             },
             shape = Shapes.medium,
             maxLines = 1,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = (MaterialTheme.colorScheme.onTertiary),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedSupportingTextColor = if (isError) error else black37,
+                focusedContainerColor = (MaterialTheme.colorScheme.onTertiary),
+                disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) error else black16,
-                unfocusedBorderColor = if (isError) error else black16
+                unfocusedBorderColor = if (isError) error else black16,
             ),
             trailingIcon = {
                 if (isError) {
@@ -91,6 +91,8 @@ fun TextField(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
-    TextField(hint = "Email", idIconDrawableRes = R.drawable.ic_email,
-        isError = true, errorMessage = stringResource(R.string.that_s_not_a_valid_email))
+    TextField(
+        hint = "Email", idIconDrawableRes = R.drawable.ic_email,
+        isError = true, errorMessage = stringResource(R.string.that_s_not_a_valid_email)
+    )
 }

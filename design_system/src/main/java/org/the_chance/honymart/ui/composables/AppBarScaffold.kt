@@ -52,7 +52,7 @@ fun AppBarScaffold(
     val topAppBarContainerColor = if (isScrolled.value) {
         MaterialTheme.colorScheme.inverseOnSurface
     } else {
-        MaterialTheme.colorScheme.onSurface
+        MaterialTheme.colorScheme.background
     }
     val topAppBarTitleColor = if (isScrolled.value) {
         MaterialTheme.colorScheme.onError

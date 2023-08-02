@@ -96,7 +96,7 @@ fun SignupContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.background(MaterialTheme.colorScheme.onSurface)
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Image(

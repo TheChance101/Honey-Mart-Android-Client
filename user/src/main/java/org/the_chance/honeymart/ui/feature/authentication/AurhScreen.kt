@@ -50,7 +50,7 @@ fun AuthContent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.background(MaterialTheme.colorScheme.onSurface)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
 
     ) {
         Image(
