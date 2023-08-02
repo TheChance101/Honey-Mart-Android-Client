@@ -2,7 +2,8 @@ package org.the_chance.honeymart.ui.feature.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -48,23 +50,20 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.isLogin) {
-        if (state.isLogin) {
+    LaunchedEffect(key1 = state.validationState) {
+        if (state.validationState == ValidationState.SUCCESS) {
             navController.popBackStack(Screen.AuthenticationScreen.route, true)
         }
     }
 
-    LaunchedEffect(key1 = state.emailState, key2 = state.passwordState) {
-        if (state.emailState == ValidationState.INVALID_EMAIL
-            || state.passwordState == ValidationState.INVALID_PASSWORD
-        ) {
-            Toast.makeText(context, "Email or password not exist", Toast.LENGTH_SHORT).show()
+    LaunchedEffect(key1 = state.showToast) {
+        if (state.showToast) {
+            Toast.makeText(context, "Email or password not valid", Toast.LENGTH_SHORT).show()
         }
     }
 
     LoginContent(
         onClickLogin = viewModel::onLoginClick,
-
         onClickSignup = { navController.navigateToSignupScreen() },
         onEmailChange = viewModel::onEmailInputChange,
         onPasswordChange = viewModel::onPasswordInputChanged,
@@ -85,9 +84,9 @@ fun LoginContent(
 
     ContentVisibility(state = !state.isLoading) {
         Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Image(

@@ -4,7 +4,6 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -46,7 +45,7 @@ fun CategoryContent(
         ContentVisibility(state = !state.isLoading && !state.isError) {
             LazyVerticalGrid(
                 state = rememberLazyGridState(),
-                columns = GridCells.Adaptive(minSize = 100.dp),
+                columns = GridCells.Fixed(count = 3),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
