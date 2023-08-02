@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.feature.cart
 
 import SwipeBackGround
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,7 +39,6 @@ import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.white300
 import org.the_chance.user.R
 
 @Composable
@@ -85,7 +83,6 @@ fun CartContent(
         BottomSheetCompleteOrderContent(
             state = state.bottomSheetIsDisplayed,
             onClick = onClickButtonOrderDetails,
-            onClickButtonDiscover = onClickButtonDiscover
         )
 
         ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
@@ -109,7 +106,6 @@ private fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(white300)
     ) {
         LazyColumn(
             state = rememberLazyListState(),

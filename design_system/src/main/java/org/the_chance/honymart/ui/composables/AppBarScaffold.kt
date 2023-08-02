@@ -1,5 +1,6 @@
 package org.the_chance.honymart.ui.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,22 +36,26 @@ fun AppBarScaffold(
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val isScrolled =
-        remember { derivedStateOf { scrollBehavior.state.contentOffset < -100f } }
+    val isScrolled = remember { derivedStateOf { scrollBehavior.state.contentOffset < -100f } }
 
     val systemUiController = rememberSystemUiController()
+
+    val currentNightMode = LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+
+    val darkIcons = if (!isDarkMode) !isScrolled.value else false
+
     systemUiController.setSystemBarsColor(
-        color = Color.Transparent,
-        darkIcons = !isScrolled.value,
-        isNavigationBarContrastEnforced = false
-    )
+        color = Color.Unspecified,
+        darkIcons = darkIcons,
+        isNavigationBarContrastEnforced = false)
     val topAppBarContainerColor = if (isScrolled.value) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.inverseOnSurface
     } else {
-        MaterialTheme.colorScheme.surface
+        MaterialTheme.colorScheme.background
     }
     val topAppBarTitleColor = if (isScrolled.value) {
-        white
+        MaterialTheme.colorScheme.onError
     } else {
         primary100
     }
@@ -100,7 +105,8 @@ fun AppBarTitle(
         )
         Text(
             text = stringResource(R.string.mart),
-            style = MaterialTheme.typography.displayMedium,
-        )
+            style = MaterialTheme.typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondary),
+
+            )
     }
 }

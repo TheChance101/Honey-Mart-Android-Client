@@ -28,12 +28,12 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.CategoryItem
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.ProductCard
-import org.the_chance.honymart.ui.composables.SideBarItem
 import org.the_chance.honymart.ui.theme.dimens
 
 
@@ -87,13 +87,13 @@ private fun ProductsContent(
                     LazyColumn(
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
-                            end = MaterialTheme.dimens.space12
+                            end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                     ) {
                         items(state.categories.size) { index ->
                             val category = state.categories[index]
-                            SideBarItem(
+                            CategoryItem(
                                 icon = R.drawable.ic_bed,
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
@@ -103,6 +103,8 @@ private fun ProductsContent(
                             )
                         }
                     }
+
+
                     EmptyProductPlaceholder(state.isEmptyProducts)
                     Loading(state.isLoadingProduct)
                     AnimatedVisibility(
@@ -111,7 +113,10 @@ private fun ProductsContent(
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
                         LazyColumn(
-                            contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
+                            contentPadding = PaddingValues(
+                                top = MaterialTheme.dimens.space24,
+                                bottom = MaterialTheme.dimens.space8,
+                            ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                             state = rememberLazyListState()
                         ) {

@@ -39,8 +39,8 @@ fun AppBar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(MaterialTheme.dimens.smallButton)
-                    .background(MaterialTheme.colorScheme.primary),
-                tint = MaterialTheme.colorScheme.onPrimary
+                    .background(MaterialTheme.colorScheme.background),
+                tint = MaterialTheme.colorScheme.primary
             )
         },
         title = {

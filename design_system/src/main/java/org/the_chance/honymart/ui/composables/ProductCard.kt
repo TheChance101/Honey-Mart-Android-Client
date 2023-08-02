@@ -1,5 +1,6 @@
 package org.the_chance.honymart.ui.composables
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.blackOn60
+import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ProductCard(
@@ -57,18 +59,17 @@ fun ProductCard(
                         end = MaterialTheme.dimens.space8,
                         top = MaterialTheme.dimens.space8
                     ),
-                backgroundColor = if (isFavoriteIconClicked) white
+                backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
                 else MaterialTheme.colorScheme.primary,
                 onClick = onClickFavorite
             ) {
-                Icon(
+                Image(
                     painter = painterResource(
                         id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
                         else R.drawable.icon_favorite_unselected
                     ),
                     contentDescription = "favorite icon",
-                    tint = if (isFavoriteIconClicked) MaterialTheme.colorScheme.primary else white
-                )
+                   )
             }
             Box(
                 modifier = Modifier
@@ -77,7 +78,7 @@ fun ProductCard(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                black37,
+                                blackOn87,
                             ),
                             startY = 300f,
                         )

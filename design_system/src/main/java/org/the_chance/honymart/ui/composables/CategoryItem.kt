@@ -23,7 +23,7 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun SideBarItem(
+fun CategoryItem(
     modifier: Modifier = Modifier,
     icon: Int,
     categoryName: String,

@@ -43,7 +43,8 @@ fun ItemFavorite(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                imageUrlMarket, modifier = Modifier.overlayBottomToTop(),
+                imageUrl = imageUrlMarket,
+                modifier = Modifier.fillMaxSize().overlayBottomToTop(),
             )
             Column(
                 Modifier
@@ -55,8 +56,7 @@ fun ItemFavorite(
                 CustomSmallIconButton(
                     modifier = modifier.align(Alignment.End),
                     idIconDrawableRes = R.drawable.icon_favorite_selected,
-                    background = MaterialTheme.colorScheme.onPrimary,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    background = MaterialTheme.colorScheme.tertiary,
                     onClick = { onClickFavoriteIcon(productId) }
                 )
                 Spacer(modifier = Modifier.weight(1f))

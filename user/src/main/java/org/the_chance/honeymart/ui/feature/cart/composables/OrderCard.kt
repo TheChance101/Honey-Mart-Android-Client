@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart.composables
 
 
-import android.icu.text.DecimalFormat
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,19 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.cart.CartViewModel
+import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.CustomButton
-import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.user.R
 
 @Composable
@@ -38,7 +36,7 @@ fun CartCardView(
         .height(100.dp)
         ,
         colors =CardDefaults.cardColors(
-            containerColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.onTertiary,
         )
     ) {
         ConstraintLayout(
@@ -69,11 +67,11 @@ fun CartCardView(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                     },
-                background = primary100,
+
             )
             Text(
                 text = stringResource(R.string.total_price),
-                color = black16,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = org.the_chance.honymart.ui.theme.Typography.displaySmall,
                 modifier = Modifier.constrainAs(TotalPrice) {
                     start.linkTo(parent.start)
@@ -86,10 +84,7 @@ fun CartCardView(
 }
 
 
-fun formatCurrencyWithNearestFraction(amount: Double):String {
-    val decimalFormat = DecimalFormat("#,##0.0'$'")
-    return decimalFormat.format(amount)
-}
+
 
 
 

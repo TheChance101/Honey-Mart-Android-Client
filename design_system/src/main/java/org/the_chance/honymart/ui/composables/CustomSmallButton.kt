@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +23,6 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CustomSmallIconButton(
     modifier: Modifier = Modifier,
     @DrawableRes idIconDrawableRes: Int,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = CircleShape,
     onClick: () -> Unit,
@@ -40,10 +38,8 @@ fun CustomSmallIconButton(
 
         Image(
             painter = painterResource(id = idIconDrawableRes),
-            colorFilter = ColorFilter.tint(color = contentColor),
             contentDescription = "",
-            modifier = Modifier
-                .size(MaterialTheme.dimens.iconMedium),
+            modifier = Modifier.size(MaterialTheme.dimens.iconMedium),
         )
 
 

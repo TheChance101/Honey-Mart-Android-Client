@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.authentication
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,7 +30,6 @@ import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -49,6 +50,8 @@ fun AuthContent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+
     ) {
         Image(
             modifier = Modifier.fillMaxWidth(),
@@ -59,7 +62,7 @@ fun AuthContent(
         Text(
             text = stringResource(R.string.welcome_to_honey_mart),
             modifier = Modifier.padding(top = 16.dp),
-            color = black60,
+            color = black37,
             style = Typography.displayMedium
         )
         Text(
