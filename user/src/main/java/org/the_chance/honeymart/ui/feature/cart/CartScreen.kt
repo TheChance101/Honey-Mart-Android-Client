@@ -29,7 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.cart.composables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.composables.CartItem
-import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
 import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
@@ -38,6 +37,7 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
 
@@ -75,10 +75,12 @@ fun CartContent(
             state = state.isError,
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
-        ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
-        {
-            CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
-        }
+        EmptyOrdersPlaceholder(
+            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+            image = org.the_chance.design_system.R.drawable.placeholder_order,
+            title = stringResource(R.string.your_cart_list_is_empty),
+            subtitle = stringResource(R.string.adding_items_that_catch_your_eye),
+            onClickDiscoverMarkets = { onClickButtonDiscover() })
 
         BottomSheetCompleteOrderContent(
             state = state.bottomSheetIsDisplayed,

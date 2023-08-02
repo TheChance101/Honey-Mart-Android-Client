@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -56,10 +58,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.emailState, key2 = state.fullNameState) {
-        if (state.emailState == ValidationState.INVALID_EMAIL
-            || state.fullNameState == ValidationState.INVALID_FULL_NAME
-        ) {
+    LaunchedEffect(key1 = state.showToast) {
+        if (state.showToast) {
             Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT).show()
         }
     }
@@ -96,7 +96,9 @@ fun SignupContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Image(

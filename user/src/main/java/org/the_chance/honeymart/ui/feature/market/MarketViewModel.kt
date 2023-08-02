@@ -36,7 +36,7 @@ class MarketViewModel @Inject constructor(
     private fun onGetMarketError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isLoading = false, isError = true, markets = emptyList()) }
         }
     }
 
@@ -47,5 +47,14 @@ class MarketViewModel @Inject constructor(
                 markets = markets
             )
         }
+    }
+
+    fun getChosenMarkets() {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { getAllMarket().map { it.toMarketUiState() } },
+            ::onGetMarketSuccess,
+            ::onGetMarketError
+        )
     }
 }

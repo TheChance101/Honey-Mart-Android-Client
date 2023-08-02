@@ -65,17 +65,19 @@ private fun WishListContent(
 ) {
 
     AppBarScaffold {
+        Loading(state = state.isLoading && state.products.isEmpty())
+
         ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
 
         EmptyOrdersPlaceholder(
-            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+            state = state.products.isEmpty() && !state.isError&& !state.isLoading ,
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),
             onClickDiscoverMarkets = onClickDesCover
         )
 
-        ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
+        ContentVisibility(state = state.products.isNotEmpty() && !state.isError ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 160.dp),
@@ -89,10 +91,12 @@ private fun WishListContent(
                                 imageUrlMarket = productState.productImages!![0],
                                 name = productState.productName!!,
                                 price = "${productState.productPrice}",
-                                description = "${productState.description} ",
+                                description = "${productState.description}",
                                 productId = productState.productId!!,
-                                onClickProduct = { wishListInteractionListener(productState.productId) },
-                                onClickFavoriteIcon = { onClickIconFavorite(productState.productId) }
+                                onClickProduct =
+                                { wishListInteractionListener(productState.productId)},
+                                onClickFavoriteIcon =
+                                { onClickIconFavorite(productState.productId)}
 
                             )
                         }
@@ -100,7 +104,7 @@ private fun WishListContent(
             }
         }
 
-        Loading(state = state.isLoading)
+        Loading(state = state.isLoading && state.products.isNotEmpty())
 
     }
 }

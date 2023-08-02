@@ -16,4 +16,5 @@ data class SignupUiState(
     val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
     val confirmPasswordState: ValidationState = ValidationState.VALID_PASSWORD,
     val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
+    val showToast:Boolean = false
 )
