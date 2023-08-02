@@ -29,7 +29,8 @@ fun MarketScreen(
     val navController = LocalNavigationProvider.current
     MarketContent(
         state = state,
-        marketInteractionListener = navController::navigateToCategoryScreen
+        marketInteractionListener = navController::navigateToCategoryScreen,
+        onClickTryAgain = viewModel::getChosenMarkets
     )
 }
 
@@ -37,13 +38,11 @@ fun MarketScreen(
 fun MarketContent(
     state: MarketsUiState,
     marketInteractionListener: (Long) -> Unit,
+    onClickTryAgain : () -> Unit
 ) {
     AppBarScaffold {
-        Loading(state.isLoading)
 
-        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
-
-        ContentVisibility(state = state.markets.isNotEmpty()) {
+        ContentVisibility(state = state.markets.isNotEmpty() && !state.isError) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
@@ -59,5 +58,12 @@ fun MarketContent(
                 }
             }
         }
+
+        ConnectionErrorPlaceholder(
+            state = state.isError && state.markets.isEmpty(),
+            onClickTryAgain = onClickTryAgain
+        )
+
+        Loading(state.isLoading)
     }
 }
