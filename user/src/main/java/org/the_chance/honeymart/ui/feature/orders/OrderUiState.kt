@@ -13,13 +13,13 @@ data class OrdersUiState(
 )
 
 data class OrderUiState(
-    val orderId: Long? = 1,
-    val totalPrice: Double? = 0.0,
-    val state: Int? = 0,
-    val date: Long? = 1687259600016,
-    val marketName: String? = "",
-    val imageUrl: String? = "",
-    val quantity: Int? = 1
+    val orderId: Long = 1,
+    val totalPrice: Double = 0.0,
+    val state: Int = 0,
+    val date: Long = 1687259600016,
+    val marketName: String = "",
+    val imageUrl: String = "",
+    val quantity: Int = 1
 )
 
 fun OrderEntity.toOrderUiState(): OrderUiState {
