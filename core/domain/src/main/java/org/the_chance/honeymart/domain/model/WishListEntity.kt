@@ -1,10 +1,10 @@
 package org.the_chance.honeymart.domain.model
 
 data class WishListEntity(
-    val productId: Long,
-    val name: String,
-    val price: Double,
-    val images: List<String>,
-    val description: String
+    val productId: Long =0L,
+    val name: String = "",
+    val price: Double = 0.0,
+    val images: List<String> = emptyList(),
+    val description: String = ""
 
 )

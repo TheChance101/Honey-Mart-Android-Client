@@ -169,7 +169,6 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    iconSize = MaterialTheme.dimens.iconSmall,
                                     onClick = interaction::decreaseProductCount
                                 )
 
@@ -185,7 +184,6 @@ private fun ProductDetailsContent(
                                 CustomSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_add_to_cart,
                                     background = MaterialTheme.colorScheme.primary,
-                                    iconSize = MaterialTheme.dimens.iconSmall,
                                     onClick = interaction::increaseProductCount
                                 )
                             }
