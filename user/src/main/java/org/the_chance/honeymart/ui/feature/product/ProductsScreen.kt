@@ -87,7 +87,7 @@ private fun ProductsContent(
                     LazyColumn(
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
-                            end = MaterialTheme.dimens.space12
+                            end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                     ) {
@@ -103,6 +103,8 @@ private fun ProductsContent(
                             )
                         }
                     }
+
+
                     EmptyProductPlaceholder(state.isEmptyProducts)
                     Loading(state.isLoadingProduct)
                     AnimatedVisibility(
@@ -111,7 +113,10 @@ private fun ProductsContent(
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
                         LazyColumn(
-                            contentPadding = PaddingValues(top = MaterialTheme.dimens.space24),
+                            contentPadding = PaddingValues(
+                                top = MaterialTheme.dimens.space24,
+                                bottom = MaterialTheme.dimens.space8,
+                            ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                             state = rememberLazyListState()
                         ) {

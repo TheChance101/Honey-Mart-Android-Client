@@ -46,8 +46,6 @@ fun OrderDetailsScreen(
     val state = viewModel.state.collectAsState().value
     val navController = LocalNavigationProvider.current
 
-    Loading(state = state.isProductsLoading)
-
     ContentVisibility(state = !state.isProductsLoading) {
         OrderDetailsContent(
             state = state,
@@ -63,6 +61,7 @@ private fun OrderDetailsContent(
 ) {
     AppBarScaffold {
         Column(modifier = Modifier.fillMaxSize()) {
+            Loading(state = state.isProductsLoading)
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 160.dp),
                 modifier = Modifier
@@ -93,7 +92,7 @@ private fun OrderDetailsContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.background)
+                        .background(color = MaterialTheme.colorScheme.onTertiary)
                 ) {
                     Column(
                         modifier = Modifier

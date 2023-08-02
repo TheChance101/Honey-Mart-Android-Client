@@ -40,6 +40,7 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
 
@@ -77,6 +78,18 @@ fun CartContent(
             state = state.isError,
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
+
+//        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
+//
+//        EmptyOrdersPlaceholder(
+//            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+//            image = org.the_chance.design_system.R.drawable.placeholder_wish_list,
+//            title = stringResource(org.the_chance.design_system.R.string.your_wish_list_is_empty),
+//            subtitle = stringResource(org.the_chance.design_system.R.string.subtitle_placeholder_wishList),
+//            onClickDiscoverMarkets = onClickDesCover
+//        )
+
+
         ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
         {
             CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
@@ -109,7 +122,6 @@ private fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         LazyColumn(
             state = rememberLazyListState(),

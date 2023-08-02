@@ -45,7 +45,7 @@ fun ItemOrder(
             .height(105.dp)
             .clickable { onClickCard(orderId) },
         colors = CardDefaults.cardColors(
-            containerColor = (MaterialTheme.colorScheme.tertiaryContainer)
+            containerColor = (MaterialTheme.colorScheme.onTertiary)
 
         ),
     ) {

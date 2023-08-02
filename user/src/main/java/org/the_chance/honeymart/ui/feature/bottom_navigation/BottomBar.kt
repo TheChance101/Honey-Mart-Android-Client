@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -76,6 +77,7 @@ fun RowScope.AddItem(
             )
         },
         selected = selected,
+        label = { Text(text = if (selected) screen.label else "", color = primary100) },
         onClick = {
             navController.navigate(screen.route) {
                 Log.e(

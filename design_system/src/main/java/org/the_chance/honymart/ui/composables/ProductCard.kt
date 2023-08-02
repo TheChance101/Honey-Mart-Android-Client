@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.blackOn60
+import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -75,7 +78,7 @@ fun ProductCard(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                black37,
+                                blackOn87,
                             ),
                             startY = 300f,
                         )

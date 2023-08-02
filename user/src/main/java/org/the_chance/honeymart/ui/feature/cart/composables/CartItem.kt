@@ -51,7 +51,7 @@ fun CartItem(
             .fillMaxWidth()
             .height(100.dp)
             .padding(bottom = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
         shape = RoundedCornerShape(16.dp)
     ) {
         ConstraintLayout(

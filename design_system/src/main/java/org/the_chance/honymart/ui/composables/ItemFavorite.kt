@@ -43,7 +43,8 @@ fun ItemFavorite(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                imageUrlMarket, modifier = Modifier.overlayBottomToTop(),
+                imageUrl = imageUrlMarket,
+                modifier = Modifier.fillMaxSize().overlayBottomToTop(),
             )
             Column(
                 Modifier

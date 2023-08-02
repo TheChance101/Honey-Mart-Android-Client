@@ -178,10 +178,11 @@ private fun ProductDetailsContent(
                                     modifier = Modifier
                                         .size(MaterialTheme.dimens.smallButton)
                                         .background(MaterialTheme.colorScheme.primary, CircleShape)
-                                        .clickable { interaction.increaseProductCount()}.padding(8.dp),
+                                        .clickable { interaction.increaseProductCount() }
+                                        .padding(8.dp),
                                     contentDescription = null,
-
-                                    )
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
 
                             }
                         }

@@ -47,7 +47,10 @@ import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
 
@@ -104,19 +107,7 @@ fun OrdersContent(
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            AnimatedVisibility(
-                visible = state.isLoading,
-                enter = fadeIn(animationSpec = tween(durationMillis = 500)),
-                exit = fadeOut(animationSpec = tween(durationMillis = 500))
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Loading(state.isLoading)
-                }
-            }
+
             AnimatedVisibility(
                 visible = !state.isLoading,
                 enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
@@ -189,15 +180,21 @@ fun OrdersContent(
                         }
                     }
                 }
-                if (state.orders.isEmpty()) {
-                    PlaceholderItem(
-                        modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
-                        image = painterResource(id = R.drawable.placeholder_order),
-                        title = stringResource(R.string.placeholder_title),
-                        subtitle = stringResource(R.string.placeholder_subtitle),
-                        onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
-                    )
-                }
+
+                Loading(state = state.isLoading)
+
+                ConnectionErrorPlaceholder(
+                    state = state.isError,
+                    onClickTryAgain = ordersInteractionsListener::onClickProcessingOrder
+                )
+
+                EmptyOrdersPlaceholder(
+                    state = state.orders.isEmpty() &&  !state.isError,
+                    image = R.drawable.placeholder_order,
+                    title = stringResource(R.string.placeholder_title),
+                    subtitle = stringResource(R.string.placeholder_subtitle),
+                    onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
+                )
             }
         }
     }

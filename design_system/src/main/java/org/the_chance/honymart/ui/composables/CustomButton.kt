@@ -34,7 +34,7 @@ fun CustomButton(
     isEnable: Boolean = true,
     @StringRes labelIdStringRes: Int,
     @DrawableRes idIconDrawableRes: Int? = null,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     background: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit,
 ) {
