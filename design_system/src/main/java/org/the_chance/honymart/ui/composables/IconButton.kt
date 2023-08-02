@@ -4,18 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun IconButton(
@@ -28,7 +28,7 @@ fun IconButton(
     HoneyMartTheme {
         IconButton(
             modifier = modifier
-                .size(32.dp)
+                .size(MaterialTheme.dimens.icon32)
                 .background(backgroundColor, shape = shape)
                 .clip(shape),
             onClick = onClick

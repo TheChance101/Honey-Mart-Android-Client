@@ -23,7 +23,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
@@ -40,7 +39,8 @@ fun AppBarScaffold(
 
     val systemUiController = rememberSystemUiController()
 
-    val currentNightMode = LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    val currentNightMode =
+        LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
     val darkIcons = if (!isDarkMode) !isScrolled.value else false
@@ -48,7 +48,8 @@ fun AppBarScaffold(
     systemUiController.setSystemBarsColor(
         color = Color.Unspecified,
         darkIcons = darkIcons,
-        isNavigationBarContrastEnforced = false)
+        isNavigationBarContrastEnforced = false
+    )
     val topAppBarContainerColor = if (isScrolled.value) {
         MaterialTheme.colorScheme.inverseOnSurface
     } else {
@@ -93,7 +94,7 @@ fun AppBarTitle(
     Row {
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(MaterialTheme.dimens.icon32)
                 .padding(end = MaterialTheme.dimens.space4),
             painter = painterResource(id = R.drawable.icon_cart),
             contentDescription = stringResource(R.string.title_icon),

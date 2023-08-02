@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -48,13 +49,13 @@ fun ConnectionErrorPlaceholder(state: Boolean, onClickTryAgain: () -> Unit) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.no_connection_placeholder_img),
-                    contentDescription = "network error",
+                    contentDescription = stringResource(R.string.network_error),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
                 )
                 Text(
-                    text = "Oops, No connection !!",
+                    text = stringResource(R.string.oops_no_connection),
                     style = MaterialTheme.typography.bodyMedium,
                     color = black60,
                     textAlign = TextAlign.Center,

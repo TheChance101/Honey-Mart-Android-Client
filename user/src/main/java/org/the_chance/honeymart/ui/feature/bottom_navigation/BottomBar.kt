@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,6 +24,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.user.R
 
 @Composable
 fun BottomBar(bottomNavState: MutableState<Boolean>) {
@@ -71,8 +73,9 @@ fun RowScope.AddItem(
                 painter =
                 if (selected) painterResource(id = screen.selectedIcon)
                 else painterResource(id = screen.unSelectedIcon),
-                contentDescription = "Navigation icon",
-                tint = if (selected) white else MaterialTheme.colorScheme.outlineVariant)
+                contentDescription = stringResource(R.string.navigation_icon),
+                tint = if (selected) white else MaterialTheme.colorScheme.outlineVariant
+            )
         },
         selected = selected,
         label = { Text(text = if (selected) screen.label else "", color = MaterialTheme.colorScheme.onErrorContainer) },

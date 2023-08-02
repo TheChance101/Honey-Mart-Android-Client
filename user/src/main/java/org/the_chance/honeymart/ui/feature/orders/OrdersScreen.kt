@@ -1,27 +1,20 @@
 package org.the_chance.honeymart.ui.feature.orders
 
 import SwipeBackGround
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -32,91 +25,110 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
-import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
-import org.the_chance.honeymart.ui.feature.orders.composable.PlaceholderItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun OrdersScreen(
     viewModel: OrderViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavigationProvider.current
+
+    LaunchedEffect(lifecycleOwner) {
+        viewModel.getAllProcessingOrders()
+    }
+
     OrdersContent(
         state = state,
         ordersInteractionsListener = viewModel,
-        onClickItemOrder = navController::navigateToOrderDetailsScreen
+        onClickItemOrder = navController::navigateToOrderDetailsScreen,
+        navController = navController
     )
 }
 
-@OptIn(
-    ExperimentalFoundationApi::class,
-    ExperimentalMaterial3Api::class
-)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
     ordersInteractionsListener: OrdersInteractionsListener,
     onClickItemOrder: (orderId: Long) -> Unit = {},
+    navController: NavController
 ) {
     AppBarScaffold {
-        val navController = LocalNavigationProvider.current
+        ConnectionErrorPlaceholder(
+            state = state.isError,
+            onClickTryAgain = ordersInteractionsListener::getAllProcessingOrders
+        )
+        EmptyOrdersPlaceholder(
+            state = state.orders.isEmpty() && !state.isError && !state.isLoading,
+            image = R.drawable.placeholder_order,
+            title = stringResource(R.string.placeholder_title),
+            subtitle = stringResource(R.string.placeholder_subtitle),
+            onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(top = MaterialTheme.dimens.space24)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(
+                        horizontal = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 CustomChip(
                     state = state.orderStates == OrderStates.PROCESSING,
                     text = stringResource(id = R.string.processing),
-                    onClick = { ordersInteractionsListener.onClickProcessingOrder() }
+                    onClick = ordersInteractionsListener::getAllProcessingOrders
                 )
                 CustomChip(
                     state = state.orderStates == OrderStates.DONE,
                     text = stringResource(id = R.string.done),
-                    onClick = { ordersInteractionsListener.onClickDoneOrder() }
+                    onClick = ordersInteractionsListener::getAllDoneOrders
                 )
                 CustomChip(
                     state = state.orderStates == OrderStates.CANCELED,
                     text = stringResource(id = R.string.cancel),
-                    onClick = { ordersInteractionsListener.onClickCancelOrder() }
+                    onClick = ordersInteractionsListener::getAllCancelOrders
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
 
-            AnimatedVisibility(
-                visible = !state.isLoading,
-                enter = fadeIn(animationSpec = tween(durationMillis = 1000)) + slideInHorizontally(),
-                exit = fadeOut(animationSpec = tween(durationMillis = 1000)) + slideOutHorizontally()
-            ) {
+            Loading(state = state.isLoading)
+
+            ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
                 LazyColumn(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp)
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16,
+                        top = MaterialTheme.dimens.space8
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
                 ) {
                     itemsIndexed(
                         items = state.orders,
@@ -133,16 +145,16 @@ fun OrdersContent(
                             directions = setOf(DismissDirection.EndToStart),
                             dismissContent = {
                                 ItemOrder(
-                                    imageUrl = orderItem.imageUrl!!,
-                                    orderId = orderItem.orderId!!,
-                                    marketName = orderItem.marketName!!,
-                                    quantity = orderItem.quantity!!,
-                                    price = orderItem.totalPrice!!,
+                                    imageUrl = orderItem.imageUrl,
+                                    orderId = orderItem.orderId,
+                                    marketName = orderItem.marketName,
+                                    quantity = orderItem.quantity,
+                                    price = orderItem.totalPrice,
                                     onClickCard = { onClickItemOrder(orderItem.orderId) }
                                 )
                             })
                         LaunchedEffect(showDialog) {
-                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            if (!showDialog) {
                                 dismissState.reset()
                             }
                         }
@@ -154,21 +166,16 @@ fun OrdersContent(
                         if (showDialog) {
                             val textOrderStates = when (state.orderStates) {
                                 OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                                else -> {
-                                    stringResource(id = R.string.order_dialog_Delete_Text)
-                                }
+                                else -> stringResource(id = R.string.order_dialog_Delete_Text)
                             }
-
                             val buttonOrderStates = when (state.orderStates) {
                                 OrderStates.PROCESSING -> OrderStates.CANCELED.state
-                                else -> {
-                                    OrderStates.DELETE.state
-                                }
+                                else -> OrderStates.DELETE.state
                             }
                             CustomAlertDialog(
                                 message = textOrderStates,
                                 onConfirm = {
-                                    ordersInteractionsListener.onClickConfirmOrder(
+                                    ordersInteractionsListener.updateOrders(
                                         index.toLong(),
                                         buttonOrderStates
                                     )
@@ -180,21 +187,6 @@ fun OrdersContent(
                         }
                     }
                 }
-
-                Loading(state = state.isLoading)
-
-                ConnectionErrorPlaceholder(
-                    state = state.isError,
-                    onClickTryAgain = ordersInteractionsListener::onClickProcessingOrder
-                )
-
-                EmptyOrdersPlaceholder(
-                    state = state.orders.isEmpty() &&  !state.isError,
-                    image = R.drawable.placeholder_order,
-                    title = stringResource(R.string.placeholder_title),
-                    subtitle = stringResource(R.string.placeholder_subtitle),
-                    onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
-                )
             }
         }
     }

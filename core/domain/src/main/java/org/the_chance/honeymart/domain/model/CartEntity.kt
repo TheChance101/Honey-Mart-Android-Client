@@ -1,14 +1,14 @@
 package org.the_chance.honeymart.domain.model
 
 data class CartEntity(
-    val products: List<CartProductsEntity>?,
-    val total: Double?
+    val products: List<CartProductsEntity>,
+    val total: Double = 0.0
 )
 
 data class CartProductsEntity(
-    val id: Long?,
-    val name: String?,
-    val count: Int?,
-    val price: Double?,
-    val images: List<String>?,
+    val id: Long = 0L,
+    val name: String = "",
+    val count: Int = 0,
+    val price: Double = 0.0,
+    val images: List<String> = emptyList(),
 )

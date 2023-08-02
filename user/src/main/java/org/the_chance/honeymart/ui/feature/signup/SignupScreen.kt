@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
@@ -47,6 +48,7 @@ import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
@@ -56,10 +58,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = state.emailState, key2 = state.fullNameState) {
-        if (state.emailState == ValidationState.INVALID_EMAIL
-            || state.fullNameState == ValidationState.INVALID_FULL_NAME
-        ) {
+    LaunchedEffect(key1 = state.showToast) {
+        if (state.showToast) {
             Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT).show()
         }
     }
@@ -69,12 +69,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
         }
     }
     SignupContent(
-        onNameChange = viewModel::onFullNameInputChange,
-        onEmailChange = viewModel::onEmailInputChange,
-        onPasswordChange = viewModel::onPasswordInputChanged,
-        onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
+        listener =  viewModel,
         onClickLogin = { navController.navigateToLogin() },
-        onClickSignup = viewModel::onClickSignup,
         state = state
     )
 }
@@ -83,20 +79,18 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
 @Composable
 fun SignupContent(
     modifier: Modifier = Modifier,
-    onNameChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
+    listener: SignupInteractionListener,
     onClickLogin: () -> Unit,
-    onClickSignup: () -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onConfirmPasswordChange: (String) -> Unit,
     state: SignupUiState,
 ) {
     Loading(state = state.isLoading)
     ContentVisibility(state = !state.isLoading) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Image(
@@ -106,9 +100,9 @@ fun SignupContent(
                     contentScale = ContentScale.Crop
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
                     Text(
                         text = stringResource(R.string.sign_up),
@@ -131,7 +125,7 @@ fun SignupContent(
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 HorizontalPager(
                     state = pagerState,
@@ -141,13 +135,13 @@ fun SignupContent(
                     when (page) {
                         0 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             TextField(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 idIconDrawableRes = R.drawable.ic_person,
-                                onValueChange = onNameChange,
+                                onValueChange = listener::onFullNameInputChange,
                                 errorMessage = when (state.fullNameState) {
                                     ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
                                     ValidationState.INVALID_FULL_NAME -> "Invalid name"
@@ -158,7 +152,7 @@ fun SignupContent(
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 idIconDrawableRes = R.drawable.ic_email,
-                                onValueChange = onEmailChange,
+                                onValueChange = listener::onEmailInputChange,
                                 errorMessage = when (state.emailState) {
                                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
                                     ValidationState.INVALID_EMAIL -> "Invalid email"
@@ -169,13 +163,13 @@ fun SignupContent(
 
                         1 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             TextField(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 idIconDrawableRes = R.drawable.ic_password,
-                                onValueChange = onPasswordChange,
+                                onValueChange = listener::onPasswordInputChanged,
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
                                     ValidationState.INVALID_PASSWORD -> "Invalid password"
@@ -187,7 +181,7 @@ fun SignupContent(
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
                                 idIconDrawableRes = R.drawable.ic_password,
-                                onValueChange = onConfirmPasswordChange,
+                                onValueChange = listener::onConfirmPasswordChanged,
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
@@ -200,7 +194,10 @@ fun SignupContent(
                 when (pagerState.currentPage) {
                     0 -> CustomButton(
                         labelIdStringRes = R.string.Continue,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                        modifier = Modifier.padding(
+                            horizontal = MaterialTheme.dimens.space16,
+                            vertical = MaterialTheme.dimens.space40
+                        ),
                         onClick = {
                             if (state.fullNameState == ValidationState.VALID_FULL_NAME
                                 && state.emailState == ValidationState.VALID_EMAIL &&
@@ -215,8 +212,11 @@ fun SignupContent(
 
                     1 -> CustomButton(
                         labelIdStringRes = R.string.sign_up,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-                        onClick = onClickSignup
+                        modifier = Modifier.padding(
+                            horizontal = MaterialTheme.dimens.space16,
+                            vertical = MaterialTheme.dimens.space40
+                        ),
+                        onClick = listener::onClickSignup,
                     )
                 }
             }
@@ -225,12 +225,11 @@ fun SignupContent(
                 0 -> Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 32.dp)
+                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
                 ) {
                     Text(
                         text = stringResource(R.string.already_have_account),
-                        color = black37,
-                        style = Typography.displaySmall,
+                        style = Typography.displaySmall.copy(black37),
                         textAlign = TextAlign.Center
                     )
                     TextButton(
@@ -239,8 +238,7 @@ fun SignupContent(
                     ) {
                         Text(
                             text = stringResource(R.string.log_in),
-                            color = primary100,
-                            style = Typography.displayLarge,
+                            style = Typography.displayLarge.copy(primary100),
                             textAlign = TextAlign.Center,
                         )
                     }

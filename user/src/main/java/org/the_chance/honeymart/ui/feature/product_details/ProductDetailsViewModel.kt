@@ -15,7 +15,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
-import org.the_chance.honeymart.util.AuthData
 import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
@@ -29,7 +28,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
-    ProductImageInteractionListener, ProductDetailsInteraction {
+    ProductDetailsInteraction {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -80,8 +79,9 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null, isConnectionError = false, product = product,
-                image = product.productImages.first() ?: "",
-                smallImages = product.productImages.drop(1) as List<String>
+                image = product.productImages.first(),
+                smallImages = product.productImages.drop(1),
+                totalPrice = product.productPrice
             )
         }
         checkIfProductInWishList(args.productId.toLong())
@@ -106,13 +106,22 @@ class ProductDetailsViewModel @Inject constructor(
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity >= 100) 100 else currentQuantity + 1
         _state.update { it.copy(quantity = newQuantity) }
+        changePriceOnQuantityChange()
     }
 
     override fun decreaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity > 1) currentQuantity - 1 else 1
         _state.update { it.copy(quantity = newQuantity) }
+        changePriceOnQuantityChange()
     }
+
+    private fun changePriceOnQuantityChange() {
+        _state.update {
+            it.copy(totalPrice = it.product.productPrice * it.quantity)
+        }
+    }
+
 
     // endregion
 
@@ -149,12 +158,10 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(state.value.product.productId!!)
-                            )
+                _state.update {
+                    it.copy(
+                        navigateToAuthGraph = NavigationState(
+                            isNavigate = true
                         )
                     )
                 }
@@ -235,12 +242,10 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(state.value.product.productId!!)
-                            )
+                _state.update {
+                    it.copy(
+                        navigateToAuthGraph = NavigationState(
+                            isNavigate = true
                         )
                     )
                 }
@@ -263,7 +268,7 @@ class ProductDetailsViewModel @Inject constructor(
     override
     fun onClickFavorite(productId: Long) {
         val currentProduct = _state.value.product
-        val isFavorite = currentProduct.isFavorite ?: false
+        val isFavorite = currentProduct.isFavorite
         val newFavoriteState = !isFavorite
 
         updateFavoriteState(newFavoriteState)
@@ -301,6 +306,16 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
+        }
+    }
+
+    fun resetNavigation() {
+        _state.update {
+            it.copy(
+                navigateToAuthGraph = NavigationState(
+                    isNavigate = false
+                )
+            )
         }
     }
 

@@ -1,9 +1,7 @@
 package org.the_chance.honeymart.ui.feature.signup
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
@@ -13,7 +11,6 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,43 +21,34 @@ class SignupViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, AuthUiEffect>(SignupUiState()) {
+) : BaseViewModel<SignupUiState, Unit>(SignupUiState()), SignupInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
-
-    private lateinit var args: SignupFragmentArgs
-
-    fun saveArgs(args: SignupFragmentArgs){
-        args.also { this.args = it }
-    }
-
-    fun getData() {
-        onClickSignup()
-    }
-
-    fun onFullNameInputChange(fullName: CharSequence) {
+    override fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.trim().toString())
         _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
     }
 
-    fun onEmailInputChange(email: CharSequence) {
+    override fun onEmailInputChange(email: CharSequence) {
         val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
-    fun onPasswordInputChanged(password: CharSequence) {
+    override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validatePassword(password.toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
 
-    fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
+    override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
         val passwordState =
             validateConfirmPassword(state.value.password, confirmPassword.toString())
         if (!passwordState) {
-            _state.update { it.copy(
-                confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD,
-                confirmPassword = confirmPassword.toString()
-            ) }
+            _state.update {
+                it.copy(
+                    confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD,
+                    confirmPassword = confirmPassword.toString()
+                )
+            }
         } else {
             _state.update {
                 it.copy(
@@ -88,9 +76,13 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error,
-        fullNameState = ValidationState.INVALID_FULL_NAME,
-        emailState = ValidationState.INVALID_EMAIL) }
+        _state.update {
+            it.copy(
+                isLoading = false, error = error,
+                fullNameState = ValidationState.INVALID_FULL_NAME,
+                emailState = ValidationState.INVALID_EMAIL
+            )
+        }
     }
 
     private fun login(email: String, password: String) {
@@ -110,20 +102,7 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
-    fun onContinueClicked() {
-        val emailState = validateEmail(state.value.email.trim())
-        val fullNameState = validateFullName(state.value.fullName.trim())
-        if (fullNameState == ValidationState.VALID_FULL_NAME && emailState == ValidationState.VALID_EMAIL) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(AuthUiEffect.ClickContinueEffect))
-            }
-        }
-        _state.update {
-            it.copy(emailState = emailState, fullNameState = fullNameState, isLoading = false)
-        }
-    }
-
-    fun onClickSignup() {
+    override fun onClickSignup() {
         val validationState =
             validateConfirmPassword(state.value.password, state.value.confirmPassword)
         if (validationState) {
@@ -131,12 +110,13 @@ class SignupViewModel @Inject constructor(
                 fullName = state.value.fullName, password = state.value.password,
                 email = state.value.email
             )
-        }
-    }
-
-    fun onClickLogin() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(AuthUiEffect.ClickLoginEffect(args.AuthData)))
+            _state.update {
+                it.copy(showToast = false)
+            }
+        } else {
+            _state.update {
+                it.copy(showToast = true)
+            }
         }
     }
 

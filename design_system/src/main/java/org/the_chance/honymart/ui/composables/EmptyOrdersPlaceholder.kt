@@ -33,7 +33,7 @@ fun EmptyOrdersPlaceholder(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(MaterialTheme.dimens.space16),
+                .padding(horizontal = MaterialTheme.dimens.space32),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

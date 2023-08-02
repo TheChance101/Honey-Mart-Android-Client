@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -24,21 +25,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartCardView
 import org.the_chance.honeymart.ui.feature.cart.composables.CartItem
-import org.the_chance.honeymart.ui.feature.cart.composables.CartPlaceholder
-import org.the_chance.honeymart.ui.feature.cart.screen.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
-import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 @Composable
@@ -75,10 +75,12 @@ fun CartContent(
             state = state.isError,
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
-        ContentVisibility(state = state.products.isEmpty() && !state.isError && !state.isLoading)
-        {
-            CartPlaceholder(onClickButtonDiscover = onClickButtonDiscover)
-        }
+        EmptyOrdersPlaceholder(
+            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+            image = org.the_chance.design_system.R.drawable.placeholder_order,
+            title = stringResource(R.string.your_cart_list_is_empty),
+            subtitle = stringResource(R.string.adding_items_that_catch_your_eye),
+            onClickDiscoverMarkets = { onClickButtonDiscover() })
 
         BottomSheetCompleteOrderContent(
             state = state.bottomSheetIsDisplayed,
@@ -110,8 +112,11 @@ private fun CartSuccessScreen(
         LazyColumn(
             state = rememberLazyListState(),
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            contentPadding = PaddingValues(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space16
+            ),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             itemsIndexed(state.products) { index, product ->
                 var showDialog by remember { mutableStateOf(false) }
@@ -128,12 +133,12 @@ private fun CartSuccessScreen(
                             product = product,
                             onClickMinus = {
                                 cartInteractionListener.onClickMinusCountProductInCart(
-                                    productId = product.productId!!
+                                    productId = product.productId
                                 )
                             },
                             onClickPlus = {
                                 cartInteractionListener.onClickAddCountProductInCart(
-                                    productId = product.productId!!
+                                    productId = product.productId
                                 )
                             },
                             isLoading = state.isLoading

@@ -20,9 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honeymart.ui.feature.uistate.WishListUiState
+import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
@@ -44,35 +43,34 @@ fun WishListScreen(
     }
 
     WishListContent(
+        listener = viewModel,
         state = state,
-        wishListInteractionListener = navController::navigateToProductDetailsScreen,
-        onClickDesCover = {
-            navController.navigateToMarketScreen()
-        },
-        onClickIconFavorite = viewModel::onClickFavoriteIcon,
-        onClickTryAgain = { viewModel.getWishListProducts() }
+        wishListInteractionListener = navController::navigateToProductDetailsScreen
     )
 
 }
 
 @Composable
 private fun WishListContent(
+    listener: WishListInteractionListener,
     state: WishListUiState,
     wishListInteractionListener: (ProductId: Long) -> Unit,
-    onClickDesCover: () -> Unit,
-    onClickIconFavorite: (ProductId: Long) -> Unit,
-    onClickTryAgain: () -> Unit,
 ) {
 
     AppBarScaffold {
-        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = onClickTryAgain)
+        Loading(state = state.isLoading && state.products.isEmpty())
+
+        ConnectionErrorPlaceholder(
+            state = state.isError,
+            onClickTryAgain = listener::getWishListProducts
+        )
 
         EmptyOrdersPlaceholder(
             state = state.products.isEmpty() && !state.isError && !state.isLoading,
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),
-            onClickDiscoverMarkets = onClickDesCover
+            onClickDiscoverMarkets = listener::onClickDiscoverButton
         )
 
         ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
@@ -82,25 +80,26 @@ private fun WishListContent(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    content = {
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                    ) {
                         items(state.products) { productState ->
                             ItemFavorite(
-                                imageUrlMarket = productState.productImages!![0],
-                                name = productState.productName!!,
-                                price = "${productState.productPrice}",
-                                description = "${productState.description} ",
-                                productId = productState.productId!!,
-                                onClickProduct = { wishListInteractionListener(productState.productId) },
-                                onClickFavoriteIcon = { onClickIconFavorite(productState.productId) }
+                                imageUrlMarket = productState.productImages[0],
+                                name = productState.productName,
+                                price = formatCurrencyWithNearestFraction(productState.productPrice),
+                                description = productState.description,
+                                productId = productState.productId,
+                                onClickProduct =
+                                { wishListInteractionListener(productState.productId) },
+                                onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
 
                             )
                         }
-                    })
+                    }
             }
         }
 
-        Loading(state = state.isLoading)
+        Loading(state = state.isLoading && state.products.isNotEmpty())
 
     }
 }

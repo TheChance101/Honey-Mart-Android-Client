@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,10 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -46,7 +43,6 @@ fun ItemOrder(
             .clickable { onClickCard(orderId) },
         colors = CardDefaults.cardColors(
             containerColor = (MaterialTheme.colorScheme.onTertiary)
-
         ),
     ) {
         Row(
@@ -62,7 +58,7 @@ fun ItemOrder(
                         horizontal = MaterialTheme.dimens.space8,
                         vertical = MaterialTheme.dimens.space16,
                     ),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 Text(
                     text = stringResource(id = R.string.order, orderId),
@@ -76,7 +72,7 @@ fun ItemOrder(
                 )
                 Row {
                     Image(
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon16),
                         painter = painterResource(id = R.drawable.order),
                         contentDescription = marketName,
                         colorFilter = ColorFilter.tint(black60)

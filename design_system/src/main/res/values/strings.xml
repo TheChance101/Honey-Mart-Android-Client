@@ -93,4 +93,13 @@
     <string name="title_icon">Title Icon</string>
     <string name="honey">Honey</string>
     <string name="mart">Mart</string>
+    <string name="oops_no_connection">Oops, No connection !!</string>
+    <string name="network_error">network error</string>
+    <string name="icon">icon</string>
+    <string name="warning_icon">warning Icon</string>
+    <string name="empty_product">empty product</string>
+    <string name="there_is_no_product_here">There is no product here !!</string>
+    <string name="cart_check_icon">cart check icon</string>
+    <string name="favorite_icon">favorite icon</string>
+    <string name="copy_button">Copy button</string>
 </resources>

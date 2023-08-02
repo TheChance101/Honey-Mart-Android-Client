@@ -12,9 +12,9 @@ data class MarketsUiState(
 )
 
 data class MarketUiState(
-    val marketId: Long? = 0L,
-    val marketName: String? = "",
-    val marketImage: String? = "",
+    val marketId: Long = 0L,
+    val marketName: String = "",
+    val marketImage: String = "",
 )
 
 

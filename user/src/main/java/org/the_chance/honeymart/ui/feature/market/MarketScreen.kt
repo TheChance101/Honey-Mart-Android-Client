@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
@@ -18,7 +17,8 @@ import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
- import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
@@ -29,35 +29,37 @@ fun MarketScreen(
     val navController = LocalNavigationProvider.current
     MarketContent(
         state = state,
-        marketInteractionListener = navController::navigateToCategoryScreen
+        onClickMarket = navController::navigateToCategoryScreen,
+        listener = viewModel
     )
 }
 
 @Composable
 fun MarketContent(
     state: MarketsUiState,
-    marketInteractionListener: (Long) -> Unit,
+    onClickMarket: (Long) -> Unit,
+    listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-        Loading(state.isLoading)
-
-        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = {})
-
-        ContentVisibility(state = state.markets.isNotEmpty()) {
+        ContentVisibility(state = state.markets.isNotEmpty() && !state.isError) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                contentPadding = PaddingValues(
+                    horizontal = MaterialTheme.dimens.space16,
+                    vertical = MaterialTheme.dimens.space8
+                ),
             ) {
                 items(state.markets.size) { position ->
-                    val market = state.markets[position]
-                    MarketItem(
-                        market,
-                        onClickItem = marketInteractionListener
-                    )
+                    MarketItem(state.markets[position], onClickItem = onClickMarket)
                 }
             }
         }
+        ConnectionErrorPlaceholder(
+            state = state.isError && state.markets.isEmpty(),
+            onClickTryAgain = listener::getChosenMarkets
+        )
+        Loading(state.isLoading)
     }
 }

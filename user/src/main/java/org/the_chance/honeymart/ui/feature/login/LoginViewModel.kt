@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.login
 
-import androidx.lifecycle.SavedStateHandle
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
@@ -9,25 +9,17 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val loginUser: LoginUserUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-) : BaseViewModel<LoginUiState, AuthenticationUiEffect>(LoginUiState()) {
+) : BaseViewModel<LoginUiState, Unit>(LoginUiState()),
+    LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
-
-    private lateinit var args: LoginFragmentArgs
-
-    fun saveArgs(args: LoginFragmentArgs){
-        args.also { this.args = it }
-    }
-
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -37,19 +29,13 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    fun getData() {
-        onLoginClick()
-    }
-
     private fun onLoginSuccess(validationState: ValidationState) {
-//        if (validationState == ValidationState.SUCCESS) {
-//            viewModelScope.launch {
-//                _effect.emit(EventHandler(AuthenticationUiEffect.ClickLoginEffect(args.authData)))
-//            }
-//        }
+        Log.e("onLoginSuccess", "onLoginSuccess: ")
         _state.update {
-            it.copy(isLoading = false, error = null,
-                validationState = validationState, isLogin = true)
+            it.copy(
+                isLoading = false, error = null,
+                validationState = validationState
+            )
         }
     }
 
@@ -65,20 +51,27 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    fun onLoginClick() {
-        if (_state.value.emailState == ValidationState.VALID_EMAIL ||
+    override fun onLoginClick() {
+        if (_state.value.emailState == ValidationState.VALID_EMAIL &&
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
+            _state.update {
+                it.copy(showToast = false)
+            }
+        } else {
+            _state.update {
+                it.copy(showToast = true)
+            }
         }
     }
 
-    fun onEmailInputChange(email: CharSequence) {
+    override fun onEmailInputChange(email: CharSequence) {
         val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
-    fun onPasswordInputChanged(password: CharSequence) {
+    override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validatePassword(password.trim().toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }

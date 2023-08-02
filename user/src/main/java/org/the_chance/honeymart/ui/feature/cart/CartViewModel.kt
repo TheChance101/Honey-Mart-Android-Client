@@ -10,9 +10,6 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.CartUiState
-import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,13 +17,13 @@ class CartViewModel @Inject constructor(
     private val getAllCart: GetAllCartUseCase,
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val checkout:CheckoutUseCase
-) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
+    private val checkout: CheckoutUseCase
+) : BaseViewModel<CartUiState, Unit>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-     override fun getChosenCartProducts() {
-        _state.update { it.copy(isLoading = true, isError = false,bottomSheetIsDisplayed = false) }
+    override fun getChosenCartProducts() {
+        _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
             { getAllCart().toCartListProductUiState() },
             ::onGetAllCartSuccess,
@@ -127,33 +124,34 @@ class CartViewModel @Inject constructor(
     }
 
 
-
     fun onClickOrderNowButton() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { checkout() },
             ::onCheckOutSuccess,
-            ::onCheckOutFailed
+            ::onCheckOutError
         )
     }
- private fun onCheckOutSuccess(message: String) {
-     _state.update { it.copy(isLoading = false, products = emptyList(),bottomSheetIsDisplayed = true) }
-     viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
- }
 
-    private fun onCheckOutFailed(error: ErrorHandler) {
+    private fun onCheckOutSuccess(message: String) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                products = emptyList(),
+                bottomSheetIsDisplayed = true
+            )
+        }
+    }
+
+    private fun onCheckOutError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
-    fun onClickDiscoverButton() {
-        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
-    }
-
-     override fun deleteCart(position: Long) {
-          _state.update { it.copy(isLoading = true) }
+    override fun deleteCart(position: Long) {
+        _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
             if (productId != null) {

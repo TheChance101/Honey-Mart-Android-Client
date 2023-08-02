@@ -31,8 +31,6 @@ fun NavGraphBuilder.productRoute() {
 
         )
     ) {
-//        val marketId = navBackStackEntry.arguments?.getString(ProductArgs.MARKET_ID)
-//        val position = navBackStackEntry.arguments?.getString(ProductArgs.POSITION)
         ProductsScreen()
     }
 }
