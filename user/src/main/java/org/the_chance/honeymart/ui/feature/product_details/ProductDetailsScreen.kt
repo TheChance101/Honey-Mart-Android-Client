@@ -191,7 +191,7 @@ private fun ProductDetailsContent(
                             }
                         }
                         SpacerVertical8()
-                        TextPrice(state.product.productPrice.toString() + "$")
+                        TextPrice(state.totalPrice.toString() + "$")
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
