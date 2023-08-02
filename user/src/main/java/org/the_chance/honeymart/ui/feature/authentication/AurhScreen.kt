@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
@@ -62,20 +59,26 @@ fun AuthContent(
         )
         Text(
             text = stringResource(R.string.welcome_to_honey_mart),
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
             color = black37,
             style = Typography.displayMedium
         )
         Text(
             text = stringResource(R.string.get_ready_to_a_shopping_experience_like_no_other),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space16
+            ),
             color = black37,
             style = Typography.bodySmall,
             textAlign = TextAlign.Center
         )
         CustomButton(
             labelIdStringRes = R.string.sign_up,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space40
+            ),
             onClick = onClickSignUp
         )
         Row(
@@ -90,8 +93,9 @@ fun AuthContent(
                 textAlign = TextAlign.Center
             )
             TextButton(
-                contentPadding = PaddingValues(0.dp),
-                onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
+                contentPadding = PaddingValues(MaterialTheme.dimens.zero),
+                onClick = onClickLogin, colors = ButtonDefaults.textButtonColors(Color.Transparent)
+            ) {
                 Text(
                     text = stringResource(R.string.log_in),
                     style = Typography.displayLarge.copy(primary100),

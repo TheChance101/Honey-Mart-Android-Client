@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.honymart.ui.modifier.fullOverlay
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -29,7 +30,7 @@ fun ItemMarketCard(
             .fillMaxWidth()
             .height(MaterialTheme.dimens.heightItemMarketCard)
             .clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.medium
+        shape = Shapes.medium
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),

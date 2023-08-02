@@ -20,6 +20,7 @@ import org.the_chance.honeymart.ui.feature.cart.CartViewModel
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 @Composable
@@ -31,14 +32,14 @@ fun CartCardView(
 ) {
     Card(
         shape = RoundedCornerShape(
-            topEnd = 16.dp,
-            topStart = 16.dp,
-            bottomEnd = 0.dp,
-            bottomStart = 0.dp
+            topEnd = MaterialTheme.dimens.space16,
+            topStart = MaterialTheme.dimens.space16,
+            bottomEnd = MaterialTheme.dimens.zero,
+            bottomStart = MaterialTheme.dimens.zero
         ),
         modifier = modifier
             .fillMaxWidth()
-            .height(100.dp),
+            .height(MaterialTheme.dimens.card),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onTertiary,
         )
@@ -46,7 +47,7 @@ fun CartCardView(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = MaterialTheme.dimens.space16)
         ) {
             val (priceInDollars, orderNowButton, TotalPrice) = createRefs()
             Text(

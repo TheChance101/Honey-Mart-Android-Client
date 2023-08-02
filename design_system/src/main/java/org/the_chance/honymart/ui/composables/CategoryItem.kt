@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -43,7 +44,7 @@ fun CategoryItem(
                     .background(
                         if (isSelected) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.secondaryContainer,
-                        shape = MaterialTheme.shapes.medium
+                        shape = Shapes.medium
                     )
                     .padding(bottom = MaterialTheme.dimens.space4),
                 onClick = onClick

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -39,6 +39,7 @@ import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
@@ -73,14 +74,14 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
     onClickSignup: () -> Unit,
-    ) {
+) {
     Loading(state.isLoading)
 
     ContentVisibility(state = !state.isLoading) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Image(
@@ -90,9 +91,9 @@ fun LoginContent(
                     contentScale = ContentScale.Crop
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
                     Text(
                         text = stringResource(R.string.welcome_back),
@@ -133,14 +134,17 @@ fun LoginContent(
             )
             CustomButton(
                 labelIdStringRes = R.string.log_in,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                modifier = Modifier.padding(
+                    horizontal = MaterialTheme.dimens.space16,
+                    vertical = MaterialTheme.dimens.space40
+                ),
                 onClick = listener::onLoginClick,
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 32.dp)
+                modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
             ) {
                 Text(
                     text = stringResource(R.string.don_t_have_an_account),

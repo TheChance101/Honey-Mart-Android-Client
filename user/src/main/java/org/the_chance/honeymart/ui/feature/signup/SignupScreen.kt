@@ -34,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
@@ -49,6 +48,7 @@ import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
@@ -87,7 +87,7 @@ fun SignupContent(
     ContentVisibility(state = !state.isLoading) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState()),
@@ -100,9 +100,9 @@ fun SignupContent(
                     contentScale = ContentScale.Crop
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
                     Text(
                         text = stringResource(R.string.sign_up),
@@ -125,7 +125,7 @@ fun SignupContent(
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 HorizontalPager(
                     state = pagerState,
@@ -135,7 +135,7 @@ fun SignupContent(
                     when (page) {
                         0 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             TextField(
                                 text = state.fullName,
@@ -163,7 +163,7 @@ fun SignupContent(
 
                         1 -> Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             TextField(
                                 text = state.password,
@@ -194,7 +194,10 @@ fun SignupContent(
                 when (pagerState.currentPage) {
                     0 -> CustomButton(
                         labelIdStringRes = R.string.Continue,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                        modifier = Modifier.padding(
+                            horizontal = MaterialTheme.dimens.space16,
+                            vertical = MaterialTheme.dimens.space40
+                        ),
                         onClick = {
                             if (state.fullNameState == ValidationState.VALID_FULL_NAME
                                 && state.emailState == ValidationState.VALID_EMAIL &&
@@ -209,7 +212,10 @@ fun SignupContent(
 
                     1 -> CustomButton(
                         labelIdStringRes = R.string.sign_up,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
+                        modifier = Modifier.padding(
+                            horizontal = MaterialTheme.dimens.space16,
+                            vertical = MaterialTheme.dimens.space40
+                        ),
                         onClick = listener::onClickSignup,
                     )
                 }
@@ -219,7 +225,7 @@ fun SignupContent(
                 0 -> Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 32.dp)
+                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
                 ) {
                     Text(
                         text = stringResource(R.string.already_have_account),

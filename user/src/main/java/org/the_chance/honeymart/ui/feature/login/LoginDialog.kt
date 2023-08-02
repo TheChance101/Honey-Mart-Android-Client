@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -26,6 +27,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CustomDialog(
@@ -50,7 +52,7 @@ fun CustomDialogUi(
             verticalArrangement = Arrangement.Center,
             modifier = modifier
                 .background(Color.White)
-                .padding(16.dp)
+                .padding(MaterialTheme.dimens.space16)
                 .fillMaxWidth(),
         ) {
             Image(
@@ -59,7 +61,7 @@ fun CustomDialogUi(
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .size(138.dp)
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = MaterialTheme.dimens.space24),
             )
             Text(
                 text = stringResource(R.string.success_sign_up_description),

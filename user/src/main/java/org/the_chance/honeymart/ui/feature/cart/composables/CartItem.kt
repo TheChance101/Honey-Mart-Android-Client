@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -36,7 +35,9 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
+import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -51,9 +52,9 @@ fun CartItem(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .padding(bottom = 16.dp),
+            .padding(bottom = MaterialTheme.dimens.space16),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
-        shape = RoundedCornerShape(16.dp)
+        shape = Shapes.medium
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -65,12 +66,12 @@ fun CartItem(
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
 
             Image(
-                painter = rememberAsyncImagePainter(model = product.productImage?.get(0)),
+                painter = rememberAsyncImagePainter(model = product.productImage.get(0)),
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .width(100.dp)
-                    .height(100.dp)
+                    .width(MaterialTheme.dimens.card)
+                    .height(MaterialTheme.dimens.card)
                     .constrainAs(imageOrder) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
@@ -79,7 +80,7 @@ fun CartItem(
             )
 
             Text(
-                text = product.productName ?: "",
+                text = product.productName,
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(MaterialTheme.colorScheme.onSecondary),
                 modifier = Modifier.constrainAs(textOrderNumber) {
                     top.linkTo(parent.top, margin = 8.dp)
@@ -88,13 +89,16 @@ fun CartItem(
             )
 
             Text(
-                text = formatCurrencyWithNearestFraction(product.productPrice!!),
+                text = formatCurrencyWithNearestFraction(product.productPrice),
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(primary100),
 
                 modifier = Modifier
                     .border(1.dp, primary100, CircleShape)
                     .background(Color.Transparent, CircleShape)
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(
+                        horizontal = MaterialTheme.dimens.space8,
+                        vertical = MaterialTheme.dimens.space4
+                    )
                     .constrainAs(textItemPrice) {
                         top.linkTo(textOrderNumber.bottom, margin = 16.dp)
                         bottom.linkTo(parent.bottom, margin = 16.dp)
@@ -122,7 +126,7 @@ fun CartItem(
                         painter = painterResource(id = R.drawable.minus_1),
                         contentScale = ContentScale.Inside
                     )
-                    .size(24.dp)
+                    .size(MaterialTheme.dimens.icon24)
                     .constrainAs(imageViewMinusOrder) {
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
@@ -148,7 +152,7 @@ fun CartItem(
                 enabled = !isLoading,
                 modifier = Modifier
                     .background(primary100, CircleShape)
-                    .size(24.dp)
+                    .size(MaterialTheme.dimens.icon24)
                     .constrainAs(imageViewAddItem) {
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                         end.linkTo(parent.end, margin = 16.dp)

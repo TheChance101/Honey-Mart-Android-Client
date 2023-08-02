@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -28,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import org.the_chance.design_system.R
@@ -43,6 +43,7 @@ import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honymart.ui.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun OrdersScreen(
@@ -88,14 +89,17 @@ fun OrdersContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 24.dp)
+                .padding(top = MaterialTheme.dimens.space24)
         ) {
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(
+                        horizontal = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 CustomChip(
                     state = state.orderStates == OrderStates.PROCESSING,
@@ -118,9 +122,13 @@ fun OrdersContent(
 
             ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
                 LazyColumn(
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp)
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16,
+                        top = MaterialTheme.dimens.space8
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
                 ) {
                     itemsIndexed(
                         items = state.orders,

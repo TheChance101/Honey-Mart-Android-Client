@@ -33,6 +33,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -64,7 +65,10 @@ private fun BottomSheetContent(
     onClick: () -> Unit = {},
 ) {
     Card(
-        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+        shape = RoundedCornerShape(
+            topStart = MaterialTheme.dimens.space28,
+            topEnd = MaterialTheme.dimens.space28
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -75,7 +79,7 @@ private fun BottomSheetContent(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.drag), contentDescription = "",
-                modifier = Modifier.padding(top = 12.dp)
+                modifier = Modifier.padding(top = MaterialTheme.dimens.space12)
             )
             Image(
                 modifier = Modifier
@@ -87,7 +91,10 @@ private fun BottomSheetContent(
             )
 
             Text(
-                modifier = Modifier.padding(vertical = 24.dp, horizontal = 34.dp),
+                modifier = Modifier.padding(
+                    vertical = MaterialTheme.dimens.space24,
+                    horizontal = MaterialTheme.dimens.space34
+                ),
                 text = stringResource(id = R.string.order_complete),
                 textAlign = TextAlign.Center,
                 style = Typography.bodySmall.copy(color = black37)
@@ -96,7 +103,11 @@ private fun BottomSheetContent(
             CustomButton(
                 labelIdStringRes = R.string.show_my_order_details,
                 modifier = Modifier
-                    .padding(start = 36.dp, end = 36.dp, bottom = 24.dp),
+                    .padding(
+                        start = MaterialTheme.dimens.space36,
+                        end = MaterialTheme.dimens.space36,
+                        bottom = MaterialTheme.dimens.space24
+                    ),
                 onClick = onClick,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )

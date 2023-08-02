@@ -78,7 +78,7 @@ fun CustomAlertDialog(
                             .padding(end = MaterialTheme.dimens.space8),
                         onClick = onConfirm,
                         colors = ButtonDefaults.textButtonColors(primary100),
-                        shape = MaterialTheme.shapes.medium,
+                        shape = Shapes.medium,
                     ) {
                         Text(
                             text = stringResource(id = R.string.yes_i_m_sure),
@@ -91,7 +91,7 @@ fun CustomAlertDialog(
                             .height(MaterialTheme.dimens.heightPrimaryButton),
                         onClick = onCancel,
                         colors = ButtonDefaults.textButtonColors(Color.Transparent),
-                        shape = MaterialTheme.shapes.medium,
+                        shape = Shapes.medium,
                         border = BorderStroke(MaterialTheme.dimens.strokeNormal, color = black16)
                     )
                     {

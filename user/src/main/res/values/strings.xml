@@ -8,4 +8,7 @@
     <string name="total_price">Total Price</string>
     <string name="your_cart_list_is_empty">Your Cart list is empty!!</string>
     <string name="adding_items_that_catch_your_eye">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
+    <string name="navigation_icon">Navigation icon</string>
+    <string name="category_image">category image</string>
+    <string name="market_name">Market Name</string>
 </resources>

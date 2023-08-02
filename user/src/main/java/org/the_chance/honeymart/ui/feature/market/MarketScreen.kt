@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
@@ -19,6 +18,7 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
@@ -45,8 +45,11 @@ fun MarketContent(
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                contentPadding = PaddingValues(
+                    horizontal = MaterialTheme.dimens.space16,
+                    vertical = MaterialTheme.dimens.space8
+                ),
             ) {
                 items(state.markets.size) { position ->
                     MarketItem(state.markets[position], onClickItem = onClickMarket)
