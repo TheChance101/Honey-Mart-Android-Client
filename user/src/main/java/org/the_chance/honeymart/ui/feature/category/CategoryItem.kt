@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,6 +44,7 @@ fun CategoryItem(
     ) {
         Box(
             modifier = Modifier
+                .aspectRatio(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .clickable { onCategoryClicked(categoryId, marketId, position) }
