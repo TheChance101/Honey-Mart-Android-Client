@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -40,7 +39,8 @@ fun AppBarScaffold(
 
     val systemUiController = rememberSystemUiController()
 
-    val currentNightMode = LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    val currentNightMode =
+        LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
     val darkIcons = if (!isDarkMode) !isScrolled.value else false
@@ -48,7 +48,8 @@ fun AppBarScaffold(
     systemUiController.setSystemBarsColor(
         color = Color.Unspecified,
         darkIcons = darkIcons,
-        isNavigationBarContrastEnforced = false)
+        isNavigationBarContrastEnforced = false
+    )
     val topAppBarContainerColor = if (isScrolled.value) {
         MaterialTheme.colorScheme.inverseOnSurface
     } else {
@@ -65,15 +66,11 @@ fun AppBarScaffold(
                 title = { AppBarTitle(topAppBarTitleColor) },
                 navigationIcon = { },
                 actions = { },
-                colors = topAppBarColors(
+                colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = topAppBarContainerColor,
-                    scrolledContainerColor = MaterialTheme.colorScheme.applyTonalElevation(
-                        backgroundColor = containerColor,
-                        elevation = TopAppBarSmallTokens.OnScrollContainerElevation
-                    ),
                     navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface,
-                    actionIconContentColor = MaterialTheme.colorScheme.onSurface
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 ),
                 scrollBehavior = scrollBehavior
             )
