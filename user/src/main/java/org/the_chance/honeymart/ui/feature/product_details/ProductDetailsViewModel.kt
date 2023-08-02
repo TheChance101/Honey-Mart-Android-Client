@@ -149,12 +149,10 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(state.value.product.productId!!)
-                            )
+                _state.update {
+                    it.copy(
+                        navigateToAuthGraph = NavigationState(
+                            isNavigate = true
                         )
                     )
                 }

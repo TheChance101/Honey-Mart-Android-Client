@@ -85,7 +85,12 @@ private fun ProductDetailsContent(
                         .fillMaxWidth()
                         .shadow(elevation = 8.dp)
                         .background(MaterialTheme.colorScheme.tertiaryContainer)
-                        .padding(MaterialTheme.dimens.space16),
+                        .padding(
+                            bottom = MaterialTheme.dimens.space56,
+                            top = MaterialTheme.dimens.space16,
+                            start = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16,
+                        ),
                     idIconDrawableRes = R.drawable.icon_cart,
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
