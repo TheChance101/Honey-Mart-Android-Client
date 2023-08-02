@@ -69,12 +69,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
         }
     }
     SignupContent(
-        onNameChange = viewModel::onFullNameInputChange,
-        onEmailChange = viewModel::onEmailInputChange,
-        onPasswordChange = viewModel::onPasswordInputChanged,
-        onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
+        listener =  viewModel,
         onClickLogin = { navController.navigateToLogin() },
-        onClickSignup = viewModel::onClickSignup,
         state = state
     )
 }
@@ -83,12 +79,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
 @Composable
 fun SignupContent(
     modifier: Modifier = Modifier,
-    onNameChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
+    listener: SignupInteractionListener,
     onClickLogin: () -> Unit,
-    onClickSignup: () -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onConfirmPasswordChange: (String) -> Unit,
     state: SignupUiState,
 ) {
     Loading(state = state.isLoading)
@@ -96,7 +88,7 @@ fun SignupContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
+            modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState()),
         ) {
@@ -149,7 +141,7 @@ fun SignupContent(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 idIconDrawableRes = R.drawable.ic_person,
-                                onValueChange = onNameChange,
+                                onValueChange = listener::onFullNameInputChange,
                                 errorMessage = when (state.fullNameState) {
                                     ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
                                     ValidationState.INVALID_FULL_NAME -> "Invalid name"
@@ -160,7 +152,7 @@ fun SignupContent(
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 idIconDrawableRes = R.drawable.ic_email,
-                                onValueChange = onEmailChange,
+                                onValueChange = listener::onEmailInputChange,
                                 errorMessage = when (state.emailState) {
                                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
                                     ValidationState.INVALID_EMAIL -> "Invalid email"
@@ -177,7 +169,7 @@ fun SignupContent(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 idIconDrawableRes = R.drawable.ic_password,
-                                onValueChange = onPasswordChange,
+                                onValueChange = listener::onPasswordInputChanged,
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
                                     ValidationState.INVALID_PASSWORD -> "Invalid password"
@@ -189,7 +181,7 @@ fun SignupContent(
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
                                 idIconDrawableRes = R.drawable.ic_password,
-                                onValueChange = onConfirmPasswordChange,
+                                onValueChange = listener::onConfirmPasswordChanged,
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
@@ -218,7 +210,7 @@ fun SignupContent(
                     1 -> CustomButton(
                         labelIdStringRes = R.string.sign_up,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-                        onClick = onClickSignup
+                        onClick = listener::onClickSignup,
                     )
                 }
             }
@@ -231,8 +223,7 @@ fun SignupContent(
                 ) {
                     Text(
                         text = stringResource(R.string.already_have_account),
-                        color = black37,
-                        style = Typography.displaySmall,
+                        style = Typography.displaySmall.copy(black37),
                         textAlign = TextAlign.Center
                     )
                     TextButton(
@@ -241,8 +232,7 @@ fun SignupContent(
                     ) {
                         Text(
                             text = stringResource(R.string.log_in),
-                            color = primary100,
-                            style = Typography.displayLarge,
+                            style = Typography.displayLarge.copy(primary100),
                             textAlign = TextAlign.Center,
                         )
                     }

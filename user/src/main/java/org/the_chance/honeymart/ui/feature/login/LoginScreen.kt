@@ -2,8 +2,6 @@ package org.the_chance.honeymart.ui.feature.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,23 +61,19 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     }
 
     LoginContent(
-        onClickLogin = viewModel::onLoginClick,
+        listener = viewModel,
         onClickSignup = { navController.navigateToSignupScreen() },
-        onEmailChange = viewModel::onEmailInputChange,
-        onPasswordChange = viewModel::onPasswordInputChanged,
-        state = state
+        state = state,
     )
 }
 
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    onClickLogin: () -> Unit,
-    onClickSignup: () -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
+    listener: LoginInteractionListener,
     state: LoginUiState,
-) {
+    onClickSignup: () -> Unit,
+    ) {
     Loading(state.isLoading)
 
     ContentVisibility(state = !state.isLoading) {
@@ -91,7 +85,7 @@ fun LoginContent(
             Box(contentAlignment = Alignment.Center) {
                 Image(
                     painter = painterResource(R.drawable.background_frame),
-                    contentDescription = "",
+                    contentDescription = null,
                     modifier = modifier.fillMaxWidth(),
                     contentScale = ContentScale.Crop
                 )
@@ -102,16 +96,14 @@ fun LoginContent(
                 ) {
                     Text(
                         text = stringResource(R.string.welcome_back),
-                        color = white,
-                        style = Typography.headlineMedium,
+                        style = Typography.headlineMedium.copy(color = white),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
                         ),
-                        color = white,
-                        style = Typography.bodyMedium,
+                        style = Typography.bodyMedium.copy(color = white),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -120,7 +112,7 @@ fun LoginContent(
                 text = state.email,
                 hint = stringResource(R.string.email),
                 idIconDrawableRes = R.drawable.ic_email,
-                onValueChange = onEmailChange,
+                onValueChange = listener::onEmailInputChange,
                 errorMessage = when (state.emailState) {
                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
                     ValidationState.INVALID_EMAIL -> "Invalid email"
@@ -131,7 +123,7 @@ fun LoginContent(
                 text = state.password,
                 hint = stringResource(R.string.password),
                 idIconDrawableRes = R.drawable.ic_password,
-                onValueChange = onPasswordChange,
+                onValueChange = listener::onPasswordInputChanged,
                 errorMessage = when (state.passwordState) {
                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
                     ValidationState.INVALID_PASSWORD -> "Invalid password"
@@ -142,7 +134,7 @@ fun LoginContent(
             CustomButton(
                 labelIdStringRes = R.string.log_in,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
-                onClick = onClickLogin,
+                onClick = listener::onLoginClick,
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -152,8 +144,7 @@ fun LoginContent(
             ) {
                 Text(
                     text = stringResource(R.string.don_t_have_an_account),
-                    color = black37,
-                    style = Typography.displaySmall,
+                    style = Typography.displaySmall.copy(color = black37),
                     textAlign = TextAlign.Center
                 )
                 TextButton(
@@ -162,8 +153,7 @@ fun LoginContent(
                 ) {
                     Text(
                         text = stringResource(R.string.Sign_up),
-                        color = primary100,
-                        style = Typography.displayLarge,
+                        style = Typography.displayLarge.copy(color = primary100),
                         textAlign = TextAlign.Center,
                     )
                 }

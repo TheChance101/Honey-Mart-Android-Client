@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.product
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -46,23 +45,17 @@ fun ProductsScreen(
 
     ProductsContent(
         state = state,
-        viewModel = viewModel,
         productInteractionListener = viewModel,
-        navigateToProductScreen = { productId ->
-            navController.navigateToProductDetailsScreen(productId)
-        },
-        navigateToAuth = {
-            navController.navigateToAuth()
-        }
+        navigateToProductScreen =
+        {productId -> navController.navigateToProductDetailsScreen(productId)},
+        navigateToAuth = { navController.navigateToAuth() }
     )
 }
 
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
-    viewModel: ProductViewModel,
     productInteractionListener: ProductInteractionListener,
     navigateToProductScreen: (productId: Long) -> Unit,
     navigateToAuth: () -> Unit,
@@ -70,7 +63,7 @@ private fun ProductsContent(
     AppBarScaffold {
         Loading(state.isLoadingCategory)
 
-        ConnectionErrorPlaceholder(state.isError, {})
+        ConnectionErrorPlaceholder(state.isError, productInteractionListener::resetNavigation)
 
         ContentVisibility(state = !state.isLoadingCategory && !state.isError) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -103,8 +96,6 @@ private fun ProductsContent(
                             )
                         }
                     }
-
-
                     EmptyProductPlaceholder(state.isEmptyProducts)
                     Loading(state.isLoadingProduct)
                     AnimatedVisibility(
@@ -146,13 +137,13 @@ private fun ProductsContent(
         LaunchedEffect(key1 = state.navigateToProductDetailsState.isNavigate) {
             if (state.navigateToProductDetailsState.isNavigate) {
                 navigateToProductScreen(state.navigateToProductDetailsState.id)
-                viewModel.resetNavigation()
+                productInteractionListener.resetNavigation()
             }
         }
         LaunchedEffect(key1 = state.navigateToAuthGraph) {
             if (state.navigateToAuthGraph.isNavigate) {
                 navigateToAuth()
-                viewModel.resetNavigation()
+                productInteractionListener.resetNavigation()
             }
         }
     }

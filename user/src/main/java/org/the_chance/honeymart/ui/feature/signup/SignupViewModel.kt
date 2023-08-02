@@ -21,26 +21,25 @@ class SignupViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, Unit>(SignupUiState()) {
+) : BaseViewModel<SignupUiState, Unit>(SignupUiState()), SignupInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
-
-    fun onFullNameInputChange(fullName: CharSequence) {
+    override fun onFullNameInputChange(fullName: CharSequence) {
         val fullNameState = validateFullName(fullName.trim().toString())
         _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
     }
 
-    fun onEmailInputChange(email: CharSequence) {
+    override fun onEmailInputChange(email: CharSequence) {
         val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
-    fun onPasswordInputChanged(password: CharSequence) {
+    override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validatePassword(password.toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
 
-    fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
+    override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
         val passwordState =
             validateConfirmPassword(state.value.password, confirmPassword.toString())
         if (!passwordState) {
@@ -103,7 +102,7 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
-    fun onClickSignup() {
+    override fun onClickSignup() {
         val validationState =
             validateConfirmPassword(state.value.password, state.value.confirmPassword)
         if (validationState) {

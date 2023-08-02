@@ -18,7 +18,7 @@ import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
- import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.Loading
 
 
 @Composable
@@ -29,19 +29,18 @@ fun MarketScreen(
     val navController = LocalNavigationProvider.current
     MarketContent(
         state = state,
-        marketInteractionListener = navController::navigateToCategoryScreen,
-        onClickTryAgain = viewModel::getChosenMarkets
+        onClickMarket = navController::navigateToCategoryScreen,
+        listener = viewModel
     )
 }
 
 @Composable
 fun MarketContent(
     state: MarketsUiState,
-    marketInteractionListener: (Long) -> Unit,
-    onClickTryAgain : () -> Unit
+    onClickMarket: (Long) -> Unit,
+    listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-
         ContentVisibility(state = state.markets.isNotEmpty() && !state.isError) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
@@ -50,20 +49,14 @@ fun MarketContent(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
                 items(state.markets.size) { position ->
-                    val market = state.markets[position]
-                    MarketItem(
-                        market,
-                        onClickItem = marketInteractionListener
-                    )
+                    MarketItem(state.markets[position], onClickItem = onClickMarket)
                 }
             }
         }
-
         ConnectionErrorPlaceholder(
             state = state.isError && state.markets.isEmpty(),
-            onClickTryAgain = onClickTryAgain
+            onClickTryAgain = listener::getChosenMarkets
         )
-
         Loading(state.isLoading)
     }
 }

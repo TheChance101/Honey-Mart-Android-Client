@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
+import org.the_chance.honymart.ui.theme.black37
 
 
 @Composable
@@ -57,8 +57,8 @@ fun MarketItem(
                 .background(
                     Brush.verticalGradient(
                         colorStops = arrayOf(
-                            Pair(1f, Color(0x5E121212)),
-                            Pair(1f, Color(0x5E121212))
+                            Pair(1f, black37),
+                            Pair(1f, black37)
                         )
                     )
                 )
@@ -72,14 +72,9 @@ fun MarketItem(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment =  Alignment.CenterVertically
             ) {
-                Text(text = state.marketName!! , color = White, maxLines = 2, fontSize = 20.sp)
+                Text(text = state.marketName , color = White, maxLines = 2, fontSize = 20.sp)
             }
-
-
-
     }
-
-    
 }
 
 @Preview(showSystemUi = true, showBackground = true)

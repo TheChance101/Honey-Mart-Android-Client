@@ -32,7 +32,6 @@ import org.the_chance.honeymart.ui.feature.cart.composables.CartItem
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
-import org.the_chance.honeymart.ui.feature.uistate.CartUiState
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility

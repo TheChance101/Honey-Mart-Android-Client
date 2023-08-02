@@ -10,8 +10,6 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.CartUiState
-import org.the_chance.honeymart.ui.feature.uistate.toCartListProductUiState
 import javax.inject.Inject
 
 @HiltViewModel

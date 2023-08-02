@@ -34,7 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.uistate.CartListProductUiState
+import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.primary100

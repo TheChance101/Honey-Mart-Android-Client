@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -32,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
@@ -60,7 +59,8 @@ fun OrdersScreen(
     OrdersContent(
         state = state,
         ordersInteractionsListener = viewModel,
-        onClickItemOrder = navController::navigateToOrderDetailsScreen
+        onClickItemOrder = navController::navigateToOrderDetailsScreen,
+        navController = navController
     )
 }
 
@@ -70,9 +70,9 @@ fun OrdersContent(
     state: OrdersUiState,
     ordersInteractionsListener: OrdersInteractionsListener,
     onClickItemOrder: (orderId: Long) -> Unit = {},
+    navController: NavController
 ) {
     AppBarScaffold {
-        val navController = LocalNavigationProvider.current
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = ordersInteractionsListener::getAllProcessingOrders
@@ -86,9 +86,11 @@ fun OrdersContent(
         )
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,11 +114,11 @@ fun OrdersContent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
             Loading(state = state.isLoading)
+
             ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
                 LazyColumn(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(vertical = 16.dp)
                 ) {
@@ -144,7 +146,7 @@ fun OrdersContent(
                                 )
                             })
                         LaunchedEffect(showDialog) {
-                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                            if (!showDialog) {
                                 dismissState.reset()
                             }
                         }

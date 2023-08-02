@@ -97,7 +97,7 @@ class OrderViewModel @Inject constructor(
             OrderStates.PROCESSING -> getAllProcessingOrders()
             OrderStates.DONE -> getAllDoneOrders()
             OrderStates.CANCELED -> getAllCancelOrders()
-            else -> {}
+            else -> Unit
         }
     }
 

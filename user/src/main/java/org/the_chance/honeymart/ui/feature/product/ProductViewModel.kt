@@ -1,10 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -14,9 +12,8 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
-import org.the_chance.honeymart.ui.feature.uistate.WishListProductUiState
-import org.the_chance.honeymart.ui.feature.uistate.toWishListProductUiState
-import org.the_chance.honeymart.util.EventHandler
+import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
+import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +24,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
+) : BaseViewModel<ProductsUiState, Unit>(ProductsUiState()), ProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -47,7 +44,6 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId()
         getCategoriesByMarketId()
-       // log(_state.value.toString())
     }
 
     private fun getCategoriesByMarketId() {
@@ -68,12 +64,14 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
+
     private fun onGetCategoryError(error: ErrorHandler) {
         _state.update { it.copy(isLoadingCategory = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
+
     override fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
@@ -89,6 +87,7 @@ class ProductViewModel @Inject constructor(
         }
         getProductsByCategoryId()
     }
+
     private fun updateCategorySelection(
         categories: List<CategoryUiState>,
         selectedCategoryId: Long,
@@ -106,6 +105,7 @@ class ProductViewModel @Inject constructor(
             ::onGetProductError
         )
     }
+
     private fun onGetProductSuccess(products: List<ProductUiState>) {
         if (products.isEmpty()) {
             _state.update {
@@ -124,12 +124,14 @@ class ProductViewModel @Inject constructor(
         }
         getWishListProducts(products)
     }
+
     private fun onGetProductError(error: ErrorHandler) {
         _state.update { it.copy(isLoadingProduct = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
+
     override fun onClickProduct(productId: Long) {
         _state.update {
             it.copy(
@@ -140,6 +142,7 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
+
     private fun updateProducts(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
@@ -156,6 +159,7 @@ class ProductViewModel @Inject constructor(
         )
 
     }
+
     private fun onGetWishListProductSuccess(
         wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
     ) {
@@ -165,6 +169,7 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
+
     private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
         _state.update { it.copy(isLoadingProduct = false, error = error, products = products) }
         if (error is ErrorHandler.NoConnection) {
@@ -197,10 +202,6 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductUiEffect.RemovedFromWishListEffect))
-        }
-
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -227,13 +228,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(products = newProduct) }
     }
 
-    private fun onAddToWishListSuccess(successMessage: String) {
-
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
-        }
-
-    }
+    private fun onAddToWishListSuccess(successMessage: String) {}
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser) {
@@ -248,7 +243,7 @@ class ProductViewModel @Inject constructor(
         updateFavoriteState(productId, false)
     }
 
-    fun resetNavigation() {
+    override fun resetNavigation() {
         _state.update {
             it.copy(
                 navigateToProductDetailsState = NavigationState(
@@ -261,5 +256,6 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
+    override fun onclickTryAgain() {getData()}
 
 }

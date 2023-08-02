@@ -16,7 +16,8 @@ class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-) : BaseViewModel<LoginUiState, Unit>(LoginUiState()),LoginInteractionListener {
+) : BaseViewModel<LoginUiState, Unit>(LoginUiState()),
+    LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
     private fun login(email: String, password: String) {
@@ -29,7 +30,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
-        Log.e("onLoginSuccess", "onLoginSuccess: " )
+        Log.e("onLoginSuccess", "onLoginSuccess: ")
         _state.update {
             it.copy(
                 isLoading = false, error = null,
@@ -65,12 +66,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onEmailInputChange(email: CharSequence) {
+    override fun onEmailInputChange(email: CharSequence) {
         val emailState = validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
-    fun onPasswordInputChanged(password: CharSequence) {
+    override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validatePassword(password.trim().toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
