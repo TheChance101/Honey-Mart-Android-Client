@@ -3,10 +3,6 @@ package org.the_chance.honeymart.ui.feature.login
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 
-/**
- * Created by Aziza Helmy on 6/16/2023.
- */
-
 data class LoginUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,

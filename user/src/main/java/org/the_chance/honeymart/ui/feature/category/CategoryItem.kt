@@ -25,9 +25,6 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 
-/**
- * Created by Aziza Helmy on 7/27/2023.
- */
 @Composable
 fun CategoryItem(
     state: CategoryUiState,

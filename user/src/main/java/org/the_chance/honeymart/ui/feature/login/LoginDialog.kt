@@ -29,10 +29,11 @@ import org.the_chance.honymart.ui.theme.black37
 
 @Composable
 fun CustomDialog(
+    modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>
 ) {
     Dialog(onDismissRequest = { openDialogCustom.value = false }) {
-        CustomDialogUi()
+        CustomDialogUi(modifier)
     }
 }
 

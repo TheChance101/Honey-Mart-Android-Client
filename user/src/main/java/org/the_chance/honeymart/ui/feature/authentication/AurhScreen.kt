@@ -30,6 +30,7 @@ import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -77,8 +78,8 @@ fun AuthContent(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 40.dp),
             onClick = onClickSignUp
         )
-        Spacer(modifier = Modifier.height(16.dp))
         Row(
+            modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -93,8 +94,7 @@ fun AuthContent(
                 onClick = onClickLogin , colors = ButtonDefaults.textButtonColors(Color.Transparent)) {
                 Text(
                     text = stringResource(R.string.log_in),
-                    color = primary100,
-                    style = Typography.displayLarge,
+                    style = Typography.displayLarge.copy(primary100),
                     textAlign = TextAlign.Center,
                 )
             }

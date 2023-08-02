@@ -26,16 +26,20 @@ import org.the_chance.user.R
 fun CartCardView(
     modifier: Modifier = Modifier,
     totalPrice: String = "300,000 $",
-    isLoading: Boolean ,
+    isLoading: Boolean,
     viewModel: CartViewModel = hiltViewModel()
 ) {
     Card(
-        shape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp, bottomEnd = 0.dp, bottomStart = 0.dp),
-    modifier = Modifier
-        .fillMaxWidth()
-        .height(100.dp)
-        ,
-        colors =CardDefaults.cardColors(
+        shape = RoundedCornerShape(
+            topEnd = 16.dp,
+            topStart = 16.dp,
+            bottomEnd = 0.dp,
+            bottomStart = 0.dp
+        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(100.dp),
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onTertiary,
         )
     ) {
@@ -68,7 +72,7 @@ fun CartCardView(
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                     },
 
-            )
+                )
             Text(
                 text = stringResource(R.string.total_price),
                 color = MaterialTheme.colorScheme.onTertiaryContainer,

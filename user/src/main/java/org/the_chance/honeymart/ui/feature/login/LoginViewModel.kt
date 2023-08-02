@@ -16,7 +16,7 @@ class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-) : BaseViewModel<LoginUiState, Unit>(LoginUiState()) {
+) : BaseViewModel<LoginUiState, Unit>(LoginUiState()),LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
     private fun login(email: String, password: String) {
@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    fun onLoginClick() {
+    override fun onLoginClick() {
         if (_state.value.emailState == ValidationState.VALID_EMAIL &&
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {

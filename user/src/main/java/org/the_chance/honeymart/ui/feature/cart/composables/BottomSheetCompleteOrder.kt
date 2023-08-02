@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.cart.screen
+package org.the_chance.honeymart.ui.feature.cart.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,14 +53,14 @@ fun BottomSheetCompleteOrderContent(
         scrimColor = Color.Black.copy(alpha = 0.32f),
         content = { LaunchedEffect(key1 = state) { if (state) sheetState.expand() else sheetState.hide() } },
         sheetContent = {
-            BottomSheetContnet(onClick = onClick)
+            BottomSheetContent(onClick = onClick)
         },
     )
 }
 
 @Preview
 @Composable
-private fun BottomSheetContnet(
+private fun BottomSheetContent(
     onClick: () -> Unit = {},
 ) {
     Card(

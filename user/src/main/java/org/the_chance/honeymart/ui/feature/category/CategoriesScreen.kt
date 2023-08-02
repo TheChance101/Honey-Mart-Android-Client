@@ -20,27 +20,29 @@ import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
 
-/**
- * Created by Aziza Helmy on 7/27/2023.
- */
 @Composable
 fun CategoriesScreen(
     viewModel: CategoryViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
-    CategoryContent(state, listener = navController::navigateToProductScreen)
+    CategoryContent(
+        state,
+        listener = viewModel,
+        onClickCategory = navController::navigateToProductScreen
+    )
 }
 
 @Composable
 fun CategoryContent(
     state: CategoriesUiState,
-    listener: (categoryId: Long, marketId: Long, position: Int) -> Unit,
+    listener: CategoryInteractionListener,
+    onClickCategory: (categoryId: Long, marketId: Long, position: Int) -> Unit,
 ) {
     AppBarScaffold {
         Loading(state.isLoading)
 
-        ConnectionErrorPlaceholder(state.isError, {})
+        ConnectionErrorPlaceholder(state.isError, listener::onGetData)
 
         ContentVisibility(state = !state.isLoading && !state.isError) {
             LazyVerticalGrid(
@@ -53,7 +55,7 @@ fun CategoryContent(
                 itemsIndexed(state.categories) { index, item ->
                     CategoryItem(
                         state = item,
-                        onCategoryClicked = listener,
+                        onCategoryClicked = onClickCategory,
                         categoryId = item.categoryId,
                         marketId = state.marketId,
                         position = index,

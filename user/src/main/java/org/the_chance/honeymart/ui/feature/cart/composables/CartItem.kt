@@ -41,13 +41,14 @@ import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun CartItem(
+    modifier: Modifier = Modifier,
     product: CartListProductUiState,
     isLoading: Boolean,
     onClickMinus: () -> Unit = {},
     onClickPlus: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
             .padding(bottom = 16.dp),
@@ -55,7 +56,8 @@ fun CartItem(
         shape = RoundedCornerShape(16.dp)
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.onTertiary)
 
         ) {
@@ -73,8 +75,7 @@ fun CartItem(
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
-                    }
-                , contentScale = ContentScale.Crop
+                    }, contentScale = ContentScale.Crop
             )
 
             Text(
@@ -117,13 +118,16 @@ fun CartItem(
                     width = 1.dp
                 ),
                 modifier = Modifier
-                    .paint(painter = painterResource(id = R.drawable.minus_1), contentScale = ContentScale.Inside)
+                    .paint(
+                        painter = painterResource(id = R.drawable.minus_1),
+                        contentScale = ContentScale.Inside
+                    )
                     .size(24.dp)
                     .constrainAs(imageViewMinusOrder) {
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                         end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
                     },
-                ) {}
+            ) {}
 
 
             Text(
