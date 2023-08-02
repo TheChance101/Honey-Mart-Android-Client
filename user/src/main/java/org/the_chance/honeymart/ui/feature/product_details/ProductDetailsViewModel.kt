@@ -29,7 +29,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
-    ProductImageInteractionListener, ProductDetailsInteraction {
+    ProductDetailsInteraction {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -233,19 +233,15 @@ class ProductDetailsViewModel @Inject constructor(
             is ErrorHandler.NoConnection -> {
                 _state.update { it.copy(isLoading = false, isConnectionError = true) }
             }
-
             is ErrorHandler.UnAuthorizedUser -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        EventHandler(
-                            ProductDetailsUiEffect.UnAuthorizedUserEffect(
-                                AuthData.ProductDetails(state.value.product.productId!!)
-                            )
+                _state.update {
+                    it.copy(
+                        navigateToAuthGraph = NavigationState(
+                            isNavigate = true
                         )
                     )
                 }
             }
-
             else -> {}
         }
         updateFavoriteState(false)
@@ -263,7 +259,7 @@ class ProductDetailsViewModel @Inject constructor(
     override
     fun onClickFavorite(productId: Long) {
         val currentProduct = _state.value.product
-        val isFavorite = currentProduct.isFavorite ?: false
+        val isFavorite = currentProduct.isFavorite
         val newFavoriteState = !isFavorite
 
         updateFavoriteState(newFavoriteState)
@@ -301,6 +297,16 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
+        }
+    }
+
+    fun resetNavigation() {
+        _state.update {
+            it.copy(
+                navigateToAuthGraph = NavigationState(
+                    isNavigate = false
+                )
+            )
         }
     }
 

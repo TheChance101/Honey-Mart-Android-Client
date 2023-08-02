@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,12 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.AppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -55,8 +53,12 @@ fun ProductDetailsScreen(
     HoneyMartTheme {
         ProductDetailsContent(state = state,
             interaction = viewModel,
+            viewModel = viewModel,
             onBackClick = {
                 navController.navigateUp()
+            },
+            navigateToAuth = {
+                navController.navigateToAuth()
             }
         )
     }
@@ -65,8 +67,10 @@ fun ProductDetailsScreen(
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
+    viewModel: ProductDetailsViewModel,
     interaction: ProductDetailsInteraction,
     onBackClick: () -> Unit,
+    navigateToAuth: () -> Unit,
 ) {
     Loading(state.isLoading)
 
@@ -114,7 +118,9 @@ private fun ProductDetailsContent(
 
                         AppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
-                            onBackClick = onBackClick, onFavoriteClick = {},
+                            state = state,
+                            onBackClick = onBackClick,
+                            onFavoriteClick = { interaction.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -158,6 +164,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
+                                    iconSize = MaterialTheme.dimens.iconSmall,
                                     onClick = interaction::decreaseProductCount
                                 )
 
@@ -169,15 +176,12 @@ private fun ProductDetailsContent(
                                     modifier = Modifier
                                         .padding(horizontal = MaterialTheme.dimens.space12)
                                 )
-                                Icon(
-                                    painter = painterResource(id = R.drawable.icon_add_to_cart),
-                                    modifier = Modifier
-                                        .size(MaterialTheme.dimens.smallButton)
-                                        .background(MaterialTheme.colorScheme.primary, CircleShape)
-                                        .clickable { interaction.increaseProductCount() }
-                                        .padding(8.dp),
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+
+                                CustomSmallIconButton(
+                                    idIconDrawableRes = R.drawable.icon_add_to_cart,
+                                    background = MaterialTheme.colorScheme.primary,
+                                    iconSize = MaterialTheme.dimens.iconSmall,
+                                    onClick = interaction::increaseProductCount
                                 )
                             }
                         }
@@ -208,6 +212,12 @@ private fun ProductDetailsContent(
                     )
                 }
             }
+        }
+    }
+    LaunchedEffect(key1 = state.navigateToAuthGraph) {
+        if (state.navigateToAuthGraph.isNavigate) {
+            navigateToAuth()
+            viewModel.resetNavigation()
         }
     }
 }

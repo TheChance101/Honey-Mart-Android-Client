@@ -9,12 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiState
 import org.the_chance.honymart.ui.composables.CustomSmallIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
+    state: ProductDetailsUiState,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onFavoriteClick: () -> Unit,
@@ -35,8 +37,17 @@ fun AppBar(
         },
         actions = {
             CustomSmallIconButton(
-                idIconDrawableRes = R.drawable.icon_favorite_unselected,
-                onClick = onFavoriteClick
+                idIconDrawableRes =
+                if (state.product.isFavorite)
+                    R.drawable.icon_favorite_selected
+                else
+                    R.drawable.icon_favorite_unselected,
+                background =
+                if (state.product.isFavorite)
+                    MaterialTheme.colorScheme.tertiary
+                else
+                    MaterialTheme.colorScheme.primary,
+                onClick = onFavoriteClick,
             )
         },
     )
@@ -47,6 +58,6 @@ fun AppBar(
 @Composable
 private fun AppBarPreview() {
     HoneyMartTheme {
-        AppBar(onBackClick = {}, onFavoriteClick = {})
+        AppBar(state = ProductDetailsUiState(), onBackClick = {}, onFavoriteClick = {})
     }
 }

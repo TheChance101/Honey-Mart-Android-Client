@@ -10,6 +10,12 @@ data class ProductDetailsUiState(
     val isConnectionError: Boolean = false,
     val product: ProductUiState = ProductUiState(),
     val image: String = "",
+    val navigateToAuthGraph: NavigationState = NavigationState(),
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
+)
+
+data class NavigationState(
+    val isNavigate: Boolean = false,
+    val id: Long = 0L
 )
