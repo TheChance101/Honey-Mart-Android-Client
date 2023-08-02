@@ -6,8 +6,6 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
-import org.the_chance.honeymart.util.Constant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,16 +15,12 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, Unit>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
-    private fun getAllProcessingOrders() {
+    override fun getAllProcessingOrders() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                isError = false,
-                orderStates = OrderStates.PROCESSING,
-            )
+            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.PROCESSING.state).map { it.toOrderUiState() } },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
@@ -43,12 +37,12 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    private fun getAllDoneOrders() {
+    override fun getAllDoneOrders() {
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.DONE.state).map { it.toOrderUiState() } },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -65,12 +59,12 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    private fun getAllCancelOrders() {
+    override fun getAllCancelOrders() {
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
         }
         tryToExecute(
-            { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.CANCELED.state).map { it.toOrderUiState() } },
             ::onGetCancelOrdersSuccess,
             ::onGetCancelOrdersError
         )
@@ -87,8 +81,8 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    private fun updateOrders(id: Long, orderState: Int) {
-        val orderId = state.value.orders[id.toInt()].orderId
+    override fun updateOrders(position: Long, orderState: Int) {
+        val orderId = state.value.orders[position.toInt()].orderId
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { updateOrderStateUseCase(orderId, orderState) },
@@ -112,42 +106,5 @@ class OrderViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
-    }
-
-    override fun onClickProcessingOrder() {
-        _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
-        }
-        tryToExecute(
-            { getAllOrders(OrderStates.PROCESSING.state).map { it.toOrderUiState() } },
-            ::onGetProcessingOrdersSuccess,
-            ::onGetProcessingOrdersError
-        )
-    }
-
-    override fun onClickDoneOrder() {
-        _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
-        }
-        tryToExecute(
-            { getAllOrders(OrderStates.DONE.state).map { it.toOrderUiState() } },
-            ::onGetDoneOrdersSuccess,
-            ::onGetDoneOrdersError
-        )
-    }
-
-    override fun onClickCancelOrder() {
-        _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
-        }
-        tryToExecute(
-            { getAllOrders(OrderStates.CANCELED.state).map { it.toOrderUiState() } },
-            ::onGetCancelOrdersSuccess,
-            ::onGetCancelOrdersError
-        )
-    }
-
-    override fun onClickConfirmOrder(position: Long, orderState: Int) {
-        updateOrders(position, orderState)
     }
 }
