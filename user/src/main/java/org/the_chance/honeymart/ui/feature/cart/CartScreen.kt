@@ -83,7 +83,6 @@ fun CartContent(
         BottomSheetCompleteOrderContent(
             state = state.bottomSheetIsDisplayed,
             onClick = onClickButtonOrderDetails,
-            onClickButtonDiscover = onClickButtonDiscover
         )
 
         ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
