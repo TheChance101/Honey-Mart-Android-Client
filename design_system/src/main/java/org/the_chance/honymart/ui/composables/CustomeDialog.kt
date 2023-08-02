@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.the_chance.design_system.R
@@ -30,6 +29,7 @@ import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
@@ -52,9 +52,9 @@ fun CustomAlertDialog(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_warning),
-                    contentDescription = "warning Icon",
+                    contentDescription = stringResource(R.string.warning_icon),
                     modifier = Modifier
-                        .padding(bottom = 32.dp),
+                        .padding(bottom = MaterialTheme.dimens.space32),
                 )
                 Text(
                     text = message,
@@ -66,16 +66,19 @@ fun CustomAlertDialog(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 32.dp)
+                        .padding(
+                            horizontal = MaterialTheme.dimens.space16,
+                            vertical = MaterialTheme.dimens.space32
+                        )
                 ) {
                     TextButton(
                         modifier = Modifier
                             .width(144.dp)
-                            .height(48.dp)
-                            .padding(end = 8.dp),
+                            .height(MaterialTheme.dimens.heightPrimaryButton)
+                            .padding(end = MaterialTheme.dimens.space8),
                         onClick = onConfirm,
                         colors = ButtonDefaults.textButtonColors(primary100),
-                        shape = Shapes.medium,
+                        shape = MaterialTheme.shapes.medium,
                     ) {
                         Text(
                             text = stringResource(id = R.string.yes_i_m_sure),
@@ -85,11 +88,11 @@ fun CustomAlertDialog(
                     TextButton(
                         modifier = Modifier
                             .width(144.dp)
-                            .height(48.dp),
+                            .height(MaterialTheme.dimens.heightPrimaryButton),
                         onClick = onCancel,
                         colors = ButtonDefaults.textButtonColors(Color.Transparent),
-                        shape = Shapes.medium,
-                        border = BorderStroke(width = 1.dp, color = black16)
+                        shape = MaterialTheme.shapes.medium,
+                        border = BorderStroke(MaterialTheme.dimens.strokeNormal, color = black16)
                     )
                     {
                         Text(
@@ -103,8 +106,4 @@ fun CustomAlertDialog(
     }
 }
 
-@Preview
-@Composable
-fun PreviewCustomAlertDialog() {
 
-}

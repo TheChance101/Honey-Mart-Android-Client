@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -23,7 +24,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
@@ -65,11 +65,15 @@ fun AppBarScaffold(
                 title = { AppBarTitle(topAppBarTitleColor) },
                 navigationIcon = { },
                 actions = { },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = topAppBarColors(
                     containerColor = topAppBarContainerColor,
+                    scrolledContainerColor = MaterialTheme.colorScheme.applyTonalElevation(
+                        backgroundColor = containerColor,
+                        elevation = TopAppBarSmallTokens.OnScrollContainerElevation
+                    ),
                     navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-                    actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurface
                 ),
                 scrollBehavior = scrollBehavior
             )
@@ -93,7 +97,7 @@ fun AppBarTitle(
     Row {
         Icon(
             modifier = Modifier
-                .size(32.dp)
+                .size(MaterialTheme.dimens.icon32)
                 .padding(end = MaterialTheme.dimens.space4),
             painter = painterResource(id = R.drawable.icon_cart),
             contentDescription = stringResource(R.string.title_icon),

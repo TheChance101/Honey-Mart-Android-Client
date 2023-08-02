@@ -15,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
@@ -34,20 +34,20 @@ fun TextField(
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
-    Column() {
+    Column {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .height(64.dp),
+                .padding(horizontal = MaterialTheme.dimens.space16)
+                .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
             label = {
-                    Text(
-                        text = hint,
-                        color = if (isError) error else black37,
-                        style = Typography.displaySmall,
-                    )
+                Text(
+                    text = hint,
+                    color = if (isError) error else black37,
+                    style = Typography.displaySmall,
+                )
             },
             shape = Shapes.medium,
             maxLines = 1,
@@ -62,7 +62,7 @@ fun TextField(
                 if (isError) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_error_password),
-                        contentDescription = "Copy button",
+                        contentDescription = stringResource(R.string.copy_button),
                         tint = error
                     )
                 }
@@ -71,7 +71,7 @@ fun TextField(
                 Icon(
                     painter =
                     painterResource(idIconDrawableRes),
-                    contentDescription = "Copy button",
+                    contentDescription = stringResource(R.string.copy_button),
                     tint = if (isError) error else white200
                 )
             },
@@ -82,7 +82,10 @@ fun TextField(
                 text = errorMessage,
                 color = error,
                 style = Typography.displaySmall,
-                modifier = Modifier.padding(start = 16.dp, top = 0.dp)
+                modifier = Modifier.padding(
+                    start = MaterialTheme.dimens.space16,
+                    top = MaterialTheme.dimens.zero
+                )
             )
         }
     }
