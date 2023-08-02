@@ -1,38 +1,21 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.orders.composable.OrdersInteractionsListener
 import org.the_chance.honeymart.util.Constant
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-    savedStateHandle: SavedStateHandle,
-    ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()),
-    OrdersInteractionsListener {
+) : BaseViewModel<OrdersUiState, Unit>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
-    private var job: Job? = null
-
-//    private val orderArgs: OrderArgs = OrderArgs(savedStateHandle)
-
-
-    init {
-        getAllProcessingOrders()
-    }
-
 
     private fun getAllProcessingOrders() {
         _state.update {
@@ -40,11 +23,7 @@ class OrderViewModel @Inject constructor(
                 isLoading = true,
                 isError = false,
                 orderStates = OrderStates.PROCESSING,
-
             )
-        }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickProcessing))
         }
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_1).map { it.toOrderUiState() } },
@@ -64,12 +43,9 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun getAllDoneOrders() {
+    private fun getAllDoneOrders() {
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
-        }
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDone))
         }
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_2).map { it.toOrderUiState() } },
@@ -89,17 +65,9 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun getAllCancelOrders() {
+    private fun getAllCancelOrders() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                orderStates = OrderStates.CANCELED,
-                isError = false
-            )
-        }
-
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickCanceled))
+            it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
         }
         tryToExecute(
             { getAllOrders(Constant.ORDER_STATE_3).map { it.toOrderUiState() } },
@@ -119,7 +87,7 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-     private fun updateOrders(id: Long, orderState: Int) {
+    private fun updateOrders(id: Long, orderState: Int) {
         val orderId = state.value.orders[id.toInt()].orderId
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
@@ -146,27 +114,9 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun onClickDiscoverMarketsButton() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
-        }
-    }
-
-    override fun onClickOrder(orderId: Long) {
-        job?.cancel()
-        job = viewModelScope.launch {
-            delay(10)
-            _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
-        }
-    }
-
     override fun onClickProcessingOrder() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                isError = false,
-                orderStates = OrderStates.PROCESSING
-            )
+            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
         }
         tryToExecute(
             { getAllOrders(OrderStates.PROCESSING.state).map { it.toOrderUiState() } },
@@ -188,11 +138,7 @@ class OrderViewModel @Inject constructor(
 
     override fun onClickCancelOrder() {
         _state.update {
-            it.copy(
-                isLoading = true,
-                orderStates = OrderStates.CANCELED,
-                isError = false
-            )
+            it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
         }
         tryToExecute(
             { getAllOrders(OrderStates.CANCELED.state).map { it.toOrderUiState() } },
@@ -203,11 +149,5 @@ class OrderViewModel @Inject constructor(
 
     override fun onClickConfirmOrder(position: Long, orderState: Int) {
         updateOrders(position, orderState)
-    }
-
-    override fun onClickDiscoverMarkets() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
-        }
     }
 }
