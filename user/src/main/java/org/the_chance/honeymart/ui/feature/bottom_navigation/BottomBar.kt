@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.bottom_navigation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -23,7 +22,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
@@ -73,19 +71,13 @@ fun RowScope.AddItem(
                 painter =
                 if (selected) painterResource(id = screen.selectedIcon)
                 else painterResource(id = screen.unSelectedIcon),
-                contentDescription = "Navigation icon"
-            )
+                contentDescription = "Navigation icon",
+                tint = if (selected) white else MaterialTheme.colorScheme.outlineVariant)
         },
         selected = selected,
-        label = { Text(text = if (selected) screen.label else "", color = primary100) },
+        label = { Text(text = if (selected) screen.label else "", color = MaterialTheme.colorScheme.onErrorContainer) },
         onClick = {
             navController.navigate(screen.route) {
-                Log.e(
-                    "AddItem",
-                    "Current Start Destination: ${navController.graph.findStartDestination().route}",
-                )
-                Log.e("AddItem", "Current Destination: ${screen.route}")
-                Log.e("AddItem", "Current Graph: ${navController.graph}")
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
@@ -113,7 +105,7 @@ fun RowScope.AddItem(
         },
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = white,
-            indicatorColor = primary100,
+            indicatorColor = MaterialTheme.colorScheme.errorContainer,
             unselectedIconColor = black60
         )
     )
