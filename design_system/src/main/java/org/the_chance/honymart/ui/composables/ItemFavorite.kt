@@ -36,7 +36,7 @@ fun ItemFavorite(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(MaterialTheme.dimens.heightItemFavorite)
+            .height(MaterialTheme.dimens.heightItem)
             .clickable(onClick = { onClickProduct(productId) }), shape = MaterialTheme.shapes.medium
     ) {
         Box(
@@ -44,7 +44,9 @@ fun ItemFavorite(
         ) {
             ImageNetwork(
                 imageUrl = imageUrlMarket,
-                modifier = Modifier.fillMaxSize().overlayBottomToTop(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .overlayBottomToTop(),
             )
             Column(
                 Modifier

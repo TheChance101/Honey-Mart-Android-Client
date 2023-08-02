@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun TextPrice(
@@ -29,13 +30,16 @@ fun TextPrice(
         color = color,
         modifier = modifier
             .wrapContentWidth()
-            .height(26.dp)
+            .height(MaterialTheme.dimens.smallButton)
             .clip(CircleShape)
             .border(
                 BorderStroke(1.dp, color),
                 shape = CircleShape
             )
-            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space8
+            )
     )
 }
 

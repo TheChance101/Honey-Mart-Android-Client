@@ -15,10 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -32,7 +33,7 @@ fun CategoryItem(
 ) {
     HoneyMartTheme {
         Column(
-            modifier = Modifier.width(56.dp),
+            modifier = Modifier.width(MaterialTheme.dimens.space56),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
         ) {
@@ -41,7 +42,7 @@ fun CategoryItem(
                     .size(MaterialTheme.dimens.space56)
                     .background(
                         if (isSelected) MaterialTheme.colorScheme.primary
-                        else  MaterialTheme.colorScheme.secondaryContainer,
+                        else MaterialTheme.colorScheme.secondaryContainer,
                         shape = MaterialTheme.shapes.medium
                     )
                     .padding(bottom = MaterialTheme.dimens.space4),
@@ -49,7 +50,7 @@ fun CategoryItem(
             ) {
                 Icon(
                     painter = painterResource(id = icon),
-                    contentDescription = "icon",
+                    contentDescription = stringResource(R.string.icon),
                     tint = if (isSelected) White else MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }

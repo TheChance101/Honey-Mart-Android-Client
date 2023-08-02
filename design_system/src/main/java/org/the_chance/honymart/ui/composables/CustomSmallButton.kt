@@ -39,7 +39,7 @@ fun CustomSmallIconButton(
         Image(
             painter = painterResource(id = idIconDrawableRes),
             contentDescription = "",
-            modifier = Modifier.size(MaterialTheme.dimens.iconMedium),
+            modifier = Modifier.size(MaterialTheme.dimens.icon24),
         )
 
 

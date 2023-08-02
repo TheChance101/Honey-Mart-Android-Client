@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -45,12 +46,12 @@ fun EmptyProductPlaceholder(state: Boolean){
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.placeholder_wish_list),
-                    contentDescription = "empty product",
+                    contentDescription = stringResource(R.string.empty_product),
                     contentScale = ContentScale.Crop
                 )
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
-                    text = "There is no product here !!",
+                    text = stringResource(R.string.there_is_no_product_here),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
