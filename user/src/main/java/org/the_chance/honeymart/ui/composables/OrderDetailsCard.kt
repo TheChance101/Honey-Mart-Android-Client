@@ -14,13 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
@@ -28,7 +26,7 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderDetailsCard(
-    imagePainter: Painter,
+    imageUrl: String,
     orderName: String,
     orderPrice: String,
     orderCount: String,
@@ -44,7 +42,7 @@ fun OrderDetailsCard(
         ) {
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
-                imagePainter = rememberAsyncImagePainter(model = imagePainter),
+                imageUrl = imageUrl,
             )
             Box(
                 modifier = Modifier
@@ -98,7 +96,7 @@ fun OrderDetailsCard(
 @Composable
 fun OrderDetailsCardPreview() {
     OrderDetailsCard(
-        imagePainter = rememberAsyncImagePainter(model = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg"),
+        imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
         orderName = "To Kill a Mockingbird",
         orderPrice = "30,000",
         orderCount = "3",

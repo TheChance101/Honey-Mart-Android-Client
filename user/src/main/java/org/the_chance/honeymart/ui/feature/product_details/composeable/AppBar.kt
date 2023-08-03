@@ -7,6 +7,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiState
@@ -28,7 +29,7 @@ fun AppBar(
         ),
         navigationIcon = {
             HoneyFavIconButton(
-                idIconDrawableRes = R.drawable.icon_arrow_back,
+                iconPainter = painterResource(id = R.drawable.icon_arrow_back),
                 onClick = onBackClick,
                 background = MaterialTheme.colorScheme.background
             )
@@ -37,11 +38,12 @@ fun AppBar(
         },
         actions = {
             HoneyFavIconButton(
-                idIconDrawableRes =
-                if (state.product.isFavorite)
-                    R.drawable.icon_favorite_selected
-                else
-                    R.drawable.icon_favorite_unselected,
+                iconPainter = painterResource(
+                    id = if (state.product.isFavorite)
+                        R.drawable.icon_favorite_selected
+                    else
+                        R.drawable.icon_favorite_unselected
+                ),
                 background =
                 if (state.product.isFavorite)
                     MaterialTheme.colorScheme.tertiary

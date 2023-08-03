@@ -43,7 +43,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.HoneyButton
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -140,7 +140,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
-                                idIconDrawableRes = R.drawable.ic_person,
+                                iconPainter = painterResource(id =R.drawable.ic_person ),
                                 onValueChange = listener::onFullNameInputChange,
                                 errorMessage = when (state.fullNameState) {
                                     ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
@@ -151,7 +151,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.email,
                                 hint = stringResource(R.string.email),
-                                idIconDrawableRes = R.drawable.ic_email,
+                                iconPainter = painterResource(id =R.drawable.ic_email ),
                                 onValueChange = listener::onEmailInputChange,
                                 errorMessage = when (state.emailState) {
                                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
@@ -168,7 +168,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
-                                idIconDrawableRes = R.drawable.ic_password,
+                                iconPainter = painterResource(id = R.drawable.ic_password) ,
                                 onValueChange = listener::onPasswordInputChanged,
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
@@ -180,7 +180,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
-                                idIconDrawableRes = R.drawable.ic_password,
+                                iconPainter = painterResource(id =R.drawable.ic_password ) ,
                                 onValueChange = listener::onConfirmPasswordChanged,
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
@@ -192,7 +192,7 @@ fun SignupContent(
                 }
                 val coroutineScope = rememberCoroutineScope()
                 when (pagerState.currentPage) {
-                    0 -> HoneyButton(
+                    0 -> HoneyFilledButton(
                         label = stringResource(id = R.string.Continue),
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,
@@ -210,7 +210,7 @@ fun SignupContent(
                         },
                     )
 
-                    1 -> HoneyButton(
+                    1 -> HoneyFilledButton(
                         label = stringResource(id = R.string.sign_up),
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,

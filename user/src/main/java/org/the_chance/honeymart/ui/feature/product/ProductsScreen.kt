@@ -23,9 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
@@ -33,7 +33,6 @@ import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -117,7 +116,7 @@ private fun ProductsContent(
                                 val product = state.products[index]
                                 ProductCard(
                                     modifier = Modifier.fillMaxWidth(),
-                                    imagePainter = rememberAsyncImagePainter(model = product.productImages.firstOrNull() ?: ""),
+                                    imageUrl = product.productImages.firstOrNull() ?: "",
                                     productName = product.productName,
                                     productPrice = product.productPrice.toString(),
                                     secondaryText = product.productDescription,

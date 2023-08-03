@@ -34,7 +34,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.HoneyButton
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -112,7 +112,7 @@ fun LoginContent(
             HoneyTextField(
                 text = state.email,
                 hint = stringResource(R.string.email),
-                idIconDrawableRes = R.drawable.ic_email,
+                iconPainter = painterResource(id = R.drawable.ic_email),
                 onValueChange = listener::onEmailInputChange,
                 errorMessage = when (state.emailState) {
                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
@@ -123,7 +123,7 @@ fun LoginContent(
             HoneyTextField(
                 text = state.password,
                 hint = stringResource(R.string.password),
-                idIconDrawableRes = R.drawable.ic_password,
+                iconPainter = painterResource(id =R.drawable.ic_password ) ,
                 onValueChange = listener::onPasswordInputChanged,
                 errorMessage = when (state.passwordState) {
                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
@@ -132,7 +132,7 @@ fun LoginContent(
                     else -> ""
                 },
             )
-            HoneyButton(
+            HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
                 modifier = Modifier.padding(
                     horizontal = MaterialTheme.dimens.space16,

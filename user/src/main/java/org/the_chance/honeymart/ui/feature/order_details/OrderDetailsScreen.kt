@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
@@ -76,7 +75,7 @@ private fun OrderDetailsContent(
                     content = {
                         items(state.products) { itemOrderDetails ->
                             OrderDetailsCard(
-                                imagePainter = rememberAsyncImagePainter(model =itemOrderDetails.images[0] ),
+                                imageUrl = itemOrderDetails.images[0],
                                 orderName = itemOrderDetails.name,
                                 orderPrice = "${itemOrderDetails.price}",
                                 orderCount = "${itemOrderDetails.count}",

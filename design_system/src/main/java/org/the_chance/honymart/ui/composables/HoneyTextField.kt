@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +11,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,11 +27,11 @@ import org.the_chance.honymart.ui.theme.white200
 @Composable
 fun HoneyTextField(
     hint: String,
-    @DrawableRes idIconDrawableRes: Int,
+    iconPainter: Painter,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     text: String = "",
     errorMessage: String = "",
-    onValueChange: (String) -> Unit = {},
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
     Column {
@@ -69,8 +69,7 @@ fun HoneyTextField(
             },
             leadingIcon = {
                 Icon(
-                    painter =
-                    painterResource(idIconDrawableRes),
+                    painter = iconPainter,
                     contentDescription = stringResource(R.string.copy_button),
                     tint = if (isError) error else white200
                 )
@@ -95,7 +94,10 @@ fun HoneyTextField(
 @Composable
 fun TextFieldPreview() {
     HoneyTextField(
-        hint = "Email", idIconDrawableRes = R.drawable.ic_email,
-        isError = true, errorMessage = stringResource(R.string.that_s_not_a_valid_email)
+        hint = "Email",
+        iconPainter = painterResource(id = R.drawable.ic_email),
+        isError = true,
+        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
+        onValueChange = {}
     )
 }

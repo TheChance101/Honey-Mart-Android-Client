@@ -22,7 +22,7 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun HoneyButton(
+fun HoneyFilledIconButton(
     label: String,
     onClick: () -> Unit,
     iconPainter: Painter,
@@ -46,16 +46,13 @@ fun HoneyButton(
 
             )
     ) {
-        iconPainter.let {
-            Icon(
-                painter = iconPainter,
-                contentDescription = label,
-                modifier = Modifier
-                    .padding(end = MaterialTheme.dimens.space8)
-                    .size(MaterialTheme.dimens.icon24)
-            )
-
-        }
+        Icon(
+            painter = iconPainter,
+            contentDescription = label,
+            modifier = Modifier
+                .padding(end = MaterialTheme.dimens.space8)
+                .size(MaterialTheme.dimens.icon24)
+        )
 
         Text(
             text = label,
@@ -68,21 +65,9 @@ fun HoneyButton(
 
 @Preview
 @Composable
-private fun HoneyMartButtonPreview() {
-    HoneyMartTheme {
-        HoneyButton(
-            label = stringResource(id = R.string.Sign_up),
-            onClick = {},
-            iconPainter = painterResource(id = 0)
-        )
-    }
-}
-
-@Preview
-@Composable
 private fun HoneyMartButtonWithIconPreview() {
     HoneyMartTheme {
-        HoneyButton(
+        HoneyFilledIconButton(
             label = stringResource(id = R.string.order_now),
             iconPainter = painterResource(R.drawable.icon_cart),
             onClick = {}
@@ -94,7 +79,7 @@ private fun HoneyMartButtonWithIconPreview() {
 @Composable
 private fun HoneyMartButtonNotEnablePreview() {
     HoneyMartTheme {
-        HoneyButton(
+        HoneyFilledIconButton(
             label = stringResource(id = R.string.order_now),
             iconPainter = painterResource(R.drawable.icon_cart),
             isEnable = false,

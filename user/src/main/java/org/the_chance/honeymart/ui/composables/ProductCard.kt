@@ -17,13 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -32,7 +30,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    imagePainter: Painter,
+    imageUrl: String,
     productName: String,
     productPrice: String,
     secondaryText: String,
@@ -48,10 +46,10 @@ fun ProductCard(
             .clip(MaterialTheme.shapes.medium)
             .clickable { onClickCard() }
     ) {
-        ImageNetwork(
-            modifier = Modifier.fillMaxSize(),
-            imagePainter = rememberAsyncImagePainter(model = imagePainter)
-        )
+            ImageNetwork(
+                modifier = Modifier.fillMaxSize(),
+                imageUrl = imageUrl
+            )
         IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -123,7 +121,7 @@ fun ProductCard(
 @Composable
 fun ProductCardPreview() {
     ProductCard(
-        imagePainter = rememberAsyncImagePainter(model = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg"),
+        imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
         productName = "To Kill a Mockingbird",
         productPrice = "30,000",
         secondaryText = "Secondary Text",

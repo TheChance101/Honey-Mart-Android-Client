@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,9 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.rememberAsyncImagePainter
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.modifier.fullOverlay
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
@@ -21,7 +20,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemMarketCard(
-    imagePainter: Painter,
+    imageUrlMarket: String,
     nameMarket: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
@@ -39,7 +38,7 @@ fun ItemMarketCard(
             contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                rememberAsyncImagePainter(model = imagePainter),
+                imageUrlMarket,
                 modifier = Modifier.fullOverlay()
             )
             Text(
@@ -56,7 +55,7 @@ fun ItemMarketCard(
 private fun ItemMarketCardPreview() {
     HoneyMartTheme {
         ItemMarketCard(
-            imagePainter = rememberAsyncImagePainter(model = "https://upload.wikimedia.org/wikipedia/commons/1/13/Supermarkt.jpg") ,
+            imageUrlMarket = "https://upload.wikimedia.org/wikipedia/commons/1/13/Supermarkt.jpg",
             nameMarket = "Fresh Fare"
         ) {}
     }
