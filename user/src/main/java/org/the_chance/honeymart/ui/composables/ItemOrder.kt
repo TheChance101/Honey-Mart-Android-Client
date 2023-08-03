@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -49,7 +50,7 @@ fun ItemOrder(
             verticalAlignment = Alignment.Bottom
         ) {
             ImageNetwork(
-                imageUrl = imageUrl, modifier = Modifier.width(104.dp)
+                imagePainter = rememberAsyncImagePainter(model =imageUrl ), modifier = Modifier.width(104.dp)
             )
             Column(
                 modifier = Modifier
@@ -86,7 +87,7 @@ fun ItemOrder(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            TextPrice(
+            HoneyOutlineText(
                 price = "$price$",
                 modifier = Modifier.padding(
                     bottom = MaterialTheme.dimens.space16,

@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,23 +22,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.composables.IconButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    modifier: Modifier = Modifier,
     imageUrl: String,
     productName: String,
     productPrice: String,
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
+    modifier: Modifier = Modifier,
     onClickFavorite: () -> Unit = {},
     onClickCard: () -> Unit = {}
 ) {
-    HoneyMartTheme {
         Box(
             modifier = modifier
                 .height(height = 200.dp)
@@ -48,7 +49,7 @@ fun ProductCard(
         ) {
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
-                imageUrl = imageUrl
+                imagePainter = rememberAsyncImagePainter(model =imageUrl )
             )
             IconButton(
                 modifier = Modifier
@@ -115,7 +116,6 @@ fun ProductCard(
             }
 
         }
-    }
 }
 
 @Preview

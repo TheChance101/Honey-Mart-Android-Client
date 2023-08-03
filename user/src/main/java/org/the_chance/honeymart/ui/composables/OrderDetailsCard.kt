@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -33,7 +33,6 @@ fun OrderDetailsCard(
     orderId: Long,
     onClickCard: (orderId: Long) -> Unit = {},
 ) {
-    HoneyMartTheme {
         Box(
             modifier = Modifier
                 .size(width = 160.dp, MaterialTheme.dimens.heightItem)
@@ -42,7 +41,7 @@ fun OrderDetailsCard(
         ) {
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
-                imageUrl = imageUrl,
+                imagePainter = rememberAsyncImagePainter(model = imageUrl),
             )
             Box(
                 modifier = Modifier
@@ -90,7 +89,6 @@ fun OrderDetailsCard(
                 }
             }
         }
-    }
 }
 
 @Preview
