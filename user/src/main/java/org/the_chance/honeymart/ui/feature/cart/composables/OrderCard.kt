@@ -18,7 +18,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.cart.CartViewModel
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
-import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyMartButton
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
@@ -60,7 +60,7 @@ fun CartCardView(
                 }
             )
 
-            CustomButton(
+            HoneyMartButton(
                 onClick = { viewModel.onClickOrderNowButton() },
                 label = stringResource(id = R.string.order_now),
                 isEnable = !isLoading,

@@ -35,8 +35,8 @@ import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.AppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honymart.ui.composables.CustomButton
-import org.the_chance.honymart.ui.composables.CustomSmallIconButton
+import org.the_chance.honymart.ui.composables.HoneyMartButton
+import org.the_chance.honymart.ui.composables.HoneyMartSmallIconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.TextPrice
@@ -79,7 +79,7 @@ private fun ProductDetailsContent(
     ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
         Scaffold(
             bottomBar = {
-                CustomButton(
+                HoneyMartButton(
                     label = stringResource(id = R.string.add_to_cart),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -159,7 +159,7 @@ private fun ProductDetailsContent(
                             )
 
                             Row {
-                                CustomSmallIconButton(
+                                HoneyMartSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_remove_from_cart,
                                     background = Color.Transparent,
                                     modifier = Modifier
@@ -181,7 +181,7 @@ private fun ProductDetailsContent(
                                         .padding(horizontal = MaterialTheme.dimens.space12)
                                 )
 
-                                CustomSmallIconButton(
+                                HoneyMartSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_add_to_cart,
                                     background = MaterialTheme.colorScheme.primary,
                                     onClick = interaction::increaseProductCount

@@ -28,9 +28,9 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
-import org.the_chance.honymart.ui.composables.CategoryItem
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.ProductCard
