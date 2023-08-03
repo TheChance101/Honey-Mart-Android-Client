@@ -48,14 +48,13 @@ fun CartContent(
     cartInteractionListener: CartInteractionListener,
 ) {
     AppBarScaffold {
-        Loading((state.isLoading && state.products.isEmpty()))
-
+        Loading((state.unpopulatedLoading()))
         ConnectionErrorPlaceholder(
-            state = state.isError,
+            state = state.errorPlaceHolderCondition(),
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
         EmptyOrdersPlaceholder(
-            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+            state = state.placeHolderCondition(),
             image = org.the_chance.design_system.R.drawable.placeholder_order,
             title = stringResource(R.string.your_cart_list_is_empty),
             subtitle = stringResource(R.string.adding_items_that_catch_your_eye),
@@ -67,13 +66,13 @@ fun CartContent(
             onClick = cartInteractionListener::onClickViewOrders,
         )
 
-        ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
+        ContentVisibility(state.cartSuccessScreenCondition()) {
             CartSuccessScreen(
                 state = state,
                 cartInteractionListener = cartInteractionListener
             )
         }
-        Loading(state = state.isLoading && state.products.isNotEmpty())
+        Loading(state = state.populatedLoading())
 
     }
 }
