@@ -32,7 +32,7 @@ import org.the_chance.user.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
- fun CartSuccessScreen(
+fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
@@ -102,7 +102,9 @@ import org.the_chance.user.R
             }
         }
 
-        CartCardView(totalPrice = state.total.toString(), isLoading = state.isLoading)
+        CartCardView(
+            totalPrice = state.total.toString(), isLoading = state.isLoading,
+            onClick = cartInteractionListener::onClickOrderNowButton)
     }
 
 }

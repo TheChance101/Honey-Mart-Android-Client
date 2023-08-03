@@ -1,18 +1,22 @@
 package org.the_chance.honeymart.ui.feature.category
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CategoriesUiState, Unit>(CategoriesUiState()),CategoryInteractionListener {
+) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
+    CategoryInteractionListener {
 
     private val categoryArgs: CategoryArgs = CategoryArgs(savedStateHandle)
 
@@ -25,7 +29,21 @@ class CategoryViewModel @Inject constructor(
 
     override fun onGetData() {
         getAllCategory()
-        _state.update { it.copy(marketId = categoryArgs.marketId.toLong()) }
+    }
+
+    override fun onClickCategory(categoryId: Long, position: Int) {
+
+        viewModelScope.launch {
+            _effect.emit(
+                EventHandler(
+                    CategoryUiEffect.ClickCategoryEffect(
+                        categoryId,
+                        categoryArgs.marketId.toLong(),
+                        position
+                    )
+                )
+            )
+        }
     }
 
     private fun getAllCategory() {

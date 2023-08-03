@@ -1,11 +1,14 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,6 +17,7 @@ class OrderViewModel @Inject constructor(
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
+
 
     override fun getAllProcessingOrders() {
         _state.update {
@@ -46,6 +50,7 @@ class OrderViewModel @Inject constructor(
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
+
     }
 
     private fun onGetDoneOrdersSuccess(orders: List<OrderUiState>) {
@@ -105,6 +110,19 @@ class OrderViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
+        }
+    }
+
+
+    override fun onClickOrder(orderId: Long) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
+        }
+    }
+
+    override fun onClickDiscoverMarkets() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
         }
     }
 }

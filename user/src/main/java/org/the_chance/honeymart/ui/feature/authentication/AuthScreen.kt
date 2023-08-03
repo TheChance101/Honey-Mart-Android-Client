@@ -17,14 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -32,13 +34,28 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    viewModel: AuthViewModel = hiltViewModel(),
+) {
     val navController = LocalNavigationProvider.current
-    AuthContent(navController = navController)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is AuthenticationUiEffect.ClickLoginEffect -> navController.navigateToLogin()
+                is AuthenticationUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
+            }
+        }
+    }
+
+    AuthContent(listener = viewModel)
 }
 
 @Composable
-fun AuthContent(navController: NavController) {
+fun AuthContent(
+    listener: AuthenticationInteractionListener,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -71,7 +88,7 @@ fun AuthContent(navController: NavController) {
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space40
             ),
-            onClick = { navController.navigateToSignupScreen() }
+            onClick = listener::onClickSignUp
         )
         Row(
             modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
@@ -85,7 +102,7 @@ fun AuthContent(navController: NavController) {
             )
             TextButton(
                 contentPadding = PaddingValues(MaterialTheme.dimens.zero),
-                onClick = { navController.navigateToLogin() },
+                onClick = listener::onClickLogin,
                 colors = ButtonDefaults.textButtonColors(Color.Transparent)
             ) {
                 Text(

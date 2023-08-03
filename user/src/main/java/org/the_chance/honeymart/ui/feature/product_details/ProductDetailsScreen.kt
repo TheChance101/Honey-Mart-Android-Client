@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,6 +32,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.AppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
@@ -49,17 +50,29 @@ fun ProductDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is ProductDetailsUiEffect.AddProductToWishListEffectError -> TODO("show snack bar")
+                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> TODO("show snack bar")
+                is ProductDetailsUiEffect.AddToCartError -> TODO("show snack bar")
+                ProductDetailsUiEffect.AddToCartSuccess -> TODO("show snack bar")
+                ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> TODO("show order dialog")
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> TODO("show snack bar")
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> TODO("show snack bar")
+                ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+            }
+        }
+    }
 
     HoneyMartTheme {
         ProductDetailsContent(state = state,
-            interaction = viewModel,
+            listenener = viewModel,
             viewModel = viewModel,
-            onBackClick = {
-                navController.navigateUp()
-            },
-            navigateToAuth = {
-                navController.navigateToAuth()
-            }
+
         )
     }
 }
@@ -68,10 +81,9 @@ fun ProductDetailsScreen(
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
     viewModel: ProductDetailsViewModel,
-    interaction: ProductDetailsInteraction,
-    onBackClick: () -> Unit,
-    navigateToAuth: () -> Unit,
-) {
+    listenener: ProductDetailsInteraction,
+
+    ) {
     Loading(state.isLoading)
 
     ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
@@ -95,7 +107,7 @@ private fun ProductDetailsContent(
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
                         state.product.productId.let {
-                            interaction.addProductToCart(
+                            listenener.addProductToCart(
                                 it,
                                 state.quantity
                             )
@@ -124,8 +136,8 @@ private fun ProductDetailsContent(
                         AppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = onBackClick,
-                            onFavoriteClick = { interaction.onClickFavorite(state.product.productId) },
+                            onBackClick = listenener::onClickBack,
+                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -169,7 +181,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = interaction::decreaseProductCount
+                                    onClick = listenener::decreaseProductCount
                                 )
 
                                 Text(
@@ -184,7 +196,7 @@ private fun ProductDetailsContent(
                                 CustomSmallIconButton(
                                     idIconDrawableRes = R.drawable.icon_add_to_cart,
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = interaction::increaseProductCount
+                                    onClick = listenener::increaseProductCount
                                 )
                             }
                         }
@@ -210,17 +222,11 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            interaction.onClickSmallImage(state.smallImages[index])
+                            listenener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }
             }
-        }
-    }
-    LaunchedEffect(key1 = state.navigateToAuthGraph) {
-        if (state.navigateToAuthGraph.isNavigate) {
-            navigateToAuth()
-            viewModel.resetNavigation()
         }
     }
 }

@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -37,7 +39,18 @@ fun WishListScreen(
     val state = viewModel.state.collectAsState().value
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavigationProvider.current
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                WishListUiEffect.ClickDiscoverEffect -> navController.navigateToMarketScreen()
+                is WishListUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
+                    it.productId
+                )
 
+                WishListUiEffect.DeleteProductFromWishListEffect -> TODO("show snack bar")
+            }
+        }
+    }
     LaunchedEffect(lifecycleOwner) {
         viewModel.getWishListProducts()
     }
@@ -45,7 +58,6 @@ fun WishListScreen(
     WishListContent(
         listener = viewModel,
         state = state,
-        wishListInteractionListener = navController::navigateToProductDetailsScreen
     )
 
 }
@@ -54,7 +66,6 @@ fun WishListScreen(
 private fun WishListContent(
     listener: WishListInteractionListener,
     state: WishListUiState,
-    wishListInteractionListener: (ProductId: Long) -> Unit,
 ) {
 
     AppBarScaffold {
@@ -81,21 +92,20 @@ private fun WishListContent(
                     contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-                    ) {
-                        items(state.products) { productState ->
-                            ItemFavorite(
-                                imageUrlMarket = productState.productImages[0],
-                                name = productState.productName,
-                                price = formatCurrencyWithNearestFraction(productState.productPrice),
-                                description = productState.description,
-                                productId = productState.productId,
-                                onClickProduct =
-                                { wishListInteractionListener(productState.productId) },
-                                onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
+                ) {
+                    items(state.products) { productState ->
+                        ItemFavorite(
+                            imageUrlMarket = productState.productImages[0],
+                            name = productState.productName,
+                            price = formatCurrencyWithNearestFraction(productState.productPrice),
+                            description = productState.description,
+                            productId = productState.productId,
+                            onClickProduct = listener::onClickProduct,
+                            onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
 
                             )
-                        }
                     }
+                }
             }
         }
 

@@ -25,11 +25,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
@@ -44,19 +46,24 @@ fun OrderDetailsScreen(
 ) {
     val state = viewModel.state.collectAsState().value
     val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-
-    OrderDetailsContent(
-        state = state,
-        onClickItemOrderDetails = navController::navigateToProductDetailsScreen
-    )
-
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is OrderDetailsUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
+                    it.productId
+                )
+            }
+        }
+    }
+    OrderDetailsContent(state = state, listener = viewModel)
 }
 
 @Composable
 private fun OrderDetailsContent(
+    listener: OrderDetailsInteractionListener,
     state: OrderDetailsUiState,
-    onClickItemOrderDetails: (orderId: Long) -> Unit = {},
 ) {
     AppBarScaffold {
         ContentVisibility(state = !state.isProductsLoading) {
@@ -79,7 +86,7 @@ private fun OrderDetailsContent(
                                 orderPrice = "${itemOrderDetails.price}",
                                 orderCount = "${itemOrderDetails.count}",
                                 orderId = itemOrderDetails.id,
-                                onClickCard = { onClickItemOrderDetails(itemOrderDetails.id) },
+                                onClickCard = listener::onClickOrder,
                             )
                         }
                     }

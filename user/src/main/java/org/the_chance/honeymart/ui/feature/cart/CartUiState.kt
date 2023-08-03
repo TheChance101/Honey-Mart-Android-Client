@@ -40,5 +40,13 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
     }
 }
 
+fun CartUiState.firstTimeLoading(state: CartUiState): Boolean {
+    return state.isLoading && state.products.isNotEmpty()
+}
+
+fun CartUiState.isError(state: CartUiState): Boolean {
+    return state.isError
+}
+
 
 

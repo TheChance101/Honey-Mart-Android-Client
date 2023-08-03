@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.feature.signup
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddUserUseCase
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
@@ -11,7 +13,7 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +24,8 @@ class SignupViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, AuthenticationUiEffect>(SignupUiState()), SignupInteractionListener {
+) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
+    SignupInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     override fun onFullNameInputChange(fullName: CharSequence) {
@@ -96,11 +99,22 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(loginState: ValidationState) {
+        if (loginState == ValidationState.SUCCESS) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(SignupUiEffect.ClickSignupEffect))
+            }
+        }
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
 
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+    }
+
+    override fun onClickLogin() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(SignupUiEffect.ClickLoginEffect))
+        }
     }
 
     override fun onClickSignup() {

@@ -102,6 +102,12 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(image = url) }
     }
 
+    override fun onClickBack() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(ProductDetailsUiEffect.OnBackClickEffect))
+        }
+    }
+
     override fun increaseProductCount() {
         val currentQuantity = _state.value.quantity
         val newQuantity = if (currentQuantity >= 100) 100 else currentQuantity + 1
@@ -158,10 +164,10 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                _state.update {
-                    it.copy(
-                        navigateToAuthGraph = NavigationState(
-                            isNavigate = true
+                viewModelScope.launch {
+                    _effect.emit(
+                        EventHandler(
+                            ProductDetailsUiEffect.UnAuthorizedUserEffect
                         )
                     )
                 }
@@ -242,10 +248,10 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                _state.update {
-                    it.copy(
-                        navigateToAuthGraph = NavigationState(
-                            isNavigate = true
+                viewModelScope.launch {
+                    _effect.emit(
+                        EventHandler(
+                            ProductDetailsUiEffect.UnAuthorizedUserEffect
                         )
                     )
                 }
@@ -309,14 +315,5 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    fun resetNavigation() {
-        _state.update {
-            it.copy(
-                navigateToAuthGraph = NavigationState(
-                    isNavigate = false
-                )
-            )
-        }
-    }
 
 }

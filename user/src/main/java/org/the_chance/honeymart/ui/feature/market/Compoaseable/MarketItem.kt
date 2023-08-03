@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.market
+package org.the_chance.honeymart.ui.feature.market.Compoaseable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
+import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens

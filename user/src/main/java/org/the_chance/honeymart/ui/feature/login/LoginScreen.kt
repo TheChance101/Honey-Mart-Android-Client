@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +33,7 @@ import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.Loading
@@ -48,24 +49,26 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(key1 = state.validationState) {
-        if (state.validationState == ValidationState.SUCCESS) {
-            navController.popBackStack(Screen.AuthenticationScreen.route, true)
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                LoginUiEffect.ClickLoginEffect -> navController.popBackStack(
+                    Screen.AuthenticationScreen.route,
+                    true
+                )
+                LoginUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
+                LoginUiEffect.ShowToastEffect -> Toast.makeText(
+                    context,
+                    "Email or password not valid",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
-    LaunchedEffect(key1 = state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(context, "Email or password not valid", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    LoginContent(
-        listener = viewModel,
-        onClickSignup = { navController.navigateToSignupScreen() },
-        state = state,
-    )
+    LoginContent(listener = viewModel, state = state)
 }
 
 @Composable
@@ -73,7 +76,6 @@ fun LoginContent(
     modifier: Modifier = Modifier,
     listener: LoginInteractionListener,
     state: LoginUiState,
-    onClickSignup: () -> Unit,
 ) {
     Loading(state.isLoading)
 
@@ -138,7 +140,7 @@ fun LoginContent(
                     horizontal = MaterialTheme.dimens.space16,
                     vertical = MaterialTheme.dimens.space40
                 ),
-                onClick = listener::onLoginClick,
+                onClick = listener::onClickLogin,
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -152,7 +154,7 @@ fun LoginContent(
                     textAlign = TextAlign.Center
                 )
                 TextButton(
-                    onClick = onClickSignup,
+                    onClick = listener::onClickSignup,
                     colors = ButtonDefaults.textButtonColors(Color.Transparent)
                 ) {
                     Text(

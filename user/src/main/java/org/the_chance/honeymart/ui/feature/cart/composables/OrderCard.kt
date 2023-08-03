@@ -15,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.feature.cart.CartViewModel
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.theme.black60
@@ -28,7 +26,7 @@ fun CartCardView(
     modifier: Modifier = Modifier,
     totalPrice: String,
     isLoading: Boolean,
-    viewModel: CartViewModel = hiltViewModel()
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(
@@ -60,7 +58,7 @@ fun CartCardView(
             )
 
             CustomButton(
-                onClick = { viewModel.onClickOrderNowButton() },
+                onClick = onClick,
                 labelIdStringRes = org.the_chance.design_system.R.string.order_now,
                 isEnable = !isLoading,
                 idIconDrawableRes = org.the_chance.design_system.R.drawable.icon_cart,

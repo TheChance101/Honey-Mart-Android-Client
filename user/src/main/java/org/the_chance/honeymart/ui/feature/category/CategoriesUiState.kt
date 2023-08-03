@@ -10,7 +10,6 @@ data class CategoriesUiState(
     val error: ErrorHandler? = null,
     val message: String = "",
     val categories: List<CategoryUiState> = emptyList(),
-    val marketId: Long =0,
 )
 
 data class CategoryUiState(

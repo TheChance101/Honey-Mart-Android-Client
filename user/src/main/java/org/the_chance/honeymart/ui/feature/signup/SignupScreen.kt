@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +42,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.Loading
@@ -57,20 +58,26 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(key1 = state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT).show()
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
+                SignupUiEffect.ClickSignupEffect -> navController.popBackStack(
+                    Screen.AuthenticationScreen.route,
+                    true
+                )
+
+                SignupUiEffect.ShowToastEffect ->
+                    Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT)
+                        .show()
+            }
         }
     }
-    LaunchedEffect(key1 = state.isLogin) {
-        if (state.isLogin == ValidationState.SUCCESS) {
-            navController.popBackStack(Screen.AuthenticationScreen.route, true)
-        }
-    }
+
     SignupContent(
-        listener =  viewModel,
-        onClickLogin = { navController.navigateToLogin() },
+        listener = viewModel,
         state = state
     )
 }
@@ -80,7 +87,6 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
 fun SignupContent(
     modifier: Modifier = Modifier,
     listener: SignupInteractionListener,
-    onClickLogin: () -> Unit,
     state: SignupUiState,
 ) {
     Loading(state = state.isLoading)
@@ -199,10 +205,7 @@ fun SignupContent(
                             vertical = MaterialTheme.dimens.space40
                         ),
                         onClick = {
-                            if (state.fullNameState == ValidationState.VALID_FULL_NAME
-                                && state.emailState == ValidationState.VALID_EMAIL &&
-                                state.email.isNotEmpty() && state.fullName.isNotEmpty()
-                            ) {
+                            if (state.continueValidation()) {
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(1)
                                 }
@@ -233,7 +236,7 @@ fun SignupContent(
                         textAlign = TextAlign.Center
                     )
                     TextButton(
-                        onClick = onClickLogin,
+                        onClick = listener::onClickLogin,
                         colors = ButtonDefaults.textButtonColors(Color.Transparent)
                     ) {
                         Text(

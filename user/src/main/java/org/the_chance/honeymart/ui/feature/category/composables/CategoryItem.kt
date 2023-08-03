@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category.Composables
+package org.the_chance.honeymart.ui.feature.category.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,10 +32,8 @@ import org.the_chance.user.R
 @Composable
 fun CategoryItem(
     state: CategoryUiState,
-    categoryId: Long,
-    onCategoryClicked: (categoryId: Long, marketId: Long, position: Int) -> Unit,
-    marketId: Long,
-    position: Int,
+    onCategoryClicked: (categoryId: Long, position: Int) -> Unit,
+    position: Int
 ) {
     Column(
         horizontalAlignment = CenterHorizontally,
@@ -48,7 +46,7 @@ fun CategoryItem(
                 .aspectRatio(1f)
                 .clip(shape = Shapes.medium)
                 .background(MaterialTheme.colorScheme.secondaryContainer)
-                .clickable { onCategoryClicked(categoryId, marketId, position) }
+                .clickable { onCategoryClicked(state.categoryId, position) }
                 .size(120.dp), contentAlignment = Center
         ) {
             Icon(

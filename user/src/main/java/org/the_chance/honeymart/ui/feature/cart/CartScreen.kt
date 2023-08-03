@@ -12,6 +12,7 @@ import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteO
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ContentVisibility
@@ -27,24 +28,24 @@ fun CartScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by viewModel.state.collectAsState()
 
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                CartUiEffect.ClickDiscoverEffect -> navController.navigateToMarketScreen()
+                CartUiEffect.ClickViewOrdersEffect -> navController.navigateToOrderScreen()
+            }
+        }
+    }
     LaunchedEffect(lifecycleOwner) {
         viewModel.getChosenCartProducts()
     }
-
-    CartContent(
-        state = state,
-        cartInteractionListener = viewModel,
-        onClickButtonOrderDetails = { navController.navigateToOrderScreen() },
-        onClickButtonDiscover = { navController.navigateToMarketScreen() }
-    )
+    CartContent(state = state, cartInteractionListener = viewModel)
 }
 
 @Composable
 fun CartContent(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
-    onClickButtonOrderDetails: () -> Unit = {},
-    onClickButtonDiscover: () -> Unit = {},
 ) {
     AppBarScaffold {
         Loading((state.isLoading && state.products.isEmpty()))
@@ -58,11 +59,12 @@ fun CartContent(
             image = org.the_chance.design_system.R.drawable.placeholder_order,
             title = stringResource(R.string.your_cart_list_is_empty),
             subtitle = stringResource(R.string.adding_items_that_catch_your_eye),
-            onClickDiscoverMarkets = { onClickButtonDiscover() })
+            onClickDiscoverMarkets = cartInteractionListener::onClickDiscoverButton
+        )
 
         BottomSheetCompleteOrderContent(
             state = state.bottomSheetIsDisplayed,
-            onClick = onClickButtonOrderDetails,
+            onClick = cartInteractionListener::onClickViewOrders,
         )
 
         ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {

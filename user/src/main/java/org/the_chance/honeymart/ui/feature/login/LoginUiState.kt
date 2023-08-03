@@ -11,5 +11,4 @@ data class LoginUiState(
     val emailState: ValidationState = ValidationState.VALID_EMAIL,
     val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
     val validationState: ValidationState = ValidationState.BLANK_EMAIL,
-    val showToast:Boolean = false
 )

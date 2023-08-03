@@ -1,15 +1,16 @@
 package org.the_chance.honeymart.ui.feature.login
 
-import android.util.Log
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-) : BaseViewModel<LoginUiState, AuthenticationUiEffect>(LoginUiState()),
+) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -31,7 +32,11 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
-        Log.e("onLoginSuccess", "onLoginSuccess: ")
+        if (validationState == ValidationState.SUCCESS) {
+            viewModelScope.launch {
+                _effect.emit(EventHandler(LoginUiEffect.ClickLoginEffect))
+            }
+        }
         _state.update {
             it.copy(
                 isLoading = false, error = null,
@@ -52,18 +57,22 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    override fun onLoginClick() {
+    override fun onClickLogin() {
         if (_state.value.emailState == ValidationState.VALID_EMAIL &&
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
-            _state.update {
-                it.copy(showToast = false)
-            }
+
         } else {
-            _state.update {
-                it.copy(showToast = true)
+            viewModelScope.launch {
+                _effect.emit(EventHandler(LoginUiEffect.ShowToastEffect))}
             }
+        }
+
+
+    override fun onClickSignup() {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(LoginUiEffect.ClickSignUpEffect))
         }
     }
 

@@ -1,12 +1,15 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,7 +17,8 @@ class OrderDetailsViewModel @Inject constructor(
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
     private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<OrderDetailsUiState, Unit>(OrderDetailsUiState()) {
+) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
+    OrderDetailsInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
@@ -66,4 +70,9 @@ class OrderDetailsViewModel @Inject constructor(
         _state.update { it.copy(isDetailsLoading = false, error = error) }
     }
 
+    override fun onClickOrder(productId: Long) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(OrderDetailsUiEffect.ClickProductEffect(productId)))
+        }
+    }
 }
