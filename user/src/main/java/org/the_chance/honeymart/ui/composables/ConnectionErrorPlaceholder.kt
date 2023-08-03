@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -24,13 +24,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ConnectionErrorPlaceholder(state: Boolean, onClickTryAgain: () -> Unit) {
-    HoneyMartTheme {
         AnimatedVisibility(
             visible = state,
             enter = fadeIn(
@@ -60,17 +59,16 @@ fun ConnectionErrorPlaceholder(state: Boolean, onClickTryAgain: () -> Unit) {
                     color = black60,
                     textAlign = TextAlign.Center,
                 )
-                CustomSmallButton(
-                    labelIdStringRes = R.string.try_again_text,
+                HoneyFilledButton(
+                    label = stringResource(id = R.string.try_again_text),
                     onClick = onClickTryAgain,
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space16)
-                        .wrapContentWidth()
+                        .wrapContentWidth(),
                 )
 
             }
         }
-    }
 }
 
 

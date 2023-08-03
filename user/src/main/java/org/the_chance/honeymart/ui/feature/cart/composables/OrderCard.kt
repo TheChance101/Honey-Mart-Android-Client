@@ -12,13 +12,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.feature.cart.CartViewModel
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
-import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
@@ -60,11 +61,11 @@ fun CartCardView(
                 }
             )
 
-            CustomButton(
+            HoneyFilledIconButton(
                 onClick = { viewModel.onClickOrderNowButton() },
-                labelIdStringRes = org.the_chance.design_system.R.string.order_now,
+                label = stringResource(id = R.string.order_now),
                 isEnable = !isLoading,
-                idIconDrawableRes = org.the_chance.design_system.R.drawable.icon_cart,
+                iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.icon_cart),
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(orderNowButton) {
@@ -72,7 +73,6 @@ fun CartCardView(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                     },
-
                 )
             Text(
                 text = stringResource(R.string.total_price),

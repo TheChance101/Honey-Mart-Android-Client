@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -77,16 +79,16 @@ fun ItemOrder(
                         contentDescription = marketName,
                         colorFilter = ColorFilter.tint(black60)
                     )
-                    SpacerHorizontal4()
                     Text(
                         text = stringResource(id = R.string.items, quantity),
                         style = MaterialTheme.typography.displaySmall,
-                        color = black60
+                        color = black60,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space4)
                     )
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            TextPrice(
+            HoneyOutlineText(
                 price = "$price$",
                 modifier = Modifier.padding(
                     bottom = MaterialTheme.dimens.space16,

@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.feature.wishlist.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,22 +14,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.HoneyFavIconButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.modifier.overlayBottomToTop
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemFavorite(
-    modifier: Modifier = Modifier,
     imageUrlMarket: String,
     name: String,
     price: String,
     description: String,
-    onClickProduct: (ProductId: Long) -> Unit,
     productId: Long,
+    modifier: Modifier = Modifier,
+    onClickProduct: (ProductId: Long) -> Unit,
     onClickFavoriteIcon: (ProductId: Long) -> Unit,
 ) {
 
@@ -55,9 +58,9 @@ fun ItemFavorite(
 
             ) {
 
-                CustomSmallIconButton(
+                HoneyFavIconButton(
                     modifier = modifier.align(Alignment.End),
-                    idIconDrawableRes = R.drawable.icon_favorite_selected,
+                    iconPainter = painterResource(id = R.drawable.icon_favorite_selected) ,
                     background = MaterialTheme.colorScheme.tertiary,
                     onClick = { onClickFavoriteIcon(productId) }
                 )

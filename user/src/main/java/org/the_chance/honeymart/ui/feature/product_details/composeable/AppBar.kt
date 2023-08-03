@@ -7,10 +7,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiState
-import org.the_chance.honymart.ui.composables.CustomSmallIconButton
+import org.the_chance.honymart.ui.composables.HoneyFavIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,8 +28,8 @@ fun AppBar(
             containerColor = Color.Transparent,
         ),
         navigationIcon = {
-            CustomSmallIconButton(
-                idIconDrawableRes = R.drawable.icon_arrow_back,
+            HoneyFavIconButton(
+                iconPainter = painterResource(id = R.drawable.icon_arrow_back),
                 onClick = onBackClick,
                 background = MaterialTheme.colorScheme.background
             )
@@ -36,12 +37,13 @@ fun AppBar(
         title = {
         },
         actions = {
-            CustomSmallIconButton(
-                idIconDrawableRes =
-                if (state.product.isFavorite)
-                    R.drawable.icon_favorite_selected
-                else
-                    R.drawable.icon_favorite_unselected,
+            HoneyFavIconButton(
+                iconPainter = painterResource(
+                    id = if (state.product.isFavorite)
+                        R.drawable.icon_favorite_selected
+                    else
+                        R.drawable.icon_favorite_unselected
+                ),
                 background =
                 if (state.product.isFavorite)
                     MaterialTheme.colorScheme.tertiary

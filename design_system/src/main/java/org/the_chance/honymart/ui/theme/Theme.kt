@@ -72,7 +72,6 @@ val MaterialTheme.dimens: Dimens
 @Composable
 fun HoneyMartTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
     useDarkIcons: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -95,15 +94,6 @@ fun HoneyMartTheme(
             val window = (view.context as Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
 
-            /*ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, windowInsets ->
-                val insets = windowInsets.getInsets(
-                    WindowInsetsCompat.Type.systemGestures()
-                )
-                view.updatePadding(
-                    bottom = insets.bottom
-                )
-                WindowInsetsCompat.CONSUMED
-            }*/
         }
     }
 
