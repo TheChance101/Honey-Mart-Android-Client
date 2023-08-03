@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.feature.market.Compoaseable.MarketItem
+import org.the_chance.honeymart.ui.feature.market.compoaseable.MarketItem
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder

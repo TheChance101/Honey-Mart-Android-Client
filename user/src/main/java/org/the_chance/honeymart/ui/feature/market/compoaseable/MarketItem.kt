@@ -1,5 +1,6 @@
-package org.the_chance.honeymart.ui.feature.market.Compoaseable
+package org.the_chance.honeymart.ui.feature.market.compoaseable
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -39,7 +41,10 @@ fun MarketItem(
             .fillMaxWidth()
             .clip(shape = Shapes.medium)
             .height(MaterialTheme.dimens.heightItemMarketCard)
-            .clickable(onClick = { onClickItem(state.marketId) }),
+            .clickable(onClick = {
+                Log.e("MarketItem", "MarketItem: ${state.marketImage}" )
+                onClickItem(state.marketId)
+            }),
 
         ) {
 
@@ -60,8 +65,8 @@ fun MarketItem(
                 .background(
                     Brush.verticalGradient(
                         colorStops = arrayOf(
-                            Pair(1f, black37),
-                            Pair(1f, black37)
+                            Pair(1f, Color(0x5E121212)),
+                            Pair(1f, Color(0x5E121212))
                         )
                     )
                 )
