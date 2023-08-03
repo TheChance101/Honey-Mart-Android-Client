@@ -96,8 +96,8 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(loginState: ValidationState) {
-        if (loginState == ValidationState.SUCCESS) 
-            executeAction(_effect, SignupUiEffect.ClickSignupEffect)
+        if (loginState == ValidationState.SUCCESS)
+            effectActionExecutor(_effect, SignupUiEffect.ClickSignupEffect)
 
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
@@ -107,7 +107,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onClickLogin() {
-        executeAction(_effect, SignupUiEffect.ClickLoginEffect)
+        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
 
     override fun onClickSignup() {

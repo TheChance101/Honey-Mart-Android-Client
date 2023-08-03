@@ -99,7 +99,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     override fun onClickBack() {
-        executeAction(_effect, ProductDetailsUiEffect.OnBackClickEffect)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.OnBackClickEffect)
     }
 
     override fun increaseProductCount() {
@@ -144,7 +144,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
-        executeAction(_effect, ProductDetailsUiEffect.AddToCartSuccess)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -156,11 +156,11 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                executeAction(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
+                effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
             is ErrorHandler.InvalidData -> {
-                executeAction(
+                effectActionExecutor(
                     _effect,
                     ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(
                         productId,
@@ -218,7 +218,7 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        executeAction(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
@@ -229,7 +229,7 @@ class ProductDetailsViewModel @Inject constructor(
             }
 
             is ErrorHandler.UnAuthorizedUser -> {
-                executeAction(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
+                effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
             else -> {}
@@ -276,7 +276,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        executeAction(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {

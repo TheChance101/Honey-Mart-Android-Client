@@ -133,7 +133,7 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        executeAction(
+        effectActionExecutor(
             _effect,
             ProductUiEffect.ClickProductEffect(productId, args.categoryId.toLong())
         )
@@ -199,7 +199,7 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        executeAction(_effect, ProductUiEffect.RemovedFromWishListEffect)
+        effectActionExecutor(_effect, ProductUiEffect.RemovedFromWishListEffect)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -227,13 +227,13 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
-        executeAction(_effect, ProductUiEffect.AddedToWishListEffect)
+        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
 
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
-            executeAction(_effect, ProductUiEffect.UnAuthorizedUserEffect)
+            effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
         updateFavoriteState(productId, false)
     }
 

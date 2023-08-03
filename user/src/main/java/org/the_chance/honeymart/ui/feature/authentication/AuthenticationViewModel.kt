@@ -11,6 +11,6 @@ class AuthViewModel @Inject constructor() :
     BaseViewModel<SignupUiState, AuthenticationUiEffect>(SignupUiState()),
     AuthenticationInteractionListener {
     override val TAG: String = this::class.java.simpleName
-    override fun onClickSignUp() {executeAction(_effect, AuthenticationUiEffect.ClickSignUpEffect)}
-    override fun onClickLogin() { executeAction(_effect, AuthenticationUiEffect.ClickLoginEffect)}
+    override fun onClickSignUp() {effectActionExecutor(_effect, AuthenticationUiEffect.ClickSignUpEffect)}
+    override fun onClickLogin() { effectActionExecutor(_effect, AuthenticationUiEffect.ClickLoginEffect)}
 }

@@ -30,7 +30,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginSuccess(validationState: ValidationState) {
         if (validationState == ValidationState.SUCCESS)
-            executeAction(_effect, LoginUiEffect.ClickLoginEffect)
+            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
         _state.update {
             it.copy(
                 isLoading = false, error = null,
@@ -57,13 +57,13 @@ class LoginViewModel @Inject constructor(
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
         } else {
-            executeAction(_effect, LoginUiEffect.ShowToastEffect)
+            effectActionExecutor(_effect, LoginUiEffect.ShowToastEffect)
         }
     }
 
 
     override fun onClickSignup() {
-        executeAction(_effect, LoginUiEffect.ClickSignUpEffect)
+        effectActionExecutor(_effect, LoginUiEffect.ClickSignUpEffect)
     }
 
     override fun onEmailInputChange(email: CharSequence) {

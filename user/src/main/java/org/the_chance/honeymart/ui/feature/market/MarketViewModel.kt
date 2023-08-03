@@ -29,7 +29,7 @@ class MarketViewModel @Inject constructor(
     }
 
     override fun onClickMarket(marketId: Long) {
-        executeAction(_effect, MarketUiEffect.ClickMarketEffect(marketId))
+        effectActionExecutor(_effect, MarketUiEffect.ClickMarketEffect(marketId))
     }
 
     private fun onGetMarketError(error: ErrorHandler) {

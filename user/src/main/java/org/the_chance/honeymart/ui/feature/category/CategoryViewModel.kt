@@ -29,7 +29,7 @@ class CategoryViewModel @Inject constructor(
     }
 
     override fun onClickCategory(categoryId: Long, position: Int) {
-        executeAction(
+        effectActionExecutor(
             _effect,
             CategoryUiEffect.ClickCategoryEffect(
                 categoryId,

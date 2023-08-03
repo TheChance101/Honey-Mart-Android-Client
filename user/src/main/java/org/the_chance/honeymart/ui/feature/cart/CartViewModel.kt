@@ -124,7 +124,7 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickViewOrders() {
-        executeAction(_effect, CartUiEffect.ClickViewOrdersEffect)
+        effectActionExecutor(_effect, CartUiEffect.ClickViewOrdersEffect)
     }
 
     override fun onClickOrderNowButton() {
@@ -154,7 +154,7 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickDiscoverButton() {
-        executeAction(_effect, CartUiEffect.ClickDiscoverEffect)
+        effectActionExecutor(_effect, CartUiEffect.ClickDiscoverEffect)
     }
 
     override fun deleteCart(position: Long) {

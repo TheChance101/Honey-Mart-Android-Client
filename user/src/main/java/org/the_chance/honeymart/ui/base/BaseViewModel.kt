@@ -67,7 +67,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         }
     }
 
-    protected fun <T : BaseUiEffect> executeAction(
+    protected fun <T : BaseUiEffect> effectActionExecutor(
         _effect: MutableSharedFlow<EventHandler<T>>,
         effect: T,
     ) {

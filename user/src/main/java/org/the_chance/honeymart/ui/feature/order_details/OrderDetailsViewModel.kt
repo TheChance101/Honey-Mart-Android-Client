@@ -68,7 +68,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     override fun onClickOrder(productId: Long) {
-        executeAction(_effect, OrderDetailsUiEffect.ClickProductEffect(productId))
+        effectActionExecutor(_effect, OrderDetailsUiEffect.ClickProductEffect(productId))
 
     }
 }

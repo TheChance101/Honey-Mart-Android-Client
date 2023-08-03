@@ -32,7 +32,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-        executeAction(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
+        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
         getWishListProducts()
     }
 
@@ -81,7 +81,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickDiscoverButton() {
-        executeAction(_effect, WishListUiEffect.ClickDiscoverEffect)
+        effectActionExecutor(_effect, WishListUiEffect.ClickDiscoverEffect)
     }
 
     override fun onClickFavoriteIcon(productId: Long) {
@@ -90,6 +90,6 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        executeAction(_effect, WishListUiEffect.ClickProductEffect(productId))
+        effectActionExecutor(_effect, WishListUiEffect.ClickProductEffect(productId))
     }
 }

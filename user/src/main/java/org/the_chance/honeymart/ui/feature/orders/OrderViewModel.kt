@@ -112,10 +112,10 @@ class OrderViewModel @Inject constructor(
 
 
     override fun onClickOrder(orderId: Long) {
-        executeAction(_effect, OrderUiEffect.ClickOrderEffect(orderId))
+        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
     }
 
     override fun onClickDiscoverMarkets() {
-        executeAction(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
+        effectActionExecutor(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
     }
 }
