@@ -39,13 +39,13 @@ import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -137,7 +137,7 @@ fun SignupContent(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
-                            TextField(
+                            HoneyTextField(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 idIconDrawableRes = R.drawable.ic_person,
@@ -148,7 +148,7 @@ fun SignupContent(
                                     else -> ""
                                 },
                             )
-                            TextField(
+                            HoneyTextField(
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 idIconDrawableRes = R.drawable.ic_email,
@@ -165,7 +165,7 @@ fun SignupContent(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
-                            TextField(
+                            HoneyTextField(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 idIconDrawableRes = R.drawable.ic_password,
@@ -177,7 +177,7 @@ fun SignupContent(
                                     else -> ""
                                 },
                             )
-                            TextField(
+                            HoneyTextField(
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
                                 idIconDrawableRes = R.drawable.ic_password,
@@ -193,7 +193,7 @@ fun SignupContent(
                 val coroutineScope = rememberCoroutineScope()
                 when (pagerState.currentPage) {
                     0 -> CustomButton(
-                        labelIdStringRes = R.string.Continue,
+                        label = stringResource(id = R.string.Continue) ,
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,
                             vertical = MaterialTheme.dimens.space40
@@ -211,7 +211,7 @@ fun SignupContent(
                     )
 
                     1 -> CustomButton(
-                        labelIdStringRes = R.string.sign_up,
+                        label = stringResource(id = R.string.sign_up),
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,
                             vertical = MaterialTheme.dimens.space40

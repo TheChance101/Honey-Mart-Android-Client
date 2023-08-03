@@ -28,10 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
-import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
@@ -107,7 +108,7 @@ private fun OrderDetailsContent(
                                 style = Typography.bodyMedium,
                             )
                             Text(
-                                text = stringResource(id = org.the_chance.design_system.R.string.total_price),
+                                text = stringResource(id = R.string.total_price),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 style = Typography.displaySmall,
                             )

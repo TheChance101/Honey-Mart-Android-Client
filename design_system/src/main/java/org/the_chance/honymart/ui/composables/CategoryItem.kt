@@ -14,31 +14,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CategoryItem(
-    modifier: Modifier = Modifier,
-    icon: Int,
+    iconPainter: Painter,
     categoryName: String,
     isSelected: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    HoneyMartTheme {
-        Column(
-            modifier = Modifier.width(MaterialTheme.dimens.space56),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
-        ) {
-            IconButton(
+
+    Column(
+        modifier = Modifier.width(MaterialTheme.dimens.space56),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
+    ) {
+        IconButton(
                 modifier = modifier
                     .size(MaterialTheme.dimens.space56)
                     .background(
@@ -50,7 +50,7 @@ fun CategoryItem(
                 onClick = onClick
             ) {
                 Icon(
-                    painter = painterResource(id = icon),
+                    painter = iconPainter,
                     contentDescription = stringResource(R.string.icon),
                     tint = if (isSelected) White else MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -66,11 +66,15 @@ fun CategoryItem(
                 textAlign = TextAlign.Start
             )
         }
-    }
+
 }
 
 @Preview
 @Composable
 fun SideBarItemPreview() {
-    // SideBarItem()
+    CategoryItem(
+        iconPainter = painterResource(id = R.drawable.icon_category),
+        categoryName = "Foods",
+        isSelected = false
+    )
 }

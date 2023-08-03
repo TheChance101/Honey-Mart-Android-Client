@@ -77,11 +77,11 @@ fun ItemOrder(
                         contentDescription = marketName,
                         colorFilter = ColorFilter.tint(black60)
                     )
-                    SpacerHorizontal4()
                     Text(
                         text = stringResource(id = R.string.items, quantity),
                         style = MaterialTheme.typography.displaySmall,
-                        color = black60
+                        color = black60,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space4)
                     )
                 }
             }

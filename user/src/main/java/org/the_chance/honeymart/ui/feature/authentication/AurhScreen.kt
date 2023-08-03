@@ -74,7 +74,7 @@ fun AuthContent(
             textAlign = TextAlign.Center
         )
         CustomButton(
-            labelIdStringRes = R.string.sign_up,
+            label = stringResource(id =R.string.sign_up ),
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space40

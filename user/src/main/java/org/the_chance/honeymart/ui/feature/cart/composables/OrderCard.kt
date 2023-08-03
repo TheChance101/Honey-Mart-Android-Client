@@ -62,7 +62,7 @@ fun CartCardView(
 
             CustomButton(
                 onClick = { viewModel.onClickOrderNowButton() },
-                labelIdStringRes = org.the_chance.design_system.R.string.order_now,
+                label = stringResource(id = R.string.order_now),
                 isEnable = !isLoading,
                 idIconDrawableRes = org.the_chance.design_system.R.drawable.icon_cart,
                 modifier = Modifier

@@ -31,12 +31,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.TextField
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -109,7 +109,7 @@ fun LoginContent(
                     )
                 }
             }
-            TextField(
+            HoneyTextField(
                 text = state.email,
                 hint = stringResource(R.string.email),
                 idIconDrawableRes = R.drawable.ic_email,
@@ -120,7 +120,7 @@ fun LoginContent(
                     else -> ""
                 },
             )
-            TextField(
+            HoneyTextField(
                 text = state.password,
                 hint = stringResource(R.string.password),
                 idIconDrawableRes = R.drawable.ic_password,
@@ -133,7 +133,7 @@ fun LoginContent(
                 },
             )
             CustomButton(
-                labelIdStringRes = R.string.log_in,
+                label = stringResource(id = R.string.log_in),
                 modifier = Modifier.padding(
                     horizontal = MaterialTheme.dimens.space16,
                     vertical = MaterialTheme.dimens.space40

@@ -101,7 +101,7 @@ private fun BottomSheetContent(
             )
 
             CustomButton(
-                labelIdStringRes = R.string.show_my_order_details,
+                label = stringResource(id = R.string.show_my_order_details) ,
                 modifier = Modifier
                     .padding(
                         start = MaterialTheme.dimens.space36,

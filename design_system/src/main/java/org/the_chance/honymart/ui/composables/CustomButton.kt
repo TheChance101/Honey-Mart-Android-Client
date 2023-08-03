@@ -28,14 +28,15 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CustomButton(
+    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnable: Boolean = true,
-    @StringRes labelIdStringRes: Int,
     @DrawableRes idIconDrawableRes: Int? = null,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     background: Color = MaterialTheme.colorScheme.primary,
-    onClick: () -> Unit,
-) {
+
+    ) {
     Button(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
@@ -60,7 +61,7 @@ fun CustomButton(
             idIconDrawableRes?.let {
                 Icon(
                     painter = painterResource(id = idIconDrawableRes),
-                    contentDescription = stringResource(id = labelIdStringRes),
+                    contentDescription = label,
                     modifier = Modifier
                         .padding(end = MaterialTheme.dimens.space8)
                         .size(MaterialTheme.dimens.icon24)
@@ -69,7 +70,7 @@ fun CustomButton(
             }
 
             Text(
-                text = stringResource(id = labelIdStringRes),
+                text = label,
                 style = Typography.bodyMedium,
                 color = contentColor
             )
@@ -81,7 +82,7 @@ fun CustomButton(
 @Composable
 private fun CustomButtonPreview() {
     HoneyMartTheme {
-        CustomButton(labelIdStringRes = R.string.Sign_up) {}
+        CustomButton(label = stringResource(id = R.string.Sign_up), onClick = {})
     }
 }
 
@@ -128,9 +129,10 @@ private fun CustomButtonSmallPreview() {
 private fun CustomButtonWithIconPreview() {
     HoneyMartTheme {
         CustomButton(
-            labelIdStringRes = R.string.order_now,
-            idIconDrawableRes = R.drawable.icon_cart
-        ) {}
+            label = stringResource(id = R.string.order_now),
+            idIconDrawableRes = R.drawable.icon_cart,
+            onClick = {}
+        )
     }
 }
 
@@ -139,9 +141,10 @@ private fun CustomButtonWithIconPreview() {
 private fun CustomButtonNotEnablePreview() {
     HoneyMartTheme {
         CustomButton(
-            labelIdStringRes = R.string.order_now,
+            label = stringResource(id =R.string.order_now ),
             idIconDrawableRes = R.drawable.icon_cart,
             isEnable = false,
-        ) {}
+            onClick = {}
+        )
     }
 }
