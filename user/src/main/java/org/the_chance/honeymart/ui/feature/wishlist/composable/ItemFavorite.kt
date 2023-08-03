@@ -28,8 +28,8 @@ fun ItemFavorite(
     name: String,
     price: String,
     description: String,
-    onClickProduct: (ProductId: Long) -> Unit,
     productId: Long,
+    onClickProduct: (ProductId: Long) -> Unit,
     onClickFavoriteIcon: (ProductId: Long) -> Unit,
 ) {
 
@@ -55,7 +55,7 @@ fun ItemFavorite(
 
             ) {
 
-                CustomSmallIconButton(
+                HoneyMartSmallIconButton(
                     modifier = modifier.align(Alignment.End),
                     idIconDrawableRes = R.drawable.icon_favorite_selected,
                     background = MaterialTheme.colorScheme.tertiary,

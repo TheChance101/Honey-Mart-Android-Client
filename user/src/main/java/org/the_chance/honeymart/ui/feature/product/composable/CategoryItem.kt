@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.feature.product.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,9 +30,8 @@ fun CategoryItem(
     categoryName: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
-
     Column(
         modifier = Modifier.width(MaterialTheme.dimens.space56),
         horizontalAlignment = Alignment.CenterHorizontally,
