@@ -58,8 +58,8 @@ fun ConnectionErrorPlaceholder(state: Boolean, onClickTryAgain: () -> Unit) {
                     color = black60,
                     textAlign = TextAlign.Center,
                 )
-                HoneyMartSmallButton(
-                    labelIdStringRes = R.string.try_again_text,
+                HoneyOutlineButton(
+                    label = stringResource(id = R.string.try_again_text),
                     onClick = onClickTryAgain,
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space16)

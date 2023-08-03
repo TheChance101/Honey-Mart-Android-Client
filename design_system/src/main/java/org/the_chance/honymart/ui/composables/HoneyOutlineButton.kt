@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
@@ -18,9 +17,9 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun HoneyMartSmallButton(
+fun HoneyOutlineButton(
     onClick: () -> Unit,
-    @StringRes labelIdStringRes: Int,
+    label: String,
     modifier: Modifier = Modifier,
     isEnable: Boolean = true,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
@@ -40,7 +39,7 @@ fun HoneyMartSmallButton(
         )
     ) {
         Text(
-            text = stringResource(id = labelIdStringRes),
+            text = label,
             style = Typography.bodyMedium,
             color = contentColor
         )
@@ -52,7 +51,7 @@ fun HoneyMartSmallButton(
 @Composable
 private fun CustomButtonSmallPreview() {
     HoneyMartTheme {
-        HoneyMartSmallButton(labelIdStringRes = R.string.Sign_up, onClick = {})
+        HoneyOutlineButton(label = stringResource(id = R.string.Sign_up), onClick = {})
     }
 }
 
