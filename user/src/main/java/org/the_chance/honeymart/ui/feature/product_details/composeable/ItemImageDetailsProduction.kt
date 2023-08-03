@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
@@ -20,7 +21,7 @@ fun ItemImageDetailsProduction(
         modifier = modifier.size(88.dp)
     ) {
         ImageNetwork(
-            imageUrl = imageUrl, modifier = Modifier.fillMaxSize()
+            imagePainter = rememberAsyncImagePainter(model = imageUrl), modifier = Modifier.fillMaxSize()
         )
     }
 

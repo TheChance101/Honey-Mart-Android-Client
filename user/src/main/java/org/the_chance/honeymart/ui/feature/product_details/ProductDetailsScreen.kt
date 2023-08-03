@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
@@ -37,9 +38,9 @@ import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProd
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.CustomSmallIconButton
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.TextPrice
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -118,7 +119,7 @@ private fun ProductDetailsContent(
                         }) {
 
                         ImageNetwork(
-                            imageUrl = state.image, modifier = Modifier.fillMaxSize()
+                            imagePainter = rememberAsyncImagePainter(model = state.image), modifier = Modifier.fillMaxSize()
                         )
 
                         AppBar(
@@ -189,7 +190,7 @@ private fun ProductDetailsContent(
                             }
                         }
 
-                        TextPrice(state.totalPrice.toString() + "$",modifier=Modifier.padding(vertical = MaterialTheme.dimens.space8))
+                        HoneyOutlineText(state.totalPrice.toString() + "$",modifier=Modifier.padding(vertical = MaterialTheme.dimens.space8))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()

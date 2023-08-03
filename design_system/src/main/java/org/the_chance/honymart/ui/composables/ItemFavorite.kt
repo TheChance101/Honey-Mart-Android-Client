@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.modifier.overlayBottomToTop
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -23,13 +24,13 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemFavorite(
-    modifier: Modifier = Modifier,
     imageUrlMarket: String,
     name: String,
     price: String,
     description: String,
-    onClickProduct: (ProductId: Long) -> Unit,
     productId: Long,
+    modifier: Modifier = Modifier,
+    onClickProduct: (ProductId: Long) -> Unit,
     onClickFavoriteIcon: (ProductId: Long) -> Unit,
 ) {
 
@@ -43,7 +44,7 @@ fun ItemFavorite(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
-                imageUrl = imageUrlMarket,
+                imagePainter = rememberAsyncImagePainter(model = imageUrlMarket),
                 modifier = Modifier
                     .fillMaxSize()
                     .overlayBottomToTop(),
