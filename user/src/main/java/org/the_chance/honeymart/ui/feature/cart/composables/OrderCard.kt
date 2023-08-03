@@ -26,7 +26,7 @@ import org.the_chance.user.R
 @Composable
 fun CartCardView(
     modifier: Modifier = Modifier,
-    totalPrice: String = "300,000 $",
+    totalPrice: String,
     isLoading: Boolean,
     viewModel: CartViewModel = hiltViewModel()
 ) {
@@ -52,8 +52,7 @@ fun CartCardView(
             val (priceInDollars, orderNowButton, TotalPrice) = createRefs()
             Text(
                 text = formatCurrencyWithNearestFraction(totalPrice.toDouble()),
-                color = black60,
-                style = org.the_chance.honymart.ui.theme.Typography.bodyMedium,
+                style = org.the_chance.honymart.ui.theme.Typography.bodyMedium.copy(black60),
                 modifier = Modifier.constrainAs(priceInDollars) {
                     top.linkTo(parent.top, margin = 8.dp)
                     end.linkTo(parent.end)
@@ -76,8 +75,8 @@ fun CartCardView(
                 )
             Text(
                 text = stringResource(R.string.total_price),
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = org.the_chance.honymart.ui.theme.Typography.displaySmall,
+                style = org.the_chance.honymart.ui.theme.Typography.displaySmall
+                    .copy(color = MaterialTheme.colorScheme.onTertiaryContainer),
                 modifier = Modifier.constrainAs(TotalPrice) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top, margin = 8.dp)

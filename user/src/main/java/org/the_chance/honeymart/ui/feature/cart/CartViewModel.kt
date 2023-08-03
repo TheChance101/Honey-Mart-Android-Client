@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +19,7 @@ class CartViewModel @Inject constructor(
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
     private val checkout: CheckoutUseCase
-) : BaseViewModel<CartUiState, Unit>(CartUiState()),
+) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
@@ -141,6 +142,7 @@ class CartViewModel @Inject constructor(
                 bottomSheetIsDisplayed = true
             )
         }
+        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickOrderEffect)) }
     }
 
     private fun onCheckOutError(error: ErrorHandler) {
@@ -148,6 +150,10 @@ class CartViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
+    }
+
+    fun onClickDiscoverButton() {
+        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
     }
 
     override fun deleteCart(position: Long) {

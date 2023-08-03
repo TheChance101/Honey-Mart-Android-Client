@@ -38,8 +38,8 @@ import org.the_chance.honymart.ui.theme.dimens
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetCompleteOrderContent(
-    state: Boolean = false,
     onClick: () -> Unit = {},
+    state: Boolean = false,
 ) {
     val sheetState = rememberModalBottomSheetState(
         confirmValueChange = { it != SheetValue.PartiallyExpanded },
