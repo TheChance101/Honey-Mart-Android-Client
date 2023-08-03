@@ -12,7 +12,7 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-) : BaseViewModel<OrdersUiState, Unit>(OrdersUiState()), OrdersInteractionsListener {
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
     override fun getAllProcessingOrders() {

@@ -11,6 +11,7 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.authentication.AuthenticationUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,7 @@ class SignupViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, Unit>(SignupUiState()), SignupInteractionListener {
+) : BaseViewModel<SignupUiState, AuthenticationUiEffect>(SignupUiState()), SignupInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     override fun onFullNameInputChange(fullName: CharSequence) {

@@ -24,7 +24,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, Unit>(ProductsUiState()), ProductInteractionListener {
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -256,6 +256,9 @@ class ProductViewModel @Inject constructor(
             )
         }
     }
-    override fun onclickTryAgain() {getData()}
+
+    override fun onclickTryAgain() {
+        getData()
+    }
 
 }
