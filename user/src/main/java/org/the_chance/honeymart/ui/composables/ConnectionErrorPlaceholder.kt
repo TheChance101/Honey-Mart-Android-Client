@@ -58,7 +58,7 @@ fun ConnectionErrorPlaceholder(state: Boolean, onClickTryAgain: () -> Unit) {
                     color = black60,
                     textAlign = TextAlign.Center,
                 )
-                CustomSmallButton(
+                HoneyMartSmallButton(
                     labelIdStringRes = R.string.try_again_text,
                     onClick = onClickTryAgain,
                     modifier = Modifier

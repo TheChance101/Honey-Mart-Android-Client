@@ -34,7 +34,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyMartButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -132,7 +132,7 @@ fun LoginContent(
                     else -> ""
                 },
             )
-            CustomButton(
+            HoneyMartButton(
                 label = stringResource(id = R.string.log_in),
                 modifier = Modifier.padding(
                     horizontal = MaterialTheme.dimens.space16,

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiState
-import org.the_chance.honymart.ui.composables.CustomSmallIconButton
+import org.the_chance.honymart.ui.composables.HoneyMartSmallIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +27,7 @@ fun AppBar(
             containerColor = Color.Transparent,
         ),
         navigationIcon = {
-            CustomSmallIconButton(
+            HoneyMartSmallIconButton(
                 idIconDrawableRes = R.drawable.icon_arrow_back,
                 onClick = onBackClick,
                 background = MaterialTheme.colorScheme.background
@@ -36,7 +36,7 @@ fun AppBar(
         title = {
         },
         actions = {
-            CustomSmallIconButton(
+            HoneyMartSmallIconButton(
                 idIconDrawableRes =
                 if (state.product.isFavorite)
                     R.drawable.icon_favorite_selected

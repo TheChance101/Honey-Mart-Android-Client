@@ -15,17 +15,16 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
-fun CustomSmallIconButton(
-    modifier: Modifier = Modifier,
+fun HoneyMartSmallIconButton(
+    onClick: () -> Unit,
     @DrawableRes idIconDrawableRes: Int,
+    modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = CircleShape,
-    onClick: () -> Unit,
 ) {
     IconButton(
         onClick = onClick,
@@ -48,11 +47,10 @@ fun CustomSmallIconButton(
 
 @Preview
 @Composable
-private fun CustomSmallIconPreview() {
-    HoneyMartTheme {
-        CustomSmallIconButton(
-            idIconDrawableRes = R.drawable.icon_favorite_selected
-        )
-        {}
-    }
+private fun HoneyMartSmallIconPreview() {
+    HoneyMartSmallIconButton(
+        idIconDrawableRes = R.drawable.icon_favorite_selected,
+        onClick = {}
+    )
+
 }
