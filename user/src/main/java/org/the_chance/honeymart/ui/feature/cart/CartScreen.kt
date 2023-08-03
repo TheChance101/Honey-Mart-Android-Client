@@ -48,7 +48,7 @@ fun CartContent(
     cartInteractionListener: CartInteractionListener,
 ) {
     AppBarScaffold {
-        Loading((state.unpopulatedLoading()))
+        Loading(state.unpopulatedLoading() || state.populatedLoading())
         ConnectionErrorPlaceholder(
             state = state.errorPlaceHolderCondition(),
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
@@ -72,7 +72,7 @@ fun CartContent(
                 cartInteractionListener = cartInteractionListener
             )
         }
-        Loading(state = state.populatedLoading())
+
 
     }
 }
