@@ -25,12 +25,12 @@ import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
 @Composable
-fun TextField(
+fun HoneyTextField(
+    hint: String,
+    @DrawableRes idIconDrawableRes: Int,
     modifier: Modifier = Modifier,
     text: String = "",
     onValueChange: (String) -> Unit = {},
-    hint: String,
-    @DrawableRes idIconDrawableRes: Int,
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
@@ -94,7 +94,7 @@ fun TextField(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
-    TextField(
+    HoneyTextField(
         hint = "Email", idIconDrawableRes = R.drawable.ic_email,
         isError = true, errorMessage = stringResource(R.string.that_s_not_a_valid_email)
     )
