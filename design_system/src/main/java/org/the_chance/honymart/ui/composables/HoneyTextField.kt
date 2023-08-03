@@ -30,8 +30,8 @@ fun HoneyTextField(
     @DrawableRes idIconDrawableRes: Int,
     modifier: Modifier = Modifier,
     text: String = "",
-    onValueChange: (String) -> Unit = {},
     errorMessage: String = "",
+    onValueChange: (String) -> Unit = {},
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
     Column {
