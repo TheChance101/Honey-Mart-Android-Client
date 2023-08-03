@@ -41,7 +41,6 @@ import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SpacerVertical8
 import org.the_chance.honymart.ui.composables.TextPrice
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -67,12 +66,7 @@ fun ProductDetailsScreen(
             }
         }
     }
-
-    HoneyMartTheme {
-        ProductDetailsContent(state = state,
-            listenener = viewModel,
-        )
-    }
+    ProductDetailsContent(state = state, listenener = viewModel)
 }
 
 @Composable
