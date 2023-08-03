@@ -19,10 +19,10 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun IconButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = CircleShape,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
     content: @Composable () -> Unit,
 ) {
     HoneyMartTheme {
@@ -48,6 +48,7 @@ fun IconButtonPreview() {
                 contentDescription = "",
                 tint = Color.White
             )
-        }
+        },
+        onClick = {}
     )
 }

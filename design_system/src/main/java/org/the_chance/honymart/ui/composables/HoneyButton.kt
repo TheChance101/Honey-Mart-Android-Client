@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,12 +22,12 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun HoneyMartButton(
+fun HoneyButton(
     label: String,
     onClick: () -> Unit,
+    iconPainter: Painter,
     modifier: Modifier = Modifier,
     isEnable: Boolean = true,
-    @DrawableRes idIconDrawableRes: Int? = null,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
@@ -46,9 +46,9 @@ fun HoneyMartButton(
 
             )
     ) {
-        idIconDrawableRes?.let {
+        iconPainter.let {
             Icon(
-                painter = painterResource(id = idIconDrawableRes),
+                painter = iconPainter,
                 contentDescription = label,
                 modifier = Modifier
                     .padding(end = MaterialTheme.dimens.space8)
@@ -70,7 +70,11 @@ fun HoneyMartButton(
 @Composable
 private fun HoneyMartButtonPreview() {
     HoneyMartTheme {
-        HoneyMartButton(label = stringResource(id = R.string.Sign_up), onClick = {})
+        HoneyButton(
+            label = stringResource(id = R.string.Sign_up),
+            onClick = {},
+            iconPainter = painterResource(id = 0)
+        )
     }
 }
 
@@ -78,9 +82,9 @@ private fun HoneyMartButtonPreview() {
 @Composable
 private fun HoneyMartButtonWithIconPreview() {
     HoneyMartTheme {
-        HoneyMartButton(
+        HoneyButton(
             label = stringResource(id = R.string.order_now),
-            idIconDrawableRes = R.drawable.icon_cart,
+            iconPainter = painterResource(R.drawable.icon_cart),
             onClick = {}
         )
     }
@@ -90,9 +94,9 @@ private fun HoneyMartButtonWithIconPreview() {
 @Composable
 private fun HoneyMartButtonNotEnablePreview() {
     HoneyMartTheme {
-        HoneyMartButton(
+        HoneyButton(
             label = stringResource(id = R.string.order_now),
-            idIconDrawableRes = R.drawable.icon_cart,
+            iconPainter = painterResource(R.drawable.icon_cart),
             isEnable = false,
             onClick = {}
         )

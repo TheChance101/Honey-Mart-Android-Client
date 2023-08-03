@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.composables.HoneyMartButton
+import org.the_chance.honymart.ui.composables.HoneyButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -100,7 +100,7 @@ private fun BottomSheetContent(
                 style = Typography.bodySmall.copy(color = black37)
             )
 
-            HoneyMartButton(
+            HoneyButton(
                 label = stringResource(id = R.string.show_my_order_details),
                 modifier = Modifier
                     .padding(

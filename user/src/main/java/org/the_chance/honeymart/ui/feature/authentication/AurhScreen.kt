@@ -24,7 +24,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
-import org.the_chance.honymart.ui.composables.HoneyMartButton
+import org.the_chance.honymart.ui.composables.HoneyButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -73,7 +73,7 @@ fun AuthContent(
             style = Typography.bodySmall,
             textAlign = TextAlign.Center
         )
-        HoneyMartButton(
+        HoneyButton(
             label = stringResource(id = R.string.sign_up),
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,

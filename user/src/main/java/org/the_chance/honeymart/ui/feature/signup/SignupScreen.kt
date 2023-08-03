@@ -43,7 +43,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.HoneyMartButton
+import org.the_chance.honymart.ui.composables.HoneyButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -192,7 +192,7 @@ fun SignupContent(
                 }
                 val coroutineScope = rememberCoroutineScope()
                 when (pagerState.currentPage) {
-                    0 -> HoneyMartButton(
+                    0 -> HoneyButton(
                         label = stringResource(id = R.string.Continue),
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,
@@ -210,7 +210,7 @@ fun SignupContent(
                         },
                     )
 
-                    1 -> HoneyMartButton(
+                    1 -> HoneyButton(
                         label = stringResource(id = R.string.sign_up),
                         modifier = Modifier.padding(
                             horizontal = MaterialTheme.dimens.space16,

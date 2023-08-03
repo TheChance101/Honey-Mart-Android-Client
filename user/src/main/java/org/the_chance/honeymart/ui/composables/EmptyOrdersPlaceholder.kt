@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.composables.HoneyMartButton
+import org.the_chance.honymart.ui.composables.HoneyButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
@@ -59,10 +59,10 @@ fun EmptyOrdersPlaceholder(
                 textAlign = TextAlign.Center,
             )
 
-            HoneyMartButton(
+            HoneyButton(
                 label = stringResource(id = R.string.discover_market_now),
                 onClick = onClickDiscoverMarkets,
-                idIconDrawableRes = R.drawable.icon_cart,
+                iconPainter = painterResource(id = R.drawable.icon_cart),
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
                 background = primary100
             )
