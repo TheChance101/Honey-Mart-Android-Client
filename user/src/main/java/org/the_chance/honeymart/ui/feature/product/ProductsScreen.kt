@@ -78,7 +78,7 @@ private fun ProductsContent(
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        ContentVisibility(state = !state.isLoadingCategory && !state.isError) {
+        ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
                     modifier = Modifier

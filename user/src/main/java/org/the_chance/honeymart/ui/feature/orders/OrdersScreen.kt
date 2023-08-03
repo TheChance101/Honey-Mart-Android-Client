@@ -83,7 +83,7 @@ fun OrdersContent(
             onClickTryAgain = listener::getAllProcessingOrders
         )
         EmptyOrdersPlaceholder(
-            state = state.orders.isEmpty() && !state.isError && !state.isLoading,
+            state = state.emptyOrdersPlaceHolder(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
@@ -106,17 +106,17 @@ fun OrdersContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 CustomChip(
-                    state = state.orderStates == OrderStates.PROCESSING,
+                    state = state.processing(),
                     text = stringResource(id = R.string.processing),
                     onClick = listener::getAllProcessingOrders
                 )
                 CustomChip(
-                    state = state.orderStates == OrderStates.DONE,
+                    state = state.done(),
                     text = stringResource(id = R.string.done),
                     onClick = listener::getAllDoneOrders
                 )
                 CustomChip(
-                    state = state.orderStates == OrderStates.CANCELED,
+                    state = state.cancel(),
                     text = stringResource(id = R.string.cancel),
                     onClick = listener::getAllCancelOrders
                 )
@@ -124,7 +124,7 @@ fun OrdersContent(
 
             Loading(state = state.isLoading)
 
-            ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
+            ContentVisibility(state = state.screenContent()) {
                 LazyColumn(
                     modifier = Modifier.padding(
                         start = MaterialTheme.dimens.space16,

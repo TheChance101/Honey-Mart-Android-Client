@@ -69,7 +69,7 @@ private fun WishListContent(
 ) {
 
     AppBarScaffold {
-        Loading(state = state.isLoading && state.products.isEmpty())
+        Loading(state = state.firstLoading())
 
         ConnectionErrorPlaceholder(
             state = state.isError,
@@ -77,14 +77,14 @@ private fun WishListContent(
         )
 
         EmptyOrdersPlaceholder(
-            state = state.products.isEmpty() && !state.isError && !state.isLoading,
+            state = state.emptyPlaceholder(),
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),
             onClickDiscoverMarkets = listener::onClickDiscoverButton
         )
 
-        ContentVisibility(state = state.products.isNotEmpty() && !state.isError) {
+        ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 160.dp),
@@ -108,9 +108,7 @@ private fun WishListContent(
                 }
             }
         }
-
-        Loading(state = state.isLoading && state.products.isNotEmpty())
-
+        Loading(state = state.loading())
     }
 }
 

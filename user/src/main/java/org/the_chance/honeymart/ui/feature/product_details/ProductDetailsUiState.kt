@@ -14,3 +14,4 @@ data class ProductDetailsUiState(
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
 )
+  fun ProductDetailsUiState.contentScreen()= !this.isLoading && !this.isConnectionError

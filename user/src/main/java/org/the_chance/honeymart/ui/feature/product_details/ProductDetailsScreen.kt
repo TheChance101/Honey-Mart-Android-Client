@@ -71,8 +71,6 @@ fun ProductDetailsScreen(
     HoneyMartTheme {
         ProductDetailsContent(state = state,
             listenener = viewModel,
-            viewModel = viewModel,
-
         )
     }
 }
@@ -80,7 +78,6 @@ fun ProductDetailsScreen(
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    viewModel: ProductDetailsViewModel,
     listenener: ProductDetailsInteraction,
 
     ) {
@@ -88,7 +85,7 @@ private fun ProductDetailsContent(
 
     ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
 
-    ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
+    ContentVisibility(state = state.contentScreen()) {
         Scaffold(
             bottomBar = {
                 CustomButton(

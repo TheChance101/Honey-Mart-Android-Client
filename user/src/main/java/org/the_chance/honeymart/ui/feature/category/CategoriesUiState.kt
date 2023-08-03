@@ -26,3 +26,6 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
         categoryImageId = categoryImageId
     )
 }
+
+fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+
