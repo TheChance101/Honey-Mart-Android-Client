@@ -1,14 +1,11 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -115,14 +112,10 @@ class OrderViewModel @Inject constructor(
 
 
     override fun onClickOrder(orderId: Long) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickOrderEffect(orderId)))
-        }
+        executeAction(_effect, OrderUiEffect.ClickOrderEffect(orderId))
     }
 
     override fun onClickDiscoverMarkets() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderUiEffect.ClickDiscoverMarketsEffect))
-        }
+        executeAction(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
     }
 }

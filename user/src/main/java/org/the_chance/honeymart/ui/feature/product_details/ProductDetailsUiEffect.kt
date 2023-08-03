@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-sealed class ProductDetailsUiEffect {
+import org.the_chance.honeymart.ui.base.BaseUiEffect
+
+sealed class ProductDetailsUiEffect: BaseUiEffect {
     object AddToCartSuccess : ProductDetailsUiEffect()
     data class AddToCartError(val error: Exception) : ProductDetailsUiEffect()
     object UnAuthorizedUserEffect :

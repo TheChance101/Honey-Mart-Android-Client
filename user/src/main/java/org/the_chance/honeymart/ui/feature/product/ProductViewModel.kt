@@ -1,10 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -16,7 +14,6 @@ import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -136,13 +133,10 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        viewModelScope.launch {
-            _effect.emit(
-                EventHandler(
-                    ProductUiEffect.ClickProductEffect(productId, args.categoryId.toLong())
-                )
-            )
-        }
+        executeAction(
+            _effect,
+            ProductUiEffect.ClickProductEffect(productId, args.categoryId.toLong())
+        )
     }
 
 
@@ -205,10 +199,7 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductUiEffect.RemovedFromWishListEffect))
-        }
-
+        executeAction(_effect, ProductUiEffect.RemovedFromWishListEffect)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -236,25 +227,15 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(ProductUiEffect.AddedToWishListEffect))
-        }
+        executeAction(_effect, ProductUiEffect.AddedToWishListEffect)
+
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-
-        if (error is ErrorHandler.UnAuthorizedUser) {
-            viewModelScope.launch {
-                _effect.emit(
-                    EventHandler(
-                        ProductUiEffect.UnAuthorizedUserEffect
-                    )
-                )
-            }
-        }
+        if (error is ErrorHandler.UnAuthorizedUser)
+            executeAction(_effect, ProductUiEffect.UnAuthorizedUserEffect)
         updateFavoriteState(productId, false)
     }
-
 
 
     override fun onclickTryAgain() {
