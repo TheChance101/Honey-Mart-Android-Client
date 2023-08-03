@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,27 +22,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderDetailsCard(
-    imageUrl: String,
+    imagePainter: Painter,
     orderName: String,
     orderPrice: String,
     orderCount: String,
     orderId: Long,
-    onClickCard: (orderId: Long) -> Unit = {},
+    onClickCard: (orderId: Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(width = 160.dp, MaterialTheme.dimens.heightItem)
                 .clip(MaterialTheme.shapes.medium)
                 .clickable { onClickCard(orderId) }
         ) {
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
-                imagePainter = rememberAsyncImagePainter(model = imageUrl),
+                imagePainter = rememberAsyncImagePainter(model = imagePainter),
             )
             Box(
                 modifier = Modifier
@@ -95,10 +98,11 @@ fun OrderDetailsCard(
 @Composable
 fun OrderDetailsCardPreview() {
     OrderDetailsCard(
-        imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
+        imagePainter = rememberAsyncImagePainter(model = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg"),
         orderName = "To Kill a Mockingbird",
         orderPrice = "30,000",
         orderCount = "3",
         orderId = 0,
+        onClickCard = {}
     )
 }

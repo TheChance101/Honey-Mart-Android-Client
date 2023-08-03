@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 
 @Composable
-fun SwipeBackGround() {
+fun SwipeBackground() {
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(bottom = 16.dp, end = 8.dp)) {

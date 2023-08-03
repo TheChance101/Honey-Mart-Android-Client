@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,57 +32,57 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    imageUrl: String,
+    imagePainter: Painter,
     productName: String,
     productPrice: String,
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
+    onClickFavorite: () -> Unit,
+    onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickFavorite: () -> Unit = {},
-    onClickCard: () -> Unit = {}
 ) {
-        Box(
-            modifier = modifier
-                .height(height = 200.dp)
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-                .clickable { onClickCard() }
+    Box(
+        modifier = modifier
+            .height(height = 200.dp)
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .clickable { onClickCard() }
+    ) {
+        ImageNetwork(
+            modifier = Modifier.fillMaxSize(),
+            imagePainter = rememberAsyncImagePainter(model = imagePainter)
+        )
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(
+                    end = MaterialTheme.dimens.space8,
+                    top = MaterialTheme.dimens.space8
+                ),
+            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+            else MaterialTheme.colorScheme.primary,
+            onClick = onClickFavorite
         ) {
-            ImageNetwork(
-                modifier = Modifier.fillMaxSize(),
-                imagePainter = rememberAsyncImagePainter(model =imageUrl )
+            Image(
+                painter = painterResource(
+                    id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                    else R.drawable.icon_favorite_unselected
+                ),
+                contentDescription = stringResource(R.string.favorite_icon),
             )
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(
-                        end = MaterialTheme.dimens.space8,
-                        top = MaterialTheme.dimens.space8
-                    ),
-                backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-                else MaterialTheme.colorScheme.primary,
-                onClick = onClickFavorite
-            ) {
-                Image(
-                    painter = painterResource(
-                        id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
-                        else R.drawable.icon_favorite_unselected
-                    ),
-                    contentDescription = stringResource(R.string.favorite_icon),
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                blackOn87,
-                            ),
-                            startY = 300f,
-                        )
+        }
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            blackOn87,
+                        ),
+                        startY = 300f,
                     )
+                )
             )
             Column(
                 modifier = Modifier
@@ -122,10 +123,12 @@ fun ProductCard(
 @Composable
 fun ProductCardPreview() {
     ProductCard(
-        imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
+        imagePainter = rememberAsyncImagePainter(model = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg"),
         productName = "To Kill a Mockingbird",
         productPrice = "30,000",
         secondaryText = "Secondary Text",
-        isFavoriteIconClicked = true
+        isFavoriteIconClicked = true,
+        onClickFavorite = {},
+        onClickCard = {}
     )
 }

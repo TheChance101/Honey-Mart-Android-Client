@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
@@ -116,7 +117,7 @@ private fun ProductsContent(
                                 val product = state.products[index]
                                 ProductCard(
                                     modifier = Modifier.fillMaxWidth(),
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
+                                    imagePainter = rememberAsyncImagePainter(model = product.productImages.firstOrNull() ?: ""),
                                     productName = product.productName,
                                     productPrice = product.productPrice.toString(),
                                     secondaryText = product.productDescription,

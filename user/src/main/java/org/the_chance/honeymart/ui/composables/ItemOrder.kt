@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 

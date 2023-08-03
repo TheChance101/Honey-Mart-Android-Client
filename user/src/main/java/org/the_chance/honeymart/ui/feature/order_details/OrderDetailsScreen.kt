@@ -28,13 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.OrderDetailsCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.OrderDetailsCard
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
@@ -75,7 +76,7 @@ private fun OrderDetailsContent(
                     content = {
                         items(state.products) { itemOrderDetails ->
                             OrderDetailsCard(
-                                imageUrl = itemOrderDetails.images[0],
+                                imagePainter = rememberAsyncImagePainter(model =itemOrderDetails.images[0] ),
                                 orderName = itemOrderDetails.name,
                                 orderPrice = "${itemOrderDetails.price}",
                                 orderCount = "${itemOrderDetails.count}",
