@@ -67,7 +67,14 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         }
     }
 
-
+    protected fun <T : BaseUiEffect> effectActionExecutor(
+        _effect: MutableSharedFlow<EventHandler<T>>,
+        effect: T,
+    ) {
+        viewModelScope.launch {
+            _effect.emit(EventHandler(effect))
+        }
+    }
     protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,

@@ -34,9 +34,17 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
     )
 }
 
-enum class OrderStates(val state:Int) {
+enum class OrderStates(val state: Int) {
     PROCESSING(1),
     DONE(2),
     CANCELED(3),
     DELETE(4)
 }
+
+fun OrdersUiState.processing() =this.orderStates == OrderStates.PROCESSING
+fun OrdersUiState.cancel() =this.orderStates == OrderStates.CANCELED
+fun OrdersUiState.done() =this.orderStates == OrderStates.DONE
+
+fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
+
+fun OrdersUiState.screenContent() = this.orders.isNotEmpty() && !this.isError

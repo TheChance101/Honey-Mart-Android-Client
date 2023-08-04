@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.category.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
@@ -31,10 +32,8 @@ import org.the_chance.user.R
 @Composable
 fun CategoryItem(
     state: CategoryUiState,
-    categoryId: Long,
-    onCategoryClicked: (categoryId: Long, marketId: Long, position: Int) -> Unit,
-    marketId: Long,
-    position: Int,
+    onCategoryClicked: (categoryId: Long, position: Int) -> Unit,
+    position: Int
 ) {
     Column(
         horizontalAlignment = CenterHorizontally,
@@ -47,7 +46,7 @@ fun CategoryItem(
                 .aspectRatio(1f)
                 .clip(shape = Shapes.medium)
                 .background(MaterialTheme.colorScheme.secondaryContainer)
-                .clickable { onCategoryClicked(categoryId, marketId, position) }
+                .clickable { onCategoryClicked(state.categoryId, position) }
                 .size(120.dp), contentAlignment = Center
         ) {
             Icon(

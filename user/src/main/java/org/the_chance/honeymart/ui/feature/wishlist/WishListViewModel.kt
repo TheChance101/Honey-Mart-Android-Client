@@ -11,7 +11,7 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 class WishListViewModel @javax.inject.Inject constructor(
     private val getAllWishListUseCase: GetAllWishListUseCase,
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
-) : BaseViewModel<WishListUiState, Unit>(WishListUiState()),
+) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -32,7 +32,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-
+        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
         getWishListProducts()
     }
 
@@ -60,8 +60,8 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
     }
 
-   override fun getWishListProducts() {
-       _state.update { it.copy(isLoading = true, isError = false) }
+    override fun getWishListProducts() {
+        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllWishListUseCase().map { it.toWishListProductUiState() } },
             ::onGetProductSuccess,
@@ -81,12 +81,15 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickDiscoverButton() {
-
+        effectActionExecutor(_effect, WishListUiEffect.ClickDiscoverEffect)
     }
 
     override fun onClickFavoriteIcon(productId: Long) {
         deleteProductFromWishList(productId)
+
     }
 
-    override fun onClickProduct(productId: Long) {}
+    override fun onClickProduct(productId: Long) {
+        effectActionExecutor(_effect, WishListUiEffect.ClickProductEffect(productId))
+    }
 }

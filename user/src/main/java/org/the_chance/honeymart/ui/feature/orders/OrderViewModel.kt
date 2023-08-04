@@ -12,8 +12,9 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
     private val updateOrderStateUseCase: UpdateOrderStateUseCase,
-) : BaseViewModel<OrdersUiState, Unit>(OrdersUiState()), OrdersInteractionsListener {
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
+
 
     override fun getAllProcessingOrders() {
         _state.update {
@@ -46,6 +47,7 @@ class OrderViewModel @Inject constructor(
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
+
     }
 
     private fun onGetDoneOrdersSuccess(orders: List<OrderUiState>) {
@@ -106,5 +108,14 @@ class OrderViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+    }
+
+
+    override fun onClickOrder(orderId: Long) {
+        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
+    }
+
+    override fun onClickDiscoverMarkets() {
+        effectActionExecutor(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
     }
 }

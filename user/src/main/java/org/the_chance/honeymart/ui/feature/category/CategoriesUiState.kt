@@ -10,22 +10,6 @@ data class CategoriesUiState(
     val error: ErrorHandler? = null,
     val message: String = "",
     val categories: List<CategoryUiState> = emptyList(),
-    val marketId: Long =0,
-)
-val test= CategoriesUiState(
-    isLoading = false,
-    isError = false,
-    error = null,
-    message = "dapibus",
-    categories = listOf(
-        CategoryUiState(
-            categoryId = 5995,
-            categoryName = "Catherine Carson",
-            categoryImageId = 1342,
-            isCategorySelected = false
-        )
-    ),
-    marketId = 3783
 )
 data class CategoryUiState(
     val categoryId: Long = 0L,
@@ -41,3 +25,6 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
         categoryImageId = categoryImageId
     )
 }
+
+fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+

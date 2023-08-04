@@ -12,16 +12,10 @@ data class ProductsUiState(
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
     val isEmptyProducts: Boolean = false,
-    val navigateToProductDetailsState: NavigationState = NavigationState(),
-    val navigateToAuthGraph: NavigationState = NavigationState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L
 )
 
-data class NavigationState(
-    val isNavigate: Boolean = false,
-    val id: Long = 0L
-)
 
 data class ProductUiState(
     val productId: Long = 0L,
@@ -41,3 +35,5 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImages = productImages
     )
 }
+
+fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError

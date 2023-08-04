@@ -16,7 +16,7 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(
+fun ProductAppBar(
     state: ProductDetailsUiState,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
@@ -60,6 +60,6 @@ fun AppBar(
 @Composable
 private fun AppBarPreview() {
     HoneyMartTheme {
-        AppBar(state = ProductDetailsUiState(), onBackClick = {}, onFavoriteClick = {})
+        ProductAppBar(state = ProductDetailsUiState(), onBackClick = {}, onFavoriteClick = {})
     }
 }

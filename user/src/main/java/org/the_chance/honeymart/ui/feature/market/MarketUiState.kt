@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.uistate
+package org.the_chance.honeymart.ui.feature.market
 
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -25,3 +25,6 @@ fun MarketEntity.toMarketUiState(): MarketUiState {
         marketImage = imageUrl
     )
 }
+
+fun MarketsUiState.showMarket() = this.markets.isNotEmpty() && !this.isError
+fun MarketsUiState.errorPlaceHolder() = this.markets.isEmpty() && this.isError

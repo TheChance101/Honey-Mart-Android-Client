@@ -30,7 +30,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
@@ -40,6 +39,7 @@ import org.the_chance.honeymart.ui.composables.ItemOrder
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
@@ -50,40 +50,44 @@ fun OrdersScreen(
     viewModel: OrderViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToMarketScreen()
+                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(it.orderId)
+            }
+        }
+    }
     LaunchedEffect(lifecycleOwner) {
         viewModel.getAllProcessingOrders()
     }
-
     OrdersContent(
         state = state,
-        ordersInteractionsListener = viewModel,
-        onClickItemOrder = navController::navigateToOrderDetailsScreen,
-        navController = navController
-    )
+        listener = viewModel,
+
+        )
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
-    ordersInteractionsListener: OrdersInteractionsListener,
-    onClickItemOrder: (orderId: Long) -> Unit = {},
-    navController: NavController
+    listener: OrdersInteractionsListener,
 ) {
     AppBarScaffold {
         ConnectionErrorPlaceholder(
             state = state.isError,
-            onClickTryAgain = ordersInteractionsListener::getAllProcessingOrders
+            onClickTryAgain = listener::getAllProcessingOrders
         )
         EmptyOrdersPlaceholder(
-            state = state.orders.isEmpty() && !state.isError && !state.isLoading,
+            state = state.emptyOrdersPlaceHolder(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = { navController.navigateToMarketScreen() }
+            onClickDiscoverMarkets = listener::onClickDiscoverMarkets
         )
 
         Column(
@@ -102,25 +106,25 @@ fun OrdersContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 CustomChip(
-                    state = state.orderStates == OrderStates.PROCESSING,
+                    state = state.processing(),
                     text = stringResource(id = R.string.processing),
-                    onClick = ordersInteractionsListener::getAllProcessingOrders
+                    onClick = listener::getAllProcessingOrders
                 )
                 CustomChip(
-                    state = state.orderStates == OrderStates.DONE,
+                    state = state.done(),
                     text = stringResource(id = R.string.done),
-                    onClick = ordersInteractionsListener::getAllDoneOrders
+                    onClick = listener::getAllDoneOrders
                 )
                 CustomChip(
-                    state = state.orderStates == OrderStates.CANCELED,
+                    state = state.cancel(),
                     text = stringResource(id = R.string.cancel),
-                    onClick = ordersInteractionsListener::getAllCancelOrders
+                    onClick = listener::getAllCancelOrders
                 )
             }
 
             Loading(state = state.isLoading)
 
-            ContentVisibility(state.orders.isNotEmpty() && !state.isError) {
+            ContentVisibility(state = state.screenContent()) {
                 LazyColumn(
                     modifier = Modifier.padding(
                         start = MaterialTheme.dimens.space16,
@@ -150,7 +154,7 @@ fun OrdersContent(
                                     marketName = orderItem.marketName,
                                     quantity = orderItem.quantity,
                                     price = orderItem.totalPrice,
-                                    onClickCard = { onClickItemOrder(orderItem.orderId) }
+                                    onClickCard = listener::onClickOrder,
                                 )
                             })
                         LaunchedEffect(showDialog) {
@@ -175,7 +179,7 @@ fun OrdersContent(
                             CustomAlertDialog(
                                 message = textOrderStates,
                                 onConfirm = {
-                                    ordersInteractionsListener.updateOrders(
+                                    listener.updateOrders(
                                         index.toLong(),
                                         buttonOrderStates
                                     )

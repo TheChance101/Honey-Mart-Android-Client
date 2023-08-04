@@ -15,7 +15,7 @@ data class WishListProductUiState(
     val productName: String = "",
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = true,
-    val description :String ="" ,
+    val description: String = "",
     val productImages: List<String> = emptyList()
 )
 
@@ -28,3 +28,12 @@ fun WishListEntity.toWishListProductUiState(): WishListProductUiState {
         description = description
     )
 }
+
+fun WishListUiState.firstLoading() = this.isLoading && this.products.isEmpty()
+
+fun WishListUiState.emptyPlaceholder() = this.products.isEmpty() && !this.isError && !this.isLoading
+
+
+fun WishListUiState.contentScreen() = this.products.isNotEmpty() && !this.isError
+
+fun WishListUiState.loading() = this.isLoading && this.products.isNotEmpty()

@@ -21,7 +21,8 @@ class SignupViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-) : BaseViewModel<SignupUiState, Unit>(SignupUiState()), SignupInteractionListener {
+) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
+    SignupInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     override fun onFullNameInputChange(fullName: CharSequence) {
@@ -95,11 +96,18 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(loginState: ValidationState) {
+        if (loginState == ValidationState.SUCCESS)
+            effectActionExecutor(_effect, SignupUiEffect.ClickSignupEffect)
+
         _state.update { it.copy(isLoading = false, isLogin = loginState) }
     }
 
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+    }
+
+    override fun onClickLogin() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
 
     override fun onClickSignup() {

@@ -44,9 +44,9 @@ import org.the_chance.honymart.ui.theme.primary100
 fun CartItem(
     modifier: Modifier = Modifier,
     product: CartListProductUiState,
-    isLoading: Boolean,
     onClickMinus: () -> Unit = {},
-    onClickPlus: () -> Unit = {}
+    onClickPlus: () -> Unit = {},
+    isLoading: Boolean,
 ) {
     Card(
         modifier = modifier

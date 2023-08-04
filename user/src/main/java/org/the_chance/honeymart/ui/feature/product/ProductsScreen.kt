@@ -17,10 +17,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -32,6 +32,7 @@ import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -43,14 +44,27 @@ fun ProductsScreen(
 ) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    ProductsContent(
-        state = state,
-        productInteractionListener = viewModel,
-        navigateToProductScreen =
-        {productId -> navController.navigateToProductDetailsScreen(productId)},
-        navigateToAuth = { navController.navigateToAuth() }
-    )
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                ProductUiEffect.AddedToWishListEffect -> {// TODO: add snack bar
+                }
+
+                is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
+                    it.productId
+                )
+
+                ProductUiEffect.RemovedFromWishListEffect -> {// TODO: add snack bar
+                }
+
+                ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+            }
+        }
+    }
+
+    ProductsContent(state = state, productInteractionListener = viewModel)
 }
 
 
@@ -58,15 +72,14 @@ fun ProductsScreen(
 private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
-    navigateToProductScreen: (productId: Long) -> Unit,
-    navigateToAuth: () -> Unit,
-) {
+
+    ) {
     AppBarScaffold {
-        Loading(state.isLoadingCategory)
+        Loading(state.isLoadingCategory || state.isLoadingProduct)
 
-        ConnectionErrorPlaceholder(state.isError, productInteractionListener::resetNavigation)
+        ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        ContentVisibility(state = !state.isLoadingCategory && !state.isError) {
+        ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
                     modifier = Modifier
@@ -98,7 +111,6 @@ private fun ProductsContent(
                         }
                     }
                     EmptyProductPlaceholder(state.isEmptyProducts)
-                    Loading(state.isLoadingProduct)
                     AnimatedVisibility(
                         visible = !state.isLoadingProduct,
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
@@ -135,18 +147,6 @@ private fun ProductsContent(
             }
         }
 
-        LaunchedEffect(key1 = state.navigateToProductDetailsState.isNavigate) {
-            if (state.navigateToProductDetailsState.isNavigate) {
-                navigateToProductScreen(state.navigateToProductDetailsState.id)
-                productInteractionListener.resetNavigation()
-            }
-        }
-        LaunchedEffect(key1 = state.navigateToAuthGraph) {
-            if (state.navigateToAuthGraph.isNavigate) {
-                navigateToAuth()
-                productInteractionListener.resetNavigation()
-            }
-        }
     }
 }
 
