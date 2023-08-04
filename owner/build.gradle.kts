@@ -37,8 +37,12 @@ android {
 
 dependencies {
     implementation(project(BuildModules.DESIGN_SYSTEM))
+    implementation(project(BuildModules.CORE_DOMAIN))
     implementation(project(BuildModules.CORE_DATA))
+    Dependencies.firebaseDependency.forEach { implementation(it) }
     Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.composeDependency.forEach { implementation(it) }
+    Dependencies.ktorDependency.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
