@@ -10,7 +10,6 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCartUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -125,10 +124,10 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickViewOrders() {
-        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickViewOrdersEffect)) }
+        effectActionExecutor(_effect, CartUiEffect.ClickViewOrdersEffect)
     }
 
-     override fun onClickOrderNowButton() {
+    override fun onClickOrderNowButton() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { checkout() },
@@ -154,8 +153,8 @@ class CartViewModel @Inject constructor(
         }
     }
 
-  override  fun onClickDiscoverButton() {
-        viewModelScope.launch { _effect.emit(EventHandler(CartUiEffect.ClickDiscoverEffect)) }
+    override fun onClickDiscoverButton() {
+        effectActionExecutor(_effect, CartUiEffect.ClickDiscoverEffect)
     }
 
     override fun deleteCart(position: Long) {

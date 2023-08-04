@@ -79,10 +79,7 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
         }
     }
 
-    SignupContent(
-        listener = viewModel,
-        state = state
-    )
+    SignupContent(listener = viewModel, state = state)
 }
 
 @OptIn(ExperimentalFoundationApi::class)

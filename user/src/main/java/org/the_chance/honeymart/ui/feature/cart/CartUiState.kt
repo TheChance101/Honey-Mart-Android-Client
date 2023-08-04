@@ -17,7 +17,7 @@ data class CartListProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
     val productPrice: Double = 0.0,
-    val productCount: Int= 0,
+    val productCount: Int = 0,
     val productImage: List<String> = emptyList()
 )
 
@@ -40,13 +40,15 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
     }
 }
 
-fun CartUiState.firstTimeLoading(state: CartUiState): Boolean {
-    return state.isLoading && state.products.isNotEmpty()
-}
+fun CartUiState.unpopulatedLoading() = this.isLoading && this.products.isEmpty()
 
-fun CartUiState.isError(state: CartUiState): Boolean {
-    return state.isError
-}
+fun CartUiState.errorPlaceHolderCondition() = this.isError
+
+fun CartUiState.placeHolderCondition() = this.products.isEmpty() && !this.isError && !this.isLoading
+
+fun CartUiState.cartSuccessScreenCondition() = this.products.isNotEmpty() && !this.isError
+
+fun CartUiState.populatedLoading() = this.isLoading && this.products.isNotEmpty()
 
 
 

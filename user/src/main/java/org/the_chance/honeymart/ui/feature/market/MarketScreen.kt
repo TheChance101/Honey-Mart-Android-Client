@@ -48,7 +48,7 @@ fun MarketContent(
     listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-        ContentVisibility(state = state.markets.isNotEmpty() && !state.isError) {
+        ContentVisibility(state = state.showMarket()) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
@@ -64,7 +64,7 @@ fun MarketContent(
             }
         }
         ConnectionErrorPlaceholder(
-            state = state.isError && state.markets.isEmpty(),
+            state = state.errorPlaceHolder(),
             onClickTryAgain = listener::getChosenMarkets
         )
         Loading(state.isLoading)

@@ -46,6 +46,8 @@ import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SpacerVertical8
+import org.the_chance.honymart.ui.composables.TextPrice
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -72,20 +74,12 @@ fun ProductDetailsScreen(
             }
         }
     }
-
-    HoneyMartTheme {
-        ProductDetailsContent(state = state,
-            listenener = viewModel,
-            viewModel = viewModel,
-
-        )
-    }
+    ProductDetailsContent(state = state, listenener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    viewModel: ProductDetailsViewModel,
     listenener: ProductDetailsInteraction,
 
     ) {
@@ -93,7 +87,7 @@ private fun ProductDetailsContent(
 
     ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
 
-    ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
+    ContentVisibility(state = state.contentScreen()) {
         Scaffold(
             bottomBar = {
                 HoneyFilledIconButton(

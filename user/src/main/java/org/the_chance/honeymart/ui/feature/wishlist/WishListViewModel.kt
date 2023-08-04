@@ -1,14 +1,11 @@
 package org.the_chance.honeymart.ui.feature.wishlist
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
@@ -35,9 +32,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(WishListUiEffect.DeleteProductFromWishListEffect))
-        }
+        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
         getWishListProducts()
     }
 
@@ -86,9 +81,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickDiscoverButton() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(WishListUiEffect.ClickDiscoverEffect))
-        }
+        effectActionExecutor(_effect, WishListUiEffect.ClickDiscoverEffect)
     }
 
     override fun onClickFavoriteIcon(productId: Long) {
@@ -97,8 +90,6 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(WishListUiEffect.ClickProductEffect(productId)))
-        }
+        effectActionExecutor(_effect, WishListUiEffect.ClickProductEffect(productId))
     }
 }

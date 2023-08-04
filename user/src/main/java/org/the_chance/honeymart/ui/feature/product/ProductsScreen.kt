@@ -75,11 +75,11 @@ private fun ProductsContent(
 
     ) {
     AppBarScaffold {
-        Loading(state.isLoadingCategory)
+        Loading(state.isLoadingCategory || state.isLoadingProduct)
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        ContentVisibility(state = !state.isLoadingCategory && !state.isError) {
+        ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
                     modifier = Modifier
@@ -111,7 +111,6 @@ private fun ProductsContent(
                         }
                     }
                     EmptyProductPlaceholder(state.isEmptyProducts)
-                    Loading(state.isLoadingProduct)
                     AnimatedVisibility(
                         visible = !state.isLoadingProduct,
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),

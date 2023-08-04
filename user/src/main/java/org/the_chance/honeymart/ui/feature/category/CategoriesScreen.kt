@@ -62,7 +62,7 @@ fun CategoryContent(
 
         ConnectionErrorPlaceholder(state.isError, listener::onGetData)
 
-        ContentVisibility(state = !state.isLoading && !state.isError) {
+        ContentVisibility(state.showLazyCondition()) {
             LazyVerticalGrid(
                 state = rememberLazyGridState(),
                 columns = GridCells.Fixed(count = 3),

@@ -1,15 +1,12 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,8 +68,7 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     override fun onClickOrder(productId: Long) {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(OrderDetailsUiEffect.ClickProductEffect(productId)))
-        }
+        effectActionExecutor(_effect, OrderDetailsUiEffect.ClickProductEffect(productId))
+
     }
 }

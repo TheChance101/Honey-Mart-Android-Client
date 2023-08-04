@@ -1,16 +1,13 @@
 package org.the_chance.honeymart.ui.feature.login
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.util.EventHandler
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,11 +29,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(validationState: ValidationState) {
-        if (validationState == ValidationState.SUCCESS) {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(LoginUiEffect.ClickLoginEffect))
-            }
-        }
+        if (validationState == ValidationState.SUCCESS)
+            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
         _state.update {
             it.copy(
                 isLoading = false, error = null,
@@ -62,18 +56,14 @@ class LoginViewModel @Inject constructor(
             _state.value.passwordState == ValidationState.VALID_PASSWORD
         ) {
             login(_state.value.email.trim(), _state.value.password.trim())
-
         } else {
-            viewModelScope.launch {
-                _effect.emit(EventHandler(LoginUiEffect.ShowToastEffect))}
-            }
+            effectActionExecutor(_effect, LoginUiEffect.ShowToastEffect)
         }
+    }
 
 
     override fun onClickSignup() {
-        viewModelScope.launch {
-            _effect.emit(EventHandler(LoginUiEffect.ClickSignUpEffect))
-        }
+        effectActionExecutor(_effect, LoginUiEffect.ClickSignUpEffect)
     }
 
     override fun onEmailInputChange(email: CharSequence) {

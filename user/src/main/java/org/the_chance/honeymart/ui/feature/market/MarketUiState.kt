@@ -25,3 +25,6 @@ fun MarketEntity.toMarketUiState(): MarketUiState {
         marketImage = imageUrl
     )
 }
+
+fun MarketsUiState.showMarket() = this.markets.isNotEmpty() && !this.isError
+fun MarketsUiState.errorPlaceHolder() = this.markets.isEmpty() && this.isError
