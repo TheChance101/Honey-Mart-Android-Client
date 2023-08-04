@@ -30,8 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
-     buildFeatures {
+    buildFeatures {
         dataBinding = true
+        compose = true
     }
 }
 
