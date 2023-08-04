@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
@@ -90,9 +91,22 @@ fun HoneyTextField(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
+@Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
+    HoneyTextField(
+        hint = "Email",
+        iconPainter = painterResource(id = R.drawable.ic_email),
+        isError = true,
+        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
+        onValueChange = {}
+    )
+}
+
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
+@Composable
+fun TextFieldTabletPreview() {
     HoneyTextField(
         hint = "Email",
         iconPainter = painterResource(id = R.drawable.ic_email),
