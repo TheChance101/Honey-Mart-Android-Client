@@ -37,8 +37,8 @@ import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honymart.ui.composables.HoneyFavIconButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
+import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
@@ -163,7 +163,7 @@ private fun ProductDetailsContent(
                             )
 
                             Row {
-                                HoneyFavIconButton(
+                                HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
                                     background = Color.Transparent,
                                     modifier = Modifier
@@ -185,7 +185,7 @@ private fun ProductDetailsContent(
                                         .padding(horizontal = MaterialTheme.dimens.space12)
                                 )
 
-                                HoneyFavIconButton(
+                                HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
                                     onClick = listenener::increaseProductCount
@@ -225,6 +225,3 @@ private fun ProductDetailsContent(
         }
     }
 }
-
-
-

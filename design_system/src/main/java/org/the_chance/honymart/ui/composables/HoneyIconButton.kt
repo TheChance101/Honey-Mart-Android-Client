@@ -19,7 +19,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
-fun HoneyFavIconButton(
+fun HoneyIconButton(
     onClick: () -> Unit,
     iconPainter: Painter,
     modifier: Modifier = Modifier,
@@ -48,7 +48,7 @@ fun HoneyFavIconButton(
 @Preview
 @Composable
 private fun HoneyMartSmallIconPreview() {
-    HoneyFavIconButton(
+    HoneyIconButton(
         iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
         onClick = {}
     )

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -38,6 +39,7 @@ import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
@@ -45,6 +47,7 @@ fun ProductsScreen(
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
+
 
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
@@ -64,15 +67,13 @@ fun ProductsScreen(
         }
     }
 
-    ProductsContent(state = state, productInteractionListener = viewModel)
+        ProductsContent(state = state, productInteractionListener = viewModel)
 }
-
 
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
-
     ) {
     AppBarScaffold {
         Loading(state.isLoadingCategory || state.isLoadingProduct)
@@ -149,6 +150,3 @@ private fun ProductsContent(
 
     }
 }
-
-
-
