@@ -23,10 +23,10 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HoneyFilledIconButton(
+    modifier: Modifier = Modifier,
     label: String,
     onClick: () -> Unit,
     iconPainter: Painter,
-    modifier: Modifier = Modifier,
     isEnable: Boolean = true,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     background: Color = MaterialTheme.colorScheme.primary,

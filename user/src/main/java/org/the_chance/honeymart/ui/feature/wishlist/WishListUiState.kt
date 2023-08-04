@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.wishlist
 
+import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -27,6 +28,14 @@ fun WishListEntity.toWishListProductUiState(): WishListProductUiState {
         productImages = images,
         description = description
     )
+}
+
+
+
+
+fun formatCurrencyWithNearestFraction(amount: Double):String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(amount)
 }
 
 fun WishListUiState.firstLoading() = this.isLoading && this.products.isEmpty()

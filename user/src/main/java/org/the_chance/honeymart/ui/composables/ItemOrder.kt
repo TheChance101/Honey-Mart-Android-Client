@@ -31,15 +31,16 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemOrder(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     orderId: Long,
+    onClickCard: (orderId: Long) -> Unit = {},
     marketName: String,
     quantity: Int,
     price: Double,
-    onClickCard: (orderId: Long) -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(105.dp)
             .clickable { onClickCard(orderId) },

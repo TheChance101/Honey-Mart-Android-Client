@@ -67,13 +67,13 @@ fun ProductDetailsScreen(
             }
         }
     }
-    ProductDetailsContent(state = state, listenener = viewModel)
+    ProductDetailsContent(state = state, listener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listenener: ProductDetailsInteraction,
+    listener: ProductDetailsInteraction,
 
     ) {
     Loading(state.isLoading)
@@ -99,7 +99,7 @@ private fun ProductDetailsContent(
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
                         state.product.productId.let {
-                            listenener.addProductToCart(
+                            listener.addProductToCart(
                                 it,
                                 state.quantity
                             )
@@ -128,8 +128,8 @@ private fun ProductDetailsContent(
                         ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = listenener::onClickBack,
-                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
+                            onBackClick = listener::onClickBack,
+                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -173,7 +173,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listenener::decreaseProductCount
+                                    onClick = listener::decreaseProductCount
                                 )
 
                                 Text(
@@ -188,13 +188,13 @@ private fun ProductDetailsContent(
                                 HoneyFavIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listenener::increaseProductCount
+                                    onClick = listener::increaseProductCount
                                 )
                             }
                         }
 
                         HoneyOutlineText(
-                            state.totalPrice.toString() + "$",
+                            price = state.totalPrice.toString() + "$",
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
                         )
                         Text(
@@ -217,7 +217,7 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            listenener.onClickSmallImage(state.smallImages[index])
+                            listener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }

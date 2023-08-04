@@ -158,7 +158,7 @@ fun OrdersContent(
                                 )
                             })
                         LaunchedEffect(showDialog) {
-                            if (!showDialog) {
+                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
                                 dismissState.reset()
                             }
                         }

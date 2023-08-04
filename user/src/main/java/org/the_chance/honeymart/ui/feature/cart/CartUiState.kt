@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart
 
+import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CartProductsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -8,7 +9,7 @@ data class CartUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val total: Double? = 0.0,
+    val total: Double = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
     val bottomSheetIsDisplayed: Boolean = false
 )
@@ -16,7 +17,7 @@ data class CartUiState(
 data class CartListProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
-    val productPrice: Double = 0.0,
+    val productPrice: Double = formatCurrencyWithNearestFraction(0.0).toDouble(),
     val productCount: Int = 0,
     val productImage: List<String> = emptyList()
 )
@@ -39,6 +40,14 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
         )
     }
 }
+
+
+
+fun formatCurrencyWithNearestFraction(amount: Double):String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(amount)
+}
+
 
 fun CartUiState.unpopulatedLoading() = this.isLoading && this.products.isEmpty()
 

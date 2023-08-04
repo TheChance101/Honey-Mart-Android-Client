@@ -59,7 +59,7 @@ fun MarketContent(
                 ),
             ) {
                 items(state.markets.size) { position ->
-                    MarketItem(state.markets[position], onClickItem = listener::onClickMarket)
+                    MarketItem(onClickItem = listener::onClickMarket, state.markets[position])
                 }
             }
         }

@@ -26,14 +26,14 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemFavorite(
-    imageUrlMarket: String,
+    modifier: Modifier = Modifier,
     name: String,
     price: String,
     description: String,
     productId: Long,
-    modifier: Modifier = Modifier,
     onClickProduct: (ProductId: Long) -> Unit,
     onClickFavoriteIcon: (ProductId: Long) -> Unit,
+    imageUrlMarket: String,
 ) {
 
     Card(
@@ -60,7 +60,7 @@ fun ItemFavorite(
 
                 HoneyFavIconButton(
                     modifier = modifier.align(Alignment.End),
-                    iconPainter = painterResource(id = R.drawable.icon_favorite_selected) ,
+                    iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
                     background = MaterialTheme.colorScheme.tertiary,
                     onClick = { onClickFavoriteIcon(productId) }
                 )

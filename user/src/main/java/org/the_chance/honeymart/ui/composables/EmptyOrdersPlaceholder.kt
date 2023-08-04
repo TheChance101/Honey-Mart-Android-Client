@@ -27,8 +27,8 @@ fun EmptyOrdersPlaceholder(
     state:Boolean,
     image: Int,
     title: String,
-    subtitle: String,
     onClickDiscoverMarkets: () -> Unit,
+    subtitle: String,
 ) {
     ContentVisibility(state = state) {
         Column(

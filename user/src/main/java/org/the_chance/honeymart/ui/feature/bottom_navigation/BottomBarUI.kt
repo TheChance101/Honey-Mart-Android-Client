@@ -27,14 +27,14 @@ import org.the_chance.honymart.ui.theme.white
 import org.the_chance.user.R
 
 @Composable
-fun BottomBar(bottomNavState: MutableState<Boolean>) {
+fun BottomBarUi(bottomNavState: MutableState<Boolean>) {
     val navController = LocalNavigationProvider.current
 
     val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Cart,
-        BottomBarScreen.Order,
-        BottomBarScreen.WishList,
+        BottomBarItems.Home,
+        BottomBarItems.Cart,
+        BottomBarItems.Order,
+        BottomBarItems.WishList,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -61,7 +61,7 @@ fun BottomBar(bottomNavState: MutableState<Boolean>) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: BottomBarItems,
     currentDestination: NavDestination?,
     navController: NavHostController,
 ) {
@@ -88,19 +88,19 @@ fun RowScope.AddItem(
                 restoreState = true
             }
             when (screen) {
-                BottomBarScreen.Home -> {
+                BottomBarItems.Home -> {
                     navController.popBackStack(Screen.MarketScreen.route, false)
                 }
 
-                BottomBarScreen.Cart -> {
+                BottomBarItems.Cart -> {
                     navController.popBackStack(Screen.CartScreen.route, false)
                 }
 
-                BottomBarScreen.Order -> {
+                BottomBarItems.Order -> {
                     navController.popBackStack(Screen.OrderScreen.route, false)
                 }
 
-                BottomBarScreen.WishList -> {
+                BottomBarItems.WishList -> {
                     navController.popBackStack(Screen.WishListScreen.route, false)
                 }
             }

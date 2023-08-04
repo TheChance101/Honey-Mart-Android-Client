@@ -18,9 +18,9 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HoneyFilledButton(
+    modifier: Modifier = Modifier,
     label: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     isEnable: Boolean = true,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     background: Color = MaterialTheme.colorScheme.primary,
