@@ -28,6 +28,7 @@ import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.CustomButton
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -82,8 +83,8 @@ fun AuthContent(
             style = Typography.bodySmall.copy(black37),
             textAlign = TextAlign.Center
         )
-        CustomButton(
-            labelIdStringRes = R.string.sign_up,
+        HoneyFilledButton(
+            label = stringResource(id = R.string.sign_up),
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space40

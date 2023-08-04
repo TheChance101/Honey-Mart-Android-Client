@@ -1,6 +1,5 @@
 package org.the_chance.honymart.ui.composables
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +11,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,12 +25,12 @@ import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
 @Composable
-fun TextField(
+fun HoneyTextField(
+    hint: String,
+    iconPainter: Painter,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     text: String = "",
-    onValueChange: (String) -> Unit = {},
-    hint: String,
-    @DrawableRes idIconDrawableRes: Int,
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
@@ -69,8 +69,7 @@ fun TextField(
             },
             leadingIcon = {
                 Icon(
-                    painter =
-                    painterResource(idIconDrawableRes),
+                    painter = iconPainter,
                     contentDescription = stringResource(R.string.copy_button),
                     tint = if (isError) error else white200
                 )
@@ -94,8 +93,11 @@ fun TextField(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
-    TextField(
-        hint = "Email", idIconDrawableRes = R.drawable.ic_email,
-        isError = true, errorMessage = stringResource(R.string.that_s_not_a_valid_email)
+    HoneyTextField(
+        hint = "Email",
+        iconPainter = painterResource(id = R.drawable.ic_email),
+        isError = true,
+        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
+        onValueChange = {}
     )
 }

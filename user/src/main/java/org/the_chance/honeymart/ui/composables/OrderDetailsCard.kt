@@ -1,4 +1,4 @@
-package org.the_chance.honymart.ui.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -31,11 +31,11 @@ fun OrderDetailsCard(
     orderPrice: String,
     orderCount: String,
     orderId: Long,
-    onClickCard: (orderId: Long) -> Unit = {},
+    onClickCard: (orderId: Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    HoneyMartTheme {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(width = 160.dp, MaterialTheme.dimens.heightItem)
                 .clip(MaterialTheme.shapes.medium)
                 .clickable { onClickCard(orderId) }
@@ -90,7 +90,6 @@ fun OrderDetailsCard(
                 }
             }
         }
-    }
 }
 
 @Preview
@@ -102,5 +101,6 @@ fun OrderDetailsCardPreview() {
         orderPrice = "30,000",
         orderCount = "3",
         orderId = 0,
+        onClickCard = {}
     )
 }

@@ -19,7 +19,7 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun TextPrice(
+fun HoneyOutlineText(
     price: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
@@ -48,6 +48,6 @@ fun TextPrice(
 @Composable
 private fun TextPricePreview() {
     HoneyMartTheme {
-        TextPrice("10,000,000")
+        HoneyOutlineText("10,000,000")
     }
 }
