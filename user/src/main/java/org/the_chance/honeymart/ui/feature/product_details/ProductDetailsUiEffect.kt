@@ -1,12 +1,14 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-import org.the_chance.honeymart.util.AuthData
+import org.the_chance.honeymart.ui.base.BaseUiEffect
 
-sealed class ProductDetailsUiEffect {
+sealed class ProductDetailsUiEffect: BaseUiEffect {
     object AddToCartSuccess : ProductDetailsUiEffect()
     data class AddToCartError(val error: Exception) : ProductDetailsUiEffect()
-    data class UnAuthorizedUserEffect(val authData: AuthData.ProductDetails) :
+    object UnAuthorizedUserEffect :
         ProductDetailsUiEffect()
+
+   object OnBackClickEffect : ProductDetailsUiEffect()
 
     object AddProductToWishListEffectSuccess : ProductDetailsUiEffect()
     data class AddProductToWishListEffectError(val error: Exception) : ProductDetailsUiEffect()

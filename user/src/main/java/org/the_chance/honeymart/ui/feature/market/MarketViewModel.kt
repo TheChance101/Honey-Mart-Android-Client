@@ -5,15 +5,12 @@ import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.uistate.MarketUiState
-import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
-import org.the_chance.honeymart.ui.feature.uistate.toMarketUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-) : BaseViewModel<MarketsUiState, Unit>(MarketsUiState()),
+) : BaseViewModel<MarketsUiState, MarketUiEffect>(MarketsUiState()),
     MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -31,6 +28,9 @@ class MarketViewModel @Inject constructor(
         )
     }
 
+    override fun onClickMarket(marketId: Long) {
+        effectActionExecutor(_effect, MarketUiEffect.ClickMarketEffect(marketId))
+    }
 
     private fun onGetMarketError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
@@ -48,7 +48,7 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-   override fun getChosenMarkets() {
+    override fun getChosenMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllMarket().map { it.toMarketUiState() } },

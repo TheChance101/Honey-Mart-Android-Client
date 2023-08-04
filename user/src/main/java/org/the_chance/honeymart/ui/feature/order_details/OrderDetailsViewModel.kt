@@ -14,7 +14,8 @@ class OrderDetailsViewModel @Inject constructor(
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
     private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<OrderDetailsUiState, Unit>(OrderDetailsUiState()) {
+) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
+    OrderDetailsInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
@@ -66,4 +67,8 @@ class OrderDetailsViewModel @Inject constructor(
         _state.update { it.copy(isDetailsLoading = false, error = error) }
     }
 
+    override fun onClickOrder(productId: Long) {
+        effectActionExecutor(_effect, OrderDetailsUiEffect.ClickProductEffect(productId))
+
+    }
 }

@@ -12,7 +12,8 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CategoriesUiState, Unit>(CategoriesUiState()),CategoryInteractionListener {
+) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
+    CategoryInteractionListener {
 
     private val categoryArgs: CategoryArgs = CategoryArgs(savedStateHandle)
 
@@ -25,7 +26,18 @@ class CategoryViewModel @Inject constructor(
 
     override fun onGetData() {
         getAllCategory()
-        _state.update { it.copy(marketId = categoryArgs.marketId.toLong()) }
+    }
+
+    override fun onClickCategory(categoryId: Long, position: Int) {
+        effectActionExecutor(
+            _effect,
+            CategoryUiEffect.ClickCategoryEffect(
+                categoryId,
+                categoryArgs.marketId.toLong(),
+                position
+            )
+        )
+
     }
 
     private fun getAllCategory() {

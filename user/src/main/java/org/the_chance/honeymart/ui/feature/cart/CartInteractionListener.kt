@@ -5,6 +5,10 @@ interface CartInteractionListener {
     fun onClickMinusCountProductInCart(productId: Long)
     fun deleteCart(productId: Long)
     fun changeBottomSheetValue()
-
     fun getChosenCartProducts()
+    fun onClickDiscoverButton()
+
+    fun onClickOrderNowButton()
+
+    fun onClickViewOrders()
 }

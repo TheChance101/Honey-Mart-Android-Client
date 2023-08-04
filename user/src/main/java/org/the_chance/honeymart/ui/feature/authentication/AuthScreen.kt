@@ -17,13 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -31,19 +34,27 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    viewModel: AuthViewModel = hiltViewModel(),
+) {
     val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    AuthContent(
-        onClickSignUp = { navController.navigateToSignupScreen() },
-        onClickLogin = { navController.navigateToLogin() },
-    )
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is AuthenticationUiEffect.ClickLoginEffect -> navController.navigateToLogin()
+                is AuthenticationUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
+            }
+        }
+    }
+
+    AuthContent(listener = viewModel)
 }
 
 @Composable
 fun AuthContent(
-    onClickSignUp: () -> Unit,
-    onClickLogin: () -> Unit,
+    listener: AuthenticationInteractionListener,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,8 +71,7 @@ fun AuthContent(
         Text(
             text = stringResource(R.string.welcome_to_honey_mart),
             modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-            color = black37,
-            style = Typography.displayMedium
+            style = Typography.displayMedium.copy(black37)
         )
         Text(
             text = stringResource(R.string.get_ready_to_a_shopping_experience_like_no_other),
@@ -69,8 +79,7 @@ fun AuthContent(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space16
             ),
-            color = black37,
-            style = Typography.bodySmall,
+            style = Typography.bodySmall.copy(black37),
             textAlign = TextAlign.Center
         )
         HoneyFilledButton(
@@ -79,7 +88,7 @@ fun AuthContent(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space40
             ),
-            onClick = onClickSignUp
+            onClick = listener::onClickSignUp
         )
         Row(
             modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
@@ -88,13 +97,13 @@ fun AuthContent(
         ) {
             Text(
                 text = stringResource(R.string.already_have_account),
-                color = black37,
-                style = Typography.displaySmall,
+                style = Typography.displaySmall.copy(black37),
                 textAlign = TextAlign.Center
             )
             TextButton(
                 contentPadding = PaddingValues(MaterialTheme.dimens.zero),
-                onClick = onClickLogin, colors = ButtonDefaults.textButtonColors(Color.Transparent)
+                onClick = listener::onClickLogin,
+                colors = ButtonDefaults.textButtonColors(Color.Transparent)
             ) {
                 Text(
                     text = stringResource(R.string.log_in),

@@ -10,12 +10,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.feature.uistate.MarketsUiState
+import org.the_chance.honeymart.ui.feature.market.compoaseable.MarketItem
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -27,21 +29,26 @@ fun MarketScreen(
 ) {
     val state = viewModel.state.collectAsState().value
     val navController = LocalNavigationProvider.current
-    MarketContent(
-        state = state,
-        onClickMarket = navController::navigateToCategoryScreen,
-        listener = viewModel
-    )
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is MarketUiEffect.ClickMarketEffect -> navController.navigateToCategoryScreen(it.marketId)
+            }
+        }
+    }
+
+    MarketContent(state = state, listener = viewModel)
 }
 
 @Composable
 fun MarketContent(
     state: MarketsUiState,
-    onClickMarket: (Long) -> Unit,
     listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-        ContentVisibility(state = state.markets.isNotEmpty() && !state.isError) {
+        ContentVisibility(state = state.showMarket()) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
@@ -52,12 +59,12 @@ fun MarketContent(
                 ),
             ) {
                 items(state.markets.size) { position ->
-                    MarketItem(state.markets[position], onClickItem = onClickMarket)
+                    MarketItem(state.markets[position], onClickItem = listener::onClickMarket)
                 }
             }
         }
         ConnectionErrorPlaceholder(
-            state = state.isError && state.markets.isEmpty(),
+            state = state.errorPlaceHolder(),
             onClickTryAgain = listener::getChosenMarkets
         )
         Loading(state.isLoading)

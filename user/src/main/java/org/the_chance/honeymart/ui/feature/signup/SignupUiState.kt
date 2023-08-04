@@ -18,3 +18,10 @@ data class SignupUiState(
     val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
     val showToast:Boolean = false
 )
+
+
+fun SignupUiState.continueValidation(): Boolean {
+    return this.fullNameState == ValidationState.VALID_FULL_NAME
+            && this.emailState == ValidationState.VALID_EMAIL &&
+            this.email.isNotEmpty() && this.fullName.isNotEmpty()
+}

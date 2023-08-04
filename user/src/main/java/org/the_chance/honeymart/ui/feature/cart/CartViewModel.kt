@@ -18,7 +18,7 @@ class CartViewModel @Inject constructor(
     private val deleteFromCart: DeleteFromCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
     private val checkout: CheckoutUseCase
-) : BaseViewModel<CartUiState, Unit>(CartUiState()),
+) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
@@ -54,7 +54,7 @@ class CartViewModel @Inject constructor(
         val currentState = _state.value
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
-                val currentCount = product.productCount ?: 0
+                val currentCount = product.productCount
                 val newProductCount = if (currentCount >= 100) 100 else currentCount + 1
                 product.copy(productCount = newProductCount)
             } else {
@@ -76,7 +76,7 @@ class CartViewModel @Inject constructor(
 
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
-                val currentCount = product.productCount ?: 1
+                val currentCount = product.productCount
                 val newProductCount = if (currentCount > 1) currentCount - 1 else 1
                 product.copy(productCount = newProductCount)
             } else {
@@ -123,8 +123,11 @@ class CartViewModel @Inject constructor(
         decrementProductCountByOne(productId)
     }
 
+    override fun onClickViewOrders() {
+        effectActionExecutor(_effect, CartUiEffect.ClickViewOrdersEffect)
+    }
 
-    fun onClickOrderNowButton() {
+    override fun onClickOrderNowButton() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { checkout() },
@@ -150,17 +153,19 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    override fun onClickDiscoverButton() {
+        effectActionExecutor(_effect, CartUiEffect.ClickDiscoverEffect)
+    }
+
     override fun deleteCart(position: Long) {
         _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         viewModelScope.launch {
-            if (productId != null) {
-                tryToExecute(
-                    { deleteFromCart(productId) },
-                    ::onDeleteFromCartSuccess,
-                    ::onDeleteFromCartError
-                )
-            }
+            tryToExecute(
+                { deleteFromCart(productId) },
+                ::onDeleteFromCartSuccess,
+                ::onDeleteFromCartError
+            )
         }
     }
 

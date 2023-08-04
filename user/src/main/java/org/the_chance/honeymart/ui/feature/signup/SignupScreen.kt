@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,9 +40,10 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.feature.login.CustomDialog
+import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
@@ -57,22 +58,25 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(key1 = state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT).show()
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
+                SignupUiEffect.ClickSignupEffect -> navController.popBackStack(
+                    Screen.AuthenticationScreen.route,
+                    true
+                )
+
+                SignupUiEffect.ShowToastEffect ->
+                    Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT)
+                        .show()
+            }
         }
     }
-    LaunchedEffect(key1 = state.isLogin) {
-        if (state.isLogin == ValidationState.SUCCESS) {
-            navController.popBackStack(Screen.AuthenticationScreen.route, true)
-        }
-    }
-    SignupContent(
-        listener =  viewModel,
-        onClickLogin = { navController.navigateToLogin() },
-        state = state
-    )
+
+    SignupContent(listener = viewModel, state = state)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -80,7 +84,6 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
 fun SignupContent(
     modifier: Modifier = Modifier,
     listener: SignupInteractionListener,
-    onClickLogin: () -> Unit,
     state: SignupUiState,
 ) {
     Loading(state = state.isLoading)
@@ -140,7 +143,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
-                                iconPainter = painterResource(id =R.drawable.ic_person ),
+                                iconPainter = painterResource(id = R.drawable.ic_person),
                                 onValueChange = listener::onFullNameInputChange,
                                 errorMessage = when (state.fullNameState) {
                                     ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
@@ -151,7 +154,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.email,
                                 hint = stringResource(R.string.email),
-                                iconPainter = painterResource(id =R.drawable.ic_email ),
+                                iconPainter = painterResource(id = R.drawable.ic_email),
                                 onValueChange = listener::onEmailInputChange,
                                 errorMessage = when (state.emailState) {
                                     ValidationState.BLANK_EMAIL -> "email cannot be blank"
@@ -168,7 +171,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.password,
                                 hint = stringResource(R.string.password),
-                                iconPainter = painterResource(id = R.drawable.ic_password) ,
+                                iconPainter = painterResource(id = R.drawable.ic_password),
                                 onValueChange = listener::onPasswordInputChanged,
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
@@ -180,7 +183,7 @@ fun SignupContent(
                             HoneyTextField(
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
-                                iconPainter = painterResource(id =R.drawable.ic_password ) ,
+                                iconPainter = painterResource(id = R.drawable.ic_password),
                                 onValueChange = listener::onConfirmPasswordChanged,
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
@@ -199,10 +202,7 @@ fun SignupContent(
                             vertical = MaterialTheme.dimens.space40
                         ),
                         onClick = {
-                            if (state.fullNameState == ValidationState.VALID_FULL_NAME
-                                && state.emailState == ValidationState.VALID_EMAIL &&
-                                state.email.isNotEmpty() && state.fullName.isNotEmpty()
-                            ) {
+                            if (state.continueValidation()) {
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(1)
                                 }
@@ -233,7 +233,7 @@ fun SignupContent(
                         textAlign = TextAlign.Center
                     )
                     TextButton(
-                        onClick = onClickLogin,
+                        onClick = listener::onClickLogin,
                         colors = ButtonDefaults.textButtonColors(Color.Transparent)
                     ) {
                         Text(

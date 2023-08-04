@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login
+package org.the_chance.honeymart.ui.feature.login.compsoables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,8 +65,7 @@ fun CustomDialogUi(
             )
             Text(
                 text = stringResource(R.string.success_sign_up_description),
-                color = black37,
-                style = Typography.bodySmall,
+                style = Typography.bodySmall.copy(black37),
                 textAlign = TextAlign.Center
             )
         }

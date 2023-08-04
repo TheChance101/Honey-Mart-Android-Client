@@ -16,8 +16,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.feature.cart.CartViewModel
 import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.black60
@@ -27,9 +25,9 @@ import org.the_chance.user.R
 @Composable
 fun CartCardView(
     modifier: Modifier = Modifier,
-    totalPrice: String = "300,000 $",
+    totalPrice: String,
     isLoading: Boolean,
-    viewModel: CartViewModel = hiltViewModel()
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(
@@ -53,8 +51,7 @@ fun CartCardView(
             val (priceInDollars, orderNowButton, TotalPrice) = createRefs()
             Text(
                 text = formatCurrencyWithNearestFraction(totalPrice.toDouble()),
-                color = black60,
-                style = org.the_chance.honymart.ui.theme.Typography.bodyMedium,
+                style = org.the_chance.honymart.ui.theme.Typography.bodyMedium.copy(black60),
                 modifier = Modifier.constrainAs(priceInDollars) {
                     top.linkTo(parent.top, margin = 8.dp)
                     end.linkTo(parent.end)
@@ -62,8 +59,8 @@ fun CartCardView(
             )
 
             HoneyFilledIconButton(
-                onClick = { viewModel.onClickOrderNowButton() },
                 label = stringResource(id = R.string.order_now),
+                onClick = onClick,
                 isEnable = !isLoading,
                 iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.icon_cart),
                 modifier = Modifier
@@ -73,11 +70,11 @@ fun CartCardView(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                     },
-                )
+            )
             Text(
                 text = stringResource(R.string.total_price),
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = org.the_chance.honymart.ui.theme.Typography.displaySmall,
+                style = org.the_chance.honymart.ui.theme.Typography.displaySmall
+                    .copy(color = MaterialTheme.colorScheme.onTertiaryContainer),
                 modifier = Modifier.constrainAs(TotalPrice) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top, margin = 8.dp)

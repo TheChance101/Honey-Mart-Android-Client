@@ -24,7 +24,7 @@ class ProductViewModel @Inject constructor(
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, Unit>(ProductsUiState()), ProductInteractionListener {
+) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -133,15 +133,12 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        _state.update {
-            it.copy(
-                navigateToProductDetailsState = NavigationState(
-                    isNavigate = true,
-                    id = productId
-                )
-            )
-        }
+        effectActionExecutor(
+            _effect,
+            ProductUiEffect.ClickProductEffect(productId, args.categoryId.toLong())
+        )
     }
+
 
     private fun updateProducts(
         products: List<ProductUiState>,
@@ -202,6 +199,7 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
+        effectActionExecutor(_effect, ProductUiEffect.RemovedFromWishListEffect)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -228,34 +226,20 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(products = newProduct) }
     }
 
-    private fun onAddToWishListSuccess(successMessage: String) {}
+    private fun onAddToWishListSuccess(successMessage: String) {
+        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
+
+    }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-        if (error is ErrorHandler.UnAuthorizedUser) {
-            _state.update {
-                it.copy(
-                    navigateToAuthGraph = NavigationState(
-                        isNavigate = true
-                    )
-                )
-            }
-        }
+        if (error is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
         updateFavoriteState(productId, false)
     }
 
-    override fun resetNavigation() {
-        _state.update {
-            it.copy(
-                navigateToProductDetailsState = NavigationState(
-                    isNavigate = false,
-                    id = 0L
-                ),
-                navigateToAuthGraph = NavigationState(
-                    isNavigate = false
-                )
-            )
-        }
+
+    override fun onclickTryAgain() {
+        getData()
     }
-    override fun onclickTryAgain() {getData()}
 
 }
