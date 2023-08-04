@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
-    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.KOTLIN_KSP)
     id(Plugins.HILT_LIBRARY)
     id(Plugins.NAVIGATION_ARGS)
     id("com.google.gms.google-services")
@@ -65,7 +65,7 @@ dependencies {
     //Glide
     implementation(Dependencies.glideDependency)
     //Hilt
-    kapt(Dependencies.hiltCompiler)
+    ksp(Dependencies.hiltCompiler)
     implementation(Dependencies.hiltDependency)
     //LiveData
     Dependencies.liveDataDependencies.forEach { implementation(it) }

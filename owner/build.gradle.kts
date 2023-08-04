@@ -1,6 +1,7 @@
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_KSP)
 }
 
 android {

@@ -4,5 +4,6 @@ object PluginsVersions {
     const val HILT_LIBRARY = "2.44"
     const val KOTLIN_ANDROID = "1.8.10"
     const val KOTLIN_JVM = "1.8.0"
+    const val KOTLIN_KSP = "1.8.10-1.0.9"
     const val PLUGIN_SERIALIZATION = "1.8.0"
 }

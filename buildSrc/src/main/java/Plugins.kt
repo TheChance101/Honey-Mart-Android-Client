@@ -4,7 +4,7 @@ object Plugins {
     const val HILT_LIBRARY = "com.google.dagger.hilt.android"
     const val KOTLIN_ANDROID = "android"
     const val KOTLIN_JVM = "org.jetbrains.kotlin.jvm"
-    const val KOTLIN_KAPT = "kapt"
+    const val KOTLIN_KSP = "com.google.devtools.ksp"
     const val JAVA_LIBRARY = "java-library"
     const val NAVIGATION_ARGS = "androidx.navigation.safeargs.kotlin"
     const val SERIALIZATION = "org.jetbrains.kotlin.plugin.serialization"

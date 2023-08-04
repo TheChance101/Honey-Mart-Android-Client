@@ -16,6 +16,6 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID) version PluginsVersions.KOTLIN_ANDROID apply false
     id(Plugins.KOTLIN_JVM) version PluginsVersions.KOTLIN_JVM apply false
     kotlin(Plugins.PLUGIN_SERIALIZATION) version PluginsVersions.PLUGIN_SERIALIZATION
-
     id(Plugins.HILT_LIBRARY) version PluginsVersions.HILT_LIBRARY apply false
+    id(Plugins.KOTLIN_KSP) version PluginsVersions.KOTLIN_KSP apply false
 }

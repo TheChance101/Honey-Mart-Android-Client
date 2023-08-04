@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
-    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.KOTLIN_KSP)
     id(Plugins.HILT_LIBRARY)
     id(Plugins.SERIALIZATION)
 }
@@ -46,11 +46,8 @@ dependencies {
     implementation(Dependencies.coroutinesDependency)
     //Hilt
     implementation(Dependencies.hiltDependency)
-    kapt(Dependencies.hiltCompiler)
+    ksp(Dependencies.hiltCompiler)
     // DataStore
     implementation(Dependencies.dateStoreDependency)
     Dependencies.ktorDependency.forEach { implementation(it) }
-}
-kapt {
-    correctErrorTypes = true
 }

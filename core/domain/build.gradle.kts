@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.JAVA_LIBRARY)
     id(Plugins.KOTLIN_JVM)
-    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.KOTLIN_KSP)
 }
 
 java {
