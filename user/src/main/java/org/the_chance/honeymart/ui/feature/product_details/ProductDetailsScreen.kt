@@ -34,21 +34,14 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
-import org.the_chance.honeymart.ui.feature.product_details.composeable.AppBar
+import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honymart.ui.composables.ContentVisibility
-import org.the_chance.honymart.ui.composables.CustomButton
-import org.the_chance.honymart.ui.composables.CustomSmallIconButton
 import org.the_chance.honymart.ui.composables.HoneyFavIconButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.SpacerVertical8
-import org.the_chance.honymart.ui.composables.TextPrice
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -102,7 +95,7 @@ private fun ProductDetailsContent(
                             start = MaterialTheme.dimens.space16,
                             end = MaterialTheme.dimens.space16,
                         ),
-                    iconPainter = painterResource(id =  R.drawable.icon_cart),
+                    iconPainter = painterResource(id = R.drawable.icon_cart),
                     isEnable = !state.isAddToCartLoading,
                     onClick = {
                         state.product.productId.let {
@@ -132,7 +125,7 @@ private fun ProductDetailsContent(
                             imageUrl = state.image, modifier = Modifier.fillMaxSize()
                         )
 
-                        AppBar(
+                        ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
                             onBackClick = listenener::onClickBack,
@@ -200,7 +193,10 @@ private fun ProductDetailsContent(
                             }
                         }
 
-                        HoneyOutlineText(state.totalPrice.toString() + "$",modifier=Modifier.padding(vertical = MaterialTheme.dimens.space8))
+                        HoneyOutlineText(
+                            state.totalPrice.toString() + "$",
+                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
+                        )
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()

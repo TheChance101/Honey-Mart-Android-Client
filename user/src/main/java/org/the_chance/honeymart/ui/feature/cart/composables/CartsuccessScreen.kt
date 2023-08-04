@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart.composables
 
-import SwipeBackGround
+import SwipeBackground
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -57,7 +57,7 @@ fun CartSuccessScreen(
                 SwipeToDismiss(
                     modifier = Modifier.animateItemPlacement(),
                     state = dismissState,
-                    background = { SwipeBackGround() },
+                    background = { SwipeBackground() },
                     directions = setOf(DismissDirection.EndToStart),
                     dismissContent = {
                         CartItem(

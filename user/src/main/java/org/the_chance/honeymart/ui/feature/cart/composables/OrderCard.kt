@@ -70,7 +70,7 @@ fun CartCardView(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom, margin = 16.dp)
                     },
-                )
+            )
             Text(
                 text = stringResource(R.string.total_price),
                 style = org.the_chance.honymart.ui.theme.Typography.displaySmall

@@ -34,11 +34,9 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
-import org.the_chance.honeymart.util.collect
-import org.the_chance.honymart.ui.composables.ContentVisibility
-import org.the_chance.honymart.ui.composables.CustomButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -60,6 +58,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                     Screen.AuthenticationScreen.route,
                     true
                 )
+
                 LoginUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
                 LoginUiEffect.ShowToastEffect -> Toast.makeText(
                     context,
@@ -127,7 +126,7 @@ fun LoginContent(
             HoneyTextField(
                 text = state.password,
                 hint = stringResource(R.string.password),
-                iconPainter = painterResource(id =R.drawable.ic_password ) ,
+                iconPainter = painterResource(id = R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
                 errorMessage = when (state.passwordState) {
                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"

@@ -11,21 +11,6 @@ data class CategoriesUiState(
     val message: String = "",
     val categories: List<CategoryUiState> = emptyList(),
 )
-val test= CategoriesUiState(
-    isLoading = false,
-    isError = false,
-    error = null,
-    message = "dapibus",
-    categories = listOf(
-        CategoryUiState(
-            categoryId = 5995,
-            categoryName = "Catherine Carson",
-            categoryImageId = 1342,
-            isCategorySelected = false
-        )
-    ),
-    marketId = 3783
-)
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
