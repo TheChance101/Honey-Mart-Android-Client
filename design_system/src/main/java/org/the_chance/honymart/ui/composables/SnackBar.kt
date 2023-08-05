@@ -37,14 +37,14 @@ fun SnackBar(
                     Text(
                         "Undo",
                         modifier = Modifier.clickable(onClick = onHideSnackbar),
-                        style = Typography.displayLarge,
+                        style = Typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
             ) {
                 Text(
                     text = message,
-                    style = Typography.displayLarge,
+                    style = Typography.bodySmall,
                 )
             }
         }

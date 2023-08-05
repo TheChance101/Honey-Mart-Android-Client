@@ -15,6 +15,7 @@ data class WishListProductUiState(
     val productName: String = "",
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = true,
+    val showSnackBar: Boolean= false ,
     val description: String = "",
     val productImages: List<String> = emptyList()
 )
