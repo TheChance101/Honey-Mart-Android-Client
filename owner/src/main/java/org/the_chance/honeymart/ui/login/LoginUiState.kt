@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login
+package org.the_chance.honeymart.ui.login
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
