@@ -15,6 +15,11 @@ class AuthRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), AuthRepository {
 
+    override suspend fun createOwnerAccount(
+        fullName: String, email: String, password: String,
+    ): Boolean =
+        wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
+
     override suspend fun createUserAccount(
         fullName: String,
         password: String,
