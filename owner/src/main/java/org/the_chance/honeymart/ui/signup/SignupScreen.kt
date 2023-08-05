@@ -51,7 +51,6 @@ fun SignupScreen(
 
 }
 
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
 fun SignupContent(
     state: SignupUiState,

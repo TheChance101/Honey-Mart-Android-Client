@@ -1,12 +1,21 @@
 package org.the_chance.honeymart.ui
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import org.the_chance.owner.R
+import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.signup.SignupScreen
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        setContent() {
+            HoneyMartTheme() {
+                SignupScreen()
+            }
+        }
     }
 }
