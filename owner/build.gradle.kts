@@ -23,15 +23,22 @@ android {
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
         targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
+
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
-     buildFeatures {
+    buildFeatures {
         dataBinding = true
+        compose = true
     }
 }
 
@@ -51,4 +58,7 @@ dependencies {
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 }
