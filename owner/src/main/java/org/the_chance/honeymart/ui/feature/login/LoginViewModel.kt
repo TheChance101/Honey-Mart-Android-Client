@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginOwner: LoginOwnerUseCase,
+    private val loginOwnerUseCase: LoginOwnerUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginOwner(password = password, email = email) },
+            { loginOwnerUseCase(password = password, email = email) },
             ::onLoginSuccess,
             ::onLoginError,
         )
