@@ -28,7 +28,7 @@ fun HoneyFilledIconButton(
     iconPainter: Painter,
     modifier: Modifier = Modifier,
     isEnable: Boolean = true,
-    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
     Button(

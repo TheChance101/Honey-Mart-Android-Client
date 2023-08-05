@@ -39,7 +39,6 @@ private val DarkColorScheme = darkColorScheme(
     onError = primary100,
     onErrorContainer = black37,
     outlineVariant = white,
-
     )
 
 private val LightColorScheme = lightColorScheme(
@@ -55,7 +54,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = white,
     onTertiary = white,
     onTertiaryContainer = black16,
-    tertiaryContainer = white30,
+    tertiaryContainer = white,
     onSurfaceVariant = white,
     errorContainer = primary100,
     inverseOnSurface = primary100,
