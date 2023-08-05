@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.signup
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddOwnerUseCase
+import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
@@ -11,9 +13,10 @@ import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val createAccount: AddOwnerUseCase,
-//    private val loginOwner: LoginOwnerUseCase,
+    private val loginOwner: LoginOwnerUseCase,
     private val validateFullName: ValidateFullNameUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
@@ -23,7 +26,7 @@ class SignUpViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     override fun onClickLogin() {
-//        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
+        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
 
     override fun onClickSignup() {
@@ -120,23 +123,23 @@ class SignUpViewModel @Inject constructor(
 
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
-//        tryToExecute(
-//            { loginOwner(password = password, email = email) },
-//            ::onLoginSuccess,
-//            ::onLoginError,
-//        )
+        tryToExecute(
+            { loginOwner(password = password, email = email) },
+            ::onLoginSuccess,
+            ::onLoginError,
+        )
     }
 
-//    private fun onLoginSuccess(loginState: ValidationState) {
-//        if (loginState == ValidationState.SUCCESS)
-////            effectActionExecutor(_effect, SignupUiEffect.ClickSignupEffect)
-//
-//        _state.update { it.copy(isLoading = false, isLogin = loginState) }
-//    }
-//
-//    private fun onLoginError(error: ErrorHandler) {
-//        _state.update { it.copy(isLoading = false, error = error) }
-//    }
+    private fun onLoginSuccess(loginState: ValidationState) {
+        if (loginState == ValidationState.SUCCESS)
+            effectActionExecutor(_effect, SignupUiEffect.ClickSignupEffect)
+
+        _state.update { it.copy(isLoading = false, isLogin = loginState) }
+    }
+
+    private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+    }
 
 
 }
