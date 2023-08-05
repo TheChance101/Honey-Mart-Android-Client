@@ -91,4 +91,19 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
 
+    override suspend fun addProduct(
+        name: String,
+        price: Double,
+        description: String,
+        categoriesId: List<Long>
+    ): ProductEntity {
+        return wrap {
+            honeyMartService.addProduct(
+                name = name,
+                price = price,
+                description = description,
+                categoriesId = categoriesId
+            )
+        }.value?.toProductEntity() ?: throw NotFoundException()
+    }
 }
