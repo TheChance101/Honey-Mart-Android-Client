@@ -96,7 +96,6 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
-
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
@@ -144,7 +143,8 @@ class ProductViewModel @Inject constructor(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
     ) = products.map { product ->
-        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId },
+            showSnackBar = false)
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
@@ -179,7 +179,7 @@ class ProductViewModel @Inject constructor(
         val isFavorite = currentProduct?.isFavorite ?: false
         val newFavoriteState = !isFavorite
 
-        updateFavoriteState(productId, newFavoriteState)
+        updateFavoriteState(productId, newFavoriteState,true)
 
         if (isFavorite) {
             deleteProductFromWishList(productId)
@@ -215,10 +215,11 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean,showSnackBar : Boolean) {
         val newProduct = _state.value.products.map {
             if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite)
+                it.copy(isFavorite = isFavorite,
+                showSnackBar = showSnackBar )
             } else {
                 it
             }
@@ -228,13 +229,18 @@ class ProductViewModel @Inject constructor(
 
     private fun onAddToWishListSuccess(successMessage: String) {
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
+        _state.update { currentState ->
+            currentState.copy(
+                products = currentState.products.map { it.copy(showSnackBar = false) }
+            )
+        }
 
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
-        updateFavoriteState(productId, false)
+        updateFavoriteState(productId, false,false )
     }
 
 

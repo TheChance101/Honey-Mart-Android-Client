@@ -36,6 +36,7 @@ import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDeta
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBar
 import org.the_chance.honymart.ui.theme.dimens
 
 
@@ -52,14 +53,15 @@ fun ProductsScreen(
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                ProductUiEffect.AddedToWishListEffect -> {// TODO: add snack bar
+                ProductUiEffect.AddedToWishListEffect -> {//
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     it.productId
                 )
 
-                ProductUiEffect.RemovedFromWishListEffect -> {// TODO: add snack bar
+                ProductUiEffect.RemovedFromWishListEffect -> {//
+
                 }
 
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
@@ -147,6 +149,15 @@ private fun ProductsContent(
                 }
             }
         }
-
+        state.products.forEach{productState ->
+        if (productState.showSnackBar && productState.isFavorite){
+            SnackBar(message = "Successfully add to Wish List ", show =productState.showSnackBar) {
+                productInteractionListener.onClickFavIcon(productState.productId)
+            }
+                
+            }
+        }
     }
+
+    
 }

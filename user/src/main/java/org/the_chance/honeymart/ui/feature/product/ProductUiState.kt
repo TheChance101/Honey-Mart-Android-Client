@@ -13,12 +13,13 @@ data class ProductsUiState(
     val products: List<ProductUiState> = emptyList(),
     val isEmptyProducts: Boolean = false,
     val categories: List<CategoryUiState> = emptyList(),
-    val categoryId: Long = 0L
+    val categoryId: Long = 0L,
 )
 
 
 data class ProductUiState(
     val productId: Long = 0L,
+    val showSnackBar :Boolean = false ,
     val productName: String = "",
     val productDescription: String = "",
     val productPrice: Double = 0.0,
