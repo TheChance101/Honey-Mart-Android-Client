@@ -65,6 +65,7 @@ fun LoginContent(
                 painter = painterResource(id = R.drawable.auth_image),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxHeight()
             )
 
 
