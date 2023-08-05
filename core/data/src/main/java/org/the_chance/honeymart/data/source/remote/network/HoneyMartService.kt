@@ -150,4 +150,15 @@ interface HoneyMartService {
         productId: Long,
     ): BaseResponse<ProductDto>
     // endregion
+
+
+
+    // region Owner
+
+
+    // region Auth
+    suspend fun loginOwner(email: String, password: String): BaseResponse<String>
+    //endregion
+
+    //endregion
 }

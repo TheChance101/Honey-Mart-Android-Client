@@ -44,5 +44,9 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
+    override suspend fun loginOwner(email: String, password: String): String {
+        return wrap { honeyMartService.loginOwner(email, password) }.value
+            ?: throw NotFoundException()
+    }
 
 }
