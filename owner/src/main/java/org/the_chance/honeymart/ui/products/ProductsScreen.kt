@@ -13,6 +13,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,87 +35,7 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductsViewModel = hiltViewModel()
 ) {
-    // val state by viewModel.state.collectAsState()
-    val products = listOf(
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ), ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ), ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ), ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        ),
-        ProductUiState(
-            productName = "Apple",
-            productPrice = 25.0,
-            productId = 0,
-            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
-            productQuantity = 5
-        )
-    )
-    val state = ProductsUiState(
-        products = products,
-        category = CategoryUiState(R.drawable.icon_category, "Bedroom")
-    )
+    val state by viewModel.state.collectAsState()
     ProductsContent(state)
 }
 
@@ -143,7 +65,7 @@ fun ProductsContent(state: ProductsUiState) {
                     tint = black37
                 )
                 Text(
-                    text = "Bedroom",
+                    text = state.category.categoryName,
                     style = MaterialTheme.typography.bodySmall,
                     color = blackOn60
                 )
@@ -152,7 +74,7 @@ fun ProductsContent(state: ProductsUiState) {
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HoneyOutlineText(text = state.products.size.toString() + " Products")
+                HoneyOutlineText(text = state.productsQuantity)
                 IconButton(
                     modifier = Modifier.size(MaterialTheme.dimens.icon24),
                     onClick = { /*TODO*/ },
@@ -174,8 +96,7 @@ fun ProductsContent(state: ProductsUiState) {
                 ProductCard(
                     imageUrl = product.productImage,
                     productName = product.productName,
-                    productPrice = product.productPrice.toString() + "$",
-                    productQuantity = product.productQuantity.toString()
+                    productPrice = product.productPrice,
                 )
             }
         }

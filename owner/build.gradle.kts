@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
@@ -58,6 +62,9 @@ dependencies {
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
 
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
