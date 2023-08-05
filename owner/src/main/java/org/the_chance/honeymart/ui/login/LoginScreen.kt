@@ -14,6 +14,8 @@ import org.the_chance.honymart.ui.composables.Loading
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
@@ -63,7 +65,6 @@ fun LoginContent(
                 painter = painterResource(id = R.drawable.auth_image),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxHeight()
             )
 
 
@@ -109,6 +110,7 @@ fun LoginContent(
                         else -> ""
                     },
                 )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
                 HoneyTextField(
                     text = state.password,
                     hint = stringResource(org.the_chance.design_system.R.string.password),
