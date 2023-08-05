@@ -2,16 +2,19 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.product.ProductUiEffect
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
     private val getAllWishListUseCase: GetAllWishListUseCase,
     private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
-) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
+    private val addToWishListUseCase: AddToWishListUseCase,
+    ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -19,9 +22,9 @@ class WishListViewModel @javax.inject.Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
-                products = updateProductFavoriteState(false, productId),
+                products = updateProductFavoriteState(false, true,productId),
                 isLoading = true,
-                isError = false
+                isError = false,
             )
         }
         tryToExecute(
@@ -33,27 +36,68 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     private fun onDeleteProductSuccess(successMessage: String) {
         effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
+        _state.update { currentState ->
+            currentState.copy(
+                products = currentState.products.map { it.copy(showSnackBar = false) }
+            )
+        }
         getWishListProducts()
     }
 
     private fun updateProductFavoriteState(
         isFavorite: Boolean,
+        showSnackBar :Boolean,
         productId: Long
     ): List<WishListProductUiState> {
         val updatedProducts = _state.value.products.map { wishListProductUiState ->
             if (wishListProductUiState.productId == productId) {
-                wishListProductUiState.copy(isFavorite = isFavorite)
+                wishListProductUiState.copy(isFavorite = isFavorite, showSnackBar = showSnackBar)
             } else {
                 wishListProductUiState
             }
         }
         return updatedProducts
     }
+     override fun addProductToWishList(productId: Long) {
+         _state.update {
+             it.copy(
+                 isLoading = true,
+                 isError = false,
+             )
+         }
+        tryToExecute(
+            { addToWishListUseCase(productId) },
+            ::onAddToWishListSuccess,
+            { onAddToWishListError(it, productId) }
+        )
+    }
+    private fun onAddToWishListSuccess(successMessage: String) {
+        effectActionExecutor(_effect, WishListUiEffect.AddProductToWishList)
+        getWishListProducts()
+
+    }
+    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, WishListUiEffect.UnAuthorizedUserEffect)
+        updateFavoriteState(productId, false)
+    }
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+        val newProduct = _state.value.products.map {
+            if (it.productId == productId) {
+                it.copy(isFavorite = isFavorite)
+            } else {
+                it
+            }
+        }
+        _state.update { it.copy(products = newProduct) }
+    }
+
+
 
 
     private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
         _state.update {
-            it.copy(products = updateProductFavoriteState(true, productId), error = error)
+            it.copy(products = updateProductFavoriteState(true, false ,productId), error = error)
         }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
