@@ -21,6 +21,7 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun FormTextField(
@@ -49,10 +50,8 @@ fun FormTextField(
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedSupportingTextColor = if (isError) org.the_chance.honymart.ui.theme.error else black37,
-                focusedContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
-                focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black16,
+                focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else primary100,
                 unfocusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black16,
             ),
             trailingIcon = {

@@ -64,7 +64,7 @@ fun AddProductForm() {
                 textAlign = TextAlign.Center,
             )
         }
-        for (i in listOf("Product name", "Number of item", "Price", "Description")) {
+        for (i in listOf("Product name", "Number of items", "Price", "Description")) {
             FormTextField(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
                 hint = i,
