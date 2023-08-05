@@ -24,6 +24,7 @@ import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun EmptyOrdersPlaceholder(
+    modifier : Modifier ,
     state:Boolean,
     image: Int,
     title: String,
@@ -47,7 +48,7 @@ fun EmptyOrdersPlaceholder(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space32),
                 style = MaterialTheme.typography.bodyMedium,
-                color = black60,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -55,7 +56,7 @@ fun EmptyOrdersPlaceholder(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space16),
                 style = MaterialTheme.typography.displayLarge,
-                color = black37,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
             )
 
@@ -75,6 +76,7 @@ fun EmptyOrdersPlaceholder(
 fun PreviewPlaceholderItem() {
     HoneyMartTheme {
         EmptyOrdersPlaceholder(
+            modifier = Modifier,
             state = true,
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),

@@ -40,8 +40,6 @@ fun HoneyIconButton(
             contentDescription = "",
             modifier = Modifier.size(MaterialTheme.dimens.icon24),
         )
-
-
     }
 }
 

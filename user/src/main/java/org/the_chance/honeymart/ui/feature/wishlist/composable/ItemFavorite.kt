@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.composables.HoneyFavIconButton
+import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.modifier.overlayBottomToTop
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -58,7 +58,7 @@ fun ItemFavorite(
 
             ) {
 
-                HoneyFavIconButton(
+                HoneyIconButton(
                     modifier = modifier.align(Alignment.End),
                     iconPainter = painterResource(id = R.drawable.icon_favorite_selected) ,
                     background = MaterialTheme.colorScheme.tertiary,

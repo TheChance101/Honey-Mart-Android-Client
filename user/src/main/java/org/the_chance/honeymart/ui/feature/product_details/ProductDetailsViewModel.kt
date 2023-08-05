@@ -36,7 +36,7 @@ class ProductDetailsViewModel @Inject constructor(
         getData()
     }
 
-    fun getData() {
+    private fun getData() {
         getProductDetails(args.productId.toLong())
     }
 

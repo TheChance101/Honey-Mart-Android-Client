@@ -83,11 +83,12 @@ fun OrdersContent(
             onClickTryAgain = listener::getAllProcessingOrders
         )
         EmptyOrdersPlaceholder(
+            modifier = Modifier.padding(top= MaterialTheme.dimens.space8),
             state = state.emptyOrdersPlaceHolder(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = listener::onClickDiscoverMarkets
+            onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
         )
 
         Column(
