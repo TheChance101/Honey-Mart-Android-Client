@@ -8,6 +8,7 @@ data class ProductsUiState(
     val isEmptyProducts: Boolean = false,
     val error: ErrorHandler? = null,
     val products: List<ProductUiState> = emptyList(),
+    val category: CategoryUiState = CategoryUiState(0, ""),
 )
 
 data class ProductUiState(
@@ -15,4 +16,10 @@ data class ProductUiState(
     val productName: String = "",
     val productImage: String = "",
     val productPrice: Double = 0.0,
+    val productQuantity: Int = 0
+)
+
+data class CategoryUiState(
+    val categoryIcon: Int = 0,
+    val categoryName: String = ""
 )
