@@ -1,12 +1,9 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +18,6 @@ import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 @Composable
@@ -58,7 +54,6 @@ fun CartContent(
             onClickTryAgain = cartInteractionListener::getChosenCartProducts
         )
         EmptyOrdersPlaceholder(
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
             state = state.placeHolderCondition(),
             image = org.the_chance.design_system.R.drawable.placeholder_order,
             title = stringResource(R.string.your_cart_list_is_empty),
@@ -77,8 +72,6 @@ fun CartContent(
                 cartInteractionListener = cartInteractionListener
             )
         }
-
-
     }
 }
 

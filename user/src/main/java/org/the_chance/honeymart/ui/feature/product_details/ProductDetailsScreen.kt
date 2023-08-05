@@ -106,7 +106,6 @@ private fun ProductDetailsContent(
                             )
                         }
                     }
-
                 )
             }
         ) { padding ->

@@ -24,7 +24,6 @@ import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun EmptyOrdersPlaceholder(
-    modifier : Modifier ,
     state:Boolean,
     image: Int,
     title: String,
@@ -76,7 +75,6 @@ fun EmptyOrdersPlaceholder(
 fun PreviewPlaceholderItem() {
     HoneyMartTheme {
         EmptyOrdersPlaceholder(
-            modifier = Modifier,
             state = true,
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),

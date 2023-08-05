@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -67,7 +66,6 @@ fun WishListScreen(
         listener = viewModel,
         state = state,
     )
-
 }
 
 @Composable
@@ -77,7 +75,6 @@ private fun WishListContent(
 ) {
     AppBarScaffold {
 
-
         Loading(state = state.firstLoading())
 
         ConnectionErrorPlaceholder(
@@ -86,7 +83,6 @@ private fun WishListContent(
         )
 
         EmptyOrdersPlaceholder(
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
             state = state.emptyPlaceholder(),
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
@@ -125,18 +121,12 @@ private fun WishListContent(
                     listener.addProductToWishList(productState.productId)
                 }
         }
-
-
             Loading(state = state.loading())
         }
-
-
 }
-
 
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewWishListScreen() {
-//    WishListScreen()
-
+    WishListScreen()
 }
