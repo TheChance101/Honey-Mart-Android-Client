@@ -58,19 +58,19 @@ fun ItemOrder(
                     .fillMaxHeight()
                     .padding(
                         horizontal = MaterialTheme.dimens.space8,
-                        vertical = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8,
                     ),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 Text(
                     text = stringResource(id = R.string.order, orderId),
                     style = MaterialTheme.typography.displayLarge,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = marketName,
                     style = MaterialTheme.typography.displaySmall,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Row {
                     Image(
