@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.products
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.products.composables.ProductCard
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -80,6 +80,34 @@ fun ProductsScreen(
             productId = 0,
             productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
             productQuantity = 5
+        ),
+        ProductUiState(
+            productName = "Apple",
+            productPrice = 25.0,
+            productId = 0,
+            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
+            productQuantity = 5
+        ),
+        ProductUiState(
+            productName = "Apple",
+            productPrice = 25.0,
+            productId = 0,
+            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
+            productQuantity = 5
+        ),
+        ProductUiState(
+            productName = "Apple",
+            productPrice = 25.0,
+            productId = 0,
+            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
+            productQuantity = 5
+        ),
+        ProductUiState(
+            productName = "Apple",
+            productPrice = 25.0,
+            productId = 0,
+            productImage = "https://img.freepik.com/free-photo/colorful-fruits-tasty-fresh-ripe-juicy-white-desk_179666-169.jpg",
+            productQuantity = 5
         )
     )
     val state = ProductsUiState(
@@ -94,14 +122,18 @@ fun ProductsContent(state: ProductsUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp, start = 16.dp, end = 16.dp)
+            .padding(
+                top = MaterialTheme.dimens.space24,
+                start = MaterialTheme.dimens.space16,
+                end = MaterialTheme.dimens.space16
+            )
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -117,7 +149,8 @@ fun ProductsContent(state: ProductsUiState) {
                 )
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 HoneyOutlineText(text = state.products.size.toString() + " Products")
                 IconButton(
@@ -134,6 +167,7 @@ fun ProductsContent(state: ProductsUiState) {
         }
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
         ) {
             items(state.products.size) { index ->
                 val product = state.products[index]
