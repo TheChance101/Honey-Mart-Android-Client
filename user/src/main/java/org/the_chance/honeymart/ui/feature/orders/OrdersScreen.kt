@@ -61,13 +61,14 @@ fun OrdersScreen(
             }
         }
     }
+
     LaunchedEffect(lifecycleOwner) {
         viewModel.getAllProcessingOrders()
     }
+
     OrdersContent(
         state = state,
         listener = viewModel,
-
         )
 }
 
@@ -78,12 +79,13 @@ fun OrdersContent(
     listener: OrdersInteractionsListener,
 ) {
     AppBarScaffold {
+        Loading(state = state.firstLoading())
+
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = listener::getAllProcessingOrders
         )
         EmptyOrdersPlaceholder(
-            modifier = Modifier.padding(top= MaterialTheme.dimens.space8),
             state = state.emptyOrdersPlaceHolder(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
@@ -118,12 +120,10 @@ fun OrdersContent(
                 )
                 CustomChip(
                     state = state.cancel(),
-                    text = stringResource(id = R.string.cancel),
+                    text = stringResource(id= R.string.cancelled),
                     onClick = listener::getAllCancelOrders
                 )
             }
-
-            Loading(state = state.isLoading)
 
             ContentVisibility(state = state.screenContent()) {
                 LazyColumn(
@@ -192,6 +192,7 @@ fun OrdersContent(
                         }
                     }
                 }
+                Loading(state = state.loading())
             }
         }
     }
