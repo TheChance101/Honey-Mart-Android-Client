@@ -39,7 +39,11 @@ fun HoneyTextField(
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(
+                    end = MaterialTheme.dimens.space16,
+                    start = MaterialTheme.dimens.space16,
+                    bottom = MaterialTheme.dimens.space8
+                )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
