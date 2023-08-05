@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
@@ -55,4 +57,7 @@ dependencies {
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
 }
