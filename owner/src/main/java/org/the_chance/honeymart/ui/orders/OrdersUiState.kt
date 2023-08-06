@@ -9,13 +9,13 @@ data class OrdersUiState(
     val error: ErrorHandler? = null,
     val state: Boolean = false,
     val orders: List<OrderUiState> = emptyList(),
-    val orderStates: OrderStates = OrderStates.PROCESSING,
+    val orderStates: OrderStates = OrderStates.ALL,
 )
 
 data class OrderUiState(
     val orderId: Long = 1,
     val totalPrice: Double = 0.0,
-    val date: Long = 1687259600016,
+    val time: Long = 1687259600016,
     val userName: String = "",
     val state: Int = 0,
     )
@@ -25,7 +25,8 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
         orderId = orderId,
         totalPrice = totalPrice,
         state = state,
-        date = date,
+        time = date,
+        userName = user.fullName
     )
 }
 
