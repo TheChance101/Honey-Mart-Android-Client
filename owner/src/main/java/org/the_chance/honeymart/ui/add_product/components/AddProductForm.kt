@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -125,10 +126,15 @@ fun AddProductForm(
             }
         }
         Spacer(modifier = Modifier.weight(1F))
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MaterialTheme.dimens.space48),
+            contentAlignment = Alignment.Center
+        ) {
             Loading(
                 state = state.isLoading,
-                modifier = Modifier.size(MaterialTheme.dimens.icon48)
+                modifier = Modifier.size(MaterialTheme.dimens.smallLottieLoading)
             )
         }
         HoneyFilledIconButton(
