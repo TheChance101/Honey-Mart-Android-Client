@@ -51,7 +51,7 @@ interface HoneyMartService {
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto>
 
 

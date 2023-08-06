@@ -95,14 +95,14 @@ class HoneyMartRepositoryImp @Inject constructor(
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>
+        categoryId: Long
     ): ProductEntity {
         return wrap {
             honeyMartService.addProduct(
                 name = name,
                 price = price,
                 description = description,
-                categoriesId = categoriesId
+                categoriesId = categoryId
             )
         }.value?.toProductEntity() ?: throw NotFoundException()
     }

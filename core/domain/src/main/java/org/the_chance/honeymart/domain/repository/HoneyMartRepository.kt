@@ -36,6 +36,6 @@ interface HoneyMartRepository {
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoryId: Long,
     ): ProductEntity
 }

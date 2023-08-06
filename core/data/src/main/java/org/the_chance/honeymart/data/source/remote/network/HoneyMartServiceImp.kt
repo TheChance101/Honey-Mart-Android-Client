@@ -84,7 +84,7 @@ class HoneyMartServiceImp @Inject constructor(
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto> =
         wrap(client.submitForm(url = "/product", formParameters = Parameters.build {
             append("price", price.toString())
