@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,8 +37,8 @@ import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.composables.HoneyFavIconButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
-import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
@@ -57,25 +55,25 @@ fun ProductDetailsScreen(
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
-                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {}
-                is ProductDetailsUiEffect.AddToCartError -> {}
-                ProductDetailsUiEffect.AddToCartSuccess -> {}
+                is ProductDetailsUiEffect.AddProductToWishListEffectError -> TODO("show snack bar")
+                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> TODO("show snack bar")
+                is ProductDetailsUiEffect.AddToCartError -> TODO("show snack bar")
+                ProductDetailsUiEffect.AddToCartSuccess -> TODO("show snack bar")
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {}
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {}
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {}
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> TODO("show order dialog")
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> TODO("show snack bar")
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> TODO("show snack bar")
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
     }
-    ProductDetailsContent(state = state, listenener = viewModel)
+    ProductDetailsContent(state = state, listener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listenener: ProductDetailsInteraction,
+    listener: ProductDetailsInteraction,
 
     ) {
     Loading(state.isLoading)
@@ -85,42 +83,32 @@ private fun ProductDetailsContent(
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
             bottomBar = {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HoneyFilledIconButton(
-                        label = stringResource(id = R.string.add_to_cart),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .shadow(elevation = 8.dp)
-                            .background(MaterialTheme.colorScheme.tertiaryContainer)
-                            .padding(
-                                bottom = MaterialTheme.dimens.space56,
-                                top = MaterialTheme.dimens.space16,
-                                start = MaterialTheme.dimens.space16,
-                                end = MaterialTheme.dimens.space16,
+                HoneyFilledIconButton(
+                    label = stringResource(id = R.string.add_to_cart),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(elevation = 8.dp)
+                        .background(MaterialTheme.colorScheme.tertiaryContainer)
+                        .padding(
+                            bottom = MaterialTheme.dimens.space56,
+                            top = MaterialTheme.dimens.space16,
+                            start = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16,
+                        ),
+                    iconPainter = painterResource(id = R.drawable.icon_cart),
+                    isEnable = !state.isAddToCartLoading,
+                    onClick = {
+                        state.product.productId.let {
+                            listener.addProductToCart(
+                                it,
+                                state.quantity
                             )
-                            .align(Alignment.BottomCenter),
-                        iconPainter = painterResource(id = R.drawable.icon_cart),
-                        isEnable = !state.isAddToCartLoading,
-                        onClick = {
-                            state.product.productId.let {
-                                listenener.addProductToCart(
-                                    it,
-                                    state.quantity
-                                )
-                            }
                         }
-                    )
-                    Box(modifier = Modifier.align(Alignment.BottomCenter).height(100.dp)) {
-                        Loading(
-                            state = state.isAddToCartLoading,
-                            size = 70.dp,
-                            modifier = Modifier
-                                .align(Alignment.Center))
                     }
-                }
+
+                )
             }
-        )
-        { padding ->
+        ) { padding ->
             Column(Modifier.fillMaxSize()) {
 
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -140,8 +128,8 @@ private fun ProductDetailsContent(
                         ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = listenener::onClickBack,
-                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
+                            onBackClick = listener::onClickBack,
+                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -185,7 +173,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listenener::decreaseProductCount
+                                    onClick = listener::decreaseProductCount
                                 )
 
                                 Text(
@@ -200,13 +188,13 @@ private fun ProductDetailsContent(
                                 HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listenener::increaseProductCount
+                                    onClick = listener::increaseProductCount
                                 )
                             }
                         }
 
                         HoneyOutlineText(
-                            state.totalPrice.toString() + "$",
+                            price = state.totalPrice.toString() + "$",
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
                         )
                         Text(
@@ -229,7 +217,7 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            listenener.onClickSmallImage(state.smallImages[index])
+                            listener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }
@@ -238,8 +226,5 @@ private fun ProductDetailsContent(
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewScreen(){
-    ProductDetailsScreen()
-}
+
+

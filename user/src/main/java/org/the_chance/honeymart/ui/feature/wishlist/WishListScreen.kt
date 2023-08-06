@@ -27,10 +27,8 @@ import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.wishlist.composable.ItemFavorite
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.SnackBar
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -40,7 +38,6 @@ fun WishListScreen(
     val state = viewModel.state.collectAsState().value
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavigationProvider.current
-
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
@@ -49,15 +46,10 @@ fun WishListScreen(
                     it.productId
                 )
 
-                WishListUiEffect.DeleteProductFromWishListEffect -> {
-                    //show snack bar
-                }
-
-                else -> {}
+                WishListUiEffect.DeleteProductFromWishListEffect -> TODO("show snack bar")
             }
         }
     }
-
     LaunchedEffect(lifecycleOwner) {
         viewModel.getWishListProducts()
     }
@@ -66,6 +58,7 @@ fun WishListScreen(
         listener = viewModel,
         state = state,
     )
+
 }
 
 @Composable
@@ -73,8 +66,8 @@ private fun WishListContent(
     listener: WishListInteractionListener,
     state: WishListUiState,
 ) {
-    AppBarScaffold {
 
+    AppBarScaffold {
         Loading(state = state.firstLoading())
 
         ConnectionErrorPlaceholder(
@@ -108,25 +101,19 @@ private fun WishListContent(
                             productId = productState.productId,
                             onClickProduct = listener::onClickProduct,
                             onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
-                        )
+
+                            )
                     }
                 }
             }
         }
-        state.products.forEach { productState ->
-                SnackBar(
-                    "Item removed from Wish List",
-                    productState.showSnackBar
-                ) {
-                    listener.addProductToWishList(productState.productId)
-                }
-        }
-            Loading(state = state.loading())
-        }
+        Loading(state = state.loading())
+    }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewWishListScreen() {
     WishListScreen()
+
 }

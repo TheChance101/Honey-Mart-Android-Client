@@ -26,11 +26,11 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CategoryItem(
+    modifier: Modifier = Modifier,
     iconPainter: Painter,
     categoryName: String,
-    isSelected: Boolean,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    isSelected: Boolean,
 ) {
     Column(
         modifier = Modifier.width(MaterialTheme.dimens.space56),
@@ -38,33 +38,33 @@ fun CategoryItem(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
     ) {
         IconButton(
-                modifier = modifier
-                    .size(MaterialTheme.dimens.space56)
-                    .background(
-                        if (isSelected) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.secondaryContainer,
-                        shape = Shapes.medium
-                    )
-                    .padding(bottom = MaterialTheme.dimens.space4),
-                onClick = onClick
-            ) {
-                Icon(
-                    painter = iconPainter,
-                    contentDescription = stringResource(R.string.icon),
-                    tint = if (isSelected) White else MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-            Text(
-                text = categoryName,
-                style = MaterialTheme.typography.displaySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color =
+            modifier = modifier
+                .size(MaterialTheme.dimens.space56)
+                .background(
                     if (isSelected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onSecondaryContainer,
-                textAlign = TextAlign.Start
+                    else MaterialTheme.colorScheme.secondaryContainer,
+                    shape = Shapes.medium
+                )
+                .padding(bottom = MaterialTheme.dimens.space4),
+            onClick = onClick
+        ) {
+            Icon(
+                painter = iconPainter,
+                contentDescription = stringResource(R.string.icon),
+                tint = if (isSelected) White else MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
+        Text(
+            text = categoryName,
+            style = MaterialTheme.typography.displaySmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color =
+            if (isSelected) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onSecondaryContainer,
+            textAlign = TextAlign.Start
+        )
+    }
 
 }
 

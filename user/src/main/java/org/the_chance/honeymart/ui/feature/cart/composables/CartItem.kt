@@ -34,7 +34,7 @@ import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
-import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.cart.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -66,7 +66,7 @@ fun CartItem(
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
 
             Image(
-                painter = rememberAsyncImagePainter(model = product.productImage.get(0)),
+                painter = rememberAsyncImagePainter(model = product.productImage[0]),
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()

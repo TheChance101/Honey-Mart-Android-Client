@@ -106,7 +106,7 @@ fun CartSuccessScreen(
             }
         }
         CartCardView(
-            totalPrice = state.total.toString(), isLoading = state.isLoading,
+            totalPrice = state.total, isLoading = state.isLoading,
             onClick = cartInteractionListener::onClickOrderNowButton)
     }
 
