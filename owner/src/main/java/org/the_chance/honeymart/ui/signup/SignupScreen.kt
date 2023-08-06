@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -99,7 +98,8 @@ fun SignupContent(
                     modifier = Modifier.padding(bottom = 100.dp)
                 )
                 HoneyTextField(
-                    hint = state.fullName,
+                    text = state.fullName,
+                    hint = "full name",
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
                     onValueChange = listener::onFullNameInputChange,
                     errorMessage = when (state.fullNameState) {
@@ -109,7 +109,8 @@ fun SignupContent(
                     },
                 )
                 HoneyTextField(
-                    hint = state.email,
+                    text = state.email,
+                    hint = "Email",
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_email),
                     onValueChange = listener::onEmailInputChange,
                     errorMessage = when (state.emailState) {
@@ -119,7 +120,8 @@ fun SignupContent(
                     },
                 )
                 HoneyTextField(
-                    hint = state.password,
+                    text = state.password,
+                    hint = "Password",
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                     onValueChange = listener::onPasswordInputChanged,
                     errorMessage = when (state.passwordState) {
@@ -130,7 +132,8 @@ fun SignupContent(
                     },
                 )
                 HoneyTextField(
-                    hint = state.confirmPassword,
+                    text = state.confirmPassword,
+                    hint = "Confirm Password",
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                     onValueChange = listener::onConfirmPasswordChanged,
                     errorMessage = when (state.confirmPasswordState) {
@@ -140,13 +143,15 @@ fun SignupContent(
                 )
 
 
-                Spacer(modifier = Modifier.weight(1f))
                 HoneyFilledButton(
                     label = stringResource(R.string.continuo),
                     onClick = listener::onClickSignup,
                     background = primary100,
                     contentColor = Color.White,
-                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space24)
+                    modifier = Modifier.padding(
+                        bottom = MaterialTheme.dimens.space24,
+                        top = MaterialTheme.dimens.space32
+                    )
                 )
 
 
@@ -208,7 +213,7 @@ fun SignupContent(
                 style = Typography.displayMedium.copy(color = Color.Black)
             )
         }
-        }
+    }
 }
 
 
