@@ -176,6 +176,7 @@ private fun ProductDetailsContent(
 
                             Row {
                                 HoneyIconButton(
+                                    isLoading = state.isAddToCartLoading,
                                     iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
                                     background = Color.Transparent,
                                     modifier = Modifier
@@ -200,13 +201,14 @@ private fun ProductDetailsContent(
                                 HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listenener::increaseProductCount
+                                    onClick = listenener::increaseProductCount,
+                                    isLoading = state.isAddToCartLoading,
                                 )
                             }
                         }
 
                         HoneyOutlineText(
-                            state.totalPrice.toString() + "$",
+                            price = state.totalPrice.toString() + "$",
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
                         )
                         Text(

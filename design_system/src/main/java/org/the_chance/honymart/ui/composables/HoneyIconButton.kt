@@ -20,13 +20,15 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HoneyIconButton(
-    onClick: () -> Unit,
-    iconPainter: Painter,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    isLoading: Boolean = false,
+    iconPainter: Painter,
     shape: Shape = CircleShape,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
     IconButton(
+        enabled = !isLoading,
         onClick = onClick,
         modifier = modifier
             .clip(shape)
