@@ -20,7 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.black37
+import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white50
 
 @Composable
@@ -47,7 +48,7 @@ fun ItemOrder(
         ) {
             Text(
                 text = stringResource(R.string.order, orderId),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = black60,
                 style = MaterialTheme.typography.bodyMedium
             )
             Row(
@@ -62,17 +63,17 @@ fun ItemOrder(
                     Icon(
                         painter = painterResource(R.drawable.ic_person),
                         contentDescription = "userName",
-                        tint = MaterialTheme.colorScheme.onBackground,
+                        tint = black37,
                         )
                     Text(
                         text = userName,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = Typography.displayLarge
+                        color = black37,
+                        style = MaterialTheme.typography.displayLarge
                     )
                 }
                 Text(
                     text = "$price$",
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = black60,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -83,13 +84,12 @@ fun ItemOrder(
                 Icon(
                     painter = painterResource(R.drawable.icon_clock),
                     contentDescription = "time",
-                    tint = MaterialTheme.colorScheme.onBackground,
-
+                    tint = black37,
                     )
                 Text(
                     text = time,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = Typography.displayLarge
+                    color = black37,
+                    style = MaterialTheme.typography.displayLarge
                 )
             }
         }
