@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
+import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -119,7 +120,7 @@ fun SignupContent(
                         else -> ""
                     },
                 )
-                HoneyTextField(
+                HoneyTextFieldPassword(
                     text = state.password,
                     hint = stringResource(R.string.passwordd),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
@@ -131,7 +132,7 @@ fun SignupContent(
                         else -> ""
                     },
                 )
-                HoneyTextField(
+                HoneyTextFieldPassword(
                     text = state.confirmPassword,
                     hint = stringResource(R.string.confirm_passwordd),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
