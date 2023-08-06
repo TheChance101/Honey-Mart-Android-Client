@@ -30,7 +30,7 @@ fun ItemOrder(
     orderId: Long,
     userName: String,
     price: Double,
-    time: String,
+    time: Long,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -87,7 +87,7 @@ fun ItemOrder(
                     tint = black37,
                     )
                 Text(
-                    text = time,
+                    text = stringResource(R.string.order,time),
                     color = black37,
                     style = MaterialTheme.typography.displayLarge
                 )
