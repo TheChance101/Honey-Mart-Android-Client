@@ -4,6 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
@@ -33,7 +34,6 @@ class AddProductViewModel @Inject constructor(
                 productDescription = product.productDescription,
             )
         }
-        log(product.toString())
     }
 
     private fun onAddProductError(errorHandler: ErrorHandler) {
@@ -44,14 +44,33 @@ class AddProductViewModel @Inject constructor(
     }
 
     override fun onProductNameChanged(name: String) {
-        _state.update { it.copy(productName = name) }
+        val productNameState: ValidationState = when {
+            name.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            name.length <= 2 -> ValidationState.SHORT_LENGTH_TEXT
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        _state.update { it.copy(productNameState = productNameState, productName = name) }
     }
 
     override fun onProductPriceChanged(price: String) {
-        _state.update { it.copy(productPrice = price) }
+        val productPriceState: ValidationState = when {
+            price.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        _state.update { it.copy(productPriceState = productPriceState, productPrice = price) }
     }
 
     override fun onProductDescriptionChanged(description: String) {
-        _state.update { it.copy(productDescription = description) }
+        val productDescriptionState: ValidationState = when {
+            description.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            description.length < 6 -> ValidationState.SHORT_LENGTH_TEXT
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        _state.update {
+            it.copy(
+                productDescriptionState = productDescriptionState,
+                productDescription = description
+            )
+        }
     }
 }

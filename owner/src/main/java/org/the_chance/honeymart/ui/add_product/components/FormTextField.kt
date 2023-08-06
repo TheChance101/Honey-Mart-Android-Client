@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -27,6 +29,7 @@ import org.the_chance.honymart.ui.theme.primary100
 fun FormTextField(
     hint: String,
     onValueChange: (String) -> Unit,
+    keyboardType: KeyboardType,
     modifier: Modifier = Modifier,
     text: String = "",
     errorMessage: String = "",
@@ -47,6 +50,7 @@ fun FormTextField(
                     style = Typography.displaySmall,
                 )
             },
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -85,6 +89,7 @@ fun FormTextFieldPreview() {
     FormTextField(
         hint = "Email",
         isError = false,
+        keyboardType = KeyboardType.Number,
         onValueChange = {}
     )
 }

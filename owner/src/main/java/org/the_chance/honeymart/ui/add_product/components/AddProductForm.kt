@@ -23,10 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.add_product.AddProductUiState
+import org.the_chance.honeymart.ui.add_product.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.black60
@@ -77,19 +80,36 @@ fun AddProductForm(
             text = state.productName,
             modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
             hint = "Product name",
-            onValueChange = onProductNameChanged
+            keyboardType = KeyboardType.Text,
+            onValueChange = onProductNameChanged,
+            errorMessage = when (state.productNameState) {
+                ValidationState.BLANK_TEXT_FIELD -> "Product name can't be blank"
+                ValidationState.SHORT_LENGTH_TEXT -> "Product name is too short"
+                else -> ""
+            }
         )
         FormTextField(
             text = state.productPrice,
             modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
             hint = "Price",
-            onValueChange = onProductPriceChanged
+            keyboardType = KeyboardType.Number,
+            onValueChange = onProductPriceChanged,
+            errorMessage = when (state.productPriceState) {
+                ValidationState.BLANK_TEXT_FIELD -> "Product price can't be blank"
+                else -> ""
+            }
         )
         FormTextField(
             text = state.productDescription,
             modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
             hint = "Description",
-            onValueChange = onProductDescriptionChanged
+            keyboardType = KeyboardType.Text,
+            onValueChange = onProductDescriptionChanged,
+            errorMessage = when (state.productDescriptionState) {
+                ValidationState.BLANK_TEXT_FIELD -> "Product description can't be blank"
+                ValidationState.SHORT_LENGTH_TEXT -> "Product description is too short"
+                else -> ""
+            }
         )
         Text(
             modifier = Modifier.padding(
@@ -142,7 +162,7 @@ fun AddProductForm(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space24
             ),
-            isEnable = !state.isLoading,
+            isEnable = state.showButton(),
             label = "Add",
             iconPainter = painterResource(R.drawable.icon_add_product),
             onClick = {
