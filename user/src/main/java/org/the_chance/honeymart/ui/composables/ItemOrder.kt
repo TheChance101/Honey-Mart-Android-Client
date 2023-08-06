@@ -89,7 +89,7 @@ fun ItemOrder(
             }
             Spacer(modifier = Modifier.weight(1f))
             HoneyOutlineText(
-                price = "$price$",
+                text = "$price$",
                 modifier = Modifier.padding(
                     bottom = MaterialTheme.dimens.space16,
                     end = MaterialTheme.dimens.space8,
