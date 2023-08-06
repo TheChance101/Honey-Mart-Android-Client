@@ -23,7 +23,10 @@ import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
-fun Loading(state: Boolean) {
+fun Loading(
+    state: Boolean,
+    modifier: Modifier = Modifier
+) {
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.loading)
     )
@@ -33,7 +36,7 @@ fun Loading(state: Boolean) {
         exit = fadeOut(animationSpec = tween(durationMillis = 500))
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(Color.Transparent),
             contentAlignment = Alignment.Center
