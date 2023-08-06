@@ -11,7 +11,7 @@ class AddProductUseCase @Inject constructor(
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>
+        categoriesId: Long
     ): ProductEntity {
         return honeyMartRepository.addProduct(name, price, description, categoriesId)
     }
