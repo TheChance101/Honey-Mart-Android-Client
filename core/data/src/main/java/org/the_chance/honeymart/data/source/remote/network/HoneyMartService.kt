@@ -14,6 +14,13 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
  */
 interface HoneyMartService {
 
+
+    suspend fun addOwner(
+        fullName: String,
+        email: String,
+        password: String,
+    ): BaseResponse<String>
+
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
     suspend fun addMarket(marketName: String): BaseResponse<MarketDto>
@@ -143,4 +150,15 @@ interface HoneyMartService {
         productId: Long,
     ): BaseResponse<ProductDto>
     // endregion
+
+
+
+    // region Owner
+
+
+    // region Auth
+    suspend fun loginOwner(email: String, password: String): BaseResponse<String>
+    //endregion
+
+    //endregion
 }

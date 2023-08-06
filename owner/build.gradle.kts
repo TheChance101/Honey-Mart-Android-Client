@@ -33,6 +33,11 @@ android {
         targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
     }
 
+     buildFeatures {
+        dataBinding = true
+         compose = true
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
     }
