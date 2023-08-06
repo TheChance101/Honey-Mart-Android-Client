@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.cart.composables
 import SwipeBackground
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.honeymart.ui.feature.cart.CartInteractionListener
 import org.the_chance.honeymart.ui.feature.cart.CartUiState
+import org.the_chance.honeymart.ui.feature.cart.populatedLoading
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
@@ -36,6 +39,7 @@ fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,7 +105,6 @@ fun CartSuccessScreen(
                 }
             }
         }
-
         CartCardView(
             totalPrice = state.total.toString(), isLoading = state.isLoading,
             onClick = cartInteractionListener::onClickOrderNowButton)
