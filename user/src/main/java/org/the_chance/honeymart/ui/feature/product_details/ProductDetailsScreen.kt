@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -59,37 +59,23 @@ fun ProductDetailsScreen(
             when (it) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {}
-                is ProductDetailsUiEffect.AddToCartError -> {
-
-                }
-
-                ProductDetailsUiEffect.AddToCartSuccess -> {
-                }
-
+                is ProductDetailsUiEffect.AddToCartError -> {}
+                ProductDetailsUiEffect.AddToCartSuccess -> {}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {
-
-                }
-
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {
-
-                }
-
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {
-
-                }
-
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {}
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {}
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
     }
-    ProductDetailsContent(state = state, listener = viewModel)
+    ProductDetailsContent(state = state, listenener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listener: ProductDetailsInteraction,
+    listenener: ProductDetailsInteraction,
 
     ) {
     Loading(state.isLoading)
@@ -117,28 +103,24 @@ private fun ProductDetailsContent(
                         isEnable = !state.isAddToCartLoading,
                         onClick = {
                             state.product.productId.let {
-                                listener.addProductToCart(
+                                listenener.addProductToCart(
                                     it,
                                     state.quantity
                                 )
                             }
                         }
                     )
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .height(100.dp)
-                    ) {
+                    Box(modifier = Modifier.align(Alignment.BottomCenter).height(100.dp)) {
                         Loading(
                             state = state.isAddToCartLoading,
                             size = 70.dp,
                             modifier = Modifier
-                                .align(Alignment.Center)
-                        )
+                                .align(Alignment.Center))
                     }
                 }
             }
-        ) { padding ->
+        )
+        { padding ->
             Column(Modifier.fillMaxSize()) {
 
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -158,8 +140,8 @@ private fun ProductDetailsContent(
                         ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = listener::onClickBack,
-                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
+                            onBackClick = listenener::onClickBack,
+                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -203,9 +185,9 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listener::decreaseProductCount,
-                                    isLoading = state.isAddToCartLoading
+                                    onClick = listenener::decreaseProductCount
                                 )
+
                                 Text(
                                     text = state.quantity.toString(),
                                     style = MaterialTheme.typography.displayMedium.copy(
@@ -218,14 +200,13 @@ private fun ProductDetailsContent(
                                 HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listener::increaseProductCount,
-                                    isLoading = state.isAddToCartLoading
+                                    onClick = listenener::increaseProductCount
                                 )
                             }
                         }
 
                         HoneyOutlineText(
-                            price = state.totalPrice.toString() + "$",
+                            state.totalPrice.toString() + "$",
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
                         )
                         Text(
@@ -248,7 +229,7 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            listener.onClickSmallImage(state.smallImages[index])
+                            listenener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }
@@ -257,5 +238,8 @@ private fun ProductDetailsContent(
     }
 }
 
-
-
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewScreen(){
+    ProductDetailsScreen()
+}

@@ -179,7 +179,7 @@ class ProductViewModel @Inject constructor(
         val isFavorite = currentProduct?.isFavorite ?: false
         val newFavoriteState = !isFavorite
 
-        updateFavoriteState(productId, newFavoriteState,true)
+        updateFavoriteState(productId, newFavoriteState,!isFavorite)
 
         if (isFavorite) {
             deleteProductFromWishList(productId)
@@ -224,14 +224,15 @@ class ProductViewModel @Inject constructor(
                 it
             }
         }
-        _state.update { it.copy(products = newProduct) }
+        _state.update { it.copy(products = newProduct, isLoadingProduct = true) }
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
         _state.update { currentState ->
             currentState.copy(
-                products = currentState.products.map { it.copy(showSnackBar = false) }
+                products = currentState.products.map { it.copy(showSnackBar = false) },
+                isLoadingProduct = false
             )
         }
 

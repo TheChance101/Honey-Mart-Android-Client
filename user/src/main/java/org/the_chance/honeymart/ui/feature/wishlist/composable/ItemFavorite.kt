@@ -30,6 +30,7 @@ fun ItemFavorite(
     name: String,
     price: String,
     description: String,
+    enable : Boolean ,
     productId: Long,
     onClickProduct: (ProductId: Long) -> Unit,
     onClickFavoriteIcon: (ProductId: Long) -> Unit,
@@ -40,7 +41,7 @@ fun ItemFavorite(
         modifier = modifier
             .fillMaxWidth()
             .height(MaterialTheme.dimens.heightItem)
-            .clickable(onClick = { onClickProduct(productId) }), shape = MaterialTheme.shapes.medium
+            .clickable(onClick = { if(enable)onClickProduct(productId) }), shape = MaterialTheme.shapes.medium
     ) {
         Box(
             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
@@ -62,8 +63,7 @@ fun ItemFavorite(
                     modifier = modifier.align(Alignment.End),
                     iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
                     background = MaterialTheme.colorScheme.tertiary,
-                    onClick = { onClickFavoriteIcon(productId) },
-                    isLoading = false
+                    onClick = { if(enable)onClickFavoriteIcon(productId) }
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -100,7 +100,8 @@ private fun ItemFavoritePreview() {
             description = "Secondary text",
             onClickProduct = {},
             onClickFavoriteIcon = {},
-            productId = 1
+            productId = 1,
+            enable = true
         )
     }
 }

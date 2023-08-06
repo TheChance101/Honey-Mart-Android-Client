@@ -20,7 +20,6 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HoneyIconButton(
-    isLoading: Boolean ,
     onClick: () -> Unit,
     iconPainter: Painter,
     modifier: Modifier = Modifier,
@@ -29,7 +28,6 @@ fun HoneyIconButton(
 ) {
     IconButton(
         onClick = onClick,
-        enabled = !isLoading,
         modifier = modifier
             .clip(shape)
             .size(MaterialTheme.dimens.smallButton)
@@ -42,8 +40,6 @@ fun HoneyIconButton(
             contentDescription = "",
             modifier = Modifier.size(MaterialTheme.dimens.icon24),
         )
-
-
     }
 }
 
@@ -52,8 +48,7 @@ fun HoneyIconButton(
 private fun HoneyMartSmallIconPreview() {
     HoneyIconButton(
         iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
-        onClick = {},
-        isLoading = true
+        onClick = {}
     )
 
 }
