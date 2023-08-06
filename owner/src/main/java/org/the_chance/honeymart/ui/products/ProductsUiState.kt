@@ -33,3 +33,5 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImage = productImages[0],
     )
 }
+
+fun ProductsUiState.contentScreen() = !this.isLoading && !this.isError

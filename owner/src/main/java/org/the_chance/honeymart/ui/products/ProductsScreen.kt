@@ -25,8 +25,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.products.composables.ProductCard
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.IconButton
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
@@ -41,66 +44,72 @@ fun ProductsScreen(
 
 @Composable
 fun ProductsContent(state: ProductsUiState) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = MaterialTheme.dimens.space24,
-                start = MaterialTheme.dimens.space16,
-                end = MaterialTheme.dimens.space16
-            )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+    Loading(state = state.isLoading)
+
+    ContentVisibility(state = state.contentScreen()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = MaterialTheme.dimens.space24,
+                    start = MaterialTheme.dimens.space16,
+                    end = MaterialTheme.dimens.space16
+                )
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    modifier = Modifier.size(MaterialTheme.dimens.icon48),
-                    painter = painterResource(id = R.drawable.icon_category),
-                    contentDescription = "category icon",
-                    tint = black37
-                )
-                Text(
-                    text = state.category.categoryName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = blackOn60
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                HoneyOutlineText(text = state.productsQuantity)
-                IconButton(
-                    modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                    onClick = { /*TODO*/ },
-                    backgroundColor = Color.Transparent
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_options),
-                        contentDescription = "options icon",
+                        modifier = Modifier.size(MaterialTheme.dimens.icon48),
+                        painter = painterResource(id = R.drawable.icon_category),
+                        contentDescription = "category icon",
+                        tint = black37
+                    )
+                    Text(
+                        text = state.category.categoryName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = blackOn60
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    HoneyOutlineText(text = state.productsQuantity)
+                    IconButton(
+                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
+                        onClick = { /*TODO*/ },
+                        backgroundColor = Color.Transparent
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_options),
+                            contentDescription = "options icon",
+                        )
+                    }
+                }
+            }
+            EmptyPlaceholder(state = state.isEmptyProducts, emptyObjectName = "Product")
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+            ) {
+                items(state.products.size) { index ->
+                    val product = state.products[index]
+                    ProductCard(
+                        imageUrl = product.productImage,
+                        productName = product.productName,
+                        productPrice = product.productPrice,
                     )
                 }
             }
         }
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
-        ) {
-            items(state.products.size) { index ->
-                val product = state.products[index]
-                ProductCard(
-                    imageUrl = product.productImage,
-                    productName = product.productName,
-                    productPrice = product.productPrice,
-                )
-            }
-        }
     }
+
 }
 
 @Preview(name = "tablet", device = Devices.TABLET, showSystemUi = true)

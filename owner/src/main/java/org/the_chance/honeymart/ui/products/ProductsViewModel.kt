@@ -29,7 +29,7 @@ class ProductsViewModel @Inject constructor(
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllProducts(1) },
+            { getAllProducts(9) },
             ::onGetProductsSuccess,
             ::onGetProductsError
         )
@@ -43,7 +43,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     private fun onGetProductsSuccess(products: List<ProductEntity>) {
-        _state.update { it.copy() }
+        _state.update { it.copy(isLoading = false) }
         val productsUiState = products.map { product -> product.toProductUiState() }
         checkIfCategoryProductsEmpty(productsUiState)
     }
