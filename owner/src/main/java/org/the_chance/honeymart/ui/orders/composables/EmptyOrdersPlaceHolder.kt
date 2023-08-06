@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.orders.composables
+package org.the_chance.honeymart.ui.orders.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image

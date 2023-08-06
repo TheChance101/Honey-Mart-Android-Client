@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.orders
+package org.the_chance.honeymart.ui.orders
 
 interface OrdersInteractionsListener {
 

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.orders.composables
+package org.the_chance.honeymart.ui.orders.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
