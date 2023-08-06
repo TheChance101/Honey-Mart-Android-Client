@@ -51,7 +51,7 @@ fun ProductAppBar(
                 else
                     MaterialTheme.colorScheme.primary,
                 onClick = onFavoriteClick,
-                isLoading = false
+                isLoading = state.isAddToCartLoading
             )
         },
     )
