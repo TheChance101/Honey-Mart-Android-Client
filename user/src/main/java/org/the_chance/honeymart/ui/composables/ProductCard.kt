@@ -36,6 +36,7 @@ fun ProductCard(
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
     onClickFavorite: () -> Unit,
+    enable: Boolean,
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -44,7 +45,8 @@ fun ProductCard(
             .height(height = 200.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onClickCard() }
+            .clickable { if (enable) onClickCard() },
+
     ) {
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
@@ -59,7 +61,7 @@ fun ProductCard(
                 ),
             backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
             else MaterialTheme.colorScheme.primary,
-            onClick = onClickFavorite
+            onClick = { if(enable)onClickFavorite() }
         ) {
             Image(
                 painter = painterResource(
@@ -126,6 +128,7 @@ fun ProductCardPreview() {
         productPrice = "30,000",
         secondaryText = "Secondary Text",
         isFavoriteIconClicked = true,
+        enable = true,
         onClickFavorite = {},
         onClickCard = {}
     )

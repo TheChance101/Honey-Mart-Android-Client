@@ -29,6 +29,7 @@ fun CategoryItem(
     iconPainter: Painter,
     categoryName: String,
     isSelected: Boolean,
+    enable : Boolean ,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -46,7 +47,8 @@ fun CategoryItem(
                         shape = Shapes.medium
                     )
                     .padding(bottom = MaterialTheme.dimens.space4),
-                onClick = onClick
+                onClick = onClick,
+            enabled = enable,
             ) {
                 Icon(
                     painter = iconPainter,
@@ -74,6 +76,7 @@ fun SideBarItemPreview() {
     CategoryItem(
         iconPainter = painterResource(id = R.drawable.icon_category),
         categoryName = "Foods",
-        isSelected = false
+        isSelected = false ,
+        enable = true
     )
 }

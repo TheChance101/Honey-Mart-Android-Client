@@ -81,6 +81,7 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
+        EmptyProductPlaceholder(state.emptyPlaceHolder())
 
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -107,15 +108,15 @@ private fun ProductsContent(
                                 iconPainter = painterResource(id = R.drawable.ic_bed),
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
+                                enable = !state.disableClickedWhenShowSnackBar(),
                                 onClick = {
                                     productInteractionListener.onClickCategory(category.categoryId)
                                 }
                             )
                         }
                     }
-                    EmptyProductPlaceholder(state.isEmptyProducts)
                     AnimatedVisibility(
-                        visible = !state.isLoadingProduct,
+                        visible = !state.isEmptyProducts,
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
@@ -139,6 +140,7 @@ private fun ProductsContent(
                                     onClickCard = {
                                         productInteractionListener.onClickProduct(product.productId)
                                     },
+                                    enable = !state.disableClickedWhenShowSnackBar(),
                                     onClickFavorite = {
                                         productInteractionListener.onClickFavIcon(product.productId)
                                     }
@@ -149,15 +151,12 @@ private fun ProductsContent(
                 }
             }
         }
-        state.products.forEach{productState ->
-        if (productState.showSnackBar && productState.isFavorite){
-            SnackBar(message = "Successfully add to Wish List ", show =productState.showSnackBar) {
-                productInteractionListener.onClickFavIcon(productState.productId)
+            SnackBar(message = "Successfully add to Wish List ",
+                show = state.disableClickedWhenShowSnackBar()) {
+                productInteractionListener.onClickFavIcon(state.returnId())
             }
-                
-            }
-        }
-    }
 
-    
+        Loading(state = state.loading())
+
+    }
 }
