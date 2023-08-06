@@ -26,12 +26,13 @@ fun AddProductScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    AddProductContent(state = state)
+    AddProductContent(state = state, listener = viewModel)
 }
 
 @Composable
 fun AddProductContent(
-    state: AddProductUiState
+    state: AddProductUiState,
+    listener: AddProductInteractionListener
 ) {
     Row(
         modifier = Modifier
@@ -59,7 +60,13 @@ fun AddProductContent(
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            AddProductForm()
+            AddProductForm(
+                state = state,
+                onProductNameChanged = listener::onProductNameChanged,
+                onProductPriceChanged = listener::onProductPriceChanged,
+                onProductDescriptionChanged = listener::onProductDescriptionChanged,
+                onClickAddProduct = listener::addProduct
+            )
         }
     }
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.add_product.AddProductUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black60
@@ -32,9 +33,16 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddProductForm() {
+fun AddProductForm(
+    state: AddProductUiState,
+    onProductNameChanged: (String) -> Unit,
+    onProductPriceChanged: (String) -> Unit,
+    onProductDescriptionChanged: (String) -> Unit,
+    onClickAddProduct: (name: String, price: Double, description: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.tertiary,
@@ -64,13 +72,24 @@ fun AddProductForm() {
                 textAlign = TextAlign.Center,
             )
         }
-        for (i in listOf("Product name", "Number of items", "Price", "Description")) {
-            FormTextField(
-                modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
-                hint = i,
-                onValueChange = { }
-            )
-        }
+        FormTextField(
+            text = state.productName,
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            hint = "Product name",
+            onValueChange = onProductNameChanged
+        )
+        FormTextField(
+            text = state.productPrice,
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            hint = "Price",
+            onValueChange = onProductPriceChanged
+        )
+        FormTextField(
+            text = state.productDescription,
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            hint = "Description",
+            onValueChange = onProductDescriptionChanged
+        )
         Text(
             modifier = Modifier.padding(
                 top = MaterialTheme.dimens.space24,
@@ -113,7 +132,13 @@ fun AddProductForm() {
             ),
             label = "Add",
             iconPainter = painterResource(R.drawable.icon_add_product),
-            onClick = { }
+            onClick = {
+                onClickAddProduct(
+                    state.productName,
+                    state.productPrice.toDouble(),
+                    state.productDescription
+                )
+            }
         )
     }
 }
@@ -122,6 +147,12 @@ fun AddProductForm() {
 @Composable
 fun PreviewAddProductForm() {
     HoneyMartTheme {
-        AddProductForm()
+        /*AddProductForm(
+            state = AddProductUiState(),
+            onProductNameChanged = { },
+            onProductPriceChanged = { },
+            onProductDescriptionChanged = { },
+            onClickAddProduct = { "" , 0.0, "" }
+        )*/
     }
 }
