@@ -32,6 +32,17 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
+    override suspend fun addOwner(
+        fullName: String,
+        email: String,
+        password: String,
+    ): BaseResponse<String> =
+        wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
+            append("fullName", fullName)
+            append("email", email)
+            append("password", password)
+        }))
+
 
     override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {
         return wrap(client.get("/markets"))
@@ -202,4 +213,17 @@ class HoneyMartServiceImp @Inject constructor(
             }
         }
     }
+
+
+
+    // region Owner
+    //region Auth
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<String> =
+        wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
+    //endregion
+
+    //endregion
 }

@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
@@ -23,6 +27,7 @@ android {
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility = ConfigData.JAVA_VERSIONS_CODE
         targetCompatibility = ConfigData.JAVA_VERSIONS_CODE
@@ -51,6 +56,9 @@ dependencies {
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
     androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
