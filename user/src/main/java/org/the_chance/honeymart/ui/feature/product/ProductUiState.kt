@@ -36,5 +36,20 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImages = productImages
     )
 }
-
+fun ProductsUiState.firstLoading() = this.isLoadingCategory  || this.isLoadingProduct
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
+fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
+        !this.isError && !this.isLoadingProduct
+fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
+        && this.products.isNotEmpty()
+fun ProductsUiState.disableClickedWhenShowSnackBar(): Boolean {
+    return products.any { product ->
+        product.showSnackBar
+    }
+}
+fun ProductsUiState.returnId(): Long {
+    val productWithSnackBar = products.firstOrNull { product ->
+        product.showSnackBar && product.isFavorite
+    }
+    return productWithSnackBar?.productId ?: -1
+}
