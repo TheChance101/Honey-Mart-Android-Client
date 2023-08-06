@@ -62,7 +62,8 @@ fun ItemFavorite(
                     modifier = modifier.align(Alignment.End),
                     iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
                     background = MaterialTheme.colorScheme.tertiary,
-                    onClick = { onClickFavoriteIcon(productId) }
+                    onClick = { onClickFavoriteIcon(productId) },
+                    isLoading = false
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(

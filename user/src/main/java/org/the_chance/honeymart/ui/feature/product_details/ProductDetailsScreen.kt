@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -193,7 +194,6 @@ private fun ProductDetailsContent(
 
                             Row {
                                 HoneyIconButton(
-                                    isLoading = state.isLoading,
                                     iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
                                     background = Color.Transparent,
                                     modifier = Modifier
@@ -203,9 +203,9 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listener::decreaseProductCount
+                                    onClick = listener::decreaseProductCount,
+                                    isLoading = state.isAddToCartLoading
                                 )
-
                                 Text(
                                     text = state.quantity.toString(),
                                     style = MaterialTheme.typography.displayMedium.copy(
@@ -216,10 +216,10 @@ private fun ProductDetailsContent(
                                 )
 
                                 HoneyIconButton(
-                                    isLoading = state.isLoading,
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listener::increaseProductCount
+                                    onClick = listener::increaseProductCount,
+                                    isLoading = state.isAddToCartLoading
                                 )
                             }
                         }
