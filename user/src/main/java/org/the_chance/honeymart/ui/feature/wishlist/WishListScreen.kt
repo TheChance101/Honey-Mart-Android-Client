@@ -47,6 +47,7 @@ fun WishListScreen(
                 )
 
                 WishListUiEffect.DeleteProductFromWishListEffect -> TODO("show snack bar")
+                else -> {}
             }
         }
     }

@@ -3,13 +3,13 @@ package org.the_chance.honeymart.ui.feature.cart.composables
 import SwipeBackground
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,14 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.honeymart.ui.feature.cart.CartInteractionListener
 import org.the_chance.honeymart.ui.feature.cart.CartUiState
-import org.the_chance.honeymart.ui.feature.cart.populatedLoading
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun CartSuccessScreen(
     state: CartUiState,
@@ -43,6 +44,7 @@ fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+
     ) {
         LazyColumn(
             state = rememberLazyListState(),
@@ -107,7 +109,8 @@ fun CartSuccessScreen(
         }
         CartCardView(
             totalPrice = state.total, isLoading = state.isLoading,
-            onClick = cartInteractionListener::onClickOrderNowButton)
+            onClick = cartInteractionListener::onClickOrderNowButton
+        )
     }
 
 }

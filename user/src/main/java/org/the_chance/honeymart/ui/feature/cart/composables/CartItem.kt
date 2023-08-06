@@ -53,14 +53,14 @@ fun CartItem(
             .fillMaxWidth()
             .height(100.dp)
             .padding(bottom = MaterialTheme.dimens.space16),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
+        colors =
+        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
         shape = Shapes.medium
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.onTertiary)
-
         ) {
             val (imageOrder, textOrderNumber, textItemPrice, imageViewMinusOrder,
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
@@ -81,7 +81,9 @@ fun CartItem(
 
             Text(
                 text = product.productName,
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(MaterialTheme.colorScheme.onSecondary),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                    MaterialTheme.colorScheme.onSecondary
+                ),
                 modifier = Modifier.constrainAs(textOrderNumber) {
                     top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(imageOrder.end, margin = 8.dp)
@@ -90,7 +92,9 @@ fun CartItem(
 
             Text(
                 text = formatCurrencyWithNearestFraction(product.productPrice),
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(primary100),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                    primary100
+                ),
 
                 modifier = Modifier
                     .border(1.dp, primary100, CircleShape)

@@ -25,6 +25,7 @@ fun HoneyIconButton(
     iconPainter: Painter,
     shape: Shape = CircleShape,
     background: Color = MaterialTheme.colorScheme.primary,
+    isLoading: Boolean = false
 ) {
     IconButton(
         onClick = onClick,
@@ -32,8 +33,8 @@ fun HoneyIconButton(
             .clip(shape)
             .size(MaterialTheme.dimens.smallButton)
             .background(background),
-
-        ) {
+        enabled = isLoading
+    ) {
 
         Image(
             painter = iconPainter,
@@ -48,7 +49,9 @@ fun HoneyIconButton(
 private fun HoneyMartSmallIconPreview() {
     HoneyIconButton(
         iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
-        onClick = {}
+        onClick = {
+        },
+        isLoading = false
     )
 
 }
