@@ -11,9 +11,10 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            HoneyMartTheme(){
-                LoginScreen()
+
+        setContent() {
+            HoneyMartTheme() {
+                SignupScreen()
             }
         }
     }

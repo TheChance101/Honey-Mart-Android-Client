@@ -12,6 +12,7 @@ interface AuthRepository {
 
     suspend fun createUserAccount(fullName: String, password: String, email: String): Boolean
 
+    suspend fun createOwnerAccount(fullName: String, email: String, password: String): Boolean
 
     suspend fun loginOwner(email: String, password: String): String
 }
