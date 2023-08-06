@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
@@ -31,7 +33,11 @@ android {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
      buildFeatures {
-        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
     }
 }
 
@@ -47,6 +53,9 @@ dependencies {
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
     androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
