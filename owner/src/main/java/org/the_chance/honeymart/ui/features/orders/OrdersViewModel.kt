@@ -13,7 +13,7 @@ class OrdersViewModel @Inject constructor(
 ): BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
     override fun onClickOrder(orderId: Long) {
-//        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
+        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
     }
 
     override fun getAllOrders() {
