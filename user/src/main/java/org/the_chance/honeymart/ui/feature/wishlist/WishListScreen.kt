@@ -108,6 +108,7 @@ private fun WishListContent(
                             productId = productState.productId,
                             onClickProduct = listener::onClickProduct,
                             onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
+                            enable = !state.isLoading
                         )
                     }
                 }
