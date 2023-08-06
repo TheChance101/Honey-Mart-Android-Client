@@ -62,7 +62,7 @@ fun SignupContent(
 
             Image(
                 painter = painterResource(id = R.drawable.image),
-                contentDescription = "honey image",
+                contentDescription = stringResource(R.string.honey_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxHeight()
             )
@@ -99,7 +99,7 @@ fun SignupContent(
                 )
                 HoneyTextField(
                     text = state.fullName,
-                    hint = "full name",
+                    hint = stringResource(R.string.full_namee),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
                     onValueChange = listener::onFullNameInputChange,
                     errorMessage = when (state.fullNameState) {
@@ -110,7 +110,7 @@ fun SignupContent(
                 )
                 HoneyTextField(
                     text = state.email,
-                    hint = "Email",
+                    hint = stringResource(R.string.emaill),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_email),
                     onValueChange = listener::onEmailInputChange,
                     errorMessage = when (state.emailState) {
@@ -121,7 +121,7 @@ fun SignupContent(
                 )
                 HoneyTextField(
                     text = state.password,
-                    hint = "Password",
+                    hint = stringResource(R.string.passwordd),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                     onValueChange = listener::onPasswordInputChanged,
                     errorMessage = when (state.passwordState) {
@@ -133,7 +133,7 @@ fun SignupContent(
                 )
                 HoneyTextField(
                     text = state.confirmPassword,
-                    hint = "Confirm Password",
+                    hint = stringResource(R.string.confirm_passwordd),
                     iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                     onValueChange = listener::onConfirmPasswordChanged,
                     errorMessage = when (state.confirmPasswordState) {
