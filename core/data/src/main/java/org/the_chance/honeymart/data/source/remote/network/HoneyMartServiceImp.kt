@@ -202,4 +202,17 @@ class HoneyMartServiceImp @Inject constructor(
             }
         }
     }
+
+
+
+    // region Owner
+    //region Auth
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<String> =
+        wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
+    //endregion
+
+    //endregion
 }

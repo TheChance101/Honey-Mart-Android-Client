@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
@@ -33,7 +35,8 @@ android {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
      buildFeatures {
-        compose = true
+        dataBinding = true
+         compose = true
     }
 
     composeOptions {
