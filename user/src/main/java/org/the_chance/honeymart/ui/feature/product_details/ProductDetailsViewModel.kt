@@ -132,7 +132,7 @@ class ProductDetailsViewModel @Inject constructor(
             it.copy(
                 isAddToCartLoading = true,
                 error = null,
-                isConnectionError = false
+                isConnectionError = false,
             )
         }
         tryToExecuteDebounced(

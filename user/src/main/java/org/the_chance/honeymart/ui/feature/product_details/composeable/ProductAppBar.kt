@@ -31,7 +31,8 @@ fun ProductAppBar(
             HoneyIconButton(
                 iconPainter = painterResource(id = R.drawable.icon_arrow_back),
                 onClick = onBackClick,
-                background = MaterialTheme.colorScheme.background
+                background = MaterialTheme.colorScheme.background,
+                isLoading = false
             )
         },
         title = {
@@ -50,6 +51,7 @@ fun ProductAppBar(
                 else
                     MaterialTheme.colorScheme.primary,
                 onClick = onFavoriteClick,
+                isLoading = state.isAddToCartLoading
             )
         },
     )

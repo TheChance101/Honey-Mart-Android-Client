@@ -4,7 +4,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class ProductDetailsUiState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val isAddToCartLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val totalPrice: Double = 0.0,

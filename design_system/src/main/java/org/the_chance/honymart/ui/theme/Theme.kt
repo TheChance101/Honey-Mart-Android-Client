@@ -23,8 +23,8 @@ private val DarkColorScheme = darkColorScheme(
     primary = primary100,
     onPrimary = darkText87,
     secondary = darkBackground200,
-    onSecondary = darkText87,
-    background = darkBackground400,
+    onSecondary = white,
+    background = darkBackground200,
     onBackground = black60,
     error = darkError,
     secondaryContainer = darkBackground400,
@@ -33,20 +33,20 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = darkBackground300,
     onTertiaryContainer = black37,
     tertiaryContainer = darkBackground300,
-    onSurfaceVariant = darkText87,
+    onSurfaceVariant = blackOn60,
     errorContainer = darkBackground400,
     inverseOnSurface = darkBackground300,
     onError = primary100,
     onErrorContainer = black37,
     outlineVariant = white,
-    )
+)
 
 private val LightColorScheme = lightColorScheme(
     primary = primary100,
     onPrimary = white,
     secondary = white,
     onSecondary = black87,
-    background = white,
+    background = background,
     onBackground = black60,
     error = error,
     secondaryContainer = white100,
@@ -54,15 +54,15 @@ private val LightColorScheme = lightColorScheme(
     tertiary = white,
     onTertiary = white,
     onTertiaryContainer = black16,
-    tertiaryContainer = white,
-    onSurfaceVariant = white,
+    tertiaryContainer = white30,
+    onSurfaceVariant = white87,
     errorContainer = primary100,
     inverseOnSurface = primary100,
     onError = white,
     onErrorContainer = primary100,
     outlineVariant = black8,
 
-)
+    )
 
 val MaterialTheme.dimens: Dimens
     @Composable
