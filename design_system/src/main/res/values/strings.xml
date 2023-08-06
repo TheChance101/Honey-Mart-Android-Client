@@ -102,4 +102,7 @@
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
+    <string name="there_are_no_order_for_this_day">There are no order for this \n day!!</string>
+    <string name="all">all</string>
+    <string name="new_order">new order</string>
 </resources>
