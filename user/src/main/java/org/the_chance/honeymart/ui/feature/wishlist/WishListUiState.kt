@@ -34,7 +34,6 @@ fun WishListUiState.firstLoading() = this.isLoading && this.products.isEmpty()
 
 fun WishListUiState.emptyPlaceholder() = this.products.isEmpty() && !this.isError && !this.isLoading
 
-
 fun WishListUiState.contentScreen() = this.products.isNotEmpty() && !this.isError
 
 fun WishListUiState.loading() = this.isLoading && this.products.isNotEmpty()

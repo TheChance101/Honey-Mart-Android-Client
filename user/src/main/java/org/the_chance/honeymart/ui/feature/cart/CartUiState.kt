@@ -49,6 +49,3 @@ fun CartUiState.placeHolderCondition() = this.products.isEmpty() && !this.isErro
 fun CartUiState.cartSuccessScreenCondition() = this.products.isNotEmpty() && !this.isError
 
 fun CartUiState.populatedLoading() = this.isLoading && this.products.isNotEmpty()
-
-
-

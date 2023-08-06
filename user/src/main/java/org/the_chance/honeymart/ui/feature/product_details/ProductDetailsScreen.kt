@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -56,14 +57,14 @@ fun ProductDetailsScreen(
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                is ProductDetailsUiEffect.AddProductToWishListEffectError -> TODO("show snack bar")
-                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> TODO("show snack bar")
-                is ProductDetailsUiEffect.AddToCartError -> TODO("show snack bar")
-                ProductDetailsUiEffect.AddToCartSuccess -> TODO("show snack bar")
+                is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
+                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {}
+                is ProductDetailsUiEffect.AddToCartError -> {}
+                ProductDetailsUiEffect.AddToCartSuccess -> {}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> TODO("show order dialog")
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> TODO("show snack bar")
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> TODO("show snack bar")
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {}
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {}
+                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
@@ -84,31 +85,42 @@ private fun ProductDetailsContent(
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
             bottomBar = {
-                HoneyFilledIconButton(
-                    label = stringResource(id = R.string.add_to_cart),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(elevation = 8.dp)
-                        .background(MaterialTheme.colorScheme.tertiaryContainer)
-                        .padding(
-                            bottom = MaterialTheme.dimens.space56,
-                            top = MaterialTheme.dimens.space16,
-                            start = MaterialTheme.dimens.space16,
-                            end = MaterialTheme.dimens.space16,
-                        ),
-                    iconPainter = painterResource(id = R.drawable.icon_cart),
-                    isEnable = !state.isAddToCartLoading,
-                    onClick = {
-                        state.product.productId.let {
-                            listenener.addProductToCart(
-                                it,
-                                state.quantity
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    HoneyFilledIconButton(
+                        label = stringResource(id = R.string.add_to_cart),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(elevation = 8.dp)
+                            .background(MaterialTheme.colorScheme.tertiaryContainer)
+                            .padding(
+                                bottom = MaterialTheme.dimens.space56,
+                                top = MaterialTheme.dimens.space16,
+                                start = MaterialTheme.dimens.space16,
+                                end = MaterialTheme.dimens.space16,
                             )
+                            .align(Alignment.BottomCenter),
+                        iconPainter = painterResource(id = R.drawable.icon_cart),
+                        isEnable = !state.isAddToCartLoading,
+                        onClick = {
+                            state.product.productId.let {
+                                listenener.addProductToCart(
+                                    it,
+                                    state.quantity
+                                )
+                            }
                         }
+                    )
+                    Box(modifier = Modifier.align(Alignment.BottomCenter).height(100.dp)) {
+                        Loading(
+                            state = state.isAddToCartLoading,
+                            size = 70.dp,
+                            modifier = Modifier
+                                .align(Alignment.Center))
                     }
-                )
+                }
             }
-        ) { padding ->
+        )
+        { padding ->
             Column(Modifier.fillMaxSize()) {
 
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
