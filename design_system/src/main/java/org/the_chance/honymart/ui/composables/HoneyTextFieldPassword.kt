@@ -10,12 +10,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
@@ -26,7 +31,7 @@ import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
 @Composable
-fun HoneyTextField(
+fun HoneyTextFieldPassword(
     hint: String,
     iconPainter: Painter,
     onValueChange: (String) -> Unit,
@@ -35,6 +40,13 @@ fun HoneyTextField(
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
 ) {
+
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+    val icon =
+        if (passwordVisible)
+            painterResource(id = R.drawable.eye) else
+            painterResource(id = R.drawable.eye_closed)
     Column {
         OutlinedTextField(
             modifier = modifier
@@ -47,6 +59,8 @@ fun HoneyTextField(
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
+            visualTransformation = if (passwordVisible) VisualTransformation.None
+            else PasswordVisualTransformation(),
             label = {
                 Text(
                     text = hint,
@@ -64,9 +78,19 @@ fun HoneyTextField(
                 unfocusedBorderColor = if (isError) error else black16,
             ),
             trailingIcon = {
+                IconButton(
+                    onClick = { passwordVisible = !passwordVisible },
+                    backgroundColor = Color.Transparent
+                ) {
+                    Icon(
+                        painter = icon,
+                        contentDescription = stringResource(R.string.icon_visible),
+                        tint = if (isError) error else white200
+                    )
+                }
                 if (isError) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_error_password),
+                        painter = icon,
                         contentDescription = stringResource(R.string.copy_button),
                         tint = error
                     )
@@ -96,26 +120,6 @@ fun HoneyTextField(
 }
 
 
-@Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
-@Composable
-fun TextFieldPreview() {
-    HoneyTextField(
-        hint = "Email",
-        iconPainter = painterResource(id = R.drawable.ic_email),
-        isError = true,
-        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
-    )
-}
 
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun TextFieldTabletPreview() {
-    HoneyTextField(
-        hint = "Email",
-        iconPainter = painterResource(id = R.drawable.ic_email),
-        isError = true,
-        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
-    )
-}
+
+

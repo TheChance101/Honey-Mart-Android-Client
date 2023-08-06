@@ -16,8 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.NavigationRail
+import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.products.ProductsScreen
+import org.the_chance.honeymart.ui.login.LoginScreen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                         MainNavGraph()
                     }
                 }
+
             }
         }
     }
