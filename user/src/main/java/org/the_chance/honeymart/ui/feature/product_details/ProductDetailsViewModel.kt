@@ -139,11 +139,13 @@ class ProductDetailsViewModel @Inject constructor(
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
+        _state.update { it.copy(snackBar =it.snackBar.copy(productId = productId)) }
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
         effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = true)) }
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -231,6 +233,9 @@ class ProductDetailsViewModel @Inject constructor(
             else -> {}
         }
         updateFavoriteState(false)
+    }
+    override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
     }
 
     // endregion

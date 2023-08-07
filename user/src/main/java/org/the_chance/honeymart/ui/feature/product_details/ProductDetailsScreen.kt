@@ -1,6 +1,12 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +50,7 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -117,7 +124,20 @@ private fun ProductDetailsContent(
                             size = 77.dp,
                             modifier = Modifier)
                     }
-                }
+                    Box(modifier = Modifier.align(Alignment.TopCenter )) {
+                        AnimatedVisibility(
+                            visible = state.snackBar.isShow,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+                        ) {
+                            SnackBarWithDuration(message = "Successfully add to Cart ",
+                                onDismiss = listenener::resetSnackBarState,
+                                undoAction = {})
+                        }
+
+                    }
+
+                    }
             }
         )
         { padding ->
@@ -220,6 +240,7 @@ private fun ProductDetailsContent(
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         )
+
                     }
 
                     SmallProductImages(
@@ -235,9 +256,12 @@ private fun ProductDetailsContent(
                         }
                     )
                 }
+
             }
         }
+
     }
+
 }
 
 @Preview(showSystemUi = true)
