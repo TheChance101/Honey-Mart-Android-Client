@@ -8,6 +8,7 @@ data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
     val isLoadingProduct: Boolean = false,
     val error: ErrorHandler? = null,
+    val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
@@ -16,10 +17,14 @@ data class ProductsUiState(
     val categoryId: Long = 0L,
 )
 
+data class SnackBarState(
+    val isShow: Boolean = false,
+    val productId: Long = 0L,
+)
+
 
 data class ProductUiState(
     val productId: Long = 0L,
-    val showSnackBar :Boolean = false ,
     val productName: String = "",
     val productDescription: String = "",
     val productPrice: Double = 0.0,
@@ -42,14 +47,4 @@ fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
         !this.isError && !this.isLoadingProduct
 fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
         && this.products.isNotEmpty()
-fun ProductsUiState.disableClickedWhenShowSnackBar(): Boolean {
-    return products.any { product ->
-        product.showSnackBar
-    }
-}
-fun ProductsUiState.returnId(): Long {
-    val productWithSnackBar = products.firstOrNull { product ->
-        product.showSnackBar && product.isFavorite
-    }
-    return productWithSnackBar?.productId ?: -1
-}
+
