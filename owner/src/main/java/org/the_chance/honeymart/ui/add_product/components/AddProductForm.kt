@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.add_product.components
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,10 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -55,15 +50,16 @@ fun AddProductForm(
     onProductPriceChanged: (String) -> Unit,
     onProductDescriptionChanged: (String) -> Unit,
     onClickAddProduct: (name: String, price: Double, description: String) -> Unit,
+    omImageSelected: (List<String>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedImageUris by remember {
-        mutableStateOf<List<Uri>>(emptyList())
-    }
-
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(4),
-        onResult = { uris -> selectedImageUris = uris }
+        onResult = { uris ->
+            val newImageStrings = uris.map { uri -> uri.toString() }
+            val updatedImages = state.productImages + newImageStrings
+            omImageSelected(updatedImages)
+        }
     )
 
     Column(
@@ -147,8 +143,8 @@ fun AddProductForm(
                 .padding(MaterialTheme.dimens.space16)
         ) {
             LazyVerticalGrid(columns = GridCells.Adaptive(102.dp)) {
-                items(selectedImageUris.size + 1) { index ->
-                    if (index < selectedImageUris.size) {
+                items(state.productImages.size + 1) { index ->
+                    if (index < state.productImages.size) {
                         Surface(
                             shape = MaterialTheme.shapes.medium,
                             color = MaterialTheme.colorScheme.tertiaryContainer,
@@ -157,7 +153,7 @@ fun AddProductForm(
                                 .padding(4.dp)
                         ) {
                             Image(
-                                painter = rememberAsyncImagePainter(selectedImageUris[index]),
+                                painter = rememberAsyncImagePainter(state.productImages[index]),
                                 contentScale = ContentScale.Crop,
                                 contentDescription = "Image of product",
                             )

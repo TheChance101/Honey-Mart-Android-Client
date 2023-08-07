@@ -68,7 +68,8 @@ fun AddProductContent(
                 onProductNameChanged = listener::onProductNameChanged,
                 onProductPriceChanged = listener::onProductPriceChanged,
                 onProductDescriptionChanged = listener::onProductDescriptionChanged,
-                onClickAddProduct = listener::addProduct
+                onClickAddProduct = listener::addProduct,
+                omImageSelected = listener::onImagesSelected
             )
         }
     }

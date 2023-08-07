@@ -73,4 +73,8 @@ class AddProductViewModel @Inject constructor(
             )
         }
     }
+
+    override fun onImagesSelected(uris: List<String>) {
+        _state.update { it.copy(productImages = uris) }
+    }
 }
