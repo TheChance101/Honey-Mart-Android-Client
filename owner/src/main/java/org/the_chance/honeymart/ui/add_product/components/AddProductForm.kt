@@ -155,11 +155,13 @@ fun AddProductForm(
                     items = state.productImages,
                 ) { image ->
                     Column(
-                        modifier = Modifier.padding(MaterialTheme.dimens.space4)
+                        modifier = Modifier
+                            .size(102.dp)
+                            .padding(MaterialTheme.dimens.space4)
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(102.dp)
+                                .fillMaxSize()
                                 .background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
                             Image(
@@ -186,7 +188,7 @@ fun AddProductForm(
                         }
                     }
                 }
-                if (state.productImages.size < 3) {
+                if (state.productImages.size < 4) {
                     item {
                         Card(
                             modifier = Modifier
