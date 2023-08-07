@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
@@ -53,6 +52,7 @@ fun FormTextField(
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             shape = Shapes.medium,
             maxLines = 1,
+            singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else primary100,

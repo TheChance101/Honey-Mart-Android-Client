@@ -94,7 +94,7 @@ fun AddProductForm(
         }
         FormTextField(
             text = state.productName,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
             hint = "Product name",
             keyboardType = KeyboardType.Text,
             onValueChange = onProductNameChanged,
@@ -106,7 +106,7 @@ fun AddProductForm(
         )
         FormTextField(
             text = state.productPrice,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
             hint = "Price",
             keyboardType = KeyboardType.Number,
             onValueChange = onProductPriceChanged,
@@ -118,7 +118,7 @@ fun AddProductForm(
         )
         FormTextField(
             text = state.productDescription,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
             hint = "Description",
             keyboardType = KeyboardType.Text,
             onValueChange = onProductDescriptionChanged,
