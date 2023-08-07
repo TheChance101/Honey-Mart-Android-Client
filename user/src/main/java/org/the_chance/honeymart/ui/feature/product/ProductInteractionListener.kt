@@ -5,4 +5,5 @@ interface ProductInteractionListener  {
     fun onClickFavIcon(productId: Long)
     fun onClickCategory(categoryId: Long)
     fun onclickTryAgain()
+    fun resetSnackBarState()
 }
