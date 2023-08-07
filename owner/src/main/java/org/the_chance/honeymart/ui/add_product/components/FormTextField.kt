@@ -56,7 +56,7 @@ fun FormTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else primary100,
-                unfocusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black16,
+                unfocusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black37,
             ),
             trailingIcon = {
                 if (isError) {

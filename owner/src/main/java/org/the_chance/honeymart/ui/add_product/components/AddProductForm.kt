@@ -112,6 +112,7 @@ fun AddProductForm(
             onValueChange = onProductPriceChanged,
             errorMessage = when (state.productPriceState) {
                 ValidationState.BLANK_TEXT_FIELD -> "Product price can't be blank"
+                ValidationState.INVALID_PRICE -> "Invalid product price"
                 else -> ""
             }
         )

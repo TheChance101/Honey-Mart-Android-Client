@@ -18,5 +18,6 @@ enum class ValidationState {
     SUCCESS,
     BLANK_TEXT_FIELD,
     VALID_TEXT_FIELD,
-    SHORT_LENGTH_TEXT
+    SHORT_LENGTH_TEXT,
+    INVALID_PRICE
 }

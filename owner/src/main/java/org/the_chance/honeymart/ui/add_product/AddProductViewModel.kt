@@ -53,8 +53,10 @@ class AddProductViewModel @Inject constructor(
     }
 
     override fun onProductPriceChanged(price: String) {
+        val priceRegex = Regex("^[0-9]+(\\.[0-9]+)?$")
         val productPriceState: ValidationState = when {
             price.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            !price.matches(priceRegex) -> ValidationState.INVALID_PRICE
             else -> ValidationState.VALID_TEXT_FIELD
         }
         _state.update { it.copy(productPriceState = productPriceState, productPrice = price) }

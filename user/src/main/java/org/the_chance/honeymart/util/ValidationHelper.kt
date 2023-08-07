@@ -23,6 +23,10 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.VALID_PASSWORD -> R.string.valid_password
         ValidationState.VALID_FULL_NAME -> R.string.valid_full_name
         ValidationState.SUCCESS -> R.string.success
+        ValidationState.BLANK_TEXT_FIELD -> TODO()
+        ValidationState.VALID_TEXT_FIELD -> TODO()
+        ValidationState.SHORT_LENGTH_TEXT -> TODO()
+        ValidationState.INVALID_PRICE -> TODO()
     }
 
 }
