@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.add_product.components
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
@@ -31,10 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.add_product.AddProductUiState
 import org.the_chance.honeymart.ui.add_product.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
@@ -44,7 +48,7 @@ import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AddProductForm(
     state: AddProductUiState,
@@ -95,7 +99,7 @@ fun AddProductForm(
                 textAlign = TextAlign.Center,
             )
         }
-        /*FormTextField(
+        FormTextField(
             text = state.productName,
             modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
             hint = "Product name",
@@ -130,7 +134,7 @@ fun AddProductForm(
                 ValidationState.SHORT_LENGTH_TEXT -> "Product description is too short"
                 else -> ""
             }
-        )*/
+        )
         Text(
             modifier = Modifier.padding(
                 top = MaterialTheme.dimens.space24,
@@ -147,39 +151,44 @@ fun AddProductForm(
                 .padding(MaterialTheme.dimens.space16)
         ) {
             LazyVerticalGrid(columns = GridCells.Adaptive(102.dp)) {
-                items(state.productImages.size + 1) { index ->
-                    if (index < state.productImages.size) {
-                        Column(
-                            modifier = Modifier.padding(MaterialTheme.dimens.space4)
+                items(
+                    items = state.productImages,
+                    key = { image -> image }
+                ) { image ->
+                    Column(
+                        modifier = Modifier.padding(MaterialTheme.dimens.space4)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(102.dp)
+                                .background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
-                            Box(
+                            Image(
+                                painter = rememberAsyncImagePainter(image),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "Image of product",
+                            )
+                            IconButton(
                                 modifier = Modifier
-                                    .size(102.dp)
-                                    .background(MaterialTheme.colorScheme.tertiaryContainer)
+                                    .align(Alignment.TopEnd)
+                                    .padding(MaterialTheme.dimens.space4)
+                                    .animateItemPlacement(),
+                                onClick = {
+                                    onClickRemoveSelectedImage(image)
+                                },
+                                backgroundColor = black16
                             ) {
-                                Image(
-                                    painter = rememberAsyncImagePainter(state.productImages[index]),
-                                    contentScale = ContentScale.Crop,
-                                    contentDescription = "Image of product",
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = "Icon Delete Image",
+                                    tint = Color.White
                                 )
-                                IconButton(
-                                    modifier = Modifier
-                                        .align(Alignment.TopEnd)
-                                        .padding(MaterialTheme.dimens.space4),
-                                    onClick = {
-                                        onClickRemoveSelectedImage(state.productImages[index])
-                                    },
-                                    backgroundColor = black16
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Clear,
-                                        contentDescription = "Icon Delete Image",
-                                        tint = Color.White
-                                    )
-                                }
                             }
                         }
-                    } else if (index <= 3) {
+                    }
+                }
+                if (state.productImages.size < 3) {
+                    item {
                         Card(
                             modifier = Modifier
                                 .size(102.dp)
@@ -209,6 +218,7 @@ fun AddProductForm(
                     }
                 }
             }
+
         }
         Spacer(modifier = Modifier.weight(1F))
         Box(
