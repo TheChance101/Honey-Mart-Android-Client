@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.composable
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.theme.Typography
@@ -59,7 +60,7 @@ fun HoneyRegistrationScaffoldPreview() {
             HoneyTextField(
                 text = "email",
                 hint = "email",
-                iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.ic_email),
+                iconPainter = painterResource(id = R.drawable.ic_email),
                 onValueChange = { },
                 errorMessage = ""
             )
@@ -68,7 +69,7 @@ fun HoneyRegistrationScaffoldPreview() {
     HoneyTextField(
         text = "password",
         hint = "pass",
-        iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.ic_password),
+        iconPainter = painterResource(id = R.drawable.ic_password),
         onValueChange = { },
         errorMessage = ""
     )
