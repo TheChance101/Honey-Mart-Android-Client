@@ -6,5 +6,11 @@ data class OrderEntity(
     val state: Int,
     val date: Long,
     val market: MarketEntity,
-    val numItems: Int
+    val numItems: Int,
+    val user: UserEntity,
+)
+
+data class UserEntity(
+    val userId: Int,
+    val fullName: String,
 )

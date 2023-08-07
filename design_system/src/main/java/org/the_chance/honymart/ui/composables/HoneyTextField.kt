@@ -39,7 +39,11 @@ fun HoneyTextField(
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(
+                    end = MaterialTheme.dimens.space16,
+                    start = MaterialTheme.dimens.space16,
+                    bottom = MaterialTheme.dimens.space8
+                )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
@@ -93,6 +97,7 @@ fun HoneyTextField(
 
 
 @Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
     HoneyTextField(
@@ -104,14 +109,3 @@ fun TextFieldPreview() {
     )
 }
 
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun TextFieldTabletPreview() {
-    HoneyTextField(
-        hint = "Email",
-        iconPainter = painterResource(id = R.drawable.ic_email),
-        isError = true,
-        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
-    )
-}

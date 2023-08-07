@@ -2,6 +2,7 @@ package org.the_chance.honymart.ui.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ fun HoneyFilledButton(
         enabled = isEnable,
         modifier = modifier
             .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.dimens.space16)
             .height(MaterialTheme.dimens.heightPrimaryButton),
         colors = ButtonDefaults.buttonColors(
             containerColor = background,
