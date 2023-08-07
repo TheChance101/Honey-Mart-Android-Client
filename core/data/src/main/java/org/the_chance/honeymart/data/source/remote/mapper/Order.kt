@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
+import org.the_chance.honeymart.data.source.remote.models.User
 import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.model.UserEntity
 
 fun OrderDto.toOrderEntity(): OrderEntity {
     return OrderEntity(
@@ -10,6 +12,12 @@ fun OrderDto.toOrderEntity(): OrderEntity {
         state = state ?: 0,
         date = date ?: 0L,
         market = market.toMarketEntity(),
-        numItems = numItems ?: 0
+        numItems = numItems ?: 0,
+        user = user.toOrderEntity(),
     )
 }
+
+fun User.toOrderEntity() = UserEntity(
+    userId = userId,
+    fullName = fullName
+)
