@@ -7,4 +7,5 @@ interface WishListInteractionListener {
     fun onClickFavoriteIcon(productId: Long)
     fun getWishListProducts()
     fun onClickDiscoverButton()
+    fun resetSnackBarState()
 }
