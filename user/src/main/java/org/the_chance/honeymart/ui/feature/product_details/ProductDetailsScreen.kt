@@ -110,12 +110,12 @@ private fun ProductDetailsContent(
                             }
                         }
                     )
-                    Box(modifier = Modifier.align(Alignment.BottomCenter).height(100.dp)) {
+                    Box(modifier = Modifier.height(100.dp)
+                        .padding(bottom = MaterialTheme.dimens.space16)) {
                         Loading(
                             state = state.isAddToCartLoading,
-                            size = 70.dp,
-                            modifier = Modifier
-                                .align(Alignment.Center))
+                            size = 77.dp,
+                            modifier = Modifier)
                     }
                 }
             }
@@ -176,9 +176,9 @@ private fun ProductDetailsContent(
 
                             Row {
                                 HoneyIconButton(
-                                    isLoading = state.isAddToCartLoading,
                                     iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
                                     background = Color.Transparent,
+                                    isLoading = state.isAddToCartLoading,
                                     modifier = Modifier
                                         .clip(CircleShape)
                                         .border(
@@ -186,8 +186,8 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listenener::decreaseProductCount
-                                )
+                                    onClick = listenener::decreaseProductCount,
+                                    )
 
                                 Text(
                                     text = state.quantity.toString(),
@@ -201,15 +201,15 @@ private fun ProductDetailsContent(
                                 HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listenener::increaseProductCount,
                                     isLoading = state.isAddToCartLoading,
-                                )
+                                    onClick = listenener::increaseProductCount,
+                                    )
                             }
                         }
 
                         HoneyOutlineText(
-                            price = state.totalPrice.toString() + "$",
-                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
+                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
+                            state.totalPrice.toString() + "$",
                         )
                         Text(
                             modifier = Modifier
