@@ -33,7 +33,6 @@ import org.the_chance.user.R
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalMaterialApi::class
 )
 @Composable
 fun CartSuccessScreen(
@@ -44,7 +43,6 @@ fun CartSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-
     ) {
         LazyColumn(
             state = rememberLazyListState(),

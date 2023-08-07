@@ -130,7 +130,7 @@ fun OrdersContent(
                     modifier = Modifier.padding(
                         start = MaterialTheme.dimens.space16,
                         end = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space8
+                        top = MaterialTheme.dimens.space16
                     ),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)

@@ -52,7 +52,7 @@ fun CartItem(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .padding(bottom = MaterialTheme.dimens.space16),
+            .padding(bottom = MaterialTheme.dimens.space8),
         colors =
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
         shape = Shapes.medium
