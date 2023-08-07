@@ -79,4 +79,10 @@ class AddProductViewModel @Inject constructor(
     override fun onImagesSelected(uris: List<String>) {
         _state.update { it.copy(productImages = uris) }
     }
+
+    override fun onClickRemoveSelectedImage(imageUri: String) {
+        val updatedImages = _state.value.productImages.toMutableList()
+        updatedImages.remove(imageUri)
+        _state.update { it.copy(productImages = updatedImages) }
+    }
 }

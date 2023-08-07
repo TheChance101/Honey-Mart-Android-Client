@@ -9,4 +9,5 @@ interface AddProductInteractionListener {
     fun onProductDescriptionChanged(description: String)
     fun addProduct(name: String, price: Double, description: String)
     fun onImagesSelected(uris: List<String>)
+    fun onClickRemoveSelectedImage(imageUri: String)
 }
