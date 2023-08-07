@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -62,7 +63,8 @@ fun SnackBar(
 @Composable
 fun SnackBarWithDuration(
     message: String,
-    onHideSnackbar: () -> Unit,
+    undoAction: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     ConstraintLayout(
@@ -70,13 +72,17 @@ fun SnackBarWithDuration(
     ) {
         val snackBar = createRef()
         LaunchedEffect(key1 = snackbarHostState) {
-            snackbarHostState.showSnackbar(
+            val snackBarResult = snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = "Close",
                 duration = SnackbarDuration.Long,
             )
-        }
+            when (snackBarResult) {
+                SnackbarResult.Dismissed -> onDismiss()
+                SnackbarResult.ActionPerformed -> onDismiss()
+            }
 
+        }
 
         SnackbarHost(
             hostState = snackbarHostState,
@@ -92,7 +98,7 @@ fun SnackBarWithDuration(
                     Text(
                         "Undo",
                         modifier = Modifier.clickable(onClick = {
-                            onHideSnackbar()
+                            undoAction()
                             snackbarHostState.currentSnackbarData?.dismiss()
                         }),
                         style = Typography.displayLarge,
