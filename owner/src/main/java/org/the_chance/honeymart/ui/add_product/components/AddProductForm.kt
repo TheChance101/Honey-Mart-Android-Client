@@ -153,7 +153,6 @@ fun AddProductForm(
             LazyVerticalGrid(columns = GridCells.Adaptive(102.dp)) {
                 items(
                     items = state.productImages,
-                    key = { image -> image }
                 ) { image ->
                     Column(
                         modifier = Modifier.padding(MaterialTheme.dimens.space4)
