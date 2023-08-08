@@ -61,7 +61,6 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-
     // region Product
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
@@ -140,11 +139,13 @@ class ProductDetailsViewModel @Inject constructor(
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
+        _state.update { it.copy(snackBar =it.snackBar.copy(productId = productId)) }
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
         effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = true)) }
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -168,7 +169,6 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
-
             else -> {}
         }
     }
@@ -176,8 +176,6 @@ class ProductDetailsViewModel @Inject constructor(
     // endregion
 
     // region Wishlist
-
-
     // region Check If Product In Wishlist
 
     private fun checkIfProductInWishList(productId: Long) {
@@ -236,6 +234,13 @@ class ProductDetailsViewModel @Inject constructor(
         }
         updateFavoriteState(false)
     }
+    override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun onclickTryAgain() {
+        getData()
+    }
 
     // endregion
 
@@ -274,7 +279,6 @@ class ProductDetailsViewModel @Inject constructor(
         )
     }
 
-
     private fun onDeleteWishListSuccess(successMessage: String) {
         effectActionExecutor(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
@@ -285,6 +289,4 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
-
-
 }

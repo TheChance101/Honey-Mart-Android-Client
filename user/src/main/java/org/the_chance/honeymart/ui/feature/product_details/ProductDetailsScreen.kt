@@ -1,6 +1,12 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +50,7 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -69,18 +76,18 @@ fun ProductDetailsScreen(
             }
         }
     }
-    ProductDetailsContent(state = state, listenener = viewModel)
+    ProductDetailsContent(state = state, listener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listenener: ProductDetailsInteraction,
+    listener: ProductDetailsInteraction,
 
     ) {
     Loading(state.isLoading)
 
-    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
+    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = listener::onclickTryAgain)
 
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
@@ -103,19 +110,35 @@ private fun ProductDetailsContent(
                         isEnable = !state.isAddToCartLoading,
                         onClick = {
                             state.product.productId.let {
-                                listenener.addProductToCart(
+                                listener.addProductToCart(
                                     it,
                                     state.quantity
                                 )
                             }
                         }
                     )
-                    Box(modifier = Modifier.align(Alignment.BottomCenter).height(100.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .padding(bottom = MaterialTheme.dimens.space16)
+                    ) {
                         Loading(
                             state = state.isAddToCartLoading,
-                            size = 70.dp,
+                            size = 75.dp,
                             modifier = Modifier
-                                .align(Alignment.Center))
+                        )
+                    }
+                    Box(modifier = Modifier.align(Alignment.Center).padding(bottom = 120.dp)) {
+                        AnimatedVisibility(
+                            visible = state.snackBar.isShow,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+                        ) {
+                            SnackBarWithDuration(message = "Successfully add to Cart ",
+                                onDismiss = listener::resetSnackBarState,
+                                undoAction = {},
+                                text = "")
+                        }
                     }
                 }
             }
@@ -140,8 +163,8 @@ private fun ProductDetailsContent(
                         ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = listenener::onClickBack,
-                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
+                            onBackClick = listener::onClickBack,
+                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -176,9 +199,9 @@ private fun ProductDetailsContent(
 
                             Row {
                                 HoneyIconButton(
-                                    isLoading = state.isAddToCartLoading,
                                     iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
                                     background = Color.Transparent,
+                                    isLoading = state.isAddToCartLoading,
                                     modifier = Modifier
                                         .clip(CircleShape)
                                         .border(
@@ -186,7 +209,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listenener::decreaseProductCount
+                                    onClick = listener::decreaseProductCount,
                                 )
 
                                 Text(
@@ -201,15 +224,15 @@ private fun ProductDetailsContent(
                                 HoneyIconButton(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
-                                    onClick = listenener::increaseProductCount,
                                     isLoading = state.isAddToCartLoading,
+                                    onClick = listener::increaseProductCount,
                                 )
                             }
                         }
 
                         HoneyOutlineText(
-                            price = state.totalPrice.toString() + "$",
-                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
+                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
+                            state.totalPrice.toString() + "$",
                         )
                         Text(
                             modifier = Modifier
@@ -220,6 +243,7 @@ private fun ProductDetailsContent(
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         )
+
                     }
 
                     SmallProductImages(
@@ -231,7 +255,7 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            listenener.onClickSmallImage(state.smallImages[index])
+                            listener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }
@@ -240,8 +264,9 @@ private fun ProductDetailsContent(
     }
 }
 
+
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewScreen(){
+fun PreviewScreen() {
     ProductDetailsScreen()
 }

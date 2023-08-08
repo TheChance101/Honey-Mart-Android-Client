@@ -22,7 +22,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
-                products = updateProductFavoriteState(false, true,productId),
+                products = updateProductFavoriteState(false,productId),
                 isLoading = true,
                 isError = false,
             )
@@ -32,26 +32,25 @@ class WishListViewModel @javax.inject.Inject constructor(
             ::onDeleteProductSuccess,
             { onDeleteProductError(it, productId) }
         )
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId =productId)) }
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
         effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
-        _state.update { currentState ->
-            currentState.copy(
-                products = currentState.products.map { it.copy(showSnackBar = false) }
-            )
-        }
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true)) }
         getWishListProducts()
+    }
+    override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
     }
 
     private fun updateProductFavoriteState(
         isFavorite: Boolean,
-        showSnackBar :Boolean,
         productId: Long
     ): List<WishListProductUiState> {
         val updatedProducts = _state.value.products.map { wishListProductUiState ->
             if (wishListProductUiState.productId == productId) {
-                wishListProductUiState.copy(isFavorite = isFavorite, showSnackBar = showSnackBar)
+                wishListProductUiState.copy(isFavorite = isFavorite)
             } else {
                 wishListProductUiState
             }
@@ -97,7 +96,7 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
         _state.update {
-            it.copy(products = updateProductFavoriteState(true, false ,productId), error = error)
+            it.copy(products = updateProductFavoriteState(true ,productId), error = error)
         }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }

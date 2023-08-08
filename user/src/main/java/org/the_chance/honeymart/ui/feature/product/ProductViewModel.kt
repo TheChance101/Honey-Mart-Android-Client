@@ -143,8 +143,7 @@ class ProductViewModel @Inject constructor(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
     ) = products.map { product ->
-        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId },
-            showSnackBar = false)
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
     }
 
     private fun getWishListProducts(products: List<ProductUiState>) {
@@ -174,12 +173,12 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    override fun onClickFavIcon(productId: Long) {
+     override fun onClickFavIcon(productId: Long) {
         val currentProduct = _state.value.products.find { it.productId == productId }
         val isFavorite = currentProduct?.isFavorite ?: false
         val newFavoriteState = !isFavorite
 
-        updateFavoriteState(productId, newFavoriteState,!isFavorite)
+        updateFavoriteState(productId, newFavoriteState)
 
         if (isFavorite) {
             deleteProductFromWishList(productId)
@@ -187,7 +186,6 @@ class ProductViewModel @Inject constructor(
             addProductToWishList(productId)
         }
     }
-
 
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
@@ -204,7 +202,6 @@ class ProductViewModel @Inject constructor(
 
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(error = error, isError = true) }
-
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -213,35 +210,32 @@ class ProductViewModel @Inject constructor(
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )
+        _state.update { it.copy(snackBar =it.snackBar.copy(productId = productId)) }
     }
 
-    private fun updateFavoriteState(productId: Long, isFavorite: Boolean,showSnackBar : Boolean) {
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
         val newProduct = _state.value.products.map {
             if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite,
-                showSnackBar = showSnackBar )
+                it.copy(isFavorite = isFavorite,)
             } else {
                 it
             }
         }
-        _state.update { it.copy(products = newProduct, isLoadingProduct = true) }
+        _state.update { it.copy(products = newProduct) }
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
-        _state.update { currentState ->
-            currentState.copy(
-                products = currentState.products.map { it.copy(showSnackBar = false) },
-                isLoadingProduct = false
-            )
-        }
 
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = true)) }
+    }
+     override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
-        updateFavoriteState(productId, false,false )
     }
 
 

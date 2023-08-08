@@ -27,7 +27,8 @@ import org.the_chance.honymart.ui.theme.dimens
 fun Loading(
     state: Boolean,
     modifier: Modifier = Modifier,
-    size: Dp = MaterialTheme.dimens.lottieLoading) {
+    size: Dp = MaterialTheme.dimens.lottieLoading,
+) {
     val composition by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(R.raw.loading)
     )

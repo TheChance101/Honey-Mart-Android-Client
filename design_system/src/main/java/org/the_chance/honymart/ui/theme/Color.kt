@@ -30,4 +30,3 @@ val darkBackground400 = Color(0xFF484848)
 
 val darkText87 = Color(0xFFE2E2E2)
 val darkText37 = Color(0x99FFFFFF)
-

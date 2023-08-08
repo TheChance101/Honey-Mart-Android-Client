@@ -7,8 +7,13 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class WishListUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
+    val snackBar :SnackBarState = SnackBarState(),
     val error: ErrorHandler? = null,
     val products: List<WishListProductUiState> = emptyList(),
+)
+data class SnackBarState(
+    val isShow : Boolean = false ,
+    val productId: Long =0L,
 )
 
 data class WishListProductUiState(
@@ -16,7 +21,6 @@ data class WishListProductUiState(
     val productName: String = "",
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = true,
-    val showSnackBar: Boolean= false ,
     val description: String = "",
     val productImages: List<String> = emptyList()
 )

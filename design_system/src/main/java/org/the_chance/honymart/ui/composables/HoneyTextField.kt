@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,7 +55,7 @@ fun HoneyTextField(
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedSupportingTextColor = if (isError) error else black37,
-                focusedContainerColor = (MaterialTheme.colorScheme.onTertiary),
+                focusedContainerColor = Color.Transparent,
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) error else black16,
                 unfocusedBorderColor = if (isError) error else black16,

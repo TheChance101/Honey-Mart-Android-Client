@@ -8,4 +8,7 @@ interface ProductDetailsInteraction {
     fun decreaseProductCount()
 
     fun addProductToCart(productId: Long, count: Int)
+    fun resetSnackBarState()
+
+    fun onclickTryAgain()
 }

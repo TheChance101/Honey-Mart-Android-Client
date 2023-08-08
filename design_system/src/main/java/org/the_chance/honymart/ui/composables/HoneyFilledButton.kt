@@ -22,7 +22,7 @@ fun HoneyFilledButton(
     label: String,
     onClick: () -> Unit,
     isEnable: Boolean = true,
-    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
     Button(
