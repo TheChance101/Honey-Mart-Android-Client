@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -150,50 +151,43 @@ fun AddProductForm(
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
-            LazyVerticalGrid(columns = GridCells.Adaptive(102.dp)) {
-                items(
-                    items = state.productImages,
-                ) { image ->
-                    Column(
-                        modifier = Modifier
-                            .size(102.dp)
-                            .padding(MaterialTheme.dimens.space4)
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(102.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(items = state.productImages) { image ->
+                    Box(
+                        modifier = Modifier.size(102.dp),
                     ) {
-                        Box(
+                        Image(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                                .clip(MaterialTheme.shapes.medium)
+                                .background(color = MaterialTheme.colorScheme.tertiaryContainer),
+                            painter = rememberAsyncImagePainter(image),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Image of product",
+                        )
+                        IconButton(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(MaterialTheme.dimens.space4),
+                            onClick = { onClickRemoveSelectedImage(image) },
+                            backgroundColor = black16
                         ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(image),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = "Image of product",
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = "Icon Delete Image",
+                                tint = Color.White
                             )
-                            IconButton(
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(MaterialTheme.dimens.space4)
-                                    .animateItemPlacement(),
-                                onClick = {
-                                    onClickRemoveSelectedImage(image)
-                                },
-                                backgroundColor = black16
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = "Icon Delete Image",
-                                    tint = Color.White
-                                )
-                            }
                         }
                     }
                 }
                 if (state.productImages.size < 4) {
                     item {
                         Card(
-                            modifier = Modifier
-                                .size(102.dp)
-                                .padding(4.dp),
+                            modifier = Modifier.size(102.dp),
                             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
                             onClick = {
                                 multiplePhotoPickerLauncher.launch(
