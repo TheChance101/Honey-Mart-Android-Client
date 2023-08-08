@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.add_product.components
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -49,14 +48,14 @@ import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddProductForm(
     state: AddProductUiState,
     onProductNameChanged: (String) -> Unit,
     onProductPriceChanged: (String) -> Unit,
     onProductDescriptionChanged: (String) -> Unit,
-    onClickAddProduct: (name: String, price: Double, description: String) -> Unit,
+    onClickAddProduct: (name: String, price: Double, description: String, images: List<String>) -> Unit,
     omImageSelected: (List<String>) -> Unit,
     onClickRemoveSelectedImage: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -67,6 +66,7 @@ fun AddProductForm(
             val newImageStrings = uris.map { uri -> uri.toString() }
             val updatedImages = state.productImages + newImageStrings
             omImageSelected(updatedImages)
+            println(updatedImages)
         }
     )
 
@@ -242,7 +242,8 @@ fun AddProductForm(
                 onClickAddProduct(
                     state.productName,
                     state.productPrice.toDouble(),
-                    state.productDescription
+                    state.productDescription,
+                    state.productImages
                 )
             }
         )
