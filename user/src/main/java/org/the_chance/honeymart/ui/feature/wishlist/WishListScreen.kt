@@ -113,7 +113,7 @@ private fun WishListContent(
                             productId = productState.productId,
                             onClickProduct = wishListInteractionListener::onClickProduct,
                             onClickFavoriteIcon = { wishListInteractionListener.onClickFavoriteIcon(productState.productId) },
-                            enable = !state.snackBar.isShow
+                            enable = !state.isLoading
                         )
                     }
                 }
