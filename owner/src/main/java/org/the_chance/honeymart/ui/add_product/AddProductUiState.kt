@@ -8,6 +8,7 @@ data class AddProductUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
+    val productId: Long = 0L,
     val productName: String = "",
     val productPrice: String = "",
     val productDescription: String = "",
@@ -19,6 +20,7 @@ data class AddProductUiState(
 
 fun ProductEntity.toAddProductUiState(): AddProductUiState {
     return AddProductUiState(
+        productId = productId,
         productName = productName,
         productPrice = ProductPrice.toString(),
         productDescription = productDescription,
