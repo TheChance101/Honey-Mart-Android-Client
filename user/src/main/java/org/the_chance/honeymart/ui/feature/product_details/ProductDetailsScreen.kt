@@ -117,14 +117,18 @@ private fun ProductDetailsContent(
                             }
                         }
                     )
-                    Box(modifier = Modifier.height(100.dp)
-                        .padding(bottom = MaterialTheme.dimens.space16)) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .padding(bottom = MaterialTheme.dimens.space16)
+                    ) {
                         Loading(
                             state = state.isAddToCartLoading,
-                            size = 77.dp,
-                            modifier = Modifier)
+                            size = 75.dp,
+                            modifier = Modifier
+                        )
                     }
-                    Box(modifier = Modifier.align(Alignment.TopCenter )) {
+                    Box(modifier = Modifier.align(Alignment.Center).padding(bottom = 120.dp)) {
                         AnimatedVisibility(
                             visible = state.snackBar.isShow,
                             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
@@ -134,10 +138,8 @@ private fun ProductDetailsContent(
                                 onDismiss = listenener::resetSnackBarState,
                                 undoAction = {})
                         }
-
                     }
-
-                    }
+                }
             }
         )
         { padding ->
@@ -207,7 +209,7 @@ private fun ProductDetailsContent(
                                             CircleShape
                                         ),
                                     onClick = listenener::decreaseProductCount,
-                                    )
+                                )
 
                                 Text(
                                     text = state.quantity.toString(),
@@ -223,7 +225,7 @@ private fun ProductDetailsContent(
                                     background = MaterialTheme.colorScheme.primary,
                                     isLoading = state.isAddToCartLoading,
                                     onClick = listenener::increaseProductCount,
-                                    )
+                                )
                             }
                         }
 
@@ -256,16 +258,14 @@ private fun ProductDetailsContent(
                         }
                     )
                 }
-
             }
         }
-
     }
-
 }
+
 
 @Preview(showSystemUi = true)
 @Composable
-fun PreviewScreen(){
+fun PreviewScreen() {
     ProductDetailsScreen()
 }
