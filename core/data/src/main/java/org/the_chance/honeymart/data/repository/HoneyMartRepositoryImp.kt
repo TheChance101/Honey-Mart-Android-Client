@@ -106,4 +106,16 @@ class HoneyMartRepositoryImp @Inject constructor(
             )
         }.value?.toProductEntity() ?: throw NotFoundException()
     }
+
+    override suspend fun addImageProduct(
+        productId: Long,
+        images: List<String>
+    ): String {
+        return wrap {
+            honeyMartService.addImageProduct(
+                productId = productId,
+                images = images
+            )
+        }.value ?: throw NotFoundException()
+    }
 }

@@ -38,4 +38,6 @@ interface HoneyMartRepository {
         description: String,
         categoryId: Long,
     ): ProductEntity
+
+    suspend fun addImageProduct(productId: Long, images: List<String>): String
 }

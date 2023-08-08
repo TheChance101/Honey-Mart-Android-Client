@@ -93,6 +93,19 @@ class HoneyMartServiceImp @Inject constructor(
             append("name", name)
         }))
 
+    override suspend fun addImageProduct(
+        productId: Long,
+        images: List<String>
+    ): BaseResponse<String> {
+        val formParameters = Parameters.build {
+            images.forEachIndexed { index, imageUrl ->
+                append("images[$index]", imageUrl)
+            }
+        }
+        return wrap(client.submitForm(url = "/product/$productId/uploadImages", formParameters = formParameters))
+    }
+
+
     override suspend fun updateProduct(
         productId: Long,
         name: String,

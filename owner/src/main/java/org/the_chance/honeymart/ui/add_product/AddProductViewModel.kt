@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.add_product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddProductUseCase
+import org.the_chance.honeymart.domain.usecase.AddProductWithImagesUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -10,15 +10,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
-    private val addProductUseCase: AddProductUseCase
+    private val addProductWithImagesUseCase: AddProductWithImagesUseCase
 ) : BaseViewModel<AddProductUiState, Unit>(AddProductUiState()), AddProductInteractionListener {
     override val TAG: String = this::class.java.simpleName
-    private val args = 43L
+    private val categoryId = 43L
 
-    override fun addProduct(name: String, price: Double, description: String) {
+    override fun addProduct(
+        name: String,
+        price: Double,
+        description: String,
+        images: List<String>
+    ) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addProductUseCase(name, price, description, args).toAddProductUiState() },
+            { addProductWithImagesUseCase(name, price, description, categoryId, images).toAddProductUiState() },
             onSuccess = ::onAddProductSuccess,
             onError = ::onAddProductError
         )
@@ -32,12 +37,15 @@ class AddProductViewModel @Inject constructor(
                 productName = product.productName,
                 productPrice = product.productPrice,
                 productDescription = product.productDescription,
+                productImages = product.productImages
             )
         }
+        log("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     }
 
     private fun onAddProductError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
+        log("Error occurred: $errorHandler")
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
