@@ -76,18 +76,18 @@ fun ProductDetailsScreen(
             }
         }
     }
-    ProductDetailsContent(state = state, listenener = viewModel)
+    ProductDetailsContent(state = state, listener = viewModel)
 }
 
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listenener: ProductDetailsInteraction,
+    listener: ProductDetailsInteraction,
 
     ) {
     Loading(state.isLoading)
 
-    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = {})
+    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = listener::onclickTryAgain)
 
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
@@ -110,7 +110,7 @@ private fun ProductDetailsContent(
                         isEnable = !state.isAddToCartLoading,
                         onClick = {
                             state.product.productId.let {
-                                listenener.addProductToCart(
+                                listener.addProductToCart(
                                     it,
                                     state.quantity
                                 )
@@ -135,8 +135,9 @@ private fun ProductDetailsContent(
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                         ) {
                             SnackBarWithDuration(message = "Successfully add to Cart ",
-                                onDismiss = listenener::resetSnackBarState,
-                                undoAction = {})
+                                onDismiss = listener::resetSnackBarState,
+                                undoAction = {},
+                                text = "")
                         }
                     }
                 }
@@ -162,8 +163,8 @@ private fun ProductDetailsContent(
                         ProductAppBar(
                             modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                             state = state,
-                            onBackClick = listenener::onClickBack,
-                            onFavoriteClick = { listenener.onClickFavorite(state.product.productId) },
+                            onBackClick = listener::onClickBack,
+                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
                         )
                     }
 
@@ -208,7 +209,7 @@ private fun ProductDetailsContent(
                                             MaterialTheme.colorScheme.primary,
                                             CircleShape
                                         ),
-                                    onClick = listenener::decreaseProductCount,
+                                    onClick = listener::decreaseProductCount,
                                 )
 
                                 Text(
@@ -224,7 +225,7 @@ private fun ProductDetailsContent(
                                     iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
                                     background = MaterialTheme.colorScheme.primary,
                                     isLoading = state.isAddToCartLoading,
-                                    onClick = listenener::increaseProductCount,
+                                    onClick = listener::increaseProductCount,
                                 )
                             }
                         }
@@ -254,7 +255,7 @@ private fun ProductDetailsContent(
                             end.linkTo(parent.end)
                         },
                         onClickImage = { index ->
-                            listenener.onClickSmallImage(state.smallImages[index])
+                            listener.onClickSmallImage(state.smallImages[index])
                         }
                     )
                 }

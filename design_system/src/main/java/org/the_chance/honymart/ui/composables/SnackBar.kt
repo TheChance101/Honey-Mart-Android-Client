@@ -65,6 +65,7 @@ fun SnackBarWithDuration(
     message: String,
     undoAction: () -> Unit,
     onDismiss: () -> Unit,
+    text: String = "Undo",
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     ConstraintLayout(
@@ -96,7 +97,7 @@ fun SnackBarWithDuration(
                 modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
                 action = {
                     Text(
-                        "Undo",
+                        text,
                         modifier = Modifier.clickable(onClick = {
                             undoAction()
                             snackbarHostState.currentSnackbarData?.dismiss()

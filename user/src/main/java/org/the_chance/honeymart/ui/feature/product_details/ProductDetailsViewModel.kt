@@ -238,6 +238,10 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
     }
 
+    override fun onclickTryAgain() {
+        getData()
+    }
+
     // endregion
 
     // region Update Favorite State

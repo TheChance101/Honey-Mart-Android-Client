@@ -9,4 +9,6 @@ interface ProductDetailsInteraction {
 
     fun addProductToCart(productId: Long, count: Int)
     fun resetSnackBarState()
+
+    fun onclickTryAgain()
 }
