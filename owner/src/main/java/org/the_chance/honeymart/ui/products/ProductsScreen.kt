@@ -104,6 +104,7 @@ fun ProductsContent(state: ProductsUiState) {
                         imageUrl = product.productImage,
                         productName = product.productName,
                         productPrice = product.productPrice,
+                        numberOfItems = state.productsQuantity
                     )
                 }
             }
