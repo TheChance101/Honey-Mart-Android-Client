@@ -100,42 +100,45 @@ fun AddProductForm(
                 textAlign = TextAlign.Center,
             )
         }
-        FormTextField(
-            text = state.productName,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
-            hint = "Product name",
-            keyboardType = KeyboardType.Text,
-            onValueChange = onProductNameChanged,
-            errorMessage = when (state.productNameState) {
-                ValidationState.BLANK_TEXT_FIELD -> "Product name can't be blank"
-                ValidationState.SHORT_LENGTH_TEXT -> "Product name is too short"
-                else -> ""
-            }
-        )
-        FormTextField(
-            text = state.productPrice,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
-            hint = "Price",
-            keyboardType = KeyboardType.Number,
-            onValueChange = onProductPriceChanged,
-            errorMessage = when (state.productPriceState) {
-                ValidationState.BLANK_TEXT_FIELD -> "Product price can't be blank"
-                ValidationState.INVALID_PRICE -> "Invalid product price"
-                else -> ""
-            }
-        )
-        FormTextField(
-            text = state.productDescription,
-            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
-            hint = "Description",
-            keyboardType = KeyboardType.Text,
-            onValueChange = onProductDescriptionChanged,
-            errorMessage = when (state.productDescriptionState) {
-                ValidationState.BLANK_TEXT_FIELD -> "Product description can't be blank"
-                ValidationState.SHORT_LENGTH_TEXT -> "Product description is too short"
-                else -> ""
-            }
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+        ) {
+            FormTextField(
+                text = state.productName,
+                hint = "Product name",
+                keyboardType = KeyboardType.Text,
+                onValueChange = onProductNameChanged,
+                errorMessage = when (state.productNameState) {
+                    ValidationState.BLANK_TEXT_FIELD -> "Product name can't be blank"
+                    ValidationState.SHORT_LENGTH_TEXT -> "Product name is too short"
+                    else -> ""
+                }
+            )
+            FormTextField(
+                text = state.productPrice,
+                hint = "Price",
+                keyboardType = KeyboardType.Number,
+                onValueChange = onProductPriceChanged,
+                errorMessage = when (state.productPriceState) {
+                    ValidationState.BLANK_TEXT_FIELD -> "Product price can't be blank"
+                    ValidationState.INVALID_PRICE -> "Invalid product price"
+                    else -> ""
+                }
+            )
+            FormTextField(
+                text = state.productDescription,
+                hint = "Description",
+                keyboardType = KeyboardType.Text,
+                onValueChange = onProductDescriptionChanged,
+                errorMessage = when (state.productDescriptionState) {
+                    ValidationState.BLANK_TEXT_FIELD -> "Product description can't be blank"
+                    ValidationState.SHORT_LENGTH_TEXT -> "Product description is too short"
+                    else -> ""
+                }
+            )
+        }
+
         Text(
             modifier = Modifier.padding(
                 top = MaterialTheme.dimens.space24,
