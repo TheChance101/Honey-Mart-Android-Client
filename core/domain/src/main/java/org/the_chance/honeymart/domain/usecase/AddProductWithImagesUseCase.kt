@@ -12,7 +12,7 @@ class AddProductWithImagesUseCase @Inject constructor(
         price: Double,
         description: String,
         categoriesId: Long,
-        images: List<String>
+        images: List<ByteArray>
     ): ProductEntity {
         val product = honeyMartRepository.addProduct(name, price, description, categoriesId)
         honeyMartRepository.addImageProduct(product.productId, images)
