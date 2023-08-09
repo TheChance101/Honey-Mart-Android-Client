@@ -2,17 +2,15 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
     private val getAllWishListUseCase: GetAllWishListUseCase,
-    private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
-    private val addToWishListUseCase: AddToWishListUseCase,
+    private val wishListOperationsUseCase: WishListOperationsUseCase,
     ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
@@ -31,7 +29,7 @@ class WishListViewModel @javax.inject.Inject constructor(
             )
         }
         tryToExecute(
-            { deleteFromWishListUseCase(productId) },
+            { wishListOperationsUseCase.deleteFromWishList(productId) },
             ::onDeleteProductSuccess,
             { onDeleteProductError(it, productId) }
         )
@@ -67,7 +65,7 @@ class WishListViewModel @javax.inject.Inject constructor(
              )
          }
         tryToExecute(
-            { addToWishListUseCase(productId) },
+            { wishListOperationsUseCase.addToWishList(productId) },
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )

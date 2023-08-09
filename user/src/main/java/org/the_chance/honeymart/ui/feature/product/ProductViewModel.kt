@@ -3,11 +3,10 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
@@ -19,9 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
-    private val addToWishListUseCase: AddToWishListUseCase,
     private val getWishListUseCase: GetAllWishListUseCase,
-    private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
+    private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
@@ -190,7 +188,7 @@ class ProductViewModel @Inject constructor(
 
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
-            { deleteFromWishListUseCase(productId) },
+            { wishListOperationsUseCase.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )
@@ -207,7 +205,7 @@ class ProductViewModel @Inject constructor(
 
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
-            { addToWishListUseCase(productId) },
+            { wishListOperationsUseCase.addToWishList(productId) },
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )

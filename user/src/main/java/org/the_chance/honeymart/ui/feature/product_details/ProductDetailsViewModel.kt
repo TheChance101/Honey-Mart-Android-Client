@@ -3,12 +3,11 @@ package org.the_chance.honeymart.ui.feature.product_details
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
-import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
+import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
@@ -18,11 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
-    private val addProductToCartUseCase: AddToCartUseCase,
+    private val addProductToCartUseCase: CartUseCase,
     private val deleteCartUseCase: DeleteAllCartUseCase,
-    private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
-    private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
+    private val wishListOperations: WishListOperationsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductDetailsInteraction {
@@ -135,7 +133,7 @@ class ProductDetailsViewModel @Inject constructor(
             )
         }
         tryToExecuteDebounced(
-            { addProductToCartUseCase(productId, count) },
+            { addProductToCartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
@@ -206,7 +204,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
-            { addProductToWishListUseCase(productId) },
+            {wishListOperations.addToWishList(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
         )
@@ -277,7 +275,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
-            { deleteProductFromWishListUseCase(productId) },
+            { wishListOperations.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )
