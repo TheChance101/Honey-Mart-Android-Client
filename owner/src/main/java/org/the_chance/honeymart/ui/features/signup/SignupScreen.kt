@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,12 +27,11 @@ import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyFooter
+import org.the_chance.honymart.ui.composables.HoneyHeader
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.owner.R
@@ -78,23 +75,15 @@ fun SignupContent(
                 verticalArrangement = Arrangement.Center,
             ) {
 
-                Text(
-                    text = stringResource(R.string.sign_up),
-                    color = black87,
-                    style = Typography.headlineMedium,
-                    textAlign = TextAlign.Center,
+                HoneyHeader(
+                    title = stringResource(R.string.sign_up),
+                    subTitle = stringResource(R.string.create_an_account_name_your_market),
+                    textColor = black60,
                     modifier = Modifier
                         .padding(bottom = MaterialTheme.dimens.space24)
                         .align(
                             Alignment.CenterHorizontally
                         )
-                )
-                Text(
-                    text = stringResource(R.string.create_an_account_name_your_market),
-                    color = black60,
-                    style = Typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 100.dp)
                 )
                 HoneyTextField(
                     text = state.fullName,

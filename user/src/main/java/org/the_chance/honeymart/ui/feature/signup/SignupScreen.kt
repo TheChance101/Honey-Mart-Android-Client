@@ -15,7 +15,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
@@ -42,9 +40,9 @@ import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyFooter
+import org.the_chance.honymart.ui.composables.HoneyHeader
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -102,20 +100,18 @@ fun SignupContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
-                    Text(
-                        text = stringResource(R.string.sign_up),
-                        color = white,
-                        style = Typography.headlineMedium,
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = stringResource(
+                    HoneyHeader(
+                        title = stringResource(R.string.sign_up),
+                        subTitle = stringResource(
                             R.string
                                 .create_your_account_and_enter_a_world_of_endless_shopping_possibilities
                         ),
-                        color = white,
-                        style = Typography.bodyMedium,
-                        textAlign = TextAlign.Center
+                        textColor = white,
+                        modifier = Modifier
+                            .padding(bottom = MaterialTheme.dimens.space24)
+                            .align(
+                                Alignment.CenterHorizontally
+                            )
                     )
                 }
             }

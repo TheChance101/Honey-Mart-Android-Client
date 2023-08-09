@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -33,9 +31,9 @@ import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyFooter
+import org.the_chance.honymart.ui.composables.HoneyHeader
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -93,17 +91,18 @@ fun LoginContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
-                    Text(
-                        text = stringResource(R.string.welcome_back),
-                        style = Typography.headlineMedium.copy(color = white),
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = stringResource(
+
+                    HoneyHeader(
+                        title = stringResource(R.string.welcome_back),
+                        subTitle = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
                         ),
-                        style = Typography.bodyMedium.copy(color = white),
-                        textAlign = TextAlign.Center
+                        textColor = white,
+                        modifier = Modifier
+                            .padding(bottom = MaterialTheme.dimens.space24)
+                            .align(
+                                Alignment.CenterHorizontally
+                            )
                     )
                 }
             }
