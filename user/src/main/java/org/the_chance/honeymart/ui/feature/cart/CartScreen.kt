@@ -15,7 +15,6 @@ import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteO
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
@@ -25,18 +24,19 @@ fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
 ) {
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val state by viewModel.state.collectAsState()
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 CartUiEffect.ClickDiscoverEffect -> navController.navigateToMarketScreen()
                 CartUiEffect.ClickViewOrdersEffect -> navController.navigateToOrderScreen()
             }
         }
     }
-    LaunchedEffect(lifecycleOwner) {
+
+    LaunchedEffect(key1 = true) {
         viewModel.getChosenCartProducts()
     }
     CartContent(state = state, cartInteractionListener = viewModel)
@@ -48,7 +48,7 @@ fun CartContent(
     cartInteractionListener: CartInteractionListener,
 ) {
     AppBarScaffold {
-        Loading(state.unpopulatedLoading() )
+        Loading(state.unpopulatedLoading())
         ConnectionErrorPlaceholder(
             state = state.errorPlaceHolderCondition(),
             onClickTryAgain = cartInteractionListener::getChosenCartProducts

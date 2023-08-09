@@ -7,7 +7,6 @@ import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.ProductUiEffect
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
@@ -19,6 +18,10 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
 
+
+    override fun onShowSnackBar(message:String){
+        _state.update { it.copy(snackBar = it.snackBar.copy(message = message, isShow = true)) }
+    }
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
@@ -36,8 +39,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true)) }
+        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect(successMessage))
         getWishListProducts()
     }
     override fun resetSnackBarState(){
@@ -71,13 +73,11 @@ class WishListViewModel @javax.inject.Inject constructor(
         )
     }
     private fun onAddToWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, WishListUiEffect.AddProductToWishList)
         getWishListProducts()
 
     }
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
-            effectActionExecutor(_effect, WishListUiEffect.UnAuthorizedUserEffect)
         updateFavoriteState(productId, false)
     }
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
