@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class AuthDataStorePrefImp @Inject constructor(context: Context) : AuthDataStorePref {
+class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDataStorePreferences {
 
     companion object {
         private const val PREFERENCES_FILE_NAME = "honey_mart"

@@ -22,7 +22,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBar
+import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     val bottomNavState = checkBottomBarState()
                     Scaffold(
                         bottomBar = {
-                            BottomBar(bottomNavState)
+                            BottomBarUi(bottomNavState)
                         },
                         contentWindowInsets = WindowInsets(0, 0, 0, 0)
                     ) { innerPadding ->

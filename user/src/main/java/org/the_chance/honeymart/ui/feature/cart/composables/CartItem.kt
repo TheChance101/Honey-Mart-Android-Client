@@ -34,7 +34,7 @@ import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
-import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.cart.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -52,21 +52,21 @@ fun CartItem(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .padding(bottom = MaterialTheme.dimens.space16),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
+            .padding(bottom = MaterialTheme.dimens.space8),
+        colors =
+        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
         shape = Shapes.medium
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.onTertiary)
-
         ) {
             val (imageOrder, textOrderNumber, textItemPrice, imageViewMinusOrder,
                 textViewNumberOfItems, imageViewAddItem) = createRefs()
 
             Image(
-                painter = rememberAsyncImagePainter(model = product.productImage.get(0)),
+                painter = rememberAsyncImagePainter(model = product.productImage[0]),
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
@@ -81,7 +81,9 @@ fun CartItem(
 
             Text(
                 text = product.productName,
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(MaterialTheme.colorScheme.onSecondary),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                    MaterialTheme.colorScheme.onSecondary
+                ),
                 modifier = Modifier.constrainAs(textOrderNumber) {
                     top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(imageOrder.end, margin = 8.dp)
@@ -90,7 +92,9 @@ fun CartItem(
 
             Text(
                 text = formatCurrencyWithNearestFraction(product.productPrice),
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(primary100),
+                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                    primary100
+                ),
 
                 modifier = Modifier
                     .border(1.dp, primary100, CircleShape)

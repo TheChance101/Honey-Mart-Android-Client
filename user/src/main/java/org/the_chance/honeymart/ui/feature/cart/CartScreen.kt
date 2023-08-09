@@ -71,9 +71,8 @@ fun CartContent(
                 state = state,
                 cartInteractionListener = cartInteractionListener
             )
+            Loading(state = state.populatedLoading())
         }
-
-
     }
 }
 

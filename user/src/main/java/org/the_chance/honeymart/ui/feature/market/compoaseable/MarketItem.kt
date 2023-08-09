@@ -31,8 +31,8 @@ import org.the_chance.user.R
 
 @Composable
 fun MarketItem(
+    onClickItem: (Long) -> Unit,
     state: MarketUiState,
-    onClickItem: (Long) -> Unit
 ){
 
     Box(

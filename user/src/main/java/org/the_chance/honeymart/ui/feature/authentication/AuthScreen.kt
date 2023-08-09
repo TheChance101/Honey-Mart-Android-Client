@@ -40,6 +40,7 @@ fun AuthScreen(
             when (it) {
                 is AuthenticationUiEffect.ClickLoginEffect -> navController.navigateToLogin()
                 is AuthenticationUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
+
             }
         }
     }

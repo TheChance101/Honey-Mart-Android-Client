@@ -8,12 +8,19 @@ data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
     val isLoadingProduct: Boolean = false,
     val error: ErrorHandler? = null,
+    val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
     val position: Int = 0,
     val products: List<ProductUiState> = emptyList(),
     val isEmptyProducts: Boolean = false,
     val categories: List<CategoryUiState> = emptyList(),
-    val categoryId: Long = 0L
+    val categoryId: Long = 0L,
+)
+
+data class SnackBarState(
+    val isShow: Boolean = false,
+    val productId: Long = 0L,
+    val message: String = ""
 )
 
 
@@ -35,5 +42,10 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImages = productImages
     )
 }
-
+fun ProductsUiState.firstLoading() = this.isLoadingCategory  || this.isLoadingProduct
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
+fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
+        !this.isError && !this.isLoadingProduct
+fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
+        && this.products.isNotEmpty()
+

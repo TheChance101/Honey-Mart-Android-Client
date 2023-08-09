@@ -61,13 +61,14 @@ fun OrdersScreen(
             }
         }
     }
+
     LaunchedEffect(lifecycleOwner) {
         viewModel.getAllProcessingOrders()
     }
+
     OrdersContent(
         state = state,
         listener = viewModel,
-
         )
 }
 
@@ -87,7 +88,7 @@ fun OrdersContent(
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = listener::onClickDiscoverMarkets
+            onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
         )
 
         Column(
@@ -117,19 +118,17 @@ fun OrdersContent(
                 )
                 CustomChip(
                     state = state.cancel(),
-                    text = stringResource(id = R.string.cancel),
+                    text = stringResource(id= R.string.cancelled),
                     onClick = listener::getAllCancelOrders
                 )
             }
-
-            Loading(state = state.isLoading)
 
             ContentVisibility(state = state.screenContent()) {
                 LazyColumn(
                     modifier = Modifier.padding(
                         start = MaterialTheme.dimens.space16,
                         end = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space8
+                        top = MaterialTheme.dimens.space16
                     ),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
@@ -158,7 +157,7 @@ fun OrdersContent(
                                 )
                             })
                         LaunchedEffect(showDialog) {
-                            if (!showDialog) {
+                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
                                 dismissState.reset()
                             }
                         }
@@ -191,6 +190,7 @@ fun OrdersContent(
                         }
                     }
                 }
+                Loading(state = state.loading())
             }
         }
     }
