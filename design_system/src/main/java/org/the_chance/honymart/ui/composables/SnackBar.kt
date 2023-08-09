@@ -20,45 +20,6 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
 
-@Composable
-fun SnackBar(
-    message: String,
-    show: Boolean,
-    onHideSnackbar: () -> Unit,
-) {
-    ConstraintLayout(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val snackBar = createRef()
-        if (show) {
-            Snackbar(
-                modifier = Modifier
-                    .constrainAs(snackBar) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .padding(horizontal = MaterialTheme.dimens.space16),
-                action = {
-                    Text(
-                        "Undo",
-                        modifier = Modifier.clickable(onClick = {
-                            onHideSnackbar()
-
-                        }),
-                        style = Typography.displayLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
-            ) {
-                Text(
-                    text = message,
-                    style = Typography.bodySmall,
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun SnackBarWithDuration(

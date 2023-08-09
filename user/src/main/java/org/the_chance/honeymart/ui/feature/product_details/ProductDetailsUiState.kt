@@ -18,6 +18,7 @@ data class ProductDetailsUiState(
 data class SnackBarState(
     val isShow : Boolean = false ,
     val productId : Long = 0L ,
+    val massage : String = ""
 )
 
 

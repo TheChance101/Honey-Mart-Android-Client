@@ -139,13 +139,12 @@ class ProductDetailsViewModel @Inject constructor(
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
-        _state.update { it.copy(snackBar =it.snackBar.copy(productId = productId)) }
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = true)) }
+        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess(message))
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -169,6 +168,7 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
+
             else -> {}
         }
     }
@@ -216,7 +216,6 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
@@ -234,8 +233,13 @@ class ProductDetailsViewModel @Inject constructor(
         }
         updateFavoriteState(false)
     }
-    override fun resetSnackBarState(){
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun showSnackBar(massage: String) {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, massage = massage)) }
     }
 
     override fun onclickTryAgain() {
@@ -280,7 +284,6 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {

@@ -96,6 +96,7 @@ class ProductViewModel @Inject constructor(
             category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
+
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
@@ -173,7 +174,7 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-     override fun onClickFavIcon(productId: Long) {
+    override fun onClickFavIcon(productId: Long) {
         val currentProduct = _state.value.products.find { it.productId == productId }
         val isFavorite = currentProduct?.isFavorite ?: false
         val newFavoriteState = !isFavorite
@@ -210,13 +211,13 @@ class ProductViewModel @Inject constructor(
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )
-        _state.update { it.copy(snackBar =it.snackBar.copy(productId = productId)) }
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
         val newProduct = _state.value.products.map {
             if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite,)
+                it.copy(isFavorite = isFavorite)
             } else {
                 it
             }
@@ -225,12 +226,15 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
-
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = true)) }
+        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect(successMessage))
     }
-     override fun resetSnackBarState(){
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
+
+    override fun showSnackBar(message: String) {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = message)) }
+    }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {

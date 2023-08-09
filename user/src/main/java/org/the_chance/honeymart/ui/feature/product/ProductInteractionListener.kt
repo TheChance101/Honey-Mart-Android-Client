@@ -6,4 +6,5 @@ interface ProductInteractionListener  {
     fun onClickCategory(categoryId: Long)
     fun onclickTryAgain()
     fun resetSnackBarState()
+    fun showSnackBar(message: String)
 }

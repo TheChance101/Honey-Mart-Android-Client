@@ -65,13 +65,10 @@ fun ProductDetailsScreen(
         effect.getContentIfHandled()?.let {
             when (it) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
-                ProductDetailsUiEffect.AddProductToWishListEffectSuccess -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
-                ProductDetailsUiEffect.AddToCartSuccess -> {}
+                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(it.message)}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
                 is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {}
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectError -> {}
-                ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess -> {}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
@@ -87,7 +84,10 @@ private fun ProductDetailsContent(
     ) {
     Loading(state.isLoading)
 
-    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = listener::onclickTryAgain)
+    ConnectionErrorPlaceholder(
+        state = state.isConnectionError,
+        onClickTryAgain = listener::onclickTryAgain
+    )
 
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
@@ -128,16 +128,20 @@ private fun ProductDetailsContent(
                             modifier = Modifier
                         )
                     }
-                    Box(modifier = Modifier.align(Alignment.Center).padding(bottom = 120.dp)) {
+                    Box(modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(bottom = 120.dp)) {
                         AnimatedVisibility(
                             visible = state.snackBar.isShow,
                             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                         ) {
-                            SnackBarWithDuration(message = "Successfully add to Cart ",
+                            SnackBarWithDuration(
+                                message = state.snackBar.massage,
                                 onDismiss = listener::resetSnackBarState,
                                 undoAction = {},
-                                text = "")
+                                text = ""
+                            )
                         }
                     }
                 }

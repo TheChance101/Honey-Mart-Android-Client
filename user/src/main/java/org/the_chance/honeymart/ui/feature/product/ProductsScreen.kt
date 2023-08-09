@@ -53,7 +53,8 @@ fun ProductsScreen(
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                ProductUiEffect.AddedToWishListEffect -> {//
+                is ProductUiEffect.AddedToWishListEffect -> {
+                    viewModel.showSnackBar(it.message)
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
@@ -69,14 +70,14 @@ fun ProductsScreen(
         }
     }
 
-        ProductsContent(state = state, productInteractionListener = viewModel)
+    ProductsContent(state = state, productInteractionListener = viewModel)
 }
 
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
-    ) {
+) {
     AppBarScaffold {
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
@@ -156,7 +157,7 @@ private fun ProductsContent(
             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
         ) {
-            SnackBarWithDuration(message = "Successfully add to Wish List",
+            SnackBarWithDuration(message = state.snackBar.message,
                 onDismiss = productInteractionListener::resetSnackBarState,
                 undoAction = {
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
