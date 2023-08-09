@@ -15,7 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.HoneyScaffold
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.market.compoaseable.MarketItem
 import org.the_chance.honeymart.util.collect
@@ -47,7 +47,7 @@ fun MarketContent(
     state: MarketsUiState,
     listener: MarketInteractionListener,
 ) {
-    HoneyScaffold {
+    HoneyAppBarScaffold {
         ContentVisibility(state = state.showMarket()) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),

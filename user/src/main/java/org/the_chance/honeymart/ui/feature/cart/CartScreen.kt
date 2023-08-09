@@ -11,7 +11,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.composables.HoneyScaffold
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
@@ -47,7 +47,7 @@ fun CartContent(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
-    HoneyScaffold {
+    HoneyAppBarScaffold {
         Loading(state.unpopulatedLoading() || state.populatedLoading())
         ConnectionErrorPlaceholder(
             state = state.errorPlaceHolderCondition(),

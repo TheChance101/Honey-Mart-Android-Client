@@ -22,8 +22,8 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
-import org.the_chance.honymart.ui.composables.HoneyFooter
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -85,7 +85,7 @@ fun AuthContent(
             ),
             onClick = listener::onClickSignUp
         )
-        HoneyFooter(
+        HoneyAuthFooter(
             text = stringResource(R.string.already_have_account),
             textButtonText = stringResource(R.string.log_in),
             onTextButtonClicked = listener::onClickLogin,

@@ -1,33 +1,23 @@
 package org.the_chance.honeymart.ui.features.signup
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
+import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honymart.ui.composables.HoneyAuthFooter
+import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
-import org.the_chance.honymart.ui.composables.HoneyFooter
-import org.the_chance.honymart.ui.composables.HoneyHeader
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
@@ -52,50 +42,28 @@ fun SignupContent(
     listener: SignupInteractionListener,
 ) {
     Loading(state = state.isLoading)
-
-    Box {
-        Row {
-
-            Image(
-                painter = painterResource(id = R.drawable.image),
-                contentDescription = stringResource(R.string.honey_image),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxHeight()
-            )
-
-
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(
-                        end = MaterialTheme.dimens.space56,
-                        bottom = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space56
-                    ),
-                verticalArrangement = Arrangement.Center,
-            ) {
-
-                HoneyHeader(
-                    title = stringResource(R.string.sign_up),
-                    subTitle = stringResource(R.string.create_an_account_name_your_market),
-                    textColor = black60,
-                    modifier = Modifier
-                        .padding(bottom = MaterialTheme.dimens.space24)
-                        .align(
-                            Alignment.CenterHorizontally
-                        )
+    HoneyAuthScaffold {
+        HoneyAuthHeader(
+            title = stringResource(R.string.sign_up),
+            subTitle = stringResource(R.string.create_an_account_name_your_market),
+            textColor = black60,
+            modifier = Modifier
+                .padding(bottom = MaterialTheme.dimens.space24)
+                .align(
+                    Alignment.CenterHorizontally
                 )
-                HoneyTextField(
-                    text = state.fullName,
-                    hint = stringResource(R.string.full_namee),
-                    iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
-                    onValueChange = listener::onFullNameInputChange,
-                    errorMessage = when (state.fullNameState) {
-                        ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
-                        ValidationState.INVALID_FULL_NAME -> "Invalid name"
-                        else -> ""
-                    },
-                )
+        )
+        HoneyTextField(
+            text = state.fullName,
+            hint = stringResource(R.string.full_namee),
+            iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
+            onValueChange = listener::onFullNameInputChange,
+            errorMessage = when (state.fullNameState) {
+                ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
+                ValidationState.INVALID_FULL_NAME -> "Invalid name"
+                else -> ""
+            },
+        )
                 HoneyTextField(
                     text = state.email,
                     hint = stringResource(R.string.emaill),
@@ -131,37 +99,24 @@ fun SignupContent(
                 )
 
 
-                HoneyFilledButton(
-                    label = stringResource(R.string.continuo),
-                    onClick = listener::onClickSignup,
-                    background = primary100,
-                    contentColor = Color.White,
-                    modifier = Modifier.padding(
-                        bottom = MaterialTheme.dimens.space24,
-                        top = MaterialTheme.dimens.space32
-                    )
-                )
-                HoneyFooter(
-                    text = stringResource(R.string.alrady_have_account),
-                    textButtonText = stringResource(R.string.log_in),
-                    onTextButtonClicked = listener::onClickLogin,
-                    modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
-                )
-            }
-        }
-
-
-        Image(
-            painter = painterResource(org.the_chance.design_system.R.drawable.image_group),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .align(TopEnd)
-                .size(120.dp)
+        HoneyFilledButton(
+            label = stringResource(R.string.continuo),
+            onClick = listener::onClickSignup,
+            background = primary100,
+            contentColor = Color.White,
+            modifier = Modifier.padding(
+                bottom = MaterialTheme.dimens.space24,
+                top = MaterialTheme.dimens.space32
+            )
         )
-
-        HoneyAppBarTitle(titleColor = Color.White)
+        HoneyAuthFooter(
+            text = stringResource(R.string.alrady_have_account),
+            textButtonText = stringResource(R.string.log_in),
+            onTextButtonClicked = listener::onClickLogin,
+            modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+        )
     }
+
 }
 
 

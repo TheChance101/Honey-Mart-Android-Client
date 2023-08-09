@@ -11,6 +11,7 @@ import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,8 @@ class SignUpViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase
-) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()), SignupInteractionListener {
+) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()), SignupInteractionListener,
+    MarketInfoInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -139,6 +141,18 @@ class SignUpViewModel @Inject constructor(
 
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
+    }
+
+    override fun onClickSendButton() {
+    }
+
+    override fun onMarketNameInputChange(marketName: CharSequence) {
+    }
+
+    override fun onMarketAddressInputChange(address: CharSequence) {
+    }
+
+    override fun onDescriptionInputChanged(description: CharSequence) {
     }
 
 

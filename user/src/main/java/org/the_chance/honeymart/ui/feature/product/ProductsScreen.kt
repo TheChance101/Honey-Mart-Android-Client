@@ -28,7 +28,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
-import org.the_chance.honeymart.ui.composables.HoneyScaffold
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
@@ -74,7 +74,7 @@ private fun ProductsContent(
     productInteractionListener: ProductInteractionListener,
 
     ) {
-    HoneyScaffold {
+    HoneyAppBarScaffold {
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)

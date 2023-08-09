@@ -26,7 +26,7 @@ import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.user.R
+
 
 @Composable
 fun CategoryItem(
@@ -51,7 +51,7 @@ fun CategoryItem(
             Icon(
                 modifier = Modifier,
                 painter = painterResource(id = org.the_chance.design_system.R.drawable.icon_category),
-                contentDescription = stringResource(R.string.category_image),
+                contentDescription = stringResource(org.the_chance.design_system.R.string.no_categories),
                 tint = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }

@@ -20,8 +20,9 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun HoneyAppBarTitle(
     titleColor: Color,
+    modifier: Modifier=Modifier
 ) {
-    Row {
+    Row(modifier = modifier) {
         Icon(
             modifier = Modifier
                 .size(MaterialTheme.dimens.icon32)

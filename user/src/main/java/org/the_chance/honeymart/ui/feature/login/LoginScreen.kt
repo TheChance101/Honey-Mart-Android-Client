@@ -29,9 +29,9 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.composables.HoneyAuthFooter
+import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
-import org.the_chance.honymart.ui.composables.HoneyFooter
-import org.the_chance.honymart.ui.composables.HoneyHeader
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -92,7 +92,7 @@ fun LoginContent(
                     modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
 
-                    HoneyHeader(
+                    HoneyAuthHeader(
                         title = stringResource(R.string.welcome_back),
                         subTitle = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
@@ -139,7 +139,7 @@ fun LoginContent(
             )
             Spacer(modifier = Modifier.weight(1f))
 
-            HoneyFooter(
+            HoneyAuthFooter(
                 text = stringResource(R.string.don_t_have_an_account),
                 textButtonText = stringResource(R.string.Sign_up),
                 onTextButtonClicked = listener::onClickSignup,
