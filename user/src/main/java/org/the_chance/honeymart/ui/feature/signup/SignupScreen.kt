@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,10 +14,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -45,12 +41,11 @@ import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
+import org.the_chance.honymart.ui.composables.HoneyFooter
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
@@ -222,27 +217,13 @@ fun SignupContent(
             }
             Spacer(modifier = Modifier.weight(1f))
             when (pagerState.currentPage) {
-                0 -> Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
-                ) {
-                    Text(
+                0 ->
+                    HoneyFooter(
                         text = stringResource(R.string.already_have_account),
-                        style = Typography.displaySmall.copy(black37),
-                        textAlign = TextAlign.Center
+                        textButtonText = stringResource(R.string.log_in),
+                        onTextButtonClicked = listener::onClickLogin,
+                        modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
                     )
-                    TextButton(
-                        onClick = listener::onClickLogin,
-                        colors = ButtonDefaults.textButtonColors(Color.Transparent)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.log_in),
-                            style = Typography.displayLarge.copy(primary100),
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-                }
             }
         }
     }
