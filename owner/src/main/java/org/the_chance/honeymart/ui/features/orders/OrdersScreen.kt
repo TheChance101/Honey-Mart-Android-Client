@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.orders
+package org.the_chance.honeymart.ui.features.orders
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -19,9 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.orders.composables.CustomChip
-import org.the_chance.honeymart.ui.orders.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.orders.composables.ItemOrder
+import org.the_chance.honeymart.ui.features.orders.composables.CustomChip
+import org.the_chance.honeymart.ui.features.orders.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.features.orders.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.dimens

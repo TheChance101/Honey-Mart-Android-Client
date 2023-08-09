@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.signup
+package org.the_chance.honeymart.ui.features.signup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
