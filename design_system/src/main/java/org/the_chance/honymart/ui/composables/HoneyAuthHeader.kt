@@ -13,7 +13,7 @@ import org.the_chance.honymart.ui.theme.Typography
  * Created by Aziza Helmy on 8/9/2023.
  */
 @Composable
-fun HoneyHeader(title: String, subTitle: String, textColor: Color, modifier: Modifier = Modifier) {
+fun HoneyAuthHeader(title: String, subTitle: String, textColor: Color, modifier: Modifier = Modifier) {
     Text(
         text = title,
         style = Typography.headlineMedium.copy(color = textColor),

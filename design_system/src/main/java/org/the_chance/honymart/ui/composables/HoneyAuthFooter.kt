@@ -18,7 +18,7 @@ import org.the_chance.honymart.ui.theme.primary100
  * Created by Aziza Helmy on 8/9/2023.
  */
 @Composable
-fun HoneyFooter(
+fun HoneyAuthFooter(
     text: String,
     textButtonText: String,
     onTextButtonClicked: () -> Unit,

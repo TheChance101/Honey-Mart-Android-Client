@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,7 +25,7 @@ import org.the_chance.honymart.ui.theme.primary100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HoneyScaffold(
+fun HoneyAppBarScaffold(
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
