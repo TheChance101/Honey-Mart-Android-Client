@@ -56,7 +56,7 @@ interface HoneyMartService {
 
     suspend fun addImageProduct(
         productId: Long,
-        images: List<String>
+        images: List<ByteArray>
     ): BaseResponse<String>
 
     suspend fun updateProduct(

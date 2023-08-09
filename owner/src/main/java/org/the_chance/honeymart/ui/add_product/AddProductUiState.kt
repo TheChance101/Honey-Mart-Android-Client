@@ -12,7 +12,7 @@ data class AddProductUiState(
     val productName: String = "",
     val productPrice: String = "",
     val productDescription: String = "",
-    val productImages: List<String> = emptyList(),
+    val productImages: List<ByteArray> = emptyList(),
     val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
@@ -24,7 +24,6 @@ fun ProductEntity.toAddProductUiState(): AddProductUiState {
         productName = productName,
         productPrice = ProductPrice.toString(),
         productDescription = productDescription,
-        productImages = productImages
     )
 }
 

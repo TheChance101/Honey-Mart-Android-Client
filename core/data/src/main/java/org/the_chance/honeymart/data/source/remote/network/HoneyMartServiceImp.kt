@@ -4,12 +4,16 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -95,14 +99,20 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun addImageProduct(
         productId: Long,
-        images: List<String>
+        images: List<ByteArray>
     ): BaseResponse<String> {
-        val formParameters = Parameters.build {
-            images.forEachIndexed { index, imageUrl ->
-                append("images[$index]", imageUrl)
+        val response: HttpResponse = client.submitFormWithBinaryData(
+            url = "/product/$productId/uploadImages",
+            formData = formData {
+                images.forEachIndexed { index, bytes ->
+                    append("images", bytes, Headers.build {
+                        append(HttpHeaders.ContentType, "image/jpeg")
+                        append(HttpHeaders.ContentDisposition, "filename=image$index.jpeg")
+                    })
+                }
             }
-        }
-        return wrap(client.submitForm(url = "/product/$productId/uploadImages", formParameters = formParameters))
+        )
+        return wrap(response)
     }
 
 

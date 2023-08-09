@@ -19,7 +19,7 @@ class AddProductViewModel @Inject constructor(
         name: String,
         price: Double,
         description: String,
-        images: List<String>
+        images: List<ByteArray>
     ) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -46,6 +46,7 @@ class AddProductViewModel @Inject constructor(
     private fun onAddProductError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         log("Error occurred: $errorHandler")
+        log("${_state.value.productImages}")
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -84,11 +85,11 @@ class AddProductViewModel @Inject constructor(
         }
     }
 
-    override fun onImagesSelected(uris: List<String>) {
+    override fun onImagesSelected(uris: List<ByteArray>) {
         _state.update { it.copy(productImages = uris) }
     }
 
-    override fun onClickRemoveSelectedImage(imageUri: String) {
+    override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
         val updatedImages = _state.value.productImages.toMutableList()
         updatedImages.remove(imageUri)
         _state.update { it.copy(productImages = updatedImages) }

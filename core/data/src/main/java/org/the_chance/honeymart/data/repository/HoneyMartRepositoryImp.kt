@@ -109,7 +109,7 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun addImageProduct(
         productId: Long,
-        images: List<String>
+        images: List<ByteArray>
     ): String {
         return wrap {
             honeyMartService.addImageProduct(

@@ -39,5 +39,5 @@ interface HoneyMartRepository {
         categoryId: Long,
     ): ProductEntity
 
-    suspend fun addImageProduct(productId: Long, images: List<String>): String
+    suspend fun addImageProduct(productId: Long, images: List<ByteArray>): String
 }
