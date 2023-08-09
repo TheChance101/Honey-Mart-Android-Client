@@ -27,8 +27,8 @@ fun EmptyOrdersPlaceholder(
     state:Boolean,
     image: Int,
     title: String,
-    subtitle: String,
     onClickDiscoverMarkets: () -> Unit,
+    subtitle: String,
 ) {
     ContentVisibility(state = state) {
         Column(
@@ -47,7 +47,7 @@ fun EmptyOrdersPlaceholder(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space32),
                 style = MaterialTheme.typography.bodyMedium,
-                color = black60,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -55,7 +55,7 @@ fun EmptyOrdersPlaceholder(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space16),
                 style = MaterialTheme.typography.displayLarge,
-                color = black37,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
             )
 

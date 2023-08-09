@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiState
-import org.the_chance.honymart.ui.composables.HoneyFavIconButton
+import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,16 +28,17 @@ fun ProductAppBar(
             containerColor = Color.Transparent,
         ),
         navigationIcon = {
-            HoneyFavIconButton(
+            HoneyIconButton(
                 iconPainter = painterResource(id = R.drawable.icon_arrow_back),
                 onClick = onBackClick,
-                background = MaterialTheme.colorScheme.background
+                background = MaterialTheme.colorScheme.background,
+                isLoading = false
             )
         },
         title = {
         },
         actions = {
-            HoneyFavIconButton(
+            HoneyIconButton(
                 iconPainter = painterResource(
                     id = if (state.product.isFavorite)
                         R.drawable.icon_favorite_selected
@@ -50,6 +51,7 @@ fun ProductAppBar(
                 else
                     MaterialTheme.colorScheme.primary,
                 onClick = onFavoriteClick,
+                isLoading = state.isAddToCartLoading
             )
         },
     )

@@ -188,7 +188,6 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
             { deleteFromWishListUseCase(productId) },
@@ -204,7 +203,6 @@ class ProductViewModel @Inject constructor(
 
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(error = error, isError = true) }
-
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -213,6 +211,7 @@ class ProductViewModel @Inject constructor(
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
@@ -227,14 +226,20 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect)
+        effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect(successMessage))
+    }
 
+    override fun showSnackBar(message: String) {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = message)) }
+    }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
-        updateFavoriteState(productId, false)
     }
 
 

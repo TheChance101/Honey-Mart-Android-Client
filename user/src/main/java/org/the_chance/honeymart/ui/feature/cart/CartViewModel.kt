@@ -175,10 +175,7 @@ class CartViewModel @Inject constructor(
 
     private fun onDeleteFromCartSuccess(message: String) {
         _state.update {
-            it.copy(
-                error = null,
-                products = emptyList()
-            )
+            it.copy(error = null)
         }
         getChosenCartProducts()
     }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -35,9 +36,11 @@ import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDeta
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
@@ -46,17 +49,20 @@ fun ProductsScreen(
     val state by viewModel.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
 
+
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                ProductUiEffect.AddedToWishListEffect -> {// TODO: add snack bar
+                is ProductUiEffect.AddedToWishListEffect -> {
+                    viewModel.showSnackBar(it.message)
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     it.productId
                 )
 
-                ProductUiEffect.RemovedFromWishListEffect -> {// TODO: add snack bar
+                ProductUiEffect.RemovedFromWishListEffect -> {//
+
                 }
 
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
@@ -67,17 +73,16 @@ fun ProductsScreen(
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 
-
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
-
-    ) {
+) {
     AppBarScaffold {
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
+        EmptyProductPlaceholder(state.emptyPlaceHolder())
 
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -104,15 +109,15 @@ private fun ProductsContent(
                                 iconPainter = painterResource(id = R.drawable.ic_bed),
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
+                                enable = !state.snackBar.isShow,
                                 onClick = {
                                     productInteractionListener.onClickCategory(category.categoryId)
                                 }
                             )
                         }
                     }
-                    EmptyProductPlaceholder(state.isEmptyProducts)
                     AnimatedVisibility(
-                        visible = !state.isLoadingProduct,
+                        visible = !state.isEmptyProducts,
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
@@ -136,6 +141,7 @@ private fun ProductsContent(
                                     onClickCard = {
                                         productInteractionListener.onClickProduct(product.productId)
                                     },
+                                    enable = !state.snackBar.isShow,
                                     onClickFavorite = {
                                         productInteractionListener.onClickFavIcon(product.productId)
                                     }
@@ -146,9 +152,19 @@ private fun ProductsContent(
                 }
             }
         }
+        AnimatedVisibility(
+            visible = state.snackBar.isShow,
+            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+        ) {
+            SnackBarWithDuration(message = state.snackBar.message,
+                onDismiss = productInteractionListener::resetSnackBarState,
+                undoAction = {
+                    productInteractionListener.onClickFavIcon(state.snackBar.productId)
+                })
+        }
+
+        Loading(state = state.loading())
 
     }
 }
-
-
-
