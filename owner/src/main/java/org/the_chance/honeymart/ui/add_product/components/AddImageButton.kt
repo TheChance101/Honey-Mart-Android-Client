@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -22,10 +23,11 @@ import org.the_chance.honymart.ui.theme.dimens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddImageButton(
-    multiplePhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    multiplePhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier.size(MaterialTheme.dimens.card),
+        modifier = modifier.size(MaterialTheme.dimens.card),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
         onClick = {
             multiplePhotoPickerLauncher.launch(
@@ -42,7 +44,7 @@ fun AddImageButton(
         ) {
             Icon(
                 painter = painterResource(R.drawable.icon_add_product),
-                contentDescription = "Icon Add",
+                contentDescription = stringResource(R.string.icon_add),
                 modifier = Modifier.size(MaterialTheme.dimens.icon24),
                 tint = black60
             )

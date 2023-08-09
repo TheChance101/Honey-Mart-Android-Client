@@ -7,17 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.add_product.components.AddProductForm
 import org.the_chance.honeymart.ui.components.PlaceHolderItem
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -50,17 +49,17 @@ fun AddProductContent(
             PlaceHolderItem(
                 modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space56),
                 visibility = true,
-                title = "Your Products is empty!!",
-                subtitle = "Adding a product will increase your chances of attracting interested buyers. What product fits your item?"
+                title = stringResource(R.string.your_products_is_empty),
+                subtitle = stringResource(R.string.add_product_placeholder_subtitle)
             )
         }
         Column(
             modifier = Modifier
+                .weight(1F)
                 .padding(
                     vertical = MaterialTheme.dimens.space24,
                     horizontal = MaterialTheme.dimens.space16,
                 )
-                .weight(1f)
                 .fillMaxHeight()
         ) {
             AddProductForm(
@@ -69,7 +68,7 @@ fun AddProductContent(
                 onProductPriceChanged = listener::onProductPriceChanged,
                 onProductDescriptionChanged = listener::onProductDescriptionChanged,
                 onClickAddProduct = listener::addProduct,
-                omImageSelected = listener::onImagesSelected,
+                onImageSelected = listener::onImagesSelected,
                 onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage
             )
         }

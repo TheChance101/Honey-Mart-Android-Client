@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
@@ -59,41 +60,44 @@ fun AddProductForm(
                 shape = MaterialTheme.shapes.medium
             )
     ) {
-        Header(title = "Add New Product", iconPainter = painterResource(id = R.drawable.icon_cart))
+        Header(
+            title = stringResource(R.string.add_new_product),
+            iconPainter = painterResource(id = R.drawable.icon_cart)
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             FormTextField(
                 text = state.name,
-                hint = "Product name",
+                hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
                 onValueChange = onProductNameChanged,
                 errorMessage = when (state.productNameState) {
-                    ValidationState.BLANK_TEXT_FIELD -> "Product name can't be blank"
-                    ValidationState.SHORT_LENGTH_TEXT -> "Product name is too short"
+                    ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
+                    ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
                     else -> ""
                 }
             )
             FormTextField(
                 text = state.price,
-                hint = "Price",
+                hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = onProductPriceChanged,
                 errorMessage = when (state.productPriceState) {
-                    ValidationState.BLANK_TEXT_FIELD -> "Product price can't be blank"
-                    ValidationState.INVALID_PRICE -> "Invalid product price"
+                    ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
+                    ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""
                 }
             )
             FormTextField(
                 text = state.description,
-                hint = "Description",
+                hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = onProductDescriptionChanged,
                 errorMessage = when (state.productDescriptionState) {
-                    ValidationState.BLANK_TEXT_FIELD -> "Product description can't be blank"
-                    ValidationState.SHORT_LENGTH_TEXT -> "Product description is too short"
+                    ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
+                    ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
                     else -> ""
                 }
             )
@@ -103,7 +107,7 @@ fun AddProductForm(
                 top = MaterialTheme.dimens.space24,
                 start = MaterialTheme.dimens.space16
             ),
-            text = "Add product image",
+            text = stringResource(R.string.add_product_image),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center,
@@ -138,7 +142,7 @@ fun AddProductForm(
                 vertical = MaterialTheme.dimens.space24
             ),
             isEnable = state.showButton(),
-            label = "Add",
+            label = stringResource(R.string.add),
             iconPainter = painterResource(R.drawable.icon_add_product),
             onClick = { onClickAddProduct(state) }
         )

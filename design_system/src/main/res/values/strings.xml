@@ -103,4 +103,23 @@
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
     <string name="placeholder_image">Placeholder Image</string>
+
+    <!--Add New Product Region-->
+    <string name="add_new_product">Add New Product</string>
+    <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
+    <string name="product_name_is_too_short">Product name is too short</string>
+    <string name="price">Price</string>
+    <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
+    <string name="invalid_product_price">Invalid product price</string>
+    <string name="description">Description</string>
+    <string name="product_description_can_t_be_blank">Product description can\'t be blank</string>
+    <string name="product_description_is_too_short">Product description is too short</string>
+    <string name="add_product_image">Add product image</string>
+    <string name="add">Add</string>
+    <string name="icon_add">Icon Add</string>
+    <string name="icon_cart">Icon Cart</string>
+    <string name="image_of_product">Image of product</string>
+    <string name="icon_delete_image">Icon Delete Image</string>
+    <string name="your_products_is_empty">Your Products is empty!!</string>
+    <string name="add_product_placeholder_subtitle">Adding a product will increase your chances of attracting interested buyers. What product fits your item?</string>
 </resources>

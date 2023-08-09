@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.design_system.R
 
 @Composable
 fun ImageBox(
@@ -37,7 +39,7 @@ fun ImageBox(
                 .background(color = MaterialTheme.colorScheme.tertiaryContainer),
             painter = rememberAsyncImagePainter(image),
             contentScale = ContentScale.Crop,
-            contentDescription = "Image of product",
+            contentDescription = stringResource(R.string.image_of_product),
         )
         IconButton(
             modifier = Modifier
@@ -48,7 +50,7 @@ fun ImageBox(
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = "Icon Delete Image",
+                contentDescription = stringResource(R.string.icon_delete_image),
                 tint = Color.White
             )
         }

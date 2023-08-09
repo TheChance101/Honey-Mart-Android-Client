@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
@@ -30,7 +31,7 @@ fun Header(
     ) {
         Icon(
             painter = iconPainter,
-            contentDescription = "Icon Cart",
+            contentDescription = stringResource(R.string.icon_cart),
             modifier = Modifier
                 .padding(end = MaterialTheme.dimens.space8)
                 .size(MaterialTheme.dimens.icon24),
