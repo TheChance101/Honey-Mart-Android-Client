@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -21,18 +22,18 @@ class CartViewModel @Inject constructor(
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
-            { cartUseCase.getCart().toCartListProductUiState()},
+             cartUseCase::getCart,
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
     }
 
-    private fun onGetAllCartSuccess(cart: CartUiState) {
+    private fun onGetAllCartSuccess(cart: CartEntity) {
         _state.update {
             it.copy(
                 isLoading = false,
                 error = null,
-                products = cart.products,
+                products = cart.products.toCartProductUiState(),
                 total = cart.total,
             )
         }

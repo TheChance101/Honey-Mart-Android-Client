@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.product_details
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
@@ -10,7 +11,6 @@ import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import javax.inject.Inject
 
@@ -63,19 +63,19 @@ class ProductDetailsViewModel @Inject constructor(
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
         tryToExecute(
-            { getProductDetailsUseCase(productId).toProductUiState() },
+            {getProductDetailsUseCase(productId)},
             ::onGetProductSuccess,
             ::onGetProductError,
         )
     }
 
-    private fun onGetProductSuccess(product: ProductUiState) {
+    private fun onGetProductSuccess(product: ProductEntity) {
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product,
+                error = null, isConnectionError = false, product = product.toProductUiState(),
                 image = product.productImages.first(),
                 smallImages = product.productImages.drop(1),
-                totalPrice = product.productPrice
+                totalPrice = product.ProductPrice
             )
         }
         checkIfProductInWishList(args.productId.toLong())
@@ -204,7 +204,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
-            {wishListOperations.addToWishList(productId) },
+            { wishListOperations.addToWishList(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
         )

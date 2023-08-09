@@ -75,9 +75,11 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     }
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-        if (error is ErrorHandler.UnAuthorizedUser)
-        updateFavoriteState(productId, false)
+        if (error is ErrorHandler.UnAuthorizedUser) {
+            updateFavoriteState(productId, false)
+        }
     }
+
     private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
         val newProduct = _state.value.products.map {
             if (it.productId == productId) {

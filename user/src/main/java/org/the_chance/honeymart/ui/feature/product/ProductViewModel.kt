@@ -3,6 +3,8 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
@@ -47,17 +49,20 @@ class ProductViewModel @Inject constructor(
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true, isError = false) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId.toLong()).map { it.toCategoryUiState() } },
+            { getMarketAllCategories(args.marketId.toLong()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+    private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
         _state.update {
             it.copy(
                 error = null, isLoadingCategory = false,
-                categories = updateCategorySelection(categories, state.value.categoryId),
+                categories = updateCategorySelection(
+                    categories.map { it.toCategoryUiState() },
+                    state.value.categoryId
+                ),
                 position = state.value.position
             )
         }
@@ -98,29 +103,29 @@ class ProductViewModel @Inject constructor(
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
-            { getAllProducts(state.value.categoryId).map { it.toProductUiState() } },
+            { getAllProducts(state.value.categoryId) },
             ::onGetProductSuccess,
             ::onGetProductError
         )
     }
 
-    private fun onGetProductSuccess(products: List<ProductUiState>) {
+    private fun onGetProductSuccess(products: List<ProductEntity>) {
         if (products.isEmpty()) {
             _state.update {
                 it.copy(
                     isEmptyProducts = true,
-                    products = products
+                    products = products.map { it.toProductUiState() }
                 )
             }
         } else {
             _state.update {
                 it.copy(
                     isEmptyProducts = false,
-                    products = products
+                    products = products.map { it.toProductUiState() }
                 )
             }
         }
-        getWishListProducts(products)
+        getWishListProducts(products.map { it.toProductUiState() })
     }
 
     private fun onGetProductError(error: ErrorHandler) {

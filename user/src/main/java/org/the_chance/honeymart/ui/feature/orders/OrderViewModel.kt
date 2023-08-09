@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.orders
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -21,14 +22,14 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.PROCESSING.state).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.PROCESSING.state) },
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
     }
 
-    private fun onGetProcessingOrdersSuccess(orders: List<OrderUiState>) {
-        _state.update { it.copy(isLoading = false, orders = orders) }
+    private fun onGetProcessingOrdersSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
     private fun onGetProcessingOrdersError(error: ErrorHandler) {
@@ -43,15 +44,15 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.DONE.state).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.DONE.state)},
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
 
     }
 
-    private fun onGetDoneOrdersSuccess(orders: List<OrderUiState>) {
-        _state.update { it.copy(isLoading = false, orders = orders) }
+    private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() } ) }
     }
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
@@ -66,14 +67,14 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.CANCELED.state).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.CANCELED.state)},
             ::onGetCancelOrdersSuccess,
             ::onGetCancelOrdersError
         )
     }
 
-    private fun onGetCancelOrdersSuccess(orders: List<OrderUiState>) {
-        _state.update { it.copy(isLoading = false, orders = orders) }
+    private fun onGetCancelOrdersSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() } ) }
     }
 
     private fun onGetCancelOrdersError(error: ErrorHandler) {
