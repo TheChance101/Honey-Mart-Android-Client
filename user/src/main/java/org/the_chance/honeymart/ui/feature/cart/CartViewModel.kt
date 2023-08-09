@@ -1,9 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
@@ -22,7 +20,7 @@ class CartViewModel @Inject constructor(
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
-             cartUseCase::getCart,
+            cartUseCase::getCart,
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
@@ -62,7 +60,7 @@ class CartViewModel @Inject constructor(
         val updatedState = currentState.copy(products = updatedProducts)
         _state.value = updatedState
 
-        updateProductCart(
+        onUpdateProductInCart(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
@@ -82,13 +80,13 @@ class CartViewModel @Inject constructor(
         }
         val updatedState = currentState.copy(products = updatedProducts)
         _state.value = updatedState
-        updateProductCart(
+        onUpdateProductInCart(
             productId,
             updatedProducts.find { it.productId == productId }?.productCount ?: 0
         )
     }
 
-    private fun updateProductCart(productId: Long, count: Int) {
+    private fun onUpdateProductInCart(productId: Long, count: Int) {
         tryToExecute(
             { cartUseCase.addToCart(productId, count) },
             ::onUpdateProductInCartSuccess,
@@ -157,16 +155,14 @@ class CartViewModel @Inject constructor(
     override fun deleteCart(position: Long) {
         _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
-        viewModelScope.launch {
-            tryToExecute(
-                { cartUseCase.deleteFromCart(productId) },
-                ::onDeleteFromCartSuccess,
-                ::onDeleteFromCartError
-            )
-        }
+        tryToExecute(
+            { cartUseCase.deleteFromCart(productId) },
+            ::onDeleteFromCartSuccess,
+            ::onDeleteFromCartError
+        )
     }
 
-    override fun changeBottomSheetValue() {
+    override fun hideBottomSheet() {
         _state.update { it.copy(bottomSheetIsDisplayed = false) }
     }
 
