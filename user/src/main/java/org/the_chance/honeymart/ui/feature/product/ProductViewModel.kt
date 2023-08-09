@@ -201,7 +201,6 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductUiEffect.RemovedFromWishListEffect)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
