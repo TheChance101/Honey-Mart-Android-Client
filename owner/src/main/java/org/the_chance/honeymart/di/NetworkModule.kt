@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.di
 
 
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,7 +58,7 @@ internal object NetworkModule {
     }
 
     @Singleton
-    @Binds
+    @Provides
     fun provideHoneyMartService(httpClient: HttpClient): HoneyMartService {
         return HoneyMartServiceImp(httpClient)
     }
