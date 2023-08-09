@@ -5,7 +5,7 @@ interface AddProductInteractionListener {
     fun onProductNameChanged(name: String)
     fun onProductPriceChanged(price: String)
     fun onProductDescriptionChanged(description: String)
-    fun addProduct(name: String, price: Double, description: String, images: List<ByteArray>)
+    fun addProduct(product: AddProductUiState)
     fun onImagesSelected(uris: List<ByteArray>)
     fun onClickRemoveSelectedImage(imageUri: ByteArray)
 }

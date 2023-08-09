@@ -8,11 +8,11 @@ data class AddProductUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val productId: Long = 0L,
-    val productName: String = "",
-    val productPrice: String = "",
-    val productDescription: String = "",
-    val productImages: List<ByteArray> = emptyList(),
+    val id: Long = 0L,
+    val name: String = "",
+    val price: String = "",
+    val description: String = "",
+    val images: List<ByteArray> = emptyList(),
     val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
@@ -20,17 +20,17 @@ data class AddProductUiState(
 
 fun ProductEntity.toAddProductUiState(): AddProductUiState {
     return AddProductUiState(
-        productId = productId,
-        productName = productName,
-        productPrice = ProductPrice.toString(),
-        productDescription = productDescription,
+        id = productId,
+        name = productName,
+        price = ProductPrice.toString(),
+        description = productDescription,
     )
 }
 
 fun AddProductUiState.showButton() =
-    productName.isNotBlank()
-            && productPrice.isNotBlank()
-            && productDescription.isNotBlank()
+    name.isNotBlank()
+            && price.isNotBlank()
+            && description.isNotBlank()
             && !isLoading
             && productNameState == ValidationState.VALID_TEXT_FIELD
             && productPriceState == ValidationState.VALID_TEXT_FIELD

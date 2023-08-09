@@ -15,15 +15,18 @@ class AddProductViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
     private val categoryId = 43L
 
-    override fun addProduct(
-        name: String,
-        price: Double,
-        description: String,
-        images: List<ByteArray>
-    ) {
+    override fun addProduct(product: AddProductUiState) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addProductWithImagesUseCase(name, price, description, categoryId, images).toAddProductUiState() },
+            {
+                addProductWithImagesUseCase(
+                    product.name,
+                    product.price.toDouble(),
+                    product.description,
+                    categoryId,
+                    product.images
+                ).toAddProductUiState()
+            },
             onSuccess = ::onAddProductSuccess,
             onError = ::onAddProductError
         )
@@ -34,19 +37,16 @@ class AddProductViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 error = null,
-                productName = product.productName,
-                productPrice = product.productPrice,
-                productDescription = product.productDescription,
-                productImages = product.productImages
+                name = product.name,
+                price = product.price,
+                description = product.description,
+                images = product.images
             )
         }
-        log("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     }
 
     private fun onAddProductError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
-        log("Error occurred: $errorHandler")
-        log("${_state.value.productImages}")
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -58,7 +58,7 @@ class AddProductViewModel @Inject constructor(
             name.length <= 2 -> ValidationState.SHORT_LENGTH_TEXT
             else -> ValidationState.VALID_TEXT_FIELD
         }
-        _state.update { it.copy(productNameState = productNameState, productName = name) }
+        _state.update { it.copy(productNameState = productNameState, name = name) }
     }
 
     override fun onProductPriceChanged(price: String) {
@@ -68,7 +68,7 @@ class AddProductViewModel @Inject constructor(
             !price.matches(priceRegex) -> ValidationState.INVALID_PRICE
             else -> ValidationState.VALID_TEXT_FIELD
         }
-        _state.update { it.copy(productPriceState = productPriceState, productPrice = price) }
+        _state.update { it.copy(productPriceState = productPriceState, price = price) }
     }
 
     override fun onProductDescriptionChanged(description: String) {
@@ -80,18 +80,18 @@ class AddProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 productDescriptionState = productDescriptionState,
-                productDescription = description
+                description = description
             )
         }
     }
 
     override fun onImagesSelected(uris: List<ByteArray>) {
-        _state.update { it.copy(productImages = uris) }
+        _state.update { it.copy(images = uris) }
     }
 
     override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
-        val updatedImages = _state.value.productImages.toMutableList()
+        val updatedImages = _state.value.images.toMutableList()
         updatedImages.remove(imageUri)
-        _state.update { it.copy(productImages = updatedImages) }
+        _state.update { it.copy(images = updatedImages) }
     }
 }
