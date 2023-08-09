@@ -118,7 +118,7 @@ fun OrdersContent(
                 )
                 CustomChip(
                     state = state.cancel(),
-                    text = stringResource(id= R.string.cancelled),
+                    text = stringResource(id= R.string.canceled),
                     onClick = listener::getAllCancelOrders
                 )
             }
