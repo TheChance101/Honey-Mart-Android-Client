@@ -15,12 +15,12 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.category.composables.CategoryItem
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.HoneyScaffold
+import org.the_chance.honeymart.ui.feature.category.composables.CategoryItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -57,7 +57,7 @@ fun CategoryContent(
     state: CategoriesUiState,
     listener: CategoryInteractionListener,
 ) {
-    AppBarScaffold {
+    HoneyScaffold {
         Loading(state.isLoading)
 
         ConnectionErrorPlaceholder(state.isError, listener::onGetData)
