@@ -110,22 +110,23 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(products: List<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
         if (products.isEmpty()) {
             _state.update {
                 it.copy(
                     isEmptyProducts = true,
-                    products = products.map { it.toProductUiState() }
+                    products = mappedProducts
                 )
             }
         } else {
             _state.update {
                 it.copy(
                     isEmptyProducts = false,
-                    products = products.map { it.toProductUiState() }
+                    products = mappedProducts
                 )
             }
         }
-        getWishListProducts(products.map { it.toProductUiState() })
+        getWishListProducts(mappedProducts)
     }
 
     private fun onGetProductError(error: ErrorHandler) {
