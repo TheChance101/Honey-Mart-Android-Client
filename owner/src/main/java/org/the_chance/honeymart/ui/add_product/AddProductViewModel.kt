@@ -2,7 +2,8 @@ package org.the_chance.honeymart.ui.add_product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddProductWithImagesUseCase
+import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
+import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
-    private val addProductWithImagesUseCase: AddProductWithImagesUseCase
+    private val addProductUseCase: AddProductUseCase,
+    private val addProductImagesUseCase: AddProductImagesUseCase
 ) : BaseViewModel<AddProductUiState, Unit>(AddProductUiState()), AddProductInteractionListener {
     override val TAG: String = this::class.java.simpleName
     private val categoryId = 43L
@@ -19,12 +21,8 @@ class AddProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                addProductWithImagesUseCase(
-                    product.name,
-                    product.price.toDouble(),
-                    product.description,
-                    categoryId,
-                    product.images
+                addProductUseCase(
+                    product.name, product.price.toDouble(), product.description, categoryId,
                 ).toAddProductUiState()
             },
             onSuccess = ::onAddProductSuccess,
@@ -35,17 +33,37 @@ class AddProductViewModel @Inject constructor(
     private fun onAddProductSuccess(product: AddProductUiState) {
         _state.update {
             it.copy(
-                isLoading = false,
                 error = null,
+                id = product.id,
                 name = product.name,
                 price = product.price,
                 description = product.description,
-                images = product.images
             )
         }
+        addProductImage(productId = product.id, images = _state.value.images)
     }
 
     private fun onAddProductError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    override fun addProductImage(productId: Long, images: List<ByteArray>) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { addProductImagesUseCase(productId, images) },
+            onSuccess = ::onAddProductImagesSuccess,
+            onError = ::onAddProductImagesError
+        )
+    }
+
+    private fun onAddProductImagesSuccess(message: String) {
+        _state.update { it.copy(isLoading = false, error = null) }
+    }
+
+    private fun onAddProductImagesError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }

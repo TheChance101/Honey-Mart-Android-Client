@@ -43,7 +43,7 @@ fun AddImageButton(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(R.drawable.icon_add_product),
+                painter = painterResource(R.drawable.icon_add_to_cart),
                 contentDescription = stringResource(R.string.icon_add),
                 modifier = Modifier.size(MaterialTheme.dimens.icon24),
                 tint = black60
