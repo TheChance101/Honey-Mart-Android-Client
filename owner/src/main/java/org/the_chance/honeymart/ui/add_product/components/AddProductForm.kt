@@ -62,7 +62,7 @@ fun AddProductForm(
     ) {
         Header(
             title = stringResource(R.string.add_new_product),
-            iconPainter = painterResource(id = R.drawable.icon_cart)
+            iconPainter = painterResource(id = R.drawable.icon_add_product)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -143,7 +143,7 @@ fun AddProductForm(
             ),
             isEnable = state.showButton(),
             label = stringResource(R.string.add),
-            iconPainter = painterResource(R.drawable.icon_add_product),
+            iconPainter = painterResource(R.drawable.icon_add_to_cart),
             onClick = { onClickAddProduct(state) }
         )
     }

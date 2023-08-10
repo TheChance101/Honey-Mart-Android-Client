@@ -23,7 +23,7 @@ fun Header(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.padding(
+        modifier = modifier.padding(
             horizontal = MaterialTheme.dimens.space16,
             vertical = MaterialTheme.dimens.space24
         ),
