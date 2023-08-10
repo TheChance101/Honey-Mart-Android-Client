@@ -56,7 +56,7 @@ private fun AddCategoryContent(
 
     Row(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(
-            visible = state.categories != emptyList<CategoryUIState>(),
+            visible = state.categories.isNotEmpty(),
             modifier = Modifier.weight(1f)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -92,7 +92,7 @@ private fun AddCategoryContent(
         }
 
         EmptyCategory(
-            state = state.categories == emptyList<CategoryUIState>(),
+            state = state.categories.isEmpty(),
             modifier = Modifier.weight(1f)
         )
 
