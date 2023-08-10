@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.addCategory
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.AddCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCategoryViewModel @Inject constructor(
-    private val addToCategoryUseCase: AddToCategoryUseCase,
+    private val addToCategoryUseCase: AddCategoryUseCase,
     private val getAllCategories: GetAllCategoriesInMarketUseCase
 ): BaseViewModel<AddCategoryUIState, AddCategoryUIEffect>(AddCategoryUIState()),
     AddCategoryListener {
