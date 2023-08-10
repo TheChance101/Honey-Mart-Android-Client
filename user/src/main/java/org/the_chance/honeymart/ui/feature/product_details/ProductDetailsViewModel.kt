@@ -37,7 +37,7 @@ class ProductDetailsViewModel @Inject constructor(
         getProductDetails(args.productId.toLong())
     }
 
-    fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
+    override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
             { deleteCartUseCase() },
@@ -201,6 +201,7 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
+
 
     // endregion
 
