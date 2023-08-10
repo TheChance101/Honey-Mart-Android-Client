@@ -25,9 +25,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.HoneyMartTitle
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.owner_black60
-import org.the_chance.honymart.ui.theme.owner_black637
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -53,7 +53,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                         .padding(top = MaterialTheme.dimens.space32)
                         .fillMaxWidth(),
                     text = "Your Market is empty!!",
-                    style = Typography.bodyMedium.copy(color = owner_black60),
+                    style = Typography.bodyMedium.copy(color = black60),
                     textAlign = TextAlign.Center
                 )
 
@@ -66,7 +66,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                         )
                         .align(Alignment.CenterHorizontally),
                     text = "Adding a category will increase your chances of attracting interested buyers. What category fits your item?",
-                    style = Typography.displayLarge.copy(color = owner_black637),
+                    style = Typography.displayLarge.copy(color = blackOn37),
                     textAlign = TextAlign.Center
                 )
 
@@ -80,7 +80,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                             .padding(end = MaterialTheme.dimens.space10)
                             .align(Alignment.CenterVertically),
                         text = "Please click on ",
-                        style = Typography.displayLarge.copy(color = owner_black637),
+                        style = Typography.displayLarge.copy(color = blackOn37),
 
                         )
 
@@ -104,7 +104,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                             .padding(start = MaterialTheme.dimens.space10)
                             .align(Alignment.CenterVertically),
                         text = "to Add Category",
-                        style = Typography.displayLarge.copy(color = owner_black637)
+                        style = Typography.displayLarge.copy(color = blackOn37)
                     )
                 }
             }

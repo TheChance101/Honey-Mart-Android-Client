@@ -14,12 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Shapes
+import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.owner_black637
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white100
 
@@ -50,7 +48,7 @@ fun CategoryImage(
             Icon(
                 painter = iconPainter,
                 contentDescription = "",
-                tint = if (isSelected) Color.White else owner_black637
+                tint = if (isSelected) Color.White else blackOn37
             )
         }
     }

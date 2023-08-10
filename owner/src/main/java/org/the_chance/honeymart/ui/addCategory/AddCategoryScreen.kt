@@ -34,9 +34,9 @@ import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.owner_black637
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
@@ -131,7 +131,7 @@ private fun AddCategoryContent(listener:AddCategoryListener, state: AddCategoryU
                             top = MaterialTheme.dimens.space32
                         ),
                         text = "Select category image",
-                        style = Typography.bodyMedium.copy(color = owner_black637)
+                        style = Typography.bodyMedium.copy(color = blackOn37)
                     )
 
                     LazyVerticalGrid(
