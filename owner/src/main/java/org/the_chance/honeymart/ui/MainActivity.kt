@@ -17,6 +17,7 @@ import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.addCategory.AddCategoryScreen
 import org.the_chance.honeymart.ui.products.ProductsScreen
 import org.the_chance.honeymart.ui.login.LoginScreen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -33,8 +34,9 @@ class MainActivity : AppCompatActivity() {
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize())
                     {
-                        NavigationRail()
-                        MainNavGraph()
+//                        NavigationRail()
+//                        MainNavGraph()
+                        AddCategoryScreen()
                     }
                 }
 

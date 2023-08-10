@@ -28,7 +28,7 @@ import org.the_chance.honymart.ui.theme.white200
 @Composable
 fun HoneyTextField(
     hint: String,
-    iconPainter: Painter,
+    iconPainter: Painter? = null ,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     text: String = "",
@@ -73,11 +73,13 @@ fun HoneyTextField(
                 }
             },
             leadingIcon = {
-                Icon(
-                    painter = iconPainter,
-                    contentDescription = stringResource(R.string.copy_button),
-                    tint = if (isError) error else white200
-                )
+                if (iconPainter != null){
+                    Icon(
+                        painter = iconPainter,
+                        contentDescription = stringResource(R.string.copy_button),
+                        tint = if (isError) error else white200
+                    )
+                }
             },
             isError = isError,
         )
