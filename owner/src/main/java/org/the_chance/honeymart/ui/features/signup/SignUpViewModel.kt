@@ -3,11 +3,7 @@ package org.the_chance.honeymart.ui.features.signup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddOwnerUseCase
-import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateConfirmPasswordUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateFullNameUseCase
-import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
+import org.the_chance.honeymart.domain.usecase.ValidationSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -17,11 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val createAccount: AddOwnerUseCase,
-    private val loginOwner: LoginOwnerUseCase,
-    private val validateFullName: ValidateFullNameUseCase,
-    private val validateEmail: ValidateEmailUseCase,
-    private val validatePassword: ValidatePasswordUseCase,
-    private val validateConfirmPassword: ValidateConfirmPasswordUseCase
+    private val validationSignupFields: ValidationSignupFieldsUseCase
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()), SignupInteractionListener,
     MarketInfoInteractionsListener {
 
@@ -32,13 +24,13 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onClickSignup() {
-        val validationState =
-            validateConfirmPassword(state.value.password, state.value.confirmPassword)
+        val validationState = state.value.emailState.isValid &&
+                state.value.passwordState.isValid &&
+                state.value.fullNameState.isValid &&
+                state.value.confirmPasswordState.isValid
+
         if (validationState) {
-            addOwner(
-                fullName = state.value.fullName, password = state.value.password,
-                email = state.value.email,
-            )
+            // navigate to loginScreen
             _state.update {
                 it.copy(showToast = false)
             }
@@ -50,35 +42,82 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onFullNameInputChange(fullName: CharSequence) {
-        val fullNameState = validateFullName(fullName.trim().toString())
-        _state.update { it.copy(fullNameState = fullNameState, fullName = fullName.toString()) }
+        val fullNameState = validationSignupFields.validationFullName(
+            fullName.trim().toString()
+        )
+        _state.update {
+            it.copy(
+                fullNameState = FieldState(
+                    errorState = when (fullNameState) {
+                        ValidationState.BLANK_FULL_NAME -> "name shouldn't be empty"
+                        ValidationState.INVALID_FULL_NAME -> "Invalid name"
+                        else -> ""
+                    },
+                    value = fullName.toString(),
+                    isValid = fullNameState == ValidationState.VALID_FULL_NAME
+                ),
+            )
+        }
     }
 
     override fun onEmailInputChange(email: CharSequence) {
-        val emailState = validateEmail(email.trim().toString())
-        _state.update { it.copy(emailState = emailState, email = email.toString()) }
+        val emailState = validationSignupFields.validateEmail(email.trim().toString())
+        _state.update {
+            it.copy(
+                emailState = FieldState(
+                    errorState = when (emailState) {
+                        ValidationState.BLANK_EMAIL -> "email shouldn't be empty"
+                        ValidationState.INVALID_EMAIL -> "Invalid email"
+                        else -> ""
+                    },
+                    value = email.toString(),
+                    isValid = emailState == ValidationState.VALID_EMAIL
+                ),
+            )
+        }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validatePassword(password.toString())
-        _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
+        val passwordState = validationSignupFields.validationPassword(password.toString())
+        _state.update {
+            it.copy(
+                passwordState = FieldState(
+                    errorState = when (passwordState) {
+                        ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
+                        ValidationState.INVALID_PASSWORD -> "Invalid password"
+                        ValidationState.INVALID_PASSWORD_LENGTH -> "Password must have at least 8 characters"
+                        else -> ""
+                    },
+                    value = password.toString(),
+                    isValid = passwordState == ValidationState.VALID_PASSWORD
+                ),
+            )
+        }
     }
 
     override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
-        val passwordState =
-            validateConfirmPassword(state.value.password, confirmPassword.toString())
+        val passwordState = validationSignupFields.validateConfirmPassword(
+            state.value.passwordState.value,
+            confirmPassword.toString()
+        )
         if (!passwordState) {
             _state.update {
                 it.copy(
-                    confirmPasswordState = ValidationState.INVALID_CONFIRM_PASSWORD,
-                    confirmPassword = confirmPassword.toString()
+                    confirmPasswordState = FieldState(
+                        errorState = "Invalid confirm password",
+                        value = confirmPassword.toString(),
+                        isValid = false
+                    )
                 )
             }
         } else {
             _state.update {
                 it.copy(
-                    confirmPasswordState = ValidationState.VALID_PASSWORD,
-                    confirmPassword = confirmPassword.toString()
+                    confirmPasswordState = FieldState(
+                        errorState = "",
+                        value = confirmPassword.toString(),
+                        isValid = true
+                    )
                 )
             }
         }
@@ -106,40 +145,13 @@ class SignUpViewModel @Inject constructor(
 
 
     private fun onSuccess(isSignUp: Boolean) {
-        if (isSignUp) {
-            login(email = _state.value.email, password = _state.value.password)
-        }
         _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
+        if (isSignUp) {
+            // navigate to marketInfo screen
+        }
     }
 
     private fun onError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false, error = error,
-                fullNameState = ValidationState.INVALID_FULL_NAME,
-                emailState = ValidationState.INVALID_EMAIL
-            )
-        }
-    }
-
-
-    private fun login(email: String, password: String) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { loginOwner(password = password, email = email) },
-            ::onLoginSuccess,
-            ::onLoginError,
-        )
-    }
-
-    private fun onLoginSuccess(loginState: ValidationState) {
-        if (loginState == ValidationState.SUCCESS)
-            effectActionExecutor(_effect, SignupUiEffect.ClickSignupEffect)
-
-        _state.update { it.copy(isLoading = false, isLogin = loginState) }
-    }
-
-    private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
@@ -154,6 +166,4 @@ class SignUpViewModel @Inject constructor(
 
     override fun onDescriptionInputChanged(description: CharSequence) {
     }
-
-
 }
