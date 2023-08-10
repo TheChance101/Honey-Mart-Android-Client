@@ -20,4 +20,7 @@
     <string name="emaill">Email</string>
     <string name="passwordd">Password</string>
     <string name="confirm_passwordd">Confirm Password</string>
+    <string name="market_info">Market info</string>
+    <string name="address">Address</string>
+    <string name="description">Description</string>
 </resources>

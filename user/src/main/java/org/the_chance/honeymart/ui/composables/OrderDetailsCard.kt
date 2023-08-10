@@ -26,70 +26,70 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderDetailsCard(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     orderName: String,
     orderPrice: String,
     orderCount: String,
-    orderId: Long,
     onClickCard: (orderId: Long) -> Unit,
-    modifier: Modifier = Modifier
+    orderId: Long,
 ) {
+    Box(
+        modifier = modifier
+            .size(width = 160.dp, MaterialTheme.dimens.heightItem)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable { onClickCard(orderId) }
+    ) {
+        ImageNetwork(
+            modifier = Modifier.fillMaxSize(),
+            imageUrl = imageUrl,
+        )
         Box(
-            modifier = modifier
-                .size(width = 160.dp, MaterialTheme.dimens.heightItem)
-                .clip(MaterialTheme.shapes.medium)
-                .clickable { onClickCard(orderId) }
+            modifier = Modifier
+                .matchParentSize()
+        )
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = MaterialTheme.dimens.space8,
+                    bottom = MaterialTheme.dimens.space8,
+                    end = MaterialTheme.dimens.space8
+                )
         ) {
-            ImageNetwork(
-                modifier = Modifier.fillMaxSize(),
-                imageUrl = imageUrl,
+            Text(
+                text = orderName,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
+            Text(
+                text = "$orderPrice$",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(
-                        start = MaterialTheme.dimens.space8,
-                        bottom = MaterialTheme.dimens.space8,
-                        end = MaterialTheme.dimens.space8
-                    )
-            ) {
-                Text(
-                    text = orderName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_cart_details),
+                    contentDescription = stringResource(R.string.cart_check_icon),
+                    tint = white,
+                    modifier = Modifier.padding(end = MaterialTheme.dimens.space4)
                 )
                 Text(
-                    text = "$orderPrice$",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "x$orderCount",
+                    style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.onPrimary,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_cart_details),
-                        contentDescription = stringResource(R.string.cart_check_icon),
-                        tint = white,
-                        modifier = Modifier.padding(end = MaterialTheme.dimens.space4)
-                    )
-                    Text(
-                        text = "x$orderCount",
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
             }
         }
+    }
 }
 
 @Preview
