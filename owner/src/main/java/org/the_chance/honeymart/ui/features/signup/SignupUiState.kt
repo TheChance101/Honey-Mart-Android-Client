@@ -8,14 +8,18 @@ data class SignupUiState(
     val error: ErrorHandler? = null,
     val isSignUp: Boolean = false,
     val isLogin: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
-    val fullName: String = "",
-    val email: String = "",
-    val password: String = "",
-    val confirmPassword: String = "",
-    val emailState: ValidationState = ValidationState.VALID_EMAIL,
-    val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val confirmPasswordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
+
+    val fullNameState: FieldState = FieldState(),
+    val emailState: FieldState = FieldState(),
+    val passwordState: FieldState = FieldState(),
+    val confirmPasswordState: FieldState = FieldState(),
+
     val showToast: Boolean = false
+)
+
+data class FieldState(
+    val value: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = false
 )
 
