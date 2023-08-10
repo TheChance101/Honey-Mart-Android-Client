@@ -106,7 +106,7 @@ fun SignupContent(
                             R.string
                                 .create_your_account_and_enter_a_world_of_endless_shopping_possibilities
                         ),
-                        textColor = white,
+                        subTitleColor = white,
                         modifier = Modifier
                             .padding(bottom = MaterialTheme.dimens.space24)
                             .align(

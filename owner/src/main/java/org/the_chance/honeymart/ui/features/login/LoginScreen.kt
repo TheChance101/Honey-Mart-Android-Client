@@ -21,7 +21,6 @@ import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.owner.R
 
@@ -46,7 +45,6 @@ fun LoginContent(
         HoneyAuthHeader(
             title = stringResource(org.the_chance.design_system.R.string.welcome_back),
             subTitle = stringResource(R.string.login_to_discover_a_curated_selection_of_products_just_for_you),
-            textColor = black60,
             modifier = Modifier
                 .padding(bottom = MaterialTheme.dimens.space24)
                 .align(

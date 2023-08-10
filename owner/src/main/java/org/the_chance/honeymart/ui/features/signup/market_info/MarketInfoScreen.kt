@@ -52,7 +52,6 @@ fun MarketInfoContent(
         HoneyAuthHeader(
             title = stringResource(R.string.sign_up),
             subTitle = stringResource(R.string.create_an_account_name_your_market),
-            textColor = black60,
             modifier = Modifier
                 .padding(bottom = MaterialTheme.dimens.space24)
                 .align(
