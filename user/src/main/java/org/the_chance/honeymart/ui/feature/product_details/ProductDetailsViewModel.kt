@@ -29,7 +29,6 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val args = ProductDetailsArgs(savedStateHandle)
 
-
     init {
         getData()
     }
@@ -38,14 +37,22 @@ class ProductDetailsViewModel @Inject constructor(
         getProductDetails(args.productId.toLong())
     }
 
-
-    fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
+    override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
             { deleteCartUseCase() },
             { onDeleteCartSuccess(it, productId, count) },
             ::onDeleteCartError,
         )
+    }
+
+    override fun showDialog(productId: Long, count: Int){
+        _state.update { it.copy(dialogState = it.dialogState.copy(
+            showDialog = true,productId = productId, count = count))}
+    }
+
+    override fun resetDialogState(){
+        _state.update { it.copy(dialogState = it.dialogState.copy(showDialog = false)) }
     }
 
     private fun onDeleteCartSuccess(message: String, productId: Long, count: Int) {
@@ -166,11 +173,9 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
-
             else -> {}
         }
     }
-
     // endregion
 
     // region Wishlist
@@ -196,6 +201,7 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
+
 
     // endregion
 
