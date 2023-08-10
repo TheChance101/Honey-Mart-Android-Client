@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.addCategory
 
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.products.CategoryUiState
 
 data class AddCategoryUIState(
     val isLoading: Boolean = true,
@@ -26,7 +25,8 @@ data class CategoryImageUIState(
 data class CategoryUIState(
     val categoryId: Long = 0L,
     val categoryIcon: Int = 0,
-    val categoryName: String = ""
+    val categoryName: String = "",
+    val isCategorySelected: Boolean = false
 )
 
 fun ListCategoryImages.toCategoryImageUIState() =

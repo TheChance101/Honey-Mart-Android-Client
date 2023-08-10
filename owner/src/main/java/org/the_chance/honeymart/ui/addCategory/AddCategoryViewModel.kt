@@ -1,12 +1,11 @@
 package org.the_chance.honeymart.ui.addCategory
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,8 +55,9 @@ class AddCategoryViewModel @Inject constructor(
         addCategory(_state.value.nameCategory.trim(), _state.value.categoryImageId)
     }
 
-    override fun onClickCategory(categoryImageId: Int) {
-        val updatedCategories = updateCategoryImageSelection(_state.value.categoryImages, categoryImageId)
+    override fun onClickCategoryImage(categoryImageId: Int) {
+        val updatedCategories =
+            updateCategoryImageSelection(_state.value.categoryImages, categoryImageId)
         val position = updatedCategories.indexOfFirst { it.categoryImageId == categoryImageId }
         _state.update {
             it.copy(
@@ -101,6 +101,28 @@ class AddCategoryViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
+        }
+    }
+
+    override fun onClickCategory(categoryId: Long) {
+        val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
+        _state.update {
+            it.copy(
+                categories = updatedCategories,
+                position = position.inc(),
+                categoryId = categoryId,
+                isLoading = false,
+            )
+        }
+    }
+
+    private fun updateCategorySelection(
+        categories: List<CategoryUIState>,
+        selectedCategoryId: Long,
+    ): List<CategoryUIState> {
+        return categories.map { category ->
+            category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
         }
     }
 

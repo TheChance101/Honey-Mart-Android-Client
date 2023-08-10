@@ -1,24 +1,17 @@
 package org.the_chance.honeymart.ui.addCategory
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,38 +22,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryImage
+import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
+import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.owner_black637
-import org.the_chance.honymart.ui.theme.white
-import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
-import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
-import org.the_chance.honymart.ui.composables.IconButton
-import org.the_chance.honymart.ui.theme.Shapes
-import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black87
-import org.the_chance.honymart.ui.theme.blackOn87
-import org.the_chance.honymart.ui.theme.darkPrimary100
-import org.the_chance.honymart.ui.theme.owner_black60
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun AddCategoryScreen(
@@ -89,19 +67,21 @@ private fun AddCategoryContent(listener:AddCategoryListener, state: AddCategoryU
                     items(count=state.categories.size ){index ->
                         CategoryItem(
                             categoryName = state.categories[index].categoryName,
-                            onCategoryClicked = {_ , _ -> },
-                            position = 0,
-                            image = categoryImages.find {
+                            onClick = {
+                                listener.onClickCategory(state.categories[index].categoryId)
+                            },
+                            icon = categoryImages.find {
                                 it.categoryImageId == state.categories[index].categoryIcon
-                            }?.categoryImage ?: R.drawable.icon_category
+                            }?.categoryImage ?: R.drawable.icon_category,
+                            isSelected = state.categories[index].isCategorySelected
                         )
                     }
                     item {
                         CategoryItem(
                             categoryName = "Add",
-                            onCategoryClicked = {_ , _ -> },
-                            position = 0,
-                            image = R.drawable.icon_add_product
+                            onClick = {},
+                            icon = R.drawable.icon_add_product,
+                            isSelected = false
                         )
                     }
                 }
@@ -166,7 +146,7 @@ private fun AddCategoryContent(listener:AddCategoryListener, state: AddCategoryU
                                 isSelected = state.categoryImages[index].isSelected,
                                 categoryImageID = state.categoryImages[index].categoryImageId,
                                 onClick = {
-                                    listener.onClickCategory(
+                                    listener.onClickCategoryImage(
                                         state.categoryImages[index].categoryImageId
                                     )
                                 }
