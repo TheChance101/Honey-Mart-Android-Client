@@ -12,4 +12,6 @@ interface ProductDetailsInteraction {
 
     fun onclickTryAgain()
     fun showSnackBar(massage: String)
+    fun resetDialogState()
+    fun showDialog(productId: Long, count: Int)
 }
