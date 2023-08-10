@@ -49,14 +49,17 @@ fun AddCategoryScreen(
 }
 
 @Composable
-private fun AddCategoryContent(listener:AddCategoryListener, state: AddCategoryUIState){
+private fun AddCategoryContent(
+    listener: AddCategoryInteractionListener,
+    state: AddCategoryUIState
+) {
 
     Row(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(
             visible = state.categories != emptyList<CategoryUIState>(),
             modifier = Modifier.weight(1f)
         ) {
-            Column(modifier = Modifier.fillMaxSize()){
+            Column(modifier = Modifier.fillMaxSize()) {
                 HoneyMartTitle()
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(5),

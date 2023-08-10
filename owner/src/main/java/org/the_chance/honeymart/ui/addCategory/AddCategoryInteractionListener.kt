@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.addCategory
 
-interface AddCategoryListener {
+interface AddCategoryInteractionListener {
     fun changeNameCategory(nameCategory: String)
     fun onClickAddCategory()
     fun onClickCategoryImage(categoryImageId: Int)

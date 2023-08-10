@@ -12,8 +12,8 @@ import javax.inject.Inject
 class AddCategoryViewModel @Inject constructor(
     private val addToCategoryUseCase: AddCategoryUseCase,
     private val getAllCategories: GetAllCategoriesInMarketUseCase
-): BaseViewModel<AddCategoryUIState, AddCategoryUIEffect>(AddCategoryUIState()),
-    AddCategoryListener {
+) : BaseViewModel<AddCategoryUIState, AddCategoryUIEffect>(AddCategoryUIState()),
+    AddCategoryInteractionListener {
 
     override val TAG: String = "addCategory"
 
@@ -22,8 +22,12 @@ class AddCategoryViewModel @Inject constructor(
         getAllCategory(8)
     }
 
-    private fun getCategoryImages(){
-        _state.update { it.copy(isLoading = false, categoryImages = categoryImages.map { it.toCategoryImageUIState() }) }
+    private fun getCategoryImages() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                categoryImages = categoryImages.map { it.toCategoryImageUIState() })
+        }
     }
 
     private fun addCategory(name: String, CategoryImageID: Int ){
