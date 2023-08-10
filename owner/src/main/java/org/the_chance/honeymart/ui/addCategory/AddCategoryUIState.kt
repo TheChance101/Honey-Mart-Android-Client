@@ -12,6 +12,7 @@ data class AddCategoryUIState(
     val categoryImageId: Int = 0,
     val positionCategory: Int = 0,
     val categoryId: Long = 0L,
+    val snackBarState: SnackBarState = SnackBarState(),
     val categories: List<CategoryUIState> = emptyList(),
     val categoryImages: List<CategoryImageUIState> = emptyList()
 )
@@ -29,11 +30,17 @@ data class CategoryUIState(
     val isCategorySelected: Boolean = false
 )
 
+data class SnackBarState(
+    val isShow: Boolean = false,
+    val message: String = ""
+)
+
 fun ListCategoryImages.toCategoryImageUIState() =
     CategoryImageUIState(
         categoryImageId = this.categoryImageId,
         image = this.categoryImage
     )
+
 fun CategoryEntity.toCategoryUIState() =
     CategoryUIState(
         categoryIcon = this.categoryImageId,

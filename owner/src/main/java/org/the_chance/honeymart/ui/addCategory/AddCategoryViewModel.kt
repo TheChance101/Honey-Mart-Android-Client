@@ -36,18 +36,36 @@ class AddCategoryViewModel @Inject constructor(
         )
 
     }
-    private fun addCategorySuccess(success: String){
+
+    private fun addCategorySuccess(success: String) {
         _state.update { it.copy(isLoading = false, nameCategory = "") }
         getAllCategory(8)
+        showSnackBar(success)
     }
-    private fun addCategoryError(error: ErrorHandler){
-        _state.update { it.copy(isLoading = false,error = error) }
-        if (error is ErrorHandler.NoConnection){
+
+    private fun showSnackBar(message: String) {
+        _state.update {
+            it.copy(
+                snackBarState = it.snackBarState.copy(
+                    isShow = true,
+                    message = message
+                )
+            )
+        }
+    }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBarState = it.snackBarState.copy(isShow = false)) }
+    }
+
+    private fun addCategoryError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
 
-    override fun changeNameCategory(nameCategory: String){
+    override fun changeNameCategory(nameCategory: String) {
         _state.update { it.copy(nameCategory = nameCategory) }
     }
 

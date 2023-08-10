@@ -5,4 +5,5 @@ interface AddCategoryListener {
     fun onClickAddCategory()
     fun onClickCategoryImage(categoryImageId: Int)
     fun onClickCategory(categoryId: Long)
+    fun resetSnackBarState()
 }

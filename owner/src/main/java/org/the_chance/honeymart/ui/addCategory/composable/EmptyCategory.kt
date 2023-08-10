@@ -25,10 +25,10 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.HoneyMartTitle
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.darkPrimary100
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.owner_black60
 import org.the_chance.honymart.ui.theme.owner_black637
+import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
@@ -87,7 +87,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                     IconButton(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(darkPrimary100),
+                            .background(primary100),
                         content = {
                             Icon(
                                 modifier = Modifier.size(MaterialTheme.dimens.icon14),
