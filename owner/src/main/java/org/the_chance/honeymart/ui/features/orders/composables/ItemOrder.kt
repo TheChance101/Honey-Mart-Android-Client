@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.white50
+import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ItemOrder(
@@ -39,7 +39,7 @@ fun ItemOrder(
             .fillMaxWidth()
             .height(111.dp)
             .clickable { onClickCard(orderId) },
-        colors = CardDefaults.cardColors(containerColor = (white50))
+        colors = CardDefaults.cardColors(containerColor = (white))
     ) {
         Column(
             modifier = Modifier

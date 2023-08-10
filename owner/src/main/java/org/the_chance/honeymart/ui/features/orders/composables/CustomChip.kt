@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white50
+import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CustomChip(
@@ -41,7 +41,7 @@ fun CustomChip(
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
             text = text,
-            color = if (state) white50 else primary100,
+            color = if (state) white else primary100,
             style = Typography.displayLarge
         )
     }

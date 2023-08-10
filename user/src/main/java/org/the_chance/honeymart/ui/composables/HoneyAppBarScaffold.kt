@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -60,16 +59,12 @@ fun HoneyAppBarScaffold(
                 title = { HoneyAppBarTitle(topAppBarTitleColor) },
                 navigationIcon = { },
                 actions = { },
-                colors = topAppBarColors(
-        containerColor = topAppBarContainerColor,
-        scrolledContainerColor = MaterialTheme.colorScheme.applyTonalElevation(
-    backgroundColor = containerColor,
-    elevation = TopAppBarSmallTokens.OnScrollContainerElevation
-),
-        navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-        titleContentColor = MaterialTheme.colorScheme.onSurface,
-        actionIconContentColor = MaterialTheme.colorScheme.onSurface
-    ),
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = topAppBarContainerColor,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                ),
                 scrollBehavior = scrollBehavior
             )
         },

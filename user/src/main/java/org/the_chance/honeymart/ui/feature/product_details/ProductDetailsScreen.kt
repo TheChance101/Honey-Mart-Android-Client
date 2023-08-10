@@ -236,7 +236,7 @@ private fun ProductDetailsContent(
 
                         HoneyOutlineText(
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
-                            state.totalPrice.toString() + "$",
+                            text = state.totalPrice.toString() + "$",
                         )
                         Text(
                             modifier = Modifier
