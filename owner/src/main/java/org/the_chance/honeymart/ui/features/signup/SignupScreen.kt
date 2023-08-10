@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
@@ -21,7 +20,6 @@ import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.owner.R
 
@@ -50,48 +48,32 @@ fun SignupContent(
 
         Column {
             HoneyTextField(
-                text = state.fullName,
-                hint = stringResource(R.string.full_namee),
+                text = state.fullNameState.value,
+                hint = stringResource(R.string.full_name),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
                 onValueChange = listener::onFullNameInputChange,
-                errorMessage = when (state.fullNameState) {
-                    ValidationState.BLANK_FULL_NAME -> "name cannot be blank"
-                    ValidationState.INVALID_FULL_NAME -> "Invalid name"
-                    else -> ""
-                },
+                errorMessage = state.fullNameState.errorState
             )
             HoneyTextField(
-                text = state.email,
-                hint = stringResource(R.string.emaill),
+                text = state.emailState.value,
+                hint = stringResource(R.string.email),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_email),
                 onValueChange = listener::onEmailInputChange,
-                errorMessage = when (state.emailState) {
-                    ValidationState.BLANK_EMAIL -> "email cannot be blank"
-                    ValidationState.INVALID_EMAIL -> "Invalid email"
-                    else -> ""
-                },
+                errorMessage = state.emailState.errorState,
             )
             HoneyTextFieldPassword(
-                text = state.password,
-                hint = stringResource(R.string.passwordd),
+                text = state.passwordState.value,
+                hint = stringResource(R.string.password),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
-                errorMessage = when (state.passwordState) {
-                    ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
-                    ValidationState.INVALID_PASSWORD -> "Invalid password"
-                    ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
-                    else -> ""
-                },
+                errorMessage = state.passwordState.errorState,
             )
             HoneyTextFieldPassword(
-                text = state.confirmPassword,
-                hint = stringResource(R.string.confirm_passwordd),
+                text = state.confirmPasswordState.value,
+                hint = stringResource(R.string.confirm_password),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                 onValueChange = listener::onConfirmPasswordChanged,
-                errorMessage = when (state.confirmPasswordState) {
-                    ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
-                    else -> ""
-                }
+                errorMessage = state.confirmPasswordState.errorState
             )
         }
 
