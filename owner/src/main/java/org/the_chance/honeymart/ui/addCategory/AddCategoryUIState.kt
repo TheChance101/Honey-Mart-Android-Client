@@ -35,7 +35,7 @@ data class SnackBarState(
     val message: String = ""
 )
 
-fun ListCategoryImages.toCategoryImageUIState() =
+fun CategoryImage.toCategoryImageUIState() =
     CategoryImageUIState(
         categoryImageId = this.categoryImageId,
         image = this.categoryImage
