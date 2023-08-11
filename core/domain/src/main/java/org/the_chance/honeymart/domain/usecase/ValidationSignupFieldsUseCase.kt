@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.util.ValidationState
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ValidationSignupFieldsUseCase @Inject constructor() {
@@ -42,18 +41,21 @@ class ValidationSignupFieldsUseCase @Inject constructor() {
                 ValidationState.INVALID_PASSWORD_LENGTH
             }
 
-            !isPasswordMatchRegex(password) -> {
-                ValidationState.INVALID_PASSWORD
+            !password.any { it.isDigit() } -> {
+                ValidationState.PASSWORD_REGEX_ERROR_DIGIT
+            }
+
+            !password.any { it.isLetter() } -> {
+                ValidationState.PASSWORD_REGEX_ERROR_LETTER
+            }
+
+            !password.contains(Regex("[!@\$%*&]")) -> {
+                ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER
             }
 
             else -> ValidationState.VALID_PASSWORD
         }
 
-    }
-
-    private fun isPasswordMatchRegex(password: String): Boolean {
-        return (Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,14}$"))
-            .matcher(password).matches()
     }
 
     fun validateConfirmPassword(password: String, repeatedPassword: String) =

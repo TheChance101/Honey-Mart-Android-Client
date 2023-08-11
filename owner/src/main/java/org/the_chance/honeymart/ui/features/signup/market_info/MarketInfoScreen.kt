@@ -60,7 +60,7 @@ fun MarketInfoContent(
         )
         HoneyTextField(
             text = state.marketName,
-            hint = stringResource(R.string.full_namee),
+            hint = stringResource(R.string.full_name),
             iconPainter = painterResource(R.drawable.icon_shop),
             onValueChange = listener::onMarketNameInputChange,
             errorMessage = "",

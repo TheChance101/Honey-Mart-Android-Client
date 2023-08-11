@@ -84,8 +84,10 @@ class SignUpViewModel @Inject constructor(
                 passwordState = FieldState(
                     errorState = when (passwordState) {
                         ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
-                        ValidationState.INVALID_PASSWORD -> "Invalid password"
-                        ValidationState.INVALID_PASSWORD_LENGTH -> "Password must have at least 8 characters"
+                        ValidationState.INVALID_PASSWORD_LENGTH -> "Password length must be at least 8"
+                        ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER -> "Please write at least 1 special character"
+                        ValidationState.PASSWORD_REGEX_ERROR_LETTER -> "Please write at least 1 letter"
+                        ValidationState.PASSWORD_REGEX_ERROR_DIGIT -> "Please write at least 1 digit"
                         else -> ""
                     },
                     value = password.toString(),
@@ -104,7 +106,7 @@ class SignUpViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     confirmPasswordState = FieldState(
-                        errorState = "Invalid confirm password",
+                        errorState = "password doesn't match",
                         value = confirmPassword.toString(),
                         isValid = false
                     )

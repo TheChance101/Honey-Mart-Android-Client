@@ -20,6 +20,6 @@ data class SignupUiState(
 data class FieldState(
     val value: String = "",
     val errorState: String = "",
-    val isValid: Boolean = false
+    val isValid: Boolean = errorState.isNotEmpty()
 )
 

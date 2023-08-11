@@ -52,7 +52,7 @@ fun SignupContent(
                 hint = stringResource(R.string.full_name),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
                 onValueChange = listener::onFullNameInputChange,
-                errorMessage = state.fullNameState.errorState
+                errorMessage = state.fullNameState.errorState,
             )
             HoneyTextField(
                 text = state.emailState.value,
@@ -73,7 +73,7 @@ fun SignupContent(
                 hint = stringResource(R.string.confirm_password),
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                 onValueChange = listener::onConfirmPasswordChanged,
-                errorMessage = state.confirmPasswordState.errorState
+                errorMessage = state.confirmPasswordState.errorState,
             )
         }
 
