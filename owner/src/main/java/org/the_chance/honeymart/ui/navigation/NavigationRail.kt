@@ -37,6 +37,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
+import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
 
@@ -56,6 +57,7 @@ fun NavigationRail() {
             Box(
                 modifier = Modifier
                     .size(48.dp)
+                    .clickable { }
                     .background(
                         MaterialTheme.colorScheme.primary,
                         CircleShape
@@ -83,7 +85,8 @@ fun NavigationRail() {
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             modifier = Modifier
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable { navController.navigateToLogin() },
             painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
             contentDescription = "Logout Icon",
             tint = black60
