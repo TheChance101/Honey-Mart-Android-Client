@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +44,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
@@ -58,10 +58,9 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
                 SignupUiEffect.ClickSignupEffect -> navController.popBackStack(

@@ -39,7 +39,6 @@ import org.the_chance.honeymart.ui.composables.ItemOrder
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
@@ -51,10 +50,9 @@ fun OrdersScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToMarketScreen()
                 is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(it.orderId)
@@ -62,7 +60,7 @@ fun OrdersScreen(
         }
     }
 
-    LaunchedEffect(lifecycleOwner) {
+    LaunchedEffect(key1 = true){
         viewModel.getAllProcessingOrders()
     }
 

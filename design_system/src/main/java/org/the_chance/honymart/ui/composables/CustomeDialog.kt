@@ -58,6 +58,8 @@ fun CustomAlertDialog(
                 )
                 Text(
                     text = message,
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16),
                     color = black60,
                     style = Typography.bodySmall,
                     textAlign = TextAlign.Center

@@ -14,6 +14,7 @@ data class WishListUiState(
 data class SnackBarState(
     val isShow : Boolean = false ,
     val productId: Long =0L,
+    val message: String = "",
 )
 
 data class WishListProductUiState(
