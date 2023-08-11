@@ -69,7 +69,7 @@ fun PlaceHolderItem(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewPlaceHolderItem() {
+private fun PreviewPlaceHolderItem() {
     PlaceHolderItem(
         visibility = true,
         title = "Your Products is empty!!",

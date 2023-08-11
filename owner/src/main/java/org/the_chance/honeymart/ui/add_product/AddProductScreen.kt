@@ -56,10 +56,6 @@ fun AddProductContent(
         Column(
             modifier = Modifier
                 .weight(1F)
-                .padding(
-                    vertical = MaterialTheme.dimens.space24,
-                    horizontal = MaterialTheme.dimens.space16,
-                )
                 .fillMaxHeight()
         ) {
             AddProductForm(

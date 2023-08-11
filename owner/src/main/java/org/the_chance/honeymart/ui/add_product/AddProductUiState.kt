@@ -27,11 +27,12 @@ fun ProductEntity.toAddProductUiState(): AddProductUiState {
     )
 }
 
-fun AddProductUiState.showButton() =
-    name.isNotBlank()
+fun AddProductUiState.showButton(): Boolean {
+    return name.isNotBlank()
             && price.isNotBlank()
             && description.isNotBlank()
             && !isLoading
             && productNameState == ValidationState.VALID_TEXT_FIELD
             && productPriceState == ValidationState.VALID_TEXT_FIELD
             && productDescriptionState == ValidationState.VALID_TEXT_FIELD
+}

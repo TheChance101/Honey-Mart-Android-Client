@@ -54,13 +54,17 @@ fun AddProductForm(
 
     Column(
         modifier = modifier
+            .padding(
+                vertical = MaterialTheme.dimens.space24,
+                horizontal = MaterialTheme.dimens.space16,
+            )
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.tertiary,
                 shape = MaterialTheme.shapes.medium
             )
     ) {
-        Header(
+        AddProductHeader(
             title = stringResource(R.string.add_new_product),
             iconPainter = painterResource(id = R.drawable.icon_add_product)
         )
