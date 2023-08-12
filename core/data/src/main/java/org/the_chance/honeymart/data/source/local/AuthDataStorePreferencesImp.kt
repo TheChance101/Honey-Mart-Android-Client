@@ -15,6 +15,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDa
     companion object {
         private const val PREFERENCES_FILE_NAME = "honey_mart"
         private val KEY_TOKEN = stringPreferencesKey("token")
+        private val PROFILE_NAME = stringPreferencesKey("profile_name")
+        private val PROFILE_IMAGE = stringPreferencesKey("profile_image")
     }
 
     private val Context.preferencesDataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(
@@ -38,6 +40,30 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDa
     override suspend fun clearToken() {
         prefDataStore.edit { preferences ->
             preferences.remove(KEY_TOKEN)
+        }
+    }
+
+    override suspend fun saveProfileName(name: String) {
+        prefDataStore.edit { preferences ->
+            preferences[PROFILE_NAME] = name
+        }
+    }
+
+    override fun getProfileName(): String? {
+        return runBlocking {
+            prefDataStore.data.map { preferences -> preferences[PROFILE_NAME] }.first()
+        }
+    }
+
+    override suspend fun saveProfileImage(image: String) {
+        prefDataStore.edit { preferences ->
+            preferences[PROFILE_IMAGE] = image
+        }
+    }
+
+    override fun getProfileImage(): String? {
+        return runBlocking {
+            prefDataStore.data.map { preferences -> preferences[PROFILE_IMAGE] }.first()
         }
     }
 }
