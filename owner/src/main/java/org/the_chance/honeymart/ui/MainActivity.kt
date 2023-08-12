@@ -3,6 +3,9 @@ package org.the_chance.honeymart.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,14 +33,20 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
-                    val navigationRail = checkNavigationRailState()
+                    val navigationRailState = checkNavigationRailState()
                     Box(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxSize()
                     )
                     {
-                        NavigationRail(navigationRailState = navigationRail)
+                        AnimatedVisibility(
+                            visible = navigationRailState.value,
+                            enter = slideInHorizontally(initialOffsetX = { -it }),
+                            exit = slideOutHorizontally(targetOffsetX = { -it }),
+                        ) {
+                            NavigationRail()
+                        }
                         MainNavGraph()
                     }
                 }

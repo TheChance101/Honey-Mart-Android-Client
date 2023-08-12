@@ -7,10 +7,10 @@ class GetUserInfoUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
     fun getUserNameFirstCharacter(): Char {
-        return authRepository.getUserName()?.firstOrNull() ?: ' '
+        return authRepository.getOwnerName()?.firstOrNull() ?: ' '
     }
 
     fun getUserImageUrl(): String {
-        return authRepository.getUserImageUrl() ?: ""
+        return authRepository.getOwnerImageUrl() ?: ""
     }
 }
