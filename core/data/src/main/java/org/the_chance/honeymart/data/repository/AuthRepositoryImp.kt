@@ -49,19 +49,19 @@ class AuthRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
-    override suspend fun saveProfileName(name: String) {
+    override suspend fun saveUserName(name: String) {
         datastore.saveProfileName(name)
     }
 
-    override fun getProfileName(): String? {
+    override fun getUserName(): String? {
         return datastore.getProfileName()
     }
 
-    override suspend fun saveProfileImageUrl(imageUrl: String) {
+    override suspend fun saveUserImageUrl(imageUrl: String) {
         datastore.saveProfileImage(imageUrl)
     }
 
-    override fun getProfileImageUrl(): String? {
+    override fun getUserImageUrl(): String? {
         return datastore.getProfileImage()
     }
 

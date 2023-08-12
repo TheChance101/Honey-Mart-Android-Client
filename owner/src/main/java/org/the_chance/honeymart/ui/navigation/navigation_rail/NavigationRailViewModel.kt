@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.navigation
+package org.the_chance.honeymart.ui.navigation.navigation_rail
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -22,8 +22,8 @@ class NavigationRailViewModel @Inject constructor(
     private fun getUserInfo() {
         _state.update {
             it.copy(
-                profileName = profileInfo.getProfileName().first(),
-                profileImage = profileInfo.getProfileImage()
+                userNameFirstCharacter = profileInfo.getUserNameFirstCharacter(),
+                userImageUrl = profileInfo.getUserImageUrl()
             )
         }
     }

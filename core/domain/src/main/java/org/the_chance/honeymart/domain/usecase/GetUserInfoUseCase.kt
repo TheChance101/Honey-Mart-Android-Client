@@ -6,11 +6,11 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
-    fun getProfileName(): String {
-        return authRepository.getProfileName()?:""
+    fun getUserNameFirstCharacter(): Char {
+        return authRepository.getUserName()?.firstOrNull() ?: ' '
     }
 
-    fun getProfileImage(): String {
-        return authRepository.getProfileImageUrl()?:""
+    fun getUserImageUrl(): String {
+        return authRepository.getUserImageUrl() ?: ""
     }
 }
