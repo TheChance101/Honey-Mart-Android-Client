@@ -23,6 +23,7 @@ fun HoneyFilledButton(
     label: String,
     onClick: () -> Unit,
     isEnable: Boolean = true,
+    isLoading: Boolean = false,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
@@ -42,12 +43,14 @@ fun HoneyFilledButton(
 
             )
     ) {
-        Text(
-            text = label,
-            style = Typography.bodyMedium,
-            color = contentColor
-        )
-
+        Loading(state = isLoading)
+        if (!isLoading) {
+            Text(
+                text = label,
+                style = Typography.bodyMedium,
+                color = contentColor
+            )
+        }
     }
 }
 
