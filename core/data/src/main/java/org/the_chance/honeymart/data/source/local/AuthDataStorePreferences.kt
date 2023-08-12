@@ -4,9 +4,8 @@ interface AuthDataStorePreferences {
     suspend fun saveToken(token: String)
     fun getToken(): String?
     suspend fun clearToken()
-
-    suspend fun saveProfileName(name:String)
-    fun getProfileName(): String?
-    suspend fun saveProfileImage(image:String)
-    fun getProfileImage(): String?
+    suspend fun saveOwnerName(name: String)
+    fun getOwnerName(): String?
+    suspend fun saveOwnerImage(image: String)
+    fun getOwnerImage(): String?
 }

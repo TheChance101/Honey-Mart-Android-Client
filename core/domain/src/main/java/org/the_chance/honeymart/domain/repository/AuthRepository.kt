@@ -16,8 +16,8 @@ interface AuthRepository {
 
     suspend fun loginOwner(email: String, password: String): String
 
-    suspend fun saveUserName(name: String)
-    fun getUserName(): String?
-    suspend fun saveUserImageUrl(imageUrl: String)
-    fun getUserImageUrl(): String?
+    suspend fun saveOwnerName(name: String)
+    fun getOwnerName(): String?
+    suspend fun saveOwnerImageUrl(imageUrl: String)
+    fun getOwnerImageUrl(): String?
 }

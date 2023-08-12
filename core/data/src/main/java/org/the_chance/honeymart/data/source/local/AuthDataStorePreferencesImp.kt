@@ -15,8 +15,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDa
     companion object {
         private const val PREFERENCES_FILE_NAME = "honey_mart"
         private val KEY_TOKEN = stringPreferencesKey("token")
-        private val PROFILE_NAME = stringPreferencesKey("profile_name")
-        private val PROFILE_IMAGE = stringPreferencesKey("profile_image")
+        private val OWNER_NAME = stringPreferencesKey("owner_name")
+        private val OWNER_IMAGE = stringPreferencesKey("owner_image")
     }
 
     private val Context.preferencesDataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(
@@ -43,27 +43,33 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDa
         }
     }
 
-    override suspend fun saveProfileName(name: String) {
+    override suspend fun saveOwnerName(name: String) {
         prefDataStore.edit { preferences ->
-            preferences[PROFILE_NAME] = name
+            preferences[OWNER_NAME] = name
         }
     }
 
-    override fun getProfileName(): String? {
+    override fun getOwnerName(): String? {
         return runBlocking {
-            prefDataStore.data.map { preferences -> preferences[PROFILE_NAME] }.first()
+            prefDataStore.data.map { preferences
+                ->
+                preferences[OWNER_NAME]
+            }.first()
         }
     }
 
-    override suspend fun saveProfileImage(image: String) {
+    override suspend fun saveOwnerImage(image: String) {
         prefDataStore.edit { preferences ->
-            preferences[PROFILE_IMAGE] = image
+            preferences[OWNER_IMAGE] = image
         }
     }
 
-    override fun getProfileImage(): String? {
+    override fun getOwnerImage(): String? {
         return runBlocking {
-            prefDataStore.data.map { preferences -> preferences[PROFILE_IMAGE] }.first()
+            prefDataStore.data.map { preferences
+                ->
+                preferences[OWNER_IMAGE]
+            }.first()
         }
     }
 }
