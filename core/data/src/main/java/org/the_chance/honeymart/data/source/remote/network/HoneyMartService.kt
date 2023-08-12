@@ -3,6 +3,7 @@ package org.the_chance.honeymart.data.source.remote.network
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.LoginDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -72,7 +73,8 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<String>
+    suspend fun loginUser(email: String, password: String): BaseResponse<LoginDto>
+    suspend fun refreshToken(refreshToken: String) :BaseResponse<LoginDto>
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>

@@ -2,7 +2,9 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toLoginEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.LoginEntity
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
@@ -23,16 +25,26 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
 
 
-    override suspend fun loginUser(email: String, password: String): String =
-        wrap { honeyMartService.loginUser(email, password) }.value ?: throw NotFoundException()
+    override suspend fun loginUser(email: String, password: String): LoginEntity =
+        wrap { honeyMartService.loginUser(email, password) }.value?.toLoginEntity()
+            ?: throw NotFoundException()
 
-    override suspend fun saveToken(token: String) {
-        datastore.saveToken(token)
-        Log.e("Saved Successfully : ", token)
+    override suspend fun refreshToken(refreshToken: String): LoginEntity =
+        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toLoginEntity()
+            ?: throw NotFoundException()
+
+
+    override suspend fun saveTokens(accessToken: String,refreshToken: String) {
+        datastore.saveTokens(accessToken, refreshToken)
+        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken",)
     }
 
-    override fun getToken(): String? {
-        return datastore.getToken()
+    override fun getAccessToken(): String? {
+        return datastore.getAccessToken()
+    }
+
+    override fun getRefreshToken(): String? {
+        return datastore.getRefreshToken()
     }
 
     override suspend fun clearToken() {
