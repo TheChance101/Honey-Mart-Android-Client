@@ -19,4 +19,6 @@
     <string name="market_info">Market info</string>
     <string name="address">Address</string>
     <string name="description">Description</string>
+    <string name="send">Send</string>
+    <string name="market_images">Market Images</string>
 </resources>
