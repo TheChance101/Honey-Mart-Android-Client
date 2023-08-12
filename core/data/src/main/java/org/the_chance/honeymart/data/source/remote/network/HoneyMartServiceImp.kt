@@ -17,6 +17,7 @@ import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.LoginDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -114,11 +115,17 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun loginUser(email: String, password: String): BaseResponse<String> =
+    override suspend fun loginUser(email: String, password: String): BaseResponse<LoginDto> =
         wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
+
+    override suspend fun refreshToken(refreshToken: String): BaseResponse<LoginDto> =
+        wrap(client.submitForm(url = "/token/refresh" , formParameters = Parameters.build {
+            append("refreshToken" ,refreshToken)
+        }) )
+
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
         wrap(client.get("/wishList"))
