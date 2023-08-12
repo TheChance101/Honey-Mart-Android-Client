@@ -22,14 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.products.composables.ProductCard
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
+import org.the_chance.honeymart.ui.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
@@ -104,7 +104,6 @@ fun ProductsContent(state: ProductsUiState) {
                         imageUrl = product.productImage,
                         productName = product.productName,
                         productPrice = product.productPrice,
-                        numberOfItems = state.productsQuantity
                     )
                 }
             }

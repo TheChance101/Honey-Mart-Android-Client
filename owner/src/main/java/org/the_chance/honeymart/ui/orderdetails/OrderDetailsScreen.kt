@@ -1,8 +1,15 @@
 package org.the_chance.honeymart.ui.orderdetails
 
-import android.graphics.drawable.Icon
-import android.widget.TextClock
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,15 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.products.ProductsContent
-import org.the_chance.honeymart.ui.products.ProductsUiState
-import org.the_chance.honeymart.ui.products.ProductsViewModel
 import org.the_chance.honeymart.ui.products.composables.ProductCard
-import org.the_chance.honeymart.ui.products.contentScreen
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -63,34 +65,32 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
             ) {
                 Column {
                     Text(
-                        text = "Order #${state.orderDetails.orderId}",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = blackOn60
+                        text = state.formatOrder(state.orderDetails.orderId),
+                        style = MaterialTheme.typography.headlineLarge.copy(color = blackOn60),
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
+                        verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(MaterialTheme.dimens.space20),
                             painter = painterResource(id = R.drawable.icon_clock),
                             contentDescription = "clock icon",
                             tint = black37
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.space8))
                         Text(
                             text = state.orderDetails.date,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = black37
+                            style = MaterialTheme.typography.bodyMedium.copy(color = black37),
+
                         )
                     }
                 }
 
                 Text(
-                    text = "${state.orderDetails.totalPrice}$",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = blackOn60
+                    text = state.formatPrice(state.orderDetails.totalPrice),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60),
+
                 )
 
             }
@@ -105,7 +105,6 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                         imageUrl = product.images[0],
                         productName = product.name,
                         productPrice = product.price.toString(),
-                        numberOfItems = product.count.toString()
                     )
                 }
             }

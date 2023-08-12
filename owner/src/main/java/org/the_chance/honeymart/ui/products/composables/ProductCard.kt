@@ -1,6 +1,14 @@
 package org.the_chance.honeymart.ui.products.composables
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +33,6 @@ fun ProductCard(
     imageUrl: String,
     productName: String,
     productPrice: String,
-    numberOfItems: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -69,11 +76,7 @@ fun ProductCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Text(
-                            text = numberOfItems,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = black37
-                        )
+
                     }
 
                 }
@@ -97,7 +100,7 @@ fun PreviewProductCard() {
             imageUrl = "",
             productName = "Fresh fruits",
             productPrice = "30,000$",
-            numberOfItems = "3"
+
         )
     }
 }

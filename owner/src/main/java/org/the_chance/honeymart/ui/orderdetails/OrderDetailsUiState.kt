@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.orderdetails
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.products.ProductsUiState
 
 data class OrderDetailsUiState(
     val isProductsLoading: Boolean = false,
@@ -54,3 +53,10 @@ fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState 
 }
 
 fun OrderDetailsUiState.contentScreen() = !this.isLoading && !this.isError
+fun OrderDetailsUiState.formatPrice(price: Double): String {
+    return "$price$"
+}
+
+fun OrderDetailsUiState.formatOrder(order: Long): String {
+    return "Order #${order}"
+}

@@ -3,9 +3,8 @@ package org.the_chance.honeymart.ui.orderdetails
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -31,14 +30,14 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderDetails(orderId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getOrderDetailsUseCase(orderId).toOrderParentDetailsUiState() },
+            { getOrderDetailsUseCase(orderId) },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )
     }
 
-    private fun onGetOrderDetailsSuccess(orderDetails: OrderParentDetailsUiState) {
-        _state.update { it.copy(isLoading = false, orderDetails = orderDetails) }
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetailsEntity) {
+        _state.update { it.copy(isLoading = false, orderDetails = orderDetails.toOrderParentDetailsUiState()) }
     }
 
     private fun onGetOrderDetailsError(error: ErrorHandler) {
