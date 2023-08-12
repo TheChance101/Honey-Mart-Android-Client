@@ -1,11 +1,8 @@
-package org.the_chance.honeymart.ui.navigation
+package org.the_chance.honeymart.ui.navigation.navigation_rail
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -44,6 +41,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
 import org.the_chance.honeymart.ui.util.collect
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
@@ -83,19 +81,19 @@ fun NavigationRail(
 
     AnimatedVisibility(
         visible = navigationRailState.value,
-        enter = slideInVertically(initialOffsetY = { it }),
-        exit = slideOutVertically(targetOffsetY = { it }),
+        enter = slideInHorizontally(initialOffsetX = { -it }),
+        exit = slideOutHorizontally(targetOffsetX = { it }),
         content = {
             NavigationRail(
                 containerColor = MaterialTheme.colorScheme.onTertiary,
                 header = {
-                    if (state.profileImage.isNotEmpty()) {
+                    if (state.userImageUrl.isNotEmpty()) {
                         ImageNetwork(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
                                 .clickable { viewModel.onClickProfile() },
-                            imageUrl = state.profileImage,
+                            imageUrl = state.userImageUrl,
                         )
                     } else {
                         Box(
@@ -109,7 +107,7 @@ fun NavigationRail(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = state.profileName.toString(),
+                                text = state.userNameFirstCharacter.toString(),
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     textAlign = TextAlign.Center,
                                     color = white
@@ -141,7 +139,6 @@ fun NavigationRail(
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavRailItem(
     screen: NavigationRailScreen,
@@ -194,13 +191,12 @@ fun NavRailItem(
             Spacer(modifier = Modifier.height(8.dp))
             AnimatedVisibility(
                 visible = selected,
-                enter = scaleIn(),
-                exit = scaleOut(),
             ) {
                 Text(
                     text = screen.label,
                     color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.displayLarge
                 )
             }
         }

@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
-import org.the_chance.honeymart.ui.navigation.NavigationRail
+import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
     private fun checkNavigationRailState(): MutableState<Boolean> {
         val navController = LocalNavigationProvider.current
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val navigationRailState = rememberSaveable { (mutableStateOf(true)) }
+        val navigationRailState = rememberSaveable { (mutableStateOf(false)) }
 
         val navigationRailScreens = listOf(
-            Screen.Login.route,
-            Screen.Signup.route,
+            Screen.Category.route,
+            Screen.Orders.route,
         )
         when (navBackStackEntry?.destination?.route) {
             in navigationRailScreens -> {
