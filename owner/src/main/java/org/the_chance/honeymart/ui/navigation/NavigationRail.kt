@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -38,11 +40,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun NavigationRail() {
+fun NavigationRail(
+    viewModel: NavigationRailViewModel = hiltViewModel(),
+) {
+    val state by viewModel.state.collectAsState()
+
     val navController = LocalNavigationProvider.current
 
     val screens = listOf(
@@ -54,23 +61,32 @@ fun NavigationRail() {
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.onTertiary,
         header = {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clickable { }
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        CircleShape
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "H",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        textAlign = TextAlign.Center,
-                        color = white
-                    )
+            if (state.profileImage.isNotEmpty()) {
+                ImageNetwork(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable { },
+                    imageUrl = state.profileImage,
                 )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable { }
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = state.profileName.toString(),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            textAlign = TextAlign.Center,
+                            color = white
+                        )
+                    )
+                }
             }
         }
     ) {
