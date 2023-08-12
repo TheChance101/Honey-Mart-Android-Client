@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,30 +30,18 @@ import org.the_chance.honymart.ui.theme.dimens
  */
 @Composable
 fun HoneyAuthScaffold(
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable () -> Unit
 ) {
     Box {
-        Row {
+        Row(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(id = org.the_chance.owner.R.drawable.auth_image),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxHeight()
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(
-                        end = MaterialTheme.dimens.space56,
-                        bottom = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space56
-                    ),
-                verticalArrangement = Arrangement.Center,
-            ) {
 
-                content
-
-            }
+            content()
         }
 
         Image(
@@ -62,7 +53,13 @@ fun HoneyAuthScaffold(
                 .size(120.dp)
         )
 
-        HoneyAppBarTitle(titleColor = Color.White)
+        HoneyAppBarTitle(
+            titleColor = Color.White,
+            modifier = Modifier.padding(
+                top = MaterialTheme.dimens.space32,
+                start = MaterialTheme.dimens.space24
+            )
+        )
     }
 }
 

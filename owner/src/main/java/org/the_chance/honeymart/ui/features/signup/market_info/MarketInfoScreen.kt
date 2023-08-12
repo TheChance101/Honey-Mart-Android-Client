@@ -1,6 +1,9 @@
 package org.the_chance.honeymart.ui.features.signup.market_info
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,65 +52,77 @@ fun MarketInfoContent(
 ) {
     Loading(state.isLoading)
     HoneyAuthScaffold {
-        HoneyAuthHeader(
-            title = stringResource(R.string.sign_up),
-            subTitle = stringResource(R.string.create_an_account_name_your_market),
-            textColor = black60,
+        Column(
             modifier = Modifier
-                .padding(bottom = MaterialTheme.dimens.space24)
-                .align(
-                    Alignment.CenterHorizontally
-                )
-        )
-        HoneyTextField(
-            text = state.marketName,
-            hint = stringResource(R.string.full_namee),
-            iconPainter = painterResource(R.drawable.icon_shop),
-            onValueChange = listener::onMarketNameInputChange,
-            errorMessage = "",
-        )
-        HoneyTextField(
-            text = state.address,
-            hint = stringResource(R.string.address),
-            iconPainter = painterResource(R.drawable.icon_map_point),
-            onValueChange = listener::onMarketAddressInputChange,
-            errorMessage = "",
-        )
-        HoneyTextField(
-            text = state.description,
-            hint = stringResource(R.string.description),
-            iconPainter = painterResource(R.drawable.icon_document_add),
-            onValueChange = listener::onDescriptionInputChanged,
-            errorMessage = "",
-        )
-        Text(
-            modifier = Modifier.padding(
-                top = MaterialTheme.dimens.space24,
-                start = MaterialTheme.dimens.space16
-            ),
-            text = "Add product image",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            textAlign = TextAlign.Center,
-        )
-        Card(
-            modifier = Modifier.size(102.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
-            onClick = {},
-            shape = MaterialTheme.shapes.medium
+                .fillMaxHeight()
+                .padding(
+                    end = MaterialTheme.dimens.space56,
+                    bottom = MaterialTheme.dimens.space16,
+                    top = MaterialTheme.dimens.space56
+                ),
+            verticalArrangement = Arrangement.Center,
         ) {
-            Box(
+
+            HoneyAuthHeader(
+                title = stringResource(R.string.sign_up),
+                subTitle = stringResource(R.string.create_an_account_name_your_market),
+                textColor = black60,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .size(MaterialTheme.dimens.icon48),
-                contentAlignment = Alignment.Center
+                    .padding(bottom = MaterialTheme.dimens.space24)
+                    .align(
+                        Alignment.CenterHorizontally
+                    )
+            )
+            HoneyTextField(
+                text = state.marketName,
+                hint = stringResource(R.string.full_namee),
+                iconPainter = painterResource(R.drawable.icon_shop),
+                onValueChange = listener::onMarketNameInputChange,
+                errorMessage = "",
+            )
+            HoneyTextField(
+                text = state.address,
+                hint = stringResource(R.string.address),
+                iconPainter = painterResource(R.drawable.icon_map_point),
+                onValueChange = listener::onMarketAddressInputChange,
+                errorMessage = "",
+            )
+            HoneyTextField(
+                text = state.description,
+                hint = stringResource(R.string.description),
+                iconPainter = painterResource(R.drawable.icon_document_add),
+                onValueChange = listener::onDescriptionInputChanged,
+                errorMessage = "",
+            )
+            Text(
+                modifier = Modifier.padding(
+                    top = MaterialTheme.dimens.space24,
+                    start = MaterialTheme.dimens.space16
+                ),
+                text = "Add product image",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                textAlign = TextAlign.Center,
+            )
+            Card(
+                modifier = Modifier.size(102.dp),
+                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
+                onClick = {},
+                shape = MaterialTheme.shapes.medium
             ) {
-                Icon(
-                    painter = painterResource(org.the_chance.design_system.R.drawable.icon_add_product),
-                    contentDescription = "Icon Add",
-                    modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                    tint = black60
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .size(MaterialTheme.dimens.icon48),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(org.the_chance.design_system.R.drawable.icon_add_product),
+                        contentDescription = "Icon Add",
+                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
+                        tint = black60
+                    )
+                }
             }
         }
     }
