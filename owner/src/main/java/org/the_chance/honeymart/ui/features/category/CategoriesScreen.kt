@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.category
+package org.the_chance.honeymart.ui.features.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,8 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.features.category.categories.CategoriesInteractionsListener
-import org.the_chance.honeymart.ui.features.category.categories.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.categories.CategoryItem
 import org.the_chance.honeymart.ui.features.products.ProductsViewModel
 import org.the_chance.honymart.ui.theme.dimens
