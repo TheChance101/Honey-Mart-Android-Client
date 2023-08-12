@@ -9,14 +9,20 @@ import javax.inject.Inject
 @HiltViewModel
 class NavigationRailViewModel @Inject constructor(
     private val profileInfo: GetUserInfoUseCase,
-)
-    : BaseViewModel<NavigationRailUiState , NavigationRailEffect>(NavigationRailUiState()){
+) : BaseViewModel<NavigationRailUiState, NavigationRailEffect>(NavigationRailUiState()) {
     override val TAG: String
         get() = this::class.simpleName.toString()
 
+    init {
+        getUserInfo()
+    }
 
     private fun getUserInfo() {
-        _state.update { it.copy(
-        ) }
+        _state.update {
+            it.copy(
+                profileName = profileInfo.getProfileName().first(),
+                profileImage = profileInfo.getProfileImage()
+            )
+        }
     }
 }
