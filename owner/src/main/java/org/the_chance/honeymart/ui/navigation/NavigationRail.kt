@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.NavigationRailItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
@@ -27,7 +28,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +43,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.util.collect
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
@@ -51,6 +55,22 @@ fun NavigationRail(
     val state by viewModel.state.collectAsState()
 
     val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is NavigationRailEffect.OnClickProfile -> {
+                    //TODO: Navigate to Profile
+                }
+
+                is NavigationRailEffect.OnClickLogout -> {
+                    //TODO: Clear Token
+                    navController.navigateToLogin()
+                }
+            }
+        }
+    }
 
     val screens = listOf(
         NavigationRailScreen.Orders,
@@ -65,14 +85,15 @@ fun NavigationRail(
                 ImageNetwork(
                     modifier = Modifier
                         .size(48.dp)
-                        .clickable { },
+                        .clip(CircleShape)
+                        .clickable { viewModel.onClickProfile() },
                     imageUrl = state.profileImage,
                 )
             } else {
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .clickable { }
+                        .clickable { viewModel.onClickProfile() }
                         .background(
                             MaterialTheme.colorScheme.primary,
                             CircleShape
@@ -102,7 +123,7 @@ fun NavigationRail(
         Icon(
             modifier = Modifier
                 .padding(16.dp)
-                .clickable { navController.navigateToLogin() },
+                .clickable { viewModel.onClickLogout() },
             painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
             contentDescription = "Logout Icon",
             tint = black60
