@@ -19,25 +19,55 @@ class SignUpViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
+    private fun addOwner(
+        fullName: String,
+        email: String,
+        password: String,
+    ) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            {
+                createAccount(
+                    fullName = fullName,
+                    password = password,
+                    email = email,
+                )
+            },
+            ::onSuccess,
+            ::onError,
+        )
+    }
+
+
+    private fun onSuccess(isSignUp: Boolean) {
+        _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
+    }
+
+    private fun onError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+    }
+
     override fun onClickLogin() {
         effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
 
-    override fun onClickSignup() {
+    override fun onClickContinue() {
         val validationState = state.value.emailState.isValid &&
                 state.value.passwordState.isValid &&
                 state.value.fullNameState.isValid &&
                 state.value.confirmPasswordState.isValid
 
         if (validationState) {
-            // navigate to loginScreen
-            _state.update {
-                it.copy(showToast = false)
+            addOwner(
+                fullName = state.value.fullNameState.value,
+                email = state.value.emailState.value,
+                password = state.value.passwordState.value
+            )
+            if (state.value.isSignUp) {
+                effectActionExecutor(_effect, SignupUiEffect.ClickContinueEffect)
             }
         } else {
-            _state.update {
-                it.copy(showToast = true)
-            }
+            effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
     }
 
@@ -125,37 +155,6 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-
-    private fun addOwner(
-        fullName: String,
-        email: String,
-        password: String,
-    ) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            {
-                createAccount(
-                    fullName = fullName,
-                    password = password,
-                    email = email,
-                )
-            },
-            ::onSuccess,
-            ::onError,
-        )
-    }
-
-
-    private fun onSuccess(isSignUp: Boolean) {
-        _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
-        if (isSignUp) {
-            // navigate to marketInfo screen
-        }
-    }
-
-    private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-    }
 
     override fun onClickSendButton() {
     }

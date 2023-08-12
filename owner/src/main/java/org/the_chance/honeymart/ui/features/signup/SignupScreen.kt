@@ -1,19 +1,26 @@
 package org.the_chance.honeymart.ui.features.signup
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.features.login.navigateToLoginScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -28,9 +35,32 @@ fun SignupScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
 
     SignupContent(listener = viewModel, state = state)
 
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                SignupUiEffect.ShowValidationToast -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                SignupUiEffect.ClickContinueEffect -> {
+                    // SHOW MARKET INFO DETAILS
+                }
+
+                SignupUiEffect.ClickLoginEffect -> {
+                    navController.navigateToLoginScreen()
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -38,8 +68,6 @@ fun SignupContent(
     state: SignupUiState,
     listener: SignupInteractionListener,
 ) {
-    Loading(state = state.isLoading)
-
     HoneyAuthScaffold {
         HoneyAuthHeader(
             title = stringResource(R.string.sign_up),
@@ -82,9 +110,10 @@ fun SignupContent(
         ) {
             HoneyFilledButton(
                 label = stringResource(R.string.continue_word),
-                onClick = listener::onClickSignup,
+                onClick = listener::onClickContinue,
                 background = primary100,
                 contentColor = Color.White,
+                isLoading = state.isLoading
             )
 
             HoneyAuthFooter(
@@ -96,7 +125,6 @@ fun SignupContent(
         }
 
     }
-
 }
 
 
