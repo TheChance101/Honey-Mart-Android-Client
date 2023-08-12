@@ -86,7 +86,7 @@ fun FormTextField(
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
-fun FormTextFieldPreview() {
+private fun FormTextFieldPreview() {
     FormTextField(
         hint = "Email",
         isError = false,

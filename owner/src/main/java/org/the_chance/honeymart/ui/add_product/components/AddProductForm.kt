@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.add_product.AddProductInteractionListener
 import org.the_chance.honeymart.ui.add_product.AddProductUiState
 import org.the_chance.honeymart.ui.add_product.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
@@ -38,18 +39,13 @@ private const val MAX_IMAGES = 4
 @Composable
 fun AddProductForm(
     state: AddProductUiState,
-    onProductNameChanged: (String) -> Unit,
-    onProductPriceChanged: (String) -> Unit,
-    onProductDescriptionChanged: (String) -> Unit,
-    onClickAddProduct: (product: AddProductUiState) -> Unit,
-    onImageSelected: (List<ByteArray>) -> Unit,
-    onClickRemoveSelectedImage: (ByteArray) -> Unit,
+    listener: AddProductInteractionListener,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
-        onResult = { uris -> handleImageSelection(uris, context, state, onImageSelected) }
+        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
     )
 
     Column(
@@ -76,7 +72,7 @@ fun AddProductForm(
                 text = state.name,
                 hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
-                onValueChange = onProductNameChanged,
+                onValueChange = listener::onProductNameChanged,
                 errorMessage = when (state.productNameState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
@@ -87,7 +83,7 @@ fun AddProductForm(
                 text = state.price,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
-                onValueChange = onProductPriceChanged,
+                onValueChange = listener::onProductPriceChanged,
                 errorMessage = when (state.productPriceState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
@@ -98,7 +94,7 @@ fun AddProductForm(
                 text = state.description,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
-                onValueChange = onProductDescriptionChanged,
+                onValueChange = listener::onProductDescriptionChanged,
                 errorMessage = when (state.productDescriptionState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
@@ -121,9 +117,9 @@ fun AddProductForm(
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
-            ImageGrid(
+            SelectedImagesGrid(
                 images = state.images,
-                onClickRemoveSelectedImage = onClickRemoveSelectedImage,
+                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
                 multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
                 maxImages = MAX_IMAGES
             )
@@ -148,7 +144,7 @@ fun AddProductForm(
             isEnable = state.showButton(),
             label = stringResource(R.string.add),
             iconPainter = painterResource(R.drawable.icon_add_to_cart),
-            onClick = { onClickAddProduct(state) }
+            onClick = { listener.addProduct(state) }
         )
     }
 }

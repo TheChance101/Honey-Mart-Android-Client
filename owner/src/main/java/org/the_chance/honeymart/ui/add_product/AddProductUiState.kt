@@ -18,15 +18,6 @@ data class AddProductUiState(
     val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
 )
 
-fun ProductEntity.toAddProductUiState(): AddProductUiState {
-    return AddProductUiState(
-        id = productId,
-        name = productName,
-        price = ProductPrice.toString(),
-        description = productDescription,
-    )
-}
-
 fun AddProductUiState.showButton(): Boolean {
     return name.isNotBlank()
             && price.isNotBlank()

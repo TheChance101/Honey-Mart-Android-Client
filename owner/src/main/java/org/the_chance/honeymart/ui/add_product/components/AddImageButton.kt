@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.add_product.components
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -49,5 +52,17 @@ fun AddImageButton(
                 tint = black60
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewAddImageButton() {
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(4),
+        onResult = {  }
+    )
+    HoneyMartTheme {
+        AddImageButton(multiplePhotoPickerLauncher)
     }
 }

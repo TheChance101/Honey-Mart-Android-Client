@@ -24,7 +24,7 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
 
 @Composable
-fun ImageBox(
+fun ItemImageProduct(
     image: ByteArray,
     onClickRemove: (ByteArray) -> Unit,
     modifier: Modifier = Modifier

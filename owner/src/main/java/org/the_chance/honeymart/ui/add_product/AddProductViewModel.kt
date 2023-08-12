@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.add_product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
 import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -22,25 +23,20 @@ class AddProductViewModel @Inject constructor(
         tryToExecute(
             {
                 addProductUseCase(
-                    product.name, product.price.toDouble(), product.description, categoryId,
-                ).toAddProductUiState()
+                    product.name,
+                    product.price.toDouble(),
+                    product.description,
+                    categoryId
+                )
             },
             onSuccess = ::onAddProductSuccess,
             onError = ::onAddProductError
         )
     }
 
-    private fun onAddProductSuccess(product: AddProductUiState) {
-        _state.update {
-            it.copy(
-                error = null,
-                id = product.id,
-                name = product.name,
-                price = product.price,
-                description = product.description,
-            )
-        }
-        addProductImage(productId = product.id, images = _state.value.images)
+    private fun onAddProductSuccess(product: ProductEntity) {
+        _state.update { it.copy(error = null, id = product.productId) }
+        addProductImage(productId = product.productId, images = _state.value.images)
     }
 
     private fun onAddProductError(errorHandler: ErrorHandler) {
@@ -54,12 +50,12 @@ class AddProductViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { addProductImagesUseCase(productId, images) },
-            onSuccess = ::onAddProductImagesSuccess,
+            onSuccess = { onAddProductImagesSuccess() },
             onError = ::onAddProductImagesError
         )
     }
 
-    private fun onAddProductImagesSuccess(message: String) {
+    private fun onAddProductImagesSuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
     }
 
@@ -80,27 +76,34 @@ class AddProductViewModel @Inject constructor(
     }
 
     override fun onProductPriceChanged(price: String) {
+        val productPriceState = getProductPriceState(price)
+        _state.update { it.copy(productPriceState = productPriceState, price = price) }
+    }
+
+    private fun getProductPriceState(price: String): ValidationState {
         val priceRegex = Regex("^[0-9]+(\\.[0-9]+)?$")
         val productPriceState: ValidationState = when {
             price.isBlank() -> ValidationState.BLANK_TEXT_FIELD
             !price.matches(priceRegex) -> ValidationState.INVALID_PRICE
             else -> ValidationState.VALID_TEXT_FIELD
         }
-        _state.update { it.copy(productPriceState = productPriceState, price = price) }
+        return productPriceState
     }
 
     override fun onProductDescriptionChanged(description: String) {
+        val productDescriptionState = getProductDescriptionState(description)
+        _state.update {
+            it.copy(productDescriptionState = productDescriptionState, description = description)
+        }
+    }
+
+    private fun getProductDescriptionState(description: String): ValidationState {
         val productDescriptionState: ValidationState = when {
             description.isBlank() -> ValidationState.BLANK_TEXT_FIELD
             description.length < 6 -> ValidationState.SHORT_LENGTH_TEXT
             else -> ValidationState.VALID_TEXT_FIELD
         }
-        _state.update {
-            it.copy(
-                productDescriptionState = productDescriptionState,
-                description = description
-            )
-        }
+        return productDescriptionState
     }
 
     override fun onImagesSelected(uris: List<ByteArray>) {

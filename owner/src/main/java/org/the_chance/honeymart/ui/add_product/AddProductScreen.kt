@@ -58,15 +58,7 @@ fun AddProductContent(
                 .weight(1F)
                 .fillMaxHeight()
         ) {
-            AddProductForm(
-                state = state,
-                onProductNameChanged = listener::onProductNameChanged,
-                onProductPriceChanged = listener::onProductPriceChanged,
-                onProductDescriptionChanged = listener::onProductDescriptionChanged,
-                onClickAddProduct = listener::addProduct,
-                onImageSelected = listener::onImagesSelected,
-                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage
-            )
+            AddProductForm(state = state, listener = listener,)
         }
     }
 }
@@ -78,7 +70,7 @@ fun AddProductContent(
     uiMode = UI_MODE_NIGHT_NO
 )
 @Composable
-fun PreviewAddProductScreen() {
+private fun PreviewAddProductScreen() {
     HoneyMartTheme {
         AddProductScreen()
     }
