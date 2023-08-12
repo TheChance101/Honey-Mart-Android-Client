@@ -9,4 +9,5 @@ class GetUserInfoUseCase @Inject constructor(
     operator fun invoke(): String {
         return authRepository.getProfileImageUrl() ?: authRepository.getProfileName() ?: ""
     }
+
 }
