@@ -157,6 +157,7 @@ class ProductDetailsViewModel @Inject constructor(
 
             is ErrorHandler.UnAuthorizedUser -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
+                refreshToken()
             }
 
             is ErrorHandler.InvalidData -> {
@@ -227,6 +228,7 @@ class ProductDetailsViewModel @Inject constructor(
 
             is ErrorHandler.UnAuthorizedUser -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
+                refreshToken()
             }
 
             else -> {}

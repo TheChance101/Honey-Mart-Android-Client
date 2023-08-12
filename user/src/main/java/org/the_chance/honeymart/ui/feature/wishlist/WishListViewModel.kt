@@ -121,6 +121,9 @@ class WishListViewModel @javax.inject.Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+        if (error is ErrorHandler.UnAuthorizedUser){
+            refreshToken()
+        }
     }
 
     override fun onClickDiscoverButton() {

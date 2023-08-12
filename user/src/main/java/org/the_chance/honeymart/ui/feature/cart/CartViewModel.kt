@@ -47,6 +47,9 @@ class CartViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
+        if (error is ErrorHandler.UnAuthorizedUser){
+            refreshToken()
+        }
     }
 
 
