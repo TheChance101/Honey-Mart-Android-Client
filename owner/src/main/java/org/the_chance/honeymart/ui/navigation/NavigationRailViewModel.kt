@@ -29,10 +29,10 @@ class NavigationRailViewModel @Inject constructor(
     }
 
     override fun onClickProfile() {
-        effectActionExecutor(_effect, NavigationRailEffect.OnClickProfile)
+        effectActionExecutor(_effect, NavigationRailEffect.OnClickProfileEffect)
     }
 
     override fun onClickLogout() {
-        effectActionExecutor(_effect, NavigationRailEffect.OnClickLogout)
+        effectActionExecutor(_effect, NavigationRailEffect.OnClickLogoutEffect)
     }
 }

@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.navigation
 import org.the_chance.honeymart.ui.base.BaseUiEffect
 
 sealed class NavigationRailEffect : BaseUiEffect {
-    object OnClickProfile: NavigationRailEffect()
-    object OnClickLogout: NavigationRailEffect()
+    object OnClickProfileEffect : NavigationRailEffect()
+    object OnClickLogoutEffect : NavigationRailEffect()
+
 }

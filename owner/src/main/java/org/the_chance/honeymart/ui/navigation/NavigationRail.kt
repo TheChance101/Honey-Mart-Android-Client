@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,12 +19,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.NavigationRailItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
@@ -51,6 +52,7 @@ import org.the_chance.honymart.ui.theme.white
 @Composable
 fun NavigationRail(
     viewModel: NavigationRailViewModel = hiltViewModel(),
+    navigationRailState: MutableState<Boolean>
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -60,11 +62,11 @@ fun NavigationRail(
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
-                is NavigationRailEffect.OnClickProfile -> {
+                is NavigationRailEffect.OnClickProfileEffect -> {
                     //TODO: Navigate to Profile
                 }
 
-                is NavigationRailEffect.OnClickLogout -> {
+                is NavigationRailEffect.OnClickLogoutEffect -> {
                     //TODO: Clear Token
                     navController.navigateToLogin()
                 }
@@ -78,59 +80,66 @@ fun NavigationRail(
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    NavigationRail(
-        containerColor = MaterialTheme.colorScheme.onTertiary,
-        header = {
-            if (state.profileImage.isNotEmpty()) {
-                ImageNetwork(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .clickable { viewModel.onClickProfile() },
-                    imageUrl = state.profileImage,
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable { viewModel.onClickProfile() }
-                        .background(
-                            MaterialTheme.colorScheme.primary,
-                            CircleShape
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = state.profileName.toString(),
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            textAlign = TextAlign.Center,
-                            color = white
+
+    AnimatedVisibility(
+        visible = navigationRailState.value,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+        content = {
+            NavigationRail(
+                containerColor = MaterialTheme.colorScheme.onTertiary,
+                header = {
+                    if (state.profileImage.isNotEmpty()) {
+                        ImageNetwork(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .clickable { viewModel.onClickProfile() },
+                            imageUrl = state.profileImage,
                         )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clickable { viewModel.onClickProfile() }
+                                .background(
+                                    MaterialTheme.colorScheme.primary,
+                                    CircleShape
+                                ),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = state.profileName.toString(),
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    textAlign = TextAlign.Center,
+                                    color = white
+                                )
+                            )
+                        }
+                    }
+                }
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+                screens.forEach { screen ->
+                    NavRailItem(
+                        screen = screen,
+                        currentDestination = currentDestination,
+                        navController = navController
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable { viewModel.onClickLogout() },
+                    painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
+                    contentDescription = "Logout Icon",
+                    tint = black60
+                )
             }
         }
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        screens.forEach { screen ->
-            NavRailItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable { viewModel.onClickLogout() },
-            painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
-            contentDescription = "Logout Icon",
-            tint = black60
-        )
-    }
+    )
 }
-
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -196,10 +205,4 @@ fun NavRailItem(
             }
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewSc() {
-    NavigationRail()
 }
