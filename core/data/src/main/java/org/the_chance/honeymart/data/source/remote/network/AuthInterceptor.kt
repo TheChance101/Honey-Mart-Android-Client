@@ -6,14 +6,15 @@ import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val dataStorePreferences: AuthDataStorePreferences
-) : Interceptor {
+    private val dataStorePreferences: AuthDataStorePreferences,
+
+    ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = dataStorePreferences.getToken()
+        val accessToken = dataStorePreferences.getAccessToken()
         val newRequest = chain
             .request()
             .newBuilder()
-            .addHeader(AUTHORIZATION, "Bearer $token")
+            .addHeader(AUTHORIZATION, "Bearer $accessToken")
             .build()
         return chain.proceed(newRequest)
     }

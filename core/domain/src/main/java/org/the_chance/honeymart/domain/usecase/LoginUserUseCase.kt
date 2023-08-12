@@ -19,7 +19,7 @@ class LoginUserUseCase @Inject constructor(
             passwordValidationState
         } else {
             val token = authRepository.loginUser(email, password)
-            authRepository.saveToken(token)
+            authRepository.saveTokens(token.accessToken,token.refreshToken)
             ValidationState.SUCCESS
         }
     }
