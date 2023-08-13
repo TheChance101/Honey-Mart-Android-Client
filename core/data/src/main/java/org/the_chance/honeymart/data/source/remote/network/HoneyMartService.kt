@@ -23,7 +23,17 @@ interface HoneyMartService {
 
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
-    suspend fun addMarket(marketName: String): BaseResponse<MarketDto>
+    suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+        ownerId: Long
+    ): BaseResponse<String>
+
+    suspend fun addMarketImages(
+        marketId: Long,
+        marketImages: List<ByteArray>
+    ): BaseResponse<String>
 
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
@@ -150,7 +160,6 @@ interface HoneyMartService {
         productId: Long,
     ): BaseResponse<ProductDto>
     // endregion
-
 
 
     // region Owner

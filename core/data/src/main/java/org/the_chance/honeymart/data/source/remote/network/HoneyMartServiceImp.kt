@@ -4,12 +4,16 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -48,10 +52,37 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/markets"))
     }
 
-    override suspend fun addMarket(marketName: String): BaseResponse<MarketDto> =
+    override suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+        ownerId: Long
+    ): BaseResponse<String> =
         wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
             append("marketName", marketName)
+            append("marketAddress", marketAddress)
+            append("marketDescription", marketDescription)
+            append("ownerId", ownerId.toString())
         }))
+
+    override suspend fun addMarketImages(
+        marketId: Long,
+        marketImages: List<ByteArray>
+    ): BaseResponse<String> {
+        val response: HttpResponse = client.submitFormWithBinaryData(
+            url = "/markets/$marketId/uploadImages",
+            formData = formData {
+                marketImages.forEachIndexed { index, bytes ->
+                    append("images", bytes, Headers.build {
+                        append(HttpHeaders.ContentType, "image/jpeg")
+                        append(HttpHeaders.ContentDisposition, "filename=image$index.jpeg")
+                    })
+                }
+            }
+        )
+        return wrap(response)
+    }
+
 
     override suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto> =
         wrap(client.put("/markets/$marketId") {
@@ -213,7 +244,6 @@ class HoneyMartServiceImp @Inject constructor(
             }
         }
     }
-
 
 
     // region Owner

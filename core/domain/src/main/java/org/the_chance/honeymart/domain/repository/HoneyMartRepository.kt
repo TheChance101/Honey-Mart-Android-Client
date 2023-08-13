@@ -12,6 +12,18 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<MarketEntity>?
+    suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+        ownerId: Long
+    ): Boolean
+
+    suspend fun addMarketImages(
+        marketId: Long,
+        marketImages: List<ByteArray>
+    ): String
+
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity>?
@@ -20,15 +32,15 @@ interface HoneyMartRepository {
     suspend fun getWishList(): List<WishListEntity>
     suspend fun getCart(): CartEntity
 
-    suspend fun addToCart(productId: Long,count:Int): String
+    suspend fun addToCart(productId: Long, count: Int): String
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun getAllOrders(orderState:Int): List<OrderEntity>
-    suspend fun updateOrderState(id: Long?, state: Int):Boolean
+    suspend fun getAllOrders(orderState: Int): List<OrderEntity>
+    suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
 
     suspend fun getProductDetails(productId: Long): ProductEntity
 
-    suspend fun deleteAllCart():String
+    suspend fun deleteAllCart(): String
 }
