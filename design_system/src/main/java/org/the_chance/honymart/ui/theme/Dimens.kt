@@ -47,4 +47,6 @@ data class Dimens(
     val heightItemMarketCard: Dp = 164.dp,
     val heightItem: Dp = 192.dp,
     val card: Dp = 120.dp,
+
+    val sunImageSize: Dp  = 120.dp
     )

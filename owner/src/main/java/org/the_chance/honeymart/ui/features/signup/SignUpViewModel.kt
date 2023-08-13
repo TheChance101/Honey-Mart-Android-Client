@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.features.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddOwnerUseCase
+import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val createAccount: AddOwnerUseCase,
+    private val createOwnerAccount: CreateOwnerAccountUseCase,
     private val validationSignupFields: ValidationSignupFieldsUseCase
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()), SignupInteractionListener,
     MarketInfoInteractionsListener {
@@ -27,7 +27,7 @@ class SignUpViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                createAccount(
+                createOwnerAccount(
                     fullName = fullName,
                     password = password,
                     email = email,

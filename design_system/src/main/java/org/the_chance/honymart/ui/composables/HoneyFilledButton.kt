@@ -1,5 +1,9 @@
 package org.the_chance.honymart.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,7 +26,7 @@ fun HoneyFilledButton(
     modifier: Modifier = Modifier,
     label: String,
     onClick: () -> Unit,
-    isEnable: Boolean = true,
+    isButtonEnabled: Boolean = true,
     isLoading: Boolean = false,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
@@ -30,7 +34,7 @@ fun HoneyFilledButton(
     Button(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
-        enabled = isEnable,
+        enabled = isButtonEnabled,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.dimens.space16)
@@ -44,7 +48,11 @@ fun HoneyFilledButton(
             )
     ) {
         Loading(state = isLoading)
-        if (!isLoading) {
+        AnimatedVisibility(
+            visible = !isLoading,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500))
+        ) {
             Text(
                 text = label,
                 style = Typography.bodyMedium,
@@ -60,6 +68,7 @@ private fun HoneyMartButtonPreview() {
     HoneyMartTheme {
         HoneyFilledButton(
             label = stringResource(id = R.string.Sign_up),
-            onClick = {})
+            onClick = {}
+        )
     }
 }
