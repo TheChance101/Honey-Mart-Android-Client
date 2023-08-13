@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
