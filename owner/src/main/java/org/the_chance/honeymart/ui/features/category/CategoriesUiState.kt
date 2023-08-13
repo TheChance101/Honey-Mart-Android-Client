@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category
 
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
