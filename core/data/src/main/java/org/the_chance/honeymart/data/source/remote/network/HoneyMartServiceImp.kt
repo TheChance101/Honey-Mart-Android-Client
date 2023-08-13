@@ -78,13 +78,18 @@ class HoneyMartServiceImp @Inject constructor(
         }))
 
     override suspend fun updateCategory(
-        id: Long, marketID: Long, name: String, imageId: Int,
-    ): BaseResponse<CategoryDto> = wrap(client.put("/category") {
-        parameter("marketID", marketID)
-        parameter("id", id)
-        parameter("name", name)
-        parameter("imageId", imageId)
-    })
+        id: Long,
+        marketID: Long,
+        name: String,
+        imageId: Int,
+    ): BaseResponse<String> {
+        return wrap(client.put("/category") {
+            parameter("marketID", marketID)
+            parameter("id", id)
+            parameter("name", name)
+            parameter("imageId", imageId)
+        })
+    }
 
     override suspend fun deleteCategory(id: Long): BaseResponse<String> =
         wrap(client.delete("/category/{id}"))
@@ -236,7 +241,6 @@ class HoneyMartServiceImp @Inject constructor(
             }
         }
     }
-
 
 
     // region Owner

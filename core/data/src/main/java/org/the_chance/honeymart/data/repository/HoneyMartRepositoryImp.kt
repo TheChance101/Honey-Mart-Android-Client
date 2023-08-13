@@ -118,4 +118,20 @@ class HoneyMartRepositoryImp @Inject constructor(
             )
         }.value ?: throw NotFoundException()
     }
+
+    override suspend fun updateCategory(
+        id: Long,
+        name: String,
+        marketId: Long,
+        imageId: Int
+    ): String {
+        return wrap {
+            honeyMartService.updateCategory(
+                id = id,
+                name = name,
+                marketID = marketId,
+                imageId = imageId
+            )
+        }.value ?: throw NotFoundException()
+    }
 }

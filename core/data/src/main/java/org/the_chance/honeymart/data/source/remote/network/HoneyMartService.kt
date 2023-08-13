@@ -41,7 +41,7 @@ interface HoneyMartService {
         marketID: Long,
         name: String,
         imageId: Int,
-    ): BaseResponse<CategoryDto>
+    ): BaseResponse<String>
 
     suspend fun deleteCategory(id: Long): BaseResponse<String>
     //endregion Category
