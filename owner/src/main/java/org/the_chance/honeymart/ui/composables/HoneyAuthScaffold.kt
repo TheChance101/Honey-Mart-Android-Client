@@ -29,10 +29,11 @@ import org.the_chance.design_system.R
  */
 @Composable
 fun HoneyAuthScaffold(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.image_group),
