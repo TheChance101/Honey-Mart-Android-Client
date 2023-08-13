@@ -2,13 +2,13 @@ package org.the_chance.honeymart.ui.navigation.navigation_rail
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetUserInfoUseCase
+import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class NavigationRailViewModel @Inject constructor(
-    private val profileInfo: GetUserInfoUseCase,
+    private val profileInfo: GetOwnerInfoUseCase,
 ) : BaseViewModel<NavigationRailUiState, NavigationRailEffect>(NavigationRailUiState()),
     NavigationRailInteractionListener {
 
@@ -16,14 +16,14 @@ class NavigationRailViewModel @Inject constructor(
         get() = this::class.simpleName.toString()
 
     init {
-        getUserInfo()
+        getOwnerInfo()
     }
 
-    private fun getUserInfo() {
+    private fun getOwnerInfo() {
         _state.update {
             it.copy(
-                userNameFirstCharacter = profileInfo.getUserNameFirstCharacter(),
-                userImageUrl = profileInfo.getUserImageUrl()
+                ownerNameFirstCharacter = profileInfo.getOwnerNameFirstCharacter(),
+                ownerImageUrl = profileInfo.getOwnerImageUrl()
             )
         }
     }

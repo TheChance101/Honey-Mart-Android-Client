@@ -77,13 +77,13 @@ fun NavigationRail(
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.onTertiary,
         header = {
-            if (state.userImageUrl.isNotEmpty()) {
+            if (state.ownerImageUrl.isNotEmpty()) {
                 ImageNetwork(
                     modifier = Modifier
                         .size(MaterialTheme.dimens.icon48)
                         .clip(CircleShape)
                         .clickable { viewModel.onClickProfile() },
-                    imageUrl = state.userImageUrl,
+                    imageUrl = state.ownerImageUrl,
                 )
             } else {
                 Box(
@@ -97,7 +97,7 @@ fun NavigationRail(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = state.userNameFirstCharacter.toString(),
+                        text = state.ownerNameFirstCharacter.toString(),
                         style = MaterialTheme.typography.headlineMedium.copy(
                             textAlign = TextAlign.Center,
                             color = white
