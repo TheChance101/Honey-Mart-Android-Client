@@ -108,4 +108,7 @@
     <string name="all">all</string>
     <string name="new_order">new order</string>
     <string name="cancelled">Cancelled</string>
+    <string name="icon_add">Icon Add</string>
+    <string name="image_of_product">Image of product</string>
+    <string name="icon_delete_image">Icon Delete Image</string>
 </resources>

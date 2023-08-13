@@ -15,5 +15,9 @@ data class MarketInfoUiState(
     val description: FieldState = FieldState(),
     val marketImage: FieldState = FieldState(),
 
-    val validationToast: ValidationToast = ValidationToast()
+    val validationToast: ValidationToast = ValidationToast(),
+
+    val MAX_IMAGES: Int = 4,
+
+    val images: List<ByteArray> = emptyList(),
 )

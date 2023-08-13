@@ -167,4 +167,26 @@ class SignUpViewModel @Inject constructor(
 
     override fun onDescriptionInputChanged(description: CharSequence) {
     }
+
+    override fun addMarketImage(marketId: Long, images: List<ByteArray>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onImagesSelected(uris: List<ByteArray>) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(images = uris)
+            )
+        }
+    }
+
+    override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
+        val updatedImages = _state.value.marketInfoUiState.images.toMutableList()
+        updatedImages.remove(imageUri)
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(images = updatedImages)
+            )
+        }
+    }
 }
