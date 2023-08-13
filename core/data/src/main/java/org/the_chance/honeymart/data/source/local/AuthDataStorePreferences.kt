@@ -6,6 +6,6 @@ interface AuthDataStorePreferences {
     suspend fun clearToken()
     suspend fun saveOwnerName(name: String)
     fun getOwnerName(): String?
-    suspend fun saveOwnerImage(image: String)
-    fun getOwnerImage(): String?
+    suspend fun saveOwnerImageUrl(image: String)
+    fun getOwnerImageUrl(): String?
 }

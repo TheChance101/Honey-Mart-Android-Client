@@ -58,13 +58,13 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDa
         }
     }
 
-    override suspend fun saveOwnerImage(image: String) {
+    override suspend fun saveOwnerImageUrl(image: String) {
         prefDataStore.edit { preferences ->
             preferences[OWNER_IMAGE] = image
         }
     }
 
-    override fun getOwnerImage(): String? {
+    override fun getOwnerImageUrl(): String? {
         return runBlocking {
             prefDataStore.data.map { preferences
                 ->

@@ -56,9 +56,9 @@ class AuthRepositoryImp @Inject constructor(
     override fun getOwnerName(): String? = datastore.getOwnerName()
 
     override suspend fun saveOwnerImageUrl(imageUrl: String) {
-        datastore.saveOwnerImage(imageUrl)
+        datastore.saveOwnerImageUrl(imageUrl)
     }
 
-    override fun getOwnerImageUrl(): String? = datastore.getOwnerImage()
+    override fun getOwnerImageUrl(): String? = datastore.getOwnerImageUrl()
 
 }
