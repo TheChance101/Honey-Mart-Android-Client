@@ -61,4 +61,7 @@ dependencies {
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
 }
