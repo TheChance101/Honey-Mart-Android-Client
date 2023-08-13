@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product
+package org.the_chance.honeymart.ui.features.add_product
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update

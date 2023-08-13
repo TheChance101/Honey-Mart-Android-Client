@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product.components
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
