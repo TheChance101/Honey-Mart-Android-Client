@@ -12,8 +12,8 @@ import org.the_chance.design_system.R
 
 @Composable
 fun ImageNetwork(
-    imageUrl: String,
     modifier: Modifier = Modifier,
+    imageUrl: String,
     contentDescription: String = "",
     contentScale: ContentScale = ContentScale.Crop,
 ) {

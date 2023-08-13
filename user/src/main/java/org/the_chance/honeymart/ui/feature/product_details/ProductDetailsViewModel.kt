@@ -36,7 +36,7 @@ class ProductDetailsViewModel @Inject constructor(
         getData()
     }
 
-    fun getData() {
+    private fun getData() {
         getProductDetails(args.productId.toLong())
     }
 
@@ -60,7 +60,6 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
-
 
     // region Product
     private fun getProductDetails(productId: Long) {
@@ -132,7 +131,7 @@ class ProductDetailsViewModel @Inject constructor(
             it.copy(
                 isAddToCartLoading = true,
                 error = null,
-                isConnectionError = false
+                isConnectionError = false,
             )
         }
         tryToExecuteDebounced(
@@ -140,11 +139,12 @@ class ProductDetailsViewModel @Inject constructor(
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess(message))
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -176,8 +176,6 @@ class ProductDetailsViewModel @Inject constructor(
     // endregion
 
     // region Wishlist
-
-
     // region Check If Product In Wishlist
 
     private fun checkIfProductInWishList(productId: Long) {
@@ -218,7 +216,6 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
@@ -235,6 +232,18 @@ class ProductDetailsViewModel @Inject constructor(
             else -> {}
         }
         updateFavoriteState(false)
+    }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun showSnackBar(massage: String) {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, massage = massage)) }
+    }
+
+    override fun onclickTryAgain() {
+        getData()
     }
 
     // endregion
@@ -274,9 +283,7 @@ class ProductDetailsViewModel @Inject constructor(
         )
     }
 
-
     private fun onDeleteWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -285,6 +292,4 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
-
-
 }

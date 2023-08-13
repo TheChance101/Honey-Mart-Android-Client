@@ -35,12 +35,12 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.ItemOrder
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honeymart.util.collect
-import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -61,13 +61,14 @@ fun OrdersScreen(
             }
         }
     }
+
     LaunchedEffect(lifecycleOwner) {
         viewModel.getAllProcessingOrders()
     }
+
     OrdersContent(
         state = state,
         listener = viewModel,
-
         )
 }
 
@@ -77,7 +78,7 @@ fun OrdersContent(
     state: OrdersUiState,
     listener: OrdersInteractionsListener,
 ) {
-    AppBarScaffold {
+    HoneyAppBarScaffold {
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = listener::getAllProcessingOrders
@@ -87,7 +88,7 @@ fun OrdersContent(
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.placeholder_title),
             subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = listener::onClickDiscoverMarkets
+            onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
         )
 
         Column(
@@ -117,19 +118,17 @@ fun OrdersContent(
                 )
                 CustomChip(
                     state = state.cancel(),
-                    text = stringResource(id = R.string.cancel),
+                    text = stringResource(id= R.string.canceled),
                     onClick = listener::getAllCancelOrders
                 )
             }
-
-            Loading(state = state.isLoading)
 
             ContentVisibility(state = state.screenContent()) {
                 LazyColumn(
                     modifier = Modifier.padding(
                         start = MaterialTheme.dimens.space16,
                         end = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space8
+                        top = MaterialTheme.dimens.space16
                     ),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
@@ -158,7 +157,7 @@ fun OrdersContent(
                                 )
                             })
                         LaunchedEffect(showDialog) {
-                            if (!showDialog) {
+                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
                                 dismissState.reset()
                             }
                         }
@@ -191,6 +190,7 @@ fun OrdersContent(
                         }
                     }
                 }
+                Loading(state = state.loading())
             }
         }
     }

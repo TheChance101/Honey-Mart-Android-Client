@@ -1,6 +1,12 @@
 package org.the_chance.honeymart.ui.feature.wishlist
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,16 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honeymart.ui.feature.wishlist.composable.ItemFavorite
-import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -39,6 +45,7 @@ fun WishListScreen(
     val state = viewModel.state.collectAsState().value
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavigationProvider.current
+
     lifecycleOwner.collect(viewModel.effect) { effect ->
         effect.getContentIfHandled()?.let {
             when (it) {
@@ -47,33 +54,37 @@ fun WishListScreen(
                     it.productId
                 )
 
-                WishListUiEffect.DeleteProductFromWishListEffect -> TODO("show snack bar")
+                WishListUiEffect.DeleteProductFromWishListEffect -> {
+                    //show snack bar
+                }
+
+                else -> {}
             }
         }
     }
+
     LaunchedEffect(lifecycleOwner) {
         viewModel.getWishListProducts()
     }
 
     WishListContent(
-        listener = viewModel,
+        wishListInteractionListener = viewModel,
         state = state,
     )
-
 }
 
 @Composable
 private fun WishListContent(
-    listener: WishListInteractionListener,
+    wishListInteractionListener: WishListInteractionListener,
     state: WishListUiState,
 ) {
+    HoneyAppBarScaffold {
 
-    AppBarScaffold {
         Loading(state = state.firstLoading())
 
         ConnectionErrorPlaceholder(
             state = state.isError,
-            onClickTryAgain = listener::getWishListProducts
+            onClickTryAgain = wishListInteractionListener::getWishListProducts
         )
 
         EmptyOrdersPlaceholder(
@@ -81,7 +92,7 @@ private fun WishListContent(
             image = R.drawable.placeholder_wish_list,
             title = stringResource(R.string.your_wish_list_is_empty),
             subtitle = stringResource(R.string.subtitle_placeholder_wishList),
-            onClickDiscoverMarkets = listener::onClickDiscoverButton
+            onClickDiscoverMarkets = wishListInteractionListener::onClickDiscoverButton
         )
 
         ContentVisibility(state = state.contentScreen()) {
@@ -100,21 +111,31 @@ private fun WishListContent(
                             price = formatCurrencyWithNearestFraction(productState.productPrice),
                             description = productState.description,
                             productId = productState.productId,
-                            onClickProduct = listener::onClickProduct,
-                            onClickFavoriteIcon = { listener.onClickFavoriteIcon(productState.productId) },
-
-                            )
+                            onClickProduct = wishListInteractionListener::onClickProduct,
+                            onClickFavoriteIcon = { wishListInteractionListener.onClickFavoriteIcon(productState.productId) },
+                            enable = !state.isLoading
+                        )
                     }
                 }
             }
         }
-        Loading(state = state.loading())
-    }
+        AnimatedVisibility(
+            visible = state.snackBar.isShow,
+            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+        ) {
+            SnackBarWithDuration(message = "Item removed from Wish List ",
+                onDismiss = wishListInteractionListener::resetSnackBarState,
+                undoAction = {
+                    wishListInteractionListener.addProductToWishList(state.snackBar.productId)
+                })
+        }
+            Loading(state = state.loading())
+        }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewWishListScreen() {
     WishListScreen()
-
 }

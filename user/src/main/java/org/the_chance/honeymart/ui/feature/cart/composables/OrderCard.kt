@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import org.the_chance.honeymart.util.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.wishlist.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -25,9 +25,9 @@ import org.the_chance.user.R
 @Composable
 fun CartCardView(
     modifier: Modifier = Modifier,
-    totalPrice: String,
-    isLoading: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    totalPrice: Double,
+    isLoading: Boolean
 ) {
     Card(
         shape = RoundedCornerShape(
@@ -48,9 +48,9 @@ fun CartCardView(
                 .fillMaxSize()
                 .padding(horizontal = MaterialTheme.dimens.space16)
         ) {
-            val (priceInDollars, orderNowButton, TotalPrice) = createRefs()
+            val (priceInDollars, orderNowButton, totalPriceText) = createRefs()
             Text(
-                text = formatCurrencyWithNearestFraction(totalPrice.toDouble()),
+                text = formatCurrencyWithNearestFraction(totalPrice),
                 style = org.the_chance.honymart.ui.theme.Typography.bodyMedium.copy(black60),
                 modifier = Modifier.constrainAs(priceInDollars) {
                     top.linkTo(parent.top, margin = 8.dp)
@@ -75,7 +75,7 @@ fun CartCardView(
                 text = stringResource(R.string.total_price),
                 style = org.the_chance.honymart.ui.theme.Typography.displaySmall
                     .copy(color = MaterialTheme.colorScheme.onTertiaryContainer),
-                modifier = Modifier.constrainAs(TotalPrice) {
+                modifier = Modifier.constrainAs(totalPriceText) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top, margin = 8.dp)
                     bottom.linkTo(orderNowButton.top, margin = 8.dp)

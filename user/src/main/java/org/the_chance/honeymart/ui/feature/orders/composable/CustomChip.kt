@@ -57,6 +57,6 @@ fun PreviewCustomChip() {
     ) {
         CustomChip(state = true, text = "Processing", onClick = { })
         CustomChip(state = false, text = "Done", onClick = { })
-        CustomChip(state = false, text = "Cancel", onClick = { })
+        CustomChip(state = false, text = "Cancelled", onClick = { })
     }
 }

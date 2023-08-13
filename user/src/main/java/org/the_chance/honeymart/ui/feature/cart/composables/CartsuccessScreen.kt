@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,12 +31,15 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+)
 @Composable
 fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,10 +105,10 @@ fun CartSuccessScreen(
                 }
             }
         }
-
         CartCardView(
-            totalPrice = state.total.toString(), isLoading = state.isLoading,
-            onClick = cartInteractionListener::onClickOrderNowButton)
+            totalPrice = state.total, isLoading = state.isLoading,
+            onClick = cartInteractionListener::onClickOrderNowButton
+        )
     }
 
 }
