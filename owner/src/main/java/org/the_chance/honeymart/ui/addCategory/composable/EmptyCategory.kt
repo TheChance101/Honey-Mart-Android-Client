@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.addCategory.HoneyMartTitle
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
@@ -52,7 +52,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space32)
                         .fillMaxWidth(),
-                    text = "Your Market is empty!!",
+                    text = stringResource(R.string.your_market_is_empty),
                     style = Typography.bodyMedium.copy(color = black60),
                     textAlign = TextAlign.Center
                 )
@@ -65,7 +65,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                             end = MaterialTheme.dimens.space86
                         )
                         .align(Alignment.CenterHorizontally),
-                    text = "Adding a category will increase your chances of attracting interested buyers. What category fits your item?",
+                    text = stringResource(R.string.body_empty_category),
                     style = Typography.displayLarge.copy(color = blackOn37),
                     textAlign = TextAlign.Center
                 )
@@ -79,7 +79,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                         modifier = Modifier
                             .padding(end = MaterialTheme.dimens.space10)
                             .align(Alignment.CenterVertically),
-                        text = "Please click on ",
+                        text = stringResource(R.string.please_click_on),
                         style = Typography.displayLarge.copy(color = blackOn37),
 
                         )
@@ -103,7 +103,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                         modifier = Modifier
                             .padding(start = MaterialTheme.dimens.space10)
                             .align(Alignment.CenterVertically),
-                        text = "to Add Category",
+                        text = stringResource(R.string.to_add_category),
                         style = Typography.displayLarge.copy(color = blackOn37)
                     )
                 }

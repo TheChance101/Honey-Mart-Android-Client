@@ -35,11 +35,13 @@ data class SnackBarState(
     val message: String = ""
 )
 
-fun CategoryImage.toCategoryImageUIState() =
-    CategoryImageUIState(
-        categoryImageId = this.categoryImageId,
-        image = this.categoryImage
-    )
+fun Map<Int, Int>.toCategoryImageUIState() =
+    this.map {
+        CategoryImageUIState(
+            categoryImageId = it.key,
+            image = it.value,
+        )
+    }
 
 fun CategoryEntity.toCategoryUIState() =
     CategoryUIState(

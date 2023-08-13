@@ -54,13 +54,3 @@ fun CategoryImage(
     }
 
 }
-
-//@Composable
-//@Preview
-//fun previewCategoryImage(){
-//    CategoryImage(
-//        iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.icon_cart),
-//        isSelected = true,
-//        onClick = {}
-//    )
-//}
