@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.products.composables.ProductCard
+import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -70,8 +70,10 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                     )
 
 
-                    Row(modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-                        verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             modifier = Modifier.size(MaterialTheme.dimens.space20),
                             painter = painterResource(id = R.drawable.icon_clock),
@@ -83,7 +85,7 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                             text = state.orderDetails.date,
                             style = MaterialTheme.typography.bodyMedium.copy(color = black37),
 
-                        )
+                            )
                     }
                 }
 
@@ -91,7 +93,7 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                     text = state.formatPrice(state.orderDetails.totalPrice),
                     style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60),
 
-                )
+                    )
 
             }
 
@@ -109,7 +111,11 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                 }
             }
 
-            HoneyFilledIconButton("Done", {}, painterResource(id = R.drawable.icon_cart))
+            HoneyFilledIconButton(
+                label = "Done",
+                onClick = {},
+                iconPainter = painterResource(id = R.drawable.icon_cart)
+            )
 
         }
     }
