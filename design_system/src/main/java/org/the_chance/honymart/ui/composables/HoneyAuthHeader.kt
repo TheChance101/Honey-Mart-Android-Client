@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.black87
@@ -41,5 +44,13 @@ fun HoneyAuthHeader(
             textAlign = TextAlign.Center,
         )
     }
+}
 
+@Preview
+@Composable
+fun PreviewHoneyAuthHeader(){
+    HoneyAuthHeader(
+        title = stringResource(R.string.sign_up),
+        subTitle = stringResource(R.string.create_an_account_name_your_market),
+    )
 }
