@@ -3,6 +3,10 @@ package org.the_chance.honeymart.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
+import org.the_chance.honeymart.ui.add_product.AddProductScreen
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.owner.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,24 +28,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
-                HoneyMartTheme {
-                    Box(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .fillMaxSize())
-                    {
-                        NavigationRail()
-                        MainNavGraph()
-                    }
-                }
-
+            HoneyMartTheme {
+                AddProductScreen()
             }
         }
     }
-}
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun Preview() {
-    NavigationRail()
 }
