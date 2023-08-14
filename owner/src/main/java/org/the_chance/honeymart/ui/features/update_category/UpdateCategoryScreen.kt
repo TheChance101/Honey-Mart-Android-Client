@@ -43,12 +43,13 @@ fun UpdateCategoryScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    UpdateCategoryContent(state = state)
+    UpdateCategoryContent(state = state, listener = viewModel)
 }
 
 @Composable
 fun UpdateCategoryContent(
-    state: UpdateCategoryUiState
+    state: UpdateCategoryUiState,
+    listener: UpdateCategoryInteractionListener
 ) {
     Row(
         modifier = Modifier
@@ -92,7 +93,7 @@ fun UpdateCategoryContent(
                     text = state.categoryName,
                     hint = stringResource(R.string.new_category_name),
                     keyboardType = KeyboardType.Text,
-                    onValueChange = { },
+                    onValueChange = listener::onUpdatedCategoryNameChanged,
                     errorMessage = when (state.categoryNameState) {
                         ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
                         ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
@@ -112,13 +113,14 @@ fun UpdateCategoryContent(
                     columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space32)
+                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
                 ) {
-                    if (state.categoryImages.isNotEmpty()) items(count = state.categoryImages.size) { index ->
-                        CategoryIconItem(iconPainter = painterResource(id = state.categoryImages[index].icon),
-                            isSelected = state.categoryImages[index].isCategorySelected,
-                            categoryIconId = state.categoryImages[index].categoryIconId,
-                            onClick = { }
+                    if (state.categoryIcons.isNotEmpty()) items(count = state.categoryIcons.size) { index ->
+                        CategoryIconItem(
+                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                            isSelected = state.categoryIcons[index].isCategorySelected,
+                            categoryIconId = state.categoryIcons[index].categoryIconId,
+                            onClick = { listener.onClickCategoryIcon(state.categoryIcons[index].categoryIconId) }
                         )
                     }
                 }
@@ -134,12 +136,13 @@ fun UpdateCategoryContent(
                 ) {
                     HoneyFilledButton(
                         label = "Save update",
-                        onClick = { },
+                        isEnable = state.showButton(),
+                        onClick = { listener.updateCategory(state) },
                         modifier = Modifier.width(IntrinsicSize.Max)
                     )
                     HoneyOutlineButton(
                         label = "Cancel",
-                        onClick = { },
+                        onClick = listener::onClickCancelUpdateCategory,
                         modifier = Modifier.width(IntrinsicSize.Max)
                     )
                 }

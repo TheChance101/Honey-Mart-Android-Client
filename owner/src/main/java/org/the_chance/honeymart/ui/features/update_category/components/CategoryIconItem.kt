@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
@@ -51,7 +50,8 @@ fun CategoryIconItem(
                 painter = iconPainter,
                 contentDescription = stringResource(R.string.category_icon),
                 modifier = Modifier.size(MaterialTheme.dimens.icon32),
-                tint = if (isSelected) white else black37
+                tint = if (isSelected) white
+                else MaterialTheme.colorScheme.onSecondary
             )
         }
     }
