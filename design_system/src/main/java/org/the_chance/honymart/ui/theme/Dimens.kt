@@ -9,6 +9,7 @@ data class Dimens(
     val space4: Dp = 4.dp,
     val space6: Dp = 6.dp,
     val space8: Dp = 8.dp,
+    val space10: Dp = 10.dp,
     val space12: Dp = 12.dp,
     val space16: Dp = 16.dp,
     val space20: Dp = 20.dp,
@@ -20,7 +21,9 @@ data class Dimens(
     val space40: Dp = 40.dp,
     val space48: Dp = 48.dp,
     val space56: Dp = 56.dp,
-    val space64: Dp = 46.dp,
+    val space64: Dp = 64.dp,
+    val space86: Dp = 86.dp,
+    val space112: Dp = 112.dp,
 
     val fontSizeHeading: Dp = 24.dp,
     val fontSizeSecondary: Dp = 12.dp,
@@ -41,6 +44,7 @@ data class Dimens(
     val heightPrimaryButton: Dp = 48.dp,
     val heightOutlinedTextField: Dp = 64.dp,
 
+    val icon14: Dp = 14.dp,
     val icon16: Dp = 16.dp,
     val icon24: Dp = 24.dp,
     val icon32: Dp = 32.dp,

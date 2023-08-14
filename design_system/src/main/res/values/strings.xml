@@ -134,6 +134,12 @@
     <string name="category_name_is_too_short">Category name is too short</string>
     <string name="update_category">Update category</string>
     <string name="new_category_name">New category name</string>
-    <string name="select_category_image">Select category image</string>
     <string name="category_icon">Category Icon</string>
+    <string name="add_new_category">Add New category</string>
+    <string name="category_name">Category Name</string>
+    <string name="select_category_image">Select category image</string>
+    <string name="your_market_is_empty">Your Market is empty!!</string>
+    <string name="body_empty_category">Adding a category will increase your chances of attracting interested buyers. What category fits your item?</string>
+    <string name="please_click_on">"Please click on "</string>
+    <string name="to_add_category">to Add Category</string>
 </resources>

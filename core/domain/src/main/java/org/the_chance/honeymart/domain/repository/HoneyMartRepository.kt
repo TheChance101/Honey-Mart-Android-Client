@@ -20,12 +20,12 @@ interface HoneyMartRepository {
     suspend fun getWishList(): List<WishListEntity>
     suspend fun getCart(): CartEntity
 
-    suspend fun addToCart(productId: Long, count: Int): String
+    suspend fun addToCart(productId: Long,count:Int): String
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun getAllOrders(orderState: Int): List<OrderEntity>
-    suspend fun updateOrderState(id: Long?, state: Int): Boolean
+    suspend fun getAllOrders(orderState:Int): List<OrderEntity>
+    suspend fun updateOrderState(id: Long?, state: Int):Boolean
     suspend fun checkout(): String
 
     suspend fun getProductDetails(productId: Long): ProductEntity
@@ -40,4 +40,6 @@ interface HoneyMartRepository {
     ): ProductEntity
 
     suspend fun addImageProduct(productId: Long, images: List<ByteArray>): String
+
+    suspend fun addCategory(name: String, imageId: Int): String
 }
