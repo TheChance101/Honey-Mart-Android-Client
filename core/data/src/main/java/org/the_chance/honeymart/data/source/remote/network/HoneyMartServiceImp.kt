@@ -69,10 +69,9 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("/markets/$marketId/categories"))
 
     override suspend fun addCategory(
-        marketID: Long, name: String, imageId: Int,
-    ): BaseResponse<CategoryDto> =
+        name: String, imageId: Int,
+    ): BaseResponse<String> =
         wrap(client.submitForm(url = "/category", formParameters = Parameters.build {
-            append("marketID", marketID.toString())
             append("imageId", imageId.toString())
             append("name", name)
         }))
