@@ -15,6 +15,6 @@ fun NavGraphBuilder.categoryRoute() {
     composable(
         route = ROUTE,
     ) {
-        CategoryScreen()
+        CategoriesScreen()
     }
 }

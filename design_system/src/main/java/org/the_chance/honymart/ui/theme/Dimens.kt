@@ -35,6 +35,7 @@ data class Dimens(
     val strokeNormal: Dp = 1.dp,
 
     val lottieLoading: Dp = 100.dp,
+    val smallLottieLoading: Dp = 48.dp,
     val addToCartLottieLoading: Dp = 50.dp,
     val itemProductImage: Dp = 88.dp,
 

@@ -20,6 +20,8 @@ class LoginOwnerUseCase @Inject constructor(
         } else {
             val token = authRepository.loginOwner(email, password)
             authRepository.saveToken(token)
+            authRepository.saveOwnerName("")
+            authRepository.saveOwnerImageUrl("")
             ValidationState.SUCCESS
         }
     }

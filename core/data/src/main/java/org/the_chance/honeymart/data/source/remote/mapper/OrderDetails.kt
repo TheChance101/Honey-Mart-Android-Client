@@ -9,7 +9,8 @@ fun OrderDetailsDto.toOrderDetailsEntity() = OrderDetailsEntity(
     products = products?.map { it.toOrderProductDetailsEntity() }?: emptyList(),
     totalPrice = totalPrice?: 0.0,
     date = date?: "",
-    state = state?: 0
+    state = state?: 0,
+     orderId =  0L,
 )
 
 fun OrderProductDto.toOrderProductDetailsEntity() = OrderProductDetailsEntity(

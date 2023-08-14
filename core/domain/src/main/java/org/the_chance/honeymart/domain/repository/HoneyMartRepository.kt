@@ -30,7 +30,16 @@ interface HoneyMartRepository {
 
     suspend fun getProductDetails(productId: Long): ProductEntity
 
-    suspend fun deleteAllCart():String
+    suspend fun deleteAllCart(): String
+
+    suspend fun addProduct(
+        name: String,
+        price: Double,
+        description: String,
+        categoryId: Long,
+    ): ProductEntity
+
+    suspend fun addImageProduct(productId: Long, images: List<ByteArray>): String
 
     suspend fun addCategory(name: String, imageId: Int): String
 }
