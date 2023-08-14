@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product.components
+package org.the_chance.honeymart.ui.features.add_product.components
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
