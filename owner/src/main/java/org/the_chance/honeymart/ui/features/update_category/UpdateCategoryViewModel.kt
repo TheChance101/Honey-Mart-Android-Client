@@ -46,7 +46,6 @@ class UpdateCategoryViewModel @Inject constructor(
 
     private fun onUpdateCategorySuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
-        log("SUUUUUUUUUUUUUUUUUUUUUUI")
     }
 
     private fun onUpdateCategoryError(errorHandler: ErrorHandler) {
@@ -54,7 +53,6 @@ class UpdateCategoryViewModel @Inject constructor(
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
-        log("ERRRRRRRRRRRRRRRRROR")
     }
 
     override fun onUpdatedCategoryNameChanged(name: String) {

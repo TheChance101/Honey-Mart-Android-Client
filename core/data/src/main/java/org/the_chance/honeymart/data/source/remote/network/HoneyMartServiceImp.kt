@@ -11,10 +11,14 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
+import io.ktor.http.ParametersBuilder
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
@@ -77,18 +81,24 @@ class HoneyMartServiceImp @Inject constructor(
             append("name", name)
         }))
 
+    @OptIn(InternalAPI::class)
     override suspend fun updateCategory(
         id: Long,
         marketID: Long,
         name: String,
         imageId: Int,
     ): BaseResponse<String> {
-        return wrap(client.put("/category") {
-            parameter("marketID", marketID)
-            parameter("id", id)
-            parameter("name", name)
-            parameter("imageId", imageId)
+        val formData = Parameters.build {
+            append("marketID", marketID.toString())
+            append("id", id.toString())
+            append("name", name)
+            append("imageId", imageId.toString())
+        }
+        val response = wrap<BaseResponse<String>>(client.put("/category") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
         })
+        return response
     }
 
     override suspend fun deleteCategory(id: Long): BaseResponse<String> =
