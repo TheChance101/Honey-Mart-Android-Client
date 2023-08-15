@@ -77,7 +77,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(end = MaterialTheme.dimens.space10)
+                            .padding(end = MaterialTheme.dimens.space8)
                             .align(Alignment.CenterVertically),
                         text = stringResource(R.string.please_click_on),
                         style = Typography.displayLarge.copy(color = blackOn37),
@@ -101,7 +101,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
 
                     Text(
                         modifier = Modifier
-                            .padding(start = MaterialTheme.dimens.space10)
+                            .padding(start = MaterialTheme.dimens.space8)
                             .align(Alignment.CenterVertically),
                         text = stringResource(R.string.to_add_category),
                         style = Typography.displayLarge.copy(color = blackOn37)

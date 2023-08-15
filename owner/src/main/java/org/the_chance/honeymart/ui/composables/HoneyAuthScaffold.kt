@@ -39,7 +39,7 @@ fun HoneyAuthScaffold(
             painter = painterResource(R.drawable.image_group),
             contentDescription = "",
             modifier = Modifier
-                .size(120.dp)
+                .size(MaterialTheme.dimens.sunImageSize)
                 .align(TopEnd),
             contentScale = ContentScale.FillBounds
         )

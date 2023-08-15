@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.features.login
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,8 +20,11 @@ import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
+import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.owner.R
+
 
 @Composable
 fun LoginScreen(
@@ -36,11 +41,17 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
+    Loading(state.isLoading)
     HoneyAuthScaffold {
         HoneyAuthHeader(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(org.the_chance.design_system.R.string.welcome_back),
             subTitle = stringResource(R.string.login_to_discover_a_curated_selection_of_products_just_for_you),
+            modifier = Modifier
+                .padding(bottom = MaterialTheme.dimens.space24)
+                .align(
+                    Alignment.CenterHorizontally
+                )
         )
 
         Column {

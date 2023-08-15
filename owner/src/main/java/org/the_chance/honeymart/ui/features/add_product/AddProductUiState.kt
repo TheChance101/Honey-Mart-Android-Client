@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product
+package org.the_chance.honeymart.ui.features.add_product
 
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler

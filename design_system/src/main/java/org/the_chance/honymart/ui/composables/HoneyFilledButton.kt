@@ -69,6 +69,7 @@ private fun HoneyMartButtonPreview() {
     HoneyMartTheme {
         HoneyFilledButton(
             label = stringResource(id = R.string.Sign_up),
-            onClick = {})
+            onClick = {}
+        )
     }
 }

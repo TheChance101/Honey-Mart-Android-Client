@@ -27,6 +27,9 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.VALID_TEXT_FIELD -> TODO()
         ValidationState.SHORT_LENGTH_TEXT -> TODO()
         ValidationState.INVALID_PRICE -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_LETTER -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_DIGIT -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER -> TODO()
     }
 
 }

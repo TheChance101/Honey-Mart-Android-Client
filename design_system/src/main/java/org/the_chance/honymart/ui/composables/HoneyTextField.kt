@@ -28,10 +28,10 @@ import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun HoneyTextField(
-    hint: String,
-    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    hint: String,
     iconPainter: Painter? = null ,
+    onValueChange: (String) -> Unit,
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
