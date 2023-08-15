@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,6 +83,7 @@ fun SignupContent(
                 iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
                 onValueChange = listener::onConfirmPasswordChanged,
                 errorMessage = state.confirmPasswordState.errorState,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             )
         }
 
@@ -96,7 +99,7 @@ fun SignupContent(
             )
 
             HoneyAuthFooter(
-                text = stringResource(R.string.alrady_have_account),
+                text = stringResource(org.the_chance.design_system.R.string.already_have_account),
                 textButtonText = stringResource(R.string.log_in),
                 onTextButtonClicked = listener::onClickLogin,
                 modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
