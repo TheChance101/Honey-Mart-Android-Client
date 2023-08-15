@@ -3,7 +3,7 @@ package org.the_chance.honeymart.domain.usecase
 import org.the_chance.honeymart.domain.util.ValidationState
 import javax.inject.Inject
 
-class ValidateCreateMarketFieldsUseCase @Inject constructor() {
+class ValidateMarketFieldsUseCase @Inject constructor() {
     fun validateMarketName(marketName: String): ValidationState {
         if (marketName.isBlank()) {
             return ValidationState.BLANK_MARKET_NAME
@@ -32,12 +32,5 @@ class ValidateCreateMarketFieldsUseCase @Inject constructor() {
             return ValidationState.SHORT_MARKET_DESCRIPTION
         }
         return ValidationState.VALID_MARKET_DESCRIPTION
-    }
-
-    fun validateMarketImages(marketImages: List<ByteArray>): ValidationState {
-        if (marketImages.isEmpty()) {
-            return ValidationState.EMPTY_MARKET_IMAGES
-        }
-        return ValidationState.VALID_MARKET_IMAGES
     }
 }
