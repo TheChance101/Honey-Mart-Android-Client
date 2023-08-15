@@ -88,7 +88,7 @@ fun SignupContent(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             HoneyFilledButton(
-                label = stringResource(R.string.continue_word),
+                label = stringResource(org.the_chance.design_system.R.string.continue_word),
                 onClick = listener::onClickContinue,
                 background = primary100,
                 contentColor = Color.White,
@@ -102,7 +102,6 @@ fun SignupContent(
                 modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
             )
         }
-
     }
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
@@ -122,6 +121,8 @@ fun SignupContent(
                 SignupUiEffect.ClickLoginEffect -> {
                     navController.navigateToLogin()
                 }
+
+                else -> {}
             }
         }
     }
