@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -21,48 +22,52 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.design_system.R
 
 /**
  * Created by Aziza Helmy on 8/5/2023.
  */
 @Composable
 fun HoneyAuthScaffold(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Box {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image(
+            painter = painterResource(R.drawable.image_group),
+            contentDescription = "",
+            modifier = Modifier
+                .size(120.dp)
+                .align(TopEnd),
+            contentScale = ContentScale.FillBounds
+        )
+
         Row {
             Image(
                 painter = painterResource(id = org.the_chance.owner.R.drawable.auth_image),
-                contentDescription = "",
+                contentDescription = "authorization background image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxHeight()
             )
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(
-                        end = MaterialTheme.dimens.space56,
-                        bottom = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space56
-                    ),
-                verticalArrangement = Arrangement.Center,
+                    .padding(end = MaterialTheme.dimens.space32),
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
-
-                content
-
+                content()
             }
         }
 
-        Image(
-            painter = painterResource(org.the_chance.design_system.R.drawable.image_group),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .align(TopEnd)
-                .size(120.dp)
+        HoneyAppBarTitle(
+            modifier = Modifier.padding(
+                start = MaterialTheme.dimens.space16,
+                top = MaterialTheme.dimens.space32
+            ),
+            titleColor = Color.White
         )
-
-        HoneyAppBarTitle(titleColor = Color.White)
     }
 }
 
