@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,7 +38,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
-import org.the_chance.honeymart.ui.util.collect
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -50,21 +50,22 @@ fun NavigationRail(
     val state by viewModel.state.collectAsState()
 
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        when (effect) {
-            is NavigationRailEffect.OnClickProfileEffect -> {
-                //TODO: Navigate to Profile
-            }
 
-            is NavigationRailEffect.OnClickLogoutEffect -> {
-                //TODO: Clear Token
-                navController.navigateToLogin()
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                is NavigationRailEffect.OnClickProfileEffect -> {
+                    //TODO: Navigate to Profile
+                }
+
+                is NavigationRailEffect.OnClickLogoutEffect -> {
+                    //TODO: Clear Token
+                    navController.navigateToLogin()
+                }
             }
         }
     }
-
     val screens = listOf(
         NavigationRailScreen.Orders,
         NavigationRailScreen.Category,
