@@ -53,16 +53,14 @@ fun NavigationRail(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
-            when (it) {
-                is NavigationRailEffect.OnClickProfileEffect -> {
-                    //TODO: Navigate to Profile
-                }
+        when (effect) {
+            is NavigationRailEffect.OnClickProfileEffect -> {
+                //TODO: Navigate to Profile
+            }
 
-                is NavigationRailEffect.OnClickLogoutEffect -> {
-                    //TODO: Clear Token
-                    navController.navigateToLogin()
-                }
+            is NavigationRailEffect.OnClickLogoutEffect -> {
+                //TODO: Clear Token
+                navController.navigateToLogin()
             }
         }
     }
