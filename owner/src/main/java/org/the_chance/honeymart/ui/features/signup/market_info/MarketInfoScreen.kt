@@ -83,7 +83,7 @@ fun MarketInfoContent(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
-                    text = stringResource(R.string.market_images),
+                    text = stringResource(org.the_chance.design_system.R.string.market_images),
                     style = MaterialTheme.typography.displaySmall,
                     color = if (state.marketImage.errorState.isNotEmpty()) error else black37,
                     textAlign = TextAlign.Center,
@@ -110,7 +110,7 @@ fun MarketInfoContent(
             }
         }
         HoneyFilledButton(
-            label = stringResource(R.string.send),
+            label = stringResource(org.the_chance.design_system.R.string.send),
             onClick = listener::onClickSendButton,
             background = primary100,
             contentColor = Color.White,

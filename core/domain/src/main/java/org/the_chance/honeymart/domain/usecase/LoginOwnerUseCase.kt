@@ -6,23 +6,22 @@ import javax.inject.Inject
 
 class LoginOwnerUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val validateEmailUseCase: ValidateEmailUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val validationLoginFieldsUseCase: ValidationLoginFieldsUseCase,
 ) {
-    suspend operator fun invoke(email: String, password: String): ValidationState {
-        val emailValidationState = validateEmailUseCase(email)
-        val passwordValidationState = validatePasswordUseCase(password)
-        return if (emailValidationState != ValidationState.VALID_EMAIL
-        ) {
-            emailValidationState
+    suspend operator fun invoke(email: String, password: String): Boolean {
+        val emailValidationState = validationLoginFieldsUseCase.validateEmail(email)
+        val passwordValidationState = validationLoginFieldsUseCase.validatePassword(password)
+
+        return if (emailValidationState != ValidationState.VALID_EMAIL) {
+            false
         } else if (passwordValidationState != ValidationState.VALID_PASSWORD) {
-            passwordValidationState
+            false
         } else {
             val token = authRepository.loginOwner(email, password)
             authRepository.saveToken(token)
             authRepository.saveOwnerName("")
             authRepository.saveOwnerImageUrl("")
-            ValidationState.SUCCESS
+            true
         }
     }
 }
