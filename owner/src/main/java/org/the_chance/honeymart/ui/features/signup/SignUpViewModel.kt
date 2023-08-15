@@ -67,7 +67,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountSuccess(isSignUp: Boolean) {
-        _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
+        _state.update { it.copy(isLoading = false, isOwnerAccountCreated = isSignUp) }
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {

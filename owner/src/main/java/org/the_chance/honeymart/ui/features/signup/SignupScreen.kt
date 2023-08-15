@@ -47,7 +47,7 @@ fun SignupContent(
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
-        ContentVisibility(state = !state.isSignUp) {
+        ContentVisibility(state = !state.isOwnerAccountCreated) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -62,7 +62,7 @@ fun SignupContent(
             }
         }
 
-        ContentVisibility(state = state.isSignUp) {
+        ContentVisibility(state = state.isOwnerAccountCreated) {
             MarketInfoScreen()
         }
     }
