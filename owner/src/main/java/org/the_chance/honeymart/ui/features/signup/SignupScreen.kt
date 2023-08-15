@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.signup.market_info.navigateToMarketInfoScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -118,14 +119,12 @@ fun SignupContent(
                 }
 
                 SignupUiEffect.ClickContinueEffect -> {
-                    // SHOW MARKET INFO DETAILS
+                    navController.navigateToMarketInfoScreen()
                 }
 
                 SignupUiEffect.ClickLoginEffect -> {
                     navController.navigateToLogin()
                 }
-
-                else -> {}
             }
         }
     }
