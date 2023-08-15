@@ -24,7 +24,10 @@ class LoginViewModel @Inject constructor(
     private fun loginOwner(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginOwnerUseCase(email = email, password = password) },
+            {
+                val validationState = loginOwnerUseCase(email, password)
+                validationState == ValidationState.SUCCESS
+            },
             ::onLoginSuccess,
             ::onLoginError,
         )

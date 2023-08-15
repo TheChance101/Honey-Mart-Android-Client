@@ -39,8 +39,9 @@ class ValidationLoginFieldsUseCase @Inject constructor() {
                 ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER
             }
 
-            else -> ValidationState.VALID_PASSWORD
+            else -> {
+                ValidationState.VALID_PASSWORD
+            }
         }
-
     }
 }
