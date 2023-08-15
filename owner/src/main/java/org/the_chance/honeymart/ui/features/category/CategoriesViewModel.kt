@@ -2,8 +2,12 @@ package org.the_chance.honeymart.ui.features.category
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
+import org.the_chance.honeymart.ui.addCategory.categoryIcons
+import org.the_chance.honeymart.ui.addCategory.toCategoryImageUIState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
@@ -12,13 +16,17 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val getAllCategories: GetAllCategoriesInMarketUseCase
+    private val getAllCategories: GetAllCategoriesInMarketUseCase,
+    private val addCategoryUseCase: AddToCategoryUseCase
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
+    init {
+        getCategoryImages()
+        getAllCategory()
+    }
 
-    override val TAG: String
-        get() = TODO("Not yet implemented")
+    override val TAG: String = "category"
 
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
@@ -46,9 +54,92 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCategory(categoryId: Long, position: Int) {
+    override fun onClickCategory(categoryId: Long) {
+        val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
+        val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
+        _state.update {
+            it.copy(
+                categories = updatedCategories,
+                position = position.inc(),
+                categoryId = categoryId,
+                isLoading = false,
+            )
+        }
+    }
 
+    private fun updateCategorySelection(
+        categories: List<CategoryUiState>,
+        selectedCategoryId: Long,
+    ): List<CategoryUiState> {
+        return categories.map { category ->
+            category.copy(isCategorySelected = category.categoryId == selectedCategoryId)
+        }
+    }
+
+    private fun getCategoryImages() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                categoryImages = categoryIcons.toCategoryImageUIState()
+            )
+        }
+    }
+
+    private fun addCategory(name: String, CategoryImageID: Int) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            function = { addCategoryUseCase(name, CategoryImageID) },
+            onSuccess = ::addCategorySuccess,
+            onError = ::addCategoryError
+        )
 
     }
 
+    private fun addCategorySuccess(success: String) {
+        _state.update { it.copy(isLoading = false, nameCategory = "") }
+        getAllCategory()
+        updateStateToShowAddCategory(false)
+    }
+
+    private fun addCategoryError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
+
+    override fun changeNameCategory(nameCategory: String) {
+        _state.update { it.copy(nameCategory = nameCategory) }
+    }
+
+    override fun onClickAddCategory() {
+        addCategory(_state.value.nameCategory.trim(), _state.value.categoryImageId)
+    }
+
+    override fun onClickCategoryImage(categoryImageId: Int) {
+        val updatedCategories =
+            updateCategoryImageSelection(_state.value.categoryImages, categoryImageId)
+        val position = updatedCategories.indexOfFirst { it.categoryImageId == categoryImageId }
+        _state.update {
+            it.copy(
+                categoryImages = updatedCategories,
+                isLoading = false,
+                position = position.inc(),
+                categoryImageId = categoryImageId
+            )
+        }
+    }
+
+    private fun updateCategoryImageSelection(
+        categoryImages: List<CategoryImageUIState>,
+        selectedCategoryImageId: Int,
+    ): List<CategoryImageUIState> {
+        return categoryImages.map { category ->
+            category.copy(isSelected = category.categoryImageId == selectedCategoryImageId)
+        }
+    }
+
+    override fun updateStateToShowAddCategory(state: Boolean) {
+        _state.update { it.copy(showAddCategory = state) }
+    }
 }

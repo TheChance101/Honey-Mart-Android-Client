@@ -32,7 +32,7 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun CategoryItem(
     state: CategoryUiState,
-    onCategoryClicked: (categoryId: Long, position: Int) -> Unit,
+    onCategoryClicked: (categoryId: Long, position: Int) -> Unit = { _, _ -> },
     position: Int
 ) {
     Column(

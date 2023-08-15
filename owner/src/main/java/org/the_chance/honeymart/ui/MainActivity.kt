@@ -3,9 +3,6 @@ package org.the_chance.honeymart.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
-import org.the_chance.honeymart.ui.navigation.MainNavGraph
-import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
+import org.the_chance.honeymart.ui.features.category.CategoriesScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
@@ -40,14 +36,16 @@ class MainActivity : AppCompatActivity() {
                             .fillMaxSize()
                     )
                     {
-                        AnimatedVisibility(
-                            visible = navigationRailState.value,
-                            enter = slideInHorizontally(initialOffsetX = { -it }),
-                            exit = slideOutHorizontally(targetOffsetX = { -it }),
-                        ) {
-                            NavigationRail()
-                        }
-                        MainNavGraph()
+//                        AnimatedVisibility(
+//                            visible = navigationRailState.value,
+//                            enter = slideInHorizontally(initialOffsetX = { -it }),
+//                            exit = slideOutHorizontally(targetOffsetX = { -it }),
+//                        ) {
+//                            NavigationRail()
+//                        }
+//                        MainNavGraph()
+
+                        CategoriesScreen()
                     }
                 }
             }
