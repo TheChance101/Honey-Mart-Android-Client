@@ -7,7 +7,7 @@ import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.Category.route
 
-fun NavController.navigateToOrderScreen() {
+fun NavController.navigateToCategoryScreen() {
     navigate(ROUTE)
 }
 
