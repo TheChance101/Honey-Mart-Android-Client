@@ -14,7 +14,7 @@ fun MainNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Orders.route
+        startDestination = Screen.Login.route
     ) {
         ordersRoute()
         categoryRoute()

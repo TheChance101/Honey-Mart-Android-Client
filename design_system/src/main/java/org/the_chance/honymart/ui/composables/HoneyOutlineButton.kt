@@ -49,7 +49,7 @@ fun HoneyOutlineButton(
     ) {
         Text(
             text = label,
-            style = Typography.bodySmall.copy(fontWeight = FontWeight.Normal),
+            style = Typography.bodySmall,
             color = contentColor
         )
     }

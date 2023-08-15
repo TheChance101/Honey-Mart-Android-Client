@@ -18,5 +18,9 @@ enum class ValidationState {
     VALID_EMAIL,
     VALID_PASSWORD,
     VALID_FULL_NAME,
-    SUCCESS
+    SUCCESS,
+    BLANK_TEXT_FIELD,
+    VALID_TEXT_FIELD,
+    SHORT_LENGTH_TEXT,
+    INVALID_PRICE
 }

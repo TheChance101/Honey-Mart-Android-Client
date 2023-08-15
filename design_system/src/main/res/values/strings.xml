@@ -108,5 +108,39 @@
     <string name="all">all</string>
     <string name="new_order">new order</string>
     <string name="cancelled">Cancelled</string>
+    <string name="placeholder_image">Placeholder Image</string>
+
+    <!--Add New Product Region-->
+    <string name="add_new_product">Add New Product</string>
+    <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
+    <string name="product_name_is_too_short">Product name is too short</string>
+    <string name="price">Price</string>
+    <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
+    <string name="invalid_product_price">Invalid product price</string>
+    <string name="description">Description</string>
+    <string name="product_description_can_t_be_blank">Product description can\'t be blank</string>
+    <string name="product_description_is_too_short">Product description is too short</string>
+    <string name="add_product_image">Add product image</string>
+    <string name="add">Add</string>
+    <string name="icon_add">Icon Add</string>
+    <string name="icon_cart">Icon Cart</string>
+    <string name="image_of_product">Image of product</string>
+    <string name="icon_delete_image">Icon Delete Image</string>
+    <string name="your_products_is_empty">Your Products is empty!!</string>
+    <string name="add_product_placeholder_subtitle">Adding a product will increase your chances of attracting interested buyers. What product fits your item?</string>
+
+    <!--Update Category Region-->
+    <string name="category_name_can_t_be_blank">Category name can\'t be blank</string>
+    <string name="category_name_is_too_short">Category name is too short</string>
+    <string name="update_category">Update category</string>
+    <string name="new_category_name">New category name</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="add_new_category">Add New category</string>
+    <string name="category_name">Category Name</string>
+    <string name="select_category_image">Select category image</string>
+    <string name="your_market_is_empty">Your Market is empty!!</string>
+    <string name="body_empty_category">Adding a category will increase your chances of attracting interested buyers. What category fits your item?</string>
+    <string name="please_click_on">"Please click on "</string>
+    <string name="to_add_category">to Add Category</string>
     <string name="create_an_account_name_your_market">Welcome to Honey Mart!! \n Create an account, Name your market and choose its category to start selling your products</string>
 </resources>

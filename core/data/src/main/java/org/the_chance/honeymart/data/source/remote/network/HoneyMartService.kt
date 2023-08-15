@@ -34,14 +34,14 @@ interface HoneyMartService {
     //region Category
     suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>>
 
-    suspend fun addCategory(marketID: Long, name: String, imageId: Int): BaseResponse<CategoryDto>
+    suspend fun addCategory(name: String, imageId: Int): BaseResponse<String>
 
     suspend fun updateCategory(
         id: Long,
         marketID: Long,
         name: String,
         imageId: Int,
-    ): BaseResponse<CategoryDto>
+    ): BaseResponse<String>
 
     suspend fun deleteCategory(id: Long): BaseResponse<String>
     //endregion Category
@@ -58,9 +58,13 @@ interface HoneyMartService {
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto>
 
+    suspend fun addImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String>
 
     suspend fun updateProduct(
         productId: Long,
