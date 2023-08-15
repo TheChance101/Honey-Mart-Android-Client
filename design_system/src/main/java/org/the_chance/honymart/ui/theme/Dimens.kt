@@ -9,7 +9,6 @@ data class Dimens(
     val space4: Dp = 4.dp,
     val space6: Dp = 6.dp,
     val space8: Dp = 8.dp,
-    val space10: Dp = 10.dp,
     val space12: Dp = 12.dp,
     val space16: Dp = 16.dp,
     val space20: Dp = 20.dp,
@@ -52,6 +51,6 @@ data class Dimens(
     val heightItemMarketCard: Dp = 164.dp,
     val heightItem: Dp = 192.dp,
     val card: Dp = 120.dp,
-
+    val sunImageSize: Dp = 120.dp,
     val categoryIconItem: Dp = 82.dp
 )

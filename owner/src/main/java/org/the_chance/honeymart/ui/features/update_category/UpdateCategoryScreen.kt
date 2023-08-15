@@ -136,7 +136,7 @@ fun UpdateCategoryContent(
                 ) {
                     HoneyFilledButton(
                         label = "Save update",
-                        isEnable = state.showButton(),
+                        isButtonEnabled = state.showButton(),
                         onClick = { listener.updateCategory(state) },
                         modifier = Modifier.width(IntrinsicSize.Max)
                     )
