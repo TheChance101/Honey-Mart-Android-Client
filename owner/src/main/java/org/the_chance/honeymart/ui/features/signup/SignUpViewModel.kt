@@ -2,8 +2,11 @@ package org.the_chance.honeymart.ui.features.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.usecase.AddMarketImagesUseCase
+import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
 import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
-import org.the_chance.honeymart.domain.usecase.ValidationSignupFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -13,11 +16,36 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val createOwnerAccount: CreateOwnerAccountUseCase,
-    private val validationSignupFields: ValidationSignupFieldsUseCase
-) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()), SignupInteractionListener,
+    private val validateSignupFields: ValidateSignupFieldsUseCase,
+    private val createMarketUseCase: CreateMarketUseCase,
+    private val addMarketImagesUseCase: AddMarketImagesUseCase,
+    private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase
+) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
+    SignupInteractionListener,
     MarketInfoInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
+
+    override fun onClickLogin() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
+    }
+
+    override fun onClickContinue() {
+        val validationSignupFieldsState = state.value.emailState.isValid &&
+                state.value.passwordState.isValid &&
+                state.value.fullNameState.isValid &&
+                state.value.confirmPasswordState.isValid
+
+        if (validationSignupFieldsState) {
+            addOwner(
+                fullName = state.value.fullNameState.value,
+                email = state.value.emailState.value,
+                password = state.value.passwordState.value
+            )
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
+        }
+    }
 
     private fun addOwner(
         fullName: String,
@@ -33,46 +61,21 @@ class SignUpViewModel @Inject constructor(
                     email = email,
                 )
             },
-            ::onSuccess,
-            ::onError,
+            ::onCreateOwnerAccountSuccess,
+            ::onCreateOwnerAccountError,
         )
     }
 
-
-    private fun onSuccess(isSignUp: Boolean) {
+    private fun onCreateOwnerAccountSuccess(isSignUp: Boolean) {
         _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
     }
 
-    private fun onError(error: ErrorHandler) {
+    private fun onCreateOwnerAccountError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
-    override fun onClickLogin() {
-        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
-    }
-
-    override fun onClickContinue() {
-        val validationState = state.value.emailState.isValid &&
-                state.value.passwordState.isValid &&
-                state.value.fullNameState.isValid &&
-                state.value.confirmPasswordState.isValid
-
-        if (validationState) {
-            addOwner(
-                fullName = state.value.fullNameState.value,
-                email = state.value.emailState.value,
-                password = state.value.passwordState.value
-            )
-            if (state.value.isSignUp) {
-                effectActionExecutor(_effect, SignupUiEffect.ClickContinueEffect)
-            }
-        } else {
-            effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
-        }
-    }
-
     override fun onFullNameInputChange(fullName: CharSequence) {
-        val fullNameState = validationSignupFields.validationFullName(
+        val fullNameState = validateSignupFields.validationFullName(
             fullName.trim().toString()
         )
         _state.update {
@@ -91,7 +94,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onEmailInputChange(email: CharSequence) {
-        val emailState = validationSignupFields.validateEmail(email.trim().toString())
+        val emailState = validateSignupFields.validateEmail(email.trim().toString())
         _state.update {
             it.copy(
                 emailState = FieldState(
@@ -108,7 +111,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validationSignupFields.validationPassword(password.toString())
+        val passwordState = validateSignupFields.validationPassword(password.toString())
         _state.update {
             it.copy(
                 passwordState = FieldState(
@@ -128,7 +131,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
-        val passwordState = validationSignupFields.validateConfirmPassword(
+        val passwordState = validateSignupFields.validateConfirmPassword(
             state.value.passwordState.value,
             confirmPassword.toString()
         )
@@ -157,25 +160,181 @@ class SignUpViewModel @Inject constructor(
 
 
     override fun onClickSendButton() {
+        val market = state.value.marketInfoUiState
+        val marketFieldsValidationState =
+            market.marketNameState.isValid && market.marketAddressState.isValid
+                    && market.marketDescriptionState.isValid && !market.isMarketImagesEmpty
+
+        if (marketFieldsValidationState) {
+            createMarket(
+                marketName = market.marketNameState.value,
+                marketAddress = market.marketAddressState.value,
+                marketDescription = market.marketDescriptionState.value,
+                ownerId = 4
+            )
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
+        }
+    }
+
+    private fun createMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+        ownerId: Long,
+    ) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isLoading = true
+                )
+            )
+        }
+        tryToExecute(
+            {
+                createMarketUseCase(
+                    marketName = marketName,
+                    marketAddress = marketAddress,
+                    marketDescription = marketDescription,
+                    ownerId = ownerId
+                )
+            },
+            ::onCreateMarketSuccess,
+            ::onCreateMarketError
+        )
+    }
+
+    private fun onCreateMarketError(errorHandler: ErrorHandler) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isLoading = false,
+                    error = errorHandler
+                )
+            )
+        }
+    }
+
+    private fun onCreateMarketSuccess(isMarketCreated: Boolean) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isMarketCreated = isMarketCreated
+                )
+            )
+        }
+        addMarketImages(4, state.value.marketInfoUiState.images)
     }
 
     override fun onMarketNameInputChange(marketName: CharSequence) {
+        val marketNameState = validateMarketFieldsUseCase.validateMarketName(
+            marketName.trim().toString()
+        )
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    marketNameState =
+                    FieldState(
+                        errorState = when (marketNameState) {
+                            ValidationState.BLANK_MARKET_NAME -> "market name shouldn't be empty"
+                            ValidationState.INVALID_MARKET_NAME -> "Invalid market name"
+                            else -> ""
+                        },
+                        value = marketName.toString(),
+                        isValid = marketNameState == ValidationState.VALID_MARKET_NAME
+                    ),
+                )
+            )
+        }
     }
 
     override fun onMarketAddressInputChange(address: CharSequence) {
+        val marketAddressState = validateMarketFieldsUseCase.validateMarketAddress(
+            address.trim().toString()
+        )
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    marketAddressState =
+                    FieldState(
+                        errorState =
+                        if (marketAddressState == ValidationState.BLANK_MARKET_ADDRESS)
+                            "market address shouldn't be empty"
+                        else
+                            "",
+                        value = address.toString(),
+                        isValid = marketAddressState == ValidationState.VALID_MARKET_ADDRESS
+                    ),
+                )
+            )
+        }
     }
 
-    override fun onDescriptionInputChanged(description: CharSequence) {
+    override fun onMarketDescriptionInputChanged(description: CharSequence) {
+        val marketDescriptionState = validateMarketFieldsUseCase.validateMarketDescription(
+            description.trim().toString()
+        )
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    marketDescriptionState =
+                    FieldState(
+                        errorState = when (marketDescriptionState) {
+                            ValidationState.BLANK_MARKET_DESCRIPTION -> "market description shouldn't be empty"
+                            ValidationState.SHORT_MARKET_DESCRIPTION -> "market description should be 20 letter at least"
+                            else -> ""
+                        },
+                        value = description.toString(),
+                        isValid = marketDescriptionState == ValidationState.VALID_MARKET_DESCRIPTION
+                    ),
+                )
+            )
+        }
     }
 
-    override fun addMarketImage(marketId: Long, images: List<ByteArray>) {
-        TODO("Not yet implemented")
+
+    override fun addMarketImages(marketId: Long, images: List<ByteArray>) {
+        tryToExecute(
+            {
+                addMarketImagesUseCase(
+                    marketId = marketId,
+                    marketImages = images
+                )
+            },
+            ::onAddMarketImagesSuccess,
+            ::onAddMarketImagesError
+        )
+    }
+
+    private fun onAddMarketImagesError(errorHandler: ErrorHandler) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isLoading = false,
+                    error = errorHandler
+                )
+            )
+        }
+    }
+
+    private fun onAddMarketImagesSuccess(s: String) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isLoading = false,
+                )
+            )
+        }
+        effectActionExecutor(_effect, SignupUiEffect.NavigateToApproveScreenEffect)
     }
 
     override fun onImagesSelected(uris: List<ByteArray>) {
         _state.update {
             it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(images = uris)
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    images = uris,
+                    isMarketImagesEmpty = false
+                )
             )
         }
     }
@@ -188,5 +347,17 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(images = updatedImages)
             )
         }
+        checkIsImagesEmpty(state.value.marketInfoUiState.images)
     }
+
+    private fun checkIsImagesEmpty(marketImages: List<ByteArray>) {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isMarketImagesEmpty = marketImages.isEmpty()
+                )
+            )
+        }
+    }
+
 }
