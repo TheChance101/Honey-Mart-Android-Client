@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.features.category.categories.CategoryItem
 import org.the_chance.honeymart.ui.features.products.ProductsViewModel
-import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
 import org.the_chance.honymart.ui.theme.dimens
 
 /**
@@ -24,7 +23,6 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CategoriesScreen(productViewModel: ProductsViewModel = hiltViewModel()) {
 
     val state by productViewModel.state.collectAsState()
-    NavigationRail()
 }
 
 @Composable

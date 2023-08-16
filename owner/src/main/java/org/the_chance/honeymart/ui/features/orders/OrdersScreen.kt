@@ -22,7 +22,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.composables.CustomChip
 import org.the_chance.honeymart.ui.features.orders.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.features.orders.composables.ItemOrder
-import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.dimens
@@ -30,18 +29,17 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun OrdersScreen(
     viewModel: OrdersViewModel = hiltViewModel(),
-    ) {
+) {
     val state by viewModel.state.collectAsState()
-    NavigationRail()
 
-OrdersContent(state, viewModel)
+    OrdersContent(state, viewModel)
 }
 
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
     listener: OrdersInteractionsListener,
-    ){
+) {
     Loading(state = state.isLoading)
     EmptyOrdersPlaceholder(
         painter = painterResource(id = R.drawable.owner_empty_order),
