@@ -16,6 +16,8 @@ import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.login.LoginScreen
 import org.the_chance.honeymart.ui.features.signup.SignupScreen
 import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryScreen
+import org.the_chance.honeymart.ui.features.login.LoginScreen
+import org.the_chance.honeymart.ui.navigation.RootNavigationGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
-                    LoginScreen()
+                    RootNavigationGraph()
                 }
             }
         }
