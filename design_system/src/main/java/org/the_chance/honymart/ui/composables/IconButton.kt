@@ -13,26 +13,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun IconButton(
+    size: Dp,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     content: @Composable () -> Unit,
 ) {
-        IconButton(
-            modifier = modifier
-                .size(MaterialTheme.dimens.icon32)
-                .background(backgroundColor, shape = shape)
-                .clip(shape),
-            onClick = onClick
-        ) {
-            content()
-        }
+    IconButton(
+        modifier = modifier
+            .size(size)
+            .background(backgroundColor, shape = shape)
+            .clip(shape),
+        onClick = onClick
+    ) {
+        content()
+    }
 }
 
 @Preview

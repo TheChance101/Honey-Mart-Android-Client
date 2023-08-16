@@ -52,6 +52,7 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
@@ -150,6 +151,7 @@ fun SignupContent(
                                     ValidationState.INVALID_FULL_NAME -> "Invalid name"
                                     else -> ""
                                 },
+                                color = white200
                             )
                             HoneyTextField(
                                 text = state.email,
@@ -161,6 +163,7 @@ fun SignupContent(
                                     ValidationState.INVALID_EMAIL -> "Invalid email"
                                     else -> ""
                                 },
+                                color = white200
                             )
                         }
 
@@ -179,6 +182,7 @@ fun SignupContent(
                                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                                     else -> ""
                                 },
+                                color = white200
                             )
                             HoneyTextField(
                                 text = state.confirmPassword,
@@ -188,7 +192,8 @@ fun SignupContent(
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
-                                }
+                                },
+                                color = white200
                             )
                         }
                     }
