@@ -47,65 +47,10 @@ fun AddCategoryScreen(
 fun AddCategoryContent(
     listener: CategoriesInteractionsListener,
     state: CategoriesUiState,
-    showAddCategory: Boolean,
 ) {
-//    AnimatedVisibility(visible = showAddCategory) {
-//        Row(modifier = Modifier.fillMaxSize()) {
-//            Column(modifier = Modifier.fillMaxSize()
-//                .weight(1f)) {
-//                AnimatedVisibility(
-//                    visible = state.categories.isNotEmpty(),
-//                ) {
-//                    Column(
-//                        modifier = Modifier.fillMaxSize()
-//                    ) {
-//                        HoneyMartTitle()
-//                        LazyVerticalGrid(
-//                            columns = GridCells.Fixed(5),
-//                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-//                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-//                            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space32)
-//                        ) {
-//                            items(count = state.categories.size) { index ->
-//                                CategoryItem(
-//                                    categoryName = state.categories[index].categoryName,
-//                                    onClick = {
-//                                        listener.onClickCategory(state.categories[index].categoryId)
-//                                    },
-//                                    icon = categoryIcons[state.categories[index].categoryIcon]
-//                                        ?: R.drawable.icon_category,
-//                                    isSelected = state.categories[index].isCategorySelected
-//                                )
-//                            }
-//                            item {
-//                                CategoryItem(
-//                                    categoryName = stringResource(id = R.string.add),
-//                                    onClick = {},
-//                                    icon = R.drawable.icon_add_product,
-//                                    isSelected = false
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//                AnimatedVisibility(visible = state.categories.isEmpty()) {
-//                    Column(modifier = Modifier.fillMaxSize()
-//                        .weight(1f)) {
-//                    EmptyCategory(
-//                        state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-//                        onClick = {}
-//                    )
-//                }
-//            }
     AnimatedVisibility(
         visible = !state.isError,
         modifier = Modifier
-            .padding(
-                top = MaterialTheme.dimens.space112,
-                end = MaterialTheme.dimens.space16
-            )
             .clip(
                 RoundedCornerShape(
                     topEnd = MaterialTheme.dimens.space16,
