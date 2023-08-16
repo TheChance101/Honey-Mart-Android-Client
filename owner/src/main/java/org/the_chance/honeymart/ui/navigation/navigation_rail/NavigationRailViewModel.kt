@@ -3,13 +3,16 @@ package org.the_chance.honeymart.ui.navigation.navigation_rail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
+import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class NavigationRailViewModel @Inject constructor(
-    private val profileInfo: GetOwnerInfoUseCase,
-) : BaseViewModel<NavigationRailUiState, NavigationRailEffect>(NavigationRailUiState()),
+    private val ownerProfileInfo: GetOwnerInfoUseCase,
+    private val logOutOwnerUseCase: LogOutOwnerUseCase,
+
+    ) : BaseViewModel<NavigationRailUiState, NavigationRailEffect>(NavigationRailUiState()),
     NavigationRailInteractionListener {
 
     override val TAG: String
@@ -22,8 +25,8 @@ class NavigationRailViewModel @Inject constructor(
     private fun getOwnerInfo() {
         _state.update {
             it.copy(
-                ownerNameFirstCharacter = profileInfo.getOwnerNameFirstCharacter(),
-                ownerImageUrl = profileInfo.getOwnerImageUrl()
+                ownerNameFirstCharacter = ownerProfileInfo.getOwnerNameFirstCharacter(),
+                ownerImageUrl = ownerProfileInfo.getOwnerImageUrl()
             )
         }
     }
@@ -33,6 +36,7 @@ class NavigationRailViewModel @Inject constructor(
     }
 
     override fun onClickLogout() {
+        logOutOwnerUseCase
         effectActionExecutor(_effect, NavigationRailEffect.OnClickLogoutEffect)
     }
 }
