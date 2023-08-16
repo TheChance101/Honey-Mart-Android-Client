@@ -3,14 +3,11 @@ package org.the_chance.honeymart.ui.features.category
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -101,31 +98,18 @@ fun CategoriesContent(
                         }
                     }
                 }
-            }
-        }
 
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
 
-
-
-        AddCategoryContent(
-            listener = listener, state = state,
-            showAddCategory = state.showAddCategory
-        )
-
-        LazyVerticalGrid(
-            state = rememberLazyGridState(),
-            columns = GridCells.Fixed(count = 3),
-            contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-        ) {
-            itemsIndexed(state.categories) { index, item ->
-                CategoryItem(
-                    categoryName = stringResource(id = R.string.add),
-                    onClick = {},
-                    icon = R.drawable.icon_add_product,
-                    isSelected = false
-                )
+                    AddCategoryContent(
+                        listener = listener, state = state,
+                        showAddCategory = state.showAddCategory
+                    )
+                }
             }
         }
     }
