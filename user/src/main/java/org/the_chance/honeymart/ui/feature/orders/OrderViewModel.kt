@@ -16,6 +16,16 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
+    override fun getAllPendingOrders() {
+        _state.update {
+            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PENDING)
+        }
+        tryToExecute(
+            { getAllOrders(OrderStates.PENDING.state) },
+            ::onGetPendingOrdersSuccess,
+            ::onGetPendingOrdersError
+        )
+    }
 
     override fun getAllProcessingOrders() {
         _state.update {
@@ -26,6 +36,17 @@ class OrderViewModel @Inject constructor(
             ::onGetProcessingOrdersSuccess,
             ::onGetProcessingOrdersError
         )
+    }
+
+    private fun onGetPendingOrdersSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+    }
+
+    private fun onGetPendingOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     private fun onGetProcessingOrdersSuccess(orders: List<OrderEntity>) {
@@ -44,15 +65,14 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.DONE.state)},
+            { getAllOrders(OrderStates.DONE.state) },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
-
     }
 
     private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() } ) }
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
@@ -67,14 +87,14 @@ class OrderViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.CANCELED.state)},
+            { getAllOrders(OrderStates.CANCELED.state) },
             ::onGetCancelOrdersSuccess,
             ::onGetCancelOrdersError
         )
     }
 
     private fun onGetCancelOrdersSuccess(orders: List<OrderEntity>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() } ) }
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
     private fun onGetCancelOrdersError(error: ErrorHandler) {
@@ -97,6 +117,7 @@ class OrderViewModel @Inject constructor(
     private fun updateOrdersSuccess(state: Boolean) {
         _state.update { it.copy(isLoading = false, state = state) }
         when (_state.value.orderStates) {
+            OrderStates.PENDING -> getAllPendingOrders()
             OrderStates.PROCESSING -> getAllProcessingOrders()
             OrderStates.DONE -> getAllDoneOrders()
             OrderStates.CANCELED -> getAllCancelOrders()
@@ -119,4 +140,6 @@ class OrderViewModel @Inject constructor(
     override fun onClickDiscoverMarkets() {
         effectActionExecutor(_effect, OrderUiEffect.ClickDiscoverMarketsEffect)
     }
+
+
 }
