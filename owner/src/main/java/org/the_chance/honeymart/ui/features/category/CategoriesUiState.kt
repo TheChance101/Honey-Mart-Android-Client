@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.features.category
 
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.addCategory.AddCategoryUIState
 import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
 import org.the_chance.honeymart.ui.features.products.ProductUiState
@@ -24,6 +25,7 @@ data class CategoriesUiState(
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L,
+    val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
 )
 data class SnackBarState(
     val isShow: Boolean = false,

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryImage
 import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
 import org.the_chance.honeymart.ui.components.FormTextField
@@ -83,8 +84,12 @@ fun AddCategoryContent(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space64),
                     hint = stringResource(R.string.category_name),
                     keyboardType = KeyboardType.Text,
-
                     onValueChange = listener::changeNameCategory,
+                    errorMessage = when (state.categoryNameState) {
+                        ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
+                        ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
+                        else -> ""
+                    }
                 )
 
                 Text(

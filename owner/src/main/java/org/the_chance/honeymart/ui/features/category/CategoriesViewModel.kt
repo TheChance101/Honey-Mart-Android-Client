@@ -7,12 +7,14 @@ import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
 import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.addCategory.toCategoryImageUIState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.products.toProductUiState
+import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryUiState
 import javax.inject.Inject
 
 /**
@@ -23,16 +25,20 @@ class CategoriesViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
     private val addCategoryUseCase: AddToCategoryUseCase,
     private val getAllProducts: GetAllProductsByCategoryUseCase,
-    ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
+    private val updateCategoryUseCase: UpdateCategoryUseCase
+) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
+
+    private val marketId = 7L
 
     init {
         getCategoryImages()
         getAllCategory()
     }
 
-    override val TAG: String = "category"
+    override val TAG: String = this::class.java.simpleName
 
+    // region Categories
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
@@ -58,7 +64,9 @@ class CategoriesViewModel @Inject constructor(
             _state.update { it.copy(isError = true) }
         }
     }
+    // endregion
 
+    // region Add Category
     override fun onClickCategory(categoryId: Long) {
         val updatedCategories = updateCategorySelection(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
@@ -70,7 +78,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
-        getProductsByCategoryId(categoryId =categoryId )
+        getProductsByCategoryId(categoryId = categoryId)
     }
 
     private fun updateCategorySelection(
@@ -84,10 +92,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun getCategoryImages() {
         _state.update {
-            it.copy(
-                isLoading = false,
-                categoryImages = categoryIcons.toCategoryImageUIState()
-            )
+            it.copy(isLoading = false, categoryImages = categoryIcons.toCategoryImageUIState())
         }
     }
 
@@ -105,11 +110,12 @@ class CategoriesViewModel @Inject constructor(
         getAllCategory()
         updateStateToShowAddCategory(false)
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = success)) }
-        Log.e("is show",state.value.snackBar.isShow.toString())
+        Log.e("is show", state.value.snackBar.isShow.toString())
     }
-    override fun resetSnackBarState(){
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
-        Log.e("is show",state.value.snackBar.isShow.toString())
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+        Log.e("is show", state.value.snackBar.isShow.toString())
     }
 
 
@@ -119,6 +125,7 @@ class CategoriesViewModel @Inject constructor(
             _state.update { it.copy(isError = true) }
         }
     }
+
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
@@ -141,7 +148,13 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun changeNameCategory(nameCategory: String) {
-        _state.update { it.copy(nameCategory = nameCategory) }
+        val categoryNameState: ValidationState = getCategoryNameState(nameCategory)
+        _state.update {
+            it.copy(
+                nameCategory = nameCategory,
+                categoryNameState = categoryNameState
+            )
+        }
     }
 
     override fun onClickAddCategory() {
@@ -175,4 +188,61 @@ class CategoriesViewModel @Inject constructor(
     override fun updateStateToShowAddCategory(state: Boolean) {
         _state.update { it.copy(showAddCategory = state) }
     }
+    // endregion
+
+    // region Update Category
+    override fun updateCategory(category: UpdateCategoryUiState) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            function = {
+                updateCategoryUseCase(
+                    imageId = category.categoryIconId,
+                    name = category.categoryName,
+                    id = category.categoryId,
+                    marketId = marketId
+                )
+            },
+            onSuccess = { onUpdateCategorySuccess() },
+            onError = ::onUpdateCategoryError
+        )
+    }
+
+    private fun onUpdateCategorySuccess() {
+        _state.update { it.copy(isLoading = false, error = null) }
+    }
+
+    private fun onUpdateCategoryError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    override fun onUpdatedCategoryNameChanged(name: String) {
+        val categoryNameState: ValidationState = getCategoryNameState(name)
+        _state.update { it.copy(categoryNameState = categoryNameState, nameCategory = name) }
+    }
+
+    private fun getCategoryNameState(name: String): ValidationState {
+        val productNameState: ValidationState = when {
+            name.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            name.length <= 2 -> ValidationState.SHORT_LENGTH_TEXT
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        return productNameState
+    }
+
+    override fun onClickCategoryIcon(categoryIconId: Int) {
+        val updatedIcons = _state.value.categoryImages.map { imageState ->
+            imageState.copy(isSelected = imageState.categoryImageId == categoryIconId)
+        }
+        _state.update {
+            it.copy(categoryImages = updatedIcons, categoryImageId = categoryIconId)
+        }
+    }
+
+    override fun onClickCancelUpdateCategory() {
+
+    }
+    // endregion
 }
