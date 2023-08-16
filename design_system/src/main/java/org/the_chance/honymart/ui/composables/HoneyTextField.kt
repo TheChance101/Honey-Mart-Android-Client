@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +35,7 @@ fun HoneyTextField(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
+    color: Color
 ) {
     Column {
         OutlinedTextField(
@@ -72,7 +74,7 @@ fun HoneyTextField(
                 Icon(
                     painter = iconPainter,
                     contentDescription = stringResource(R.string.copy_button),
-                    tint = if (isError) error else white200
+                    tint = if (isError) error else color
                 )
             },
             isError = isError,
@@ -100,7 +102,8 @@ fun TextFieldPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
+        color = white200
     )
 }
 
@@ -112,6 +115,7 @@ fun TextFieldTabletPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
+        color = white200
     )
 }

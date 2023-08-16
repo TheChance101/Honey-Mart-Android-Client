@@ -59,7 +59,8 @@ fun ProductCard(
                 ),
             backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
             else MaterialTheme.colorScheme.primary,
-            onClick = onClickFavorite
+            onClick = onClickFavorite,
+            size = MaterialTheme.dimens.icon32
         ) {
             Image(
                 painter = painterResource(
