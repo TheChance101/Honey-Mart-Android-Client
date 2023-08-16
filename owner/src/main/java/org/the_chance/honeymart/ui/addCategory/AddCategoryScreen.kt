@@ -47,7 +47,6 @@ fun AddCategoryScreen(
 fun AddCategoryContent(
     listener: CategoriesInteractionsListener,
     state: CategoriesUiState,
-    showAddCategory: Boolean,
 ) {
     AnimatedVisibility(
         visible = !state.isError,
