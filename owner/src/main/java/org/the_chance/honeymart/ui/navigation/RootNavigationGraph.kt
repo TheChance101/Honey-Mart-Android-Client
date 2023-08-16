@@ -20,5 +20,5 @@ fun RootNavigationGraph() {
 
 object Graph {
     const val AUTH_GRAPH = "auth_graph"
-    const val HOME = "main_graph"
+    const val MAIN_GRAPH = "main_graph"
 }

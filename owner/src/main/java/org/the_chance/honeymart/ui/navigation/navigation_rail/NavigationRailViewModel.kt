@@ -4,6 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
@@ -36,7 +37,18 @@ class NavigationRailViewModel @Inject constructor(
     }
 
     override fun onClickLogout() {
-        logOutOwnerUseCase
+        tryToExecute(
+            function = { logOutOwnerUseCase() },
+            onSuccess = { onLogoutSuccess() },
+            onError = ::onLogoutError
+        )
+    }
+
+    private fun onLogoutSuccess() {
         effectActionExecutor(_effect, NavigationRailEffect.OnClickLogoutEffect)
+    }
+
+    private fun onLogoutError(error: ErrorHandler) {
+
     }
 }

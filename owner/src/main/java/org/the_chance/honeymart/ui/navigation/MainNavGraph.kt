@@ -9,7 +9,7 @@ import org.the_chance.honeymart.ui.features.orders.ordersRoute
 fun NavGraphBuilder.mainNavGraph() {
     navigation(
         startDestination = Screen.Category.route,
-        route = Graph.HOME
+        route = Graph.MAIN_GRAPH
     ) {
         ordersRoute()
         categoryRoute()
