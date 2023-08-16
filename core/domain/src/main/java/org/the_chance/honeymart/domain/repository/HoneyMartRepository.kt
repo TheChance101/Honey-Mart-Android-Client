@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
 
@@ -31,4 +32,6 @@ interface HoneyMartRepository {
     suspend fun getProductDetails(productId: Long): ProductEntity
 
     suspend fun deleteAllCart():String
+
+    suspend fun getProfileUser(): ProfileUserEntity
 }

@@ -1,5 +1,4 @@
-package org.the_chance.honeymart.data .source.remote.mapper
-
+package org.the_chance.honeymart.data.source.remote.mapper
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.domain.model.ProductEntity
 

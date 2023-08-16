@@ -21,6 +21,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -189,6 +190,10 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
+
+    override suspend fun getProfileUser(): BaseResponse<ProfileUserDto> =
+        wrap(client.get("/user/myProfile"))
+
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {

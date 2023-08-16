@@ -7,6 +7,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toProfileUserEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
@@ -15,6 +16,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -90,5 +92,9 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
+
+    override suspend fun getProfileUser(): ProfileUserEntity =
+        wrap { honeyMartService.getProfileUser() }.value?.toProfileUserEntity()
+            ?: throw NotFoundException()
 
 }
