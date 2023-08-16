@@ -23,6 +23,7 @@ import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
 import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 /**
@@ -41,9 +42,13 @@ fun CategoriesContent(
     listener: CategoriesInteractionsListener,
 ) {
 
-    Column(modifier = Modifier.fillMaxSize()
-        .background(MaterialTheme.colorScheme.tertiaryContainer)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
         HoneyMartTitle()
+        Loading(state = state.isLoading && state.categories.isEmpty())
         AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
             Column(
                 modifier = Modifier
@@ -58,64 +63,66 @@ fun CategoriesContent(
         }
 
 
-            Row(modifier = Modifier.fillMaxSize()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
+        Row(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                EmptyCategory(
+                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    onClick = { listener.updateStateToShowAddCategory(true) }
+                )
+                AnimatedVisibility(
+                    visible = state.categories.isNotEmpty(),
                 ) {
-                    EmptyCategory(
-                        state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                        onClick = { listener.updateStateToShowAddCategory(true) }
-                    )
-                    AnimatedVisibility(
-                        visible = state.categories.isNotEmpty(),
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = MaterialTheme.dimens.space32)
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                                .padding(horizontal = MaterialTheme.dimens.space32)
-                        ) {
 
-                            LazyVerticalGrid(
-                                columns = GridCells.Adaptive(140.dp),
-                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            ) {
-                                items(count = state.categories.size) { index ->
-                                    CategoryItem(
-                                        categoryName = state.categories[index].categoryName,
-                                        onClick = {
-                                            listener.onClickCategory(state.categories[index].categoryId)
-                                        },
-                                        icon = categoryIcons[state.categories[index].categoryIcon]
-                                            ?: R.drawable.icon_category,
-                                        isSelected = state.categories[index].isCategorySelected
-                                    )
-                                }
-                                item {
-                                    CategoryItem(
-                                        categoryName = stringResource(id = R.string.add),
-                                        onClick = {listener.updateStateToShowAddCategory(true)},
-                                        icon = R.drawable.icon_add_to_cart,
-                                        isSelected = false
-                                    )
-                                }
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(140.dp),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                        ) {
+                            items(count = state.categories.size) { index ->
+                                CategoryItem(
+                                    categoryName = state.categories[index].categoryName,
+                                    onClick = {
+                                        listener.onClickCategory(state.categories[index].categoryId)
+                                    },
+                                    icon = categoryIcons[state.categories[index].categoryIcon]
+                                        ?: R.drawable.icon_category,
+                                    isSelected = state.categories[index].isCategorySelected
+                                )
+                            }
+                            item {
+                                CategoryItem(
+                                    categoryName = stringResource(id = R.string.add),
+                                    onClick = { listener.updateStateToShowAddCategory(true) },
+                                    icon = R.drawable.icon_add_to_cart,
+                                    isSelected = false
+                                )
                             }
                         }
                     }
                 }
+            }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                ) {
-                        AddCategoryContent(
-                            listener = listener, state = state,
-                        )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                AddCategoryContent(
+                    listener = listener, state = state,
+                )
 
 
-                }
             }
         }
     }
+    Loading(state = state.isLoading && state.categories.isNotEmpty())
+}

@@ -85,10 +85,10 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    private fun addCategory(name: String, CategoryImageID: Int) {
+    private fun addCategory(name: String, categoryImageID: Int) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            function = { addCategoryUseCase(name, CategoryImageID) },
+            function = { addCategoryUseCase(name, categoryImageID) },
             onSuccess = ::addCategorySuccess,
             onError = ::addCategoryError
         )

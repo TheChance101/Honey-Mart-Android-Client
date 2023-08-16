@@ -134,8 +134,4 @@ fun AddCategoryContent(
             )
         }
     }
-
-
-    Loading(state = state.isLoading)
-
 }
