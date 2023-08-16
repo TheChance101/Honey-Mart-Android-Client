@@ -129,7 +129,6 @@ fun HomeContent(
                 }
         )
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
             modifier = Modifier
                 .constrainAs(marketItems) {
                     top.linkTo(marketText.bottom)
@@ -165,7 +164,7 @@ fun HomeContent(
                 }
         )
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = PaddingValues(8.dp),
             modifier = Modifier
                 .constrainAs(categoryItems) {
                     top.linkTo(categoriesText.bottom)
@@ -174,7 +173,7 @@ fun HomeContent(
                 }
         ) {
             items(10) {
-                Hexagon(size = 140f, color = black37)
+                Hexagon()
             }
         }
     }

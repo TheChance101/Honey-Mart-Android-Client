@@ -1,48 +1,79 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.white
 import kotlin.math.cos
 import kotlin.math.sin
 
+
 @Composable
 fun Hexagon(
-    size: Float,
-    color: Color
+    modifier: Modifier = Modifier,
 ) {
-    Canvas(
-        modifier = androidx.compose.ui.Modifier.size(size.dp)
-    ) {
-        val hexagonPath = Path()
-        val centerX = size / 2
-        val centerY = size / 2
-        val radius = size / 2
-        val angle = Math.PI / 3
-
-        hexagonPath.moveTo(centerX + radius * cos(0.0).toFloat(), centerY + radius * Math.sin(0.0).toFloat())
-
-        for (i in 1..6) {
-            val x = centerX + radius * cos(angle * i).toFloat()
-            val y = centerY + radius * sin(angle * i).toFloat()
-            hexagonPath.lineTo(x, y)
+    Box(modifier = modifier) {
+        HexagonShapeCanvas()
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            Image(
+                painter = painterResource(id = org.the_chance.design_system.R.drawable.cuppaper),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp)
+            )
+            Text(text = "Drinks",
+                style = Typography.displaySmall.copy(black60))
         }
-
-        hexagonPath.close()
-
-        drawPath(
-            path = hexagonPath,
-            color = color
-        )
     }
 }
 
-@Preview
 @Composable
-fun HexagonPreview() {
-    Hexagon(size = 138f, color = Color.Blue)
+fun HexagonShapeCanvas() {
+    Canvas(
+        modifier = Modifier
+            .size(height = 120.dp, width = 130.dp)
+    ) {
+        val hexagonSize = size.maxDimension
+        val hexagonPath = Path().apply {
+            val angleRadians = Math.toRadians(60.0).toFloat()
+            val radius = hexagonSize / 2f
+
+            (0..5).forEach { i ->
+                val currentAngle = angleRadians * i
+                val x = center.x + radius * cos(currentAngle)
+                val y = center.y + radius * sin(currentAngle)
+                if (i == 0) moveTo(x, y) else lineTo(x, y)
+            }
+            close()
+
+        }
+        drawIntoCanvas {
+            it.drawOutline(
+                outline = Outline.Generic(hexagonPath),
+                paint = Paint().apply {
+                    color = white
+                    pathEffect = PathEffect.cornerPathEffect(16.dp.toPx())
+                }
+            )
+        }
+    }
 }
