@@ -1,14 +1,18 @@
 package org.the_chance.honeymart.ui.features.category
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
 import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.addCategory.toCategoryImageUIState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.features.products.toProductUiState
 import javax.inject.Inject
 
 /**
@@ -17,8 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
-    private val addCategoryUseCase: AddToCategoryUseCase
-) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
+    private val addCategoryUseCase: AddToCategoryUseCase,
+    private val getAllProducts: GetAllProductsByCategoryUseCase,
+    ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     init {
@@ -65,6 +70,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
+        getProductsByCategoryId(categoryId =categoryId )
     }
 
     private fun updateCategorySelection(
@@ -92,20 +98,46 @@ class CategoriesViewModel @Inject constructor(
             onSuccess = ::addCategorySuccess,
             onError = ::addCategoryError
         )
-
     }
 
     private fun addCategorySuccess(success: String) {
         _state.update { it.copy(isLoading = false, nameCategory = "") }
         getAllCategory()
         updateStateToShowAddCategory(false)
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = success)) }
+        Log.e("is show",state.value.snackBar.isShow.toString())
     }
+    override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
+        Log.e("is show",state.value.snackBar.isShow.toString())
+    }
+
 
     private fun addCategoryError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+    }
+    private fun getProductsByCategoryId(categoryId: Long) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { getAllProducts(categoryId) },
+            ::onGetProductsSuccess,
+            ::onGetProductsError
+        )
+    }
+
+    private fun onGetProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
+
+    private fun onGetProductsSuccess(products: List<ProductEntity>) {
+        _state.update { it.copy(isLoading = false) }
+
     }
 
     override fun changeNameCategory(nameCategory: String) {
@@ -128,6 +160,7 @@ class CategoriesViewModel @Inject constructor(
                 categoryImageId = categoryImageId
             )
         }
+
     }
 
     private fun updateCategoryImageSelection(

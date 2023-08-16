@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.addCategory.AddCategoryUIState
 import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
+import org.the_chance.honeymart.ui.features.products.ProductUiState
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -15,12 +16,18 @@ data class CategoriesUiState(
     val message: String = "",
     val nameCategory: String = "",
     val position: Int = 0,
+    val snackBar: SnackBarState =SnackBarState(),
     val categoryImageId: Int = 0,
     val showAddCategory: Boolean = false,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
+    val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L,
+)
+data class SnackBarState(
+    val isShow: Boolean = false,
+    val message: String = "",
 )
 
 data class CategoryUiState(
@@ -29,6 +36,12 @@ data class CategoryUiState(
     val categoryImageId: Int = 0,
     val isCategorySelected: Boolean = false,
     val categoryIcon: Int = 0,
+)
+data class ProductUiState(
+    val productId: Long = 0L,
+    val productName: String = "",
+    val productImage: String = "",
+    val productPrice: String = "0.0",
 )
 
 fun CategoryEntity.toCategoryUiState(): CategoryUiState {

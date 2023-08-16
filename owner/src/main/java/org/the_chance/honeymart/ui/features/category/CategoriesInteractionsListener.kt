@@ -11,4 +11,5 @@ interface CategoriesInteractionsListener {
     fun onClickAddCategory()
     fun onClickCategoryImage(categoryImageId: Int)
     fun updateStateToShowAddCategory(state: Boolean)
+    fun resetSnackBarState()
 }

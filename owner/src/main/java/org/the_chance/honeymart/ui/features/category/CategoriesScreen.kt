@@ -1,18 +1,27 @@
 package org.the_chance.honeymart.ui.features.category
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,7 +32,9 @@ import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
 import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
 /**
@@ -41,7 +52,6 @@ fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,53 +73,55 @@ fun CategoriesContent(
         }
 
 
-        Row(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                EmptyCategory(
-                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = { listener.updateStateToShowAddCategory(true) }
-                )
-                AnimatedVisibility(
-                    visible = state.categories.isNotEmpty(),
+            Row(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = MaterialTheme.dimens.space32)
+                    EmptyCategory(
+                        state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                        onClick = { listener.updateStateToShowAddCategory(true) }
+                    )
+                    AnimatedVisibility(
+                        visible = state.categories.isNotEmpty(),
                     ) {
-
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(140.dp),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = MaterialTheme.dimens.space32)
                         ) {
-                            items(count = state.categories.size) { index ->
-                                CategoryItem(
-                                    categoryName = state.categories[index].categoryName,
-                                    onClick = {
-                                        listener.onClickCategory(state.categories[index].categoryId)
-                                    },
-                                    icon = categoryIcons[state.categories[index].categoryIcon]
-                                        ?: R.drawable.icon_category,
-                                    isSelected = state.categories[index].isCategorySelected
-                                )
-                            }
-                            item {
-                                CategoryItem(
-                                    categoryName = stringResource(id = R.string.add),
-                                    onClick = { listener.updateStateToShowAddCategory(true) },
-                                    icon = R.drawable.icon_add_to_cart,
-                                    isSelected = false
-                                )
+
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(140.dp),
+                                contentPadding = PaddingValues(horizontal = 16.dp) ,
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                            ) {
+                                items(count = state.categories.size) { index ->
+                                    CategoryItem(
+                                        categoryName = state.categories[index].categoryName,
+                                        onClick = {
+                                            listener.onClickCategory(state.categories[index].categoryId)
+                                        },
+                                        icon = categoryIcons[state.categories[index].categoryImageId]
+                                            ?: R.drawable.icon_category,
+                                        isSelected = state.categories[index].isCategorySelected
+                                    )
+                                }
+                                item {
+                                    CategoryItem(
+                                        categoryName = stringResource(id = R.string.add),
+                                        onClick =
+                                        {listener.updateStateToShowAddCategory(!state.showAddCategory)},
+                                        icon = R.drawable.icon_add_to_cart,
+                                        isSelected = false
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            }
 
             Column(
                 modifier = Modifier
@@ -119,10 +131,38 @@ fun CategoriesContent(
                 AddCategoryContent(
                     listener = listener, state = state,
                 )
+                AnimatedVisibility(visible =state.products.isNotEmpty() && !state.isLoading ) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+                    ) {
+                        items(state.products.size) { index ->
+                            val product = state.products[index]
+                            ProductCard(
+                                imageUrl = product.productImage,
+                                productName = product.productName,
+                                productPrice = product.productPrice,
+                            )
+                        }
+                    }
+
+                }
 
 
             }
         }
     }
+        AnimatedVisibility(
+            visible = state.snackBar.isShow,
+            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+        ) {
+            SnackBarWithDuration(
+                message = state.snackBar.message,
+                onDismiss = listener::resetSnackBarState,
+                undoAction = {},
+                text = ""
+            )
+        }
     Loading(state = state.isLoading && state.categories.isNotEmpty())
 }
