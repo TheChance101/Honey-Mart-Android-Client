@@ -17,7 +17,7 @@ data class CategoriesUiState(
     val message: String = "",
     val nameCategory: String = "",
     val position: Int = 0,
-    val snackBar: SnackBarState =SnackBarState(),
+    val snackBar: SnackBarState = SnackBarState(),
     val categoryImageId: Int = 0,
     val showAddCategory: Boolean = false,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
@@ -26,7 +26,9 @@ data class CategoriesUiState(
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L,
     val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productsQuantity: String = "",
 )
+
 data class SnackBarState(
     val isShow: Boolean = false,
     val message: String = "",
@@ -39,6 +41,7 @@ data class CategoryUiState(
     val isCategorySelected: Boolean = false,
     val categoryIcon: Int = 0,
 )
+
 data class ProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
