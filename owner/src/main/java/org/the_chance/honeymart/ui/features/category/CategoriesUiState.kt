@@ -16,17 +16,19 @@ data class CategoriesUiState(
     val nameCategory: String = "",
     val position: Int = 0,
     val categoryImageId: Int = 0,
-    val showAddCategory: Boolean = false,
+    val showAddCategory: Boolean = true,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val categories: List<CategoryUiState> = emptyList(),
-    val categoryId: Long = 0L
+    val categoryId: Long = 0L,
 )
+
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
     val categoryImageId: Int = 0,
-    val isCategorySelected: Boolean = false
+    val isCategorySelected: Boolean = false,
+    val categoryIcon: Int = 0,
 )
 
 fun CategoryEntity.toCategoryUiState(): CategoryUiState {
