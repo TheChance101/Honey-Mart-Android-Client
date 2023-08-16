@@ -21,14 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryImage
 import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
+import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
-import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn37
@@ -49,8 +51,12 @@ fun AddCategoryContent(
     state: CategoriesUiState,
 ) {
     AnimatedVisibility(
-        visible = !state.isError,
+        visible = state.showAddCategory,
         modifier = Modifier
+            .padding(
+                end = MaterialTheme.dimens.space16,
+                bottom = MaterialTheme.dimens.space16
+            )
             .clip(
                 RoundedCornerShape(
                     topEnd = MaterialTheme.dimens.space16,
@@ -72,11 +78,13 @@ fun AddCategoryContent(
             Column(modifier = Modifier.fillMaxSize()) {
                 HeaderText(title = stringResource(R.string.add_new_category))
 
-                HoneyTextField(
+                FormTextField(
                     text = state.nameCategory,
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space64),
                     hint = stringResource(R.string.category_name),
-                    onValueChange = listener::changeNameCategory
+                    keyboardType = KeyboardType.Text,
+
+                    onValueChange = listener::changeNameCategory,
                 )
 
                 Text(
@@ -89,16 +97,16 @@ fun AddCategoryContent(
                 )
 
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
+                    columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space24)
+                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
                 ) {
                     items(count = state.categoryImages.size) { index ->
-                        CategoryImage(
+                        CategoryIconItem(
                             iconPainter = painterResource(id = state.categoryImages[index].image),
                             isSelected = state.categoryImages[index].isSelected,
-                            categoryImageID = state.categoryImages[index].categoryImageId,
+                            categoryIconId = state.categoryImages[index].categoryImageId,
                             onClick = {
                                 listener.onClickCategoryImage(
                                     state.categoryImages[index].categoryImageId

@@ -1,13 +1,16 @@
 package org.the_chance.honeymart.ui.addCategory.composable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryItem(
     icon: Int,
@@ -32,38 +35,45 @@ fun CategoryItem(
     onClick: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.width(MaterialTheme.dimens.space56),
+        modifier = modifier
+            .wrapContentSize() ,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
     ) {
-        IconButton(
-            modifier = modifier
-                .size(140.dp)
-                .background(
-                    if (isSelected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.secondaryContainer,
-                    shape = Shapes.medium
-                )
-                .padding(bottom = MaterialTheme.dimens.space4),
+        Card(
+            modifier = Modifier.size(140.dp),
+            shape = MaterialTheme.shapes.medium,
+
+            colors = if (isSelected) CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
+            else CardDefaults.cardColors(MaterialTheme.colorScheme.background),
             onClick = onClick
         ) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = stringResource(R.string.icon),
-                tint = if (isSelected) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.size(MaterialTheme.dimens.icon48)
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = MaterialTheme.dimens.space4),
+                contentAlignment = Alignment.Center
+
+            ) {
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = stringResource(R.string.icon),
+                    tint = if (isSelected) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(MaterialTheme.dimens.icon48)
+                )
+            }
         }
         Text(
             text = categoryName,
-            style = MaterialTheme.typography.displaySmall,
+            style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color =
-            if (isSelected) MaterialTheme.colorScheme.primary
+            color = if (isSelected) MaterialTheme.colorScheme.primary
             else MaterialTheme.colorScheme.onSecondaryContainer,
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Center
         )
+
     }
+
 
 }

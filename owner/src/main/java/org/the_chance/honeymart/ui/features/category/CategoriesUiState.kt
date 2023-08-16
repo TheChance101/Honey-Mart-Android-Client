@@ -16,7 +16,7 @@ data class CategoriesUiState(
     val nameCategory: String = "",
     val position: Int = 0,
     val categoryImageId: Int = 0,
-    val showAddCategory: Boolean = true,
+    val showAddCategory: Boolean = false,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val categories: List<CategoryUiState> = emptyList(),

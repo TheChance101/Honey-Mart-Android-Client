@@ -51,7 +51,7 @@ fun CategoryIconItem(
                 contentDescription = stringResource(R.string.category_icon),
                 modifier = Modifier.size(MaterialTheme.dimens.icon32),
                 tint = if (isSelected) white
-                else MaterialTheme.colorScheme.onSecondary
+                else MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
     }

@@ -39,8 +39,6 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> 
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-            HoneyMartTitle(modifier = Modifier.align(Alignment.TopStart))
-
             Column(modifier = Modifier.align(Alignment.Center)) {
                 Image(
                     painter = painterResource(id = R.drawable.img_empty_category),

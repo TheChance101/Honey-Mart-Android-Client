@@ -41,7 +41,7 @@ fun CategoriesContent(
 
     Column() {
         HoneyMartTitle()
-        AnimatedVisibility(visible = state.categories.isEmpty()) {
+        AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -49,19 +49,22 @@ fun CategoriesContent(
             ) {
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = {}
+                    onClick = { listener.updateStateToShowAddCategory(true) }
                 )
             }
         }
 
 
-        AnimatedVisibility(visible = state.showAddCategory) {
             Row(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f)
                 ) {
+                    EmptyCategory(
+                        state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                        onClick = { listener.updateStateToShowAddCategory(true) }
+                    )
                     AnimatedVisibility(
                         visible = state.categories.isNotEmpty(),
                     ) {
@@ -89,8 +92,8 @@ fun CategoriesContent(
                                 item {
                                     CategoryItem(
                                         categoryName = stringResource(id = R.string.add),
-                                        onClick = {},
-                                        icon = R.drawable.icon_add_product,
+                                        onClick = {listener.updateStateToShowAddCategory(true)},
+                                        icon = R.drawable.icon_add_to_cart,
                                         isSelected = false
                                     )
                                 }
@@ -104,13 +107,12 @@ fun CategoriesContent(
                         .fillMaxSize()
                         .weight(1f)
                 ) {
+                        AddCategoryContent(
+                            listener = listener, state = state,
+                        )
 
-                    AddCategoryContent(
-                        listener = listener, state = state,
-                        showAddCategory = state.showAddCategory
-                    )
+
                 }
             }
         }
     }
-}
