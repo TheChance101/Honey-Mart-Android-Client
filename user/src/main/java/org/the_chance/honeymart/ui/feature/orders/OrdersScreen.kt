@@ -107,6 +107,12 @@ fun OrdersContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 CustomChip(
+                    state = state.pending(),
+                    text = stringResource(id = R.string.Pending),
+                    onClick = listener::getAllProcessingOrders
+                )
+
+                CustomChip(
                     state = state.processing(),
                     text = stringResource(id = R.string.processing),
                     onClick = listener::getAllProcessingOrders
