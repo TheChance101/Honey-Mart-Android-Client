@@ -26,8 +26,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryImage
 import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
+import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.components.PlaceHolderItem
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
@@ -56,9 +58,10 @@ fun AddCategoryContent(
         Row(modifier = Modifier.fillMaxSize()) {
             AnimatedVisibility(
                 visible = state.categories.isNotEmpty(),
-                modifier = Modifier.weight(1f)
+
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.fillMaxSize()
+                    .weight(1f)) {
                     HoneyMartTitle()
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(5),
@@ -88,6 +91,16 @@ fun AddCategoryContent(
                         }
                     }
                 }
+            }
+            Column(modifier = Modifier.fillMaxSize()
+                .weight(1f)) {
+            AnimatedVisibility(visible = state.categories.isEmpty()) {
+                EmptyCategory(
+                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    modifier = Modifier.weight(2f),
+                    onClick = {}
+                )
+            }
             }
 
             AnimatedVisibility(

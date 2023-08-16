@@ -35,9 +35,8 @@ fun CategoriesContent(
 ) {
 
     Column() {
-
         EmptyCategory(
-            state = state.categories.isEmpty(),
+            state = state.categories.isEmpty() && !state.isLoading && !state.isError,
             modifier = Modifier.weight(1f),
             onClick = { listener.updateStateToShowAddCategory(true) }
         )
