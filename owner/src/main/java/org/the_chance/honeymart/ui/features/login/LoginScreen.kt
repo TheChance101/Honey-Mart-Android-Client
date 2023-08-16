@@ -23,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.features.signup.SignupUiEffect
 import org.the_chance.honeymart.ui.features.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
@@ -40,7 +39,30 @@ fun LoginScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                LoginUiEffect.ShowValidationToastEffect -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
 
+                LoginUiEffect.ClickLoginEffect -> {
+                    navController.navigateToCategoryScreen()
+                }
+
+                LoginUiEffect.ClickSignUpEffect -> {
+                    navController.navigateToSignupScreen()
+
+                }
+            }
+        }
+    }
     LoginContent(viewModel = viewModel, listener = viewModel, state = state)
 }
 
@@ -50,8 +72,7 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-    val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
+
 
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
@@ -96,27 +117,7 @@ fun LoginContent(
         )
     }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                LoginUiEffect.ShowValidationToastEffect -> {
-                    Toast.makeText(
-                        context,
-                        state.validationToast.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
 
-                LoginUiEffect.ClickLoginEffect -> {
-                    navController.navigateToCategoryScreen()
-                }
-
-                LoginUiEffect.ClickSignUpEffect -> {
-                    navController.navigateToSignupScreen()
-                }
-            }
-        }
-    }
 }
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
