@@ -2,7 +2,9 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfileEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.OwnerProfileEntity
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
@@ -60,5 +62,9 @@ class AuthRepositoryImp @Inject constructor(
     }
 
     override fun getOwnerImageUrl(): String? = datastore.getOwnerImageUrl()
+
+    override suspend fun getOwnerProfile(): OwnerProfileEntity =
+        wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfileEntity()
+            ?: throw NotFoundException()
 
 }
