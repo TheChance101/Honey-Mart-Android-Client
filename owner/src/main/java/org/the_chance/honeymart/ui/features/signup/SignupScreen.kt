@@ -36,18 +36,37 @@ fun SignupScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    SignupContent(viewModel = viewModel, listener = viewModel, state = state)
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                SignupUiEffect.ShowValidationToast -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                SignupUiEffect.ClickContinueEffect -> {
+                    navController.navigateToMarketInfoScreen()
+                }
+
+                SignupUiEffect.ClickLoginEffect -> {
+                    navController.navigateToLogin()
+                }
+            }
+        }
+    }
+    SignupContent(listener = viewModel, state = state)
 }
 
 @Composable
 fun SignupContent(
-    viewModel: SignUpViewModel,
     state: SignupUiState,
     listener: SignupInteractionListener,
 ) {
-    val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
@@ -107,27 +126,7 @@ fun SignupContent(
             )
         }
     }
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                SignupUiEffect.ShowValidationToast -> {
-                    Toast.makeText(
-                        context,
-                        state.validationToast.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
 
-                SignupUiEffect.ClickContinueEffect -> {
-                    navController.navigateToMarketInfoScreen()
-                }
-
-                SignupUiEffect.ClickLoginEffect -> {
-                    navController.navigateToLogin()
-                }
-            }
-        }
-    }
 }
 
 

@@ -63,17 +63,14 @@ fun LoginScreen(
             }
         }
     }
-    LoginContent(viewModel = viewModel, listener = viewModel, state = state)
+    LoginContent(listener = viewModel, state = state)
 }
 
 @Composable
 fun LoginContent(
-    viewModel: LoginViewModel,
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-
-
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
@@ -116,8 +113,6 @@ fun LoginContent(
             modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
         )
     }
-
-
 }
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
