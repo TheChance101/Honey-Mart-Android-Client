@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.features.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.OwnerProfileEntity
+import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationLoginFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -13,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
     private val validationLoginFieldsUseCase: ValidationLoginFieldsUseCase
 
@@ -20,6 +23,26 @@ class LoginViewModel @Inject constructor(
     LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
+
+    init {
+        checkAuthAndNavigate()
+    }
+
+    private fun checkAuthAndNavigate() {
+        tryToExecute(
+            { getOwnerProfileUseCase() },
+            ::onGetProfileSuccess,
+            ::onGetProfileError
+        )
+    }
+
+    private fun onGetProfileSuccess(profile: OwnerProfileEntity) {
+        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+    }
+
+    private fun onGetProfileError(error: ErrorHandler) {
+        // Handle the error here
+    }
 
     private fun loginOwner(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
