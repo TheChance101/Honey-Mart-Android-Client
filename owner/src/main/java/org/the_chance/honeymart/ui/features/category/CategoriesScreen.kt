@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.category
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.AddCategoryContent
@@ -39,7 +41,8 @@ fun CategoriesContent(
     listener: CategoriesInteractionsListener,
 ) {
 
-    Column() {
+    Column(modifier = Modifier.fillMaxSize()
+        .background(MaterialTheme.colorScheme.tertiaryContainer)) {
         HoneyMartTitle()
         AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
             Column(
@@ -70,13 +73,13 @@ fun CategoriesContent(
                     ) {
                         Column(
                             modifier = Modifier.fillMaxSize()
+                                .padding(horizontal = MaterialTheme.dimens.space32)
                         ) {
 
                             LazyVerticalGrid(
-                                columns = GridCells.Fixed(5),
+                                columns = GridCells.Adaptive(140.dp),
                                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space32)
                             ) {
                                 items(count = state.categories.size) { index ->
                                     CategoryItem(

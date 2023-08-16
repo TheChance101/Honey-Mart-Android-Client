@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.addCategory.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,7 @@ fun CategoryItem(
             shape = MaterialTheme.shapes.medium,
 
             colors = if (isSelected) CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
-            else CardDefaults.cardColors(MaterialTheme.colorScheme.background),
+            else CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
             onClick = onClick
         ) {
             Box(
@@ -68,8 +69,6 @@ fun CategoryItem(
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = if (isSelected) MaterialTheme.colorScheme.primary
-            else MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center
         )
 
