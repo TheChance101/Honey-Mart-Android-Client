@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -29,6 +30,7 @@ fun EmptyOrdersPlaceholder(
     title: String,
     subtitle: String,
     onClickDiscoverMarkets: () -> Unit,
+    visibility: Boolean = true
 ) {
     ContentVisibility(state = state) {
         Column(
@@ -54,18 +56,19 @@ fun EmptyOrdersPlaceholder(
                 text = subtitle,
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space16),
-                style = MaterialTheme.typography.displayLarge,
+                style = Typography.displayLarge,
                 color = black37,
                 textAlign = TextAlign.Center,
             )
-
-            HoneyFilledIconButton(
-                label = stringResource(id = R.string.discover_market_now),
-                onClick = onClickDiscoverMarkets,
-                iconPainter = painterResource(id = R.drawable.icon_cart),
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
-                background = primary100
-            )
+            ContentVisibility(state = visibility) {
+                HoneyFilledIconButton(
+                    label = stringResource(id = R.string.discover_market_now),
+                    onClick = onClickDiscoverMarkets,
+                    iconPainter = painterResource(id = R.drawable.icon_cart),
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
+                    background = primary100
+                )
+            }
         }
     }
 }
