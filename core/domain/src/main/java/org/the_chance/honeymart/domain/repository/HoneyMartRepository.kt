@@ -41,5 +41,12 @@ interface HoneyMartRepository {
 
     suspend fun addImageProduct(productId: Long, images: List<ByteArray>): String
 
+    suspend fun updateCategory(
+        id: Long,
+        name: String,
+        marketId: Long,
+        imageId: Int
+    ): String
+
     suspend fun addCategory(name: String, imageId: Int): String
 }

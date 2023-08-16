@@ -97,7 +97,7 @@ fun LoginContent(
                         subTitle = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
                         ),
-                        textColor = white,
+                        subTitleColor = white,
                         modifier = Modifier
                             .padding(bottom = MaterialTheme.dimens.space24)
                             .align(

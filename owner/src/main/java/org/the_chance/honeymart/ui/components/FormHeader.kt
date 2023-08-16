@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product.components
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,7 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun AddProductHeader(
+fun FormHeader(
     title: String,
     iconPainter: Painter,
     modifier: Modifier = Modifier
@@ -73,7 +73,7 @@ fun AddProductHeader(
 @Composable
 private fun PreviewAddProductHeader() {
     HoneyMartTheme {
-        AddProductHeader(
+        FormHeader(
             title = stringResource(R.string.add_new_product),
             iconPainter = painterResource(id = R.drawable.icon_add_product)
         )

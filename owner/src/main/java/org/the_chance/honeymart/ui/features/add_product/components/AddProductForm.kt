@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.add_product.components
+package org.the_chance.honeymart.ui.features.add_product.components
 
 import android.content.Context
 import android.net.Uri
@@ -27,9 +27,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.add_product.AddProductInteractionListener
-import org.the_chance.honeymart.ui.add_product.AddProductUiState
-import org.the_chance.honeymart.ui.add_product.showButton
+import org.the_chance.honeymart.ui.components.FormHeader
+import org.the_chance.honeymart.ui.components.FormTextField
+import org.the_chance.honeymart.ui.features.add_product.AddProductInteractionListener
+import org.the_chance.honeymart.ui.features.add_product.AddProductUiState
+import org.the_chance.honeymart.ui.features.add_product.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -60,7 +62,7 @@ fun AddProductForm(
                 shape = MaterialTheme.shapes.medium
             )
     ) {
-        AddProductHeader(
+        FormHeader(
             title = stringResource(R.string.add_new_product),
             iconPainter = painterResource(id = R.drawable.icon_add_product)
         )

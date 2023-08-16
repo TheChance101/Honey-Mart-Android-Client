@@ -1,21 +1,31 @@
 package org.the_chance.honeymart.ui.features.signup
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoUiState
 
 data class SignupUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isSignUp: Boolean = false,
-    val isLogin: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
-    val fullName: String = "",
-    val email: String = "",
-    val password: String = "",
-    val confirmPassword: String = "",
-    val emailState: ValidationState = ValidationState.VALID_EMAIL,
-    val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val confirmPasswordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
-    val showToast: Boolean = false
+
+    val marketInfoUiState: MarketInfoUiState = MarketInfoUiState(),
+
+    val fullNameState: FieldState = FieldState(),
+    val emailState: FieldState = FieldState(),
+    val passwordState: FieldState = FieldState(),
+    val confirmPasswordState: FieldState = FieldState(),
+
+    val validationToast: ValidationToast = ValidationToast()
+)
+
+data class FieldState(
+    val value: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isNotEmpty()
+)
+
+data class ValidationToast(
+    val isShow: Boolean = false,
+    val message: String = "Please fill all required fields"
 )
 
