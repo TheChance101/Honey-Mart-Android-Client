@@ -21,6 +21,7 @@ data class CategoriesUiState(
     val categoryImageId: Int = 0,
     val showAddCategory: Boolean = false,
     val showUpdateCategory: Boolean = false,
+    val showDialog : Boolean = false ,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val products: List<ProductUiState> = emptyList(),
@@ -51,7 +52,8 @@ data class ProductUiState(
 )
 enum class Visibility{
     UPDATE_CATEGORY,
-    ADD_CATEGORY
+    ADD_CATEGORY,
+    DELETE_CATEGORY,
 }
 
 fun CategoryEntity.toCategoryUiState(): CategoryUiState {

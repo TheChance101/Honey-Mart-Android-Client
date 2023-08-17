@@ -101,7 +101,7 @@ class HoneyMartServiceImp @Inject constructor(
     }
 
     override suspend fun deleteCategory(id: Long): BaseResponse<String> {
-        return wrap(client.delete(urlString = "/category/{id}"))
+        return wrap(client.delete(urlString = "/category/$id"))
     }
 
 

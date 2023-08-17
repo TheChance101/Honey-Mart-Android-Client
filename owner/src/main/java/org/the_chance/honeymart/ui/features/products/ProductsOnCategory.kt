@@ -76,7 +76,7 @@ fun ProductsOnCategory(
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
-                        onClickDelete = { listener.deleteCategory(state.categoryId) }
+                        onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
                     )
                 }
             }

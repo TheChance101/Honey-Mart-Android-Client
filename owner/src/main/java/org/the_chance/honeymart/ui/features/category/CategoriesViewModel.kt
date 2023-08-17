@@ -29,7 +29,7 @@ class CategoriesViewModel @Inject constructor(
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
-    private val marketId = 2L
+    private val marketId = 5L
 
     init {
         getCategoryImages()
@@ -94,7 +94,7 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(
                 categories = updatedCategories,
-                position = position.inc(),
+                position = position,
                 categoryId = categoryId,
                 isLoading = false,
                 showAddCategory = false,
@@ -228,6 +228,14 @@ class CategoriesViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         showUpdateCategory = !_state.value.showUpdateCategory
+                    )
+                }
+            }
+
+            Visibility.DELETE_CATEGORY -> {
+                _state.update {
+                    it.copy(
+                        showDialog = !_state.value.showDialog
                     )
                 }
             }
