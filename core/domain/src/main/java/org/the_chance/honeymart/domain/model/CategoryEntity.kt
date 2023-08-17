@@ -5,6 +5,5 @@ data class CategoryEntity(
     val categoryId: Long,
     val categoryName: String,
     val categoryImageId: Int,
-    val categoryImage: String,
 )
 

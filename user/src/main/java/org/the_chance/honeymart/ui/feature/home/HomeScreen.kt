@@ -166,8 +166,6 @@ fun HomeContent(
                 ) {
                     items(10) {
                         Hexagon(
-                            label = state.categories[it].categoryName,
-                            imageUrl = state.categories[it].categoryImage,
                         )
                     }
                 }
@@ -256,7 +254,7 @@ fun HomeContent(
                 )
             }
 
-            items(10) {
+            items(state.discoverProducts.size) {
                 NewProductsItems(
                     productName = state.discoverProducts[it].productName,
                     productPrice = state.discoverProducts[it].productPrice.toString(),
