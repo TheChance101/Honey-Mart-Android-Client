@@ -104,4 +104,5 @@
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
     <string name="cancelled">Cancelled</string>
+    <string name="declined">Declined</string>
 </resources>
