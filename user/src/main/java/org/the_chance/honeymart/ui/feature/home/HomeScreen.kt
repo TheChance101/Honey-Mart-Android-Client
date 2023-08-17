@@ -194,8 +194,10 @@ fun HomeContent(
                 }
         )
         {
-            items(10) {
-                CouponsItem()
+            items(state.coupons.size) {
+                CouponsItem(
+                    state=state.coupons[it],
+                )
             }
         }
         Text(

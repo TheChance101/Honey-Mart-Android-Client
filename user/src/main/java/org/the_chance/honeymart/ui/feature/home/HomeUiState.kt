@@ -1,5 +1,8 @@
 package org.the_chance.honeymart.ui.feature.home
 
+import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
+
 data class HomeUiState(
     val searchClick: Boolean = false,
     val isLoading: Boolean = true,
@@ -22,16 +25,12 @@ data class CategoryUiState(
 
 
 data class CouponUiState(
-    val couponId: Long = 0L,
-    val couponCode: Long = 0L,
-    val couponImage: String = "",
-    val startDate: String = "",
-    val endDate: String = "",
-    val couponName: String = "",
-    val dealNumber: Int = 0,
-    val price: Double = 0.0,
-    val offerPriceDouble: Double = 0.0,
-
+    val couponId: Long,
+    val count: Int,
+    val discountPercentage: Double,
+    val expirationDate: String,
+    val product: ProductEntity,
+    val isClipped: Boolean,
     )
 
 data class NewProductUiState(
@@ -56,4 +55,14 @@ data class DiscoverProductUiState(
     val discoverProductImage: String = "",
     val price: Double = 0.0,
     val isFavorite: Boolean = false,
+)
+
+
+fun CouponEntity.toCouponUiState() = CouponUiState(
+    couponId = couponId,
+    count = count,
+    discountPercentage = discountPercentage,
+    expirationDate = expirationDate,
+    product = product,
+    isClipped = isClipped,
 )

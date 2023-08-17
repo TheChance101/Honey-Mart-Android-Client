@@ -17,10 +17,12 @@ import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -189,6 +191,12 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
+
+    override suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>> =
+        wrap(client.get("/coupon/allUserCoupons"))
+
+    override suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>> =
+        wrap(client.get("/coupon/allValidCoupons"))
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {

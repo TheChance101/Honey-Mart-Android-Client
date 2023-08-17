@@ -3,10 +3,12 @@ package org.the_chance.honeymart.data.source.remote.network
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 /**
@@ -143,4 +145,15 @@ interface HoneyMartService {
         productId: Long,
     ): BaseResponse<ProductDto>
     // endregion
+
+
+    // region Coupon
+     suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>>
+
+     suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>>
+
+
+
+
+    // endregion Coupon
 }

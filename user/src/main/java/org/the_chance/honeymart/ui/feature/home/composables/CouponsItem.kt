@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,15 +25,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun CouponsItem() {
+fun CouponsItem(
+    modifier: Modifier = Modifier,
+    state : CouponUiState
+) {
     val color = MaterialTheme.colorScheme
     Row {
         Column(
@@ -60,7 +60,7 @@ fun CouponsItem() {
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             Text(
-                text = "Bronze foundation",
+                text = state.product.productName,
                 style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onSecondary),
             )
 
@@ -73,7 +73,7 @@ fun CouponsItem() {
                 )
                 CouponDataItem(
                     label = "End Date",
-                    value = "10.08.2023"
+                    value = state.expirationDate
                 )
             }
 
@@ -82,15 +82,15 @@ fun CouponsItem() {
             ) {
                 CouponDataItem(
                     label = "No. Deal",
-                    value = "10"
+                    value = state.count.toString()
                 )
                 CouponDataItem(
                     label = "Price",
-                    value = "$200"
+                    value = state.product.ProductPrice.toString(),
                 )
                 CouponDataItem(
                     label = "Offer Price",
-                    value = "$100",
+                    value = state.discountPercentage.toString(),
                     valueColor = MaterialTheme.colorScheme.primary
                 )
             }
@@ -326,19 +326,21 @@ fun CouponDataItem(
     }
 }
 
-
-@Preview(uiMode = UI_MODE_NIGHT_NO)
-@Composable
-fun PreviewCoupons() {
-    HoneyMartTheme {
-        CouponsItem()
-    }
-}
-
-@Preview(uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewCouponsDark() {
-    HoneyMartTheme {
-        CouponsItem()
-    }
-}
+//
+//@Preview(uiMode = UI_MODE_NIGHT_NO)
+//@Composable
+//fun PreviewCoupons() {
+//    HoneyMartTheme {
+//        CouponsItem(
+//
+//        )
+//    }
+//}
+//
+//@Preview(uiMode = UI_MODE_NIGHT_YES)
+//@Composable
+//fun PreviewCouponsDark() {
+//    HoneyMartTheme {
+//        CouponsItem()
+//    }
+//}
