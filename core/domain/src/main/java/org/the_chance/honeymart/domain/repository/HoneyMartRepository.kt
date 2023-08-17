@@ -3,6 +3,7 @@ package org.the_chance.honeymart.domain.repository
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
@@ -38,4 +39,8 @@ interface HoneyMartRepository {
     suspend fun getUSerCoupons(): List<CouponEntity>
 
     suspend fun getValidUSerCoupons(): List<ValidCouponEntity>
+
+    suspend fun getRecentProducts(): List<GetRecentProductsEntity>
+
+    suspend fun getAllProducts(): List<ProductEntity>
 }

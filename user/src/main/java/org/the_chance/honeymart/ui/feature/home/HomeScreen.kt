@@ -219,8 +219,13 @@ fun HomeContent(
                     end.linkTo(parent.end)
                 }
         ) {
-            items(10) {
-                NewProductsItems()
+            items(state.newProducts.size) {
+                NewProductsItems(
+                    state = state.newProducts[it],
+                    isFavoriteIconClicked = state.newProducts[it].isFavorite,
+                    onClickFavorite = {},
+                    enable = true
+                )
             }
         }
         Text(
@@ -270,7 +275,12 @@ fun HomeContent(
                 contentPadding = PaddingValues(MaterialTheme.dimens.space8),
             ) {
                 items(10) {
-                    NewProductsItems()
+                    NewProductsItems(
+                        state = state.newProducts[it],
+                        isFavoriteIconClicked = state.newProducts[it].isFavorite,
+                        onClickFavorite = {},
+                        enable = true
+                    )
                 }
             }
         }

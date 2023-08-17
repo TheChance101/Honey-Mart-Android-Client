@@ -18,6 +18,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -78,6 +79,9 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct"))
+
+    override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
+        wrap(client.get("/product/all"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/product/$productId"))
@@ -197,6 +201,9 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>> =
         wrap(client.get("/coupon/allValidCoupons"))
+
+    override suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>> =
+        wrap(client.get("/product/recentProducts"))
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {

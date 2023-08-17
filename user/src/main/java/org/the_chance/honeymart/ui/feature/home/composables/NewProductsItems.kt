@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,17 +18,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.home.NewProductUiState
 import org.the_chance.honymart.ui.composables.IconButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
-@Preview
 @Composable
 fun NewProductsItems(
     modifier: Modifier = Modifier,
     isFavoriteIconClicked: Boolean = false,
+    state: NewProductUiState,
     onClickFavorite: () -> Unit = {},
     enable: Boolean = true
 
@@ -38,9 +43,18 @@ fun NewProductsItems(
             .padding(
                 end = MaterialTheme.dimens.space8,
                 top = MaterialTheme.dimens.space8
-            ),
+            )
+
     )
     {
+        ImageNetwork(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxSize(),
+            imageUrl = state.newProductImage,
+            contentDescription = "new product image",
+            contentScale = androidx.compose.ui.layout.ContentScale.Crop
+        )
         IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd),
@@ -66,11 +80,11 @@ fun NewProductsItems(
 
         ) {
             Text(
-                text = "blah blah blah",
+                text = state.newProductName,
                 style = Typography.displayLarge.copy(white)
             )
             Text(
-                text = "30000$",
+                text = state.price.toString(),
                 style = Typography.displayLarge.copy(white)
             )
 

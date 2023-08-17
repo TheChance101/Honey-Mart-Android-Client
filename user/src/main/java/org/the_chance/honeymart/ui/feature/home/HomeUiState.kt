@@ -1,26 +1,27 @@
 package org.the_chance.honeymart.ui.feature.home
 
 import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.market.MarketUiState
+import org.the_chance.honeymart.ui.feature.orders.OrderStates
+import org.the_chance.honeymart.ui.feature.orders.OrderUiState
+import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class HomeUiState(
     val searchClick: Boolean = false,
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-    val error: String? = null,
+    val error: ErrorHandler? = null,
     val categories: List<CategoryUiState> = emptyList(),
-    val markets: List<org.the_chance.honeymart.ui.feature.market.MarketUiState> = emptyList(),
+    val markets: List<MarketUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
     val newProducts: List<NewProductUiState> = emptyList(),
-    val lastPurchases: List<LastPurchaseUiState> = emptyList(),
-    val discoverProducts: List<DiscoverProductUiState> = emptyList(),
-)
-
-
-data class CategoryUiState(
-    val categoryId: Long = 0L,
-    val categoryName: String = "",
-    val categoryImage: String = "",
+    val lastPurchases: List<OrderUiState> = emptyList(),
+    val discoverProducts: List<ProductUiState> = emptyList(),
+    val orderStates: OrderStates = OrderStates.DONE,
 )
 
 
@@ -31,32 +32,15 @@ data class CouponUiState(
     val expirationDate: String,
     val product: ProductEntity,
     val isClipped: Boolean,
-    )
+)
 
 data class NewProductUiState(
     val newProductId: Long = 0L,
     val newProductName: String = "",
     val newProductImage: String = "",
     val price: Double = 0.0,
-    val isFavorite: Boolean = false,
-
-    )
-
-data class LastPurchaseUiState(
-    val lastPurchaseId: Long = 0L,
-    val lastPurchaseName: String = "",
-    val lastPurchaseImage: String = "",
-    val productImages: List<String> = emptyList()
+    val isFavorite: Boolean = false
 )
-
-data class DiscoverProductUiState(
-    val discoverProductId: Long = 0L,
-    val discoverProductName: String = "",
-    val discoverProductImage: String = "",
-    val price: Double = 0.0,
-    val isFavorite: Boolean = false,
-)
-
 
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
@@ -65,4 +49,12 @@ fun CouponEntity.toCouponUiState() = CouponUiState(
     expirationDate = expirationDate,
     product = product,
     isClipped = isClipped,
+)
+
+fun GetRecentProductsEntity.toGetRecentProductUiState() = NewProductUiState(
+    newProductId = productId,
+    newProductName = productName,
+    newProductImage = productImages[0],
+    price = ProductPrice,
+    isFavorite = false,
 )
