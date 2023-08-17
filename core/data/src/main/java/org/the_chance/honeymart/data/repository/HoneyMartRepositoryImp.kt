@@ -94,6 +94,10 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun addCategory(name: String, imageId: Int): String =
         wrap { honeyMartService.addCategory(name, imageId) }.value ?: throw NotFoundException()
 
+    override suspend fun deleteCategory(id: Long): String {
+        return wrap { honeyMartService.deleteCategory(id) }.value ?: throw NotFoundException()
+    }
+
     override suspend fun addProduct(
         name: String,
         price: Double,
