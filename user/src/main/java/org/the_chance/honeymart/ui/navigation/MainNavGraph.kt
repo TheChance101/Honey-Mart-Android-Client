@@ -24,6 +24,6 @@ object Graph {
     const val AUTH_GRAPH = "auth_graph"
     const val HOME = "home_graph"
     const val CART = "cart_graph"
-    const val ORDERS = "orders_graph"
+    const val ORDERS = "search_screen"
     const val WISH_LIST = "wish_list_graph"
 }
