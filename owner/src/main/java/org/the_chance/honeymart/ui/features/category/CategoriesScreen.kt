@@ -65,7 +65,7 @@ fun CategoriesContent(
             ) {
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = { listener.resetShowState(true) }
+                    onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
             }
         }
@@ -79,7 +79,7 @@ fun CategoriesContent(
             ) {
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = { listener.resetShowState(true) }
+                    onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
                 AnimatedVisibility(
                     visible = state.categories.isNotEmpty(),
@@ -101,7 +101,7 @@ fun CategoriesContent(
                                     categoryName = state.categories[index].categoryName,
                                     onClick = {
                                         listener.onClickCategory(state.categories[index].categoryId)
-                                        listener.resetShowState(state.showUpdateCategory)
+                                        listener.resetShowState(Visibility.UPDATE_CATEGORY)
                                     },
                                     icon = categoryIcons[state.categories[index].categoryImageId]
                                         ?: R.drawable.icon_category,
@@ -112,7 +112,7 @@ fun CategoriesContent(
                                 CategoryItem(
                                     categoryName = stringResource(id = R.string.add),
                                     onClick =
-                                    { listener.resetShowState(!state.showAddCategory) },
+                                    { listener.resetShowState(Visibility.ADD_CATEGORY) },
                                     icon = R.drawable.icon_add_to_cart,
                                     isSelected = false
                                 )

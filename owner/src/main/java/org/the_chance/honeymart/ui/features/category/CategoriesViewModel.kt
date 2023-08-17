@@ -41,7 +41,7 @@ class CategoriesViewModel @Inject constructor(
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(5).map { it.toCategoryUiState() } },
+            { getAllCategories(marketId).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -77,7 +77,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
-       // getProductsByCategoryId(categoryId = categoryId)
+        // getProductsByCategoryId(categoryId = categoryId)
         updateCategory(_state.value)
     }
 
@@ -108,7 +108,7 @@ class CategoriesViewModel @Inject constructor(
     private fun addCategorySuccess(success: String) {
         _state.update { it.copy(isLoading = false, nameCategory = "") }
         getAllCategory()
-        updateStateToShowAddCategory(false)
+        resetShowState(Visibility.ADD_CATEGORY)
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = success)) }
         Log.e("is show", state.value.snackBar.isShow.toString())
     }
@@ -185,8 +185,15 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    override fun updateStateToShowAddCategory(state: Boolean) {
-        _state.update { it.copy(showUpdateCategory = state) }
+    override fun resetShowState(visibility: Visibility) {
+        when (visibility) {
+            Visibility.ADD_CATEGORY -> {
+                _state.update { it.copy(showAddCategory = !_state.value.showAddCategory) }
+            }
+            Visibility.UPDATE_CATEGORY -> {
+                _state.update { it.copy(showUpdateCategory = !_state.value.showUpdateCategory) }
+            }
+        }
     }
     // endregion
 
@@ -209,6 +216,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onUpdateCategorySuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
+        resetShowState(Visibility.UPDATE_CATEGORY)
     }
 
     private fun onUpdateCategoryError(errorHandler: ErrorHandler) {
