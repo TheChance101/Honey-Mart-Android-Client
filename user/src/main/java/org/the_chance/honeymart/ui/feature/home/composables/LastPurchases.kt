@@ -27,7 +27,7 @@ import org.the_chance.honymart.ui.theme.black60
 @Composable
 fun LastPurchasesItems(
     modifier: Modifier = Modifier,
-    image: List<String> = listOf(""),
+    image: String= "",
     label: String = "blah blah blah"
 ) {
     Box(
@@ -40,7 +40,7 @@ fun LastPurchasesItems(
                 modifier = Modifier.weight(1f)
             ) {
                 ImageNetwork(
-                    imageUrl = image[0],
+                    imageUrl = image,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -49,7 +49,7 @@ fun LastPurchasesItems(
                         .background(color = Color.Red)
                 )
                 ImageNetwork(
-                    imageUrl = image[1],
+                    imageUrl = image,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -62,7 +62,7 @@ fun LastPurchasesItems(
                 modifier = Modifier.weight(1f)
             ) {
                 ImageNetwork(
-                    imageUrl = image[2],
+                    imageUrl = image,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -71,7 +71,7 @@ fun LastPurchasesItems(
                         .background(color = Color.Blue)
                 )
                 ImageNetwork(
-                    imageUrl = image[3],
+                    imageUrl = image,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

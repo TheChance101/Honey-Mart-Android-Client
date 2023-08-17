@@ -239,7 +239,7 @@ fun HomeContent(
 
                     items(state.lastPurchases.size) {
                         LastPurchasesItems(
-                            // image = state.lastPurchases[it].imageUrl.get(it),
+                            image = state.lastPurchases[it].imageUrl,
                             label = state.lastPurchases[it].marketName,
                         )
                     }
