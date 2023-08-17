@@ -27,7 +27,7 @@ class CategoriesViewModel @Inject constructor(
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
-    private val marketId = 5L
+    private val marketId = 2L
 
     init {
         getCategoryImages()
@@ -265,8 +265,6 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCancelUpdateCategory() {
-
-    }
     // endregion
+
 }
