@@ -7,6 +7,7 @@ interface OrdersInteractionsListener {
     fun getAllPendingOrders()
     fun getAllProcessingOrders()
     fun getAllDoneOrders()
-    fun getAllCancelOrders()
+    fun getAllCancelledOrdersByUser()
+    fun getAllCancelledOrdersByOwner()
     fun updateOrders(position: Long, orderState: Int)
 }
