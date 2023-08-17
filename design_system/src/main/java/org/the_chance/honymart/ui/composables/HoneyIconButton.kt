@@ -19,14 +19,16 @@ import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
-fun HoneyFavIconButton(
-    onClick: () -> Unit,
-    iconPainter: Painter,
+fun HoneyIconButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    isLoading: Boolean = false,
+    iconPainter: Painter,
     shape: Shape = CircleShape,
     background: Color = MaterialTheme.colorScheme.primary,
 ) {
     IconButton(
+        enabled = !isLoading,
         onClick = onClick,
         modifier = modifier
             .clip(shape)
@@ -40,15 +42,13 @@ fun HoneyFavIconButton(
             contentDescription = "",
             modifier = Modifier.size(MaterialTheme.dimens.icon24),
         )
-
-
     }
 }
 
 @Preview
 @Composable
 private fun HoneyMartSmallIconPreview() {
-    HoneyFavIconButton(
+    HoneyIconButton(
         iconPainter = painterResource(id = R.drawable.icon_favorite_selected),
         onClick = {}
     )

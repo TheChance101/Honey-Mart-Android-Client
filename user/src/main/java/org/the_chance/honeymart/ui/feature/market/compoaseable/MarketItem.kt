@@ -25,15 +25,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.theme.Shapes
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.user.R
 
 
 @Composable
 fun MarketItem(
+    onClickItem: (Long) -> Unit,
     state: MarketUiState,
-    onClickItem: (Long) -> Unit
 ){
 
     Box(

@@ -2,38 +2,46 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
     private val getAllWishListUseCase: GetAllWishListUseCase,
-    private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
-) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
+    private val wishListOperationsUseCase: WishListOperationsUseCase,
+    ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
+
+    override fun onShowSnackBar(message:String){
+        _state.update { it.copy(snackBar = it.snackBar.copy(message = message, isShow = true)) }
+    }
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
-                products = updateProductFavoriteState(false, productId),
+                products = updateProductFavoriteState(false,productId),
                 isLoading = true,
-                isError = false
+                isError = false,
             )
         }
         tryToExecute(
-            { deleteFromWishListUseCase(productId) },
+            { wishListOperationsUseCase.deleteFromWishList(productId) },
             ::onDeleteProductSuccess,
             { onDeleteProductError(it, productId) }
         )
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId =productId)) }
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect)
+        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect(successMessage))
         getWishListProducts()
+    }
+    override fun resetSnackBarState(){
+        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
     }
 
     private fun updateProductFavoriteState(
@@ -49,11 +57,46 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
         return updatedProducts
     }
+     override fun addProductToWishList(productId: Long) {
+         _state.update {
+             it.copy(
+                 isLoading = true,
+                 isError = false,
+             )
+         }
+        tryToExecute(
+            { wishListOperationsUseCase.addToWishList(productId) },
+            ::onAddToWishListSuccess,
+            { onAddToWishListError(it, productId) }
+        )
+    }
+    private fun onAddToWishListSuccess(successMessage: String) {
+        getWishListProducts()
+
+    }
+    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorizedUser) {
+            updateFavoriteState(productId, false)
+        }
+    }
+
+    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+        val newProduct = _state.value.products.map {
+            if (it.productId == productId) {
+                it.copy(isFavorite = isFavorite)
+            } else {
+                it
+            }
+        }
+        _state.update { it.copy(products = newProduct) }
+    }
+
+
 
 
     private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
         _state.update {
-            it.copy(products = updateProductFavoriteState(true, productId), error = error)
+            it.copy(products = updateProductFavoriteState(true ,productId), error = error)
         }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }

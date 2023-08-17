@@ -19,7 +19,6 @@ import org.the_chance.honeymart.domain.util.NetworkException
 import org.the_chance.honeymart.domain.util.handelAuthenticationException
 import org.the_chance.honeymart.domain.util.handelGeneralException
 import org.the_chance.honeymart.domain.util.handelNetworkException
-import org.the_chance.honeymart.util.EventHandler
 import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
@@ -32,7 +31,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     protected val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
-    protected val _effect = MutableSharedFlow<EventHandler<E>>()
+    protected val _effect = MutableSharedFlow<E>()
     val effect = _effect.asSharedFlow()
 
     private var job: Job? = null
@@ -68,11 +67,11 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
     }
 
     protected fun <T : BaseUiEffect> effectActionExecutor(
-        _effect: MutableSharedFlow<EventHandler<T>>,
+        _effect: MutableSharedFlow<T>,
         effect: T,
     ) {
         viewModelScope.launch {
-            _effect.emit(EventHandler(effect))
+            _effect.emit(effect)
         }
     }
     protected fun <T> tryToExecuteDebounced(

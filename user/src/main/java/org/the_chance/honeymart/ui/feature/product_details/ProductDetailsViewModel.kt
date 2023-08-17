@@ -3,26 +3,24 @@ package org.the_chance.honeymart.ui.feature.product_details
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToCartUseCase
-import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
+import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val getProductDetailsUseCase: GetProductDetailsUseCase,
-    private val addProductToCartUseCase: AddToCartUseCase,
+    private val addProductToCartUseCase: CartUseCase,
     private val deleteCartUseCase: DeleteAllCartUseCase,
-    private val addProductToWishListUseCase: AddToWishListUseCase,
     private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
-    private val deleteProductFromWishListUseCase: DeleteFromWishListUseCase,
+    private val wishListOperations: WishListOperationsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductDetailsInteraction {
@@ -31,23 +29,30 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val args = ProductDetailsArgs(savedStateHandle)
 
-
     init {
         getData()
     }
 
-    fun getData() {
+    private fun getData() {
         getProductDetails(args.productId.toLong())
     }
 
-
-    fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
+    override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
             { deleteCartUseCase() },
             { onDeleteCartSuccess(it, productId, count) },
             ::onDeleteCartError,
         )
+    }
+
+    override fun showDialog(productId: Long, count: Int){
+        _state.update { it.copy(dialogState = it.dialogState.copy(
+            showDialog = true,productId = productId, count = count))}
+    }
+
+    override fun resetDialogState(){
+        _state.update { it.copy(dialogState = it.dialogState.copy(showDialog = false)) }
     }
 
     private fun onDeleteCartSuccess(message: String, productId: Long, count: Int) {
@@ -61,24 +66,23 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-
     // region Product
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
         tryToExecute(
-            { getProductDetailsUseCase(productId).toProductUiState() },
+            {getProductDetailsUseCase(productId)},
             ::onGetProductSuccess,
             ::onGetProductError,
         )
     }
 
-    private fun onGetProductSuccess(product: ProductUiState) {
+    private fun onGetProductSuccess(product: ProductEntity) {
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product,
+                error = null, isConnectionError = false, product = product.toProductUiState(),
                 image = product.productImages.first(),
                 smallImages = product.productImages.drop(1),
-                totalPrice = product.productPrice
+                totalPrice = product.ProductPrice
             )
         }
         checkIfProductInWishList(args.productId.toLong())
@@ -132,19 +136,20 @@ class ProductDetailsViewModel @Inject constructor(
             it.copy(
                 isAddToCartLoading = true,
                 error = null,
-                isConnectionError = false
+                isConnectionError = false,
             )
         }
         tryToExecuteDebounced(
-            { addProductToCartUseCase(productId, count) },
+            { addProductToCartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun onAddProductToCartSuccess(message: String) {
         _state.update { it.copy(isAddToCartLoading = false) }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess)
+        effectActionExecutor(_effect, ProductDetailsUiEffect.AddToCartSuccess(message))
     }
 
     private fun onAddProductToCartError(error: ErrorHandler, productId: Long, count: Int) {
@@ -168,16 +173,12 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
-
             else -> {}
         }
     }
-
     // endregion
 
     // region Wishlist
-
-
     // region Check If Product In Wishlist
 
     private fun checkIfProductInWishList(productId: Long) {
@@ -201,6 +202,7 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
+
     // endregion
 
     // region Add Product To Wishlist
@@ -208,7 +210,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
-            { addProductToWishListUseCase(productId) },
+            { wishListOperations.addToWishList(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
         )
@@ -218,7 +220,6 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        effectActionExecutor(_effect, ProductDetailsUiEffect.AddProductToWishListEffectSuccess)
     }
 
     private fun onAddProductToWishListError(error: ErrorHandler, productId: Long) {
@@ -235,6 +236,18 @@ class ProductDetailsViewModel @Inject constructor(
             else -> {}
         }
         updateFavoriteState(false)
+    }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun showSnackBar(massage: String) {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, massage = massage)) }
+    }
+
+    override fun onclickTryAgain() {
+        getData()
     }
 
     // endregion
@@ -268,15 +281,13 @@ class ProductDetailsViewModel @Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecuteDebounced(
-            { deleteProductFromWishListUseCase(productId) },
+            { wishListOperations.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )
     }
 
-
     private fun onDeleteWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductDetailsUiEffect.RemoveProductFromWishListEffectSuccess)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -285,6 +296,4 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
-
-
 }

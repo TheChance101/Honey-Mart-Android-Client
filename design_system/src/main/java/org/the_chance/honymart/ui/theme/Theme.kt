@@ -62,7 +62,7 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = primary100,
     outlineVariant = black8,
 
-)
+    )
 
 val MaterialTheme.dimens: Dimens
     @Composable

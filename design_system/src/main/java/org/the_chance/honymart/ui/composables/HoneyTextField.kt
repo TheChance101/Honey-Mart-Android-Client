@@ -30,10 +30,10 @@ import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun HoneyTextField(
+    modifier: Modifier = Modifier,
     hint: String,
     iconPainter: Painter,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
@@ -61,7 +61,7 @@ fun HoneyTextField(
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedSupportingTextColor = if (isError) error else black37,
-                focusedContainerColor = (MaterialTheme.colorScheme.onTertiary),
+                focusedContainerColor = Color.Transparent,
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
                 focusedBorderColor = if (isError) error else black16,
                 unfocusedBorderColor = if (isError) error else black16,

@@ -107,7 +107,6 @@ fun AppBarTitle(
         Text(
             text = stringResource(R.string.mart),
             style = MaterialTheme.typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondary),
-
             )
     }
 }

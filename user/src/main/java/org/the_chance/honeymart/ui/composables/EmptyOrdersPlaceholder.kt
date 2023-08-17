@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -49,15 +48,15 @@ fun EmptyOrdersPlaceholder(
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space32),
                 style = MaterialTheme.typography.bodyMedium,
-                color = black60,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
                 text = subtitle,
                 modifier = Modifier
                     .padding(top = MaterialTheme.dimens.space16),
-                style = Typography.displayLarge,
-                color = black37,
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
             )
             ContentVisibility(state = visibility) {

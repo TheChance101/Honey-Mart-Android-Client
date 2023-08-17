@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.the_chance.honeymart.data.source.local.AuthDataStorePref
-import org.the_chance.honeymart.data.source.local.AuthDataStorePrefImp
+import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.local.AuthDataStorePreferencesImp
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +16,8 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAuthDataStorePref(@ApplicationContext context: Context): AuthDataStorePref {
-        return AuthDataStorePrefImp(context)
+    fun provideAuthDataStorePref(@ApplicationContext context: Context): AuthDataStorePreferences {
+        return AuthDataStorePreferencesImp(context)
 
     }
 }

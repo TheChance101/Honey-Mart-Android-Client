@@ -31,23 +31,47 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    imageUrl: String,
+    modifier: Modifier = Modifier,
     productName: String,
     productPrice: String,
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
     onClickFavorite: () -> Unit,
+    enable: Boolean,
     onClickCard: () -> Unit,
-    modifier: Modifier = Modifier,
     visibility: Boolean = true,
+    imageUrl: String,
 ) {
     Box(
         modifier = modifier
             .height(height = 200.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onClickCard() }
+            .clickable { if (enable) onClickCard() },
+
     ) {
+        ImageNetwork(
+            modifier = Modifier.fillMaxSize(),
+            imageUrl = imageUrl
+        )
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(
+                    end = MaterialTheme.dimens.space8,
+                    top = MaterialTheme.dimens.space8
+                ),
+            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+            else MaterialTheme.colorScheme.primary,
+            onClick = { if(enable)onClickFavorite() }
+        ) {
+            Image(
+                painter = painterResource(
+                    id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                    else R.drawable.icon_favorite_unselected
+                ),
+                contentDescription = stringResource(R.string.favorite_icon),
+            )
             ImageNetwork(
                 modifier = Modifier.fillMaxSize(),
                 imageUrl = imageUrl
@@ -86,6 +110,38 @@ fun ProductCard(
                         startY = 300f,
                     )
                 )
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = MaterialTheme.dimens.space8,
+                    bottom = MaterialTheme.dimens.space8,
+                    end = MaterialTheme.dimens.space8
+                )
+        ) {
+            Text(
+                text = productName,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = "$productPrice$",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = secondaryText,
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
             )
             Column(
                 modifier = Modifier
@@ -119,7 +175,7 @@ fun ProductCard(
                 )
             }
 
-        }
+    }
 }
 
 @Preview
@@ -131,6 +187,7 @@ fun ProductCardPreview() {
         productPrice = "30,000",
         secondaryText = "Secondary Text",
         isFavoriteIconClicked = true,
+        enable = true,
         onClickFavorite = {},
         onClickCard = {}
     )

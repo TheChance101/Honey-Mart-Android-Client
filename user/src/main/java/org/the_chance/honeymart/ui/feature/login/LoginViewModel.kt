@@ -3,8 +3,7 @@ package org.the_chance.honeymart.ui.feature.login
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateEmailUseCase
-import org.the_chance.honeymart.domain.usecase.ValidatePasswordUseCase
+import org.the_chance.honeymart.domain.usecase.ValidationUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -13,8 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
-    private val validateEmail: ValidateEmailUseCase,
-    private val validatePassword: ValidatePasswordUseCase,
+    private val validation: ValidationUseCase,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
@@ -67,12 +65,12 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onEmailInputChange(email: CharSequence) {
-        val emailState = validateEmail(email.trim().toString())
+        val emailState = validation.validateEmail(email.trim().toString())
         _state.update { it.copy(emailState = emailState, email = email.toString()) }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validatePassword(password.trim().toString())
+        val passwordState = validation.validationPassword(password.trim().toString())
         _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
     }
 

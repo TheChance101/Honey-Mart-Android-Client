@@ -31,15 +31,16 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemOrder(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     orderId: Long,
+    onClickCard: (orderId: Long) -> Unit = {},
     marketName: String,
     quantity: Int,
     price: Double,
-    onClickCard: (orderId: Long) -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(105.dp)
             .clickable { onClickCard(orderId) },
@@ -58,19 +59,19 @@ fun ItemOrder(
                     .fillMaxHeight()
                     .padding(
                         horizontal = MaterialTheme.dimens.space8,
-                        vertical = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8,
                     ),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 Text(
                     text = stringResource(id = R.string.order, orderId),
                     style = MaterialTheme.typography.displayLarge,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = marketName,
                     style = MaterialTheme.typography.displaySmall,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Row {
                     Image(

@@ -38,9 +38,10 @@ fun ItemMarketCard(
             contentAlignment = Alignment.Center
         ) {
             ImageNetwork(
+                modifier = Modifier.fullOverlay(),
                 imageUrlMarket,
-                modifier = Modifier.fullOverlay()
-            )
+
+                )
             Text(
                 nameMarket,
                 style = MaterialTheme.typography.displayMedium,

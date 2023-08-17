@@ -35,11 +35,11 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CustomAlertDialog(
-    message: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
-    onDismissRequest: () -> Unit
-) {
+    onDismissRequest: () -> Unit,
+    message: String,
+    ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             shape = Shapes.extraLarge,
@@ -58,6 +58,8 @@ fun CustomAlertDialog(
                 )
                 Text(
                     text = message,
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16),
                     color = black60,
                     style = Typography.bodySmall,
                     textAlign = TextAlign.Center

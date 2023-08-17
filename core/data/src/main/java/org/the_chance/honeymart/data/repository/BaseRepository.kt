@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.InvalidDataException
 import org.the_chance.honeymart.domain.util.NotFoundException
+import org.the_chance.honeymart.domain.util.NotValidApiKeyException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 
 abstract class BaseRepository {
@@ -34,8 +35,10 @@ abstract class BaseRepository {
                 }
             }
         } catch (e: ClientRequestException) {
+            Log.e("Tag", "response Error:${e.message}")
             when (e.response.status.value) {
                 401 -> throw UnAuthorizedException()
+                400 -> throw NotValidApiKeyException()
                 500 -> throw InternalServerException()
                 else -> throw Exception(e.message)
             }

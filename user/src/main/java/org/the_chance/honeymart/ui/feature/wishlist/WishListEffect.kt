@@ -5,5 +5,5 @@ import org.the_chance.honeymart.ui.base.BaseUiEffect
 sealed class WishListUiEffect : BaseUiEffect {
     data class ClickProductEffect(val productId: Long) : WishListUiEffect()
     object ClickDiscoverEffect : WishListUiEffect()
-    object DeleteProductFromWishListEffect : WishListUiEffect()
+    data class DeleteProductFromWishListEffect(val message:String) : WishListUiEffect()
 }

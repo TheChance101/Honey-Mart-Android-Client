@@ -15,10 +15,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun IconButton(
-    size: Dp,
+    size: Dp = MaterialTheme.dimens.icon32,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
