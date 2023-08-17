@@ -4,10 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -74,6 +76,9 @@ fun HomeContent(
 
     AppBarScaffold {
         LazyVerticalGrid(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16),
             modifier = Modifier
                 .fillMaxSize()
                 .background(white30),
@@ -84,6 +89,7 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 HorizontalPager(
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space12),
                     pageCount = state.markets.size,
                     state = pagerState,
                 ) {
@@ -93,6 +99,7 @@ fun HomeContent(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(horizontal = MaterialTheme.dimens.space4)
                             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
                             .height(MaterialTheme.dimens.heightItemMarketCard)
                             .clickable(onClick = {}),
@@ -104,6 +111,7 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 HorizontalPagerIndicator(
+
                     itemCount = 3,
                     selectedPage = pagerState.currentPage,
                 )
@@ -114,6 +122,7 @@ fun HomeContent(
             ) {
                 SearchBar(
                     modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16)
                         .clickable { },
                     icon = painterResource(id = R.drawable.ic_search)
                 )
@@ -122,7 +131,10 @@ fun HomeContent(
             item(
                 span = { GridItemSpan(2) },
             ) {
-                ItemLabel(label = stringResource(org.the_chance.user.R.string.markets))
+                ItemLabel(
+                    label = stringResource(org.the_chance.user.R.string.markets),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                )
             }
 
             item(
@@ -141,13 +153,18 @@ fun HomeContent(
             item(
                 span = { GridItemSpan(2) },
             ) {
-                ItemLabel(label = stringResource(org.the_chance.user.R.string.categories))
+                ItemLabel(
+                    label = stringResource(org.the_chance.user.R.string.categories),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                )
             }
 
             item(
                 span = { GridItemSpan(2) },
             ) {
                 LazyRow(
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+
                 ) {
                     items(10) {
                         Hexagon()
@@ -159,7 +176,9 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 LazyRow(
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 )
+
                 {
                     items(5) {
                         CouponsItem(
@@ -188,6 +207,7 @@ fun HomeContent(
                 Text(
                     text = stringResource(R.string.new_products),
                     style = Typography.bodySmall.copy(black87),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 )
             }
 
@@ -195,6 +215,8 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 ) {
                     items(10) {
                         NewProductsItems()
@@ -210,6 +232,8 @@ fun HomeContent(
                 Text(
                     text = stringResource(R.string.last_purchases),
                     style = Typography.bodySmall.copy(black87),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+
                 )
             }
 
@@ -218,32 +242,37 @@ fun HomeContent(
 
                 ) {
                 LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 ) {
-                    items(10) {
-                        LastPurchasesItems()
+
+
+                        items(10) {
+                            LastPurchasesItems()
+                        }
                     }
                 }
-            }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                Text(
-                    text = stringResource(R.string.last_purchases),
-                    style = Typography.bodySmall.copy(black87),
-                )
-            }
+                item(
+                    span = { GridItemSpan(2) },
+                ) {
+                    Text(
+                        text = stringResource(R.string.last_purchases),
+                        style = Typography.bodySmall.copy(black87),
+                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                    )
+                }
 
-            items(10) {
-                NewProductsItems()
+                items(10) {
+                    NewProductsItems()
+                }
             }
         }
     }
-}
 
 
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
-}
+    @Preview
+    @Composable
+    fun HomeScreenPreview() {
+        HomeScreen()
+    }

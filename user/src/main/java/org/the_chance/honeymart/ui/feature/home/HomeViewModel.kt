@@ -27,7 +27,6 @@ class HomeViewModel @Inject constructor(
     private val getAllRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUSeCase,
     private val getAllOrders: GetAllOrdersUseCase,
-
     ) :
     BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()) {
     override val TAG: String = this::class.java.simpleName

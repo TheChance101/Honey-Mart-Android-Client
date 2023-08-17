@@ -81,7 +81,7 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("/category/$categoryId/allProduct"))
 
     override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
-        wrap(client.get("/product/all"))
+        wrap(client.get("/product"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/product/$productId"))

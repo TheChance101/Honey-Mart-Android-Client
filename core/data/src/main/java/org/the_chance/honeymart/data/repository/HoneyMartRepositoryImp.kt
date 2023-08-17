@@ -4,6 +4,7 @@ import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toGetRecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
@@ -14,6 +15,7 @@ import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
@@ -102,6 +104,14 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getValidUSerCoupons(): List<ValidCouponEntity> =
         wrap { honeyMartService.getCouponOfValidUser() }.value?.map { it.toValidCouponEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getRecentProducts(): List<GetRecentProductsEntity> =
+        wrap { honeyMartService.getRecentProducts() }.value?.map { it.toGetRecentProductEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getAllProducts(): List<ProductEntity>
+        = wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
             ?: throw NotFoundException()
 
 
