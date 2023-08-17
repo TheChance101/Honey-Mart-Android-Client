@@ -77,8 +77,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
-        // getProductsByCategoryId(categoryId = categoryId)
-        updateCategory(_state.value)
+       // getProductsByCategoryId(categoryId = categoryId)
     }
 
     private fun updateCategorySelection(
@@ -188,10 +187,21 @@ class CategoriesViewModel @Inject constructor(
     override fun resetShowState(visibility: Visibility) {
         when (visibility) {
             Visibility.ADD_CATEGORY -> {
-                _state.update { it.copy(showAddCategory = !_state.value.showAddCategory) }
+                _state.update {
+                    it.copy(
+                        showAddCategory = !_state.value.showAddCategory,
+                        showUpdateCategory = _state.value.showUpdateCategory
+                    )
+                }
             }
+
             Visibility.UPDATE_CATEGORY -> {
-                _state.update { it.copy(showUpdateCategory = !_state.value.showUpdateCategory) }
+                _state.update {
+                    it.copy(
+                        showUpdateCategory = !_state.value.showUpdateCategory,
+                        showAddCategory = _state.value.showAddCategory
+                    )
+                }
             }
         }
     }
@@ -216,6 +226,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onUpdateCategorySuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
+        getAllCategory()
         resetShowState(Visibility.UPDATE_CATEGORY)
     }
 
