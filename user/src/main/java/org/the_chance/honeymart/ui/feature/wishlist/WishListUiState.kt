@@ -31,7 +31,7 @@ fun WishListEntity.toWishListProductUiState(): WishListProductUiState {
         productId = productId,
         productName = name,
         productPrice = price,
-        productImages = images,
+        productImages = images.ifEmpty { listOf("") },
         description = description
     )
 }

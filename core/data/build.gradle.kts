@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
@@ -5,6 +6,8 @@ plugins {
     id(Plugins.HILT_LIBRARY)
     id(Plugins.SERIALIZATION)
 }
+val localProps = Properties()
+val localPropsFile = localProps.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "org.the_chance.honeymart.data"
@@ -13,6 +16,8 @@ android {
     defaultConfig {
         minSdk = ConfigData.MIN_SDK_VERSION
         targetSdk = ConfigData.TARGET_SDK_VERSION
+
+        buildConfigField("String", "API_KEY", localProps.getProperty("apiKey"))
 
         testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
         consumerProguardFiles("consumer-rules.pro")
