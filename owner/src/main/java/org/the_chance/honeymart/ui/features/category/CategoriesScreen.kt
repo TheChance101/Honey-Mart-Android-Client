@@ -65,7 +65,7 @@ fun CategoriesContent(
             ) {
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = { listener.updateStateToShowAddCategory(true) }
+                    onClick = { listener.resetShowState(true) }
                 )
             }
         }
@@ -79,7 +79,7 @@ fun CategoriesContent(
             ) {
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
-                    onClick = { listener.updateStateToShowAddCategory(true) }
+                    onClick = { listener.resetShowState(true) }
                 )
                 AnimatedVisibility(
                     visible = state.categories.isNotEmpty(),
@@ -87,7 +87,7 @@ fun CategoriesContent(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = MaterialTheme.dimens.space32)
+                            .padding(horizontal = MaterialTheme.dimens.space12)
                     ) {
 
                         LazyVerticalGrid(
@@ -101,6 +101,7 @@ fun CategoriesContent(
                                     categoryName = state.categories[index].categoryName,
                                     onClick = {
                                         listener.onClickCategory(state.categories[index].categoryId)
+                                        listener.resetShowState(state.showUpdateCategory)
                                     },
                                     icon = categoryIcons[state.categories[index].categoryImageId]
                                         ?: R.drawable.icon_category,
@@ -111,7 +112,7 @@ fun CategoriesContent(
                                 CategoryItem(
                                     categoryName = stringResource(id = R.string.add),
                                     onClick =
-                                    { listener.updateStateToShowAddCategory(!state.showUpdateCategory) },
+                                    { listener.resetShowState(!state.showAddCategory) },
                                     icon = R.drawable.icon_add_to_cart,
                                     isSelected = false
                                 )
@@ -129,7 +130,7 @@ fun CategoriesContent(
                 AddCategoryContent(
                     listener = listener, state = state,
                 )
-                AnimatedVisibility(visible = state.products.isEmpty() && !state.isLoading) {
+                AnimatedVisibility(visible = state.products.isNotEmpty() && !state.isLoading && !state.showUpdateCategory) {
                     ProductsOnCategory(state = state)
                 }
 

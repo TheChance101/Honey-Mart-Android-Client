@@ -61,8 +61,8 @@ fun UpdateCategoryContent(
             Column(
                 modifier = Modifier
                     .padding(
-                        vertical = MaterialTheme.dimens.space24,
-                        horizontal = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16,
+                        bottom =  MaterialTheme.dimens.space16
                     )
                     .fillMaxSize()
                     .background(

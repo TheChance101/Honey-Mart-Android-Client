@@ -28,7 +28,7 @@ class CategoriesViewModel @Inject constructor(
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
-    private val marketId = 7L
+    private val marketId = 5L
 
     init {
         getCategoryImages()
@@ -41,7 +41,7 @@ class CategoriesViewModel @Inject constructor(
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(1).map { it.toCategoryUiState() } },
+            { getAllCategories(5).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -77,7 +77,8 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
-        getProductsByCategoryId(categoryId = categoryId)
+       // getProductsByCategoryId(categoryId = categoryId)
+        updateCategory(_state.value)
     }
 
     private fun updateCategorySelection(

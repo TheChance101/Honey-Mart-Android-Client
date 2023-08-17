@@ -49,6 +49,10 @@ data class ProductUiState(
     val productImage: String = "",
     val productPrice: String = "0.0",
 )
+enum class Visibility{
+    UPDATE_CATEGORY,
+    ADD_CATEGORY
+}
 
 fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(

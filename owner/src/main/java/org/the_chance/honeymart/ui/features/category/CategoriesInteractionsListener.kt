@@ -10,7 +10,7 @@ interface CategoriesInteractionsListener {
     fun changeNameCategory(nameCategory: String)
     fun onClickAddCategory()
     fun onClickCategoryImage(categoryImageId: Int)
-    fun updateStateToShowAddCategory(state: Boolean)
+    fun resetShowState(visibility: Visibility)
     fun resetSnackBarState()
     fun onUpdatedCategoryNameChanged(name: String)
     fun onClickCategoryIcon(categoryIconId: Int)
