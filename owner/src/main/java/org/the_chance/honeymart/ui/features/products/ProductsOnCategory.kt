@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
@@ -55,7 +56,10 @@ fun ProductsOnCategory(
             ) {
                 Icon(
                     modifier = Modifier.size(MaterialTheme.dimens.icon48),
-                    painter = painterResource(id = R.drawable.icon_category),
+                    painter = painterResource(
+                        categoryIcons[state.categories[state.position].categoryImageId]
+                            ?: R.drawable.icon_category
+                    ),
                     contentDescription = "category icon",
                     tint = black37
                 )
