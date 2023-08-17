@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -29,12 +31,15 @@ import org.the_chance.honymart.ui.theme.white200
 @Composable
 fun HoneyTextField(
     hint: String,
-    iconPainter: Painter? = null ,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    iconPainter: Painter? = null,
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Next
+    ),
 ) {
     Column {
         OutlinedTextField(
@@ -55,6 +60,7 @@ fun HoneyTextField(
                     style = Typography.displaySmall,
                 )
             },
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -74,7 +80,7 @@ fun HoneyTextField(
                 }
             },
             leadingIcon = {
-                if (iconPainter != null){
+                if (iconPainter != null) {
                     Icon(
                         painter = iconPainter,
                         contentDescription = stringResource(R.string.copy_button),

@@ -143,4 +143,11 @@
     <string name="please_click_on">"Please click on "</string>
     <string name="to_add_category">to Add Category</string>
     <string name="create_an_account_name_your_market">Welcome to Honey Mart!! \n Create an account, Name your market and choose its category to start selling your products</string>
+
+
+    <!--Owner Region-->
+    <string name="send">Send</string>
+    <string name="market_images">Market Images</string>
+    <string name="continue_word">Continue</string>
+
 </resources>
