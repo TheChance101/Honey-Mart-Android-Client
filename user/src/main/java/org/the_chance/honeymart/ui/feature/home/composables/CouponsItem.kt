@@ -168,7 +168,7 @@ fun CouponsItem(
                     .clip(RoundedCornerShape(12.dp)),
                 painter = painterResource(
                     id =
-                    org.the_chance.design_system.R.drawable.image_test
+                    org.the_chance.design_system.R.drawable.test
                 ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop

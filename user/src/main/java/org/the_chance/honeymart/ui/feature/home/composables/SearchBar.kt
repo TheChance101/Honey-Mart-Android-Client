@@ -21,7 +21,7 @@ import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun searchBar(
+fun SearchBar(
     modifier: Modifier = Modifier,
     icon: Painter,
 ) {

@@ -103,4 +103,6 @@
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
     <string name="cancelled">Cancelled</string>
+    <string name="new_products">New Products</string>
+    <string name="last_purchases">Last Purchases</string>
 </resources>

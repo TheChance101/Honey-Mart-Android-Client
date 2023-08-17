@@ -27,6 +27,8 @@ import kotlin.math.sin
 
 @Composable
 fun Hexagon(
+    imageUrl: String = "",
+    label: String = "",
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {

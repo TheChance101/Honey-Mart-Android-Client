@@ -1,42 +1,45 @@
 package org.the_chance.honeymart.ui.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.ui.feature.home.composables.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.composables.Hexagon
 import org.the_chance.honeymart.ui.feature.home.composables.HomeHorizontalItems
 import org.the_chance.honeymart.ui.feature.home.composables.HorizontalPagerIndicator
-import org.the_chance.honeymart.ui.feature.home.composables.ItemPager
+import org.the_chance.honeymart.ui.feature.home.composables.ItemLabel
 import org.the_chance.honeymart.ui.feature.home.composables.LastPurchasesItems
 import org.the_chance.honeymart.ui.feature.home.composables.NewProductsItems
-import org.the_chance.honeymart.ui.feature.home.composables.searchBar
+import org.the_chance.honeymart.ui.feature.home.composables.SearchBar
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white30
@@ -69,223 +72,175 @@ fun HomeContent(
     pagerState: PagerState
 ) {
 
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(white30)
-            .verticalScroll(rememberScrollState())
-    ) {
-
-        val (pager, indicator, searchBar, marketText,
-            marketSeeAll, marketItems, categoriesText,
-            categoriesSeeAll, categoryItems, coupounItem,
-            productsText, newProductsItems, lastPurchasesText,
-            lastPurchasesItems, discoverProducts, discoverProductsItems) = createRefs()
-
-        HorizontalPager(
-            contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-            pageCount = state.markets.size,
-            state = pagerState,
-            modifier = Modifier.constrainAs(pager) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-        ) {
-            ItemPager(marketImage = state.markets[it].marketImage, onclick = {})
-        }
-        HorizontalPagerIndicator(
-            itemCount = 3,
-            selectedPage = pagerState.currentPage,
-            modifier = Modifier.constrainAs(indicator) {
-                top.linkTo(pager.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-        )
-        searchBar(
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space16)
-                .clickable { }
-                .constrainAs(searchBar) {
-                    top.linkTo(indicator.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-            icon = painterResource(id = R.drawable.searchicon)
-        )
-        Text(
-            text = stringResource(org.the_chance.user.R.string.markets),
-            style = Typography.bodySmall.copy(black87),
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space16)
-                .constrainAs(marketText) {
-                    top.linkTo(searchBar.bottom)
-                    start.linkTo(parent.start)
-                }
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.seall),
-            contentDescription = null,
-            tint = black37,
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space24)
-                .constrainAs(marketSeeAll) {
-                    top.linkTo(searchBar.bottom)
-                    end.linkTo(parent.end)
-                }
-        )
-        LazyRow(
-            modifier = Modifier
-                .constrainAs(marketItems) {
-                    top.linkTo(marketText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            items(state.markets.size) { itemIndex ->
-                HomeHorizontalItems(
-                    name = state.markets[itemIndex].marketName,
-                    image = state.markets[itemIndex].marketImage,
-                )
-            }
-        }
-        Text(
-            text = stringResource(org.the_chance.user.R.string.categories),
-            style = Typography.bodySmall.copy(black87),
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space16)
-                .constrainAs(categoriesText) {
-                    top.linkTo(marketItems.bottom)
-                    start.linkTo(parent.start)
-                }
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.seall),
-            contentDescription = null,
-            tint = black37,
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space24)
-                .constrainAs(categoriesSeeAll) {
-                    top.linkTo(marketItems.bottom)
-                    end.linkTo(parent.end)
-                }
-        )
-        LazyRow(
-            contentPadding = PaddingValues(MaterialTheme.dimens.space8),
-            modifier = Modifier
-                .constrainAs(categoryItems) {
-                    top.linkTo(categoriesText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            items(10) {
-                Hexagon()
-            }
-        }
-        LazyRow(
-            contentPadding = PaddingValues(MaterialTheme.dimens.space8),
-            modifier = Modifier
-                .constrainAs(coupounItem) {
-                    top.linkTo(categoryItems.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        )
-        {
-            items(state.coupons.size) {
-                CouponsItem(
-                    state=state.coupons[it],
-                )
-            }
-        }
-        Text(
-            text = "new Products",
-            style = Typography.bodySmall.copy(black87),
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space16)
-                .constrainAs(productsText) {
-                    top.linkTo(coupounItem.bottom)
-                    start.linkTo(parent.start)
-                }
-        )
-        LazyRow(
-            contentPadding = PaddingValues(MaterialTheme.dimens.space8),
-            modifier = Modifier
-                .constrainAs(newProductsItems) {
-                    top.linkTo(productsText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            items(state.newProducts.size) {
-                NewProductsItems(
-                    state = state.newProducts[it],
-                    isFavoriteIconClicked = state.newProducts[it].isFavorite,
-                    onClickFavorite = {},
-                    enable = true
-                )
-            }
-        }
-        Text(
-            text = "Last Purchases",
-            style = Typography.bodySmall.copy(black87),
-            modifier = Modifier
-                .padding(16.dp)
-                .constrainAs(lastPurchasesText) {
-                    top.linkTo(newProductsItems.bottom)
-                    start.linkTo(parent.start)
-                }
-        )
-        LazyRow(
-            contentPadding = PaddingValues(MaterialTheme.dimens.space8),
-            modifier = Modifier
-                .constrainAs(lastPurchasesItems) {
-                    top.linkTo(lastPurchasesText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            items(10) {
-                LastPurchasesItems()
-            }
-        }
-        Text(
-            text = "Last Purchases",
-            style = Typography.bodySmall.copy(black87),
-            modifier = Modifier
-                .padding(MaterialTheme.dimens.space16)
-                .constrainAs(discoverProducts) {
-                    top.linkTo(lastPurchasesItems.bottom)
-                    start.linkTo(parent.start)
-                }
-        )
-        Box(
+    AppBarScaffold {
+        LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
-                .constrainAs(discoverProductsItems) {
-                    top.linkTo(discoverProducts.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
+                .background(white30),
+            columns = GridCells.Fixed(2)
         ) {
-            LazyRow(
-                contentPadding = PaddingValues(MaterialTheme.dimens.space8),
+
+            item(
+                span = { GridItemSpan(2) },
             ) {
-                items(10) {
-                    NewProductsItems(
-                        state = state.newProducts[it],
-                        isFavoriteIconClicked = state.newProducts[it].isFavorite,
-                        onClickFavorite = {},
-                        enable = true
+                HorizontalPager(
+                    pageCount = state.markets.size,
+                    state = pagerState,
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.test),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                            .height(MaterialTheme.dimens.heightItemMarketCard)
+                            .clickable(onClick = {}),
                     )
                 }
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                HorizontalPagerIndicator(
+                    itemCount = 3,
+                    selectedPage = pagerState.currentPage,
+                )
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                SearchBar(
+                    modifier = Modifier
+                        .clickable { },
+                    icon = painterResource(id = R.drawable.ic_search)
+                )
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                ItemLabel(label = stringResource(org.the_chance.user.R.string.markets))
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                LazyRow {
+                    items(state.markets.size) { itemIndex ->
+                        HomeHorizontalItems(
+                            name = state.markets[itemIndex].marketName,
+                            image = state.markets[itemIndex].marketImage,
+                        )
+                    }
+                }
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                ItemLabel(label = stringResource(org.the_chance.user.R.string.categories))
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                LazyRow(
+                ) {
+                    items(10) {
+                        Hexagon()
+                    }
+                }
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                LazyRow(
+                )
+                {
+                    items(5) {
+                        CouponsItem(
+                            state = CouponUiState(
+                                couponId = 1,
+                                count = 1,
+                                discountPercentage = 1.0,
+                                expirationDate = "1.10.2023",
+                                product = ProductEntity(
+                                    productId = 1,
+                                    productName = "100",
+                                    productDescription = "100",
+                                    ProductPrice = 1.0,
+                                    productImages = emptyList()
+                                ),
+                                isClipped = true,
+                            ),
+                        )
+                    }
+                }
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                Text(
+                    text = stringResource(R.string.new_products),
+                    style = Typography.bodySmall.copy(black87),
+                )
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                LazyRow(
+                ) {
+                    items(10) {
+                        NewProductsItems()
+                    }
+                }
+            }
+
+
+            item(
+                span = { GridItemSpan(2) },
+
+                ) {
+                Text(
+                    text = stringResource(R.string.last_purchases),
+                    style = Typography.bodySmall.copy(black87),
+                )
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+
+                ) {
+                LazyRow(
+                ) {
+                    items(10) {
+                        LastPurchasesItems()
+                    }
+                }
+            }
+
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                Text(
+                    text = stringResource(R.string.last_purchases),
+                    style = Typography.bodySmall.copy(black87),
+                )
+            }
+
+            items(10) {
+                NewProductsItems()
             }
         }
     }
 }
+
 
 @Preview
 @Composable

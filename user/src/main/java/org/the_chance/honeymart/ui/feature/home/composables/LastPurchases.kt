@@ -40,7 +40,7 @@ fun LastPurchasesItems(
                 modifier = Modifier.weight(1f)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = org.the_chance.design_system.R.drawable.test),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -49,7 +49,7 @@ fun LastPurchasesItems(
                         .background(color = Color.Red)
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = org.the_chance.design_system.R.drawable.image_test),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -62,7 +62,7 @@ fun LastPurchasesItems(
                 modifier = Modifier.weight(1f)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = org.the_chance.design_system.R.drawable.image_test),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -71,7 +71,7 @@ fun LastPurchasesItems(
                         .background(color = Color.Blue)
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = org.the_chance.design_system.R.drawable.test),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
