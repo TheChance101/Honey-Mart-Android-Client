@@ -34,7 +34,7 @@ class CategoriesViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     // region Categories
-     fun getAllCategory() {
+     override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCategories(marketId).map { it.toCategoryUiState() } },

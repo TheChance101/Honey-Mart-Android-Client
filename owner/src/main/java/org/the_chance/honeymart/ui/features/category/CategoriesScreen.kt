@@ -35,6 +35,7 @@ import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.products.ProductsOnCategory
 import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryContent
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
@@ -65,6 +66,7 @@ fun CategoriesContent(
             .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
+
         Loading(state = state.isLoading && state.categories.isEmpty())
         AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
             Column(
@@ -161,6 +163,9 @@ fun CategoriesContent(
         )
     }
     Loading(state = state.isLoading && state.categories.isNotEmpty())
+    ConnectionErrorPlaceholder(state = state.isError,
+        onClickTryAgain =listener::getAllCategory )
+
 
         if (state.showDialog) {
             CustomAlertDialog(

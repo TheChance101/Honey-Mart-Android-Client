@@ -16,4 +16,5 @@ interface CategoriesInteractionsListener {
     fun onClickCategoryIcon(categoryIconId: Int)
     fun updateCategory(category: CategoriesUiState)
     fun deleteCategory(id: Long)
+    fun getAllCategory()
 }
