@@ -1,27 +1,15 @@
 package org.the_chance.honeymart.domain.usecase
 
 import org.the_chance.honeymart.domain.repository.AuthRepository
-import org.the_chance.honeymart.domain.util.ValidationState
 import javax.inject.Inject
 
 class LoginOwnerUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val validationLoginFieldsUseCase: ValidationLoginFieldsUseCase,
 ) {
-    suspend operator fun invoke(email: String, password: String): Boolean {
-        val emailValidationState = validationLoginFieldsUseCase.validateEmail(email)
-        val passwordValidationState = validationLoginFieldsUseCase.validatePassword(password)
-
-        return if (emailValidationState != ValidationState.VALID_EMAIL) {
-            false
-        } else if (passwordValidationState != ValidationState.VALID_PASSWORD) {
-            false
-        } else {
-            val token = authRepository.loginOwner(email, password)
-            authRepository.saveToken(token)
-            authRepository.saveOwnerName("")
-            authRepository.saveOwnerImageUrl("")
-            true
-        }
+    suspend operator fun invoke(email: String, password: String) {
+        val token = authRepository.loginOwner(email, password)
+        authRepository.saveToken(token)
+        authRepository.saveOwnerName("")
+        authRepository.saveOwnerImageUrl("")
     }
 }

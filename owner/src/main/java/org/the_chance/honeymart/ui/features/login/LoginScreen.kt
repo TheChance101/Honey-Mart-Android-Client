@@ -26,8 +26,7 @@ import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.owner.R
-
+import org.the_chance.design_system.R
 
 @Composable
 fun LoginScreen(
@@ -54,22 +53,22 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = MaterialTheme.dimens.space64),
-            title = stringResource(org.the_chance.design_system.R.string.welcome_back),
+            title = stringResource(R.string.welcome_back),
             subTitle = stringResource(R.string.login_to_discover_a_curated_selection_of_products_just_for_you),
         )
         Column {
             HoneyTextField(
                 text = state.emailState.value,
-                hint = stringResource(org.the_chance.design_system.R.string.email),
-                iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.ic_email),
+                hint = stringResource(R.string.email),
+                iconPainter = painterResource(id = R.drawable.ic_email),
                 onValueChange = listener::onEmailInputChange,
                 errorMessage = state.emailState.errorState
             )
 
             HoneyTextFieldPassword(
                 text = state.passwordState.value,
-                hint = stringResource(org.the_chance.design_system.R.string.password),
-                iconPainter = painterResource(id = org.the_chance.design_system.R.drawable.ic_password),
+                hint = stringResource(R.string.password),
+                iconPainter = painterResource(id = R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
                 errorMessage = state.passwordState.errorState,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -77,14 +76,14 @@ fun LoginContent(
         }
 
         HoneyFilledButton(
-            label = stringResource(id = org.the_chance.design_system.R.string.log_in),
+            label = stringResource(id = R.string.log_in),
             onClick = listener::onClickLogin,
             isLoading = state.isLoading,
         )
 
         HoneyAuthFooter(
-            text = stringResource(org.the_chance.design_system.R.string.don_t_have_an_account),
-            textButtonText = stringResource(org.the_chance.design_system.R.string.Sign_up),
+            text = stringResource(R.string.don_t_have_an_account),
+            textButtonText = stringResource(R.string.Sign_up),
             onTextButtonClicked = listener::onClickSignup,
             modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
         )

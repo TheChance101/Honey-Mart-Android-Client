@@ -25,13 +25,14 @@ class LoginViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { loginOwnerUseCase(email, password) },
-            ::onLoginSuccess,
+            { onLoginSuccess() },
             ::onLoginError,
         )
     }
 
-    private fun onLoginSuccess(isLogin: Boolean) {
-        _state.update { it.copy(isLoading = false, isLogin = isLogin) }
+    private fun onLoginSuccess() {
+        _state.update { it.copy(isLoading = false) }
+        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }
 
     private fun onLoginError(error: ErrorHandler) {
@@ -47,9 +48,6 @@ class LoginViewModel @Inject constructor(
                 email = state.value.emailState.value,
                 password = state.value.passwordState.value
             )
-            if (state.value.isLogin) {
-                effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
-            }
         } else {
             effectActionExecutor(_effect, LoginUiEffect.ShowValidationToastEffect)
         }
