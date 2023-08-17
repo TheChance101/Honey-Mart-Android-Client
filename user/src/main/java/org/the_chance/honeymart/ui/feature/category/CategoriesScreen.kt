@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -153,22 +154,43 @@ fun CategoryContent(
                     .height(198.dp)
                     .fillMaxWidth(), contentScale = ContentScale.FillBounds
             )
-            LazyVerticalGrid(
-                state = rememberLazyGridState(),
-                columns = GridCells.Fixed(count = 3),
-                contentPadding = PaddingValues(MaterialTheme.dimens.space2),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
-                modifier = Modifier.fillMaxWidth(),
+
+            BoxWithConstraints(
+                Modifier.fillMaxSize()
             ) {
-                itemsIndexed(state.categories) { index, item ->
-                    HexagonItem(
-                        item,
-                        listener::onClickCategory,
-                        index,
-                    )
+                val itemSize = (if (maxHeight < maxWidth) maxHeight else maxWidth) * .38f
+
+                LazyVerticalGrid(
+                    //modifier = Modifier.padding(bottom =20.dp),
+                    columns = GridCells.Fixed(3),
+                    verticalArrangement = Arrangement.spacedBy((-6).dp)
+                ) {
+                    itemsIndexed(state.categories) { index, item ->
+                        HexagonItem(
+                            item,
+                            listener::onClickCategory,
+                            index,
+                            hexagonSize = itemSize
+                        )
+                    }
                 }
             }
+//            LazyVerticalGrid(
+//                state = rememberLazyGridState(),
+//                columns = GridCells.Fixed(count = 3),
+//                contentPadding = PaddingValues(MaterialTheme.dimens.space2),
+//                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
+//                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
+//                modifier = Modifier.fillMaxWidth(),
+//            ) {
+//                itemsIndexed(state.categories) { index, item ->
+//                    HexagonItem(
+//                        item,
+//                        listener::onClickCategory,
+//                        index,
+//                    )
+//                }
+//            }
         }
     }
 }

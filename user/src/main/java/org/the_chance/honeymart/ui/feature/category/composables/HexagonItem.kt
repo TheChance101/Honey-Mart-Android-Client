@@ -2,8 +2,12 @@ package org.the_chance.honeymart.ui.feature.category.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,7 +34,8 @@ import kotlin.math.sin
 fun HexagonItem(
     state: CategoryUiState,
     onClickCategory: (categoryId: Long, position: Int) -> Unit,
-    position: Int, hexagonSize: Dp = 160.dp,
+    position: Int,
+    hexagonSize: Dp = 160.dp,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -40,7 +45,7 @@ fun HexagonItem(
             .offset(x = if (position % 3 == 2) -(hexagonSize / 5) else 0.dp)
             .size(hexagonSize)
             .clip(HexagonItemShape)
-            .background(colorResource(id = R.color.white))
+            .background(colorResource(id = R.color.primary_100))
             .clickable { onClickCategory(state.categoryId, position) },
         contentAlignment = Alignment.Center,
     ) {
@@ -48,10 +53,9 @@ fun HexagonItem(
             text = state.categoryName,
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
-            )
+        )
     }
 }
-
 
 val HexagonItemShape = object : Shape {
     override fun createOutline(
