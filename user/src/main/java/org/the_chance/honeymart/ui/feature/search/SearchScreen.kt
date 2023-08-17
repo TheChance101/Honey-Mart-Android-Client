@@ -1,10 +1,15 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +37,6 @@ import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
-import org.the_chance.honeymart.ui.feature.product.ProductsUiState
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -47,7 +50,6 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
-import org.the_chance.honymart.ui.theme.white50
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -134,36 +136,42 @@ fun SearchContent(
                     )
                 }
             }
-            if (state.filtering) {
-                Text(
-                    text = "Sort by price",
-                    color = black37,
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.dimens.space16,
-                        bottom = MaterialTheme.dimens.space8,
-                        top = MaterialTheme.dimens.space16
-                    ),
-                    style = Typography.displaySmall
-                )
-                Row(
-                    modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-                ) {
-                    CustomChip(
-                        state = state.random(),
-                        text = "Random",
-                        onClick = listener::getAllRandomSearch
+            AnimatedVisibility(
+                visible = state.filtering,
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically(),
+                exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically()
+            ) {
+                Column {
+                    Text(
+                        text = "Sort by price",
+                        color = black37,
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.dimens.space16,
+                            bottom = MaterialTheme.dimens.space8,
+                            top = MaterialTheme.dimens.space16
+                        ),
+                        style = Typography.displaySmall
                     )
-                    CustomChip(
-                        state = state.ascending(),
-                        text = "Ascending",
-                        onClick = listener::getAllAscendingSearch
-                    )
-                    CustomChip(
-                        state = state.descending(),
-                        text = "Descending",
-                        onClick = listener::getAllDescendingSearch
-                    )
+                    Row(
+                        modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                    ) {
+                        CustomChip(
+                            state = state.random(),
+                            text = "Random",
+                            onClick = listener::getAllRandomSearch
+                        )
+                        CustomChip(
+                            state = state.ascending(),
+                            text = "Ascending",
+                            onClick = listener::getAllAscendingSearch
+                        )
+                        CustomChip(
+                            state = state.descending(),
+                            text = "Descending",
+                            onClick = listener::getAllDescendingSearch
+                        )
+                    }
                 }
             }
             ContentVisibility(state = state.screenContent()) {
