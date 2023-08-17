@@ -31,15 +31,10 @@ class CategoriesViewModel @Inject constructor(
 
     private val marketId = 5L
 
-    init {
-        getCategoryImages()
-        getAllCategory()
-    }
-
     override val TAG: String = this::class.java.simpleName
 
     // region Categories
-    private fun getAllCategory() {
+     fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCategories(marketId).map { it.toCategoryUiState() } },
@@ -113,7 +108,7 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    private fun getCategoryImages() {
+     fun getCategoryImages() {
         _state.update {
             it.copy(isLoading = false, categoryImages = categoryIcons.toCategoryImageUIState())
         }
@@ -195,7 +190,7 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 categoryImages = updatedCategories,
                 isLoading = false,
-                position = position.inc(),
+                position = position,
                 categoryImageId = categoryImageId
             )
         }
