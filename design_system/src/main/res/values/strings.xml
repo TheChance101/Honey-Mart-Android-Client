@@ -103,4 +103,9 @@
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
     <string name="cancelled">Cancelled</string>
+    <string name="back_button">back button</string>
+    <string name="shop_details">Shop Details</string>
+    <string name="map_pointer">map pointer</string>
+    <string name="chip_icon">chip icon</string>
+    <string name="category_image">category image</string>
 </resources>
