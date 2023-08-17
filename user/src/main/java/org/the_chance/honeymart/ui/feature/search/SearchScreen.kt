@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,7 +39,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -58,10 +58,9 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 is SearchUiEffect.OnClickProductCard ->
                     navController.navigateToProductDetailsScreen(it.productId)
@@ -197,6 +196,7 @@ fun SearchContent(
                                     productPrice = product.productPrice.toString(),
                                     secondaryText = product.marketName,
                                     isFavoriteIconClicked = false,
+                                    enable = !state.isLoading,
                                     onClickFavorite = { },
                                     onClickCard = { listener.onClickProduct(product.productId) }
                                 )

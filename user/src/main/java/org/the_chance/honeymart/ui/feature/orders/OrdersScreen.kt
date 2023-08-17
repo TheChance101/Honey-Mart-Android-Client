@@ -37,9 +37,9 @@ import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ItemOrder
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
-import org.the_chance.honeymart.ui.feature.orders.composable.CustomChip
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 

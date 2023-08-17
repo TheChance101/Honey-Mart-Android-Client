@@ -49,7 +49,7 @@ fun ProductCard(
             .clip(MaterialTheme.shapes.medium)
             .clickable { if (enable) onClickCard() },
 
-    ) {
+        ) {
         ImageNetwork(
             modifier = Modifier.fillMaxSize(),
             imageUrl = imageUrl
@@ -63,7 +63,7 @@ fun ProductCard(
                 ),
             backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
             else MaterialTheme.colorScheme.primary,
-            onClick = { if(enable)onClickFavorite() }
+            onClick = { if (enable) onClickFavorite() }
         ) {
             Image(
                 painter = painterResource(
@@ -76,73 +76,72 @@ fun ProductCard(
                 modifier = Modifier.fillMaxSize(),
                 imageUrl = imageUrl
             )
-        ContentVisibility(state = visibility) {
-            IconButton(
+            ContentVisibility(state = visibility) {
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(
+                            end = MaterialTheme.dimens.space8,
+                            top = MaterialTheme.dimens.space8
+                        ),
+                    backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+                    else MaterialTheme.colorScheme.primary,
+                    onClick = onClickFavorite,
+                    size = MaterialTheme.dimens.icon32
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                            else R.drawable.icon_favorite_unselected
+                        ),
+                        contentDescription = stringResource(R.string.favorite_icon),
+                    )
+                }
+            }
+            Box(
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
+                    .matchParentSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                blackOn87,
+                            ),
+                            startY = 300f,
+                        )
+                    )
+            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
                     .padding(
-                        end = MaterialTheme.dimens.space8,
-                        top = MaterialTheme.dimens.space8
-                    ),
-                backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-                else MaterialTheme.colorScheme.primary,
-                onClick = onClickFavorite,
-                size = MaterialTheme.dimens.icon32
+                        start = MaterialTheme.dimens.space8,
+                        bottom = MaterialTheme.dimens.space8,
+                        end = MaterialTheme.dimens.space8
+                    )
             ) {
-                Image(
-                    painter = painterResource(
-                        id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
-                        else R.drawable.icon_favorite_unselected
-                    ),
-                    contentDescription = stringResource(R.string.favorite_icon),
+                Text(
+                    text = productName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = "$productPrice$",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = secondaryText,
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
-        }
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            blackOn87,
-                        ),
-                        startY = 300f,
-                    )
-                )
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(
-                    start = MaterialTheme.dimens.space8,
-                    bottom = MaterialTheme.dimens.space8,
-                    end = MaterialTheme.dimens.space8
-                )
-        ) {
-            Text(
-                text = productName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = "$productPrice$",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = secondaryText,
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-            )
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -175,6 +174,7 @@ fun ProductCard(
                 )
             }
 
+        }
     }
 }
 
