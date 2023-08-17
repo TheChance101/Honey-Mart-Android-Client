@@ -142,6 +142,7 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 iconPainter = painterResource(id = R.drawable.ic_person),
@@ -154,6 +155,7 @@ fun SignupContent(
                                 color = white200
                             )
                             HoneyTextField(
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -172,6 +174,7 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -185,6 +188,7 @@ fun SignupContent(
                                 color = white200
                             )
                             HoneyTextField(
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.confirmPassword,
                                 hint = stringResource(R.string.confirm_password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),

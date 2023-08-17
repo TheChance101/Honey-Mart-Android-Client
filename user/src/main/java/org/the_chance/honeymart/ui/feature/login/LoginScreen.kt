@@ -114,6 +114,7 @@ fun LoginContent(
                 }
             }
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.email,
                 hint = stringResource(R.string.email),
                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -126,6 +127,7 @@ fun LoginContent(
                 color = white200
             )
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.password,
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
