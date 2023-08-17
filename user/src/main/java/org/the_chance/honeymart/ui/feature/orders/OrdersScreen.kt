@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
@@ -96,8 +97,7 @@ fun OrdersContent(
                 .fillMaxSize()
                 .padding(top = MaterialTheme.dimens.space24)
         ) {
-
-            Row(
+            LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -106,27 +106,34 @@ fun OrdersContent(
                     ),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                CustomChip(
-                    state = state.pending(),
-                    text = stringResource(id = R.string.Pending),
-                    onClick = listener::getAllProcessingOrders
-                )
-
-                CustomChip(
-                    state = state.processing(),
-                    text = stringResource(id = R.string.processing),
-                    onClick = listener::getAllProcessingOrders
-                )
-                CustomChip(
-                    state = state.done(),
-                    text = stringResource(id = R.string.done),
-                    onClick = listener::getAllDoneOrders
-                )
-                CustomChip(
-                    state = state.cancel(),
-                    text = stringResource(id= R.string.cancelled),
-                    onClick = listener::getAllCancelOrders
-                )
+                item {
+                    CustomChip(
+                        state = state.pending(),
+                        text = stringResource(id = R.string.Pending),
+                        onClick = listener::getAllProcessingOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.processing(),
+                        text = stringResource(id = R.string.processing),
+                        onClick = listener::getAllProcessingOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.done(),
+                        text = stringResource(id = R.string.done),
+                        onClick = listener::getAllDoneOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.cancel(),
+                        text = stringResource(id = R.string.cancelled),
+                        onClick = listener::getAllCancelOrders
+                    )
+                }
             }
 
             ContentVisibility(state = state.screenContent()) {
