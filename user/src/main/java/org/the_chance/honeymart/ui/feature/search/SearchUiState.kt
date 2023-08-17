@@ -2,9 +2,12 @@ package org.the_chance.honeymart.ui.feature.search
 
 import org.the_chance.honeymart.domain.model.ProductEntity
 
+import org.the_chance.honeymart.domain.util.ErrorHandler
+
 data class SearchUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val error: ErrorHandler? = null,
     val products: List<ProductUiState> = emptyList(),
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false

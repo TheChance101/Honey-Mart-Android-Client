@@ -1,14 +1,11 @@
 package org.the_chance.honeymart.ui.feature.search
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.SearchForProductUseCase
@@ -32,7 +29,7 @@ class SearchViewModel @Inject constructor(
         tryToExecute(
             { searchForProductUseCase(query) },
             ::searchForProductsSuccess,
-            ::searchForProductsError
+            ::onError
         )
     }
 
@@ -42,9 +39,6 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun searchForProductsError(error: ErrorHandler) {
-
-    }
 
     val products = searchText
         .debounce(1000L)
@@ -62,6 +56,7 @@ class SearchViewModel @Inject constructor(
         _searchText.value = text
     }
 
+
     override fun onClickFilter() {
         if (state.value.filtering) {
             _state.update { it.copy(filtering = false) }
@@ -72,15 +67,63 @@ class SearchViewModel @Inject constructor(
 
 
     override fun getAllRandomSearch() {
-        TODO("Not yet implemented")
+        _state.update {
+            it.copy(isLoading = true, searchStates = SearchStates.RANDOM, isError = false)
+        }
+        tryToExecute(
+            { searchForProductUseCase(SearchStates.RANDOM.toString()).map { it.toProductUiState() } },
+            ::onGetRandomSuccess,
+            ::onError
+        )
     }
+
+    private fun onGetRandomSuccess(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoading = false, products = products) }
+    }
+
 
     override fun getAllAscendingSearch() {
-        TODO("Not yet implemented")
+        _state.update {
+            it.copy(isLoading = true, searchStates = SearchStates.ASCENDING, isError = false)
+        }
+        tryToExecute(
+            { searchForProductUseCase(SearchStates.ASCENDING.toString()).map { it.toProductUiState() } },
+            ::onGetAscendingSearchSuccess,
+            ::onError
+        )
     }
 
+    private fun onGetAscendingSearchSuccess(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoading = false, products = products) }
+        state.value.products.sortedBy {
+            it.productPrice
+        }
+    }
+
+
     override fun getAllDescendingSearch() {
-        TODO("Not yet implemented")
+        _state.update {
+            it.copy(isLoading = true, searchStates = SearchStates.DESCENDING, isError = false)
+        }
+        tryToExecute(
+            { searchForProductUseCase(SearchStates.DESCENDING.toString()).map { it.toProductUiState() } },
+            ::onGetDescendingSearchSuccess,
+            ::onError
+        )
+    }
+
+    private fun onGetDescendingSearchSuccess(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoading = false, products = products) }
+        state.value.products.sortedByDescending {
+            it.productPrice
+        }
+    }
+
+    private fun onError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     override fun onClickProduct(productId: Long) {
@@ -89,77 +132,5 @@ class SearchViewModel @Inject constructor(
             SearchUiEffect.OnClickProductCard(productId)
         )
     }
-
-    /*data class Products(
-        val productId: Long,
-        val image: String,
-        val title: String,
-        val price: String,
-        val marketName: String
-    ) {
-        fun doesMatchSearchQuery(query: String): Boolean {
-            val matchingCombinations = listOf(
-                "$title $price $marketName",
-                "$title $price $marketName",
-                "${title.first()} ${marketName.first()}",
-            )
-
-            return matchingCombinations.any {
-                it.contains(query, ignoreCase = true)
-            }
-        }
-    }*/
 }
 
-
-/*private val allProducts = listOf(
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    ),
-    SearchViewModel.Products(
-        productId = 23,
-        image = "",
-        title = "game",
-        price = "30,000",
-        marketName = "asoak"
-    )
-)*/
