@@ -5,6 +5,7 @@ data class SearchUiState(
     val isError: Boolean = false,
     val products: List<ProductUiState> = emptyList(),
     val searchStates: SearchStates = SearchStates.RANDOM,
+    val filtering: Boolean = false
 )
 
 data class ProductUiState(

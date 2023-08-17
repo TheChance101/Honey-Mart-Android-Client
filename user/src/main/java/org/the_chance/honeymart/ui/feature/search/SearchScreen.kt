@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,16 +18,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
+import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -36,6 +44,9 @@ import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
+import org.the_chance.honymart.ui.theme.white
+import org.the_chance.honymart.ui.theme.white200
+import org.the_chance.honymart.ui.theme.white50
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -44,14 +55,25 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val products by viewModel.products.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
+    val navController = LocalNavigationProvider.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
+    lifecycleOwner.collect(viewModel.effect) { effect ->
+        effect.getContentIfHandled()?.let {
+            when (it) {
+                is SearchUiEffect.OnClickProductCard ->
+                    navController.navigateToProductDetailsScreen(it.productId)
+            }
+        }
+    }
 
     SearchContent(
         state = state,
         products = products,
         searchText = searchText,
         onSearchTextChange = viewModel::onSearchTextChange,
-        isSearching = isSearching
+        isSearching = isSearching,
+        listener = viewModel
     )
 }
 
@@ -61,7 +83,8 @@ fun SearchContent(
     products: List<SearchViewModel.Products>,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
-    isSearching: Boolean
+    isSearching: Boolean,
+    listener: SearchInteraction,
 ) {
     AppBarScaffold {
         Loading(state = state.isLoading)
@@ -69,18 +92,24 @@ fun SearchContent(
             state = state.isError,
             onClickTryAgain = {},
         )
-//        EmptyOrdersPlaceholder(
-//            state = state.emptySearchPlaceHolder(),
-//            image = R.drawable.placeholder_order,
-//            title = stringResource(R.string.the_search_result_is_empty),
-//            subtitle = stringResource(R.string.placeholder_subtitle),
-//            onClickDiscoverMarkets = {},
-//            visibility = false
-//        )
-
+        EmptyOrdersPlaceholder(
+            state = state.emptySearchPlaceHolder(),
+            image = R.drawable.placeholder_order,
+            title = stringResource(R.string.the_search_result_is_empty),
+            subtitle = stringResource(R.string.placeholder_subtitle),
+            onClickDiscoverMarkets = {},
+            visibility = false
+        )
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 HoneyTextField(
+                    modifier = Modifier.fillMaxWidth(3.4f / 4f),
                     text = searchText,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
@@ -89,35 +118,56 @@ fun SearchContent(
                 )
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
-                    onClick = {},
-                    backgroundColor = primary100
+                    onClick = listener::onClickFilter,
+                    backgroundColor = if (state.filtering) {
+                        primary100
+                    } else {
+                        white200
+                    }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.filter),
                         contentDescription = "",
-                        tint = Color.White,
+                        tint = if (state.filtering) {
+                            white
+                        } else {
+                            black37
+                        },
                     )
                 }
             }
-            Text(
-                text = "Sort by price",
-                color = black37,
-                modifier = Modifier.padding(
-                    start = MaterialTheme.dimens.space16,
-                    bottom = MaterialTheme.dimens.space8,
-                    top = MaterialTheme.dimens.space16
-                ),
-                style = Typography.displaySmall
-            )
-            Row(
-                modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-            ) {
-                CustomChip(state = state.random(), text = "Random", onClick = {})
-                CustomChip(state = state.ascending(), text = "Ascending", onClick = {})
-                CustomChip(state = state.descending(), text = "Descending", onClick = {})
+            if (state.filtering) {
+                Text(
+                    text = "Sort by price",
+                    color = black37,
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.dimens.space16,
+                        bottom = MaterialTheme.dimens.space8,
+                        top = MaterialTheme.dimens.space16
+                    ),
+                    style = Typography.displaySmall
+                )
+                Row(
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                ) {
+                    CustomChip(
+                        state = state.random(),
+                        text = "Random",
+                        onClick = listener::getAllRandomSearch
+                    )
+                    CustomChip(
+                        state = state.ascending(),
+                        text = "Ascending",
+                        onClick = listener::getAllAscendingSearch
+                    )
+                    CustomChip(
+                        state = state.descending(),
+                        text = "Descending",
+                        onClick = listener::getAllDescendingSearch
+                    )
+                }
             }
-
             ContentVisibility(state = state.screenContent()) {
                 if (isSearching) {
                     Loading(state = state.isLoading)
@@ -142,7 +192,7 @@ fun SearchContent(
                                     secondaryText = product.marketName,
                                     isFavoriteIconClicked = false,
                                     onClickFavorite = { },
-                                    onClickCard = { }
+                                    onClickCard = { listener.onClickProduct(product.productId) }
                                 )
                             }
                         }

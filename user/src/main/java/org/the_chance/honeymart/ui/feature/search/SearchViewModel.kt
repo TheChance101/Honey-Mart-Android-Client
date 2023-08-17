@@ -51,6 +51,14 @@ class SearchViewModel @Inject constructor() :
         _searchText.value = text
     }
 
+    override fun onClickFilter() {
+        if (state.value.filtering){
+            _state.update { it.copy(filtering = false) }
+        }else{
+            _state.update { it.copy(filtering = true) }
+        }
+    }
+
 
     override fun getAllRandomSearch() {
         TODO("Not yet implemented")
@@ -64,7 +72,15 @@ class SearchViewModel @Inject constructor() :
         TODO("Not yet implemented")
     }
 
+    override fun onClickProduct(productId: Long) {
+        effectActionExecutor(
+            _effect,
+            SearchUiEffect.OnClickProductCard(productId)
+        )
+    }
+
     data class Products(
+        val productId: Long,
         val image: String,
         val title: String,
         val price: String,
@@ -87,42 +103,49 @@ class SearchViewModel @Inject constructor() :
 
 private val allProducts = listOf(
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
         marketName = "asoak"
     ),
     SearchViewModel.Products(
+        productId = 23,
         image = "",
         title = "game",
         price = "30,000",
