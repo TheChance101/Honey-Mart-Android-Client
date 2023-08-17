@@ -101,7 +101,6 @@ fun CategoriesContent(
                                     categoryName = state.categories[index].categoryName,
                                     onClick = {
                                         listener.onClickCategory(state.categories[index].categoryId)
-//                                        listener.resetShowState(Visibility.UPDATE_CATEGORY)
                                     },
                                     icon = categoryIcons[state.categories[index].categoryImageId]
                                         ?: R.drawable.icon_category,

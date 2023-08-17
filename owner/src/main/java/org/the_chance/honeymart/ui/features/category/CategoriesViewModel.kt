@@ -4,6 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
@@ -23,7 +24,8 @@ class CategoriesViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
     private val addCategoryUseCase: AddToCategoryUseCase,
     private val getAllProducts: GetAllProductsByCategoryUseCase,
-    private val updateCategoryUseCase: UpdateCategoryUseCase
+    private val updateCategoryUseCase: UpdateCategoryUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
@@ -62,6 +64,27 @@ class CategoriesViewModel @Inject constructor(
             _state.update { it.copy(isError = true) }
         }
     }
+
+    override fun deleteCategory(id: Long) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            function = { deleteCategoryUseCase(id) },
+            onSuccess = { onDeleteCategorySuccess() },
+            onError = ::onDeleteCategoryError
+        )
+    }
+
+    private fun onDeleteCategorySuccess() {
+        _state.update { it.copy(isLoading = false, error = null) }
+        getAllCategory()
+    }
+
+    private fun onDeleteCategoryError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = errorHandler) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
     // endregion
 
     // region Add Category
@@ -76,7 +99,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
                 showAddCategory = false,
 
-            )
+                )
         }
         getProductsByCategoryId(categoryId = categoryId)
     }
