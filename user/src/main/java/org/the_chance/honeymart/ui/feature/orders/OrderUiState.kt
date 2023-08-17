@@ -9,7 +9,7 @@ data class OrdersUiState(
     val error: ErrorHandler? = null,
     val state: Boolean = false,
     val orders: List<OrderUiState> = emptyList(),
-    val orderStates: OrderStates = OrderStates.PROCESSING,
+    val orderStates: OrderStates = OrderStates.PENDING,
 )
 
 data class OrderUiState(
@@ -38,7 +38,8 @@ enum class OrderStates(val state: Int) {
     PENDING(1),
     PROCESSING(2),
     DONE(3),
-    CANCELED(4),
+    CANCELLED_BY_USER(4),
+    CANCELLED_BY_OWNER(5),
     DELETE(6)
 }
 
@@ -47,7 +48,8 @@ fun OrdersUiState.firstLoading() = this.isLoading && this.orders.isEmpty()
 fun OrdersUiState.pending() = this.orderStates == OrderStates.PENDING
 fun OrdersUiState.processing() = this.orderStates == OrderStates.PROCESSING
 fun OrdersUiState.done() = this.orderStates == OrderStates.DONE
-fun OrdersUiState.cancel() = this.orderStates == OrderStates.CANCELED
+fun OrdersUiState.cancelledByUser() = this.orderStates == OrderStates.CANCELLED_BY_USER
+fun OrdersUiState.cancelledByOwner() = this.orderStates == OrderStates.CANCELLED_BY_OWNER
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
 

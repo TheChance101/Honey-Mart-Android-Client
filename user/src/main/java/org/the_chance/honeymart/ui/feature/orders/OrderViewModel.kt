@@ -27,6 +27,17 @@ class OrderViewModel @Inject constructor(
         )
     }
 
+    private fun onGetPendingOrdersSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+    }
+
+    private fun onGetPendingOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
+
     override fun getAllProcessingOrders() {
         _state.update {
             it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
@@ -38,16 +49,6 @@ class OrderViewModel @Inject constructor(
         )
     }
 
-    private fun onGetPendingOrdersSuccess(orders: List<OrderEntity>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
-    }
-
-    private fun onGetPendingOrdersError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
 
     private fun onGetProcessingOrdersSuccess(orders: List<OrderEntity>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
@@ -82,22 +83,44 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    override fun getAllCancelOrders() {
+    override fun getAllCancelledOrdersByUser() {
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.CANCELED, isError = false)
+            it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_USER, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.CANCELED.state) },
-            ::onGetCancelOrdersSuccess,
-            ::onGetCancelOrdersError
+            { getAllOrders(OrderStates.CANCELLED_BY_USER.state) },
+            ::onGetCancelledOrdersByUserSuccess,
+            ::onGetCancelledOrdersByUserError
         )
     }
 
-    private fun onGetCancelOrdersSuccess(orders: List<OrderEntity>) {
+    private fun onGetCancelledOrdersByUserSuccess(orders: List<OrderEntity>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
-    private fun onGetCancelOrdersError(error: ErrorHandler) {
+    private fun onGetCancelledOrdersByUserError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
+
+    override fun getAllCancelledOrdersByOwner() {
+        _state.update {
+            it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_OWNER, isError = false)
+        }
+        tryToExecute(
+            { getAllOrders(OrderStates.CANCELLED_BY_OWNER.state) },
+            ::onGetCancelledOrdersByOwnerSuccess,
+            ::onGetCancelledOrdersByOwnerError
+        )
+    }
+
+    private fun onGetCancelledOrdersByOwnerSuccess(orders: List<OrderEntity>) {
+        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+    }
+
+    private fun onGetCancelledOrdersByOwnerError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -120,7 +143,8 @@ class OrderViewModel @Inject constructor(
             OrderStates.PENDING -> getAllPendingOrders()
             OrderStates.PROCESSING -> getAllProcessingOrders()
             OrderStates.DONE -> getAllDoneOrders()
-            OrderStates.CANCELED -> getAllCancelOrders()
+            OrderStates.CANCELLED_BY_USER -> getAllCancelledOrdersByUser()
+            OrderStates.CANCELLED_BY_OWNER -> getAllCancelledOrdersByOwner()
             else -> Unit
         }
     }
