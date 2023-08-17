@@ -74,6 +74,8 @@ class CategoriesViewModel @Inject constructor(
                 position = position.inc(),
                 categoryId = categoryId,
                 isLoading = false,
+                showAddCategory = false,
+
             )
         }
         getProductsByCategoryId(categoryId = categoryId)
