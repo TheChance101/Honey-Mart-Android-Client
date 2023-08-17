@@ -20,14 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -43,35 +41,50 @@ import org.the_chance.honymart.ui.theme.primary100
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
+    val products by viewModel.products.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
 
-    SearchContent(state = state)
+
+    SearchContent(
+        state = state,
+        products = products,
+        searchText = searchText,
+        onSearchTextChange = viewModel::onSearchTextChange,
+        isSearching = isSearching
+    )
 }
 
 @Composable
 fun SearchContent(
-    state: SearchUiState
+    state: SearchUiState,
+    products: List<SearchViewModel.Products>,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
+    isSearching: Boolean
 ) {
     AppBarScaffold {
         Loading(state = state.isLoading)
         ConnectionErrorPlaceholder(
             state = state.isError,
-            onClickTryAgain = {}
+            onClickTryAgain = {},
         )
-        EmptyOrdersPlaceholder(
-            state = state.emptySearchPlaceHolder(),
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.the_search_result_is_empty),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = {},
-            visibility = false
-        )
-        ContentVisibility(state = state.screenContent()) {
+//        EmptyOrdersPlaceholder(
+//            state = state.emptySearchPlaceHolder(),
+//            image = R.drawable.placeholder_order,
+//            title = stringResource(R.string.the_search_result_is_empty),
+//            subtitle = stringResource(R.string.placeholder_subtitle),
+//            onClickDiscoverMarkets = {},
+//            visibility = false
+//        )
+
         Column(modifier = Modifier.fillMaxSize()) {
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)) {
                 HoneyTextField(
+                    text = searchText,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
-                    onValueChange = {},
+                    onValueChange = onSearchTextChange,
                     color = black37
                 )
                 IconButton(
@@ -100,38 +113,45 @@ fun SearchContent(
                 modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                CustomChip(state = true, text = "Random", onClick = {})
-                CustomChip(state = false, text = "Ascending", onClick = {})
-                CustomChip(state = false, text = "Descending", onClick = {})
+                CustomChip(state = state.random(), text = "Random", onClick = {})
+                CustomChip(state = state.ascending(), text = "Ascending", onClick = {})
+                CustomChip(state = state.descending(), text = "Descending", onClick = {})
             }
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 160.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                state = rememberLazyGridState(),
-                content = {
-                    items(4) { itemResult ->
-                        ProductCard(
-                            visibility = false,
-                            imageUrl = "image_test",
-                            productName = "sofa",
-                            productPrice = "10,000$",
-                            secondaryText = "market name",
-                            isFavoriteIconClicked = false,
-                            onClickFavorite = { },
-                            onClickCard = { }
-                        )
-                    }
+
+            ContentVisibility(state = state.screenContent()) {
+                if (isSearching) {
+                    Loading(state = state.isLoading)
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 160.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        state = rememberLazyGridState(),
+                        content = {
+                            items(products.size) { itemResult ->
+                                val product = products[itemResult]
+                                ProductCard(
+                                    visibility = false,
+                                    imageUrl = product.image,
+                                    productName = product.title,
+                                    productPrice = product.price,
+                                    secondaryText = product.marketName,
+                                    isFavoriteIconClicked = false,
+                                    onClickFavorite = { },
+                                    onClickCard = { }
+                                )
+                            }
+                        }
+                    )
                 }
-            )
+            }
         }
     }
-    }
-    }
+}
 
 
 @Preview
