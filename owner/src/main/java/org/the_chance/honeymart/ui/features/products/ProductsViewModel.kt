@@ -13,7 +13,8 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProductsUiState, ProductsUiEffect>(ProductsUiState()) {
+) : BaseViewModel<ProductsUiState, ProductsUiEffect>(ProductsUiState())
+    ,ProductsInteractionsListener {
     override val TAG: String
         get() = this::class.simpleName.toString()
 

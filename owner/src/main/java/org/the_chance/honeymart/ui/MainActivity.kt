@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.features.category.CategoriesScreen
+import org.the_chance.honeymart.ui.features.products.ProductsScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
@@ -44,8 +45,9 @@ class MainActivity : AppCompatActivity() {
 //                            NavigationRail()
 //                        }
 //                        MainNavGraph()
+                        ProductsScreen()
 
-                        CategoriesScreen()
+//                        CategoriesScreen()
                     }
                 }
             }

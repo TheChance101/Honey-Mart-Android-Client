@@ -32,6 +32,9 @@ import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.add_product.AddProductInteractionListener
 import org.the_chance.honeymart.ui.features.add_product.AddProductUiState
 import org.the_chance.honeymart.ui.features.add_product.showButton
+import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
+import org.the_chance.honeymart.ui.features.products.ProductsUiState
+import org.the_chance.honeymart.ui.features.products.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -40,8 +43,8 @@ private const val MAX_IMAGES = 4
 
 @Composable
 fun AddProductForm(
-    state: AddProductUiState,
-    listener: AddProductInteractionListener,
+    state: ProductsUiState,
+    listener: ProductsInteractionsListener,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -154,7 +157,7 @@ fun AddProductForm(
 private fun handleImageSelection(
     uris: List<Uri>,
     context: Context,
-    state: AddProductUiState,
+    state: ProductsUiState,
     onImageSelected: (List<ByteArray>) -> Unit
 ) {
     val imageByteArrays = uris.mapNotNull { uri ->
