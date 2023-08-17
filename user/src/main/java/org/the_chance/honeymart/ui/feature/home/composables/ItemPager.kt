@@ -17,21 +17,23 @@ import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
- fun ItemPager(
-     modifier: Modifier = Modifier
- ) {
+fun ItemPager(
+    modifier: Modifier = Modifier,
+    marketImage: String,
+    onclick: () -> Unit = {},
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.dimens.space4)
             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
             .height(MaterialTheme.dimens.heightItemMarketCard)
-            .clickable(onClick = {}),
+            .clickable(onClick = onclick)
 
-        ) {
+    ) {
 
         Image(
-            painter = rememberAsyncImagePainter(model = org.the_chance.design_system.R.drawable.background_frame),
+            painter = rememberAsyncImagePainter(model = marketImage),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier

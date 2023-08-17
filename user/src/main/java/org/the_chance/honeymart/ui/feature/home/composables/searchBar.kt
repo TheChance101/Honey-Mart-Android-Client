@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black87
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun searchBar(
@@ -27,7 +28,7 @@ fun searchBar(
     Surface(
         modifier = modifier,
         color = Color.Transparent,
-        shape = MaterialTheme.shapes.small.copy(CornerSize(16.dp)),
+        shape = MaterialTheme.shapes.small.copy(CornerSize(MaterialTheme.dimens.space16)),
         border = BorderStroke(1.dp, black16)
     ) {
         Row(
@@ -37,7 +38,7 @@ fun searchBar(
             Image(
                 painter = icon,
                 contentDescription = null,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(MaterialTheme.dimens.space8)
             )
             Text(
                 text = "Search",

@@ -168,7 +168,7 @@ fun CouponsItem() {
                     .clip(RoundedCornerShape(12.dp)),
                 painter = painterResource(
                     id =
-                    org.the_chance.design_system.R.drawable.test
+                    org.the_chance.design_system.R.drawable.image_test
                 ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -269,23 +269,22 @@ fun couponRightPath(
 
         lineTo(x = size.width, y = 0f)
 
-        val radius = mediumCornerRadius
-        var centerYEnd = smallCornerRadius + radius
+        var centerYEnd = smallCornerRadius + mediumCornerRadius
 
 
         while (centerYEnd < size.height) {
             arcTo(
                 rect = Rect(
-                    left = size.width - radius,
-                    top = centerYEnd - radius,
-                    right = size.width + radius,
-                    bottom = centerYEnd + radius
+                    left = size.width - mediumCornerRadius,
+                    top = centerYEnd - mediumCornerRadius,
+                    right = size.width + mediumCornerRadius,
+                    bottom = centerYEnd + mediumCornerRadius
                 ),
                 startAngleDegrees = -90.0f,
                 sweepAngleDegrees = -180.0f,
                 forceMoveTo = false
             )
-            centerYEnd += 2 * radius + mediumCornerRadius
+            centerYEnd += 2 * mediumCornerRadius + mediumCornerRadius
         }
 
         lineTo(x = size.width, y = size.height)

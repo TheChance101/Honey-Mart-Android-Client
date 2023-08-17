@@ -12,30 +12,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import org.the_chance.design_system.R
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HomeHorizontalItems(
-    categoryName: String,
+    modifier: Modifier = Modifier,
+    name: String,
+    image: String
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12))
     ) {
         Image(
-            painter = painterResource(id = R.drawable.background_frame),
+            painter = rememberAsyncImagePainter(model = image),
             contentDescription = null,
             modifier = Modifier
                 .clip(shape = Shapes.medium)
                 .background(black16)
                 .height(MaterialTheme.dimens.card)
         )
-        Text(text = categoryName, modifier = Modifier.align(Alignment.Center))
+        Text(text = name, modifier = Modifier.align(Alignment.Center))
     }
 }

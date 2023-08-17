@@ -5,19 +5,14 @@ data class HomeUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: String? = null,
-    val pagerItems: List<PagerItems> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
-    val markets: List<MarketUiState> = emptyList(),
+    val markets: List<org.the_chance.honeymart.ui.feature.market.MarketUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
     val newProducts: List<NewProductUiState> = emptyList(),
     val lastPurchases: List<LastPurchaseUiState> = emptyList(),
     val discoverProducts: List<DiscoverProductUiState> = emptyList(),
 )
 
-data class PagerItems(
-    val pagerId: Long = 0L,
-    val pagerImage: String = "",
-)
 
 data class CategoryUiState(
     val categoryId: Long = 0L,
@@ -25,11 +20,6 @@ data class CategoryUiState(
     val categoryImage: String = "",
 )
 
-data class MarketUiState(
-    val marketId: Long = 0L,
-    val marketName: String = "",
-    val marketImage: String = "",
-)
 
 data class CouponUiState(
     val couponId: Long = 0L,
