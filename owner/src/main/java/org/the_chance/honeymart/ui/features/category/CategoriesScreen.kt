@@ -30,6 +30,7 @@ import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
 import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.products.ProductsOnCategory
+import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
@@ -110,7 +111,7 @@ fun CategoriesContent(
                                 CategoryItem(
                                     categoryName = stringResource(id = R.string.add),
                                     onClick =
-                                    { listener.updateStateToShowAddCategory(!state.showAddCategory) },
+                                    { listener.updateStateToShowAddCategory(!state.showUpdateCategory) },
                                     icon = R.drawable.icon_add_to_cart,
                                     isSelected = false
                                 )
@@ -131,6 +132,8 @@ fun CategoriesContent(
                 AnimatedVisibility(visible = state.products.isEmpty() && !state.isLoading) {
                     ProductsOnCategory(state = state)
                 }
+
+                UpdateCategoryContent(state = state, listener = listener)
             }
         }
     }

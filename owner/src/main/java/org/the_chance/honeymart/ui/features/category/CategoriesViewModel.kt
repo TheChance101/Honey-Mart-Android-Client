@@ -14,7 +14,6 @@ import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
 import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.addCategory.toCategoryImageUIState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryUiState
 import javax.inject.Inject
 
 /**
@@ -186,18 +185,18 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun updateStateToShowAddCategory(state: Boolean) {
-        _state.update { it.copy(showAddCategory = state) }
+        _state.update { it.copy(showUpdateCategory = state) }
     }
     // endregion
 
     // region Update Category
-    override fun updateCategory(category: UpdateCategoryUiState) {
+    override fun updateCategory(category: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             function = {
                 updateCategoryUseCase(
-                    imageId = category.categoryIconId,
-                    name = category.categoryName,
+                    imageId = category.categoryImageId,
+                    name = category.nameCategory,
                     id = category.categoryId,
                     marketId = marketId
                 )

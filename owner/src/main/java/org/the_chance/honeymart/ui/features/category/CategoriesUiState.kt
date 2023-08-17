@@ -20,6 +20,7 @@ data class CategoriesUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val categoryImageId: Int = 0,
     val showAddCategory: Boolean = false,
+    val showUpdateCategory: Boolean = false,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val products: List<ProductUiState> = emptyList(),
@@ -55,6 +56,13 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
         categoryName = categoryName,
         categoryImageId = categoryImageId
     )
+}
+
+fun CategoriesUiState.showButton(): Boolean {
+    return nameCategory.isNotBlank()
+            && categoryImages.any { it.isSelected }
+            && !isLoading
+            && categoryNameState == ValidationState.VALID_TEXT_FIELD
 }
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError

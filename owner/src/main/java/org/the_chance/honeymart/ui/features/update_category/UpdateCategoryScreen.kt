@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.update_category
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
-import org.the_chance.honeymart.ui.components.PlaceHolderItem
+import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
+import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
@@ -43,35 +46,17 @@ fun UpdateCategoryScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    UpdateCategoryContent(state = state, listener = viewModel)
+//    UpdateCategoryContent(state = state, listener = viewModel)
 }
 
 @Composable
 fun UpdateCategoryContent(
-    state: UpdateCategoryUiState,
-    listener: UpdateCategoryInteractionListener
+    state: CategoriesUiState,
+    listener: CategoriesInteractionsListener
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    ) {
+    AnimatedVisibility(visible = state.showUpdateCategory) {
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-        ) {
-            PlaceHolderItem(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space56),
-                visibility = true,
-                title = stringResource(R.string.your_products_is_empty),
-                subtitle = stringResource(R.string.add_product_placeholder_subtitle)
-            )
-        }
-        Column(
-            modifier = Modifier
-                .weight(1F)
-                .fillMaxHeight()
+            modifier = Modifier.fillMaxHeight()
         ) {
             Column(
                 modifier = Modifier
@@ -90,7 +75,7 @@ fun UpdateCategoryContent(
                     iconPainter = painterResource(id = R.drawable.icon_update_category)
                 )
                 FormTextField(
-                    text = state.categoryName,
+                    text = state.nameCategory,
                     hint = stringResource(R.string.new_category_name),
                     keyboardType = KeyboardType.Text,
                     onValueChange = listener::onUpdatedCategoryNameChanged,
@@ -115,12 +100,12 @@ fun UpdateCategoryContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     modifier = Modifier.padding(MaterialTheme.dimens.space16)
                 ) {
-                    if (state.categoryIcons.isNotEmpty()) items(count = state.categoryIcons.size) { index ->
+                    if (state.categoryImages.isNotEmpty()) items(count = state.categoryImages.size) { index ->
                         CategoryIconItem(
-                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                            isSelected = state.categoryIcons[index].isCategorySelected,
-                            categoryIconId = state.categoryIcons[index].categoryIconId,
-                            onClick = { listener.onClickCategoryIcon(state.categoryIcons[index].categoryIconId) }
+                            iconPainter = painterResource(id = state.categoryImages[index].image),
+                            isSelected = state.categoryImages[index].isSelected,
+                            categoryIconId = state.categoryImages[index].categoryImageId,
+                            onClick = { listener.onClickCategoryIcon(state.categoryImages[index].categoryImageId) }
                         )
                     }
                 }
@@ -150,6 +135,7 @@ fun UpdateCategoryContent(
         }
     }
 }
+
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
