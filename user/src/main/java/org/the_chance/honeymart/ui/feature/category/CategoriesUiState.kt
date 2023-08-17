@@ -15,6 +15,7 @@ data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
     val categoryImageId: Int = 0,
+    val categoryImage: String = "",
     val isCategorySelected: Boolean = false
 )
 
@@ -22,7 +23,8 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,
-        categoryImageId = categoryImageId
+        categoryImageId = categoryImageId,
+        categoryImage = categoryImage,
     )
 }
 

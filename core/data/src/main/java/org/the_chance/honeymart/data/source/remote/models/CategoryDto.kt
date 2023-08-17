@@ -9,5 +9,7 @@ data class CategoryDto(
     val categoryName: String? = null,
     @SerializedName("imageId")
     val imageId: Int? = null,
+    @SerializedName("image")
+    val image: String? = null,
 )
 

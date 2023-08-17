@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.ui.feature.home.composables.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.composables.Hexagon
 import org.the_chance.honeymart.ui.feature.home.composables.HomeHorizontalItems
@@ -41,6 +39,7 @@ import org.the_chance.honeymart.ui.feature.home.composables.LastPurchasesItems
 import org.the_chance.honeymart.ui.feature.home.composables.NewProductsItems
 import org.the_chance.honeymart.ui.feature.home.composables.SearchBar
 import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
@@ -93,9 +92,9 @@ fun HomeContent(
                     pageCount = state.markets.size,
                     state = pagerState,
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.test),
-                        contentDescription = "",
+                    ImageNetwork(
+                        imageUrl = state.markets[it].marketImage,
+                        contentDescription = "null",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -111,7 +110,6 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 HorizontalPagerIndicator(
-
                     itemCount = 3,
                     selectedPage = pagerState.currentPage,
                 )
@@ -167,7 +165,10 @@ fun HomeContent(
 
                 ) {
                     items(10) {
-                        Hexagon()
+                        Hexagon(
+                            label = state.categories[it].categoryName,
+                            imageUrl = state.categories[it].categoryImage,
+                        )
                     }
                 }
             }
@@ -180,23 +181,8 @@ fun HomeContent(
                 )
 
                 {
-                    items(5) {
-                        CouponsItem(
-                            state = CouponUiState(
-                                couponId = 1,
-                                count = 1,
-                                discountPercentage = 1.0,
-                                expirationDate = "1.10.2023",
-                                product = ProductEntity(
-                                    productId = 1,
-                                    productName = "100",
-                                    productDescription = "100",
-                                    ProductPrice = 1.0,
-                                    productImages = emptyList()
-                                ),
-                                isClipped = true,
-                            ),
-                        )
+                    items(state.coupons.size) {
+                        CouponsItem(state = state.coupons[it])
                     }
                 }
             }
@@ -218,8 +204,12 @@ fun HomeContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 ) {
-                    items(10) {
-                        NewProductsItems()
+                    items(state.newProducts.size) {
+                        NewProductsItems(
+                            productName = state.newProducts[it].newProductName,
+                            productPrice = state.newProducts[it].price.toString(),
+                            image = state.newProducts[it].newProductImage,
+                        )
                     }
                 }
             }
@@ -247,32 +237,39 @@ fun HomeContent(
                 ) {
 
 
-                        items(10) {
-                            LastPurchasesItems()
-                        }
+                    items(state.lastPurchases.size) {
+                        LastPurchasesItems(
+                            // image = state.lastPurchases[it].imageUrl.get(it),
+                            label = state.lastPurchases[it].marketName,
+                        )
                     }
                 }
+            }
 
-                item(
-                    span = { GridItemSpan(2) },
-                ) {
-                    Text(
-                        text = stringResource(R.string.last_purchases),
-                        style = Typography.bodySmall.copy(black87),
-                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                    )
-                }
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                Text(
+                    text = stringResource(R.string.last_purchases),
+                    style = Typography.bodySmall.copy(black87),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                )
+            }
 
-                items(10) {
-                    NewProductsItems()
-                }
+            items(10) {
+                NewProductsItems(
+                    productName = state.discoverProducts[it].productName,
+                    productPrice = state.discoverProducts[it].productPrice.toString(),
+                    image = state.discoverProducts[it].productImages[0],
+                )
             }
         }
     }
+}
 
 
-    @Preview
-    @Composable
-    fun HomeScreenPreview() {
-        HomeScreen()
-    }
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
+}

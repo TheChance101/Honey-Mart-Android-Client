@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +15,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
@@ -37,12 +36,12 @@ fun Hexagon(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier.align(Alignment.Center)
         ) {
-            Image(
-                painter = painterResource(id = org.the_chance.design_system.R.drawable.cuppaper),
-                contentDescription = null,
+            ImageNetwork(
+                imageUrl = imageUrl,
+                contentDescription = "image",
                 modifier = Modifier.size(32.dp)
             )
-            Text(text = "Drinks",
+            Text(text = label,
                 style = Typography.displaySmall.copy(black60))
         }
     }
