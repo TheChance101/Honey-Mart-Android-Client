@@ -4,8 +4,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.domain.model.OwnerProfileEntity
 
 fun OwnerProfileDto.toOwnerProfileEntity() = OwnerProfileEntity(
-    userId = userId,
+    ownerId = ownerId,
     fullName = fullName,
     email = email,
-    profileImage = profileImage,
 )

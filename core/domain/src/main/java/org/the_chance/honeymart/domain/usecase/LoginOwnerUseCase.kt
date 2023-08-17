@@ -17,9 +17,9 @@ class LoginOwnerUseCase @Inject constructor(
         } else if (passwordValidationState != ValidationState.VALID_PASSWORD) {
             false
         } else {
-            val token = authRepository.loginOwner(email, password)
-            authRepository.saveToken(token)
-            authRepository.saveOwnerName("")
+            val response = authRepository.loginOwner(email, password)
+            authRepository.saveToken(response.tokens.accessToken)
+            authRepository.saveOwnerName(response.fullName)
             authRepository.saveOwnerImageUrl("")
             true
         }

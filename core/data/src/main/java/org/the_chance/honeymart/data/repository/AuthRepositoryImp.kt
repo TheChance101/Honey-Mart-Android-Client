@@ -2,8 +2,11 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toOwnerLoginEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfileEntity
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.OwnerLoginEntity
 import org.the_chance.honeymart.domain.model.OwnerProfileEntity
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -46,8 +49,8 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
-    override suspend fun loginOwner(email: String, password: String): String {
-        return wrap { honeyMartService.loginOwner(email, password) }.value
+    override suspend fun loginOwner(email: String, password: String): OwnerLoginEntity {
+        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
             ?: throw NotFoundException()
     }
 

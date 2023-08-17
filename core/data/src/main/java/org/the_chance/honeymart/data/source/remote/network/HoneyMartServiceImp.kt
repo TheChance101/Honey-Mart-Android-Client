@@ -26,6 +26,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
@@ -252,7 +253,7 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<String> =
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> =
         wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
