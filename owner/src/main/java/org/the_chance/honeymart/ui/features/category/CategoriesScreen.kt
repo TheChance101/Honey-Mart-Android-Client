@@ -127,12 +127,12 @@ fun CategoriesContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
+                AnimatedVisibility(visible = !state.isLoading && !state.showUpdateCategory ) {
+                    ProductsOnCategory(state = state, listener = listener)
+                }
                 AddCategoryContent(
                     listener = listener, state = state,
                 )
-                AnimatedVisibility(visible =  !state.isLoading && !state.showUpdateCategory) {
-                    ProductsOnCategory(state = state,listener = listener)
-                }
 
                 UpdateCategoryContent(state = state, listener = listener)
             }

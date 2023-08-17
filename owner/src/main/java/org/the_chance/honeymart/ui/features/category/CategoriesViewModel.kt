@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.category
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -105,16 +104,19 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun addCategorySuccess(success: String) {
-        _state.update { it.copy(isLoading = false, nameCategory = "") }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                nameCategory = "",
+                snackBar = it.snackBar.copy(isShow = true, message = success),
+            )
+        }
         getAllCategory()
         resetShowState(Visibility.ADD_CATEGORY)
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = success)) }
-        Log.e("is show", state.value.snackBar.isShow.toString())
     }
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
-        Log.e("is show", state.value.snackBar.isShow.toString())
     }
 
 
@@ -180,7 +182,10 @@ class CategoriesViewModel @Inject constructor(
         selectedCategoryImageId: Int,
     ): List<CategoryImageUIState> {
         return categoryImages.map { category ->
-            category.copy(isSelected = category.categoryImageId == selectedCategoryImageId)
+            category.copy(
+                isSelected = category.categoryImageId == selectedCategoryImageId
+            )
+
         }
     }
 
@@ -190,7 +195,6 @@ class CategoriesViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         showAddCategory = !_state.value.showAddCategory,
-                        showUpdateCategory = _state.value.showUpdateCategory
                     )
                 }
             }
@@ -198,8 +202,7 @@ class CategoriesViewModel @Inject constructor(
             Visibility.UPDATE_CATEGORY -> {
                 _state.update {
                     it.copy(
-                        showUpdateCategory = !_state.value.showUpdateCategory,
-                        showAddCategory = _state.value.showAddCategory
+                        showUpdateCategory = !_state.value.showUpdateCategory
                     )
                 }
             }

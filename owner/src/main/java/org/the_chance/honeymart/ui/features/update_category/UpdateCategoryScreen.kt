@@ -33,6 +33,7 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -62,7 +63,7 @@ fun UpdateCategoryContent(
                 modifier = Modifier
                     .padding(
                         end = MaterialTheme.dimens.space16,
-                        bottom =  MaterialTheme.dimens.space16
+                        bottom = MaterialTheme.dimens.space16
                     )
                     .fillMaxSize()
                     .background(
@@ -127,7 +128,7 @@ fun UpdateCategoryContent(
                     )
                     HoneyOutlineButton(
                         label = "Cancel",
-                        onClick = listener::onClickCancelUpdateCategory,
+                        onClick = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
                         modifier = Modifier.width(IntrinsicSize.Max)
                     )
                 }

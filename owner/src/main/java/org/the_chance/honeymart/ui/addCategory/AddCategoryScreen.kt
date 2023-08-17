@@ -25,14 +25,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.addCategory.composable.CategoryImage
 import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
@@ -52,7 +50,7 @@ fun AddCategoryContent(
     state: CategoriesUiState,
 ) {
     AnimatedVisibility(
-        visible = state.showAddCategory,
+        visible = state.showAddCategory && !state.showUpdateCategory,
         modifier = Modifier
             .padding(
                 end = MaterialTheme.dimens.space16,
