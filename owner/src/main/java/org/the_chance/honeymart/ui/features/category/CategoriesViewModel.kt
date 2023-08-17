@@ -188,12 +188,12 @@ class CategoriesViewModel @Inject constructor(
     override fun onClickCategoryImage(categoryImageId: Int) {
         val updatedCategories =
             updateCategoryImageSelection(_state.value.categoryImages, categoryImageId)
-        val position = updatedCategories.indexOfFirst { it.categoryImageId == categoryImageId }
+//        val position = updatedCategories.indexOfFirst { it.categoryImageId == categoryImageId }
         _state.update {
             it.copy(
                 categoryImages = updatedCategories,
                 isLoading = false,
-                position = position,
+//                position = position,
                 categoryImageId = categoryImageId
             )
         }

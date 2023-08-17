@@ -106,7 +106,8 @@ fun UpdateCategoryContent(
                             iconPainter = painterResource(id = state.categoryImages[index].image),
                             isSelected = state.categoryImages[index].isSelected,
                             categoryIconId = state.categoryImages[index].categoryImageId,
-                            onClick = { listener.onClickCategoryIcon(state.categoryImages[index].categoryImageId) }
+                            onClick = { listener.onClickCategoryIcon(state.categoryImages[index]
+                                .categoryImageId) }
                         )
                     }
                 }

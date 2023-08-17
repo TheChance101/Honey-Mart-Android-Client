@@ -33,7 +33,6 @@ fun DropDownMenuList(
     modifier: Modifier = Modifier,
 
     ) {
-    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
     Box(
