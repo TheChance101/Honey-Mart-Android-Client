@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +28,7 @@ import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 @Composable
 fun CategoryItem(
@@ -38,14 +39,13 @@ fun CategoryItem(
     Column(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .padding(vertical = MaterialTheme.dimens.space8)
+        modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8)
     ) {
         Box(
             modifier = Modifier
                 .aspectRatio(1f)
                 .clip(shape = Shapes.medium)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .background(color = colorResource(id = R.color.white))
                 .clickable { onCategoryClicked(state.categoryId, position) }
                 .size(120.dp), contentAlignment = Center
         ) {
@@ -59,8 +59,7 @@ fun CategoryItem(
         Text(
             text = state.categoryName,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = MaterialTheme.dimens.space8),
+                .fillMaxWidth(),
             overflow = TextOverflow.Ellipsis,
             maxLines = 2,
             style = Typography.displayLarge,

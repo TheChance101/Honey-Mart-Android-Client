@@ -14,7 +14,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +46,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.category.composables.CardChip
 import org.the_chance.honeymart.ui.feature.category.composables.CategoriesScreenTopBar
 import org.the_chance.honeymart.ui.feature.category.composables.CategoryItem
+import org.the_chance.honeymart.ui.feature.category.composables.HexagonItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -103,8 +106,9 @@ fun CategoryContent(
 
     ContentVisibility(state.showLazyCondition()) {
         Column(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .padding(horizontal = MaterialTheme.dimens.space16),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "Contemporary Touli Market",
@@ -144,21 +148,24 @@ fun CategoryContent(
             Image(
                 painter = painterResource(id = R.drawable.market),
                 contentDescription = stringResource(id = R.string.category_image),
-                modifier = Modifier.clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
-                    .height(198.dp).fillMaxWidth(), contentScale = ContentScale.FillBounds
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                    .height(198.dp)
+                    .fillMaxWidth(), contentScale = ContentScale.FillBounds
             )
             LazyVerticalGrid(
                 state = rememberLazyGridState(),
                 columns = GridCells.Fixed(count = 3),
-                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                contentPadding = PaddingValues(MaterialTheme.dimens.space2),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 itemsIndexed(state.categories) { index, item ->
-                    CategoryItem(
-                        state = item,
-                        onCategoryClicked = listener::onClickCategory,
-                        position = index,
+                    HexagonItem(
+                        item,
+                        listener::onClickCategory,
+                        index,
                     )
                 }
             }
