@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.products
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,50 +16,56 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
+import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.Visibility
+import org.the_chance.honeymart.ui.features.products.composables.DropDownMenuList
 import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
-import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun ProductsOnCategory(state: CategoriesUiState) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = MaterialTheme.dimens.space24,
-                    start = MaterialTheme.dimens.space16,
-                    end = MaterialTheme.dimens.space16
-                )
+fun ProductsOnCategory(
+    state: CategoriesUiState,
+    listener: CategoriesInteractionsListener,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiary)
+            .padding(
+                top = MaterialTheme.dimens.space24,
+                start = MaterialTheme.dimens.space16,
+                end = MaterialTheme.dimens.space16,
+                bottom = MaterialTheme.dimens.space16,
+            )
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier.size(MaterialTheme.dimens.icon48),
-                        painter = painterResource(id = R.drawable.icon_category),
-                        contentDescription = "category icon",
-                        tint = black37
+                Icon(
+                    modifier = Modifier.size(MaterialTheme.dimens.icon48),
+                    painter = painterResource(id = R.drawable.icon_category),
+                    contentDescription = "category icon",
+                    tint = black37
+                )
+                if (state.categories.isNotEmpty()) {
+                    Text(
+                        text = state.categories[state.position].categoryName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = blackOn60
                     )
-                    if (state.categories.isNotEmpty()){
-                        Text(
-                            text = state.categories[state.categoryId.toInt()].categoryName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = blackOn60
-                        )
-                    }
+                }
 
                 }
                 Row(
@@ -66,16 +73,11 @@ fun ProductsOnCategory(state: CategoriesUiState) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     HoneyOutlineText(text = state.productsQuantity)
-                    IconButton(
-                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                        onClick = { /*TODO*/ },
-                        backgroundColor = Color.Transparent
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_options),
-                            contentDescription = "options icon",
-                        )
-                    }
+
+                    DropDownMenuList(
+                        onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
+                        onClickDelete = { /*TODO*/ }
+                    )
                 }
             }
             EmptyPlaceholder(state = state.products.isEmpty(), emptyObjectName = "Product")

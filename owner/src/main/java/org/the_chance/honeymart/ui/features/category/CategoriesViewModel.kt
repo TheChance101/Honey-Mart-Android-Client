@@ -77,7 +77,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
             )
         }
-       // getProductsByCategoryId(categoryId = categoryId)
+        getProductsByCategoryId(categoryId = categoryId)
     }
 
     private fun updateCategorySelection(

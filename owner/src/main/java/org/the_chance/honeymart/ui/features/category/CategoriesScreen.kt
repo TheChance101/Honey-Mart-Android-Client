@@ -101,7 +101,7 @@ fun CategoriesContent(
                                     categoryName = state.categories[index].categoryName,
                                     onClick = {
                                         listener.onClickCategory(state.categories[index].categoryId)
-                                        listener.resetShowState(Visibility.UPDATE_CATEGORY)
+//                                        listener.resetShowState(Visibility.UPDATE_CATEGORY)
                                     },
                                     icon = categoryIcons[state.categories[index].categoryImageId]
                                         ?: R.drawable.icon_category,
@@ -130,8 +130,8 @@ fun CategoriesContent(
                 AddCategoryContent(
                     listener = listener, state = state,
                 )
-                AnimatedVisibility(visible = state.products.isNotEmpty() && !state.isLoading && !state.showUpdateCategory) {
-                    ProductsOnCategory(state = state)
+                AnimatedVisibility(visible =  !state.isLoading && !state.showUpdateCategory) {
+                    ProductsOnCategory(state = state,listener = listener)
                 }
 
                 UpdateCategoryContent(state = state, listener = listener)
