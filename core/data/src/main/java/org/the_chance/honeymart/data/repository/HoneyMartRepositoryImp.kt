@@ -80,6 +80,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOrderDetails(orderId) }.value?.toOrderDetailsEntity()
             ?: throw NotFoundException()
 
+    override suspend fun searchForProducts(query: String): List<ProductEntity> =
+        wrap { honeyMartService.searchForProducts(query = query) }.value?.map { it.toProductEntity() }
+            ?: throw NotFoundException()
+
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
         wrap { honeyMartService.updateOrderState(id, state) }.value ?: throw NotFoundException()
 

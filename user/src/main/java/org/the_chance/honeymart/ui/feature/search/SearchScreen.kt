@@ -33,6 +33,7 @@ import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ProductCard
+import org.the_chance.honeymart.ui.feature.product.ProductsUiState
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -52,7 +53,6 @@ import org.the_chance.honymart.ui.theme.white50
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
-    val products by viewModel.products.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
     val navController = LocalNavigationProvider.current
@@ -69,7 +69,6 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     SearchContent(
         state = state,
-        products = products,
         searchText = searchText,
         onSearchTextChange = viewModel::onSearchTextChange,
         isSearching = isSearching,
@@ -80,7 +79,6 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 @Composable
 fun SearchContent(
     state: SearchUiState,
-    products: List<SearchViewModel.Products>,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     isSearching: Boolean,
@@ -182,13 +180,13 @@ fun SearchContent(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         state = rememberLazyGridState(),
                         content = {
-                            items(products.size) { itemResult ->
-                                val product = products[itemResult]
+                            items(state.products.size) { itemResult ->
+                                val product = state.products[itemResult]
                                 ProductCard(
                                     visibility = false,
-                                    imageUrl = product.image,
-                                    productName = product.title,
-                                    productPrice = product.price,
+                                    imageUrl = product.productImages[0],
+                                    productName = product.productName,
+                                    productPrice = product.productPrice.toString(),
                                     secondaryText = product.marketName,
                                     isFavoriteIconClicked = false,
                                     onClickFavorite = { },

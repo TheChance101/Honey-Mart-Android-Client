@@ -1,5 +1,7 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import org.the_chance.honeymart.domain.model.ProductEntity
+
 data class SearchUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
@@ -31,5 +33,11 @@ fun SearchUiState.emptySearchPlaceHolder() =
 
 fun SearchUiState.screenContent() = this.products.isNotEmpty() && !this.isError
 
-
-
+fun ProductEntity.toProductUiState(): ProductUiState {
+    return ProductUiState(
+        productId = productId,
+        productName = productName,
+        productPrice = ProductPrice,
+        productImages = productImages
+    )
+}
