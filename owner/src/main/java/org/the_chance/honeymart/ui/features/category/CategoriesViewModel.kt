@@ -32,6 +32,9 @@ class CategoriesViewModel @Inject constructor(
     private val marketId = 5L
 
     override val TAG: String = this::class.java.simpleName
+    init {
+        getCategoryImages()
+    }
 
     // region Categories
      override fun getAllCategory() {

@@ -56,10 +56,7 @@ fun ProductsOnCategory(
             ) {
                 Icon(
                     modifier = Modifier.size(MaterialTheme.dimens.icon48),
-                    painter = painterResource(
-                        categoryIcons[state.categories[state.position].categoryImageId]
-                            ?: R.drawable.icon_category
-                    ),
+                    painter = painterResource(id = R.drawable.icon_category),
                     contentDescription = "category icon",
                     tint = black37
                 )

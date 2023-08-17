@@ -51,7 +51,6 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
     CategoriesContent(state, categoriesViewModel)
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
-        categoriesViewModel.getCategoryImages()
     }
 }
 
