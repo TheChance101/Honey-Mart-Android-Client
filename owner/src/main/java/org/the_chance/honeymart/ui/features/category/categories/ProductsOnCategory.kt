@@ -18,11 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.DropDownMenuList
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
-import org.the_chance.honeymart.ui.features.products.composables.DropDownMenuList
 import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
@@ -67,34 +67,34 @@ fun ProductsOnCategory(
                     )
                 }
 
-                }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    HoneyOutlineText(text = state.productsQuantity)
-
-                    DropDownMenuList(
-                        onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
-                        onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
-                    )
-                }
             }
-            EmptyPlaceholder(state = state.products.isEmpty(), emptyObjectName = "Product")
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(state.products.size) { index ->
-                    val product = state.products[index]
-                    ProductCard(
-                        imageUrl = product.productImage,
-                        productName = product.productName,
-                        productPrice = product.productPrice,
-                    )
-                }
+                HoneyOutlineText(text = state.productsQuantity)
+
+                DropDownMenuList(
+                    onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
+                    onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
+                )
             }
         }
+        EmptyPlaceholder(state = state.products.isEmpty(), emptyObjectName = "Product")
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+        ) {
+            items(state.products.size) { index ->
+                val product = state.products[index]
+                ProductCard(
+                    imageUrl = product.productImage,
+                    productName = product.productName,
+                    productPrice = product.productPrice,
+                )
+            }
+        }
+    }
 
 
 }

@@ -58,20 +58,9 @@ fun AddProductContent(
                 .weight(1F)
                 .fillMaxHeight()
         ) {
-            AddProductForm(state = state, listener = listener,)
+            //AddProductForm(state = state, listener = listener,)
         }
     }
 }
 
-@Preview(
-    name = "Add Product Screen",
-    device = Devices.TABLET,
-    showSystemUi = true,
-    uiMode = UI_MODE_NIGHT_NO
-)
-@Composable
-private fun PreviewAddProductScreen() {
-    HoneyMartTheme {
-        AddProductScreen()
-    }
-}
+

@@ -2,43 +2,24 @@ package org.the_chance.honeymart.ui.features.products
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.add_product.components.AddProductForm
-import org.the_chance.honeymart.ui.features.category.Visibility
-import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts
-import org.the_chance.honymart.ui.composables.HoneyOutlineText
-import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -46,12 +27,14 @@ fun ProductsScreen(
     viewModel: ProductsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProductsContent(state,viewModel)
+    ProductsContent(state, viewModel)
 }
 
 @Composable
-fun ProductsContent(state: ProductsUiState,
-listener: ProductsInteractionsListener) {
+fun ProductsContent(
+    state: ProductsUiState,
+    listener: ProductsInteractionsListener
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,8 +50,10 @@ listener: ProductsInteractionsListener) {
                     .weight(1f)
             ) {
 
-                EmptyPlaceholder(state = state.products.isEmpty()&&
-                        !state.isLoading && !state.isError, emptyObjectName = "Product")
+                EmptyPlaceholder(
+                    state = state.products.isEmpty() &&
+                            !state.isLoading && !state.isError, emptyObjectName = "Product"
+                )
 
                 AnimatedVisibility(
                     visible = state.products.isNotEmpty(),
@@ -78,13 +63,19 @@ listener: ProductsInteractionsListener) {
                             .fillMaxSize()
                             .padding(horizontal = MaterialTheme.dimens.space12)
                     ) {
-                        ProductsOnProducts(state = state, listener =listener )
+                        ProductsOnProducts(state = state, listener = listener)
                     }
-                    AddProductForm(state = state, listener =listener )
+                }
 
-
-                    }
-            }}
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                AddProductForm(state = state, listener = listener)
+            }
+        }
     }
 
 //    ContentVisibility(state = state.contentScreen()) {
