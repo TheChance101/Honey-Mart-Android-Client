@@ -2,19 +2,27 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toGetRecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toValidCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
+import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -52,6 +60,10 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity> =
         wrap { honeyMartService.getCategoriesInMarket(marketId) }.value?.map { it.toCategoryEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity =
+        wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetailsEntity()
             ?: throw NotFoundException()
 
     override suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity> =
@@ -94,5 +106,23 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
+
+    override suspend fun getUSerCoupons(): List<CouponEntity> =
+        wrap { honeyMartService.getCouponOfUser() }.value?.map { it.toCouponEntity() }
+            ?: throw NotFoundException()
+
+
+    override suspend fun getValidUSerCoupons(): List<ValidCouponEntity> =
+        wrap { honeyMartService.getCouponOfValidUser() }.value?.map { it.toValidCouponEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getRecentProducts(): List<GetRecentProductsEntity> =
+        wrap { honeyMartService.getRecentProducts() }.value?.map { it.toGetRecentProductEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getAllProducts(): List<ProductEntity>
+        = wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
+            ?: throw NotFoundException()
+
 
 }

@@ -35,7 +35,7 @@ import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.ItemOrder
-import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -53,7 +53,7 @@ fun OrdersScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToMarketScreen()
+                OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToHomeScreen()
                 is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(it.orderId)
             }
         }

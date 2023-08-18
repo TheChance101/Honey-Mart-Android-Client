@@ -89,7 +89,7 @@ fun RowScope.AddItem(
             }
             when (screen) {
                 BottomBarItems.Home -> {
-                    navController.popBackStack(Screen.MarketScreen.route, false)
+                    navController.popBackStack(Screen.HomeScreen.route, false)
                 }
 
                 BottomBarItems.Cart -> {

@@ -18,10 +18,14 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -54,6 +58,9 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/markets/$marketId/categories"))
 
+    override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
+        wrap(client.get("/markets/$marketId"))
+
     override suspend fun addCategory(
         marketID: Long, name: String, imageId: Int,
     ): BaseResponse<CategoryDto> =
@@ -77,6 +84,9 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct"))
+
+    override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
+        wrap(client.get("/product"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/product/$productId"))
@@ -195,6 +205,15 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
+
+    override suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>> =
+        wrap(client.get("/coupon/allUserCoupons"))
+
+    override suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>> =
+        wrap(client.get("/coupon/allValidCoupons"))
+
+    override suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>> =
+        wrap(client.get("/product/recentProducts"))
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {

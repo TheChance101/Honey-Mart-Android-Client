@@ -11,4 +11,6 @@
     <string name="navigation_icon">Navigation icon</string>
     <string name="category_image">category image</string>
     <string name="market_name">Market Name</string>
+    <string name="markets">Markets</string>
+    <string name="categories">Categories</string>
 </resources>

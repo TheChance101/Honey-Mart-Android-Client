@@ -3,14 +3,15 @@ package org.the_chance.honeymart.ui.feature.market
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import org.the_chance.honeymart.ui.feature.home.HomeScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 
-private val ROUTE = Screen.MarketScreen.route
+private val ROUTE = Screen.HomeScreen.route
 
-fun NavController.navigateToMarketScreen() {
+fun NavController.navigateToHomeScreen() {
     navigate(ROUTE)
 }
 
-fun NavGraphBuilder.marketRoute() {
-    composable(ROUTE) { MarketScreen() }
+fun NavGraphBuilder.homeRoute() {
+    composable(ROUTE) { HomeScreen() }
 }

@@ -9,5 +9,5 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 internal fun CategoryDto.toCategoryEntity() = CategoryEntity(
     categoryId = categoryId ?: 0L,
     categoryName = categoryName ?: "",
-    categoryImageId = imageId ?: 0
+    categoryImageId = imageId ?: 0,
 )
