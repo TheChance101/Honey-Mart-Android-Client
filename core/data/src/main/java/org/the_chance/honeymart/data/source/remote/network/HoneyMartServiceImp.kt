@@ -44,7 +44,7 @@ class HoneyMartServiceImp @Inject constructor(
         fullName: String,
         email: String,
         password: String,
-    ): BaseResponse<String> =
+    ): BaseResponse<Boolean> =
         wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
             append("fullName", fullName)
             append("email", email)
@@ -60,28 +60,22 @@ class HoneyMartServiceImp @Inject constructor(
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-        ownerId: Long
-    ): BaseResponse<String> =
+    ): BaseResponse<Boolean> =
         wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
             append("marketName", marketName)
             append("marketAddress", marketAddress)
             append("marketDescription", marketDescription)
-            append("ownerId", ownerId.toString())
         }))
 
-    override suspend fun addMarketImages(
-        marketId: Long,
-        marketImages: List<ByteArray>
-    ): BaseResponse<String> {
+    override suspend fun addMarketImage(
+        marketImage: ByteArray
+    ): BaseResponse<Boolean> {
         val response: HttpResponse = client.submitFormWithBinaryData(
-            url = "/markets/$marketId/uploadImages",
+            url = "/markets/image",
             formData = formData {
-                marketImages.forEachIndexed { index, bytes ->
-                    append("images", bytes, Headers.build {
-                        append(HttpHeaders.ContentType, "image/jpeg")
-                        append(HttpHeaders.ContentDisposition, "filename=image$index.jpeg")
-                    })
-                }
+                append("image", marketImage, Headers.build {
+                    append(HttpHeaders.ContentType, "image/jpeg")
+                })
             }
         )
         return wrap(response)

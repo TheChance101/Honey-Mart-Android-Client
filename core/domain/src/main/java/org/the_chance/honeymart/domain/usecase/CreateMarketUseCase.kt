@@ -10,13 +10,11 @@ class CreateMarketUseCase @Inject constructor(
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-        ownerId: Long
     ): Boolean {
         return honeyMartRepository.addMarket(
             marketName,
             marketAddress,
             marketDescription,
-            ownerId
         )
     }
 }

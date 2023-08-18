@@ -9,7 +9,7 @@ interface MarketInfoInteractionsListener {
     fun onMarketNameInputChange(marketName: CharSequence)
     fun onMarketAddressInputChange(address: CharSequence)
     fun onMarketDescriptionInputChanged(description: CharSequence)
-    fun addMarketImages(marketId: Long, images: List<ByteArray>)
-    fun onImagesSelected(uris: List<ByteArray>)
+    fun addMarketImage(image: ByteArray)
+    fun onImageSelected(uri: ByteArray)
     fun onClickRemoveSelectedImage(imageUri: ByteArray)
 }

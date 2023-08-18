@@ -16,13 +16,9 @@ interface HoneyMartRepository {
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-        ownerId: Long
     ): Boolean
 
-    suspend fun addMarketImages(
-        marketId: Long,
-        marketImages: List<ByteArray>
-    ): String
+    suspend fun addMarketImage(marketImage: ByteArray): Boolean
 
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?

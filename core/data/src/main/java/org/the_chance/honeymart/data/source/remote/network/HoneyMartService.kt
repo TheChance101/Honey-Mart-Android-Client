@@ -22,7 +22,7 @@ interface HoneyMartService {
         fullName: String,
         email: String,
         password: String,
-    ): BaseResponse<String>
+    ): BaseResponse<Boolean>
 
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
@@ -30,13 +30,11 @@ interface HoneyMartService {
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-        ownerId: Long
-    ): BaseResponse<String>
+    ): BaseResponse<Boolean>
 
-    suspend fun addMarketImages(
-        marketId: Long,
-        marketImages: List<ByteArray>
-    ): BaseResponse<String>
+    suspend fun addMarketImage(
+        marketImage: ByteArray
+    ): BaseResponse<Boolean>
 
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
