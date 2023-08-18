@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.products.composables
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -87,12 +88,14 @@ fun ProductsOnProducts(
                 )
             }
         }
-        EmptyPlaceholder(state = state.products.isEmpty(), emptyObjectName = "Product")
+        EmptyPlaceholder(state = state.isEmptyProducts, emptyObjectName = "Product")
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
         ) {
             items(state.products.size) { index ->
+                Log.e("sara",state.products.toString())
+                Log.e("sara",state.toString())
                 val product = state.products[index]
                 ProductCard(
                     imageUrl = product.productImage,

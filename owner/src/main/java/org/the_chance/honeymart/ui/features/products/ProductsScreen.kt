@@ -51,12 +51,12 @@ fun ProductsContent(
             ) {
 
                 EmptyPlaceholder(
-                    state = state.products.isEmpty() &&
+                    state = state.isEmptyProducts &&
                             !state.isLoading && !state.isError, emptyObjectName = "Product"
                 )
 
                 AnimatedVisibility(
-                    visible = state.products.isNotEmpty(),
+                    visible = true,
                 ) {
                     Column(
                         modifier = Modifier

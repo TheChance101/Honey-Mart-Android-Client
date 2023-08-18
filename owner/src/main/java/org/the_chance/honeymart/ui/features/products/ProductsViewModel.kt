@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.products
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -46,12 +47,15 @@ class ProductsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
+            Log.e("sara",state.value.products.toString())
+
         }
     }
 
     private fun onGetProductsSuccess(products: List<ProductEntity>) {
         _state.update { it.copy(isLoading = false) }
         val productsUiState = products.map { product -> product.toProductUiState() }
+        Log.e("sara",productsUiState.toString())
         checkIfCategoryProductsEmpty(productsUiState)
     }
 
@@ -72,6 +76,7 @@ class ProductsViewModel @Inject constructor(
                     productsQuantity = productsUiState.size.toString() + " Products"
                 )
             }
+            Log.e("Sara",productsUiState.toString())
         }
     }
 
