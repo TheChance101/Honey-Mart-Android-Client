@@ -37,7 +37,9 @@ class CategoriesViewModel @Inject constructor(
 
     // region Categories
     override fun getAllCategory() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update {
+            it.copy(isLoading = true, isError = false)
+        }
         tryToExecute(
             { getAllCategories(1).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
@@ -46,11 +48,14 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+        val updatedCategories =
+            updateCategorySelection(categories, categories.first().categoryId)
         this._state.update {
             it.copy(
                 isLoading = false,
                 error = null,
-                categories = categories,
+                categories = updatedCategories,
+                position = 0
             )
         }
     }
@@ -72,17 +77,14 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onDeleteCategorySuccess() {
-        getAllCategory()
         _state.update {
-            val updatedCategories =
-                updateCategorySelection(_state.value.categories, it.categories.first().categoryId)
             it.copy(
-                categories = updatedCategories,
                 isLoading = false,
                 error = null,
                 position = 0
             )
         }
+        getAllCategory()
     }
 
     private fun onDeleteCategoryError(errorHandler: ErrorHandler) {
