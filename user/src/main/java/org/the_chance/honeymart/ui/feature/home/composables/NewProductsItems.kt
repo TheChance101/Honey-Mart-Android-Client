@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,24 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
-@Preview
 @Composable
 fun NewProductsItems(
     modifier: Modifier = Modifier,
@@ -39,6 +31,7 @@ fun NewProductsItems(
     enable: Boolean = true,
     productName: String = "blah blah blah",
     productPrice: String = "30000$",
+    imageUrl:String
 ) {
     Box(
         modifier = modifier
@@ -46,16 +39,12 @@ fun NewProductsItems(
             .clip(RoundedCornerShape(16.dp)),
     )
     {
-        /*ImageNetwork(
-            painter = painterResource(id = R.drawable.test),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(
-                black37,
-                blendMode = BlendMode.Multiply
-            ),
+        ImageNetwork(
+            imageUrl = imageUrl,
+            contentDescription = "Product Item",
             contentScale = ContentScale.Crop
         )
-*/
+
         IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)

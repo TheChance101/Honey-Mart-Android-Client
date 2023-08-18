@@ -26,7 +26,8 @@ fun HomeHorizontalItems(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier.size(MaterialTheme.dimens.card)
+        modifier = modifier
+            .size(MaterialTheme.dimens.card)
             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12))
     ) {
         ImageNetwork(
@@ -36,12 +37,12 @@ fun HomeHorizontalItems(
                 .clip(shape = Shapes.medium)
                 .background(black16)
                 .height(MaterialTheme.dimens.card),
-            /*colorFilter = ColorFilter.tint(
-                black37,
-                blendMode = BlendMode.Multiply
-            ),*/
         )
-        Text(text = name, modifier = Modifier.align(Alignment.Center))
+        Text(
+            text = name,
+            modifier = Modifier.align(Alignment.Center),
+            style = MaterialTheme.typography.displaySmall
+        )
     }
 }
 

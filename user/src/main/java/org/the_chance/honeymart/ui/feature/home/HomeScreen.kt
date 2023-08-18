@@ -217,7 +217,7 @@ fun HomeContent(
                         NewProductsItems(
                             productName = state.newProducts[it].newProductName,
                             productPrice = state.newProducts[it].price.toString(),
-                            image = state.newProducts[it].newProductImage,
+                            imageUrl = state.newProducts[it].newProductImage,
                         )
                     }
                 }
@@ -268,7 +268,7 @@ fun HomeContent(
                 NewProductsItems(
                     productName = state.discoverProducts[it].productName,
                     productPrice = state.discoverProducts[it].productPrice.toString(),
-                    image = state.discoverProducts[it].productImages[0],
+                    imageUrl = state.discoverProducts[it].productImages[0],
                 )
             }
         }
@@ -276,8 +276,8 @@ fun HomeContent(
 }
 
 
-    @Preview
-    @Composable
-    fun HomeScreenPreview() {
-        HomeScreen()
-    }
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
+}
