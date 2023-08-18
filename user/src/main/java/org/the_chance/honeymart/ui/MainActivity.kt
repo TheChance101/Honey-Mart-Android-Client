@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
+import org.the_chance.honeymart.ui.feature.profile.ProfileScreen
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -50,7 +51,8 @@ class MainActivity : AppCompatActivity() {
                                 .padding(innerPadding)
                         )
                         {
-                            MainNavGraph()
+                            ProfileScreen()
+                           // MainNavGraph()
                         }
                     }
                 }

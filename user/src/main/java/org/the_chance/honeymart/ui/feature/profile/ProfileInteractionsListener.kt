@@ -12,4 +12,6 @@ interface ProfileInteractionsListener {
     fun showDialog(massage: String)
 
     fun updateImage()
+
+    fun getData()
 }

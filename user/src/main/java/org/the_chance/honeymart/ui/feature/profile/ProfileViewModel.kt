@@ -2,13 +2,21 @@ package org.the_chance.honeymart.ui.feature.profile
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.orders.OrderStates
+import org.the_chance.honeymart.ui.feature.orders.OrderUiEffect
+import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsInteraction
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val
+    private val getProfileUseCase : GetProfileUserUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
     ProfileInteractionsListener {
@@ -16,18 +24,42 @@ class ProfileViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
 
+    init {
+        getData()
+    }
 
+    override fun getData(){
+        _state.update {
+            it.copy(isLoading = true, isError = false,)
+        }
+        tryToExecute(
+            { getProfileUseCase()},
+            ::onGetProfileSuccess,
+            ::onGetProfileError
+        )
+    }
+
+    private fun onGetProfileSuccess(user: ProfileUserEntity) {
+        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState()) }
+    }
+
+    private fun onGetProfileError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
 
     override fun onClickMyOrder() {
-        TODO("Not yet implemented")
+        effectActionExecutor(_effect, ProfileUiEffect.ClickMyOrderEffect)
     }
 
     override fun onClickCoupons() {
-        TODO("Not yet implemented")
+        effectActionExecutor(_effect, ProfileUiEffect.ClickCouponsEffect)
     }
 
     override fun onClickNotification() {
-        TODO("Not yet implemented")
+        effectActionExecutor(_effect, ProfileUiEffect.ClickNotificationEffect)
     }
 
     override fun onClickTheme() {
