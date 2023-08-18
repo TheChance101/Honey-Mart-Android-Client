@@ -5,6 +5,7 @@ import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -25,6 +26,8 @@ interface HoneyMartService {
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
     suspend fun deleteMarket(marketId: Long): BaseResponse<String>
+
+    suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto>
 
     //endregion Market
 

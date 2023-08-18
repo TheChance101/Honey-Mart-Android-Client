@@ -11,6 +11,8 @@ import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toValidCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
+import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -58,6 +60,10 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity> =
         wrap { honeyMartService.getCategoriesInMarket(marketId) }.value?.map { it.toCategoryEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity=
+        wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetailsEntity()
             ?: throw NotFoundException()
 
     override suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity> =

@@ -100,6 +100,7 @@
     <string name="warning_icon">warning Icon</string>
     <string name="empty_product">empty product</string>
     <string name="there_is_no_product_here">There is no product here !!</string>
+    <string name="there_is_no_categories_here">There is no categories here !!</string>
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
@@ -108,4 +109,9 @@
     <string name="last_purchases">Last Purchases</string>
     <string name="discover_products">Discover products</string>
     <string name="declined">Declined</string>
+    <string name="back_button">back button</string>
+    <string name="shop_details">Shop Details</string>
+    <string name="map_pointer">map pointer</string>
+    <string name="chip_icon">chip icon</string>
+    <string name="category_image">category image</string>
 </resources>
