@@ -13,5 +13,6 @@ interface HomeInteractionListener {
 
     fun onClickProductItem(productId: Long)
 
-    fun onClickFavoriteProduct(productId: Long)
+    fun onClickFavoriteNewProduct(productId: Long)
+    fun onClickFavoriteDiscoverProduct(productId: Long)
 }
