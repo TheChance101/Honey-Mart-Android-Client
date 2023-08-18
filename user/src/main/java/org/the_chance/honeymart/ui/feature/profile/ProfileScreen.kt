@@ -80,7 +80,7 @@ private fun ProfileContent(
         Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
-            state = state.isConnectionError,
+            state = state.contentScreen(),
             onClickTryAgain = listener::getData
         )
 

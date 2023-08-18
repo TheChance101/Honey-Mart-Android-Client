@@ -35,7 +35,7 @@ fun NavCard(
                 shape = MaterialTheme.shapes.small,
             )
             .clip(shape = MaterialTheme.shapes.small)
-            .clickable {onClick}
+            .clickable {onClick()}
             .fillMaxWidth()
             .padding(
                 horizontal = MaterialTheme.dimens.space16,

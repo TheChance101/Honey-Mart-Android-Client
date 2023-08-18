@@ -3,20 +3,17 @@ package org.the_chance.honeymart.ui.feature.profile
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
+import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.orders.OrderStates
-import org.the_chance.honeymart.ui.feature.orders.OrderUiEffect
-import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsInteraction
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getProfileUseCase : GetProfileUserUseCase,
+    private val getProfileUseCase: GetProfileUserUseCase,
+    private val logoutUserUseCase: LogoutUserUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
     ProfileInteractionsListener {
@@ -28,12 +25,12 @@ class ProfileViewModel @Inject constructor(
         getData()
     }
 
-    override fun getData(){
+    override fun getData() {
         _state.update {
-            it.copy(isLoading = true, isError = false,)
+            it.copy(isLoading = true, isError = false)
         }
         tryToExecute(
-            { getProfileUseCase()},
+            { getProfileUseCase() },
             ::onGetProfileSuccess,
             ::onGetProfileError
         )
@@ -66,9 +63,6 @@ class ProfileViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun onClickLogout() {
-        TODO("Not yet implemented")
-    }
 
     override fun showSnackBar(massage: String) {
         TODO("Not yet implemented")
@@ -80,5 +74,22 @@ class ProfileViewModel @Inject constructor(
 
     override fun updateImage() {
         TODO("Not yet implemented")
+    }
+
+
+    override fun onClickLogout() {
+        tryToExecute(
+            function = { logoutUserUseCase() },
+            onSuccess = { onLogoutSuccess() },
+            onError = ::onLogoutError
+        )
+    }
+
+    private fun onLogoutSuccess() {
+        effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
+    }
+
+    private fun onLogoutError(error: ErrorHandler) {
+
     }
 }
