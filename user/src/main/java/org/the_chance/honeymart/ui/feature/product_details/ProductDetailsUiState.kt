@@ -8,17 +8,25 @@ data class ProductDetailsUiState(
     val isAddToCartLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val totalPrice: Double = 0.0,
-    val snackBar : SnackBarState = SnackBarState(),
+    val snackBar: SnackBarState = SnackBarState(),
     val isConnectionError: Boolean = false,
     val product: ProductUiState = ProductUiState(),
     val image: String = "",
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
+    val dialogState: DialogState = DialogState(),
 )
+
 data class SnackBarState(
-    val isShow : Boolean = false ,
-    val productId : Long = 0L ,
-    val massage : String = ""
+    val isShow: Boolean = false,
+    val productId: Long = 0L,
+    val massage: String = "",
+)
+
+data class DialogState(
+    val showDialog: Boolean = false,
+    val productId: Long = 0L,
+    val count: Int = 0,
 )
 
 

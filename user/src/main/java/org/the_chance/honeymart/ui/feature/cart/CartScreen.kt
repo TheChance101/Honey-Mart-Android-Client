@@ -4,19 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
-import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.user.R
 
@@ -25,18 +23,19 @@ fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
 ) {
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val state by viewModel.state.collectAsState()
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 CartUiEffect.ClickDiscoverEffect -> navController.navigateToMarketScreen()
                 CartUiEffect.ClickViewOrdersEffect -> navController.navigateToOrderScreen()
             }
         }
     }
-    LaunchedEffect(lifecycleOwner) {
+
+    LaunchedEffect(key1 = true) {
         viewModel.getChosenCartProducts()
     }
     CartContent(state = state, cartInteractionListener = viewModel)
@@ -47,8 +46,8 @@ fun CartContent(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
-    HoneyAppBarScaffold {
-        Loading(state.unpopulatedLoading() || state.populatedLoading())
+    AppBarScaffold {
+        Loading(state.unpopulatedLoading())
         ConnectionErrorPlaceholder(
             state = state.errorPlaceHolderCondition(),
             onClickTryAgain = cartInteractionListener::getChosenCartProducts

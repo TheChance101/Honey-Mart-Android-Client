@@ -13,6 +13,7 @@ class InternalServerException : NetworkException()
 
 open class AuthenticationException : Exception()
 class UnAuthorizedException : AuthenticationException()
+class NotValidApiKeyException : AuthenticationException()
 class EmailIsExistException : AuthenticationException()
 class ForbiddenException : AuthenticationException()
 
@@ -52,6 +53,7 @@ fun handelAuthenticationException(
         is ForbiddenException -> onError(ErrorHandler.UnAuthorizedUser)
 
         is UnAuthorizedException -> onError(ErrorHandler.UnAuthorizedUser)
+        is NotValidApiKeyException -> onError(ErrorHandler.UnKnownError)
     }
 }
 

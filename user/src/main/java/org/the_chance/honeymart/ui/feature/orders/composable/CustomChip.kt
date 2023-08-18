@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
@@ -41,7 +42,9 @@ fun CustomChip(
         shape = CircleShape
     ) {
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.dimens.space16, vertical = MaterialTheme.dimens.space6
+            ),
             text = text,
             color = if (state) MaterialTheme.colorScheme.onSurfaceVariant else primary100,
             style = MaterialTheme.typography.displayLarge

@@ -3,6 +3,8 @@ package org.the_chance.honeymart.ui.feature.order_details
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.OrderDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -33,14 +35,18 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderProducts() {
         _state.update { it.copy(isProductsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderProductsDetailsUseCase(orderArgs.orderId.toLong()).map { it.toOrderDetailsProductUiState() } },
+            { getOrderProductsDetailsUseCase(orderArgs.orderId.toLong()) },
             ::onGetOrderProductsSuccess,
             ::onGetOrderProductsError
         )
     }
 
-    private fun onGetOrderProductsSuccess(products: List<OrderDetailsProductUiState>) {
-        _state.update { it.copy(isProductsLoading = false, products = products) }
+    private fun onGetOrderProductsSuccess(products: List<OrderProductDetailsEntity>) {
+        _state.update {
+            it.copy(
+                isProductsLoading = false,
+                products = products.map { it.toOrderDetailsProductUiState() })
+        }
     }
 
     private fun onGetOrderProductsError(error: ErrorHandler) {
@@ -53,14 +59,19 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderDetails() {
         _state.update { it.copy(isDetailsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderDetailsUseCase(orderArgs.orderId.toLong()).toOrderParentDetailsUiState() },
+            { getOrderDetailsUseCase(orderArgs.orderId.toLong()) },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )
     }
 
-    private fun onGetOrderDetailsSuccess(orderDetails: OrderParentDetailsUiState) {
-        _state.update { it.copy(isDetailsLoading = false, orderDetails = orderDetails) }
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetailsEntity) {
+        _state.update {
+            it.copy(
+                isDetailsLoading = false,
+                orderDetails = orderDetails.toOrderParentDetailsUiState()
+            )
+        }
     }
 
     private fun onGetOrderDetailsError(error: ErrorHandler) {
