@@ -27,7 +27,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
@@ -42,6 +44,7 @@ import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
+import java.util.Locale
 
 @Composable
 fun NavigationRail(
@@ -96,9 +99,8 @@ fun NavigationRail(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = state.ownerNameFirstCharacter.toString(),
+                        text = state.ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
                         style = MaterialTheme.typography.headlineMedium.copy(
-                            textAlign = TextAlign.Center,
                             color = white
                         )
                     )

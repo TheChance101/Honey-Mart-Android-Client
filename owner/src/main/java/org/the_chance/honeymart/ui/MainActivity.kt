@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -36,15 +37,17 @@ class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
                     val navigationRailState = checkNavigationRailState()
-                    AnimatedVisibility(
-                        visible = navigationRailState.value,
-                        enter = slideInHorizontally { -it },
-                        exit = slideOutHorizontally { -it }
-                    ) {
-                        NavigationRail()
-                    }
+                    Row {
+                        AnimatedVisibility(
+                            visible = navigationRailState.value,
+                            enter = slideInHorizontally { -it },
+                            exit = slideOutHorizontally { -it }
+                        ) {
+                            NavigationRail()
+                        }
 
-                    RootNavigationGraph()
+                        RootNavigationGraph()
+                    }
                 }
             }
         }
