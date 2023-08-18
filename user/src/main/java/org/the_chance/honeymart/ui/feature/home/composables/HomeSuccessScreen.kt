@@ -223,7 +223,7 @@ fun HomeContentSuccessScreen(
             }
         }
 
-        item {
+        item(span = { GridItemSpan(2) }) {
             Text(
                 text = stringResource(R.string.discover_products),
                 style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
@@ -233,14 +233,15 @@ fun HomeContentSuccessScreen(
 
         items(state.discoverProducts.size) {
             NewProductsItems(
-                modifier = if (it % 2 == 0) Modifier.padding(end = MaterialTheme.dimens.space16)
-                else Modifier.padding(start = MaterialTheme.dimens.space16),
+                modifier = if (it % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
+                else Modifier.padding(end = MaterialTheme.dimens.space16),
                 productName = state.discoverProducts[it].productName,
                 productPrice = state.discoverProducts[it].productPrice.toString(),
                 imageUrl = state.discoverProducts[it].productImages[0],
                 onClickFavorite =
                 { listener.onClickFavoriteProduct(state.discoverProducts[it].productId) },
-                onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) }
+                onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) },
+                isFavoriteIconClicked = state.discoverProducts[it].isFavorite
             )
         }
     }

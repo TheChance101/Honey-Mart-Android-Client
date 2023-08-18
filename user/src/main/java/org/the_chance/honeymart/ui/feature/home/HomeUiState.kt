@@ -21,7 +21,7 @@ data class HomeUiState(
     val newProducts: List<NewProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
-    val orderStates: OrderStates = OrderStates.DONE,
+    val orderStates: OrderStates = OrderStates.PROCESSING,
 )
 
 

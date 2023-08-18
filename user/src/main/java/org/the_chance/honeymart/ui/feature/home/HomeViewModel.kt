@@ -11,6 +11,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUSeCase
 import org.the_chance.honeymart.domain.usecase.GetAllUserCoupons
+import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -18,7 +19,10 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.market.toMarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
+import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
+import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
+import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +33,7 @@ class HomeViewModel @Inject constructor(
     private val getAllDiscoverProducts: GetAllProductsUSeCase,
     private val getAllOrders: GetAllOrdersUseCase,
     private val wishListOperationsUseCase: WishListOperationsUseCase,
+    private val getAllWishList: GetAllWishListUseCase,
 
     ) :
     BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
@@ -45,11 +50,13 @@ class HomeViewModel @Inject constructor(
         getRecentProducts()
         getAllDiscoverProducts()
         getAllDoneOrders()
+        getWishListProducts(_state.value.discoverProducts)
+
     }
 
     override fun getAllDoneOrders() {
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
+            it.copy(isLoading = true, orderStates = OrderStates.PROCESSING, isError = false)
         }
         tryToExecute(
             { getAllOrders(OrderStates.DONE.state) },
@@ -211,6 +218,7 @@ class HomeViewModel @Inject constructor(
             }
         }
         addProductToWishList(productId)
+        getWishListProducts(_state.value.discoverProducts)
     }
 
 
@@ -243,5 +251,41 @@ class HomeViewModel @Inject constructor(
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )
+    }
+
+
+    private fun getWishListProducts(products: List<ProductUiState>) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { getAllWishList().map { it.toWishListProductUiState() } },
+            { onGetWishListProductSuccess(it, products) },
+            { onGetWishListProductError(it, products) }
+        )
+
+    }
+
+    private fun onGetWishListProductSuccess(
+        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
+    ) {
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                isLoading = false,
+                discoverProducts = updateProducts(products, wishListProducts)
+            )
+        }
+    }
+
+    private fun updateProducts(
+        products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
+    ) = products.map { product ->
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+    }
+
+    private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
+        _state.update { it.copy(isLoading = false, error = error, discoverProducts = products) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 }

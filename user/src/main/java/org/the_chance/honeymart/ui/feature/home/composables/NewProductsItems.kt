@@ -27,13 +27,13 @@ import org.the_chance.honymart.ui.theme.white
 @Composable
 fun NewProductsItems(
     modifier: Modifier = Modifier,
-    isFavoriteIconClicked: Boolean = false,
-    onClickFavorite: () -> Unit = {},
+    isFavoriteIconClicked: Boolean ,
+    onClickFavorite: () -> Unit ,
     enable: Boolean = true,
-    productName: String = "blah blah blah",
-    productPrice: String = "30000$",
+    productName: String ,
+    productPrice: String ,
     imageUrl: String,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit ,
 
     ) {
     Box(

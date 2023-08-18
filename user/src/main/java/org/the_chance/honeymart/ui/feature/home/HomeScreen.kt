@@ -10,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.delay
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
@@ -34,12 +33,12 @@ fun HomeScreen(
         pagerState = pagerState,
         listener = viewModel
     )
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(3000)
-            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        while (true) {
+//            delay(3000)
+//            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
+//        }
+//    }
 
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
