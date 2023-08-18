@@ -4,8 +4,10 @@ interface OrdersInteractionsListener {
 
     fun onClickOrder(orderId: Long)
     fun onClickDiscoverMarkets()
+    fun getAllPendingOrders()
     fun getAllProcessingOrders()
     fun getAllDoneOrders()
-    fun getAllCancelOrders()
+    fun getAllCancelledOrdersByUser()
+    fun getAllCancelledOrdersByOwner()
     fun updateOrders(position: Long, orderState: Int)
 }

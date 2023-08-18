@@ -9,7 +9,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 /**
@@ -77,7 +77,7 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<String>
+    suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>

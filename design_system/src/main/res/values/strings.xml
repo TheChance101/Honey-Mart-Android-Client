@@ -48,6 +48,7 @@
     <string name="addedToCartFailedMessage">Failed Added To Cart</string>
     <string name="removedFromWishListSuccessMessage">Successfully Item Removed From Wish List</string>
     <string name="removedFromWishListFailedMessage">Failed Item Removed From Wish List</string>
+    <string name="Pending">Pending</string>
     <string name="Processing">Processing</string>
     <string name="Done">Done</string>
     <string name="cancel">Cancel</string>
@@ -106,4 +107,5 @@
     <string name="new_products">New Products</string>
     <string name="last_purchases">Last Purchases</string>
     <string name="discover_products">Discover products</string>
+    <string name="declined">Declined</string>
 </resources>

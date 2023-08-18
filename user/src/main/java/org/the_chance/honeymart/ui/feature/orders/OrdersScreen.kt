@@ -5,11 +5,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
@@ -59,14 +59,14 @@ fun OrdersScreen(
         }
     }
 
-    LaunchedEffect(key1 = true){
-        viewModel.getAllProcessingOrders()
+    LaunchedEffect(key1 = true) {
+        viewModel.getAllPendingOrders()
     }
 
     OrdersContent(
         state = state,
         listener = viewModel,
-        )
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -80,7 +80,7 @@ fun OrdersContent(
 
         ConnectionErrorPlaceholder(
             state = state.isError,
-            onClickTryAgain = listener::getAllProcessingOrders
+            onClickTryAgain = listener::getAllPendingOrders
         )
         EmptyOrdersPlaceholder(
             state = state.emptyOrdersPlaceHolder(),
@@ -95,31 +95,47 @@ fun OrdersContent(
                 .fillMaxSize()
                 .padding(top = MaterialTheme.dimens.space24)
         ) {
-
-            Row(
+            LazyRow(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = MaterialTheme.dimens.space16,
-                        vertical = MaterialTheme.dimens.space8
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
             ) {
-                CustomChip(
-                    state = state.processing(),
-                    text = stringResource(id = R.string.processing),
-                    onClick = listener::getAllProcessingOrders
-                )
-                CustomChip(
-                    state = state.done(),
-                    text = stringResource(id = R.string.done),
-                    onClick = listener::getAllDoneOrders
-                )
-                CustomChip(
-                    state = state.cancel(),
-                    text = stringResource(id= R.string.cancelled),
-                    onClick = listener::getAllCancelOrders
-                )
+                item {
+                    CustomChip(
+                        state = state.pending(),
+                        text = stringResource(id = R.string.Pending),
+                        onClick = listener::getAllPendingOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.processing(),
+                        text = stringResource(id = R.string.processing),
+                        onClick = listener::getAllProcessingOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.done(),
+                        text = stringResource(id = R.string.done),
+                        onClick = listener::getAllDoneOrders
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.cancelledByUser(),
+                        text = stringResource(id = R.string.cancelled),
+                        onClick = listener::getAllCancelledOrdersByUser
+                    )
+                }
+                item {
+                    CustomChip(
+                        state = state.cancelledByOwner(),
+                        text = stringResource(id = R.string.declined),
+                        onClick = listener::getAllCancelledOrdersByOwner
+                    )
+                }
             }
 
             ContentVisibility(state = state.screenContent()) {
@@ -167,11 +183,13 @@ fun OrdersContent(
                         }
                         if (showDialog) {
                             val textOrderStates = when (state.orderStates) {
-                                OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                                OrderStates.PENDING, OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
                                 else -> stringResource(id = R.string.order_dialog_Delete_Text)
                             }
+
                             val buttonOrderStates = when (state.orderStates) {
-                                OrderStates.PROCESSING -> OrderStates.CANCELED.state
+                                OrderStates.PENDING -> OrderStates.CANCELLED_BY_USER.state
+                                OrderStates.PROCESSING -> OrderStates.CANCELLED_BY_USER.state
                                 else -> OrderStates.DELETE.state
                             }
                             CustomAlertDialog(
