@@ -65,7 +65,7 @@ fun OwnerFieldsScaffold(
         )
 
         HoneyAuthFooter(
-            text = stringResource(R.string.alrady_have_account),
+            text = stringResource(R.string.already_have_account),
             textButtonText = stringResource(R.string.log_in),
             onTextButtonClicked = listener::onClickLogin,
             modifier = Modifier.align(Alignment.CenterHorizontally)
