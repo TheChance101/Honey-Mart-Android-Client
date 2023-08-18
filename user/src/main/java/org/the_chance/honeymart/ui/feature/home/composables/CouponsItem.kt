@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,7 +34,8 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun CouponsItem(
     modifier: Modifier = Modifier,
-    state: CouponUiState
+    state: CouponUiState,
+    onClick: () -> Unit = {}
 ) {
     val color = MaterialTheme.colorScheme
     Row {
@@ -97,7 +97,7 @@ fun CouponsItem(
             }
 
             Button(
-                onClick = {},
+                onClick = { onClick()},
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier
                     .height(21.dp)

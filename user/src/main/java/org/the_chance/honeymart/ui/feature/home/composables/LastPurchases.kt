@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,13 +28,16 @@ import org.the_chance.honymart.ui.theme.black60
 @Composable
 fun LastPurchasesItems(
     modifier: Modifier = Modifier,
-    image: String= "",
-    label: String = "blah blah blah"
-) {
+    image: String = "",
+    label: String = "blah blah blah",
+    onClick: () -> Unit = {},
+
+    ) {
     Box(
         modifier = modifier
             .size(width = 149.dp, height = 152.dp)
             .clip(RoundedCornerShape(16.dp))
+            .clickable { onClick() }
     ) {
         Column {
             Row(

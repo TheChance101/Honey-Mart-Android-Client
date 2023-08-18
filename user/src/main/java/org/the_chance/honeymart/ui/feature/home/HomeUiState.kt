@@ -58,3 +58,5 @@ fun GetRecentProductsEntity.toGetRecentProductUiState() = NewProductUiState(
     price = ProductPrice,
     isFavorite = false,
 )
+
+fun HomeUiState.showHome() = !this.isLoading && !this.isError

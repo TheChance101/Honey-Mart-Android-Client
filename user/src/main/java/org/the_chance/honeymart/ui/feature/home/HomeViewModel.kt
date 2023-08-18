@@ -27,12 +27,16 @@ class HomeViewModel @Inject constructor(
     private val getAllRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUSeCase,
     private val getAllOrders: GetAllOrdersUseCase,
-    ) :
-    BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()) {
+) :
+    BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
 
     init {
+        getData()
+    }
+
+    override fun getData() {
         getAllMarkets()
         getCoupons()
         getRecentProducts()
@@ -40,12 +44,12 @@ class HomeViewModel @Inject constructor(
         getAllDoneOrders()
     }
 
-     private fun getAllDoneOrders() {
+    override fun getAllDoneOrders() {
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.DONE.state)},
+            { getAllOrders(OrderStates.DONE.state) },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -54,7 +58,8 @@ class HomeViewModel @Inject constructor(
 
     private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
         _state.update {
-            it.copy(isLoading = false, lastPurchases = orders.map { it.toOrderUiState() } ) }
+            it.copy(isLoading = false, lastPurchases = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
@@ -64,7 +69,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getAllDiscoverProducts() {
+    override fun getAllDiscoverProducts() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             getAllDiscoverProducts::invoke,
@@ -72,6 +77,7 @@ class HomeViewModel @Inject constructor(
             ::onGetDiscoverProductsError,
         )
     }
+
 
     private fun onGetDiscoverProductsError(errorHandler: ErrorHandler) {
 
@@ -159,6 +165,47 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true, markets = emptyList()) }
+        }
+    }
+
+
+    override fun onClickPagerItem( marketId: Long) {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreen(marketId))
+    }
+
+    override fun onClickCouponClipped(couponId: Long) {
+          _state.value.coupons.find { it.couponId == couponId }?.let {
+              _state.update {
+                  it.copy(
+                      coupons = it.coupons.map { coupon ->
+                          if (coupon.couponId == couponId) {
+                              coupon.copy(isClipped = !coupon.isClipped)
+                          } else {
+                              coupon
+                          }
+                      }
+                  )
+              }
+          }
+    }
+
+    override fun onClickProductItem(productId: Long) {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreen(productId))
+    }
+
+    override fun onClickFavoriteProduct(productId: Long) {
+        _state.value.discoverProducts.find { it.productId == productId }?.let {
+            _state.update {
+                it.copy(
+                    discoverProducts = it.discoverProducts.map { product ->
+                        if (product.productId == productId) {
+                            product.copy(isFavorite = !product.isFavorite)
+                        } else {
+                            product
+                        }
+                    }
+                )
+            }
         }
     }
 }

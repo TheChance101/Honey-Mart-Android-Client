@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -20,15 +20,16 @@ import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun HomeHorizontalItems(
+fun HomeMarketItem(
     name: String,
     image: String,
     modifier: Modifier = Modifier,
+    onclick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .size(MaterialTheme.dimens.card)
-            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12))
+            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12)).clickable { onclick() }
     ) {
         ImageNetwork(
             imageUrl = image,
@@ -50,7 +51,7 @@ fun HomeHorizontalItems(
 @Composable
 fun HomeHorizontalItemsPreview() {
     HoneyMartTheme {
-        HomeHorizontalItems(
+        HomeMarketItem(
             name = "Test",
             image = "Test"
         )

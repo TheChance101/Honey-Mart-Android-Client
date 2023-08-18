@@ -46,8 +46,7 @@ fun Hexagon(
                 contentDescription = "image",
                 modifier = Modifier.size(32.dp)
             )
-            Text(text = label,
-                style = Typography.displaySmall.copy(black60))
+            Text(text = label, style = Typography.displaySmall.copy(black60))
         }
     }
 }

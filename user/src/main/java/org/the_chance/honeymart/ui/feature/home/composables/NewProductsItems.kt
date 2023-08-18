@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -31,12 +32,15 @@ fun NewProductsItems(
     enable: Boolean = true,
     productName: String = "blah blah blah",
     productPrice: String = "30000$",
-    imageUrl:String
-) {
+    imageUrl: String,
+    onClick: () -> Unit = {},
+
+    ) {
     Box(
         modifier = modifier
             .size(width = 160.dp, height = 136.dp)
-            .clip(RoundedCornerShape(16.dp)),
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onClick() },
     )
     {
         ImageNetwork(
