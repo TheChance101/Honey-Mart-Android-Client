@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,8 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.IconButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -45,7 +46,7 @@ fun NewProductsItems(
             .clip(RoundedCornerShape(16.dp)),
     )
     {
-        Image(
+        /*ImageNetwork(
             painter = painterResource(id = R.drawable.test),
             contentDescription = null,
             colorFilter = ColorFilter.tint(
@@ -54,7 +55,7 @@ fun NewProductsItems(
             ),
             contentScale = ContentScale.Crop
         )
-
+*/
         IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -83,11 +84,11 @@ fun NewProductsItems(
                 )
         ) {
             Text(
-                text = "blah blah blah",
+                text = productName,
                 style = MaterialTheme.typography.displayLarge.copy(white)
             )
             Text(
-                text = "30000$",
+                text = productPrice,
                 style = Typography.displayLarge.copy(white)
             )
 

@@ -22,7 +22,7 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,
-        categoryImageId = categoryImageId
+        categoryImageId = categoryImageId,
     )
 }
 
