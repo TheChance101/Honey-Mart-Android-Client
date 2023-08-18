@@ -26,7 +26,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -190,13 +189,11 @@ fun SearchContent(
                             items(state.products.size) { itemResult ->
                                 val product = state.products[itemResult]
                                 ProductCard(
-                                    visibility = false,
                                     imageUrl = product.productImages[0],
                                     productName = product.productName,
                                     productPrice = product.productPrice.toString(),
                                     secondaryText = product.marketName,
                                     isFavoriteIconClicked = false,
-                                    enable = !state.isLoading,
                                     onClickFavorite = { },
                                     onClickCard = { listener.onClickProduct(product.productId) }
                                 )

@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -37,10 +36,8 @@ fun ProductCard(
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
     onClickFavorite: () -> Unit,
-    enable: Boolean,
     onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
-    visibility: Boolean = true,
 ) {
     Box(
         modifier = modifier
@@ -53,27 +50,25 @@ fun ProductCard(
             modifier = Modifier.fillMaxSize(),
             imageUrl = imageUrl
         )
-        ContentVisibility(state = visibility) {
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(
-                        end = MaterialTheme.dimens.space8,
-                        top = MaterialTheme.dimens.space8
-                    ),
-                backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-                else MaterialTheme.colorScheme.primary,
-                onClick = onClickFavorite,
-                size = MaterialTheme.dimens.icon32
-            ) {
-                Image(
-                    painter = painterResource(
-                        id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
-                        else R.drawable.icon_favorite_unselected
-                    ),
-                    contentDescription = stringResource(R.string.favorite_icon),
-                )
-            }
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(
+                    end = MaterialTheme.dimens.space8,
+                    top = MaterialTheme.dimens.space8
+                ),
+            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+            else MaterialTheme.colorScheme.primary,
+            onClick = onClickFavorite,
+            size = MaterialTheme.dimens.icon32
+        ) {
+            Image(
+                painter = painterResource(
+                    id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                    else R.drawable.icon_favorite_unselected
+                ),
+                contentDescription = stringResource(R.string.favorite_icon),
+            )
         }
         Box(
             modifier = Modifier
@@ -113,7 +108,7 @@ fun ProductCard(
             )
             Text(
                 text = secondaryText,
-                style = Typography.displaySmall,
+                style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.onPrimary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -133,8 +128,6 @@ fun ProductCardPreview() {
         secondaryText = "Secondary Text",
         isFavoriteIconClicked = true,
         onClickFavorite = {},
-        onClickCard = {},
-        enable = false
-
+        onClickCard = {}
     )
 }
