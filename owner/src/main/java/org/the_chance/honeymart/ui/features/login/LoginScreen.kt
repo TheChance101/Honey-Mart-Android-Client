@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.features.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -34,7 +38,30 @@ fun LoginScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                LoginUiEffect.ShowValidationToastEffect -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
 
+                LoginUiEffect.ClickLoginEffect -> {
+                    navController.navigateToCategoryScreen()
+                }
+
+                LoginUiEffect.ClickSignUpEffect -> {
+                    navController.navigateToSignupScreen()
+
+                }
+            }
+        }
+    }
     LoginContent(listener = viewModel, state = state)
 }
 
@@ -43,9 +70,6 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-    val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
@@ -89,7 +113,6 @@ fun LoginContent(
         )
     }
 }
-
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable

@@ -6,6 +6,8 @@ import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
@@ -156,13 +158,13 @@ interface HoneyMartService {
     // endregion
 
 
-
     // region Owner
 
 
     // region Auth
-    suspend fun loginOwner(email: String, password: String): BaseResponse<String>
+    suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto>
     //endregion
 
     //endregion
+    suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
 }

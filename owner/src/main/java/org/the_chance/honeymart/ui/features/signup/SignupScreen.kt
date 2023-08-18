@@ -19,34 +19,54 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.signup.market_info.navigateToMarketInfoScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.design_system.R
 
 @Composable
 fun SignupScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    SignupContent(viewModel = viewModel, listener = viewModel, state = state)
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                SignupUiEffect.ShowValidationToast -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                SignupUiEffect.ClickContinueEffect -> {
+                    navController.navigateToMarketInfoScreen()
+                }
+
+                SignupUiEffect.ClickLoginEffect -> {
+                    navController.navigateToLogin()
+                }
+            }
+        }
+    }
+    SignupContent(listener = viewModel, state = state)
 }
 
 @Composable
 fun SignupContent(
-    viewModel: SignUpViewModel,
     state: SignupUiState,
     listener: SignupInteractionListener,
 ) {
-    val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
@@ -106,27 +126,7 @@ fun SignupContent(
             )
         }
     }
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                SignupUiEffect.ShowValidationToast -> {
-                    Toast.makeText(
-                        context,
-                        state.validationToast.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
 
-                SignupUiEffect.ClickContinueEffect -> {
-                    // SHOW MARKET INFO DETAILS
-                }
-
-                SignupUiEffect.ClickLoginEffect -> {
-                    navController.navigateToLogin()
-                }
-            }
-        }
-    }
 }
 
 

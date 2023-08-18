@@ -11,14 +11,11 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
-import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
-import io.ktor.http.ParametersBuilder
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
@@ -28,6 +25,8 @@ import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
@@ -254,11 +253,15 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<String> =
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> =
         wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
+
+    override suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto> {
+        return wrap(client.get("owner/Profile"))
+    }
     //endregion
 
     //endregion

@@ -8,8 +8,8 @@ class LoginOwnerUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(email: String, password: String) {
         val token = authRepository.loginOwner(email, password)
-        authRepository.saveToken(token)
-        authRepository.saveOwnerName("")
+        authRepository.saveToken(token.tokens.accessToken)
+        authRepository.saveOwnerName(token.fullName)
         authRepository.saveOwnerImageUrl("")
     }
 }

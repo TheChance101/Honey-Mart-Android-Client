@@ -14,6 +14,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.HoneyMart">
         <activity
             android:name="org.the_chance.honeymart.ui.MainActivity"
