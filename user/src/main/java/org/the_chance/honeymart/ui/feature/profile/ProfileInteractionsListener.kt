@@ -9,7 +9,8 @@ interface ProfileInteractionsListener {
     fun onClickLogout()
 
     fun showSnackBar(massage: String)
-    fun showDialog(massage: String)
+    fun showDialog()
+    fun resetDialogState()
 
     fun updateImage()
 

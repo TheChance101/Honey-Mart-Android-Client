@@ -41,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, isError = true ,error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -68,8 +68,14 @@ class ProfileViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun showDialog(massage: String) {
-        TODO("Not yet implemented")
+    override fun showDialog() {
+        _state.update {
+            it.copy(isShowDialog = true)
+        }
+    }
+
+    override fun resetDialogState() {
+        _state.update { it.copy(isShowDialog = false) }
     }
 
     override fun updateImage() {
@@ -83,6 +89,7 @@ class ProfileViewModel @Inject constructor(
             onSuccess = { onLogoutSuccess() },
             onError = ::onLogoutError
         )
+        resetDialogState()
     }
 
     private fun onLogoutSuccess() {

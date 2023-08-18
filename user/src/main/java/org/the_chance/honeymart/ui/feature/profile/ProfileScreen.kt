@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
@@ -39,6 +40,7 @@ import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsS
 import org.the_chance.honeymart.ui.feature.orders.OrderUiEffect
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
+import org.the_chance.honymart.ui.composables.CustomAlertDialog
 
 
 @Composable
@@ -84,6 +86,18 @@ private fun ProfileContent(
             onClickTryAgain = listener::getData
         )
 
+        if (state.isShowDialog) {
+            CustomAlertDialog(
+                message = stringResource(R.string.dialog_title),
+                onConfirm = {
+                    listener.onClickLogout()
+                },
+                onCancel = { listener.resetDialogState()},
+                onDismissRequest = { listener.resetDialogState() }
+            )
+        }
+
+        if(state.isConnectionError)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -160,7 +174,7 @@ private fun ProfileContent(
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
-            NavCard(iconId = R.drawable.ic_logout, title = "Logout" , onClick = listener::onClickLogout , color = MaterialTheme.colorScheme.error)
+            NavCard(iconId = R.drawable.ic_logout, title = "Logout" , onClick = listener::showDialog , color = MaterialTheme.colorScheme.error)
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
         }
