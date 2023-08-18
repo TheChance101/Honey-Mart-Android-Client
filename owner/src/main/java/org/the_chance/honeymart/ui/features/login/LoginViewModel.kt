@@ -29,6 +29,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun checkAuthAndNavigate() {
+        _state.update { it.copy(authLoading = true) }
         tryToExecute(
             { getOwnerProfileUseCase() },
             ::onGetProfileSuccess,
@@ -37,10 +38,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onGetProfileSuccess(profile: OwnerProfileEntity) {
+        _state.update { it.copy(authLoading = false) }
         effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
+        _state.update { it.copy(authLoading = false) }
         // Handle the error here
     }
 

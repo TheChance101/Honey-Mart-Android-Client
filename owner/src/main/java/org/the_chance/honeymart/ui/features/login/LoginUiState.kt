@@ -6,6 +6,7 @@ import org.the_chance.honeymart.ui.features.signup.ValidationToast
 
 data class LoginUiState(
     val isLoading: Boolean = false,
+    val authLoading:Boolean = false,
     val error: ErrorHandler? = null,
 
     val emailState: FieldState = FieldState(),

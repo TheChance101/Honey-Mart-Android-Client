@@ -30,12 +30,13 @@ class CategoriesViewModel @Inject constructor(
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
+
     init {
         getCategoryImages()
     }
 
     // region Categories
-     override fun getAllCategory() {
+    override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllCategories(1).map { it.toCategoryUiState() } },
@@ -71,8 +72,17 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onDeleteCategorySuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
         getAllCategory()
+        _state.update {
+            val updatedCategories =
+                updateCategorySelection(_state.value.categories, it.categories.first().categoryId)
+            it.copy(
+                categories = updatedCategories,
+                isLoading = false,
+                error = null,
+                position = 0
+            )
+        }
     }
 
     private fun onDeleteCategoryError(errorHandler: ErrorHandler) {
@@ -109,7 +119,7 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-     fun getCategoryImages() {
+    fun getCategoryImages() {
         _state.update {
             it.copy(isLoading = false, categoryImages = categoryIcons.toCategoryImageUIState())
         }

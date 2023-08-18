@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.login
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -31,6 +32,7 @@ import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.Loading
 
 @Composable
 fun LoginScreen(
@@ -70,47 +72,50 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-    HoneyAuthScaffold(
-        modifier = Modifier.imePadding()
-    ) {
-        HoneyAuthHeader(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = MaterialTheme.dimens.space64),
-            title = stringResource(R.string.welcome_back),
-            subTitle = stringResource(R.string.login_to_discover_a_curated_selection_of_products_just_for_you),
-        )
-        Column {
-            HoneyTextField(
-                text = state.emailState.value,
-                hint = stringResource(R.string.email),
-                iconPainter = painterResource(id = R.drawable.ic_email),
-                onValueChange = listener::onEmailInputChange,
-                errorMessage = state.emailState.errorState
+    Loading(state.authLoading)
+    AnimatedVisibility(!state.authLoading){
+        HoneyAuthScaffold(
+            modifier = Modifier.imePadding()
+        ) {
+            HoneyAuthHeader(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = MaterialTheme.dimens.space64),
+                title = stringResource(R.string.welcome_back),
+                subTitle = stringResource(R.string.login_to_discover_a_curated_selection_of_products_just_for_you),
+            )
+            Column {
+                HoneyTextField(
+                    text = state.emailState.value,
+                    hint = stringResource(R.string.email),
+                    iconPainter = painterResource(id = R.drawable.ic_email),
+                    onValueChange = listener::onEmailInputChange,
+                    errorMessage = state.emailState.errorState
+                )
+
+                HoneyTextFieldPassword(
+                    text = state.passwordState.value,
+                    hint = stringResource(R.string.password),
+                    iconPainter = painterResource(id = R.drawable.ic_password),
+                    onValueChange = listener::onPasswordInputChanged,
+                    errorMessage = state.passwordState.errorState,
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                )
+            }
+
+            HoneyFilledButton(
+                label = stringResource(id = R.string.log_in),
+                onClick = listener::onClickLogin,
+                isLoading = state.isLoading,
             )
 
-            HoneyTextFieldPassword(
-                text = state.passwordState.value,
-                hint = stringResource(R.string.password),
-                iconPainter = painterResource(id = R.drawable.ic_password),
-                onValueChange = listener::onPasswordInputChanged,
-                errorMessage = state.passwordState.errorState,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            HoneyAuthFooter(
+                text = stringResource(R.string.don_t_have_an_account),
+                textButtonText = stringResource(R.string.Sign_up),
+                onTextButtonClicked = listener::onClickSignup,
+                modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
             )
         }
-
-        HoneyFilledButton(
-            label = stringResource(id = R.string.log_in),
-            onClick = listener::onClickLogin,
-            isLoading = state.isLoading,
-        )
-
-        HoneyAuthFooter(
-            text = stringResource(R.string.don_t_have_an_account),
-            textButtonText = stringResource(R.string.Sign_up),
-            onTextButtonClicked = listener::onClickSignup,
-            modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
-        )
     }
 }
 
