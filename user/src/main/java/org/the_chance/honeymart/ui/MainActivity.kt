@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             Screen.OrderScreen.route,
             Screen.OrderDetailsScreenWithArgs.route,
             Screen.WishListScreen.route,
+            Screen.HomeScreen.route,
         )
         when (navBackStackEntry?.destination?.route) {
             in bottomBarScreens -> {
