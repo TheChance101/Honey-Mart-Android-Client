@@ -223,23 +223,22 @@ fun HomeContentSuccessScreen(
             }
         }
 
+        item {
+            Text(
+                text = stringResource(R.string.discover_products),
+                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+            )
+        }
+
         items(state.discoverProducts.size) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                Text(
-                    text = stringResource(R.string.discover_products),
-                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                )
-                NewProductsItems(
-                    productName = state.discoverProducts[it].productName,
-                    productPrice = state.discoverProducts[it].productPrice.toString(),
-                    imageUrl = state.discoverProducts[it].productImages[0],
-                    onClickFavorite = { listener.onClickFavoriteProduct(state.newProducts[it].newProductId) },
-                    onClick = { listener.onClickProductItem(state.newProducts[it].newProductId) }
-                )
-            }
+            NewProductsItems(
+                productName = state.discoverProducts[it].productName,
+                productPrice = state.discoverProducts[it].productPrice.toString(),
+                imageUrl = state.discoverProducts[it].productImages[0],
+                onClickFavorite = { listener.onClickFavoriteProduct(state.newProducts[it].newProductId) },
+                onClick = { listener.onClickProductItem(state.newProducts[it].newProductId) }
+            )
         }
     }
 }
