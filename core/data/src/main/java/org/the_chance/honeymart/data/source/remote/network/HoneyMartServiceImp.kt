@@ -263,7 +263,7 @@ class HoneyMartServiceImp @Inject constructor(
         }))
 
     override suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto> {
-        return wrap(client.get("owner/Profile"))
+        return wrap(client.get("/owner/Profile"))
     }
     //endregion
 

@@ -11,6 +11,6 @@ fun OwnerLoginDto.toOwnerLoginEntity(): OwnerLoginEntity = OwnerLoginEntity(
 )
 
 fun TokensDto.toTokenEntity(): TokensEntity = TokensEntity(
-    refreshToken = refreshToken!!,
-    accessToken = accessToken!!
+    refreshToken = refreshToken?:"",
+    accessToken = accessToken?:""
 )

@@ -29,8 +29,6 @@ class CategoriesViewModel @Inject constructor(
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
-    private val marketId = 5L
-
     override val TAG: String = this::class.java.simpleName
     init {
         getCategoryImages()
@@ -40,7 +38,7 @@ class CategoriesViewModel @Inject constructor(
      override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(marketId).map { it.toCategoryUiState() } },
+            { getAllCategories(1).map { it.toCategoryUiState() } },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -248,7 +246,7 @@ class CategoriesViewModel @Inject constructor(
                     imageId = category.categoryImageId,
                     name = category.nameCategory,
                     id = category.categoryId,
-                    marketId = marketId
+                    marketId = 1
                 )
             },
             onSuccess = { onUpdateCategorySuccess() },
