@@ -16,7 +16,6 @@ class CartViewModel @Inject constructor(
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
-
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(

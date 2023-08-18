@@ -31,16 +31,14 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
+fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     AnimatedVisibility(
         visible = state,
         modifier = modifier
-    ){
+    ) {
         Box(
             modifier = Modifier.fillMaxSize(),
-        ){
-            HoneyMartTitle(modifier = Modifier.align(Alignment.TopStart))
-
+        ) {
             Column(modifier = Modifier.align(Alignment.Center)) {
                 Image(
                     painter = painterResource(id = R.drawable.img_empty_category),
@@ -96,7 +94,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier){
                                 tint = Color.White
                             )
                         },
-                        onClick = {}
+                        onClick = onClick
                     )
 
                     Text(

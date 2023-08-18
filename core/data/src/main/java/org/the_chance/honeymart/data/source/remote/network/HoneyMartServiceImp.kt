@@ -100,8 +100,10 @@ class HoneyMartServiceImp @Inject constructor(
         return response
     }
 
-    override suspend fun deleteCategory(id: Long): BaseResponse<String> =
-        wrap(client.delete("/category/{id}"))
+    override suspend fun deleteCategory(id: Long): BaseResponse<String> {
+        return wrap(client.delete(urlString = "/category/$id"))
+    }
+
 
     override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct"))
