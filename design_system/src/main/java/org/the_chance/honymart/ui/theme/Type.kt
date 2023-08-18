@@ -36,5 +36,10 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
     ),
+    titleMedium = TextStyle(
+        fontFamily = plusJakartaSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 10.sp,
+    ),
 
 )
