@@ -114,7 +114,7 @@ fun CategoryContent(
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.map_pointer),
-                                contentDescription = stringResource(id = R.string.map_pointer),
+                                contentDescription = stringResource(R.string.map_pointer),
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
                             )
                             Text(

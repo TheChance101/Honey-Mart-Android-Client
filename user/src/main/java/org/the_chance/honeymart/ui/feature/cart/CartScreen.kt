@@ -16,7 +16,7 @@ import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 @Composable
 fun CartScreen(

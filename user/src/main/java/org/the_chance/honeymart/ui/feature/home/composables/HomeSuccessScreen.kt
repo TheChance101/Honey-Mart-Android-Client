@@ -83,7 +83,7 @@ fun HomeContentSuccessScreen(
                     .padding(horizontal = MaterialTheme.dimens.space16)
                     .padding(top = MaterialTheme.dimens.space8),
                 icon = painterResource(id = R.drawable.ic_search),
-                onClick = {}
+                onClick = listener::onClickSearchBar
             )
         }
 
@@ -94,7 +94,7 @@ fun HomeContentSuccessScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             ) {
                 ItemLabel(
-                    label = stringResource(org.the_chance.user.R.string.markets),
+                    label = stringResource(R.string.markets),
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.dimens.space16)
                         .padding(top = MaterialTheme.dimens.space8)
@@ -123,7 +123,7 @@ fun HomeContentSuccessScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             ) {
                 ItemLabel(
-                    label = stringResource(org.the_chance.user.R.string.categories),
+                    label = stringResource(R.string.categories),
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.dimens.space16)
                         .padding(

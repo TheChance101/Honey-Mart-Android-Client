@@ -20,7 +20,7 @@ import org.the_chance.honeymart.ui.feature.wishlist.formatCurrencyWithNearestFra
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 @Composable
 fun CartCardView(
