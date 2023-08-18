@@ -16,6 +16,7 @@ import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 
@@ -43,9 +44,16 @@ fun HomeScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is HomeUiEffect.NavigateToMarketScreen -> navController.navigateToCategoryScreen(it.marketId)
-                is HomeUiEffect.NavigateToProductScreen -> navController.navigateToProductDetailsScreen(it.productId)
+                is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
+                    it.marketId
+                )
+
+                is HomeUiEffect.NavigateToProductScreenEffect -> navController.navigateToProductDetailsScreen(
+                    it.productId
+                )
+
                 HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToLogin()
+                HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
             }
         }
     }

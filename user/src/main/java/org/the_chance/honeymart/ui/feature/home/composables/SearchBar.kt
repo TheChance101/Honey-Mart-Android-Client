@@ -37,7 +37,7 @@ fun SearchBar(
     Surface(
         modifier = modifier
             .clip(shape = MaterialTheme.shapes.medium)
-            .clickable { },
+            .clickable { onClick() },
         color = MaterialTheme.colorScheme.tertiaryContainer,
         shape = MaterialTheme.shapes.medium,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.onTertiaryContainer)

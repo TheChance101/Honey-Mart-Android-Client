@@ -9,10 +9,9 @@ import org.the_chance.honeymart.ui.feature.search.searchRoute
 
 fun NavGraphBuilder.orderNavGraph() {
     navigation(
-        startDestination = Screen.SearchScreen.route,
+        startDestination = Screen.OrderScreen.route,
         route = Graph.ORDERS
     ) {
-        searchRoute()
         orderRoute()
         orderDetailsRoute()
         productDetailsRoute()

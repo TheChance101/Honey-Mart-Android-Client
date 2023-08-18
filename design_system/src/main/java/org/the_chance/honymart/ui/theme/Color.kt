@@ -7,7 +7,7 @@ val error = Color(0xFFFF4E33)
 
 val blackOn60 = Color(0x99000000)
 val blackOn87 = Color(0xDE000000)
-val black8 = Color(0x14000000)
+val black8 = Color(0xFF717171)
 val black16 = Color(0x29121212)
 val black37 = Color(0xFFA0A0A0)
 val black60 = Color(0xFFA7A7A7)

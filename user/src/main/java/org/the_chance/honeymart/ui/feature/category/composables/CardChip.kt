@@ -48,7 +48,7 @@ fun CardChip(
             if (icon != null) {
                 Icon(
                     painter = icon,
-                    contentDescription = stringResource(id = R.string.chip_icon),
+                    contentDescription = stringResource(R.string.chip_icon),
                     tint = iconTint,
                 )
             }

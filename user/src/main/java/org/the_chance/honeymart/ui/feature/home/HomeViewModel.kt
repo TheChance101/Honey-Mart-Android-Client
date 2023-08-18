@@ -180,7 +180,7 @@ class HomeViewModel @Inject constructor(
 
 
     override fun onClickPagerItem(marketId: Long) {
-        effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreen(marketId))
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreenEffect(marketId))
     }
 
     override fun onClickCouponClipped(couponId: Long) {
@@ -200,7 +200,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickProductItem(productId: Long) {
-        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreen(productId))
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreenEffect(productId))
     }
 
     override fun onClickFavoriteDiscoverProduct(productId: Long) {
@@ -219,6 +219,10 @@ class HomeViewModel @Inject constructor(
         }
         addProductToWishList(productId)
         getWishListProducts(_state.value.discoverProducts)
+    }
+
+    override fun onClickSearchBar() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
     }
 
     override fun onClickFavoriteNewProduct(productId: Long) {

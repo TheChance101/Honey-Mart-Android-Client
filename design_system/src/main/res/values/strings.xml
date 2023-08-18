@@ -110,4 +110,17 @@
     <string name="discover_products">Discover products</string>
     <string name="declined">Declined</string>
     <string name="the_search_result_is_empty">The search result is empty!!</string>
+    <string name="discover_markets_now">Discover Markets Now</string>
+    <string name="you_re_delete_this_product_are_you_sure">" you’re delete this product....\nAre you sure?"</string>
+    <string name="content_desc_of_placeholder_image">PlaceHolder Image</string>
+    <string name="adding_items_that_catch_your_eye">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
+    <string name="navigation_icon">Navigation icon</string>
+    <string name="category_image">category image</string>
+    <string name="market_name">Market Name</string>
+    <string name="markets">Markets</string>
+    <string name="categories">Categories</string>
+    <string name="map_pointer">Map Pointer</string>
+    <string name="chip_icon">chip icon</string>
+    <string name="back_button">back button</string>
+    <string name="shop_details">shop details</string>
 </resources>
