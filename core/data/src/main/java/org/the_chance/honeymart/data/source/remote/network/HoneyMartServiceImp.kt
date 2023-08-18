@@ -18,6 +18,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -53,6 +54,9 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/markets/$marketId/categories"))
+
+    override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
+        wrap(client.get("/markets/$marketId"))
 
     override suspend fun addCategory(
         marketID: Long, name: String, imageId: Int,

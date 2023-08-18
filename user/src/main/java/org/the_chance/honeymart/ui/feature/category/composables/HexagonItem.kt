@@ -2,10 +2,7 @@ package org.the_chance.honeymart.ui.feature.category.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,12 +16,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import kotlin.math.cos
 import kotlin.math.min
@@ -45,7 +40,7 @@ fun HexagonItem(
             .offset(x = if (position % 3 == 2) -(hexagonSize / 5) else 0.dp)
             .size(hexagonSize)
             .clip(HexagonItemShape)
-            .background(colorResource(id = R.color.primary_100))
+            .background(MaterialTheme.colorScheme.tertiary)
             .clickable { onClickCategory(state.categoryId, position) },
         contentAlignment = Alignment.Center,
     ) {
@@ -53,6 +48,8 @@ fun HexagonItem(
             text = state.categoryName,
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
     }
 }
@@ -66,16 +63,15 @@ val HexagonItemShape = object : Shape {
         val minSize = min(size.width, size.height)
         val angleRadians = Math.toRadians(60.0).toFloat()
         val radius = minSize / 2f
-        return Outline.Generic(
-            Path().apply {
-                (0..5).forEach { i ->
-                    val currentAngle = angleRadians * i
-                    val x = radius + radius * cos(currentAngle)
-                    val y = radius + radius * sin(currentAngle)
-                    if (i == 0) moveTo(x, y) else lineTo(x, y)
-                }
-                close()
+        val path = Path().apply {
+            (0..5).forEach { i ->
+                val currentAngle = angleRadians * i
+                val x = radius + radius * cos(currentAngle)
+                val y = radius + radius * sin(currentAngle)
+                if (i == 0) moveTo(x, y) else lineTo(x, y)
             }
-        )
+            close()
+        }
+        return Outline.Generic(path)
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,8 +28,10 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CategoriesScreenTopBar(
+    onClickBack: () -> Unit,
+    titleColor: Color = MaterialTheme.colorScheme.onSecondary,
+    iconColor: Color = MaterialTheme.colorScheme.onSecondary,
     modifier: Modifier = Modifier,
-    onClickBack: () -> Unit
 ) {
     Row(
         modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
@@ -43,16 +46,21 @@ fun CategoriesScreenTopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.icon_arrow_back),
                     contentDescription = stringResource(id = R.string.back_button),
-                    tint = colorResource(id = R.color.black_87),
+                    tint = iconColor,
                     modifier = Modifier.padding(MaterialTheme.dimens.space12)
                 )
             }
         }
         Text(
             text = stringResource(id = R.string.shop_details),
-            modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
-            style = MaterialTheme.typography.bodyMedium
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+            color = titleColor
         )
-        Spacer(modifier = Modifier.width(0.dp).weight(1f))
+        Spacer(modifier = Modifier
+            .width(0.dp)
+            .weight(1f))
     }
 }

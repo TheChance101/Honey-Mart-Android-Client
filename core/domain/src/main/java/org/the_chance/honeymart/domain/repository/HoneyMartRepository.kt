@@ -2,6 +2,7 @@ package org.the_chance.honeymart.domain.repository
 
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
@@ -12,6 +13,8 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<MarketEntity>?
+
+    suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity>?

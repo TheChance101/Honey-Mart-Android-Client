@@ -25,14 +25,14 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CardChip(
     text: String,
     icon: Painter? = null,
-    iconTint: Color = colorResource(id = R.color.primary_100),
+    iconTint: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(MaterialTheme.dimens.space100),
         border = BorderStroke(
             MaterialTheme.dimens.space1,
-            colorResource(id = R.color.black_8)
+            MaterialTheme.colorScheme.outline
         ),
         colors = CardDefaults.cardColors(colorResource(id = com.google.android.material.R.color.mtrl_btn_transparent_bg_color)),
         modifier = modifier
@@ -56,7 +56,7 @@ fun CardChip(
                 text = text,
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
-                color = colorResource(id = R.color.black_87),
+                color = MaterialTheme.colorScheme.onSecondary,
             )
         }
     }
