@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,7 @@ import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
 import org.the_chance.honeymart.ui.feature.category.composables.CardChip
 import org.the_chance.honeymart.ui.feature.category.composables.CategoriesAppBarScaffold
 import org.the_chance.honeymart.ui.feature.category.composables.HexagonItem
+import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -52,6 +54,19 @@ fun CategoriesScreen(
 
     CategoriesAppBarScaffold(navController) {
         CategoryContent(state, listener = viewModel)
+    }
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                is CategoryUiEffect.ClickCategoryEffect -> {
+                    navController.navigateToProductScreen(
+                        it.categoryId,
+                        it.marketId,
+                        it.position
+                    )
+                }
+            }
+        }
     }
 
 }
