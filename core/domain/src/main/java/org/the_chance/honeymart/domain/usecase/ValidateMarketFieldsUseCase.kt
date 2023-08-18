@@ -21,8 +21,14 @@ class ValidateMarketFieldsUseCase @Inject constructor() {
         if (marketAddress.isBlank()) {
             return ValidationState.BLANK_MARKET_ADDRESS
         }
+        if (!isMarketAddressValid(marketAddress)) {
+            return ValidationState.INVALID_MARKET_ADDRESS
+        }
         return ValidationState.VALID_MARKET_ADDRESS
     }
+
+    private fun isMarketAddressValid(marketAddress: String): Boolean =
+        Regex("^[0-9]+\\s[A-Za-z\\s]+,\\s[A-Za-z\\s]+,\\s[A-Za-z]{2}\$").matches(marketAddress)
 
     fun validateMarketDescription(marketDescription: String): ValidationState {
         if (marketDescription.isBlank()) {
