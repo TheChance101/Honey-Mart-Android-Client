@@ -34,7 +34,6 @@ import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens

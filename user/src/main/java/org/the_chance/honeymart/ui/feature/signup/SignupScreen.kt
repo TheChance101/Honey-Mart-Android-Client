@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,7 +37,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton

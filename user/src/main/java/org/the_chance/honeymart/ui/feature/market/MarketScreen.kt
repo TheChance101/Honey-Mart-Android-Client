@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
@@ -19,8 +18,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.market.compoaseable.MarketItem
-import org.the_chance.honymart.ui.composables.AppBarScaffold
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
