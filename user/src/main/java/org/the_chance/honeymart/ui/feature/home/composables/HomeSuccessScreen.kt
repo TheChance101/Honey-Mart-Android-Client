@@ -182,7 +182,7 @@ fun HomeContentSuccessScreen(
                             productName = state.newProducts[it].newProductName,
                             productPrice = state.newProducts[it].price.toString(),
                             imageUrl = state.newProducts[it].newProductImage,
-                            onClickFavorite = { listener.onClickFavoriteProduct(state.newProducts[it].newProductId) },
+                            onClickFavorite = { listener.onClickFavoriteNewProduct(state.newProducts[it].newProductId) },
                             isFavoriteIconClicked = state.newProducts[it].isFavorite,
                             onClick = { listener.onClickProductItem(state.newProducts[it].newProductId) }
                         )
@@ -239,7 +239,7 @@ fun HomeContentSuccessScreen(
                 productPrice = state.discoverProducts[it].productPrice.toString(),
                 imageUrl = state.discoverProducts[it].productImages[0],
                 onClickFavorite =
-                { listener.onClickFavoriteProduct(state.discoverProducts[it].productId) },
+                { listener.onClickFavoriteDiscoverProduct(state.discoverProducts[it].productId) },
                 onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) }
             )
         }

@@ -56,8 +56,7 @@ fun NewProductsItems(
                     end = MaterialTheme.dimens.space8,
                     top = MaterialTheme.dimens.space8
                 ),
-            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-            else MaterialTheme.colorScheme.primary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
             onClick = { if (enable) onClickFavorite() }
         ) {
             Icon(
@@ -65,6 +64,7 @@ fun NewProductsItems(
                     id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
                     else R.drawable.icon_favorite_unselected
                 ),
+                tint = white,
                 contentDescription = stringResource(R.string.favorite_icon),
             )
         }

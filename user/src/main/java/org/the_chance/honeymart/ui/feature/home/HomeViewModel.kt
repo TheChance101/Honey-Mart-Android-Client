@@ -196,12 +196,29 @@ class HomeViewModel @Inject constructor(
         effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreen(productId))
     }
 
-    override fun onClickFavoriteProduct(productId: Long) {
+    override fun onClickFavoriteDiscoverProduct(productId: Long) {
         _state.value.discoverProducts.find { it.productId == productId }?.let {
             _state.update {
                 it.copy(
                     discoverProducts = it.discoverProducts.map { product ->
                         if (product.productId == productId) {
+                            product.copy(isFavorite = !product.isFavorite)
+                        } else {
+                            product
+                        }
+                    }
+                )
+            }
+        }
+        addProductToWishList(productId)
+    }
+
+    override fun onClickFavoriteNewProduct(productId: Long) {
+        _state.value.newProducts.find { it.newProductId == productId }?.let {
+            _state.update {
+                it.copy(
+                    newProducts = it.newProducts.map { product ->
+                        if (product.newProductId == productId) {
                             product.copy(isFavorite = !product.isFavorite)
                         } else {
                             product
