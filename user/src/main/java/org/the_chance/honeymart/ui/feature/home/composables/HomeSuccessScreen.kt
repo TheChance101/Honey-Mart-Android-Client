@@ -238,9 +238,9 @@ fun HomeContentSuccessScreen(
                 productName = state.discoverProducts[it].productName,
                 productPrice = state.discoverProducts[it].productPrice.toString(),
                 imageUrl = state.discoverProducts[it].productImages[0],
-                onClickFavorite =
-                { listener.onClickFavoriteDiscoverProduct(state.discoverProducts[it].productId) },
-                onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) }
+                onClickFavorite = { listener.onClickFavoriteDiscoverProduct(state.discoverProducts[it].productId) },
+                onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) },
+                isFavoriteIconClicked = state.discoverProducts[it].isFavorite
             )
         }
     }

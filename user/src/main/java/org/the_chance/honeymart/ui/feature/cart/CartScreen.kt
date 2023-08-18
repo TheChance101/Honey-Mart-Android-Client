@@ -12,7 +12,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
-import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
+import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
@@ -29,7 +29,7 @@ fun CartScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                CartUiEffect.ClickDiscoverEffect -> navController.navigateToMarketScreen()
+                CartUiEffect.ClickDiscoverEffect -> navController.navigateToHomeScreen()
                 CartUiEffect.ClickViewOrdersEffect -> navController.navigateToOrderScreen()
             }
         }

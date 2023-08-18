@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
             it.copy(isLoading = true, orderStates = OrderStates.PROCESSING, isError = false)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.DONE.state) },
+            { getAllOrders(OrderStates.PROCESSING.state) },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
@@ -235,7 +235,11 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        addProductToWishList(productId)
+        if (_state.value.newProducts.find { it.newProductId == productId }?.isFavorite == true)
+            addProductToWishList(productId)
+        else
+            deleteProductFromWishList(productId)
+
     }
 
 

@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +41,7 @@ fun Hexagon(
             modifier = Modifier.align(Alignment.Center)
         ) {
             ImageNetwork(
-                imageUrl = imageUrl,
+                imageUrl = "https://cdn.discordapp.com/attachments/830145301553348632/1141971035483275354/coffee_cup-cuate.png",
                 contentDescription = "image",
                 modifier = Modifier.size(32.dp)
             )

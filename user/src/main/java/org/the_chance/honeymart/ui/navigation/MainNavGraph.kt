@@ -10,20 +10,17 @@ fun MainNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Graph.NewHome
+        startDestination = Graph.HOME
     ) {
         authNavGraph()
         homeNavGraph()
         cartNavGraph()
         orderNavGraph()
         wishListNavGraph()
-        HomeNewNavGraph()
-
     }
 }
 
 object Graph {
-    const val NewHome = "new_home_graph"
     const val AUTH_GRAPH = "auth_graph"
     const val HOME = "home_graph"
     const val CART = "cart_graph"
