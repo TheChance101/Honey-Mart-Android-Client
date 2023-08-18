@@ -15,8 +15,6 @@ import io.ktor.serialization.gson.gson
 import okhttp3.logging.HttpLoggingInterceptor
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
-import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.data.source.remote.network.HoneyMartServiceImp
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -25,7 +23,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
 
-    private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
+    //private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
+    private const val BASE_URL = "http://10.0.2.2:8080/"
 
     @Singleton
     @Provides
@@ -41,9 +40,9 @@ internal object NetworkModule {
                 addInterceptor(authInterceptor)
                 config {
                     retryOnConnectionFailure(true)
-                    connectTimeout(1, TimeUnit.MINUTES)
-                    readTimeout(1, TimeUnit.MINUTES)
-                    writeTimeout(1, TimeUnit.MINUTES)
+                    connectTimeout(3, TimeUnit.MINUTES)
+                    readTimeout(3, TimeUnit.MINUTES)
+                    writeTimeout(3, TimeUnit.MINUTES)
                 }
             }
             defaultRequest {
@@ -59,12 +58,6 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHoneyMartService(httpClient: HttpClient): HoneyMartService {
-        return HoneyMartServiceImp(httpClient)
-    }
-
-    @Singleton
-    @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BASIC
     }
@@ -74,5 +67,4 @@ internal object NetworkModule {
     fun provideHeaderInterceptor(dataStorePreferences: AuthDataStorePreferences): AuthInterceptor {
         return AuthInterceptor(dataStorePreferences)
     }
-
 }

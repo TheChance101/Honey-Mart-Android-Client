@@ -12,6 +12,9 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
@@ -19,11 +22,14 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
@@ -96,25 +102,37 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("/markets/$marketId/categories"))
 
     override suspend fun addCategory(
-        marketID: Long, name: String, imageId: Int,
-    ): BaseResponse<CategoryDto> =
+        name: String, imageId: Int,
+    ): BaseResponse<String> =
         wrap(client.submitForm(url = "/category", formParameters = Parameters.build {
-            append("marketID", marketID.toString())
             append("imageId", imageId.toString())
             append("name", name)
         }))
 
+    @OptIn(InternalAPI::class)
     override suspend fun updateCategory(
-        id: Long, marketID: Long, name: String, imageId: Int,
-    ): BaseResponse<CategoryDto> = wrap(client.put("/category") {
-        parameter("marketID", marketID)
-        parameter("id", id)
-        parameter("name", name)
-        parameter("imageId", imageId)
-    })
+        id: Long,
+        marketID: Long,
+        name: String,
+        imageId: Int,
+    ): BaseResponse<String> {
+        val formData = Parameters.build {
+            append("marketID", marketID.toString())
+            append("id", id.toString())
+            append("name", name)
+            append("imageId", imageId.toString())
+        }
+        val response = wrap<BaseResponse<String>>(client.put("/category") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
 
-    override suspend fun deleteCategory(id: Long): BaseResponse<String> =
-        wrap(client.delete("/category/{id}"))
+    override suspend fun deleteCategory(id: Long): BaseResponse<String> {
+        return wrap(client.delete(urlString = "/category/$id"))
+    }
+
 
     override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct"))
@@ -126,7 +144,7 @@ class HoneyMartServiceImp @Inject constructor(
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto> =
         wrap(client.submitForm(url = "/product", formParameters = Parameters.build {
             append("price", price.toString())
@@ -134,6 +152,25 @@ class HoneyMartServiceImp @Inject constructor(
             append("description", description)
             append("name", name)
         }))
+
+    override suspend fun addImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String> {
+        val response: HttpResponse = client.submitFormWithBinaryData(
+            url = "/product/$productId/uploadImages",
+            formData = formData {
+                images.forEachIndexed { index, bytes ->
+                    append("images", bytes, Headers.build {
+                        append(HttpHeaders.ContentType, "image/jpeg")
+                        append(HttpHeaders.ContentDisposition, "filename=image$index.jpeg")
+                    })
+                }
+            }
+        )
+        return wrap(response)
+    }
+
 
     override suspend fun updateProduct(
         productId: Long,
@@ -156,7 +193,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun loginUser(email: String, password: String): BaseResponse<String> =
+    override suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
@@ -248,11 +285,15 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<String> =
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> =
         wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
+
+    override suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto> {
+        return wrap(client.get("/owner/Profile"))
+    }
     //endregion
 
     //endregion

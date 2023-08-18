@@ -3,11 +3,12 @@ package org.the_chance.honeymart.ui.feature.product
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddToWishListUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteFromWishListUseCase
+import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
@@ -19,9 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val getAllProducts: GetAllProductsByCategoryUseCase,
-    private val addToWishListUseCase: AddToWishListUseCase,
     private val getWishListUseCase: GetAllWishListUseCase,
-    private val deleteFromWishListUseCase: DeleteFromWishListUseCase,
+    private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
@@ -49,17 +49,20 @@ class ProductViewModel @Inject constructor(
     private fun getCategoriesByMarketId() {
         _state.update { it.copy(isLoadingCategory = true, isError = false) }
         tryToExecute(
-            { getMarketAllCategories(args.marketId.toLong()).map { it.toCategoryUiState() } },
+            { getMarketAllCategories(args.marketId.toLong()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+    private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
         _state.update {
             it.copy(
                 error = null, isLoadingCategory = false,
-                categories = updateCategorySelection(categories, state.value.categoryId),
+                categories = updateCategorySelection(
+                    categories.map { it.toCategoryUiState() },
+                    state.value.categoryId
+                ),
                 position = state.value.position
             )
         }
@@ -100,29 +103,30 @@ class ProductViewModel @Inject constructor(
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
-            { getAllProducts(state.value.categoryId).map { it.toProductUiState() } },
+            { getAllProducts(state.value.categoryId) },
             ::onGetProductSuccess,
             ::onGetProductError
         )
     }
 
-    private fun onGetProductSuccess(products: List<ProductUiState>) {
+    private fun onGetProductSuccess(products: List<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
         if (products.isEmpty()) {
             _state.update {
                 it.copy(
                     isEmptyProducts = true,
-                    products = products
+                    products = mappedProducts
                 )
             }
         } else {
             _state.update {
                 it.copy(
                     isEmptyProducts = false,
-                    products = products
+                    products = mappedProducts
                 )
             }
         }
-        getWishListProducts(products)
+        getWishListProducts(mappedProducts)
     }
 
     private fun onGetProductError(error: ErrorHandler) {
@@ -190,7 +194,7 @@ class ProductViewModel @Inject constructor(
 
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
-            { deleteFromWishListUseCase(productId) },
+            { wishListOperationsUseCase.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )
@@ -198,7 +202,6 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onDeleteWishListSuccess(successMessage: String) {
-        effectActionExecutor(_effect, ProductUiEffect.RemovedFromWishListEffect)
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -207,7 +210,7 @@ class ProductViewModel @Inject constructor(
 
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
-            { addToWishListUseCase(productId) },
+            { wishListOperationsUseCase.addToWishList(productId) },
             ::onAddToWishListSuccess,
             { onAddToWishListError(it, productId) }
         )

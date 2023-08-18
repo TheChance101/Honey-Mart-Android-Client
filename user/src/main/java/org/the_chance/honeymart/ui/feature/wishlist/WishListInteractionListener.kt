@@ -8,4 +8,5 @@ interface WishListInteractionListener {
     fun getWishListProducts()
     fun onClickDiscoverButton()
     fun resetSnackBarState()
+    fun onShowSnackBar(message: String)
 }

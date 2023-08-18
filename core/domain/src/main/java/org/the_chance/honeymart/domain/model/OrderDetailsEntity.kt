@@ -4,7 +4,8 @@ data class OrderDetailsEntity(
     val products: List<OrderProductDetailsEntity>,
     val totalPrice: Double,
     val date: String,
-    val state: Int
+    val state: Int,
+    val orderId: Long
 )
 
 data class OrderProductDetailsEntity(

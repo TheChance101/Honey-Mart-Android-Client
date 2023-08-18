@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.features.products
 
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.features.add_product.AddProductUiState
 
 data class ProductsUiState(
     val isLoading: Boolean = false,
@@ -11,6 +13,14 @@ data class ProductsUiState(
     val products: List<ProductUiState> = emptyList(),
     val productsQuantity: String = "",
     val category: CategoryUiState = CategoryUiState(0, ""),
+    val id: Long = 0L,
+    val name: String = "",
+    val price: String = "",
+    val description: String = "",
+    val images: List<ByteArray> = emptyList(),
+    val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
 )
 
 data class ProductUiState(
@@ -24,6 +34,15 @@ data class CategoryUiState(
     val categoryIcon: Int = 0,
     val categoryName: String = ""
 )
+fun ProductsUiState.showButton(): Boolean {
+    return name.isNotBlank()
+            && price.isNotBlank()
+            && description.isNotBlank()
+            && !isLoading
+            && productNameState == ValidationState.VALID_TEXT_FIELD
+            && productPriceState == ValidationState.VALID_TEXT_FIELD
+            && productDescriptionState == ValidationState.VALID_TEXT_FIELD
+}
 
 fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(

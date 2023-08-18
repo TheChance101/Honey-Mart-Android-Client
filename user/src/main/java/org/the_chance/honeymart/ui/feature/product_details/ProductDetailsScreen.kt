@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +44,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
-import org.the_chance.honeymart.util.collect
+import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
@@ -59,16 +59,15 @@ fun ProductDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
                 is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(it.message)}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {}
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect ->
+                {viewModel.showDialog(it.productId ,it.count)}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
@@ -143,6 +142,26 @@ private fun ProductDetailsContent(
                                 text = ""
                             )
                         }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    ) {
+                        if (state.dialogState.showDialog) {
+                            CustomAlertDialog(
+                                message = stringResource
+                                    (R.string.add_from_different_cart_message),
+                                onConfirm = {
+                                    listener.confirmDeleteLastCartAndAddProductToNewCart(
+                                        state.dialogState.productId, state.dialogState.count
+                                    )
+                                    listener.resetDialogState()
+                                },
+                                onCancel = { listener.resetDialogState() },
+                                onDismissRequest = { listener.resetDialogState() }
+                            )
+                        }
+
                     }
                 }
             }

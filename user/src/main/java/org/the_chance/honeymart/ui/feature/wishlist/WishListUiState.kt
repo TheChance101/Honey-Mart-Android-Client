@@ -14,6 +14,7 @@ data class WishListUiState(
 data class SnackBarState(
     val isShow : Boolean = false ,
     val productId: Long =0L,
+    val message: String = "",
 )
 
 data class WishListProductUiState(
@@ -30,7 +31,7 @@ fun WishListEntity.toWishListProductUiState(): WishListProductUiState {
         productId = productId,
         productName = name,
         productPrice = price,
-        productImages = images,
+        productImages = images.ifEmpty { listOf("") },
         description = description
     )
 }

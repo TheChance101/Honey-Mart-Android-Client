@@ -6,20 +6,20 @@ import javax.inject.Inject
 
 class LoginUserUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val validateEmailUseCase: ValidateEmailUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val validationUseCase: ValidationUseCase,
+
 ) {
     suspend operator fun invoke(email: String, password: String): ValidationState {
-        val emailValidationState = validateEmailUseCase(email)
-        val passwordValidationState = validatePasswordUseCase(password)
+        val emailValidationState = validationUseCase.validateEmail(email)
+        val passwordValidationState = validationUseCase.validationPassword(password)
         return if (emailValidationState != ValidationState.VALID_EMAIL
         ) {
             emailValidationState
         } else if (passwordValidationState != ValidationState.VALID_PASSWORD) {
             passwordValidationState
         } else {
-            val token = authRepository.loginUser(email, password)
-            authRepository.saveToken(token)
+            val response = authRepository.loginUser(email, password)
+            authRepository.saveToken(response.accessToken)
             ValidationState.SUCCESS
         }
     }

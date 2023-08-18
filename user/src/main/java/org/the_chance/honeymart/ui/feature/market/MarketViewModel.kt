@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.market
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -22,7 +23,7 @@ class MarketViewModel @Inject constructor(
     private fun getAllMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllMarket().map { it.toMarketUiState() } },
+            getAllMarket::invoke,
             ::onGetMarketSuccess,
             ::onGetMarketError
         )
@@ -39,11 +40,11 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    private fun onGetMarketSuccess(markets: List<MarketUiState>) {
+    private fun onGetMarketSuccess(markets: List<MarketEntity>) {
         _state.update {
             it.copy(
                 isLoading = false,
-                markets = markets
+                markets = markets.map { marketEntity -> marketEntity.toMarketUiState() }
             )
         }
     }
@@ -51,7 +52,7 @@ class MarketViewModel @Inject constructor(
     override fun getChosenMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllMarket().map { it.toMarketUiState() } },
+            getAllMarket::invoke,
             ::onGetMarketSuccess,
             ::onGetMarketError
         )

@@ -6,5 +6,4 @@ sealed class ProductUiEffect : BaseUiEffect {
     data class ClickProductEffect(val productId: Long, val categoryId: Long) : ProductUiEffect()
     object UnAuthorizedUserEffect : ProductUiEffect()
     data class AddedToWishListEffect(val message: String) : ProductUiEffect()
-    object RemovedFromWishListEffect : ProductUiEffect()
 }

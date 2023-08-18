@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.the_chance.honeymart.ui.features.category.CategoryUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
@@ -31,7 +32,7 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun CategoryItem(
     state: CategoryUiState,
-    onCategoryClicked: (categoryId: Long, position: Int) -> Unit,
+    onCategoryClicked: (categoryId: Long, position: Int) -> Unit = { _, _ -> },
     position: Int
 ) {
     Column(

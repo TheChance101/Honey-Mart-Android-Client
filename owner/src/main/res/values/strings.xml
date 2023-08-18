@@ -10,7 +10,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="continue_word">Continue</string>
-    <string name="alrady_have_account">Already have account?</string>
+    <string name="already_have_account">Already have account?</string>
     <string name="log_in">Log in</string>
     <string name="title_icon">title_icon</string>
     <string name="honey">Honey</string>
@@ -22,4 +22,5 @@
     <string name="send">Send</string>
     <string name="market_images">Market Images</string>
     <string name="market_name">Market name</string>
+    <string name="you_delete_a_categories">You delete a categories ....\n</string>
 </resources>

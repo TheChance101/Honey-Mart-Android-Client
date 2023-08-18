@@ -29,17 +29,17 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun OrdersScreen(
     viewModel: OrdersViewModel = hiltViewModel(),
-    ) {
+) {
     val state by viewModel.state.collectAsState()
 
-OrdersContent(state, viewModel)
+    OrdersContent(state, viewModel)
 }
 
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
     listener: OrdersInteractionsListener,
-    ){
+) {
     Loading(state = state.isLoading)
     EmptyOrdersPlaceholder(
         painter = painterResource(id = R.drawable.owner_empty_order),
