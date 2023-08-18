@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black87
@@ -21,7 +23,7 @@ import org.the_chance.honymart.ui.theme.black87
 fun ItemLabel(
     label: String,
     modifier: Modifier = Modifier,
-    iconPainter: Painter = painterResource(id = R.drawable.seall),
+    iconPainter: Painter = painterResource(id = R.drawable.ic_seall),
 ) {
     Row(
         modifier = modifier
@@ -31,12 +33,12 @@ fun ItemLabel(
     ) {
         Text(
             text = label,
-            style = Typography.bodySmall.copy(black87),
+            style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
         )
         Icon(
             painter = iconPainter,
             contentDescription = null,
-            tint = black37,
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     }
 }
@@ -44,5 +46,7 @@ fun ItemLabel(
 @Preview
 @Composable
 fun ItemLabelPreview() {
-    ItemLabel(label = "Label")
+    HoneyMartTheme {
+        ItemLabel(label = "Label")
+    }
 }

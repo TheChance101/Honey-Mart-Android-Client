@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +35,7 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun CouponsItem(
     modifier: Modifier = Modifier,
-    state : CouponUiState
+    state: CouponUiState
 ) {
     val color = MaterialTheme.colorScheme
     Row {
@@ -50,7 +51,7 @@ fun CouponsItem(
                     )
                     drawPath(
                         path = path,
-                        color = color.secondary,
+                        color = color.secondaryContainer,
                     )
                 }
                 .padding(
@@ -155,7 +156,7 @@ fun CouponsItem(
                 }
                 .padding(
                     top = MaterialTheme.dimens.space16,
-                    bottom = MaterialTheme.dimens.space8,
+                    bottom = MaterialTheme.dimens.space4,
                     end = MaterialTheme.dimens.space16,
                     start = MaterialTheme.dimens.space16
                 ),
@@ -175,12 +176,11 @@ fun CouponsItem(
             )
 
             Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
+                modifier = Modifier.padding(top = MaterialTheme.dimens.space4),
                 text = "Coupon Code",
                 style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimary)
             )
             Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space4),
                 text = "445902378",
                 style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimary)
             )
@@ -326,21 +326,4 @@ fun CouponDataItem(
     }
 }
 
-//
-//@Preview(uiMode = UI_MODE_NIGHT_NO)
-//@Composable
-//fun PreviewCoupons() {
-//    HoneyMartTheme {
-//        CouponsItem(
-//
-//        )
-//    }
-//}
-//
-//@Preview(uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun PreviewCouponsDark() {
-//    HoneyMartTheme {
-//        CouponsItem()
-//    }
-//}
+

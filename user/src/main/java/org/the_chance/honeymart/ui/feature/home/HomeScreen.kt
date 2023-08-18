@@ -78,13 +78,9 @@ fun HomeContent(
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(white30),
+            contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
             columns = GridCells.Fixed(2)
         ) {
-
             item(
                 span = { GridItemSpan(2) },
             ) {
@@ -111,7 +107,6 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 HorizontalPagerIndicator(
-
                     itemCount = 3,
                     selectedPage = pagerState.currentPage,
                 )
@@ -123,8 +118,9 @@ fun HomeContent(
                 SearchBar(
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.dimens.space16)
-                        .clickable { },
-                    icon = painterResource(id = R.drawable.ic_search)
+                        .padding(top = MaterialTheme.dimens.space8),
+                    icon = painterResource(id = R.drawable.ic_search),
+                    onClick = {}
                 )
             }
 
@@ -133,14 +129,22 @@ fun HomeContent(
             ) {
                 ItemLabel(
                     label = stringResource(org.the_chance.user.R.string.markets),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16)
+                        .padding(
+                            top =
+                            MaterialTheme.dimens.space8
+                        )
                 )
             }
 
             item(
                 span = { GridItemSpan(2) },
             ) {
-                LazyRow {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+                ) {
                     items(state.markets.size) { itemIndex ->
                         HomeHorizontalItems(
                             name = state.markets[itemIndex].marketName,
@@ -155,7 +159,12 @@ fun HomeContent(
             ) {
                 ItemLabel(
                     label = stringResource(org.the_chance.user.R.string.categories),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16)
+                        .padding(
+                            top =
+                            MaterialTheme.dimens.space8
+                        )
                 )
             }
 
@@ -176,9 +185,11 @@ fun HomeContent(
                 span = { GridItemSpan(2) },
             ) {
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+                    contentPadding = PaddingValues(
+                        horizontal = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space8
+                    )
                 )
-
                 {
                     items(5) {
                         CouponsItem(
@@ -206,7 +217,7 @@ fun HomeContent(
             ) {
                 Text(
                     text = stringResource(R.string.new_products),
-                    style = Typography.bodySmall.copy(black87),
+                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
                     modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 )
             }
@@ -227,52 +238,51 @@ fun HomeContent(
 
             item(
                 span = { GridItemSpan(2) },
-
-                ) {
-                Text(
-                    text = stringResource(R.string.last_purchases),
-                    style = Typography.bodySmall.copy(black87),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-
+            ) {
+                ItemLabel(
+                    label = stringResource(R.string.last_purchases),
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.dimens.space16)
+                        .padding(
+                            top =
+                            MaterialTheme.dimens.space8
+                        )
                 )
             }
 
             item(
                 span = { GridItemSpan(2) },
-
-                ) {
+            ) {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 ) {
-
-
-                        items(10) {
-                            LastPurchasesItems()
-                        }
+                    items(10) {
+                        LastPurchasesItems()
                     }
                 }
+            }
 
-                item(
-                    span = { GridItemSpan(2) },
-                ) {
-                    Text(
-                        text = stringResource(R.string.last_purchases),
-                        style = Typography.bodySmall.copy(black87),
-                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                    )
-                }
+            item(
+                span = { GridItemSpan(2) },
+            ) {
+                Text(
+                    text = stringResource(R.string.discover_products),
+                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                )
+            }
 
-                items(10) {
-                    NewProductsItems()
-                }
+            items(20) {
+                NewProductsItems()
             }
         }
     }
+}
 
 
-    @Preview
-    @Composable
-    fun HomeScreenPreview() {
-        HomeScreen()
-    }
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
+}

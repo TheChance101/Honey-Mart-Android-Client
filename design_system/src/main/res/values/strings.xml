@@ -105,4 +105,5 @@
     <string name="cancelled">Cancelled</string>
     <string name="new_products">New Products</string>
     <string name="last_purchases">Last Purchases</string>
+    <string name="discover_products">Discover products</string>
 </resources>
