@@ -12,6 +12,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUSeCase
 import org.the_chance.honeymart.domain.usecase.GetAllUserCoupons
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
+import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.market.toMarketUiState
@@ -27,7 +28,9 @@ class HomeViewModel @Inject constructor(
     private val getAllRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUSeCase,
     private val getAllOrders: GetAllOrdersUseCase,
-) :
+    private val wishListOperationsUseCase: WishListOperationsUseCase,
+
+    ) :
     BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
@@ -169,24 +172,24 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    override fun onClickPagerItem( marketId: Long) {
+    override fun onClickPagerItem(marketId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreen(marketId))
     }
 
     override fun onClickCouponClipped(couponId: Long) {
-          _state.value.coupons.find { it.couponId == couponId }?.let {
-              _state.update {
-                  it.copy(
-                      coupons = it.coupons.map { coupon ->
-                          if (coupon.couponId == couponId) {
-                              coupon.copy(isClipped = !coupon.isClipped)
-                          } else {
-                              coupon
-                          }
-                      }
-                  )
-              }
-          }
+        _state.value.coupons.find { it.couponId == couponId }?.let {
+            _state.update {
+                it.copy(
+                    coupons = it.coupons.map { coupon ->
+                        if (coupon.couponId == couponId) {
+                            coupon.copy(isClipped = !coupon.isClipped)
+                        } else {
+                            coupon
+                        }
+                    }
+                )
+            }
+        }
     }
 
     override fun onClickProductItem(productId: Long) {
@@ -207,5 +210,38 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
+        addProductToWishList(productId)
+    }
+
+
+    private fun addProductToWishList(productId: Long) {
+        tryToExecute(
+            { wishListOperationsUseCase.addToWishList(productId) },
+            ::onAddToWishListSuccess,
+            { onAddToWishListError(it, productId) }
+        )
+    }
+
+    private fun onDeleteWishListSuccess(successMessage: String) {
+    }
+
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        _state.update { it.copy(error = error, isError = true) }
+    }
+
+    private fun onAddToWishListSuccess(successMessage: String) {
+    }
+
+    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+        if (error is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
+    }
+
+    private fun deleteProductFromWishList(productId: Long) {
+        tryToExecute(
+            { wishListOperationsUseCase.deleteFromWishList(productId) },
+            ::onDeleteWishListSuccess,
+            ::onDeleteWishListError
+        )
     }
 }
