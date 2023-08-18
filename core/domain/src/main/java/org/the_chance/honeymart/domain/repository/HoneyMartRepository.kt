@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
@@ -21,17 +22,19 @@ interface HoneyMartRepository {
     suspend fun getWishList(): List<WishListEntity>
     suspend fun getCart(): CartEntity
 
-    suspend fun addToCart(productId: Long,count:Int): String
+    suspend fun addToCart(productId: Long, count: Int): String
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun getAllOrders(orderState:Int): List<OrderEntity>
-    suspend fun updateOrderState(id: Long?, state: Int):Boolean
+    suspend fun getAllOrders(orderState: Int): List<OrderEntity>
+    suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
 
     suspend fun getProductDetails(productId: Long): ProductEntity
 
-    suspend fun deleteAllCart():String
+    suspend fun deleteAllCart(): String
 
     suspend fun getProfileUser(): ProfileUserEntity
+    suspend fun saveThemeState(isDark: Boolean)
+    suspend fun getThemeState(): Boolean
 }

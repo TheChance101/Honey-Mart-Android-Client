@@ -58,11 +58,15 @@ fun ProfileScreen(
                 is ProfileUiEffect.ClickNotificationEffect ->{} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect ->{} //navController.navigateToCouponsScreen()
                 is ProfileUiEffect.ClickLogoutEffect -> navController.navigateToLogin()
-                ProfileUiEffect.ClickThemeEffect -> {}
+                ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
                 ProfileUiEffect.ShowToastEffect -> {}
             }
         }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getData()
     }
 
     ProfileContent(
@@ -97,7 +101,7 @@ private fun ProfileContent(
             )
         }
 
-        if(state.isConnectionError)
+       // if(!state.isError && !state.isLoading)
         Column(
             modifier = Modifier
                 .fillMaxSize()

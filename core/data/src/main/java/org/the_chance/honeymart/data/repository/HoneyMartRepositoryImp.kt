@@ -1,6 +1,9 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
+import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
+import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
@@ -25,6 +28,7 @@ import javax.inject.Inject
 
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
+    private val datastore: AppDataStorePreferences,
 ) : BaseRepository(), HoneyMartRepository {
 
     override suspend fun checkout(): String {
@@ -96,5 +100,13 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getProfileUser(): ProfileUserEntity =
         wrap { honeyMartService.getProfileUser() }.value?.toProfileUserEntity()
             ?: throw NotFoundException()
+
+    override suspend fun saveThemeState(isDark: Boolean) {
+        datastore.saveThemeState(isDark)
+    }
+
+    override suspend fun getThemeState(): Boolean {
+        return datastore.getThemeState()
+    }
 
 }
