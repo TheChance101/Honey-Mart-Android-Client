@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -58,6 +59,7 @@ fun UpdateCategoryContent(
     AnimatedVisibility(visible = state.showUpdateCategory) {
         Column(
             modifier = Modifier.fillMaxHeight()
+                .padding(bottom = 40.dp)
         ) {
             Column(
                 modifier = Modifier

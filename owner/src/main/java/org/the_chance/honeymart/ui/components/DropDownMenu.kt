@@ -31,8 +31,7 @@ fun DropDownMenuList(
     onClickUpdate: () -> Unit,
     onClickDelete: () -> Unit,
     modifier: Modifier = Modifier,
-
-    ) {
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Box(
@@ -52,8 +51,7 @@ fun DropDownMenuList(
             modifier = modifier
                 .background(
                     MaterialTheme.colorScheme.tertiaryContainer, shape = MaterialTheme.shapes.medium
-                ).align(Alignment.Center)
-                ,
+                ).align(Alignment.Center),
         ) {
             DropdownMenuItem(
                 text = {
@@ -64,7 +62,10 @@ fun DropDownMenuList(
                         textAlign = TextAlign.Center
                     )
                 },
-                onClick = onClickUpdate
+                onClick = {
+                    onClickUpdate()
+                    expanded = false
+                }
             )
             Divider(
                 thickness = 1.dp,
@@ -79,7 +80,10 @@ fun DropDownMenuList(
                         textAlign = TextAlign.Center
                     )
                 },
-                onClick = onClickDelete
+                onClick = {
+                    onClickDelete()
+                    expanded = false
+                }
             )
         }
     }
