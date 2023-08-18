@@ -30,14 +30,14 @@ import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun HoneyTextField(
-    modifier: Modifier = Modifier,
     hint: String,
-    iconPainter: Painter? = null ,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    iconPainter: Painter? = null,
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
-    keyboardOptions:KeyboardOptions =  KeyboardOptions.Default.copy(
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
         imeAction = ImeAction.Next
     ),
 ) {
@@ -60,7 +60,7 @@ fun HoneyTextField(
                     style = Typography.displaySmall,
                 )
             },
-            keyboardOptions =keyboardOptions,
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -80,7 +80,7 @@ fun HoneyTextField(
                 }
             },
             leadingIcon = {
-                if (iconPainter != null){
+                if (iconPainter != null) {
                     Icon(
                         painter = iconPainter,
                         contentDescription = stringResource(R.string.copy_button),

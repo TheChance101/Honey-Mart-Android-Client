@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
@@ -29,7 +30,6 @@ import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.owner.R
 
 @Composable
 fun SignupScreen(
@@ -79,28 +79,28 @@ fun SignupContent(
             HoneyTextField(
                 text = state.fullNameState.value,
                 hint = stringResource(R.string.full_name),
-                iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_person),
+                iconPainter = painterResource(R.drawable.ic_person),
                 onValueChange = listener::onFullNameInputChange,
                 errorMessage = state.fullNameState.errorState,
             )
             HoneyTextField(
                 text = state.emailState.value,
                 hint = stringResource(R.string.email),
-                iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_email),
+                iconPainter = painterResource(R.drawable.ic_email),
                 onValueChange = listener::onEmailInputChange,
                 errorMessage = state.emailState.errorState,
             )
             HoneyTextFieldPassword(
                 text = state.passwordState.value,
                 hint = stringResource(R.string.password),
-                iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
+                iconPainter = painterResource(R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
                 errorMessage = state.passwordState.errorState,
             )
             HoneyTextFieldPassword(
                 text = state.confirmPasswordState.value,
                 hint = stringResource(R.string.confirm_password),
-                iconPainter = painterResource(org.the_chance.design_system.R.drawable.ic_password),
+                iconPainter = painterResource(R.drawable.ic_password),
                 onValueChange = listener::onConfirmPasswordChanged,
                 errorMessage = state.confirmPasswordState.errorState,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -111,7 +111,7 @@ fun SignupContent(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             HoneyFilledButton(
-                label = stringResource(org.the_chance.design_system.R.string.continue_word),
+                label = stringResource(R.string.continue_word),
                 onClick = listener::onClickContinue,
                 background = primary100,
                 contentColor = Color.White,
@@ -119,7 +119,7 @@ fun SignupContent(
             )
 
             HoneyAuthFooter(
-                text = stringResource(org.the_chance.design_system.R.string.already_have_account),
+                text = stringResource(R.string.already_have_account),
                 textButtonText = stringResource(R.string.log_in),
                 onTextButtonClicked = listener::onClickLogin,
                 modifier = Modifier.Companion.align(Alignment.CenterHorizontally)

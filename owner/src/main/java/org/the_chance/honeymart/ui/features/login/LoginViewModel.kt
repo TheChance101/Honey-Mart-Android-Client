@@ -48,13 +48,13 @@ class LoginViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { loginOwnerUseCase(email, password) },
-            ::onLoginSuccess,
+            { onLoginSuccess() },
             ::onLoginError,
         )
     }
 
-    private fun onLoginSuccess(isLogin: Boolean) {
-        _state.update { it.copy(isLoading = false, isLogin = isLogin) }
+    private fun onLoginSuccess() {
+        _state.update { it.copy(isLoading = false) }
         effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }
 
