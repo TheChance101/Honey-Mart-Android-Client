@@ -31,7 +31,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    modifier: Modifier = Modifier,
+    imageUrl: String,
     productName: String,
     productPrice: String,
     secondaryText: String,
@@ -39,142 +39,87 @@ fun ProductCard(
     onClickFavorite: () -> Unit,
     enable: Boolean,
     onClickCard: () -> Unit,
+    modifier: Modifier = Modifier,
     visibility: Boolean = true,
-    imageUrl: String,
 ) {
     Box(
         modifier = modifier
             .height(height = 200.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .clickable { if (enable) onClickCard() },
-
-        ) {
+            .clickable { onClickCard() }
+    ) {
         ImageNetwork(
             modifier = Modifier.fillMaxSize(),
             imageUrl = imageUrl
         )
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(
-                    end = MaterialTheme.dimens.space8,
-                    top = MaterialTheme.dimens.space8
-                ),
-            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-            else MaterialTheme.colorScheme.primary,
-            onClick = { if (enable) onClickFavorite() }
-        ) {
-            Image(
-                painter = painterResource(
-                    id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
-                    else R.drawable.icon_favorite_unselected
-                ),
-                contentDescription = stringResource(R.string.favorite_icon),
-            )
-            ImageNetwork(
-                modifier = Modifier.fillMaxSize(),
-                imageUrl = imageUrl
-            )
-            ContentVisibility(state = visibility) {
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(
-                            end = MaterialTheme.dimens.space8,
-                            top = MaterialTheme.dimens.space8
-                        ),
-                    backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
-                    else MaterialTheme.colorScheme.primary,
-                    onClick = onClickFavorite,
-                    size = MaterialTheme.dimens.icon32
-                ) {
-                    Image(
-                        painter = painterResource(
-                            id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
-                            else R.drawable.icon_favorite_unselected
-                        ),
-                        contentDescription = stringResource(R.string.favorite_icon),
-                    )
-                }
-            }
-            Box(
+        ContentVisibility(state = visibility) {
+            IconButton(
                 modifier = Modifier
-                    .matchParentSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                blackOn87,
-                            ),
-                            startY = 300f,
-                        )
-                    )
-            )
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.TopEnd)
                     .padding(
-                        start = MaterialTheme.dimens.space8,
-                        bottom = MaterialTheme.dimens.space8,
-                        end = MaterialTheme.dimens.space8
-                    )
+                        end = MaterialTheme.dimens.space8,
+                        top = MaterialTheme.dimens.space8
+                    ),
+                backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+                else MaterialTheme.colorScheme.primary,
+                onClick = onClickFavorite,
+                size = MaterialTheme.dimens.icon32
             ) {
-                Text(
-                    text = productName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "$productPrice$",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = secondaryText,
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                Image(
+                    painter = painterResource(
+                        id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
+                        else R.drawable.icon_favorite_unselected
+                    ),
+                    contentDescription = stringResource(R.string.favorite_icon),
                 )
             }
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(
-                        start = MaterialTheme.dimens.space8,
-                        bottom = MaterialTheme.dimens.space8,
-                        end = MaterialTheme.dimens.space8
-                    )
-            ) {
-                Text(
-                    text = productName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "$productPrice$",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = secondaryText,
-                    style = Typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
         }
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            blackOn87,
+                        ),
+                        startY = 300f,
+                    )
+                )
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = MaterialTheme.dimens.space8,
+                    bottom = MaterialTheme.dimens.space8,
+                    end = MaterialTheme.dimens.space8
+                )
+        ) {
+            Text(
+                text = productName,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = "$productPrice$",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = secondaryText,
+                style = Typography.displaySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
     }
 }
 
@@ -187,8 +132,9 @@ fun ProductCardPreview() {
         productPrice = "30,000",
         secondaryText = "Secondary Text",
         isFavoriteIconClicked = true,
-        enable = true,
         onClickFavorite = {},
-        onClickCard = {}
+        onClickCard = {},
+        enable = false
+
     )
 }
