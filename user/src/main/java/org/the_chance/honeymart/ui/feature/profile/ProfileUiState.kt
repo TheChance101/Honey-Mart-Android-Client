@@ -13,12 +13,12 @@ data class ProfileUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val isConnectionError: Boolean = false,
     val accountInfo: AccountState = AccountState(),
-){
+) {
     data class AccountState(
-        val userId : Long = 0,
-        val fullName : String = "",
-        val email : String = "",
-        val profileImage : String = "",
+        val userId: Long = 0,
+        val fullName: String = "",
+        val email: String = "",
+        val profileImage: String = "",
 
         )
 }
@@ -28,14 +28,14 @@ data class SnackBarState(
     val massage: String = "",
 )
 
-fun ProfileUiState.contentScreen()= !this.isLoading && !this.isConnectionError
+fun ProfileUiState.contentScreen() = !this.isLoading && !this.isConnectionError
 
 
 fun ProfileUserEntity.toProfileUiState(): ProfileUiState.AccountState {
     return ProfileUiState.AccountState(
-    userId = userId,
-    fullName = fullName,
-    email = email,
-    profileImage = profileImage,
+        userId = userId,
+        fullName = fullName,
+        email = email,
+        profileImage = profileImage,
     )
 }
