@@ -106,7 +106,6 @@ class CategoriesViewModel @Inject constructor(
                 categoryId = categoryId,
                 isLoading = false,
                 showAddCategory = false,
-
                 )
         }
         getProductsByCategoryId(categoryId = categoryId)
@@ -304,4 +303,15 @@ class CategoriesViewModel @Inject constructor(
 
     // endregion
 
+    private fun handleRightStates(position: RightSide) {
+        when (position) {
+            RightSide.ADD_CATEGORY -> {
+                RightSide.ADD_CATEGORY.state = true
+            }
+            RightSide.UPDATE_CATEGORY -> TODO()
+            RightSide.ADD_PRODUCT -> TODO()
+            RightSide.UPDATE_PRODUCT -> TODO()
+            RightSide.CATEGORY_PRODUCTS -> TODO()
+        }
+    }
 }

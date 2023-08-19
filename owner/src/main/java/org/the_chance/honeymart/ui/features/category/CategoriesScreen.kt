@@ -48,6 +48,14 @@ fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
+    Row {
+        Column {
+
+        }
+        Column {
+
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +99,9 @@ fun CategoriesContent(
                     .weight(1f)
             ) {
                 AddCategoryContent(
-                    listener = listener, state = state,
+                    listener = listener,
+                    state = state,
+                    position = RightSide.ADD_CATEGORY
                 )
 
                 AnimatedVisibility(visible = !state.isLoading && !state.showUpdateCategory) {

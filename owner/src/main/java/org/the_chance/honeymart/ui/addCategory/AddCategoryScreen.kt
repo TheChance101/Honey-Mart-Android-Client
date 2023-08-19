@@ -29,6 +29,7 @@ import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.RightSide
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.theme.Typography
@@ -48,9 +49,10 @@ fun AddCategoryScreen(
 fun AddCategoryContent(
     listener: CategoriesInteractionsListener,
     state: CategoriesUiState,
+    position: RightSide
 ) {
     AnimatedVisibility(
-        visible = state.showAddCategory && !state.showUpdateCategory,
+        visible = position.state,
         modifier = Modifier
             .padding(
                 end = MaterialTheme.dimens.space16,

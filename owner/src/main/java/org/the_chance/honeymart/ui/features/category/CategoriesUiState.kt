@@ -21,7 +21,7 @@ data class CategoriesUiState(
     val categoryImageId: Int = 0,
     val showAddCategory: Boolean = false,
     val showUpdateCategory: Boolean = false,
-    val showDialog : Boolean = false ,
+    val showDialog: Boolean = false,
     val categoryImages: List<CategoryImageUIState> = emptyList(),
     val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val products: List<ProductUiState> = emptyList(),
@@ -50,7 +50,8 @@ data class ProductUiState(
     val productImage: String = "",
     val productPrice: String = "0.0",
 )
-enum class Visibility{
+
+enum class Visibility {
     UPDATE_CATEGORY,
     ADD_CATEGORY,
     DELETE_CATEGORY,
@@ -72,3 +73,22 @@ fun CategoriesUiState.showButton(): Boolean {
 }
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+
+enum class Category() {
+    RIGHT_SIDE,
+    LEFT_SIDE
+}
+
+enum class RightSide(var state: Boolean) {
+    ADD_CATEGORY(false),
+    UPDATE_CATEGORY(false),
+    ADD_PRODUCT(false),
+    UPDATE_PRODUCT(false),
+    CATEGORY_PRODUCTS(false)
+}
+
+enum class LeftSide(val state: Boolean) {
+    CATEGORIES(false),
+    EMPTY_CATEGORIES(false),
+    CATEGORY_PRODUCTS(false)
+}
