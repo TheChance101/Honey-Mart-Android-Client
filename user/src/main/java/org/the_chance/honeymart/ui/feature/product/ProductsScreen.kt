@@ -134,7 +134,6 @@ private fun ProductsContent(
                                     onClickCard = {
                                         productInteractionListener.onClickProduct(product.productId)
                                     },
-                                    enable = !state.snackBar.isShow,
                                     onClickFavorite = {
                                         productInteractionListener.onClickFavIcon(product.productId)
                                     }

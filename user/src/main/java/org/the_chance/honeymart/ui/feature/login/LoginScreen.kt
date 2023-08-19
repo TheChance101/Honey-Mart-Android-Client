@@ -43,6 +43,7 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
@@ -112,6 +113,7 @@ fun LoginContent(
                 }
             }
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.email,
                 hint = stringResource(R.string.email),
                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -121,8 +123,10 @@ fun LoginContent(
                     ValidationState.INVALID_EMAIL -> "Invalid email"
                     else -> ""
                 },
+                color = white200
             )
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.password,
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -133,6 +137,7 @@ fun LoginContent(
                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                     else -> ""
                 },
+                color = white200
             )
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
