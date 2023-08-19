@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -47,4 +48,7 @@ interface HoneyMartRepository {
     suspend fun getRecentProducts(): List<GetRecentProductsEntity>
 
     suspend fun getAllProducts(): List<ProductEntity>
+
+    suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity>
+
 }

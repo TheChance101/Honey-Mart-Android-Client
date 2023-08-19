@@ -7,6 +7,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toGetRecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toNotificationEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
@@ -19,6 +20,7 @@ import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -122,6 +124,10 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getAllProducts(): List<ProductEntity>
         = wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
+            ?: throw NotFoundException()
+
+    override suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity> =
+        wrap { honeyMartService.getAllNotifications(notificationsState) }.value?.map { it.toNotificationEntity() }
             ?: throw NotFoundException()
 
 

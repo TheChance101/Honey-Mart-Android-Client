@@ -22,6 +22,7 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
@@ -125,8 +126,8 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun searchForProducts(query: String):BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search"){
+    override suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>> =
+        wrap(client.get("product/search") {
             parameter("query", query)
         })
 
@@ -215,6 +216,10 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>> =
         wrap(client.get("/product/recentProducts"))
 
+    override suspend fun getAllNotifications(notificationState: Int): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/userNotifications") {
+            parameter("notificationState", notificationState)
+        })
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
