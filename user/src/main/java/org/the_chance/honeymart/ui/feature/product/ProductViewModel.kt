@@ -179,17 +179,10 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onClickFavIcon(productId: Long) {
-        val currentProduct = _state.value.products.find { it.productId == productId }
-        val isFavorite = currentProduct?.isFavorite ?: false
-        val newFavoriteState = !isFavorite
-
-        updateFavoriteState(productId, newFavoriteState)
-
-        if (isFavorite) {
-            deleteProductFromWishList(productId)
-        } else {
+        if (_state.value.products.find { it.productId == productId }?.isFavorite == false)
             addProductToWishList(productId)
-        }
+        else
+            deleteProductFromWishList(productId)
     }
 
     private fun deleteProductFromWishList(productId: Long) {
@@ -211,24 +204,28 @@ class ProductViewModel @Inject constructor(
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
             { wishListOperationsUseCase.addToWishList(productId) },
-            ::onAddToWishListSuccess,
+            {onAddToWishListSuccess(it, productId)},
             { onAddToWishListError(it, productId) }
         )
         _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
-    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
-        val newProduct = _state.value.products.map {
-            if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite)
-            } else {
-                it
+
+
+    private fun onAddToWishListSuccess(successMessage: String, productId: Long) {
+        _state.value.products.find { it.productId == productId }?.let {
+            _state.update {
+                it.copy(
+                    products = it.products.map { product ->
+                        if (product.productId == productId) {
+                            product.copy(isFavorite = !product.isFavorite)
+                        } else {
+                            product
+                        }
+                    }
+                )
             }
         }
-        _state.update { it.copy(products = newProduct) }
-    }
-
-    private fun onAddToWishListSuccess(successMessage: String) {
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect(successMessage))
     }
 

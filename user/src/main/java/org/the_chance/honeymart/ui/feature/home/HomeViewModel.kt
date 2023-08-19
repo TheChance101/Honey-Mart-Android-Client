@@ -236,7 +236,7 @@ class HomeViewModel @Inject constructor(
         tryToExecute(
             { wishListOperationsUseCase.addToWishList(productId) },
             { onAddToWishListSuccess(it, productId) },
-            { onAddToWishListError(it, productId) }
+            { onAddToWishListError(it) }
         )
     }
 
@@ -276,7 +276,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+    private fun onAddToWishListError(error: ErrorHandler) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
 
