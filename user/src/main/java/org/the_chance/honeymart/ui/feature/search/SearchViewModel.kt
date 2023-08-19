@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(
 
     private fun searchForProducts(query: String) {
         tryToExecute(
-            { searchForProductUseCase(query, SearchStates.RANDOM.state) },
+            { searchForProductUseCase(query) },
             ::searchForProductsSuccess,
             ::onError
         )
