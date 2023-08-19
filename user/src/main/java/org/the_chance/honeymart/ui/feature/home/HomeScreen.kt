@@ -12,9 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -34,14 +34,10 @@ fun HomeScreen(
         pagerState = pagerState,
         listener = viewModel
     )
-//    LaunchedEffect(Unit) {
-//        while (true) {
-//            delay(3000)
-//            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
-//        }
-//    }
+    LaunchedEffect(key1 = true) { viewModel.getData() }
 
     LaunchedEffect(key1 = true) {
+
         viewModel.effect.collect {
             when (it) {
                 is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
@@ -52,7 +48,7 @@ fun HomeScreen(
                     it.productId
                 )
 
-                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToLogin()
+                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
                 HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
             }
         }

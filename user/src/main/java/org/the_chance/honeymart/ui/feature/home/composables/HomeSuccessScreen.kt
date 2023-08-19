@@ -18,12 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
@@ -37,6 +39,7 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
+
     LazyVerticalGrid(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -242,6 +245,13 @@ fun HomeContentSuccessScreen(
                 onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) },
                 isFavoriteIconClicked = state.discoverProducts[it].isFavorite
             )
+        }
+    }
+    LaunchedEffect(key1 = state.markets.isNotEmpty()) {
+        while (true) {
+            delay(3000)
+            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
+
         }
     }
 }
