@@ -123,4 +123,9 @@
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
     <string name="shop_details">shop details</string>
+    <string name="your_notifications_is_empty">Your Notifications is empty!!</string>
+    <string name="you_ll_receive_a_notification_after_placing_your_order">You’ll receive a notification after placing your order</string>
+    <string name="all">All</string>
+    <string name="order_title">Order</string>
+    <string name="delivery">Delivery</string>
 </resources>
