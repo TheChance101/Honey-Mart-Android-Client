@@ -1,5 +1,10 @@
 package org.the_chance.honeymart.ui.feature.profile
 
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -82,6 +88,11 @@ private fun ProfileContent(
     state: ProfileUiState,
     listener: ProfileInteractionsListener,
 ) {
+    val context = LocalContext.current
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { handleImageSelection(it, context, state, listener::onImageSelected) }
+    )
 
     AppBarScaffold {
 
@@ -103,118 +114,148 @@ private fun ProfileContent(
             )
         }
 
-        // if(!state.isError && !state.isLoading)
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = MaterialTheme.dimens.space16),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box {
-                Image(
-                    painter = rememberAsyncImagePainter(state.accountInfo.profileImage),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.sizeProfileImage)
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .border(
-                            width = MaterialTheme.dimens.space6,
-                            color = MaterialTheme.colorScheme.onTertiary,
-                            shape = CircleShape
-                        )
-                        .align(Alignment.Center)
-                        .background(
-                            color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.primary else nullColor,
-                            shape = CircleShape
-                        ),
-                    contentScale = ContentScale.FillBounds,
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.space48)
-                        .align(Alignment.BottomEnd)
-                        .padding(MaterialTheme.dimens.space4)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = CircleShape
-                        )
-                        .border(
-                            width = MaterialTheme.dimens.space2,
-                            color = MaterialTheme.colorScheme.onTertiary,
-                            shape = CircleShape
-                        )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_camera),
+        if (!state.isError && !state.isLoading)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(all = MaterialTheme.dimens.space16),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box {
+                    Image(
+                        painter = rememberAsyncImagePainter(state.accountInfo.profileImage),
                         contentDescription = "",
                         modifier = Modifier
+                            .size(MaterialTheme.dimens.sizeProfileImage)
+                            .fillMaxSize()
                             .clip(CircleShape)
-                            .size(MaterialTheme.dimens.space24)
-                            .clickable { listener::updateImage }
-                            .align(Alignment.Center),
-                        tint = MaterialTheme.colorScheme.onTertiary,
+                            .border(
+                                width = MaterialTheme.dimens.space6,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                shape = CircleShape
+                            )
+                            .align(Alignment.Center)
+                            .background(
+                                color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.primary else nullColor,
+                                shape = CircleShape
+                            ),
+                        contentScale = ContentScale.FillBounds,
                     )
+
+                    Box(
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.space48)
+                            .align(Alignment.BottomEnd)
+                            .padding(MaterialTheme.dimens.space4)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .border(
+                                width = MaterialTheme.dimens.space2,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                shape = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_camera),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(MaterialTheme.dimens.space24)
+                                .clickable {
+                                    photoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
+                                    state.image?.let {
+                                        listener.updateImage(
+                                            userId = state.accountInfo.userId,
+                                            image = it
+                                        )
+                                    }
+                                }
+                                .align(Alignment.Center),
+                            tint = MaterialTheme.colorScheme.onTertiary,
+                        )
+                    }
+
                 }
 
+                Text(
+                    text = "${state.accountInfo.fullName}",
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.dimens.space16),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = "${state.accountInfo.email}",
+                    modifier = Modifier
+                        .padding(
+                            top = MaterialTheme.dimens.space4,
+                            bottom = MaterialTheme.dimens.space32
+                        ),
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center,
+                )
+
+                NavCard(
+                    iconId = R.drawable.ic_bill_list,
+                    title = "My Order",
+                    onClick = listener::onClickMyOrder
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
+
+                NavCard(
+                    iconId = R.drawable.ic_coupons,
+                    title = "Coupons",
+                    onClick = listener::onClickCoupons
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
+
+                NavCard(
+                    iconId = R.drawable.ic_notification,
+                    title = "Notification",
+                    onClick = listener::onClickNotification
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
+
+                NavCard(
+                    iconId = R.drawable.ic_sun,
+                    title = "Theme",
+                    onClick = listener::onClickTheme
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
+
+                NavCard(
+                    iconId = R.drawable.ic_logout,
+                    title = "Logout",
+                    onClick = listener::showDialog,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
             }
-
-            Text(
-                text = "${state.accountInfo.fullName}",
-                modifier = Modifier
-                    .padding(top = MaterialTheme.dimens.space16),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = "${state.accountInfo.email}",
-                modifier = Modifier
-                    .padding(
-                        top = MaterialTheme.dimens.space4,
-                        bottom = MaterialTheme.dimens.space32
-                    ),
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                textAlign = TextAlign.Center,
-            )
-
-            NavCard(
-                iconId = R.drawable.ic_bill_list,
-                title = "My Order",
-                onClick = listener::onClickMyOrder
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-            NavCard(
-                iconId = R.drawable.ic_coupons,
-                title = "Coupons",
-                onClick = listener::onClickCoupons
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-            NavCard(
-                iconId = R.drawable.ic_notification,
-                title = "Notification",
-                onClick = listener::onClickNotification
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-            NavCard(iconId = R.drawable.ic_sun, title = "Theme", onClick = listener::onClickTheme)
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-            NavCard(
-                iconId = R.drawable.ic_logout,
-                title = "Logout",
-                onClick = listener::showDialog,
-                color = MaterialTheme.colorScheme.error
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-        }
     }
+}
+
+private fun handleImageSelection(
+    uri: Uri?,
+    context: Context,
+    state: ProfileUiState,
+    onImageSelected: (ByteArray) -> Unit
+) {
+    val imageByteArrays =
+        uri?.let {
+            context.contentResolver.openInputStream(it)?.use { inputStream ->
+                inputStream.readBytes()
+            }
+        }
+    val updatedImages = imageByteArrays
+    updatedImages?.let { onImageSelected(it) }
 }

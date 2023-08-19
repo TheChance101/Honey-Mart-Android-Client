@@ -109,6 +109,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun onAddProfileImagesSuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
+        getData()
     }
 
     private fun onAddProfileImagesError(errorHandler: ErrorHandler) {
@@ -133,6 +134,5 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onLogoutError(error: ErrorHandler) {
-
     }
 }
