@@ -19,6 +19,7 @@ val white100 = Color(0x5EECECEC)
 val white200 = Color(0xFFE1E1E1)
 val white30 = Color(0xFFFAFAFA)
 val background = Color(0xFFFAFAFA)
+val nullColor = Color(0x00FAFAFA)
 
 /* Dark Theme Color */
 

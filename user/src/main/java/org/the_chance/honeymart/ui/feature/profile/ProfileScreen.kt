@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,6 +42,7 @@ import org.the_chance.honeymart.ui.feature.orders.OrderUiEffect
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
+import org.the_chance.honymart.ui.theme.nullColor
 
 
 @Composable
@@ -55,8 +57,8 @@ fun ProfileScreen(
         viewModel.effect.collect {
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                is ProfileUiEffect.ClickNotificationEffect ->{} //navController.navigateToNotificationScreen()
-                is ProfileUiEffect.ClickCouponsEffect ->{} //navController.navigateToCouponsScreen()
+                is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
+                is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
                 is ProfileUiEffect.ClickLogoutEffect -> navController.navigateToLogin()
                 ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
@@ -96,12 +98,12 @@ private fun ProfileContent(
                 onConfirm = {
                     listener.onClickLogout()
                 },
-                onCancel = { listener.resetDialogState()},
+                onCancel = { listener.resetDialogState() },
                 onDismissRequest = { listener.resetDialogState() }
             )
         }
 
-       // if(!state.isError && !state.isLoading)
+        // if(!state.isError && !state.isLoading)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,26 +123,41 @@ private fun ProfileContent(
                             color = MaterialTheme.colorScheme.onTertiary,
                             shape = CircleShape
                         )
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .background(
+                            color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.primary else nullColor,
+                            shape = CircleShape
+                        ),
                     contentScale = ContentScale.FillBounds,
                 )
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_camera),
-                    contentDescription = "",
+                Box(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
-                        .size(MaterialTheme.dimens.space36)
-                        .clip(CircleShape)
-                        .clickable { listener::updateImage }
+                        .size(MaterialTheme.dimens.space48)
+                        .align(Alignment.BottomEnd)
+                        .padding(MaterialTheme.dimens.space4)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        )
                         .border(
                             width = MaterialTheme.dimens.space2,
                             color = MaterialTheme.colorScheme.onTertiary,
                             shape = CircleShape
                         )
-                        .align(Alignment.BottomEnd),
-                    tint = MaterialTheme.colorScheme.onTertiary,
-                )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_camera),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(MaterialTheme.dimens.space24)
+                            .clickable { listener::updateImage }
+                            .align(Alignment.Center),
+                        tint = MaterialTheme.colorScheme.onTertiary,
+                    )
+                }
+
             }
 
             Text(
@@ -163,22 +180,39 @@ private fun ProfileContent(
                 textAlign = TextAlign.Center,
             )
 
-            NavCard(iconId = R.drawable.ic_bill_list, title = "My Order" , onClick = listener::onClickMyOrder)
+            NavCard(
+                iconId = R.drawable.ic_bill_list,
+                title = "My Order",
+                onClick = listener::onClickMyOrder
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
-            NavCard(iconId = R.drawable.ic_coupons, title = "Coupons" , onClick = listener::onClickCoupons)
+            NavCard(
+                iconId = R.drawable.ic_coupons,
+                title = "Coupons",
+                onClick = listener::onClickCoupons
+            )
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
-            NavCard(iconId = R.drawable.ic_notification, title = "Notification" , onClick = listener::onClickNotification)
+            NavCard(
+                iconId = R.drawable.ic_notification,
+                title = "Notification",
+                onClick = listener::onClickNotification
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
-            NavCard(iconId = R.drawable.ic_sun, title = "Theme" , onClick = listener::onClickTheme)
+            NavCard(iconId = R.drawable.ic_sun, title = "Theme", onClick = listener::onClickTheme)
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
-            NavCard(iconId = R.drawable.ic_logout, title = "Logout" , onClick = listener::showDialog , color = MaterialTheme.colorScheme.error)
+            NavCard(
+                iconId = R.drawable.ic_logout,
+                title = "Logout",
+                onClick = listener::showDialog,
+                color = MaterialTheme.colorScheme.error
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
         }
