@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honymart.ui.theme.dimens
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -58,7 +59,7 @@ fun HexagonItem(
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSecondary,
-            modifier = Modifier.padding(bottom = 12.dp)
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space12)
         )
     }
 }
