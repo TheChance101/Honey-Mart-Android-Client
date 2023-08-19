@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
+import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -155,8 +156,8 @@ fun HomeContentSuccessScreen(
             {
                 items(state.coupons.size) {
                     CouponsItem(
-                        state = state.coupons[it],
-                        onClick = { listener.onClickCouponClipped(state.coupons[it].couponId) })
+                        coupon = state.coupons[it],
+                        onClickGetCoupon = { listener.onClickCouponClipped(state.coupons[it].couponId) })
                 }
             }
         }
