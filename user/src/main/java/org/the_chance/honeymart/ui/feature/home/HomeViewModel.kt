@@ -40,9 +40,6 @@ class HomeViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
 
-    init {
-        getData()
-    }
 
     override fun getData() {
         getAllMarkets()
@@ -226,6 +223,24 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickFavoriteNewProduct(productId: Long) {
+
+        if (_state.value.newProducts.find { it.newProductId == productId }?.isFavorite == true)
+            addProductToWishList(productId)
+        else
+            deleteProductFromWishList(productId)
+
+    }
+
+
+    private fun addProductToWishList(productId: Long) {
+        tryToExecute(
+            { wishListOperationsUseCase.addToWishList(productId) },
+            { onAddToWishListSuccess(it, productId) },
+            { onAddToWishListError(it, productId) }
+        )
+    }
+
+    private fun onDeleteWishListSuccess(successMessage: String, productId: Long) {
         _state.value.newProducts.find { it.newProductId == productId }?.let {
             _state.update {
                 it.copy(
@@ -239,41 +254,38 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        if (_state.value.newProducts.find { it.newProductId == productId }?.isFavorite == true)
-            addProductToWishList(productId)
-        else
-            deleteProductFromWishList(productId)
-
-    }
-
-
-    private fun addProductToWishList(productId: Long) {
-        tryToExecute(
-            { wishListOperationsUseCase.addToWishList(productId) },
-            ::onAddToWishListSuccess,
-            { onAddToWishListError(it, productId) }
-        )
-    }
-
-    private fun onDeleteWishListSuccess(successMessage: String) {
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
         _state.update { it.copy(error = error, isError = true) }
     }
 
-    private fun onAddToWishListSuccess(successMessage: String) {
+    private fun onAddToWishListSuccess(successMessage: String, productId: Long) {
+        _state.value.newProducts.find { it.newProductId == productId }?.let {
+            _state.update {
+                it.copy(
+                    newProducts = it.newProducts.map { product ->
+                        if (product.newProductId == productId) {
+                            product.copy(isFavorite = !product.isFavorite)
+                        } else {
+                            product
+                        }
+                    }
+                )
+            }
+        }
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
+
     }
 
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
             { wishListOperationsUseCase.deleteFromWishList(productId) },
-            ::onDeleteWishListSuccess,
+            { onDeleteWishListSuccess(it, productId) },
             ::onDeleteWishListError
         )
     }

@@ -16,6 +16,7 @@ import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 
@@ -28,27 +29,32 @@ fun HomeScreen(
     val pagerState = rememberPagerState(initialPage = 1)
     val navController = LocalNavigationProvider.current
 
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+                HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
+                is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
+                    it.marketId
+                )
+
+                is HomeUiEffect.NavigateToProductScreenEffect -> navController.navigateToProductDetailsScreen(
+                    it.productId
+                )
+
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getData()
+    }
     HomeContent(
         state = state,
         pagerState = pagerState,
         listener = viewModel
     )
-//    LaunchedEffect(Unit) {
-//        while (true) {
-//            delay(3000)
-//            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
-//        }
-//    }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                is HomeUiEffect.NavigateToMarketScreen -> navController.navigateToCategoryScreen(it.marketId)
-                is HomeUiEffect.NavigateToProductScreen -> navController.navigateToProductDetailsScreen(it.productId)
-                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
-            }
-        }
-    }
 
 }
 

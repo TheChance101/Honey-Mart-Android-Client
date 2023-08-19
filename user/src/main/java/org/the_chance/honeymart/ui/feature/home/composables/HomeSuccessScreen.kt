@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
+import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -47,35 +48,9 @@ fun HomeContentSuccessScreen(
         columns = GridCells.Fixed(2)
     ) {
 
-        item(
-            span = { GridItemSpan(2) },
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                HorizontalPager(
-                    contentPadding = PaddingValues(MaterialTheme.dimens.space12),
-                    pageCount = state.markets.size,
-                    state = pagerState,
-                ) {
-                    ImageNetwork(
-                        imageUrl = state.markets[it].marketImage,
-                        contentDescription = "null",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = MaterialTheme.dimens.space4)
-                            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
-                            .height(MaterialTheme.dimens.heightItemMarketCard)
-                            .clickable(onClick = { listener.onClickPagerItem(state.markets[it].marketId) }),
-                    )
-                }
-                HorizontalPagerIndicator(
-                    itemCount = 3,
-                    selectedPage = pagerState.currentPage,
-                )
-            }
+        item(span = {GridItemSpan(2)})
+        {
+            PagerMarkets(state.markets, pagerState, listener::onClickPagerItem)
         }
 
         item(
@@ -93,137 +68,33 @@ fun HomeContentSuccessScreen(
         item(
             span = { GridItemSpan(2) },
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                ItemLabel(
-                    label = stringResource(R.string.markets),
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.dimens.space16)
-                        .padding(top = MaterialTheme.dimens.space8)
-                )
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
-                ) {
-                    items(state.markets.size) { itemIndex ->
-                        HomeMarketItem(
-                            name = state.markets[itemIndex].marketName,
-                            image = state.markets[itemIndex].marketImage,
-                            onclick = { listener.onClickPagerItem(state.markets[itemIndex].marketId) }
-                        )
-                    }
-                }
-            }
+            MarketsList(state, listener::onClickPagerItem)
 
         }
 
         item(
             span = { GridItemSpan(2) },
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                ItemLabel(
-                    label = stringResource(R.string.categories),
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.dimens.space16)
-                        .padding(
-                            top =
-                            MaterialTheme.dimens.space8
-                        )
-                )
-
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
-
-                ) {
-                    items(10) {
-                        Hexagon()
-                    }
-                }
-            }
+            CategoriesHexagonItem()
         }
 
         item(
             span = { GridItemSpan(2) },
         ) {
-            LazyRow(
-                contentPadding = PaddingValues(
-                    horizontal = MaterialTheme.dimens.space16,
-                    vertical = MaterialTheme.dimens.space8
-                )
-            )
-            {
-                items(state.coupons.size) {
-                    CouponsItem(
-                        state = state.coupons[it],
-                        onClick = { listener.onClickCouponClipped(state.coupons[it].couponId) })
-                }
-            }
+            CouponItem(state, listener::onClickCouponClipped)
         }
 
         item(
             span = { GridItemSpan(2) },
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                Text(
-                    text = stringResource(R.string.new_products),
-                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                )
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
-                ) {
-                    items(state.newProducts.size) {
-                        NewProductsItems(
-                            productName = state.newProducts[it].newProductName,
-                            productPrice = state.newProducts[it].price.toString(),
-                            imageUrl = state.newProducts[it].newProductImage,
-                            onClickFavorite = { listener.onClickFavoriteNewProduct(state.newProducts[it].newProductId) },
-                            isFavoriteIconClicked = state.newProducts[it].isFavorite,
-                            onClick = { listener.onClickProductItem(state.newProducts[it].newProductId) }
-                        )
-                    }
-                }
-            }
+            NewProductsItem(state, listener::onClickProductItem, listener::onClickFavoriteNewProduct)
 
         }
 
         item(
             span = { GridItemSpan(2) },
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                ItemLabel(
-                    label = stringResource(R.string.last_purchases),
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.dimens.space16)
-                        .padding(
-                            top =
-                            MaterialTheme.dimens.space8
-                        )
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
-                ) {
-                    items(state.lastPurchases.size) {
-                        LastPurchasesItems(
-                            image = state.lastPurchases[it].imageUrl,
-                            label = state.lastPurchases[it].marketName,
-                            onClick = { listener.onClickProductItem(state.lastPurchases[it].orderId) }
-
-                        )
-                    }
-                }
-            }
+            LastPurchasesItem(state, listener::onClickProductItem)
         }
 
         item(span = { GridItemSpan(2) }) {
@@ -240,18 +111,220 @@ fun HomeContentSuccessScreen(
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
                 productName = state.discoverProducts[it].productName,
                 productPrice = state.discoverProducts[it].productPrice.toString(),
-                imageUrl = state.discoverProducts[it].productImages[0],
+                imageUrl = state.discoverProducts[it].productImages.takeIf { it.isNotEmpty() }
+                    ?.get(0) ?: "",
                 onClickFavorite = { listener.onClickFavoriteDiscoverProduct(state.discoverProducts[it].productId) },
                 onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) },
                 isFavoriteIconClicked = state.discoverProducts[it].isFavorite
             )
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     LaunchedEffect(key1 = state.markets.isNotEmpty()) {
         while (true) {
             delay(3000)
             pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
 
         }
+    }
+}
+
+
+@Composable
+private fun LastPurchasesItem(
+    state: HomeUiState,
+    onClickProductItem: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+    ) {
+        ItemLabel(
+            label = stringResource(R.string.last_purchases),
+            modifier = modifier
+                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(
+                    top =
+                    MaterialTheme.dimens.space8
+                )
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+        ) {
+            items(state.lastPurchases.size) {
+                LastPurchasesItems(
+                    image = state.lastPurchases[it].imageUrl,
+                    label = state.lastPurchases[it].marketName,
+                    onClick = { onClickProductItem(state.lastPurchases[it].orderId) }
+
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun NewProductsItem(
+    state: HomeUiState,
+    onClickProductItem: (Long) -> Unit,
+    onClickFavoriteNewProduct: (Long) -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+    ) {
+        Text(
+            text = stringResource(R.string.new_products),
+            style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+        ) {
+            items(state.newProducts.size) {
+                NewProductsItems(
+                    productName = state.newProducts[it].newProductName,
+                    productPrice = state.newProducts[it].price.toString(),
+                    imageUrl = state.newProducts[it].newProductImage,
+                    onClickFavorite = {onClickFavoriteNewProduct(state.newProducts[it].newProductId) },
+                    isFavoriteIconClicked = state.newProducts[it].isFavorite,
+                    onClick = { onClickProductItem(state.newProducts[it].newProductId) }
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun CouponItem(
+    state: HomeUiState,
+    onClickCouponItem: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        contentPadding = PaddingValues(
+            horizontal = MaterialTheme.dimens.space16,
+            vertical = MaterialTheme.dimens.space8
+        )
+    )
+    {
+        items(state.coupons.size) {
+            CouponsItem(
+                state = state.coupons[it],
+                onClick = { onClickCouponItem(state.coupons[it].couponId) })
+        }
+    }
+}
+
+@Composable
+private fun CategoriesHexagonItem(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+    ) {
+        ItemLabel(
+            label = stringResource(R.string.categories),
+            modifier = modifier
+                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(
+                    top =
+                    MaterialTheme.dimens.space8
+                )
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+
+        ) {
+            items(10) {
+                Hexagon()
+            }
+        }
+    }
+}
+
+@Composable
+private fun MarketsList(
+    state: HomeUiState,
+    onClickPagerItem: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+    ) {
+        ItemLabel(
+            label = stringResource(R.string.markets),
+            modifier = modifier
+                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(top = MaterialTheme.dimens.space8)
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+        ) {
+            items(state.markets.size) { itemIndex ->
+                HomeMarketItem(
+                    name = state.markets[itemIndex].marketName,
+                    image = state.markets[itemIndex].marketImage,
+                    onclick = { onClickPagerItem(state.markets[itemIndex].marketId) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun PagerMarkets(
+    markets: List<MarketUiState>,
+    pagerState: PagerState,
+    onClickPagerItem: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+
+        HorizontalPager(
+            contentPadding = PaddingValues(MaterialTheme.dimens.space12),
+            pageCount = markets.size,
+            state = pagerState,
+        ) {
+            ImageNetwork(
+                imageUrl = markets[it].marketImage,
+                contentDescription = "null",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.dimens.space4)
+                    .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                    .height(MaterialTheme.dimens.heightItemMarketCard)
+                    .clickable(onClick = { onClickPagerItem(markets[it].marketId) }),
+            )
+        }
+        HorizontalPagerIndicator(
+            itemCount = 3,
+            selectedPage = pagerState.currentPage,
+        )
     }
 }

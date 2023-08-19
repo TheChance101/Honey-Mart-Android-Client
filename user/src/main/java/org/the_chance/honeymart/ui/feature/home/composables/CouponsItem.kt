@@ -40,7 +40,7 @@ fun CouponsItem(
     val color = MaterialTheme.colorScheme
     Row {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .drawBehind {
                     val path = couponLeftPath(
                         size = Size(
