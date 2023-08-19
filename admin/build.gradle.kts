@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
 }
 
 android {
@@ -30,16 +32,33 @@ android {
     kotlinOptions {
         jvmTarget = ConfigData.JAVA_VERSIONS_CODE.toString()
     }
+    buildFeatures {
+        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
 }
 
 dependencies {
     implementation(project(BuildModules.DESIGN_SYSTEM))
+    implementation(project(BuildModules.CORE_DOMAIN))
     implementation(project(BuildModules.CORE_DATA))
+    Dependencies.firebaseDependency.forEach { implementation(it) }
     Dependencies.uiDependencies.forEach { implementation(it) }
+    Dependencies.composeDependency.forEach { implementation(it) }
+    Dependencies.ktorDependency.forEach { implementation(it) }
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
     androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
+    //Navigation
+    Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
 }
