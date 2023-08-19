@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +37,8 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -102,7 +103,10 @@ fun SearchContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = MaterialTheme.dimens.space16),
+                    .padding(
+                        end = MaterialTheme.dimens.space16,
+                        bottom = MaterialTheme.dimens.space16
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -146,28 +150,30 @@ fun SearchContent(
                         modifier = Modifier.padding(
                             start = MaterialTheme.dimens.space16,
                             bottom = MaterialTheme.dimens.space8,
-                            top = MaterialTheme.dimens.space16
                         ),
                         style = Typography.displaySmall
                     )
                     Row(
-                        modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.dimens.space16,
+                            bottom = MaterialTheme.dimens.space16
+                        ),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CustomChip(
                             state = state.random(),
                             text = "Random",
-                            onClick = listener::getAllRandomSearch
+                            onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
                             text = "Ascending",
-                            onClick = listener::getAllAscendingSearch
+                            onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
                             text = "Descending",
-                            onClick = listener::getAllDescendingSearch
+                            onClick = listener::onClickDescendingSearch
                         )
                     }
                 }
@@ -180,21 +186,19 @@ fun SearchContent(
                         columns = GridCells.Adaptive(minSize = 160.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight(),
+                            .wrapContentHeight()
+                            .shadow(0.6.dp),
                         contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         state = rememberLazyGridState(),
                         content = {
-                            items(state.products.size) { itemResult ->
-                                val product = state.products[itemResult]
-                                ProductCard(
-                                    imageUrl = product.productImages[0],
+                            items(state.updatedProducts.size) { itemResult ->
+                                val product = state.updatedProducts[itemResult]
+                                CardSearch(
+                                    imageUrl = product.productImages.firstOrNull() ?: "",
                                     productName = product.productName,
                                     productPrice = product.productPrice.toString(),
-                                    secondaryText = product.marketName,
-                                    isFavoriteIconClicked = false,
-                                    onClickFavorite = { },
                                     onClickCard = { listener.onClickProduct(product.productId) }
                                 )
                             }
