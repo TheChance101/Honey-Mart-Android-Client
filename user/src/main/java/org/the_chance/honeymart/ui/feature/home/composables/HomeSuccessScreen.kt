@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
+import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
@@ -48,7 +49,7 @@ fun HomeContentSuccessScreen(
         columns = GridCells.Fixed(2)
     ) {
 
-        item(span = {GridItemSpan(2)})
+        item(span = { GridItemSpan(2) })
         {
             PagerMarkets(state.markets, pagerState, listener::onClickPagerItem)
         }
@@ -87,7 +88,11 @@ fun HomeContentSuccessScreen(
         item(
             span = { GridItemSpan(2) },
         ) {
-            NewProductsItem(state, listener::onClickProductItem, listener::onClickFavoriteNewProduct)
+            NewProductsItem(
+                state,
+                listener::onClickProductItem,
+                listener::onClickFavoriteNewProduct
+            )
 
         }
 
@@ -202,7 +207,7 @@ private fun NewProductsItem(
                     productName = state.newProducts[it].newProductName,
                     productPrice = state.newProducts[it].price.toString(),
                     imageUrl = state.newProducts[it].newProductImage,
-                    onClickFavorite = {onClickFavoriteNewProduct(state.newProducts[it].newProductId) },
+                    onClickFavorite = { onClickFavoriteNewProduct(state.newProducts[it].newProductId) },
                     isFavoriteIconClicked = state.newProducts[it].isFavorite,
                     onClick = { onClickProductItem(state.newProducts[it].newProductId) }
                 )
@@ -227,8 +232,8 @@ private fun CouponItem(
     {
         items(state.coupons.size) {
             CouponsItem(
-                state = state.coupons[it],
-                onClick = { onClickCouponItem(state.coupons[it].couponId) })
+                coupon = state.coupons[it],
+                onClickGetCoupon = { onClickCouponItem(state.coupons[it].couponId) })
         }
     }
 }
