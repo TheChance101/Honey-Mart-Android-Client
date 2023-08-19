@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.features.add_product.components.AddProductForm
+import org.the_chance.honeymart.ui.features.product_details.composables.ProductDetailsForm
 import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts
@@ -23,15 +27,13 @@ import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
-//@Composable
-//fun ProductDetailsScreen(
-//    viewModel: ProductDetailsViewModel = hiltViewModel()
-//) {
-//    val state by viewModel.state.collectAsState()
-//}
-//    ProductDetailsContent(state)
-//}
-//
+@Composable
+fun ProductDetailsScreen(
+    viewModel: ProductDetailsViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsState()
+    ProductDetailsContent(state, viewModel)
+}
 
 @Composable
 fun ProductDetailsContent(
@@ -72,10 +74,10 @@ fun ProductDetailsContent(
 }
 
 
-@Preview(name = "tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun PreviewProducts() {
-    HoneyMartTheme {
-        OrderDetailsContent(state = OrderDetailsUiState())
-    }
-}
+//@Preview(name = "tablet", device = Devices.TABLET, showSystemUi = true)
+//@Composable
+//fun PreviewProducts() {
+//    HoneyMartTheme {
+//        ProductDetailsContent(state = ProductsUiState(), listener = ProductDetailsViewModel)
+//    }
+//}
