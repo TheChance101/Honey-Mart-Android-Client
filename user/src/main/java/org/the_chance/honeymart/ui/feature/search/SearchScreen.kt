@@ -36,8 +36,8 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
+import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -188,13 +188,10 @@ fun SearchContent(
                         content = {
                             items(state.products.size) { itemResult ->
                                 val product = state.products[itemResult]
-                                ProductCard(
-                                    imageUrl = product.productImages[0],
+                                CardSearch(
+                                    imageUrl = product.productImages.firstOrNull() ?: "",
                                     productName = product.productName,
                                     productPrice = product.productPrice.toString(),
-                                    secondaryText = product.marketName,
-                                    isFavoriteIconClicked = false,
-                                    onClickFavorite = { },
                                     onClickCard = { listener.onClickProduct(product.productId) }
                                 )
                             }
