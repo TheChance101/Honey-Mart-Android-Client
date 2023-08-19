@@ -25,7 +25,7 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 
 @Composable

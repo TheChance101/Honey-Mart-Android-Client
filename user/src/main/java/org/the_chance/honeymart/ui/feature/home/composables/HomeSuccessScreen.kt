@@ -18,12 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
@@ -37,6 +39,7 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
+
     LazyVerticalGrid(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -83,7 +86,7 @@ fun HomeContentSuccessScreen(
                     .padding(horizontal = MaterialTheme.dimens.space16)
                     .padding(top = MaterialTheme.dimens.space8),
                 icon = painterResource(id = R.drawable.ic_search),
-                onClick = {}
+                onClick = listener::onClickSearchBar
             )
         }
 
@@ -94,7 +97,7 @@ fun HomeContentSuccessScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             ) {
                 ItemLabel(
-                    label = stringResource(org.the_chance.user.R.string.markets),
+                    label = stringResource(R.string.markets),
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.dimens.space16)
                         .padding(top = MaterialTheme.dimens.space8)
@@ -123,7 +126,7 @@ fun HomeContentSuccessScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             ) {
                 ItemLabel(
-                    label = stringResource(org.the_chance.user.R.string.categories),
+                    label = stringResource(R.string.categories),
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.dimens.space16)
                         .padding(
@@ -242,6 +245,13 @@ fun HomeContentSuccessScreen(
                 onClick = { listener.onClickProductItem(state.discoverProducts[it].productId) },
                 isFavoriteIconClicked = state.discoverProducts[it].isFavorite
             )
+        }
+    }
+    LaunchedEffect(key1 = state.markets.isNotEmpty()) {
+        while (true) {
+            delay(3000)
+            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
+
         }
     }
 }

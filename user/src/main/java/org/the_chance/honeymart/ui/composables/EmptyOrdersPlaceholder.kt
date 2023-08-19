@@ -27,8 +27,9 @@ fun EmptyOrdersPlaceholder(
     state:Boolean,
     image: Int,
     title: String,
-    onClickDiscoverMarkets: () -> Unit,
     subtitle: String,
+    onClickDiscoverMarkets: () -> Unit,
+    visibility: Boolean = true
 ) {
     ContentVisibility(state = state) {
         Column(
@@ -58,14 +59,15 @@ fun EmptyOrdersPlaceholder(
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
             )
-
-            HoneyFilledIconButton(
-                label = stringResource(id = R.string.discover_market_now),
-                onClick = onClickDiscoverMarkets,
-                iconPainter = painterResource(id = R.drawable.icon_cart),
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
-                background = primary100
-            )
+            ContentVisibility(state = visibility) {
+                HoneyFilledIconButton(
+                    label = stringResource(id = R.string.discover_market_now),
+                    onClick = onClickDiscoverMarkets,
+                    iconPainter = painterResource(id = R.drawable.icon_cart),
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.space40),
+                    background = primary100
+                )
+            }
         }
     }
 }

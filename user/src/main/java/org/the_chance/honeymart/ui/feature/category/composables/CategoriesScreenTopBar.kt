@@ -45,14 +45,14 @@ fun CategoriesScreenTopBar(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_arrow_back),
-                    contentDescription = stringResource(id = R.string.back_button),
+                    contentDescription = stringResource(R.string.back_button),
                     tint = iconColor,
                     modifier = Modifier.padding(MaterialTheme.dimens.space12)
                 )
             }
         }
         Text(
-            text = stringResource(id = R.string.shop_details),
+            text = stringResource(R.string.shop_details),
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
