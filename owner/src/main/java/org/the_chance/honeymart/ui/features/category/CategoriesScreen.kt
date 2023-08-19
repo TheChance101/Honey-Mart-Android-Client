@@ -7,14 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,21 +18,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.addCategory.AddCategoryContent
-import org.the_chance.honeymart.ui.addCategory.categoryIcons
-import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
 import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.category.categories.CategoryItems
 import org.the_chance.honeymart.ui.features.category.categories.ProductsOnCategory
 import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
-import org.the_chance.honymart.ui.theme.dimens
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -89,44 +80,9 @@ fun CategoriesContent(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
-                AnimatedVisibility(
-                    visible = state.categories.isNotEmpty(),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = MaterialTheme.dimens.space12)
-                    ) {
 
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(140.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        ) {
-                            items(count = state.categories.size) { index ->
-                                CategoryItem(
-                                    categoryName = state.categories[index].categoryName,
-                                    onClick = {
-                                        listener.onClickCategory(state.categories[index].categoryId)
-                                    },
-                                    icon = categoryIcons[state.categories[index].categoryImageId]
-                                        ?: R.drawable.icon_category,
-                                    isSelected = state.categories[index].isCategorySelected
-                                )
-                            }
-                            item {
-                                CategoryItem(
-                                    categoryName = stringResource(id = R.string.add),
-                                    onClick =
-                                    { listener.resetShowState(Visibility.ADD_CATEGORY) },
-                                    icon = R.drawable.icon_add_to_cart,
-                                    isSelected = false
-                                )
-                            }
-                        }
-                    }
-                }
+                CategoryItems(state = state, listener = listener)
+
             }
 
             Column(
