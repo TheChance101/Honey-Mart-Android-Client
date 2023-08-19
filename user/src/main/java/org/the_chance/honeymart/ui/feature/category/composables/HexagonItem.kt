@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
@@ -30,17 +31,25 @@ fun HexagonItem(
     state: CategoryUiState,
     onClickCategory: (categoryId: Long, position: Int) -> Unit,
     position: Int,
-    hexagonSize: Dp = 160.dp,
+    hexagonSize: Dp = 140.dp,
     modifier: Modifier = Modifier
 ) {
+    val backgroundColor = if (position % 2 == 0) {
+        MaterialTheme.colorScheme.surface
+    } else {
+        MaterialTheme.colorScheme.inverseSurface
+    }
     Box(
         modifier = modifier
-            .offset(y = if (position % 3 == 1) (hexagonSize / 2) - 3.dp else 0.dp)
-            .offset(x = if (position % 3 == 0) (hexagonSize / 5) else 0.dp)
-            .offset(x = if (position % 3 == 2) -(hexagonSize / 5) else 0.dp)
+            .offset(y = if (position % 3 == 1) (hexagonSize / 2) - 0.dp else 0.dp)
+            .padding(start = if (position % 3 == 0) 0.dp - 0.dp else 0.dp)
+            .padding(end = if (position % 3 == 2) 0.dp else 0.dp)
+            .offset(x = if (position % 3 == 0) 4.dp else 0.dp)
+            .offset(x = if (position % 3 == 2) (-4).dp else 0.dp)
             .size(hexagonSize)
+            .scale(1.19f)
             .clip(HexagonItemShape)
-            .background(MaterialTheme.colorScheme.tertiary)
+            .background(backgroundColor)
             .clickable { onClickCategory(state.categoryId, position) },
         contentAlignment = Alignment.Center,
     ) {
@@ -48,8 +57,8 @@ fun HexagonItem(
             text = state.categoryName,
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier.padding(bottom = 12.dp)
         )
     }
 }
