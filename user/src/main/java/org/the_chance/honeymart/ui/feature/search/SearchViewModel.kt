@@ -6,12 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -36,13 +32,15 @@ class SearchViewModel @Inject constructor(
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
 
+
     init {
         observeKeyword()
     }
 
+
     private fun searchForProducts(query: String) {
         tryToExecute(
-            { searchForProductUseCase(query) },
+            { searchForProductUseCase(query, SearchStates.RANDOM.state) },
             ::searchForProductsSuccess,
             ::onError
         )
@@ -50,22 +48,22 @@ class SearchViewModel @Inject constructor(
 
     private fun searchForProductsSuccess(products: List<ProductEntity>) {
         _state.update { searchUiState ->
-            searchUiState.copy(products = products.map { it.toProductUiState() })
+            searchUiState.copy(
+                products = products.map { it.toProductUiState() },
+                updatedProducts = products.map { it.toProductUiState() })
         }
+        filter()
     }
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
-        viewModelScope.launch {
-            actionStream.emit(text)
-        }
+        viewModelScope.launch { actionStream.emit(text) }
     }
+
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStreamDebounced.collect {
-                searchForProducts(it)
-            }
+            actionStreamDebounced.collect { searchForProducts(it) }
         }
     }
 
@@ -80,57 +78,32 @@ class SearchViewModel @Inject constructor(
 
 
     override fun getAllRandomSearch() {
-        _state.update {
-            it.copy(isLoading = true, searchStates = SearchStates.RANDOM, isError = false)
-        }
-        tryToExecute(
-            { searchForProductUseCase(SearchStates.RANDOM.toString()).map { it.toProductUiState() } },
-            ::onGetRandomSuccess,
-            ::onError
-        )
+        _state.update { it.copy(searchStates = SearchStates.RANDOM) }
+        filter()
     }
-
-    private fun onGetRandomSuccess(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = false, products = products) }
-    }
-
 
     override fun getAllAscendingSearch() {
-        _state.update {
-            it.copy(isLoading = true, searchStates = SearchStates.ASCENDING, isError = false)
-        }
-        tryToExecute(
-            { searchForProductUseCase(SearchStates.ASCENDING.toString()).map { it.toProductUiState() } },
-            ::onGetAscendingSearchSuccess,
-            ::onError
-        )
+        _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
+        filter()
     }
-
-    private fun onGetAscendingSearchSuccess(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = false, products = products) }
-        state.value.products.sortedBy {
-            it.productPrice
-        }
-    }
-
 
     override fun getAllDescendingSearch() {
-        _state.update {
-            it.copy(isLoading = true, searchStates = SearchStates.DESCENDING, isError = false)
-        }
-        tryToExecute(
-            { searchForProductUseCase(SearchStates.DESCENDING.toString()).map { it.toProductUiState() } },
-            ::onGetDescendingSearchSuccess,
-            ::onError
-        )
+        _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
+        filter()
     }
 
-    private fun onGetDescendingSearchSuccess(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = false, products = products) }
-        state.value.products.sortedByDescending {
-            it.productPrice
+    private fun filter() {
+        _state.update {
+            it.copy(
+                updatedProducts = when (it.searchStates) {
+                    SearchStates.RANDOM -> it.products
+                    SearchStates.ASCENDING -> it.products.sortedBy { it.productPrice }
+                    SearchStates.DESCENDING -> it.products.sortedByDescending { it.productPrice }
+                }
+            )
         }
     }
+
 
     private fun onError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
@@ -139,11 +112,10 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+
     override fun onClickProduct(productId: Long) {
-        effectActionExecutor(
-            _effect,
-            SearchUiEffect.OnClickProductCard(productId)
-        )
+        effectActionExecutor(_effect, SearchUiEffect.OnClickProductCard(productId))
     }
+
 }
 

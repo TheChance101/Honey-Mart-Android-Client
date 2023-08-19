@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -102,7 +103,10 @@ fun SearchContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = MaterialTheme.dimens.space16),
+                    .padding(
+                        end = MaterialTheme.dimens.space16,
+                        bottom = MaterialTheme.dimens.space16
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -146,12 +150,14 @@ fun SearchContent(
                         modifier = Modifier.padding(
                             start = MaterialTheme.dimens.space16,
                             bottom = MaterialTheme.dimens.space8,
-                            top = MaterialTheme.dimens.space16
                         ),
                         style = Typography.displaySmall
                     )
                     Row(
-                        modifier = Modifier.padding(start = MaterialTheme.dimens.space16),
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.dimens.space16,
+                            bottom = MaterialTheme.dimens.space16
+                        ),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CustomChip(
@@ -180,14 +186,15 @@ fun SearchContent(
                         columns = GridCells.Adaptive(minSize = 160.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight(),
+                            .wrapContentHeight()
+                            .shadow(0.6.dp),
                         contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         state = rememberLazyGridState(),
                         content = {
-                            items(state.products.size) { itemResult ->
-                                val product = state.products[itemResult]
+                            items(state.updatedProducts.size) { itemResult ->
+                                val product = state.updatedProducts[itemResult]
                                 CardSearch(
                                     imageUrl = product.productImages.firstOrNull() ?: "",
                                     productName = product.productName,
