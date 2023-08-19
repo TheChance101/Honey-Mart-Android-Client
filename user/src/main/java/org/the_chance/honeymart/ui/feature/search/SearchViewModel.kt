@@ -77,17 +77,17 @@ class SearchViewModel @Inject constructor(
     }
 
 
-    override fun getAllRandomSearch() {
+    override fun onClickRandomSearch() {
         _state.update { it.copy(searchStates = SearchStates.RANDOM) }
         filter()
     }
 
-    override fun getAllAscendingSearch() {
+    override fun onClickAscendingSearch() {
         _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
         filter()
     }
 
-    override fun getAllDescendingSearch() {
+    override fun onClickDescendingSearch() {
         _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
         filter()
     }

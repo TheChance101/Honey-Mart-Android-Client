@@ -163,17 +163,17 @@ fun SearchContent(
                         CustomChip(
                             state = state.random(),
                             text = "Random",
-                            onClick = listener::getAllRandomSearch
+                            onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
                             text = "Ascending",
-                            onClick = listener::getAllAscendingSearch
+                            onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
                             text = "Descending",
-                            onClick = listener::getAllDescendingSearch
+                            onClick = listener::onClickDescendingSearch
                         )
                     }
                 }
