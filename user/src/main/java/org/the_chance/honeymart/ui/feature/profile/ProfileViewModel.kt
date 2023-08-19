@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
 import org.the_chance.honeymart.domain.usecase.SaveThemeUseCase
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUserUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
+    private val addProfileImageUseCase: AddProfileImageUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
@@ -92,24 +94,24 @@ class ProfileViewModel @Inject constructor(
         _state.update { it.copy(isShowDialog = false) }
     }
 
-    override fun updateImage() {
-        TODO("Not yet implemented")
+    override fun onImageSelected(image: ByteArray) {
+        _state.update { it.copy(image = image) }
     }
 
-//     fun updateImage(userId: Long, images: List<ByteArray>) {
-//        _state.update { it.copy(isLoading = true) }
-//        tryToExecute(
-//            { addProfileImagesUseCase(userId, images) },
-//            onSuccess = { onAddProductImagesSuccess() },
-//            onError = ::onAddProductImagesError
-//        )
-//    }
+    override fun updateImage(userId: Long, image: ByteArray) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { addProfileImageUseCase(userId, image) },
+            onSuccess = { onAddProfileImagesSuccess() },
+            onError = ::onAddProfileImagesError
+        )
+    }
 
-    private fun onAddProductImagesSuccess() {
+    private fun onAddProfileImagesSuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
     }
 
-    private fun onAddProductImagesError(errorHandler: ErrorHandler) {
+    private fun onAddProfileImagesError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }

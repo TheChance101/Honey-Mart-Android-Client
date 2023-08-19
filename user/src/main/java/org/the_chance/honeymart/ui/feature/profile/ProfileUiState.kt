@@ -1,10 +1,7 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import com.airbnb.lottie.L
-import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 
 data class ProfileUiState(
     val isLoading: Boolean = false,
@@ -15,7 +12,7 @@ data class ProfileUiState(
     val isConnectionError: Boolean = false,
     val isShowDialog: Boolean = false,
     val accountInfo: AccountState = AccountState(),
-    val images: List<ByteArray> = emptyList(),
+    val image: ByteArray? = null,
 ) {
     data class AccountState(
         val userId: Long = 0,

@@ -4,13 +4,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Parameters
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
@@ -195,6 +199,19 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProfileUser(): BaseResponse<ProfileUserDto> =
         wrap(client.get("/user/myProfile"))
 
+    override suspend fun addProfileImage(userId: Long, image: ByteArray)
+            : BaseResponse<String> {
+        val response: HttpResponse = client.submitFormWithBinaryData(
+            url = "/user/profileImage",
+            formData = formData {
+                append("image", image, Headers.build {
+                    append(HttpHeaders.ContentType, "image/jpeg")
+                    append(HttpHeaders.ContentDisposition, "filename=image${image.toString()}.jpeg")
+                })
+            }
+        )
+        return wrap(response)
+    }
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
