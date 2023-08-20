@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

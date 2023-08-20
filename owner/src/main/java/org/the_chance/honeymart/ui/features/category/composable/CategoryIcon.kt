@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.addCategory
+package org.the_chance.honeymart.ui.features.category.composable
 
 import org.the_chance.design_system.R
 

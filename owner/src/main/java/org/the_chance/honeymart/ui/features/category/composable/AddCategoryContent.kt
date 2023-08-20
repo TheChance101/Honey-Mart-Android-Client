@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.addCategory.composable.HeaderText
+import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
@@ -65,7 +65,10 @@ fun AddCategoryContent(
             )
 
             Column(modifier = Modifier.fillMaxSize()) {
-                HeaderText(title = stringResource(R.string.add_new_category))
+                FormHeader(
+                    title = stringResource(R.string.add_new_category),
+                    iconPainter = painterResource(id = R.drawable.icon_add_product)
+                )
 
                 FormTextField(
                     text = state.newCategory.newCategoryName,

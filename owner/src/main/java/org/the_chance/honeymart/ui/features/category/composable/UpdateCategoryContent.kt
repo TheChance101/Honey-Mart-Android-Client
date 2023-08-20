@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -43,7 +43,8 @@ fun UpdateCategoryContent(
 ) {
     AnimatedVisibility(visible = state.showScreenState.showUpdateCategory) {
         Column(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .fillMaxHeight()
                 .padding(bottom = 40.dp)
         ) {
             Column(
@@ -90,14 +91,18 @@ fun UpdateCategoryContent(
                 ) {
                     if (state.categoryIcons.isNotEmpty())
                         items(count = state.categoryIcons.size) { index ->
-                        CategoryIconItem(
-                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                            isSelected = state.categoryIcons[index].isSelected,
-                            categoryIconId = state.categoryIcons[index].categoryIconId,
-                            onClick = { listener.onClickNewCategoryIcon(state.categoryIcons[index]
-                                .categoryIconId) }
-                        )
-                    }
+                            CategoryIconItem(
+                                iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                                isSelected = state.categoryIcons[index].isSelected,
+                                categoryIconId = state.categoryIcons[index].categoryIconId,
+                                onClick = {
+                                    listener.onClickNewCategoryIcon(
+                                        state.categoryIcons[index]
+                                            .categoryIconId
+                                    )
+                                }
+                            )
+                        }
                 }
                 Spacer(modifier = Modifier.weight(1F))
                 Row(

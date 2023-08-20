@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.addCategory.composable
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

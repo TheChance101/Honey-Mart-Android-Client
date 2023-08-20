@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.categories
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.addCategory.categoryIcons
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
@@ -39,7 +38,7 @@ fun CategoryItems(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             ) {
                 items(count = state.categories.size) { index ->
-                    org.the_chance.honeymart.ui.addCategory.composable.CategoryItem(
+                    CategoryItem(
                         categoryName = state.categories[index].categoryName,
                         onClick = {
                             listener.onClickCategory(state.categories[index].categoryId)
@@ -51,7 +50,7 @@ fun CategoryItems(
                     )
                 }
                 item {
-                    org.the_chance.honeymart.ui.addCategory.composable.CategoryItem(
+                    CategoryItem(
                         categoryName = stringResource(id = R.string.add),
                         onClick =
                         { listener.resetShowState(Visibility.ADD_CATEGORY) },

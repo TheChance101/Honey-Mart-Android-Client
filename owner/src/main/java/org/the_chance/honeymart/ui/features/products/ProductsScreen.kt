@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.add_product.components.AddProductForm
 import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts

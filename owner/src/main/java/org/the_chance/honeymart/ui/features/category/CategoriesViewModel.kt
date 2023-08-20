@@ -11,7 +11,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.addCategory.categoryIcons
+import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.addCategory.composable
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.addCategory.composable
+package org.the_chance.honeymart.ui.features.category.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +35,7 @@ fun CategoryItem(
 ) {
     Column(
         modifier = modifier
-            .wrapContentSize() ,
+            .wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
     ) {
