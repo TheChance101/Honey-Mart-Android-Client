@@ -45,7 +45,7 @@ class HoneyMartServiceImp @Inject constructor(
         email: String,
         password: String,
     ): BaseResponse<Boolean> =
-        wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
+        wrap(client.submitForm(url = "/owner/signup", formParameters = Parameters.build {
             append("fullName", fullName)
             append("email", email)
             append("password", password)
