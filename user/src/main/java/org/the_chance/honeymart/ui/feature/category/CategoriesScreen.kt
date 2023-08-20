@@ -136,7 +136,7 @@ fun CategoryContent(
                         imageUrl = state.imageUrl,
                         contentDescription = stringResource(id = R.string.category_image),
                         modifier = Modifier
-                            .height(198.dp)
+                            .height(MaterialTheme.dimens.space198)
                             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
                             .fillMaxWidth(),
                         contentScale = ContentScale.FillBounds
