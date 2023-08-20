@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.features.signup.market_info.composables
 
-import android.content.Context
-import android.net.Uri
+
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -32,9 +31,17 @@ fun MarketFieldsScaffold(
     listener: MarketInfoInteractionsListener,
 ) {
     val context = LocalContext.current
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(state.MAX_IMAGES),
-        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            val imageByteArray =
+                uri?.let {
+                    context.contentResolver.openInputStream(it)?.use { inputStream ->
+                        inputStream.readBytes()
+                    }
+                } ?: byteArrayOf()
+            listener.onImageSelected(imageByteArray)
+        }
     )
 
     Column {
@@ -64,16 +71,15 @@ fun MarketFieldsScaffold(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
                 text = stringResource(R.string.market_images),
                 style = MaterialTheme.typography.displaySmall,
-                color = if (state.isMarketImagesEmpty) org.the_chance.honymart.ui.theme.error else black37,
+                color = if (state.isMarketImageEmpty) org.the_chance.honymart.ui.theme.error else black37,
                 textAlign = TextAlign.Center,
             )
             Row(modifier = Modifier.fillMaxWidth()) {
-                SelectedImagesGrid(
-                    images = state.images,
-                    onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-                    multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-                    maxImages = state.MAX_IMAGES
-                )
+                if (state.isMarketImageEmpty) {
+                    AddImageButton(photoPickerLauncher)
+                } else {
+                    ItemImageProduct(state.image, listener::onClickRemoveSelectedImage)
+                }
             }
         }
     }
@@ -84,19 +90,4 @@ fun MarketFieldsScaffold(
         contentColor = Color.White,
         isLoading = state.isLoading
     )
-}
-
-private fun handleImageSelection(
-    uris: List<Uri>,
-    context: Context,
-    state: MarketInfoUiState,
-    onImageSelected: (List<ByteArray>) -> Unit
-) {
-    val imageByteArrays = uris.mapNotNull { uri ->
-        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            inputStream.readBytes()
-        }
-    }
-    val updatedImages = state.images + imageByteArrays
-    onImageSelected(updatedImages)
 }

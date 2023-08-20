@@ -14,11 +14,11 @@ data class MarketInfoUiState(
     val marketAddressState: FieldState = FieldState(),
     val marketDescriptionState: FieldState = FieldState(),
 
-    val isMarketImagesEmpty: Boolean = false,
+    val isMarketImageEmpty: Boolean = true,
 
     val validationToast: ValidationToast = ValidationToast(),
 
     val MAX_IMAGES: Int = 4,
 
-    val images: List<ByteArray> = emptyList(),
+    val image: ByteArray = byteArrayOf(),
 )
