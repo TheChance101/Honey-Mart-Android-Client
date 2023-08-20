@@ -152,4 +152,7 @@
     <string name="continue_word">Continue</string>
 
     <string name="declined">Declined</string>
+    <string name="product_details">Product Details</string>
+    <string name="product_image">Product Image</string>
+    <string name="update">Update</string>
 </resources>
