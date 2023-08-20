@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,10 +28,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
+import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -76,7 +79,10 @@ fun HomeContentSuccessScreen(
         item(
             span = { GridItemSpan(2) },
         ) {
-            CategoriesHexagonItem()
+            CategoriesHexagonItem(
+                marketState = state.markets, onChipClick = listener::onClickChipCategory,
+                categoryState = state.categories
+            )
         }
 
         item(
@@ -240,7 +246,10 @@ private fun CouponItem(
 
 @Composable
 private fun CategoriesHexagonItem(
-    modifier: Modifier = Modifier
+    categoryState: List<CategoryUiState>,
+    marketState: List<MarketUiState>,
+    modifier: Modifier = Modifier,
+    onChipClick: (Long) -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -249,18 +258,24 @@ private fun CategoriesHexagonItem(
             label = stringResource(R.string.categories),
             modifier = modifier
                 .padding(horizontal = MaterialTheme.dimens.space16)
-                .padding(
-                    top =
-                    MaterialTheme.dimens.space8
-                )
+                .padding(top = MaterialTheme.dimens.space8)
         )
-
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+        ) {
+            items(marketState.size) {
+                CustomChip(
+                    state = marketState[it].isClicked,
+                    text = marketState[it].marketName,
+                    onClick = { onChipClick(marketState[it].marketId) })
+            }
+        }
         LazyRow(
             contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
-
         ) {
-            items(10) {
-                Hexagon()
+            items(categoryState, key = {it.categoryId}){
+                Hexagon(label = it.categoryName)
             }
         }
     }
