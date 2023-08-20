@@ -24,6 +24,7 @@ import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
@@ -60,12 +61,13 @@ class HoneyMartServiceImp @Inject constructor(
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-    ): BaseResponse<Boolean> =
-        wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
-            append("marketName", marketName)
-            append("marketAddress", marketAddress)
-            append("marketDescription", marketDescription)
+    ): BaseResponse<MarketIdDto> {
+        return wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
+            append("name", marketName)
+            append("address", marketAddress)
+            append("description", marketDescription)
         }))
+    }
 
     override suspend fun addMarketImage(
         marketImage: ByteArray

@@ -30,7 +30,7 @@ interface HoneyMartService {
         marketName: String,
         marketAddress: String,
         marketDescription: String,
-    ): BaseResponse<Boolean>
+    ): BaseResponse<MarketIdDto>
 
     suspend fun addMarketImage(
         marketImage: ByteArray
