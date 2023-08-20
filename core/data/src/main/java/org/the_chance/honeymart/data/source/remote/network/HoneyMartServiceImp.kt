@@ -25,7 +25,6 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -209,7 +208,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getAllUserCoupons(): BaseResponse<List<CouponDto>> =
         wrap(client.get("/coupon/allUserCoupons"))
 
-    override suspend fun getAllValidCoupons(): BaseResponse<List<ValidCouponDto>> =
+    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> =
         wrap(client.get("/coupon/allValidCoupons"))
 
     override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> =

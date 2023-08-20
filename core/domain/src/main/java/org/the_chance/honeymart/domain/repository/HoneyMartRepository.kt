@@ -9,7 +9,6 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
 
@@ -42,7 +41,7 @@ interface HoneyMartRepository {
 
     suspend fun getAllUserCoupons(): List<CouponEntity>
 
-    suspend fun getAllValidCoupons(): List<ValidCouponEntity>
+    suspend fun getAllValidCoupons(): List<CouponEntity>
 
     suspend fun getRecentProducts(): List<RecentProductEntity>
 

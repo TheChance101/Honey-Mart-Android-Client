@@ -9,7 +9,6 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
-import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
@@ -172,17 +171,9 @@ class HomeViewModel @Inject constructor(
     private fun getAllValidCoupons() {
         tryToExecute(
             { getAllCoupons.getAllValidCoupons() },
-            ::onGetAllValidCouponsSuccess,
+            ::onGetAllUserCouponsSuccess,
             ::onGetAllValidCouponsError
         )
-    }
-
-    private fun onGetAllValidCouponsSuccess(coupons: List<ValidCouponEntity>) {
-        _state.update {
-            it.copy(
-                validCoupons = coupons.map { coupon -> coupon.toValidCouponUiState() },
-            )
-        }
     }
 
     private fun onGetAllValidCouponsError(error: ErrorHandler) {
@@ -222,7 +213,6 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
-
 
     private fun getAllMarkets() {
         tryToExecute(
