@@ -1,23 +1,27 @@
 package org.the_chance.honeymart.ui.features.category
 
 import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
  */
+
 // region Ui State
 data class CategoriesUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
+    val position: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
-    val showScreenState: ShowScreenState = ShowScreenState()
+    val showScreenState: ShowScreenState = ShowScreenState(),
+    val newCategory: NewCategoryUiState = NewCategoryUiState()
 )
 
 data class ShowScreenState(
@@ -37,15 +41,22 @@ data class SnackBarState(
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
+    val isSelected: Boolean = false,
     val categoryIconUIState: CategoryIconUIState = CategoryIconUIState(),
-    val position: Int = 0,
+)
+
+data class NewCategoryUiState(
+    val categoryId: Long = 0L,
+    val newCategoryName: String = "",
     val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val newIconId: Int = 0,
+    val newIcon: Int = 0,
+    val isSelected: Boolean = false,
 )
 
 data class CategoryIconUIState(
     val categoryIconId: Int = 0,
     val icon: Int = 0,
-    val isSelected: Boolean = false,
 )
 
 data class ProductUiState(
@@ -64,12 +75,25 @@ enum class Visibility {
 // endregion
 
 // region Mapper
-fun CategoryEntity.toCategoryUiState(): CategoryUiState {
-    return CategoryUiState(
-        categoryId = categoryId,
-        categoryName = categoryName,
-        categoryIconUIState = CategoryIconUIState(categoryIconId = categoryImageId)
-    )
+fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
+    return map {
+        CategoryUiState(
+            categoryId = it.categoryId,
+            categoryName = it.categoryName,
+            categoryIconUIState = CategoryIconUIState(categoryIconId = it.categoryImageId)
+        )
+    }
+}
+
+fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
+    return map {
+        ProductUiState(
+            productId = it.productId,
+            productName = it.productName,
+            productImage = it.productImages.first(),
+            productPrice = "$it.ProductPrice$",
+        )
+    }
 }
 
 fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
@@ -86,9 +110,9 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
         category.categoryName.isNotBlank() &&
-                categoryIcons.any { icon -> icon.isSelected } &&
+                category.isSelected &&
                 !isLoading &&
-                category.categoryNameState == ValidationState.VALID_TEXT_FIELD
+                newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
 }
 

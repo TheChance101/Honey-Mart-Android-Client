@@ -6,14 +6,11 @@ package org.the_chance.honeymart.ui.features.category
 interface CategoriesInteractionsListener {
 
     fun onClickCategory(categoryId: Long)
-
-    fun changeNameCategory(nameCategory: String)
-    fun onClickAddCategory()
-    fun onClickCategoryImage(categoryImageId: Int)
+    fun onNewCategoryNameChanged(categoryName: String)
+    fun onClickAddCategory(name: String, categoryIconID: Int)
     fun resetShowState(visibility: Visibility)
     fun resetSnackBarState()
-    fun onUpdatedCategoryNameChanged(name: String)
-    fun onClickCategoryIcon(categoryIconId: Int)
+    fun onClickNewCategoryIcon(categoryIconId: Int)
     fun updateCategory(category: CategoriesUiState)
     fun deleteCategory(id: Long)
     fun getAllCategory()
