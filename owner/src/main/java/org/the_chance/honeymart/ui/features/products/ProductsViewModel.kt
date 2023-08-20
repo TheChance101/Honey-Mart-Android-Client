@@ -26,23 +26,21 @@ class ProductsViewModel @Inject constructor(
         get() = this::class.simpleName.toString()
 
     init {
+        getData()
+    }
+
+    private fun getData() {
+        _state.update { it.copy(error = null, isError = false) }
         getProductsByCategoryId()
     }
 
-//    private fun getData() {
-//        _state.update { it.copy(error = null, isError = false) }
-//        getProductsByCategoryId()
-//    }
-
     private fun getProductsByCategoryId() {
-        Log.d("mah", "getProductsByCategoryId:  ")
-        _state.update { it.copy(isLoading = true, isError = false, products = productsList) }
-
-//        tryToExecute(
-//            { getAllProducts(9) },
-//            ::onGetProductsSuccess,
-//            ::onGetProductsError
-//        )
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { getAllProducts(9) },
+            ::onGetProductsSuccess,
+            ::onGetProductsError
+        )
     }
 
     private fun onGetProductsError(error: ErrorHandler) {
@@ -54,11 +52,11 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
-    private fun onGetProductsSuccess(products: List<ProductUiState>) {
+    private fun onGetProductsSuccess(products: List<ProductEntity>) {
         _state.update { it.copy(isLoading = false) }
-//        val productsUiState = products.map { product -> product.toProductUiState() }
-        Log.e("mah", products.toString())
-        checkIfCategoryProductsEmpty(products)
+        val productsUiState = products.map { product -> product.toProductUiState() }
+        Log.e("sara",productsUiState.toString())
+        checkIfCategoryProductsEmpty(productsUiState)
     }
 
     private fun checkIfCategoryProductsEmpty(productsUiState: List<ProductUiState>) {
@@ -182,27 +180,3 @@ class ProductsViewModel @Inject constructor(
         _state.update { it.copy(images = updatedImages) }
     }
 }
-
-val productsList = listOf(
-    ProductUiState(
-        productId = 1,
-        productName = "Sara",
-        productPrice = "220.0",
-        productImage = "",
-    ),
-
-    ProductUiState(
-        productId = 2,
-        productName = "Sara Salah",
-        productPrice = "220.0",
-        productImage = "",
-    ),
-
-    ProductUiState(
-        productId = 3,
-        productName = "Sara Salah Ahmed",
-        productPrice = "220.0",
-        productImage = "",
-    ),
-
-    )

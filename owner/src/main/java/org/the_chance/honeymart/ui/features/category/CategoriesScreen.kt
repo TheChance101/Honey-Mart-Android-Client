@@ -48,14 +48,7 @@ fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
-    Row {
-        Column {
 
-        }
-        Column {
-
-        }
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
