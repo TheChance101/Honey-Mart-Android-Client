@@ -104,12 +104,12 @@ class SignUpViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { loginOwnerUseCase(email, password) },
-            { onLoginSuccess() },
+            ::onLoginSuccess,
             ::onLoginError,
         )
     }
 
-    private fun onLoginSuccess() {
+    private fun onLoginSuccess(unit: Unit) {
         _state.update { it.copy(isLoading = false) }
     }
 
@@ -365,7 +365,7 @@ class SignUpViewModel @Inject constructor(
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     image = uri,
-                    isMarketImageEmpty = false
+                    isMarketImageEmpty = uri.isEmpty()
                 )
             )
         }
@@ -373,19 +373,12 @@ class SignUpViewModel @Inject constructor(
 
     override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
         _state.update {
-            it.copy(marketInfoUiState = state.value.marketInfoUiState.copy(image = byteArrayOf()))
-        }
-        checkIsImagesEmpty(state.value.marketInfoUiState.image)
-    }
-
-    private fun checkIsImagesEmpty(marketImage: ByteArray) {
-        _state.update {
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isMarketImageEmpty = marketImage.isEmpty()
+                    image = byteArrayOf(),
+                    isMarketImageEmpty = true
                 )
             )
         }
     }
-
 }
