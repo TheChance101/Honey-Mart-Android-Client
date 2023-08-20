@@ -11,15 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
-import org.the_chance.honeymart.ui.features.add_product.components.AddProductForm
 import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -73,7 +69,7 @@ fun ProductsContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                AddProductForm(state = state, listener = listener)
+//                AddProductForm(state = state, listener = listener)
             }
         }
     }

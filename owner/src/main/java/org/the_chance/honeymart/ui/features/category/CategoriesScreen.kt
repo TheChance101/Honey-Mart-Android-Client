@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.features.add_product.components.AddProductContent
 import org.the_chance.honeymart.ui.features.category.composable.AddCategoryContent
 import org.the_chance.honeymart.ui.features.category.composable.CategoryItems
 import org.the_chance.honeymart.ui.features.category.composable.CategoryProducts
@@ -88,27 +89,32 @@ fun CategoriesContent(
 
                 CategoryItems(state = state, listener = listener)
 
+                AnimatedVisibility(
+                    visible = !state.isLoading &&
+                            !state.showScreenState.showUpdateCategory
+                            && state.showScreenState.showProductDetails
+                ) {
+                    CategoryProducts(state = state, listener = listener)
+                }
+
             }
         //right
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
+                modifier = Modifier.fillMaxSize().weight(1f)
             ) {
                 AddCategoryContent(
-                    listener = listener,
-                    state = state,
+                    listener = listener, state = state,
                 )
 
                 AnimatedVisibility(
                     visible = !state.isLoading &&
                             !state.showScreenState.showUpdateCategory
-                ) {
-                    CategoryProducts(state = state, listener = listener)
-                }
-
+                ) { CategoryProducts(state = state, listener = listener) }
 
                 UpdateCategoryContent(state = state, listener = listener)
+
+                AnimatedVisibility(visible = true)
+                { AddProductContent(state = state, listener = listener) }
             }
         }
     }

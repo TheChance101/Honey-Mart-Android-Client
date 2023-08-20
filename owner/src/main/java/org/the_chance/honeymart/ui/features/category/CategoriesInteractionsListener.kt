@@ -16,7 +16,7 @@ interface CategoriesInteractionsListener {
     fun updateCategory(category: CategoriesUiState)
     fun deleteCategory(id: Long)
     fun getAllCategory()
-    fun addProduct(product: ProductsUiState)
+    fun addProduct(product: CategoriesUiState)
     fun addProductImage(productId: Long, images: List<ByteArray>)
     fun onProductNameChanged(name: String)
     fun onProductPriceChanged(price: String)

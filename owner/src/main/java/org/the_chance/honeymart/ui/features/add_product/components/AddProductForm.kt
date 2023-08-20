@@ -29,12 +29,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
-import org.the_chance.honeymart.ui.features.add_product.AddProductInteractionListener
-import org.the_chance.honeymart.ui.features.add_product.AddProductUiState
-import org.the_chance.honeymart.ui.features.add_product.showButton
-import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
-import org.the_chance.honeymart.ui.features.products.ProductsUiState
-import org.the_chance.honeymart.ui.features.products.showButton
+import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
+import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -42,9 +39,9 @@ import org.the_chance.honymart.ui.theme.dimens
 private const val MAX_IMAGES = 4
 
 @Composable
-fun AddProductForm(
-    state: ProductsUiState,
-    listener: ProductsInteractionsListener,
+fun AddProductContent(
+    state: CategoriesUiState,
+    listener: CategoriesInteractionsListener,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -74,33 +71,33 @@ fun AddProductForm(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             FormTextField(
-                text = state.name,
+                text = state.newProducts.name,
                 hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onProductNameChanged,
-                errorMessage = when (state.productNameState) {
+                errorMessage = when (state.newProducts.productNameState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
                     else -> ""
                 }
             )
             FormTextField(
-                text = state.price,
+                text = state.newProducts.price,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = listener::onProductPriceChanged,
-                errorMessage = when (state.productPriceState) {
+                errorMessage = when (state.newProducts.productNameState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""
                 }
             )
             FormTextField(
-                text = state.description,
+                text = state.newProducts.description,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onProductDescriptionChanged,
-                errorMessage = when (state.productDescriptionState) {
+                errorMessage = when (state.newProducts.productDescriptionState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
                     else -> ""
@@ -123,7 +120,7 @@ fun AddProductForm(
                 .padding(MaterialTheme.dimens.space16)
         ) {
             SelectedImagesGrid(
-                images = state.images,
+                images = state.newProducts.images,
                 onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
                 multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
                 maxImages = MAX_IMAGES
@@ -157,7 +154,7 @@ fun AddProductForm(
 private fun handleImageSelection(
     uris: List<Uri>,
     context: Context,
-    state: ProductsUiState,
+    state: CategoriesUiState,
     onImageSelected: (List<ByteArray>) -> Unit
 ) {
     val imageByteArrays = uris.mapNotNull { uri ->
@@ -165,6 +162,6 @@ private fun handleImageSelection(
             inputStream.readBytes()
         }
     }
-    val updatedImages = state.images + imageByteArrays
+    val updatedImages = state.newProducts.images + imageByteArrays
     onImageSelected(updatedImages)
 }
