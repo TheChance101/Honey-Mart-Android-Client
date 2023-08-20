@@ -24,13 +24,12 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.products.composables.ProductCard
-import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun ProductsOnCategory(
+fun CategoryProducts(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
@@ -72,7 +71,7 @@ fun ProductsOnCategory(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HoneyOutlineText(text = state.productsQuantity)
+//                HoneyOutlineText(text = state.productsQuantity)
 
                 DropDownMenuList(
                     onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },

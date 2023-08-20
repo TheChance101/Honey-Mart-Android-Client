@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Row
@@ -14,16 +13,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.navigation.Navigation
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
-import org.the_chance.honeymart.ui.features.login.LoginScreen
-import org.the_chance.honeymart.ui.features.signup.SignupScreen
-import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryScreen
-import org.the_chance.honeymart.ui.features.login.LoginScreen
-import org.the_chance.honeymart.ui.navigation.RootNavigationGraph
+import org.the_chance.honeymart.ui.features.category.CategoriesScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -45,8 +39,9 @@ class MainActivity : AppCompatActivity() {
                         ) {
                             NavigationRail()
                         }
+                        CategoriesScreen()
 
-                        RootNavigationGraph()
+//                        RootNavigationGraph()
                     }
                 }
             }

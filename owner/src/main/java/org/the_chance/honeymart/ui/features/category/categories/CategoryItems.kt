@@ -44,7 +44,8 @@ fun CategoryItems(
                         onClick = {
                             listener.onClickCategory(state.categories[index].categoryId)
                         },
-                        icon = categoryIcons[state.categories[index].categoryImageId]
+                        icon = categoryIcons[state.categories[index]
+                            .categoryIconUIState.categoryIconId]
                             ?: R.drawable.icon_category,
                         isSelected = state.categories[index].isCategorySelected
                     )

@@ -41,8 +41,8 @@ data class SnackBarState(
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
-    val isSelected: Boolean = false,
     val categoryIconUIState: CategoryIconUIState = CategoryIconUIState(),
+    val isCategorySelected: Boolean = false,
 )
 
 data class NewCategoryUiState(
@@ -51,12 +51,12 @@ data class NewCategoryUiState(
     val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val newIconId: Int = 0,
     val newIcon: Int = 0,
-    val isSelected: Boolean = false,
 )
 
 data class CategoryIconUIState(
     val categoryIconId: Int = 0,
     val icon: Int = 0,
+    val isSelected: Boolean = false,
 )
 
 data class ProductUiState(
@@ -109,12 +109,13 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // region Extension
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
-        category.categoryName.isNotBlank() &&
-                category.isSelected &&
+        newCategory.newCategoryName.isNotBlank() &&
+                !category.categoryIconUIState.isSelected &&
                 !isLoading &&
                 newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
 }
+
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
 // endregion

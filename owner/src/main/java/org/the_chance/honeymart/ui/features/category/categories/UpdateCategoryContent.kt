@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.update_category
+package org.the_chance.honeymart.ui.features.category.categories
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -17,17 +17,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
@@ -39,24 +34,14 @@ import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
-
-@Composable
-fun UpdateCategoryScreen(
-    viewModel: UpdateCategoryViewModel = hiltViewModel()
-) {
-    val state by viewModel.state.collectAsState()
-
-//    UpdateCategoryContent(state = state, listener = viewModel)
-}
 
 @Composable
 fun UpdateCategoryContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener
 ) {
-    AnimatedVisibility(visible = state.showUpdateCategory) {
+    AnimatedVisibility(visible = state.showScreenState.showUpdateCategory) {
         Column(
             modifier = Modifier.fillMaxHeight()
                 .padding(bottom = 40.dp)
@@ -78,11 +63,11 @@ fun UpdateCategoryContent(
                     iconPainter = painterResource(id = R.drawable.icon_update_category)
                 )
                 FormTextField(
-                    text = state.nameCategory,
+                    text = state.newCategory.newCategoryName,
                     hint = stringResource(R.string.new_category_name),
                     keyboardType = KeyboardType.Text,
-                    onValueChange = listener::onUpdatedCategoryNameChanged,
-                    errorMessage = when (state.categoryNameState) {
+                    onValueChange = listener::onNewCategoryNameChanged,
+                    errorMessage = when (state.newCategory.categoryNameState) {
                         ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
                         ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
                         else -> ""
@@ -103,13 +88,14 @@ fun UpdateCategoryContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     modifier = Modifier.padding(MaterialTheme.dimens.space16)
                 ) {
-                    if (state.categoryImages.isNotEmpty()) items(count = state.categoryImages.size) { index ->
+                    if (state.categoryIcons.isNotEmpty())
+                        items(count = state.categoryIcons.size) { index ->
                         CategoryIconItem(
-                            iconPainter = painterResource(id = state.categoryImages[index].image),
-                            isSelected = state.categoryImages[index].isSelected,
-                            categoryIconId = state.categoryImages[index].categoryImageId,
-                            onClick = { listener.onClickCategoryIcon(state.categoryImages[index]
-                                .categoryImageId) }
+                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                            isSelected = state.categoryIcons[index].isSelected,
+                            categoryIconId = state.categoryIcons[index].categoryIconId,
+                            onClick = { listener.onClickNewCategoryIcon(state.categoryIcons[index]
+                                .categoryIconId) }
                         )
                     }
                 }
@@ -141,10 +127,3 @@ fun UpdateCategoryContent(
 }
 
 
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun PreviewUpdateCategoryScreen() {
-    HoneyMartTheme {
-        UpdateCategoryScreen()
-    }
-}

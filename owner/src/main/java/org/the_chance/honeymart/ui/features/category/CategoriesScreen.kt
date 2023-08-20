@@ -19,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.addCategory.AddCategoryContent
+import org.the_chance.honeymart.ui.features.category.categories.AddCategoryContent
 import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.category.categories.CategoryItems
-import org.the_chance.honeymart.ui.features.category.categories.ProductsOnCategory
-import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryContent
+import org.the_chance.honeymart.ui.features.category.categories.CategoryProducts
+import org.the_chance.honeymart.ui.features.category.categories.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
@@ -57,7 +57,8 @@ fun CategoriesContent(
         HoneyMartTitle()
 
         Loading(state = state.isLoading && state.categories.isEmpty())
-        AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
+        AnimatedVisibility(visible = state.categories.isEmpty() &&
+                !state.showScreenState.showAddCategory) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -94,11 +95,11 @@ fun CategoriesContent(
                 AddCategoryContent(
                     listener = listener,
                     state = state,
-                    position = RightSide.ADD_CATEGORY
                 )
 
-                AnimatedVisibility(visible = !state.isLoading && !state.showUpdateCategory) {
-                    ProductsOnCategory(state = state, listener = listener)
+                AnimatedVisibility(visible = !state.isLoading &&
+                        !state.showScreenState.showUpdateCategory) {
+                    CategoryProducts(state = state, listener = listener)
                 }
 
 
@@ -123,12 +124,12 @@ fun CategoriesContent(
         onClickTryAgain =listener::getAllCategory )
 
 
-        if (state.showDialog) {
+        if (state.showScreenState.showDialog) {
             CustomAlertDialog(
                 message = stringResource(org.the_chance.owner.R.string.you_delete_a_categories) +
                         "Are you sure?",
                 onConfirm = {
-                    listener.deleteCategory(state.categoryId)
+                    listener.deleteCategory(state.newCategory.categoryId)
                     listener.resetShowState(Visibility.DELETE_CATEGORY)
                 },
 

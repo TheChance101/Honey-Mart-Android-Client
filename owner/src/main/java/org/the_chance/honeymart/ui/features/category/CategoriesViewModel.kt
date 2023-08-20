@@ -77,7 +77,11 @@ class CategoriesViewModel @Inject constructor(
                 categories = updatedCategories,
                 position = position,
                 isLoading = false,
-                newCategory = it.newCategory.copy(categoryId = categoryId)
+                newCategory = it.newCategory.copy(categoryId = categoryId),
+                showScreenState = it.showScreenState.copy(
+                    showAddCategory = false,
+                    showUpdateCategory = false
+                )
             )
         }
 
@@ -90,8 +94,8 @@ class CategoriesViewModel @Inject constructor(
     ): List<CategoryUiState> {
         return categories.map { category ->
             category.copy(
-                isSelected = category.categoryId == selectedCategoryId,
-                categoryId = selectedCategoryId
+                isCategorySelected = category.categoryId == selectedCategoryId,
+//                categoryId = selectedCategoryId
             )
         }
     }
@@ -109,6 +113,8 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onDeleteCategorySuccess() {
         _state.update { it.copy(isLoading = false, error = null, position = 0) }
+        getAllCategory()
+
     }
 
     private fun onDeleteCategoryError(errorHandler: ErrorHandler) {
@@ -134,11 +140,15 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                newCategory = it.newCategory.copy(newCategoryName = "", isSelected = false),
+                newCategory = it.newCategory.copy(newCategoryName = ""),
+                categoryIcons = it.categoryIcons.map { categoryIconState ->
+                    categoryIconState.copy(isSelected = false)
+                },
                 snackBar = it.snackBar.copy(isShow = true, message = success),
             )
         }
-        // resetShowState(Visibility.ADD_CATEGORY)
+        getAllCategory()
+        resetShowState(Visibility.ADD_CATEGORY)
     }
 
     private fun addCategoryError(error: ErrorHandler) {
@@ -201,9 +211,19 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateCategorySuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false, error = null,
+                newCategory = it.newCategory.copy(newCategoryName = ""),
+                categoryIcons = it.categoryIcons.map { categoryIconState ->
+                    categoryIconState.copy(isSelected = false)
+                },
+
+                )
+        }
         getAllCategory()
         resetShowState(Visibility.UPDATE_CATEGORY)
+        getAllCategory()
     }
 
     private fun onUpdateCategoryError(errorHandler: ErrorHandler) {
@@ -258,13 +278,18 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {
-        _state.update {
-            it.copy(
-                newCategory = it.newCategory.copy(
-                    isSelected = it.newCategory.newIconId == categoryIconId,
-                )
+        val updateIcons = _state.value.categoryIcons.map { iconState ->
+            iconState.copy(
+                isSelected = iconState.categoryIconId == categoryIconId
             )
         }
+        _state.update {
+            it.copy(
+                categoryIcons = updateIcons,
+                newCategory = it.newCategory.copy(newIconId = categoryIconId)
+            )
+        }
+
     }
 
     private fun getCategoryNameState(name: String): ValidationState {
