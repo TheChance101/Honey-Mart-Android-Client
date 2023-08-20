@@ -3,32 +3,30 @@ package org.the_chance.honeymart.ui.features.category
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.addCategory.AddCategoryUIState
-import org.the_chance.honeymart.ui.addCategory.CategoryImageUIState
-import org.the_chance.honeymart.ui.features.products.ProductUiState
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
  */
+// region Ui State
 data class CategoriesUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
-    val nameCategory: String = "",
-    val position: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
-    val categoryImageId: Int = 0,
-    val showAddCategory: Boolean = false,
-    val showUpdateCategory: Boolean = false,
-    val showDialog: Boolean = false,
-    val categoryImages: List<CategoryImageUIState> = emptyList(),
-    val addCategoryUiState: AddCategoryUIState = AddCategoryUIState(),
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
-    val categoryId: Long = 0L,
-    val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
-    val productsQuantity: String = "",
+    val categoryIcons: List<CategoryIconUIState> = emptyList(),
+    val showScreenState: ShowScreenState = ShowScreenState()
+)
+
+data class ShowScreenState(
+    val showAddCategory: Boolean = false,
+    val showUpdateCategory: Boolean = false,
+    val showAddProduct: Boolean = false,
+    val showProductDetails: Boolean = false,
+    val showCategoryProducts: Boolean = false,
+    val showDialog: Boolean = false,
 )
 
 data class SnackBarState(
@@ -39,16 +37,23 @@ data class SnackBarState(
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
-    val categoryImageId: Int = 0,
-    val isCategorySelected: Boolean = false,
-    val categoryIcon: Int = 0,
+    val categoryIconUIState: CategoryIconUIState = CategoryIconUIState(),
+    val position: Int = 0,
+    val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+)
+
+data class CategoryIconUIState(
+    val categoryIconId: Int = 0,
+    val icon: Int = 0,
+    val isSelected: Boolean = false,
 )
 
 data class ProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
     val productImage: String = "",
-    val productPrice: String = "0.0",
+    val productPrice: String = "",
+    val productsQuantity: String = "",
 )
 
 enum class Visibility {
@@ -56,39 +61,36 @@ enum class Visibility {
     ADD_CATEGORY,
     DELETE_CATEGORY,
 }
+// endregion
 
+// region Mapper
 fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,
-        categoryImageId = categoryImageId
+        categoryIconUIState = CategoryIconUIState(categoryIconId = categoryImageId)
     )
 }
 
+fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
+    return map {
+        CategoryIconUIState(
+            categoryIconId = it.key,
+            icon = it.value,
+        )
+    }
+}
+// endregion
+
+// region Extension
 fun CategoriesUiState.showButton(): Boolean {
-    return nameCategory.isNotBlank()
-            && categoryImages.any { it.isSelected }
-            && !isLoading
-            && categoryNameState == ValidationState.VALID_TEXT_FIELD
+    return categories.any { category ->
+        category.categoryName.isNotBlank() &&
+                categoryIcons.any { icon -> icon.isSelected } &&
+                !isLoading &&
+                category.categoryNameState == ValidationState.VALID_TEXT_FIELD
+    }
 }
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
-
-enum class Category() {
-    RIGHT_SIDE,
-    LEFT_SIDE
-}
-
-enum class RightSide(var state: Boolean) {
-    ADD_CATEGORY(false),
-    UPDATE_CATEGORY(false),
-    ADD_PRODUCT(false),
-    UPDATE_PRODUCT(false),
-    CATEGORY_PRODUCTS(false)
-}
-
-enum class LeftSide(val state: Boolean) {
-    CATEGORIES(false),
-    EMPTY_CATEGORIES(false),
-    CATEGORY_PRODUCTS(false)
-}
+// endregion
