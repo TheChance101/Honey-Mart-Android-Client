@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.signup.composables.OwnerFieldsScaffold
 import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoScreen
@@ -83,7 +84,7 @@ fun SignupContent(
                 }
 
                 SignupUiEffect.NavigateToApproveScreenEffect -> {
-                    // Navigate to admin approve screen
+                    navController.navigateToCategoryScreen()
                 }
             }
         }

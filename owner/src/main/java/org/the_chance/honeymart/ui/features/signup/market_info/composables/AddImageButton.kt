@@ -24,14 +24,14 @@ import org.the_chance.honymart.ui.theme.white200
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddImageButton(
-    multiplePhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>,
+    singlePhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.size(MaterialTheme.dimens.card),
         colors = CardDefaults.cardColors(white200),
         onClick = {
-            multiplePhotoPickerLauncher.launch(
+            singlePhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         },
