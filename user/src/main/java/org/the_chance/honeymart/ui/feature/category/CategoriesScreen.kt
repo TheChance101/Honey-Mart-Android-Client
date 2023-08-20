@@ -133,7 +133,7 @@ fun CategoryContent(
                         )
                     }
                     ImageNetwork(
-                        imageUrl = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Fruit_market.jpg",
+                        imageUrl = state.imageUrl,
                         contentDescription = stringResource(id = R.string.category_image),
                         modifier = Modifier
                             .height(198.dp)
