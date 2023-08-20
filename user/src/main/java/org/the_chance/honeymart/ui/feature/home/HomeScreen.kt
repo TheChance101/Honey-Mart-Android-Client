@@ -15,6 +15,7 @@ import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
+import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -38,10 +39,15 @@ fun HomeScreen(
                     it.marketId
                 )
 
-                is HomeUiEffect.NavigateToProductScreenEffect -> navController.navigateToProductDetailsScreen(
+                is HomeUiEffect.NavigateToProductsDetailsScreenEffect -> navController.navigateToProductDetailsScreen(
                     it.productId
                 )
 
+                is HomeUiEffect.NavigateToProductScreenEffect -> navController.navigateToProductScreen(
+                    it.categoryId,
+                    it.marketId,
+                    it.position
+                )
             }
         }
     }

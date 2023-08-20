@@ -2,12 +2,14 @@ package org.the_chance.honeymart.ui.feature.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.ValidCouponEntity
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUSeCase
@@ -17,6 +19,7 @@ import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.market.toMarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
@@ -35,6 +38,7 @@ class HomeViewModel @Inject constructor(
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getAllWishList: GetAllWishListUseCase,
     private val getAllCoupons: GetCouponsUseCase,
+    private val getMarketSpecificCategory: GetAllCategoriesInMarketUseCase
 ) :
     BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -135,6 +139,33 @@ class HomeViewModel @Inject constructor(
 
     }
 
+    override fun onClickCategory(categoryId: Long, marketId: Long, position: Int) {
+        effectActionExecutor(
+            _effect,
+            HomeUiEffect.NavigateToProductScreenEffect(categoryId, marketId, position)
+        )
+    }
+
+    private fun getCategorySpecificMarket(marketId: Long) {
+        tryToExecute(
+            { getMarketSpecificCategory(marketId) },
+            ::onGetMarketSpecificCategorySuccess,
+            ::onGetMarketSpecificCategoryError
+        )
+    }
+
+    private fun onGetMarketSpecificCategoryError(errorHandler: ErrorHandler) {
+
+    }
+
+    private fun onGetMarketSpecificCategorySuccess(categories: List<CategoryEntity>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                categories = categories.map { it.toCategoryUiState() }
+            )
+        }
+    }
 
     private fun onGetValidCouponsError(errorHandler: ErrorHandler) {
         if (errorHandler is ErrorHandler.UnAuthorizedUser) {
@@ -219,7 +250,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickProductItem(productId: Long) {
-        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreenEffect(productId))
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductsDetailsScreenEffect(productId))
     }
 
     override fun onClickFavoriteDiscoverProduct(productId: Long) {
@@ -242,6 +273,10 @@ class HomeViewModel @Inject constructor(
 
     override fun onClickSearchBar() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
+    }
+
+    override fun onClickChipCategory(marketId: Long) {
+        getCategorySpecificMarket(marketId)
     }
 
     override fun onClickFavoriteNewProduct(productId: Long) {
