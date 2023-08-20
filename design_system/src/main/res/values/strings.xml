@@ -152,4 +152,7 @@
     <string name="continue_word">Continue</string>
 
     <string name="declined">Declined</string>
+    <string name="all_requests">All Requests</string>
+    <string name="approved">Approved</string>
+    <string name="new_requests">2 new requests</string>
 </resources>
