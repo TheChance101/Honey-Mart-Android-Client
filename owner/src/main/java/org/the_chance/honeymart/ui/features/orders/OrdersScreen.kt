@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.features.orders.composables.CustomChip
+import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honeymart.ui.features.orders.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.features.orders.composables.ItemOrder
 import org.the_chance.honymart.ui.composables.Loading
