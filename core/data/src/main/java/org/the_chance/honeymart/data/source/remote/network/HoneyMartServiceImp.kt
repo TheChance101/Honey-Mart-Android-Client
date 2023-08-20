@@ -29,6 +29,7 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -268,4 +269,11 @@ class HoneyMartServiceImp @Inject constructor(
     //endregion
 
     //endregion
+
+    //region admin
+    override suspend fun getAllRequests(requestState: Int): BaseResponse<List<RequestDto>> =
+        wrap(client.get("admin/markets") {
+            parameter("requestState", requestState)
+        })
+    //end region admin
 }

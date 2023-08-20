@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
 
@@ -50,4 +51,8 @@ interface HoneyMartRepository {
 
     suspend fun addCategory(name: String, imageId: Int): String
     suspend fun deleteCategory(id: Long): String
+
+    //region admin
+    suspend fun getAllRequests(requestState: Int): List<RequestEntity>
+    //endregion admin
 }
