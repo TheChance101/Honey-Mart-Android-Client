@@ -18,4 +18,6 @@ interface HomeInteractionListener {
     fun onClickCategory(categoryId: Long, position: Int)
 
     fun onClickChipCategory(marketId: Long)
+
+
 }

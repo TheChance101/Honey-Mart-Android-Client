@@ -1,13 +1,14 @@
 package org.the_chance.honeymart.ui.feature.home
 
+import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
+import org.the_chance.honeymart.ui.feature.product.toProductUiState
 
 data class HomeUiState(
     val isLoading: Boolean = true,
@@ -24,12 +25,12 @@ data class HomeUiState(
 
 
 data class CouponUiState(
-    val couponId: Long,
-    val count: Int,
-    val discountPercentage: Double,
-    val expirationDate: String,
-    val product: ProductEntity,
-    val isClipped: Boolean,
+    val couponId: Long = 0L,
+    val count: Int = 0,
+    val discountPrice: Double = 0.0,
+    val expirationDate: String = "",
+    val product: ProductUiState = ProductUiState(),
+    val isClipped: Boolean = false,
 )
 
 data class RecentProductUiState(
@@ -43,9 +44,9 @@ data class RecentProductUiState(
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
-    discountPercentage = discountPercentage,
-    expirationDate = expirationDate,
-    product = product,
+    discountPrice = product.productPrice.discountedPrice(discountPercentage = discountPercentage),
+    expirationDate = expirationDate.formatDate(),
+    product = product.toProductUiState(),
     isClipped = isClipped,
 )
 
@@ -58,3 +59,21 @@ fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
 )
 
 fun HomeUiState.showHome() = (!this.isLoading) && !isConnectionError
+
+
+fun String.formatDate(): String {
+    val date = this
+    val year = date.substring(0, 4)
+    val month = date.substring(5, 7)
+    val day = date.substring(8, 10)
+    return "$day/$month/$year"
+}
+
+fun Double.formatCurrencyWithNearestFraction(): String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(this)
+}
+
+fun Double.discountedPrice(discountPercentage: Double): Double {
+    return this - (this * discountPercentage / 100)
+}

@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
@@ -37,7 +38,8 @@ class HomeViewModel @Inject constructor(
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getAllWishList: GetAllWishListUseCase,
     private val getAllCoupons: GetCouponsUseCase,
-    private val getMarketSpecificCategory: GetAllCategoriesInMarketUseCase
+    private val getMarketSpecificCategory: GetAllCategoriesInMarketUseCase,
+    private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -254,19 +256,26 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickCouponClipped(couponId: Long) {
-        _state.value.coupons.find { it.couponId == couponId }?.let {
-            _state.update {
-                it.copy(
-                    coupons = it.coupons.map { coupon ->
-                        if (coupon.couponId == couponId) {
-                            coupon.copy(isClipped = !coupon.isClipped)
-                        } else {
-                            coupon
-                        }
-                    }
-                )
-            }
+        tryToExecute(
+            { clipCouponsUseCase(couponId) },
+            ::onClipCouponSuccess,
+            ::onClipCouponError
+        )
+    }
+
+    private fun onClipCouponSuccess(unit: Unit) {
+        getAllUserCoupons()
+    }
+
+    private fun onClipCouponError(errorHandler: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = errorHandler,
+                isConnectionError = errorHandler is ErrorHandler.NoConnection,
+            )
         }
+        effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
 
     override fun onClickProductItem(productId: Long) {

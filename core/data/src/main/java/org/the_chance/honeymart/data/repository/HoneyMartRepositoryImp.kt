@@ -41,6 +41,10 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
+    override suspend fun clipCoupon(couponId: Long) {
+        wrap { honeyMartService.clipCoupon(couponId) }?.value ?: throw NotFoundException()
+    }
+
 
     override suspend fun getCart(): CartEntity =
         wrap { honeyMartService.getCart() }.value?.toCartEntity() ?: throw NotFoundException()

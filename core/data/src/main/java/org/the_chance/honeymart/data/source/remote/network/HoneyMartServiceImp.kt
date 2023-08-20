@@ -37,6 +37,10 @@ class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
 
+    override suspend fun clipCoupon(couponId: Long) {
+        wrap(client.post("/coupon/clip/$couponId"))
+    }
+
     override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {
         return wrap(client.get("/markets"))
     }
@@ -124,8 +128,8 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun searchForProducts(query: String):BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search"){
+    override suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>> =
+        wrap(client.get("product/search") {
             parameter("query", query)
         })
 

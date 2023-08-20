@@ -42,7 +42,9 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImages = productImages
     )
 }
-fun ProductsUiState.firstLoading() = this.isLoadingCategory  || this.isLoadingProduct
+
+
+
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
 fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
         !this.isError && !this.isLoadingProduct

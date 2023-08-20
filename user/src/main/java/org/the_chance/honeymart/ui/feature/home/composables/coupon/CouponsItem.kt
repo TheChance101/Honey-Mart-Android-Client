@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
+import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -40,14 +41,14 @@ fun CouponsItem(
             productName = coupon.product.productName,
             expirationDate = coupon.expirationDate,
             count = coupon.count,
-            productPrice = coupon.product.productPrice,
-            discountPercentage = coupon.discountPercentage,
+            productPrice = coupon.product.productPrice.formatCurrencyWithNearestFraction(),
+            discountPercentage = coupon.discountPrice.formatCurrencyWithNearestFraction(),
             onClick = onClickGetCoupon
         )
         CouponImage(
             modifier = Modifier.fillMaxHeight(),
             productImageUrl = coupon.product.productImages.takeIf { it.isNotEmpty() }?.get(0) ?: "",
-            couponCode = "445902378",
+            couponCode = coupon.couponId.toString(),
         )
     }
 }
@@ -57,8 +58,8 @@ fun CouponDetails(
     productName: String,
     expirationDate: String,
     count: Int,
-    productPrice: Double,
-    discountPercentage: Double,
+    productPrice: String,
+    discountPercentage: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,8 +89,7 @@ fun CouponDetails(
 
         CouponDataRow(
             items = listOf(
-                Pair("Start Date", "10.08.2023"),
-                Pair("End Date", expirationDate),
+                Pair("Expiration Date", expirationDate),
             )
         )
 
