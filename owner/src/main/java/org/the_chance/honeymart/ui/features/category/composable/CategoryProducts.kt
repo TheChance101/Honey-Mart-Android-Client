@@ -23,7 +23,6 @@ import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
-import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens

@@ -13,15 +13,30 @@ import org.the_chance.honeymart.domain.util.ValidationState
 data class CategoriesUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
+    val isEmptyProducts: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
+    val productsQuantity: String = "",
     val position: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
+    val category: CategoryUiState = CategoryUiState(0, ""),
     val products: List<ProductUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
     val showScreenState: ShowScreenState = ShowScreenState(),
-    val newCategory: NewCategoryUiState = NewCategoryUiState()
+    val newCategory: NewCategoryUiState = NewCategoryUiState(),
+    val newProducts: NewProductsUiState= NewProductsUiState()
+)
+
+data class NewProductsUiState(
+    val id: Long = 0L,
+    val name: String = "",
+    val price: String = "",
+    val description: String = "",
+    val images: List<ByteArray> = emptyList(),
+    val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
 )
 
 data class ShowScreenState(
@@ -91,7 +106,7 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
             productId = it.productId,
             productName = it.productName,
             productImage = it.productImages.first(),
-            productPrice = "$it.ProductPrice$",
+            productPrice = "${it.ProductPrice}$",
         )
     }
 }
@@ -114,6 +129,15 @@ fun CategoriesUiState.showButton(): Boolean {
                 !isLoading &&
                 newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
+}
+
+fun NewProductsUiState.showButton(): Boolean {
+    return name.isNotBlank()
+            && price.isNotBlank()
+            && description.isNotBlank()
+            && productNameState == ValidationState.VALID_TEXT_FIELD
+            && productPriceState == ValidationState.VALID_TEXT_FIELD
+            && productDescriptionState == ValidationState.VALID_TEXT_FIELD
 }
 
 

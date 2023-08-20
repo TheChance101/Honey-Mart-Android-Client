@@ -144,12 +144,5 @@ fun ProductsContent(
 
 }
 
-@Preview(name = "tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun PreviewProducts() {
-    HoneyMartTheme {
-//        ProductsContent(state = ProductsUiState())
-    }
-}
 
 

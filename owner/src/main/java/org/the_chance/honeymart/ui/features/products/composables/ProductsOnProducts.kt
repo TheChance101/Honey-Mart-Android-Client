@@ -21,10 +21,7 @@ import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.DropDownMenuList
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
-import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
-import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.ProductUiState
-import org.the_chance.honeymart.ui.features.category.Visibility
+import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
