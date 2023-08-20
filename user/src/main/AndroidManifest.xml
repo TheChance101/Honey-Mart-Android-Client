@@ -15,6 +15,13 @@
         android:theme="@style/Theme.HoneyMart"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".data.FireBaseMsgServiceImpl"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity
             android:name="org.the_chance.honeymart.ui.MainActivity"
 
