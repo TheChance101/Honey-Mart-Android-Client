@@ -74,7 +74,30 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.AlreadyExist) {
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    validationToast = ValidationToast(
+                        isShow = true,
+                        message = "This account already exist"
+                    ),
+                    error = error
+                )
+            }
+        } else {
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    validationToast = ValidationToast(
+                        isShow = true,
+                        message = "Something went wrong,please try again."
+                    ),
+                    error = error
+                )
+            }
+        }
+        effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
     }
 
     private fun loginOwner(email: String, password: String) {
