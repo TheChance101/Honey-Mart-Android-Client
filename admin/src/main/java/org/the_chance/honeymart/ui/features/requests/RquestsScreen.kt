@@ -8,19 +8,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.requests.composables.RequestDetails
 import org.the_chance.honeymart.ui.features.requests.composables.Requests
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun RequestsScreen() {
-    RequestsContent()
+fun RequestsScreen(viewModel: RequestsViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsState()
+
+    RequestsContent(state,viewModel)
 }
 
 @Composable
-fun RequestsContent() {
+fun RequestsContent(
+    state: RequestsUiState,
+    listener: RequestsInteractionListener
+) {
 
     Column(
         modifier = Modifier
@@ -39,14 +48,16 @@ fun RequestsContent() {
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                Requests()
+                Requests(state, listener)
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                RequestDetails()
+            ContentVisibility(state = state.isRequestSelected) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    RequestDetails(state, listener)
+                }
             }
         }
     }

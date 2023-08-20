@@ -12,11 +12,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.requests.RequestsInteractionListener
+import org.the_chance.honeymart.ui.features.requests.RequestsUiState
+import org.the_chance.honeymart.ui.features.requests.allRequests
+import org.the_chance.honeymart.ui.features.requests.approved
+import org.the_chance.honeymart.ui.features.requests.newRequests
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun Requests() {
+fun Requests(
+    state: RequestsUiState,
+    listener: RequestsInteractionListener
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20),
         modifier = Modifier.fillMaxSize()
@@ -26,19 +34,19 @@ fun Requests() {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             CustomChip(
-                state = true,
+                state = state.allRequests(),
                 text = stringResource(R.string.all_requests),
-                onClick = {}
+                onClick = listener::onClickAllRequests
             )
             CustomChip(
-                state = false,
+                state = state.newRequests(),
                 text = stringResource(R.string.new_requests),
-                onClick = {}
+                onClick = listener::onClickNewRequests
             )
             CustomChip(
-                state = false,
+                state = state.approved(),
                 text = stringResource(R.string.approved),
-                onClick = {}
+                onClick = listener::onClickApproved
             )
         }
         LazyColumn(
@@ -46,12 +54,14 @@ fun Requests() {
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(4) {
+            items(state.requests.size) {
                 ItemRequest(
-                    onClickCard = { },
-                    userName = "Menna",
-                    marketName = "HoneyMart",
-                    date = "8 Aug 08:08 pm"
+                    onClickCard = listener::onClickRequest,
+                    userName = state.userName,
+                    marketName = state.marketName,
+                    date = state.requests[it].date,
+                    onCardSelected = state.isRequestSelected,
+                    isRequestNew = state.isRequestNew
                 )
             }
         }

@@ -24,9 +24,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.requests.RequestsInteractionListener
+import org.the_chance.honeymart.ui.features.requests.RequestsUiState
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Shapes
@@ -34,7 +35,10 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun RequestDetails() {
+fun RequestDetails(
+    state: RequestsUiState,
+    listener: RequestsInteractionListener
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +72,7 @@ fun RequestDetails() {
                         .padding(top = MaterialTheme.dimens.space8)
                         .size(70.dp)
                         .clip(CircleShape),
-                    imageUrl = "",
+                    imageUrl = state.userImage,
                 )
                 Column(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
@@ -76,12 +80,12 @@ fun RequestDetails() {
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                 ) {
                     Text(
-                        text = "Menna",
+                        text = state.userName,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = "menna@gmail.com",
+                        text = state.userEmail,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.displayLarge
                     )
@@ -97,7 +101,7 @@ fun RequestDetails() {
                 contentDescription = "",
             )
             Text(
-                text = "Contemporary Touli Market",
+                text = state.marketName,
                 color = MaterialTheme.colorScheme.onSecondary,
                 style = MaterialTheme.typography.headlineMedium,
             )
@@ -111,14 +115,14 @@ fun RequestDetails() {
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Text(
-                    text = "Knowledge St. Modern Touli District",
+                    text = state.marketAddress,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.displayLarge
                 )
             }
             Text(
                 modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space112),
-                text = "A supermarket is a large retail store that offers a wide range of groceries, household items, and various consumer products under one roof.",
+                text = state.marketDescription,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center
@@ -129,7 +133,7 @@ fun RequestDetails() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 HoneyOutlineButton(
-                    onClick = { },
+                    onClick = listener::onClickCancel,
                     label = stringResource(R.string.cancel),
                 )
                 HoneyOutlineButton(
@@ -137,17 +141,11 @@ fun RequestDetails() {
                         MaterialTheme.colorScheme.primary,
                         Shapes.medium
                     ),
-                    onClick = { },
+                    onClick = listener::onClickApprove,
                     label = stringResource(R.string.approve),
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun RequestDetailsPreview() {
-    RequestDetails()
 }

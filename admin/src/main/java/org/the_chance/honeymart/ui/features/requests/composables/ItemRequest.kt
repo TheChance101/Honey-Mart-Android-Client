@@ -24,9 +24,9 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
@@ -37,6 +37,8 @@ fun ItemRequest(
     userName: String,
     marketName: String,
     date: String,
+    onCardSelected: Boolean,
+    isRequestNew: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -51,13 +53,15 @@ fun ItemRequest(
             verticalAlignment = CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(10.dp),
-                thickness = 100.dp,
-                color = MaterialTheme.colorScheme.primary
-            )
+            ContentVisibility(state = onCardSelected) {
+                Divider(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(10.dp),
+                    thickness = 100.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -92,12 +96,14 @@ fun ItemRequest(
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             style = MaterialTheme.typography.displayLarge
                         )
-                        Box(
-                            modifier = Modifier
-                                .size(MaterialTheme.dimens.space16)
-                                .clip(shape = CircleShape)
-                                .background(MaterialTheme.colorScheme.primary),
-                        )
+                        ContentVisibility(state = isRequestNew) {
+                            Box(
+                                modifier = Modifier
+                                    .size(MaterialTheme.dimens.space16)
+                                    .clip(shape = CircleShape)
+                                    .background(MaterialTheme.colorScheme.primary),
+                            )
+                        }
                     }
 
                     Row(
@@ -119,15 +125,4 @@ fun ItemRequest(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ItemRequestPrev() {
-    ItemRequest(
-        onClickCard = { },
-        userName = "Menna",
-        marketName = "HoneyMart",
-        date = "8 Aug 08:08 pm"
-    )
 }
