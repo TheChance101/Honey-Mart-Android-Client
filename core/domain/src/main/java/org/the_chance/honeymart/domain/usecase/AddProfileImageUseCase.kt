@@ -7,9 +7,8 @@ class AddProfileImageUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
     suspend operator fun invoke(
-        userId: Long,
         image: ByteArray
     ): String {
-        return honeyMartRepository.addProfileImage(userId, image)
+        return honeyMartRepository.addProfileImage(image)
     }
 }

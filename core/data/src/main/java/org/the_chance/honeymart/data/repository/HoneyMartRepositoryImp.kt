@@ -109,10 +109,9 @@ class HoneyMartRepositoryImp @Inject constructor(
         return datastore.getThemeState()
     }
 
-    override suspend fun addProfileImage(userId: Long, image: ByteArray): String {
+    override suspend fun addProfileImage(image: ByteArray): String {
         return wrap {
             honeyMartService.addProfileImage(
-                userId = userId,
                 image = image,
             )
         }.value ?: throw NotFoundException()

@@ -199,7 +199,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProfileUser(): BaseResponse<ProfileUserDto> =
         wrap(client.get("/user/myProfile"))
 
-    override suspend fun addProfileImage(userId: Long, image: ByteArray)
+    override suspend fun addProfileImage(image: ByteArray)
             : BaseResponse<String> {
         val response: HttpResponse = client.submitFormWithBinaryData(
             url = "/user/profileImage",

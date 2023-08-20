@@ -12,7 +12,7 @@ interface ProfileInteractionsListener {
     fun showDialog()
     fun resetDialogState()
 
-    fun updateImage(userId: Long, image: ByteArray)
+    fun updateImage(image: ByteArray)
     fun onImageSelected(image: ByteArray)
 
     fun getData()

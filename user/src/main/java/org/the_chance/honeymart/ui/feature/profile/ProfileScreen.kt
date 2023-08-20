@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,11 +40,6 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
-import org.the_chance.honeymart.ui.feature.market.navigateToMarketScreen
-import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
-import org.the_chance.honeymart.ui.feature.orders.OrderUiEffect
-import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.theme.nullColor
@@ -62,10 +56,10 @@ fun ProfileScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
+                is ProfileUiEffect.ClickMyOrderEffect -> {} // navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
-                is ProfileUiEffect.ClickLogoutEffect -> navController.navigateToLogin()
+                is ProfileUiEffect.ClickLogoutEffect -> {} // navController.navigateToLogin()
                 ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
                 ProfileUiEffect.ShowToastEffect -> {}
@@ -91,7 +85,7 @@ private fun ProfileContent(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { handleImageSelection(it, context, state, listener::onImageSelected) }
+        onResult = { handleImageSelection(it, context, listener::onImageSelected) }
     )
 
     AppBarScaffold {
@@ -168,10 +162,7 @@ private fun ProfileContent(
                                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                                     )
                                     state.image?.let {
-                                        listener.updateImage(
-                                            userId = state.accountInfo.userId,
-                                            image = it
-                                        )
+                                        listener.updateImage(image = it)
                                     }
                                 }
                                 .align(Alignment.Center),
@@ -247,7 +238,6 @@ private fun ProfileContent(
 private fun handleImageSelection(
     uri: Uri?,
     context: Context,
-    state: ProfileUiState,
     onImageSelected: (ByteArray) -> Unit
 ) {
     val imageByteArrays =
@@ -256,6 +246,5 @@ private fun handleImageSelection(
                 inputStream.readBytes()
             }
         }
-    val updatedImages = imageByteArrays
-    updatedImages?.let { onImageSelected(it) }
+    imageByteArrays?.let { onImageSelected(it) }
 }

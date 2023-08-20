@@ -38,5 +38,5 @@ interface HoneyMartRepository {
     suspend fun saveThemeState(isDark: Boolean)
     suspend fun getThemeState(): Boolean
 
-    suspend fun addProfileImage(userId: Long, image: ByteArray): String
+    suspend fun addProfileImage(image: ByteArray): String
 }

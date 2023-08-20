@@ -98,10 +98,10 @@ class ProfileViewModel @Inject constructor(
         _state.update { it.copy(image = image) }
     }
 
-    override fun updateImage(userId: Long, image: ByteArray) {
+    override fun updateImage(image: ByteArray) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addProfileImageUseCase(userId, image) },
+            { addProfileImageUseCase(image) },
             onSuccess = { onAddProfileImagesSuccess() },
             onError = ::onAddProfileImagesError
         )

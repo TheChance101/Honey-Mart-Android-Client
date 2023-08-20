@@ -149,13 +149,8 @@ interface HoneyMartService {
     //region profile
     suspend fun getProfileUser(): BaseResponse<ProfileUserDto>
 
-    suspend fun addProfileImage(
-        userId: Long,
-        image: ByteArray
-    ): BaseResponse<String>
+    suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
     //endregion
-
-
 
 
 }
