@@ -40,7 +40,7 @@ interface HoneyMartRepository {
     suspend fun deleteAllCart(): String
 
 
-    suspend fun getUSerCoupons(): List<CouponEntity>
+    suspend fun getUserCoupons(): List<CouponEntity>
 
     suspend fun getValidUSerCoupons(): List<ValidCouponEntity>
 

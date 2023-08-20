@@ -7,11 +7,12 @@ import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUSeCase
-import org.the_chance.honeymart.domain.usecase.GetAllUserCoupons
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -28,22 +29,20 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsUseCase,
-    private val getAllUserCoupons: GetAllUserCoupons,
     private val getAllRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUSeCase,
     private val getAllOrders: GetAllOrdersUseCase,
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getAllWishList: GetAllWishListUseCase,
-
-    ) :
+    private val getAllCoupons: GetCouponsUseCase,
+) :
     BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
 
-
     override fun getData() {
         getAllMarkets()
-        getCoupons()
+        getUserCoupons()
         getRecentProducts()
         getAllDiscoverProducts()
         getAllDoneOrders()
@@ -126,24 +125,47 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun getCoupons() {
+    private fun getUserCoupons() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            getAllUserCoupons::invoke,
-            ::onGetCouponsSuccess,
-            ::onGetCouponsError
+            { getAllCoupons.getValidUsersCoupon() },
+            ::onGetValidCouponsSuccess,
+            ::onGetValidCouponsError
         )
+
     }
 
-    private fun onGetCouponsError(errorHandler: ErrorHandler) {
+
+    private fun onGetValidCouponsError(errorHandler: ErrorHandler) {
+        if (errorHandler is ErrorHandler.UnAuthorizedUser) {
+            tryToExecute(
+                { getAllCoupons.getAllCoupons() },
+                ::onGetCouponsSuccess,
+                ::onGetCouponsError
+            )
+        }
+
+    }
+
+    fun onGetCouponsError(errorHandler: ErrorHandler) {
 
     }
 
     private fun onGetCouponsSuccess(coupon: List<CouponEntity>) {
+
         _state.update {
             it.copy(
                 isLoading = false,
-                coupons = coupon.map { it.toCouponUiState() }
+                coupons = coupon.map { it.toCouponUiState() },
+            )
+        }
+    }
+
+    private fun onGetValidCouponsSuccess(coupon: List<ValidCouponEntity>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                validCoupons = coupon.map { it.toValidCouponUiState() }
             )
         }
     }
@@ -292,7 +314,6 @@ class HomeViewModel @Inject constructor(
 
 
     private fun getWishListProducts(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getAllWishList().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
@@ -326,3 +347,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 }
+
+

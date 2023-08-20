@@ -107,7 +107,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
 
-    override suspend fun getUSerCoupons(): List<CouponEntity> =
+    override suspend fun getUserCoupons(): List<CouponEntity> =
         wrap { honeyMartService.getCouponOfUser() }.value?.map { it.toCouponEntity() }
             ?: throw NotFoundException()
 

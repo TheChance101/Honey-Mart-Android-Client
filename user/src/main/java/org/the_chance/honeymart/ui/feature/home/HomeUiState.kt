@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.home
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
@@ -18,6 +19,7 @@ data class HomeUiState(
     val categories: List<CategoryUiState> = emptyList(),
     val markets: List<MarketUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
+    val validCoupons: List<ValidCouponUiState> = emptyList(),
     val newProducts: List<NewProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
@@ -41,7 +43,21 @@ data class NewProductUiState(
     val price: Double = 0.0,
     val isFavorite: Boolean = false
 )
+data class ValidCouponUiState(
+    val couponId: Long,
+    val count: Int,
+    val discountPercentage: Double,
+    val expirationDate: String,
+    val product: ProductEntity,
+)
 
+fun ValidCouponEntity.toValidCouponUiState() = ValidCouponUiState(
+    couponId = couponId,
+    count = count,
+    discountPercentage = discountPercentage,
+    expirationDate = expirationDate,
+    product = product,
+)
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
