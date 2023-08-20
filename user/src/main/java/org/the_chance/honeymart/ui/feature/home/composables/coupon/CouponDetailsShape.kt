@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables.coupon
 
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -7,9 +8,13 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 
-val CouponDetailsShape = object : Shape {
+class CouponDetailsShape(
+    private val cornerRadius: Dp,
+    private val notchRadius: Dp
+) : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
@@ -18,13 +23,14 @@ val CouponDetailsShape = object : Shape {
         return Outline.Generic(
             couponDetailsPath(
                 size = size,
-                cornerRadius = 24f
+                cornerRadius = CornerSize(cornerRadius).toPx(size, density),
+                notchRadius = CornerSize(notchRadius).toPx(size, density)
             )
         )
     }
 }
 
-fun couponDetailsPath(size: Size, cornerRadius: Float): Path {
+fun couponDetailsPath(size: Size, cornerRadius: Float, notchRadius: Float): Path {
     return Path().apply {
         reset()
         arcTo(
@@ -37,35 +43,35 @@ fun couponDetailsPath(size: Size, cornerRadius: Float): Path {
             forceMoveTo = false
         )
 
-        lineTo(x = size.width - cornerRadius, y = 0f)
+        lineTo(x = size.width - notchRadius, y = 0f)
 
         arcTo(
             rect = Rect(
-                left = size.width - cornerRadius,
-                top = -cornerRadius,
-                right = size.width + cornerRadius,
-                bottom = cornerRadius
+                left = size.width - notchRadius,
+                top = -notchRadius,
+                right = size.width + notchRadius,
+                bottom = notchRadius
             ),
             startAngleDegrees = 180.0f,
             sweepAngleDegrees = -90.0f,
             forceMoveTo = false
         )
 
-        lineTo(x = size.width, y = size.height - cornerRadius)
+        lineTo(x = size.width, y = size.height - notchRadius)
 
         arcTo(
             rect = Rect(
-                left = size.width - cornerRadius,
-                top = size.height - cornerRadius,
-                right = size.width + cornerRadius,
-                bottom = size.height + cornerRadius
+                left = size.width - notchRadius,
+                top = size.height - notchRadius,
+                right = size.width + notchRadius,
+                bottom = size.height + notchRadius
             ),
             startAngleDegrees = 270.0f,
             sweepAngleDegrees = -90.0f,
             forceMoveTo = false
         )
 
-        lineTo(x = cornerRadius, y = size.height)
+        lineTo(x = notchRadius, y = size.height)
 
         arcTo(
             rect = Rect(

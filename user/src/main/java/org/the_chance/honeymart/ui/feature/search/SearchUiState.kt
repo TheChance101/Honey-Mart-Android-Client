@@ -40,7 +40,7 @@ fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productPrice = ProductPrice,
+        productPrice = productPrice,
         productImages = productImages
     )
 }

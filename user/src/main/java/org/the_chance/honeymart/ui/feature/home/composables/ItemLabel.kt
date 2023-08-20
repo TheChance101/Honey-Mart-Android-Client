@@ -3,8 +3,9 @@ package org.the_chance.honeymart.ui.feature.home.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +16,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.black87
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ItemLabel(
     label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     iconPainter: Painter = painterResource(id = R.drawable.ic_seall),
 ) {
@@ -35,11 +35,18 @@ fun ItemLabel(
             text = label,
             style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
         )
-        Icon(
-            painter = iconPainter,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-        )
+
+        IconButton(
+            modifier = Modifier
+                .size(MaterialTheme.dimens.icon24),
+            onClick = onClick,
+        ) {
+            Icon(
+                painter = iconPainter,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+        }
     }
 }
 
@@ -47,6 +54,6 @@ fun ItemLabel(
 @Composable
 fun ItemLabelPreview() {
     HoneyMartTheme {
-        ItemLabel(label = "Label")
+        ItemLabel(label = "Label", onClick = { /*TODO*/ })
     }
 }

@@ -31,8 +31,7 @@ fun LastPurchasesItems(
     image: String = "",
     label: String = "blah blah blah",
     onClick: () -> Unit = {},
-
-    ) {
+) {
     Box(
         modifier = modifier
             .size(width = 149.dp, height = 152.dp)

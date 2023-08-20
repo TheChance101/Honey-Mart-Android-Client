@@ -7,6 +7,6 @@ fun ProductDto.toProductEntity() = ProductEntity(
     productId = id ?: 0L,
     productName =  name ?: "",
     productDescription = description ?: "",
-    ProductPrice = price ?: 0.0,
+    productPrice = price ?: 0.0,
     productImages = images ?: emptyList()
 )

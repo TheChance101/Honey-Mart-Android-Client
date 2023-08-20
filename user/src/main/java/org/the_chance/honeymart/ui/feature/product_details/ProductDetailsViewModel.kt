@@ -82,7 +82,7 @@ class ProductDetailsViewModel @Inject constructor(
                 error = null, isConnectionError = false, product = product.toProductUiState(),
                 image = product.productImages.first(),
                 smallImages = product.productImages.drop(1),
-                totalPrice = product.ProductPrice
+                totalPrice = product.productPrice
             )
         }
         checkIfProductInWishList(args.productId.toLong())

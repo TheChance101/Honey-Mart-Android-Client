@@ -12,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.black16
+import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -29,7 +32,8 @@ fun HomeMarketItem(
     Box(
         modifier = modifier
             .size(MaterialTheme.dimens.card)
-            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12)).clickable { onclick() }
+            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12))
+            .clickable { onclick() }
     ) {
         ImageNetwork(
             imageUrl = image,
@@ -38,6 +42,7 @@ fun HomeMarketItem(
                 .clip(shape = Shapes.medium)
                 .background(black16)
                 .height(MaterialTheme.dimens.card),
+            colorFilter = ColorFilter.tint(black37, blendMode = BlendMode.Multiply),
         )
         Text(
             text = name,

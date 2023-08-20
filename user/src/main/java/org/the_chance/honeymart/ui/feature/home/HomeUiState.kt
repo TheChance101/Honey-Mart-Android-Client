@@ -1,29 +1,27 @@
 package org.the_chance.honeymart.ui.feature.home
 
 import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
+import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.ValidCouponEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
-import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class HomeUiState(
-    val searchClick: Boolean = false,
     val isLoading: Boolean = true,
-    val isError: Boolean = false,
+    val isConnectionError: Boolean = false,
     val error: ErrorHandler? = null,
+    val selectedMarketId: Long = 0L,
     val categories: List<CategoryUiState> = emptyList(),
     val markets: List<MarketUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
     val validCoupons: List<ValidCouponUiState> = emptyList(),
-    val newProducts: List<NewProductUiState> = emptyList(),
+    val recentProducts: List<RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
-    val orderStates: OrderStates = OrderStates.PROCESSING,
 )
 
 
@@ -36,13 +34,14 @@ data class CouponUiState(
     val isClipped: Boolean,
 )
 
-data class NewProductUiState(
-    val newProductId: Long = 0L,
-    val newProductName: String = "",
-    val newProductImage: String = "",
+data class RecentProductUiState(
+    val productId: Long = 0L,
+    val productName: String = "",
+    val productImage: String = "",
     val price: Double = 0.0,
     val isFavorite: Boolean = false
 )
+
 data class ValidCouponUiState(
     val couponId: Long,
     val count: Int,
@@ -58,6 +57,7 @@ fun ValidCouponEntity.toValidCouponUiState() = ValidCouponUiState(
     expirationDate = expirationDate,
     product = product,
 )
+
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
@@ -67,12 +67,12 @@ fun CouponEntity.toCouponUiState() = CouponUiState(
     isClipped = isClipped,
 )
 
-fun GetRecentProductsEntity.toGetRecentProductUiState() = NewProductUiState(
-    newProductId = productId,
-    newProductName = productName,
-    newProductImage = productImages[0],
-    price = ProductPrice,
+fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
+    productId = productId,
+    productName = productName,
+    productImage = productImages[0],
+    price = productPrice,
     isFavorite = false,
 )
 
-fun HomeUiState.showHome() = !this.isLoading && !this.isError
+fun HomeUiState.showHome() = (!this.isLoading) && !isConnectionError

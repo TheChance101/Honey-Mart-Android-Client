@@ -4,7 +4,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
-import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
@@ -158,10 +158,10 @@ interface HoneyMartService {
 
 
     // region Coupon
-    suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>>
+    suspend fun getAllUserCoupons(): BaseResponse<List<CouponDto>>
 
-    suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>>
-    suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>>
+    suspend fun getAllValidCoupons(): BaseResponse<List<ValidCouponDto>>
+    suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
 
 
     // endregion Coupon

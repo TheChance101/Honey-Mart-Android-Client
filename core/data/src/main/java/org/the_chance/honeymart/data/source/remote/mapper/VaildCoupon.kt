@@ -13,7 +13,7 @@ internal fun ValidCouponDto.toValidCouponEntity()= ValidCouponEntity(
         productId = 0L,
         productName = "",
         productDescription = "",
-        ProductPrice = 0.0,
+        productPrice = 0.0,
         productImages = emptyList()
     ),
 

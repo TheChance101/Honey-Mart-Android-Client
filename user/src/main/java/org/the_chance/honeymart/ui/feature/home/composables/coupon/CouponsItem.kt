@@ -1,11 +1,12 @@
 package org.the_chance.honeymart.ui.feature.home.composables.coupon
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -31,16 +32,21 @@ fun CouponsItem(
     onClickGetCoupon: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row {
+    Row(
+        modifier = modifier.height(IntrinsicSize.Min),
+    ) {
         CouponDetails(
+            modifier = Modifier.fillMaxHeight(),
             productName = coupon.product.productName,
             expirationDate = coupon.expirationDate,
             count = coupon.count,
-            productPrice = coupon.product.ProductPrice,
+            productPrice = coupon.product.productPrice,
             discountPercentage = coupon.discountPercentage,
             onClick = onClickGetCoupon
         )
         CouponImage(
+            modifier = Modifier.fillMaxHeight(),
+            productImageUrl = coupon.product.productImages.takeIf { it.isNotEmpty() }?.get(0) ?: "",
             couponCode = "445902378",
         )
     }
@@ -53,15 +59,21 @@ fun CouponDetails(
     count: Int,
     productPrice: Double,
     discountPercentage: Double,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
     val dimens = MaterialTheme.dimens
 
     Column(
-        modifier = Modifier
-            .clip(CouponDetailsShape)
+        modifier = modifier
+            .clip(
+                CouponDetailsShape(
+                    cornerRadius = 12.dp,
+                    notchRadius = 8.dp
+                )
+            )
             .background(colors.secondaryContainer)
             .padding(
                 horizontal = dimens.space16,
@@ -147,6 +159,7 @@ fun CouponDataRow(items: List<Pair<String, String>>) {
 @Composable
 fun CouponImage(
     couponCode: String,
+    productImageUrl: String,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
@@ -154,8 +167,14 @@ fun CouponImage(
     val dimens = MaterialTheme.dimens
 
     Column(
-        modifier = Modifier
-            .clip(CouponImageShape)
+        modifier = modifier
+            .clip(
+                CouponImageShape(
+                    middleNotchRadius = 8.dp,
+                    sideNotchRadius = 2.dp,
+                    sideNotchGap = 2.dp
+                )
+            )
             .background(colors.primary)
             .padding(
                 top = dimens.space16, bottom = dimens.space4,
@@ -164,12 +183,12 @@ fun CouponImage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Image(
+        ImageNetwork(
             modifier = Modifier
                 .size(dimens.itemProductImage)
                 .clip(RoundedCornerShape(dimens.space12)),
-            painter = painterResource(id = org.the_chance.design_system.R.drawable.test),
-            contentDescription = null,
+            imageUrl = productImageUrl,
+            contentDescription = "Product Image",
             contentScale = ContentScale.Crop
         )
 

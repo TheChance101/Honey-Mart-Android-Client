@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.home
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -12,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
@@ -74,10 +74,19 @@ fun HomeContent(
 ) {
 
     AppBarScaffold {
-        ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = listener::getData)
+        ConnectionErrorPlaceholder(
+            state = state.isConnectionError,
+            onClickTryAgain = listener::getData
+        )
         Loading(state.isLoading)
-        AnimatedVisibility(visible = state.showHome()) {
-            HomeContentSuccessScreen(state, pagerState, listener)
+        ContentVisibility(
+            state = state.showHome()
+        ) {
+            HomeContentSuccessScreen(
+                state = state,
+                pagerState = pagerState,
+                listener = listener
+            )
         }
     }
 }

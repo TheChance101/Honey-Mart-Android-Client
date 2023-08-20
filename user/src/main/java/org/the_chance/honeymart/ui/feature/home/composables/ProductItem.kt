@@ -25,17 +25,16 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun NewProductsItems(
+fun ProductItem(
     modifier: Modifier = Modifier,
-    isFavoriteIconClicked: Boolean ,
-    onClickFavorite: () -> Unit ,
+    isFavoriteIconClicked: Boolean,
+    onClickFavorite: () -> Unit,
     enable: Boolean = true,
-    productName: String ,
-    productPrice: String ,
+    productName: String,
+    productPrice: String,
     imageUrl: String,
-    onClick: () -> Unit ,
-
-    ) {
+    onClick: () -> Unit,
+) {
     Box(
         modifier = modifier
             .size(width = 160.dp, height = 136.dp)
@@ -56,7 +55,8 @@ fun NewProductsItems(
                     end = MaterialTheme.dimens.space8,
                     top = MaterialTheme.dimens.space8
                 ),
-            backgroundColor = MaterialTheme.colorScheme.primary,
+            backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
+            else MaterialTheme.colorScheme.primary,
             onClick = { if (enable) onClickFavorite() }
         ) {
             Icon(
@@ -64,7 +64,8 @@ fun NewProductsItems(
                     id = if (isFavoriteIconClicked) R.drawable.icon_favorite_selected
                     else R.drawable.icon_favorite_unselected
                 ),
-                tint = white,
+                tint = if (isFavoriteIconClicked) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.tertiary,
                 contentDescription = stringResource(R.string.favorite_icon),
             )
         }
