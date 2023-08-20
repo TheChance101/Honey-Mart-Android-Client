@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -132,14 +133,18 @@ fun HomeContentSuccessScreen(
         }
 
         item(span = { GridItemSpan(2) }) {
-            Text(
-                text = stringResource(R.string.discover_products),
-                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-            )
+            AnimatedVisibility(visible = state.discoverProducts.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.discover_products),
+                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+                )
+            }
         }
 
-        itemsIndexed(items = state.discoverProducts) { index, discoverProduct ->
+        itemsIndexed(
+            items = state.discoverProducts,
+            key = { _, item -> item.productId }) { index, discoverProduct ->
             ProductItem(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
@@ -163,6 +168,7 @@ fun HomeContentSuccessScreen(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LastPurchases(
     lastPurchases: List<OrderUiState>,
@@ -170,68 +176,76 @@ private fun LastPurchases(
     onClickSeeAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-    ) {
-        ItemLabel(
-            label = stringResource(R.string.last_purchases),
-            modifier = modifier
-                .padding(horizontal = MaterialTheme.dimens.space16)
-                .padding(
-                    top =
-                    MaterialTheme.dimens.space8
-                ),
-            onClick = onClickSeeAll
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+    AnimatedVisibility(visible = lastPurchases.isNotEmpty()) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            items(lastPurchases) { lastPurchase ->
-                LastPurchasesItems(
-                    image = lastPurchase.imageUrl,
-                    label = lastPurchase.marketName,
-                    onClick = { onClickProduct(lastPurchase.orderId) }
-                )
+            ItemLabel(
+                label = stringResource(R.string.last_purchases),
+                modifier = modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(
+                        top =
+                        MaterialTheme.dimens.space8
+                    ),
+                onClick = onClickSeeAll
+            )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+            ) {
+                items(items = lastPurchases, key = { it.orderId }) { lastPurchase ->
+                    LastPurchasesItems(
+                        modifier = Modifier.animateItemPlacement(),
+                        image = lastPurchase.imageUrl,
+                        label = lastPurchase.marketName,
+                        onClick = { onClickProduct(lastPurchase.orderId) }
+                    )
+                }
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
     onClickFavorite: (Long) -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-    ) {
-        Text(
-            text = stringResource(R.string.new_products),
-            style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+    AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            items(items = recentProducts, key = { it.productId }) { recentProduct ->
-                ProductItem(
-                    productName = recentProduct.productName,
-                    productPrice = recentProduct.price.toString(),
-                    imageUrl = recentProduct.productImage,
-                    onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                    isFavoriteIconClicked = recentProduct.isFavorite,
-                    onClick = { onClickRecentProduct(recentProduct.productId) }
-                )
+            Text(
+                text = stringResource(R.string.new_products),
+                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+            )
+
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+            ) {
+                items(items = recentProducts, key = { it.productId }) { recentProduct ->
+                    ProductItem(
+                        modifier = Modifier.animateItemPlacement(),
+                        productName = recentProduct.productName,
+                        productPrice = recentProduct.price.toString(),
+                        imageUrl = recentProduct.productImage,
+                        onClickFavorite = { onClickFavorite(recentProduct.productId) },
+                        isFavoriteIconClicked = recentProduct.isFavorite,
+                        onClick = { onClickRecentProduct(recentProduct.productId) }
+                    )
+                }
             }
         }
     }
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Coupons(
     coupons: List<CouponUiState>,
@@ -246,14 +260,16 @@ private fun Coupons(
         )
     )
     {
-        items(coupons) { coupon ->
+        items(items = coupons, key = { it.couponId }) { coupon ->
             CouponsItem(
+                modifier = Modifier.animateItemPlacement(),
                 coupon = coupon,
                 onClickGetCoupon = { onClickCoupon(coupon.couponId) })
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Categories(
     categories: List<CategoryUiState>,
@@ -264,41 +280,45 @@ private fun Categories(
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-    ) {
-        ItemLabel(
-            label = stringResource(R.string.categories),
-            modifier = modifier
-                .padding(horizontal = MaterialTheme.dimens.space16)
-                .padding(top = MaterialTheme.dimens.space8),
-            onClick = onClickSeeAll
-        )
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+    AnimatedVisibility(visible = categories.isNotEmpty()) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            items(items = markets) { market ->
-                CustomChip(
-                    state = selectedMarketId == market.marketId,
-                    text = market.marketName,
-                    onClick = { onChipClick(market.marketId) })
+            ItemLabel(
+                label = stringResource(R.string.categories),
+                modifier = modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(top = MaterialTheme.dimens.space8),
+                onClick = onClickSeeAll
+            )
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            ) {
+                items(items = markets) { market ->
+                    CustomChip(
+                        state = selectedMarketId == market.marketId,
+                        text = market.marketName,
+                        onClick = { onChipClick(market.marketId) })
+                }
             }
-        }
-        LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
-            itemsIndexed(
-                categories,
-                key = { _, category -> category.categoryId }) { index, category ->
-                HomeCategoriesItem(
-                    label = category.categoryName,
-                    onClick = { oncClickCategory(category.categoryId, index) }
-                )
+            LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
+                itemsIndexed(
+                    categories,
+                    key = { _, category -> category.categoryId }) { index, category ->
+                    HomeCategoriesItem(
+                        modifier = Modifier.animateItemPlacement(),
+                        label = category.categoryName,
+                        onClick = { oncClickCategory(category.categoryId, index) }
+                    )
+                }
             }
         }
     }
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Markets(
     markets: List<MarketUiState>,
@@ -322,8 +342,9 @@ private fun Markets(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
         ) {
-            items(markets) { market ->
+            items(items = markets, key = { it.marketId }) { market ->
                 HomeMarketItem(
+                    modifier = Modifier.animateItemPlacement(),
                     name = market.marketName,
                     image = market.marketImage,
                     onclick = { onClickMarket(market.marketId) }

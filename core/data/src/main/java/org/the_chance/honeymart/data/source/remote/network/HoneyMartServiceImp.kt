@@ -37,8 +37,8 @@ class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
 
-    override suspend fun clipCoupon(couponId: Long) {
-        wrap(client.post("/coupon/clip/$couponId"))
+    override suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean> {
+        return wrap(client.put("/coupon/clip/$couponId"))
     }
 
     override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {

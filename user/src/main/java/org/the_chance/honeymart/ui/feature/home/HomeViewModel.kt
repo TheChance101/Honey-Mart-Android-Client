@@ -191,7 +191,11 @@ class HomeViewModel @Inject constructor(
     override fun onClickCategory(categoryId: Long, position: Int) {
         effectActionExecutor(
             _effect,
-            HomeUiEffect.NavigateToProductScreenEffect(categoryId, state.value.selectedMarketId, position)
+            HomeUiEffect.NavigateToProductScreenEffect(
+                categoryId,
+                state.value.selectedMarketId,
+                position
+            )
         )
     }
 
@@ -275,7 +279,9 @@ class HomeViewModel @Inject constructor(
                 isConnectionError = errorHandler is ErrorHandler.NoConnection,
             )
         }
-        effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
+
+        if (errorHandler is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
 
     override fun onClickProductItem(productId: Long) {
