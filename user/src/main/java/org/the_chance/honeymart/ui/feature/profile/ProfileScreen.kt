@@ -130,7 +130,7 @@ private fun ProfileContent(
                             )
                             .align(Alignment.Center)
                             .background(
-                                color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.primary else nullColor,
+                                color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.onTertiary else nullColor,
                                 shape = CircleShape
                             ),
                         contentScale = ContentScale.FillBounds,
