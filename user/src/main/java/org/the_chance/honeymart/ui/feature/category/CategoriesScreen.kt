@@ -124,11 +124,11 @@ fun CategoryContent(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CardChip(
-                            text = "${state.categoriesCount} Categories",
+                            text = state.categoriesCountState,
                             icon = painterResource(id = R.drawable.boxes)
                         )
                         CardChip(
-                            text = "${state.productsCount} Items",
+                            text = state.productsCountState,
                             icon = painterResource(id = R.drawable.box_minimalistic)
                         )
                     }
