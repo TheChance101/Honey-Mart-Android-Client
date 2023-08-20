@@ -155,4 +155,5 @@
     <string name="all_requests">All Requests</string>
     <string name="approved">Approved</string>
     <string name="new_requests">2 new requests</string>
+    <string name="approve">Approve</string>
 </resources>
