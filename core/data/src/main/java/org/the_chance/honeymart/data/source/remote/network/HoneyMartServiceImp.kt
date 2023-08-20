@@ -133,10 +133,11 @@ class HoneyMartServiceImp @Inject constructor(
             parameter("query", query)
         })
 
-    override suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto> =
+    override suspend fun loginUser(email: String, password: String, deviceToken:String ): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
+            append("deviceToken",deviceToken)
         }))
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =

@@ -18,7 +18,8 @@ class LoginUserUseCase @Inject constructor(
         } else if (passwordValidationState != ValidationState.VALID_PASSWORD) {
             passwordValidationState
         } else {
-            val response = authRepository.loginUser(email, password)
+            val deviceToken = authRepository.getDeviceToken()
+            val response = authRepository.loginUser(email, password,deviceToken)
             authRepository.saveToken(response.accessToken)
             ValidationState.SUCCESS
         }

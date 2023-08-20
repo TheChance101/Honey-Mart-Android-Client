@@ -83,7 +83,11 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
+    suspend fun loginUser(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<UserLoginDto>
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>
