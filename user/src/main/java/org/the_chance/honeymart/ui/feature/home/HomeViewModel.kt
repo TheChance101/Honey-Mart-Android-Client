@@ -186,10 +186,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    override fun onClickCategory(categoryId: Long, marketId: Long, position: Int) {
+    override fun onClickCategory(categoryId: Long, position: Int) {
         effectActionExecutor(
             _effect,
-            HomeUiEffect.NavigateToProductScreenEffect(categoryId, marketId, position)
+            HomeUiEffect.NavigateToProductScreenEffect(categoryId, state.value.selectedMarketId, position)
         )
     }
 

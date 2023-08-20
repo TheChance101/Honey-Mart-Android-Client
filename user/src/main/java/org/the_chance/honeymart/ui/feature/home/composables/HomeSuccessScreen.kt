@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -96,7 +97,8 @@ fun HomeContentSuccessScreen(
                 categories = state.categories,
                 selectedMarketId = state.selectedMarketId,
                 onChipClick = listener::onClickChipCategory,
-                onClickSeeAll = {}
+                onClickSeeAll = {},
+                oncClickCategory = listener::onClickCategory
             )
         }
 
@@ -259,6 +261,7 @@ private fun Categories(
     selectedMarketId: Long,
     onChipClick: (Long) -> Unit,
     onClickSeeAll: () -> Unit,
+    oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -283,12 +286,18 @@ private fun Categories(
             }
         }
         LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
-            items(categories, key = { it.categoryId }) {
-                HomeCategoriesItem(label = it.categoryName)
+            itemsIndexed(
+                categories,
+                key = { _, category -> category.categoryId }) { index, category ->
+                HomeCategoriesItem(
+                    label = category.categoryName,
+                    onClick = { oncClickCategory(category.categoryId, index) }
+                )
             }
         }
     }
 }
+
 
 @Composable
 private fun Markets(
@@ -356,7 +365,7 @@ private fun MarketsPager(
             )
         }
         HorizontalPagerIndicator(
-            itemCount = 3,
+            itemCount = if (markets.size > 3) 3 else markets.size,
             selectedPage = pagerState.currentPage,
         )
     }

@@ -15,7 +15,7 @@ interface HomeInteractionListener {
 
     fun onClickSearchBar()
 
-    fun onClickCategory(categoryId: Long, marketId: Long, position: Int)
+    fun onClickCategory(categoryId: Long, position: Int)
 
     fun onClickChipCategory(marketId: Long)
 }
