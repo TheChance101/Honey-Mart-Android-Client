@@ -280,7 +280,7 @@ private fun Categories(
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(visible = categories.isNotEmpty()) {
+    AnimatedVisibility(visible = markets.isNotEmpty()) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
