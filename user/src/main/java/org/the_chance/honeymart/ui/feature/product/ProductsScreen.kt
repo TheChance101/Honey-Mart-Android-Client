@@ -125,7 +125,6 @@ private fun ProductsContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                             state = rememberLazyListState()
                         ) {
-                            PagingStateVisibility(products)
                             items(products.itemCount) { index ->
                                 val product = products[index]
                                 if (product != null) {
@@ -145,6 +144,7 @@ private fun ProductsContent(
                                     )
                                 }
                             }
+                            PagingStateVisibility(products)
                         }
                     }
                 }

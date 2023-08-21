@@ -21,15 +21,10 @@ fun LazyListScope.PagingStateVisibility(products: LazyPagingItems<ProductUiState
         products.loadState.refresh is LoadState.Loading -> {
             item {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
                 ) {
                     CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(16.dp)
-                            .align(Alignment.Center)
+                        modifier = Modifier.size(64.dp).padding(16.dp).align(Alignment.Center)
                     )
                 }
             }
@@ -37,15 +32,10 @@ fun LazyListScope.PagingStateVisibility(products: LazyPagingItems<ProductUiState
         products.loadState.append is LoadState.Loading -> {
             item {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
                 ) {
                     CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(16.dp)
-                            .align(Alignment.Center)
+                        modifier = Modifier.size(64.dp).padding(16.dp).align(Alignment.Center)
                     )
                 }
             }
@@ -54,9 +44,7 @@ fun LazyListScope.PagingStateVisibility(products: LazyPagingItems<ProductUiState
             item {
                 Text(
                     text = "Error loading data.",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                     textAlign = TextAlign.Center
                 )
             }
