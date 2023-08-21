@@ -90,9 +90,9 @@ fun CategoriesContent(
                 CategoryItems(state = state, listener = listener)
 
                 AnimatedVisibility(
-                    visible = !state.isLoading &&
-                            !state.showScreenState.showUpdateCategory
-                            && state.showScreenState.showProductDetails
+                    visible = !state.isLoading
+                            && !state.showScreenState.showFab
+
                 ) {
                     CategoryProducts(state = state, listener = listener)
                 }
@@ -100,20 +100,31 @@ fun CategoriesContent(
             }
         //right
             Column(
-                modifier = Modifier.fillMaxSize().weight(1f)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
             ) {
                 AddCategoryContent(
                     listener = listener, state = state,
                 )
 
                 AnimatedVisibility(
-                    visible = !state.isLoading &&
-                            !state.showScreenState.showUpdateCategory
+                    visible = !state.isLoading
+                            && !state.showScreenState.showUpdateCategory
+                            && !state.showScreenState.showAddCategory
+                            && !state.showScreenState.showAddProduct
+                            && state.showScreenState.showFab
                 ) { CategoryProducts(state = state, listener = listener) }
 
                 UpdateCategoryContent(state = state, listener = listener)
 
-                AnimatedVisibility(visible = true)
+                AnimatedVisibility(
+                    visible = !state.isLoading
+                            && !state.showScreenState.showFab
+                            && state.showScreenState.showAddProduct
+                            && !state.showScreenState.showAddCategory
+                            && !state.showScreenState.showUpdateCategory
+                )
                 { AddProductContent(state = state, listener = listener) }
             }
         }

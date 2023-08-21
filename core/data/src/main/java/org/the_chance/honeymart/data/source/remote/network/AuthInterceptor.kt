@@ -16,7 +16,7 @@ class AuthInterceptor @Inject constructor(
             .newBuilder()
             .addHeader(API_KEY, BuildConfig.API_KEY)
             .addHeader(
-                AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDIxM2JkM2Q1IiwiUk9MRV9UWVBFIjoiTWFya2V0T3duZXIiLCJpc3MiOiJpby5rdG9yLnNlcnZlci5jb25maWcuTWFwQXBwbGljYXRpb25Db25maWdAM2IyZjRhOTMiLCJleHAiOjE2OTI1NTYwNzl9.hj0dJ4syY2Omc6VuNhTyzKtTd8eDzqzCPLgLpoiydCo"
+                AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDQyYjg0Mjg2IiwiUk9MRV9UWVBFIjoiTWFya2V0T3duZXIiLCJpc3MiOiJpby5rdG9yLnNlcnZlci5jb25maWcuTWFwQXBwbGljYXRpb25Db25maWdAM2NkOWFhNjQiLCJleHAiOjE2OTI2ODgxODYsInRva2VuVHlwZSI6ImFjY2Vzc1Rva2VuIn0.2z-nW_MQqqyiN2Kw1MbSRUBX40-1H-JheNiRWCoRdjU"
             )
             .build()
         return chain.proceed(newRequest)

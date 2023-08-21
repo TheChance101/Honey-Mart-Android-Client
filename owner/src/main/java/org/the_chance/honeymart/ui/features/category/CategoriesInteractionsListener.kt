@@ -23,4 +23,5 @@ interface CategoriesInteractionsListener {
     fun onProductDescriptionChanged(description: String)
     fun onImagesSelected(uris: List<ByteArray>)
     fun onClickRemoveSelectedImage(imageUri: ByteArray)
+    fun onClickAddProductButton()
 }

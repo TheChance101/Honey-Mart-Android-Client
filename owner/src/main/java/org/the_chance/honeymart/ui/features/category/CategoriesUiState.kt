@@ -46,7 +46,9 @@ data class ShowScreenState(
     val showProductDetails: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
-)
+    val showFab : Boolean = true ,
+
+    )
 
 data class SnackBarState(
     val isShow: Boolean = false,

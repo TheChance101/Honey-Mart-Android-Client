@@ -143,7 +143,7 @@ fun AddProductContent(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space24
             ),
-            isEnable = state.showButton(),
+//            isEnable = state.showButton(),
             label = stringResource(R.string.add),
             iconPainter = painterResource(R.drawable.icon_add_to_cart),
             onClick = { listener.addProduct(state) }

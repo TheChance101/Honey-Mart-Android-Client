@@ -32,13 +32,8 @@ import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun CategoryProductsScreen(viewModel: CategoriesViewModel = hiltViewModel()) {
-    CategoryProducts(listener = viewModel)
-}
-
-@Composable
 fun CategoryProducts(
-    state: CategoriesUiState = CategoriesUiState(),
+    state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
     Box(contentAlignment = Alignment.BottomEnd) {
@@ -104,15 +99,13 @@ fun CategoryProducts(
         }
 
         AddProductButton(
-            modifier = Modifier
-                .padding(bottom = MaterialTheme.dimens.space48, end = MaterialTheme.dimens.space48),
-            state = true
+            modifier = Modifier.padding(
+                bottom = MaterialTheme.dimens.space48,
+                end = MaterialTheme.dimens.space48
+            ),
+            state = state,
+            onClick = listener::onClickAddProductButton
         )
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun categoryProductPreview() {
-    CategoryProductsScreen()
 }

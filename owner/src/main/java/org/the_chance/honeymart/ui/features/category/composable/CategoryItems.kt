@@ -24,7 +24,8 @@ fun CategoryItems(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
-    AnimatedVisibility(visible = state.categories.isNotEmpty()) {
+    AnimatedVisibility(visible = state.categories.isNotEmpty()
+            && state.showScreenState.showFab) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

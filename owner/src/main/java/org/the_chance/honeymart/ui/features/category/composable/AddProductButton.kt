@@ -18,17 +18,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddProductButton(
+    state: CategoriesUiState,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    state: Boolean = false,
-    onClick: () -> Unit = {},
-) {
-    AnimatedVisibility(visible = state) {
+
+    ) {
+    AnimatedVisibility(visible = state.showScreenState.showFab) {
         Card(
             modifier = modifier.size(96.dp),
             shape = MaterialTheme.shapes.extraLarge,
@@ -55,5 +57,5 @@ fun AddProductButton(
 @Preview
 @Composable
 private fun addProductPreview() {
-    AddProductButton()
+//    AddProductButton()
 }

@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.category
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -254,12 +253,18 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onGetProductsSuccess(products: List<ProductEntity>) {
         _state.update {
-            it.copy(isLoading = false, products = products.toProductUiState())
+            it.copy(isLoading = false,error =null , products = products.toProductUiState())
         }
-        Log.i("mah", products.size.toString())
+        log("${products}")
+        log("success")
+        log("${products.toProductUiState()}")
+
+
     }
 
     private fun onGetProductsError(error: ErrorHandler) {
+        log("error")
+
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -293,7 +298,8 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null,
-                newProducts = it.newProducts.copy(id = product.productId)
+                newProducts = it.newProducts.copy(id = product.productId),
+                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true)
             )
         }
         addProductImage(productId = product.productId, images = _state.value.newProducts.images)
@@ -441,6 +447,15 @@ class CategoriesViewModel @Inject constructor(
             else -> ValidationState.VALID_TEXT_FIELD
         }
         return productNameState
+    }
+
+    override fun onClickAddProductButton() {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(showFab = false, showAddProduct = true)
+            )
+        }
+
     }
     // endregion
 
