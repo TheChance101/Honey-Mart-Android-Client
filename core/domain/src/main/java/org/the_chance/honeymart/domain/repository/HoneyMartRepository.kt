@@ -42,7 +42,7 @@ interface HoneyMartRepository {
     suspend fun updateProduct(
         id: Long,
         name: String,
-        price: Double,
+        price: String,
         description: String
     ): String
 
