@@ -6,7 +6,7 @@ import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoUiState
 data class SignupUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
-    val isSignUp: Boolean = false,
+    val isOwnerAccountCreated: Boolean = false,
 
     val marketInfoUiState: MarketInfoUiState = MarketInfoUiState(),
 

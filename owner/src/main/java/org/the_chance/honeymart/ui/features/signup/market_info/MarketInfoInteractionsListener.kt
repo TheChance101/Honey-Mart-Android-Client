@@ -8,5 +8,8 @@ interface MarketInfoInteractionsListener {
     fun onClickSendButton()
     fun onMarketNameInputChange(marketName: CharSequence)
     fun onMarketAddressInputChange(address: CharSequence)
-    fun onDescriptionInputChanged(description: CharSequence)
+    fun onMarketDescriptionInputChanged(description: CharSequence)
+    fun addMarketImage(image: ByteArray)
+    fun onImageSelected(uri: ByteArray)
+    fun onClickRemoveSelectedImage(imageUri: ByteArray)
 }

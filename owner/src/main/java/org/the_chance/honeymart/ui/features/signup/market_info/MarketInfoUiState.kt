@@ -8,12 +8,17 @@ import org.the_chance.honeymart.ui.features.signup.ValidationToast
 data class MarketInfoUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
-    val isMarketInfoAdded: Boolean = false,
+    val isMarketCreated: Boolean = false,
 
-    val marketName: FieldState = FieldState(),
-    val address: FieldState = FieldState(),
-    val description: FieldState = FieldState(),
-    val marketImage: FieldState = FieldState(),
+    val marketNameState: FieldState = FieldState(),
+    val marketAddressState: FieldState = FieldState(),
+    val marketDescriptionState: FieldState = FieldState(),
 
-    val validationToast: ValidationToast = ValidationToast()
+    val isMarketImageEmpty: Boolean = true,
+
+    val validationToast: ValidationToast = ValidationToast(),
+
+    val MAX_IMAGES: Int = 4,
+
+    val image: ByteArray = byteArrayOf(),
 )
