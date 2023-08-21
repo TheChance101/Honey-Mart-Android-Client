@@ -12,6 +12,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.the_chance.honeymart.data.BuildConfig
 import org.json.JSONObject
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
@@ -29,6 +30,7 @@ class AuthInterceptor @Inject constructor(
             .request()
             .newBuilder()
             .addHeader(AUTHORIZATION, "Bearer $accessToken")
+            .addHeader(API_KEY, BuildConfig.API_KEY)
             .build()
 
         val oldResponse = chain.proceed(oldRequest)
@@ -78,6 +80,7 @@ class AuthInterceptor @Inject constructor(
     }
 
     companion object {
+        private const val API_KEY = "apiKey"
         private const val AUTHORIZATION = "Authorization"
         private const val BASE_URL = "http://10.0.2.2:8080/"
     }

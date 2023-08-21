@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -35,12 +37,15 @@ fun HoneyTextField(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
-) {
+    color: Color,
+    keyboardOptions: KeyboardOptions =  KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search)
+    ) {
     Column {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.dimens.space16)
+                .padding(start = MaterialTheme.dimens.space16)
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
@@ -51,6 +56,7 @@ fun HoneyTextField(
                     style = Typography.displaySmall,
                 )
             },
+            keyboardOptions=keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -73,7 +79,7 @@ fun HoneyTextField(
                 Icon(
                     painter = iconPainter,
                     contentDescription = stringResource(R.string.copy_button),
-                    tint = if (isError) error else white200
+                    tint = if (isError) error else color
                 )
             },
             isError = isError,
@@ -101,7 +107,8 @@ fun TextFieldPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
+        color = white200
     )
 }
 
@@ -113,6 +120,7 @@ fun TextFieldTabletPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
+        color = white200
     )
 }

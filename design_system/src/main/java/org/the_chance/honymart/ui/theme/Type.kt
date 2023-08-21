@@ -7,34 +7,39 @@ import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
     headlineMedium = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
     ),
     displayMedium = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.Medium,
         fontSize = 20.sp,
     ),
     bodyMedium = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
     ),
     bodySmall = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
     ),
     displayLarge = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
     ),
     displaySmall = TextStyle(
-        fontFamily = poppines,
+        fontFamily = plusJakartaSans,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
+    ),
+    titleMedium = TextStyle(
+        fontFamily = plusJakartaSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 10.sp,
     ),
 
 )

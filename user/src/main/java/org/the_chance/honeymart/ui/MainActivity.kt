@@ -65,13 +65,14 @@ class MainActivity : AppCompatActivity() {
         val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
         val bottomBarScreens = listOf(
-            Screen.MarketScreen.route,
+            Screen.HomeScreen.route,
             Screen.CategoryScreenWithArgs.route,
             Screen.ProductScreenWithArgs.route,
             Screen.CartScreen.route,
             Screen.OrderScreen.route,
             Screen.OrderDetailsScreenWithArgs.route,
             Screen.WishListScreen.route,
+            Screen.HomeScreen.route,
         )
         when (navBackStackEntry?.destination?.route) {
             in bottomBarScreens -> {

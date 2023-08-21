@@ -2,9 +2,9 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
-import org.the_chance.honeymart.data.source.remote.mapper.toLoginEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.domain.model.LoginEntity
+import org.the_chance.honeymart.domain.model.UserLoginEntity
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
@@ -25,8 +25,8 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
 
 
-    override suspend fun loginUser(email: String, password: String): LoginEntity =
-        wrap { honeyMartService.loginUser(email, password) }.value?.toLoginEntity()
+    override suspend fun loginUser(email: String, password: String): UserLoginEntity =
+        wrap { honeyMartService.loginUser(email, password) }.value?.toUserLoginEntity()
             ?: throw NotFoundException()
 
     override suspend fun refreshToken(refreshToken: String): LoginEntity =

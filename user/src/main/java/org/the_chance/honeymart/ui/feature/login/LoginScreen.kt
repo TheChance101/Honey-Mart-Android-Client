@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,7 +35,6 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honeymart.util.collect
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
@@ -43,16 +43,16 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
-    lifecycleOwner.collect(viewModel.effect) { effect ->
-        effect.getContentIfHandled()?.let {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
             when (it) {
                 LoginUiEffect.ClickLoginEffect -> navController.popBackStack(
                     Screen.AuthenticationScreen.route,
@@ -113,6 +113,7 @@ fun LoginContent(
                 }
             }
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.email,
                 hint = stringResource(R.string.email),
                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -122,8 +123,10 @@ fun LoginContent(
                     ValidationState.INVALID_EMAIL -> "Invalid email"
                     else -> ""
                 },
+                color = white200
             )
             HoneyTextField(
+                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 text = state.password,
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -134,6 +137,7 @@ fun LoginContent(
                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                     else -> ""
                 },
+                color = white200
             )
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),

@@ -3,11 +3,15 @@ package org.the_chance.honeymart.data.source.remote.network
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
-import org.the_chance.honeymart.data.source.remote.models.LoginDto
+import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
+import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 /**
@@ -22,6 +26,8 @@ interface HoneyMartService {
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
     suspend fun deleteMarket(marketId: Long): BaseResponse<String>
+
+    suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto>
 
     //endregion Market
 
@@ -42,6 +48,8 @@ interface HoneyMartService {
 
     //region Products
     suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>>
+
+    suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 
     suspend fun getCategoriesForSpecificProduct(
         productId: Long,
@@ -71,10 +79,13 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
+    suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>>
+
+
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<LoginDto>
     suspend fun refreshToken(refreshToken: String) :BaseResponse<LoginDto>
+    suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>
@@ -145,4 +156,14 @@ interface HoneyMartService {
         productId: Long,
     ): BaseResponse<ProductDto>
     // endregion
+
+
+    // region Coupon
+    suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>>
+
+    suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>>
+    suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>>
+
+
+    // endregion Coupon
 }

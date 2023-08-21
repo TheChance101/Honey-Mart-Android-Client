@@ -24,7 +24,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 @Composable
 fun BottomBarUi(bottomNavState: MutableState<Boolean>) {
@@ -89,7 +89,7 @@ fun RowScope.AddItem(
             }
             when (screen) {
                 BottomBarItems.Home -> {
-                    navController.popBackStack(Screen.MarketScreen.route, false)
+                    navController.popBackStack(Screen.HomeScreen.route, false)
                 }
 
                 BottomBarItems.Cart -> {

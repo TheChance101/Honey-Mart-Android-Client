@@ -3,22 +3,22 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
+import org.the_chance.honeymart.domain.model.MarketDetailsEntity
+import org.the_chance.honeymart.domain.usecase.GetMarketDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val getAllCategories: GetAllCategoriesInMarketUseCase,
+    private val getMarketDetails: GetMarketDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CategoriesUiState, CategoryUiEffect>(CategoriesUiState()),
+) : BaseViewModel<MarketDetailsUiState, CategoryUiEffect>(MarketDetailsUiState()),
     CategoryInteractionListener {
 
     private val categoryArgs: CategoryArgs = CategoryArgs(savedStateHandle)
 
     override val TAG: String = this::class.java.simpleName
-
 
     init {
         onGetData()
@@ -37,24 +37,26 @@ class CategoryViewModel @Inject constructor(
                 position
             )
         )
-
     }
 
     private fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(categoryArgs.marketId.toLong()).map { it.toCategoryUiState() } },
+            { getMarketDetails(categoryArgs.marketId.toLong()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryUiState>) {
+    private fun onGetCategorySuccess(market: MarketDetailsEntity) {
         this._state.update {
             it.copy(
                 isLoading = false,
                 error = null,
-                categories = categories,
+                categories = market.categories.map { it.toCategoryUiState() },
+                imageUrl = market.imageUrl,
+                marketName = market.marketName,
+                address = market.address
             )
         }
     }
