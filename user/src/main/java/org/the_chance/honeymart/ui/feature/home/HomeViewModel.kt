@@ -2,24 +2,27 @@ package org.the_chance.honeymart.ui.feature.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
-import org.the_chance.honeymart.domain.usecase.GetAllProductsUSeCase
-import org.the_chance.honeymart.domain.usecase.GetAllUserCoupons
+import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
+import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.market.toMarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
-import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
@@ -27,60 +30,200 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllMarket: GetAllMarketsUseCase,
-    private val getAllUserCoupons: GetAllUserCoupons,
-    private val getAllRecentProducts: GetRecentProductsUseCase,
-    private val getAllDiscoverProducts: GetAllProductsUSeCase,
+    private val getAllMarkets: GetAllMarketsUseCase,
+    private val getAllCategoriesInMarket: GetAllCategoriesInMarketUseCase,
+    private val getCoupons: GetCouponsUseCase,
+    private val getRecentProducts: GetRecentProductsUseCase,
+    private val getAllDiscoverProducts: GetAllProductsUseCase,
     private val getAllOrders: GetAllOrdersUseCase,
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getAllWishList: GetAllWishListUseCase,
+    private val clipCouponsUseCase: ClipCouponUseCase,
+) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
-    ) :
-    BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
-
-    init {
-        getData()
-    }
-
     override fun getData() {
+        _state.update {
+            it.copy(isLoading = true, error = null, isConnectionError = false)
+        }
         getAllMarkets()
-        getCoupons()
+        getUserCoupons()
         getRecentProducts()
-        getAllDiscoverProducts()
-        getAllDoneOrders()
-        getWishListProducts(_state.value.discoverProducts)
-
+        getDoneOrders()
+        getDiscoverProducts()
+        getWishListProducts()
     }
 
-    override fun getAllDoneOrders() {
-        _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.PROCESSING, isError = false)
-        }
+    /// region Markets
+    private fun getAllMarkets() {
         tryToExecute(
-            { getAllOrders(OrderStates.PROCESSING.state) },
+            getAllMarkets::invoke,
+            ::onGetMarketSuccess,
+            ::onGetMarketError
+        )
+    }
+
+    private fun onGetMarketSuccess(markets: List<MarketEntity>) {
+        _state.update {
+            it.copy(markets = markets.map { market -> market.toMarketUiState() })
+        }
+
+        if (markets.isNotEmpty()) {
+            _state.update { it.copy(selectedMarketId = markets[0].marketId) }
+            getMarketCategories(markets[0].marketId)
+        }
+    }
+
+    private fun onGetMarketError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection,
+            )
+        }
+    }
+    /// endregion
+
+    /// region Categories
+    private fun getMarketCategories(marketId: Long) {
+        tryToExecute(
+            { getAllCategoriesInMarket(marketId) },
+            ::onGetAllCategoriesInMarketSuccess,
+            ::onGetAllCategoriesInMarketError
+        )
+    }
+
+    private fun onGetAllCategoriesInMarketSuccess(categories: List<CategoryEntity>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                categories = categories.map { category -> category.toCategoryUiState() }
+            )
+        }
+    }
+
+    private fun onGetAllCategoriesInMarketError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection,
+            )
+        }
+    }
+    /// endregion
+
+    /// region Coupons
+    private fun getUserCoupons() {
+        tryToExecute(
+            { getCoupons.getUserCoupons() },
+            ::onGetCouponsSuccess,
+            ::onGetUserCouponsError
+        )
+    }
+
+    private fun onGetUserCouponsError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
+        }
+
+        if (error is ErrorHandler.UnAuthorizedUser)
+            getAllValidCoupons()
+    }
+
+    private fun getAllValidCoupons() {
+        tryToExecute(
+            { getCoupons.getAllValidCoupons() },
+            ::onGetCouponsSuccess,
+            ::onGetAllValidCouponsError
+        )
+    }
+
+    private fun onGetAllValidCouponsError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
+        }
+    }
+
+    private fun onGetCouponsSuccess(coupons: List<CouponEntity>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                coupons = coupons.map { coupon -> coupon.toCouponUiState() }
+            )
+        }
+    }
+    /// endregion
+
+    /// region Recent Products
+    private fun getRecentProducts() {
+        tryToExecute(
+            getRecentProducts::invoke,
+            ::onGetRecentProductsSuccess,
+            ::onGetRecentProductsError,
+        )
+    }
+
+    private fun onGetRecentProductsSuccess(products: List<RecentProductEntity>) {
+        _state.update {
+            it.copy(
+                recentProducts = products.map { product -> product.toRecentProductUiState() }
+            )
+        }
+    }
+
+    private fun onGetRecentProductsError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
+        }
+    }
+    /// endregion
+
+    /// region Done Products
+
+    private fun getDoneOrders() {
+        tryToExecute(
+            { getAllOrders(OrderStates.DONE.state) },
             ::onGetDoneOrdersSuccess,
             ::onGetDoneOrdersError
         )
-
     }
 
     private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
         _state.update {
-            it.copy(isLoading = false, lastPurchases = orders.map { it.toOrderUiState() })
+            it.copy(
+                lastPurchases = orders.map { order -> order.toOrderUiState() })
         }
     }
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
         }
     }
+    /// endregion
 
-    override fun getAllDiscoverProducts() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+    /// region Discover Products
+
+    private fun getDiscoverProducts() {
         tryToExecute(
             getAllDiscoverProducts::invoke,
             ::onGetDiscoverProductsSuccess,
@@ -88,184 +231,156 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-
-    private fun onGetDiscoverProductsError(errorHandler: ErrorHandler) {
-
-    }
-
     private fun onGetDiscoverProductsSuccess(products: List<ProductEntity>) {
-
         _state.update {
             it.copy(
-                isLoading = false,
-                discoverProducts = products.map { it.toProductUiState() }
+                discoverProducts = products.map { product -> product.toProductUiState() }
             )
-
         }
     }
 
+    private fun onGetDiscoverProductsError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
+        }
+    }
+    /// endregion
 
-    private fun getRecentProducts() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+    /// region WishList Products
+
+    private fun getWishListProducts() {
         tryToExecute(
-            getAllRecentProducts::invoke,
-            ::onGetRecentProductsSuccess,
-            ::onGetRecentProductsError,
+            { getAllWishList().map { it.toWishListProductUiState() } },
+            { onGetWishListProductSuccess(it) },
+            { onGetWishListProductError(it) }
+        )
+
+    }
+
+    private fun onGetWishListProductSuccess(wishListProducts: List<WishListProductUiState>) {
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                isLoading = false,
+                discoverProducts =
+                _state.value.discoverProducts.map { product ->
+                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+                },
+                recentProducts = _state.value.recentProducts.map { product ->
+                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+                },
+            )
+        }
+    }
+
+    private fun onGetWishListProductError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection,
+            )
+        }
+    }
+    /// endregion
+
+    /// region Interactions
+
+    override fun onClickCategory(categoryId: Long, position: Int) {
+        effectActionExecutor(
+            _effect,
+            HomeUiEffect.NavigateToProductScreenEffect(
+                categoryId,
+                state.value.selectedMarketId,
+                position
+            )
         )
     }
-
-
-    fun onGetRecentProductsSuccess(products: List<GetRecentProductsEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                newProducts = products.map { it.toGetRecentProductUiState() }
-            )
-        }
-    }
-
-    fun onGetRecentProductsError(errorHandler: ErrorHandler) {
-
-    }
-
-
-    private fun getCoupons() {
-        _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
-            getAllUserCoupons::invoke,
-            ::onGetCouponsSuccess,
-            ::onGetCouponsError
-        )
-    }
-
-    private fun onGetCouponsError(errorHandler: ErrorHandler) {
-
-    }
-
-    private fun onGetCouponsSuccess(coupon: List<CouponEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                coupons = coupon.map { it.toCouponUiState() }
-            )
-        }
-    }
-
-
-    private fun getAllMarkets() {
-        _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
-            getAllMarket::invoke,
-            ::onGetMarketSuccess,
-            ::onGetMarketError
-        )
-    }
-
-
-    private fun onGetMarketSuccess(markets: List<MarketEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                markets = markets.map { it.toMarketUiState() }
-            )
-        }
-    }
-
-    private fun onGetMarketError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true, markets = emptyList()) }
-        }
-    }
-
 
     override fun onClickPagerItem(marketId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreenEffect(marketId))
     }
 
-    override fun onClickCouponClipped(couponId: Long) {
-        _state.value.coupons.find { it.couponId == couponId }?.let {
-            _state.update {
-                it.copy(
-                    coupons = it.coupons.map { coupon ->
-                        if (coupon.couponId == couponId) {
-                            coupon.copy(isClipped = !coupon.isClipped)
-                        } else {
-                            coupon
-                        }
-                    }
-                )
-            }
+    override fun onClickGetCoupon(couponId: Long) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { clipCouponsUseCase(couponId) },
+            { onClipCouponSuccess() },
+            ::onClipCouponError
+        )
+    }
+
+    private fun onClipCouponSuccess() {
+        getUserCoupons()
+    }
+
+    private fun onClipCouponError(errorHandler: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = errorHandler,
+                isConnectionError = errorHandler is ErrorHandler.NoConnection,
+            )
         }
+
+        if (errorHandler is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
 
     override fun onClickProductItem(productId: Long) {
-        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductScreenEffect(productId))
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToProductsDetailsScreenEffect(productId))
     }
 
     override fun onClickFavoriteDiscoverProduct(productId: Long) {
-        _state.value.discoverProducts.find { it.productId == productId }?.let {
-            _state.update {
-                it.copy(
-                    discoverProducts = it.discoverProducts.map { product ->
-                        if (product.productId == productId) {
-                            product.copy(isFavorite = !product.isFavorite)
-                        } else {
-                            product
-                        }
-                    }
-                )
-            }
-        }
-        addProductToWishList(productId)
-        getWishListProducts(_state.value.discoverProducts)
+        _state.update { it.copy(isLoading = true) }
+        if (_state.value.discoverProducts.find { it.productId == productId }?.isFavorite == false)
+            addProductToWishList(productId)
+        else
+            deleteProductFromWishList(productId)
     }
 
     override fun onClickSearchBar() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
     }
 
+    override fun onClickChipCategory(marketId: Long) {
+        _state.update { it.copy(selectedMarketId = marketId, isLoading = true) }
+        getMarketCategories(marketId)
+    }
+
     override fun onClickFavoriteNewProduct(productId: Long) {
-        _state.value.newProducts.find { it.newProductId == productId }?.let {
-            _state.update {
-                it.copy(
-                    newProducts = it.newProducts.map { product ->
-                        if (product.newProductId == productId) {
-                            product.copy(isFavorite = !product.isFavorite)
-                        } else {
-                            product
-                        }
-                    }
-                )
-            }
-        }
-        if (_state.value.newProducts.find { it.newProductId == productId }?.isFavorite == true)
+        _state.update { it.copy(isLoading = true) }
+        if (_state.value.recentProducts.find { it.productId == productId }?.isFavorite == false)
             addProductToWishList(productId)
         else
             deleteProductFromWishList(productId)
-
     }
-
 
     private fun addProductToWishList(productId: Long) {
         tryToExecute(
             { wishListOperationsUseCase.addToWishList(productId) },
-            ::onAddToWishListSuccess,
-            { onAddToWishListError(it, productId) }
+            { onAddToWishListSuccess() },
+            ::onAddToWishListError
         )
     }
 
-    private fun onDeleteWishListSuccess(successMessage: String) {
+    private fun onAddToWishListSuccess() {
+        _state.update { it.copy(isLoading = false) }
+        getWishListProducts()
     }
 
-    private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isError = true) }
-    }
+    private fun onAddToWishListError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
+            )
+        }
 
-    private fun onAddToWishListSuccess(successMessage: String) {
-    }
-
-    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
@@ -273,44 +388,26 @@ class HomeViewModel @Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
             { wishListOperationsUseCase.deleteFromWishList(productId) },
-            ::onDeleteWishListSuccess,
+            { onDeleteWishListSuccess() },
             ::onDeleteWishListError
         )
     }
 
-
-    private fun getWishListProducts(products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
-            { getAllWishList().map { it.toWishListProductUiState() } },
-            { onGetWishListProductSuccess(it, products) },
-            { onGetWishListProductError(it, products) }
-        )
-
+    private fun onDeleteWishListSuccess() {
+        _state.update { it.copy(isLoading = false) }
+        getWishListProducts()
     }
 
-    private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
-    ) {
-        _state.update { productsUiState ->
-            productsUiState.copy(
+    private fun onDeleteWishListError(error: ErrorHandler) {
+        _state.update {
+            it.copy(
                 isLoading = false,
-                discoverProducts = updateProducts(products, wishListProducts)
+                error = error,
+                isConnectionError = error is ErrorHandler.NoConnection
             )
         }
     }
-
-    private fun updateProducts(
-        products: List<ProductUiState>,
-        wishListProducts: List<WishListProductUiState>,
-    ) = products.map { product ->
-        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-    }
-
-    private fun onGetWishListProductError(error: ErrorHandler, products: List<ProductUiState>) {
-        _state.update { it.copy(isLoading = false, error = error, discoverProducts = products) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
+    /// endregion
 }
+
+

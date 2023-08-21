@@ -2,6 +2,7 @@ package org.the_chance.honymart.ui.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -16,6 +17,7 @@ fun ImageNetwork(
     imageUrl: String,
     contentDescription: String = "",
     contentScale: ContentScale = ContentScale.Crop,
+    colorFilter: ColorFilter? = null
 ) {
 
     AsyncImage(
@@ -23,10 +25,11 @@ fun ImageNetwork(
             .data(imageUrl)
             .crossfade(true)
             .build(),
+        colorFilter = colorFilter,
         placeholder = painterResource(R.drawable.loading),
         contentDescription = contentDescription,
         contentScale = contentScale,
-        modifier = modifier
+        modifier = modifier,
     )
 
 

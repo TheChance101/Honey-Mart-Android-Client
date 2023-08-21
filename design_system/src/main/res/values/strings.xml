@@ -123,4 +123,14 @@
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
     <string name="shop_details">shop details</string>
+    <string name="no_deal">No. Deal</string>
+    <string name="price">Price</string>
+    <string name="offer_price">Offer Price</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="get_coupon">Get coupon</string>
+    <string name="product_image">Product Image</string>
+    <string name="coupon_code">Coupon Code</string>
+    <string name="market_image">Market Image</string>
+    <string name="product_item">Product Item</string>
+    <string name="search">Search</string>
 </resources>

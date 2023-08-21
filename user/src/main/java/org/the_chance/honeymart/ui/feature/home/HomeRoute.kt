@@ -1,9 +1,8 @@
-package org.the_chance.honeymart.ui.feature.market
+package org.the_chance.honeymart.ui.feature.home
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import org.the_chance.honeymart.ui.feature.home.HomeScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.HomeScreen.route
