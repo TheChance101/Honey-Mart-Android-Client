@@ -18,14 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.DropDownMenuList
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.CategoriesViewModel
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
@@ -93,6 +90,7 @@ fun CategoryProducts(
                         imageUrl = state.products[index].productImage,
                         productName = state.products[index].productName,
                         productPrice = state.products[index].productPrice,
+                        descrption = state.products[index].productsQuantity
                     )
                 }
             }

@@ -30,10 +30,11 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    imageUrl: String,
-    productName: String,
-    productPrice: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageUrl: String = "",
+    productName: String = "",
+    productPrice: String = "",
+    descrption: String = "",
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -46,7 +47,6 @@ fun ProductCard(
                 .clip(CircleShape),
             imageUrl = imageUrl
         )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -76,7 +76,10 @@ fun ProductCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
 
-
+                        Text(
+                            text = descrption,
+                            style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
+                        )
                     }
 
                 }
@@ -86,9 +89,6 @@ fun ProductCard(
                     color = blackOn60
                 )
             }
-
-
-       // }
     }
 }
 

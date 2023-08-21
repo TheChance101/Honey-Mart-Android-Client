@@ -110,6 +110,7 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
             productName = it.productName,
             productImage = it.productImages.first(),
             productPrice = "${it.ProductPrice}$",
+            productsQuantity = it.productDescription
         )
     }
 }
