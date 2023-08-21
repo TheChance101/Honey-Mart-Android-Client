@@ -15,7 +15,7 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<MarketEntity>?
-     suspend fun clipCoupon(couponId: Long)
+    suspend fun clipCoupon(couponId: Long): Boolean
     suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?
@@ -25,7 +25,7 @@ interface HoneyMartRepository {
     suspend fun getWishList(): List<WishListEntity>
     suspend fun getCart(): CartEntity
 
-    suspend fun addToCart(productId: Long,count:Int): String
+    suspend fun addToCart(productId: Long, count: Int): String
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 

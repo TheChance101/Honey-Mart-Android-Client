@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,39 +14,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ProductItem(
-    modifier: Modifier = Modifier,
-    isFavoriteIconClicked: Boolean,
-    onClickFavorite: () -> Unit,
-    enable: Boolean = true,
     productName: String,
     productPrice: String,
     imageUrl: String,
+    isFavoriteIconClicked: Boolean,
     onClick: () -> Unit,
+    onClickFavorite: () -> Unit,
+    modifier: Modifier = Modifier,
+    enable: Boolean = true,
 ) {
     Box(
         modifier = modifier
-            .size(width = 160.dp, height = 136.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable { onClick() },
+            .size(
+                width = MaterialTheme.dimens.heightItemMarketCard,
+                height = MaterialTheme.dimens.widthItemMarketCard
+            )
+            .clip(RoundedCornerShape(MaterialTheme.dimens.space16))
+            .clickable { onClick() }
     )
     {
         ImageNetwork(
             imageUrl = imageUrl,
             contentDescription = stringResource(R.string.product_item),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         IconButton(
@@ -69,6 +76,21 @@ fun ProductItem(
                 contentDescription = stringResource(R.string.favorite_icon),
             )
         }
+
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            blackOn87,
+                        ),
+                        startY = 50f,
+                    )
+                )
+        )
+
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -83,9 +105,23 @@ fun ProductItem(
             )
             Text(
                 text = productPrice,
-                style = Typography.displayLarge.copy(white)
+                style = MaterialTheme.typography.displayLarge.copy(white)
             )
-
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProductItemPreview() {
+    HoneyMartTheme {
+        ProductItem(
+            isFavoriteIconClicked = false,
+            onClickFavorite = {},
+            productName = "Product Name",
+            productPrice = "Rp 100.000",
+            imageUrl = "https://picsum.photos/200/300",
+            onClick = {}
+        )
     }
 }

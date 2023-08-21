@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,12 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.design_system.R
-
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun LastPurchasesItems(
@@ -34,8 +36,11 @@ fun LastPurchasesItems(
 ) {
     Box(
         modifier = modifier
-            .size(width = 149.dp, height = 152.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .size(
+                width = MaterialTheme.dimens.widthItemLastPurchases,
+                height = MaterialTheme.dimens.heightItemMarketCard
+            )
+            .clip(RoundedCornerShape(MaterialTheme.dimens.space16))
             .clickable { onClick() }
     ) {
         Column {
@@ -48,7 +53,7 @@ fun LastPurchasesItems(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(topStart = 16.dp))
+                        .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.space16))
                         .background(color = Color.Red)
                 )
                 ImageNetwork(
@@ -57,7 +62,7 @@ fun LastPurchasesItems(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(topEnd = 16.dp))
+                        .clip(RoundedCornerShape(topEnd = MaterialTheme.dimens.space16))
                         .background(color = Color.Green)
                 )
             }
@@ -70,7 +75,7 @@ fun LastPurchasesItems(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(bottomStart = 16.dp))
+                        .clip(RoundedCornerShape(bottomStart = MaterialTheme.dimens.space16))
                         .background(color = Color.Blue)
                 )
                 ImageNetwork(
@@ -79,12 +84,12 @@ fun LastPurchasesItems(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
-                        .clip(RoundedCornerShape(bottomEnd = 16.dp))
+                        .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16))
                         .background(color = Color.Yellow)
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space8))
 
             Text(
                 text = label,
@@ -94,6 +99,18 @@ fun LastPurchasesItems(
             )
 
         }
+    }
+}
+
+@Preview
+@Composable
+fun LastPurchasesItemsPreview() {
+    HoneyMartTheme {
+        LastPurchasesItems(
+            image = "",
+            label = "Last Purchases",
+            onClick = {}
+        )
     }
 }
 

@@ -4,9 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,10 +35,10 @@ import kotlin.math.sin
 
 @Composable
 fun HomeCategoriesItem(
-    imageUrl: String = "",
     onClick: () -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    imageUrl: String = "",
 ) {
     val colors = MaterialTheme.colorScheme
     Column(
@@ -61,8 +60,7 @@ fun HomeCategoriesItem(
                     )
                 }
             }
-            .width(130.dp)
-            .height(120.dp),
+            .size(MaterialTheme.dimens.widthItemMarketCard),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
