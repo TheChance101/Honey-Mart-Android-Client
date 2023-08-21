@@ -31,7 +31,7 @@ class CouponImageShape(
     }
 }
 
-fun couponImageShape(
+private fun couponImageShape(
     size: Size,
     middleNotchRadius: Float,
     sideNotchGap: Float,

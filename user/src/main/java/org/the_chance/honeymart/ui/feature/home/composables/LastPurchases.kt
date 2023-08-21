@@ -16,21 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.design_system.R
 
 
-@Preview
 @Composable
 fun LastPurchasesItems(
+    image: String,
+    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    image: String = "",
-    label: String = "blah blah blah",
-    onClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -44,7 +44,7 @@ fun LastPurchasesItems(
             ) {
                 ImageNetwork(
                     imageUrl = image,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.market_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
@@ -53,7 +53,7 @@ fun LastPurchasesItems(
                 )
                 ImageNetwork(
                     imageUrl = image,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.market_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
@@ -66,7 +66,7 @@ fun LastPurchasesItems(
             ) {
                 ImageNetwork(
                     imageUrl = image,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.market_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)
@@ -75,7 +75,7 @@ fun LastPurchasesItems(
                 )
                 ImageNetwork(
                     imageUrl = image,
-                    contentDescription = "",
+                    contentDescription = stringResource(id = R.string.market_image),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .weight(1f)

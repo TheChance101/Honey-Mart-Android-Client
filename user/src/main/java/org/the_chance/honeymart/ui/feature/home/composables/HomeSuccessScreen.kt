@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,14 +23,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
@@ -43,7 +40,6 @@ import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -53,123 +49,115 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
-    Box {
-        Loading(state = state.isLoading)
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
-            columns = GridCells.Fixed(2)
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+        contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
+        columns = GridCells.Fixed(2)
+    ) {
+
+        item(span = { GridItemSpan(2) })
+        {
+            MarketsPager(
+                markets = state.markets,
+                pagerState = pagerState,
+                onClickPagerItem = listener::onClickPagerItem
+            )
+        }
+
+        item(
+            span = { GridItemSpan(2) },
         ) {
+            SearchBar(
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(top = MaterialTheme.dimens.space8),
+                icon = painterResource(id = R.drawable.ic_search),
+                onClick = listener::onClickSearchBar
+            )
+        }
 
-            item(span = { GridItemSpan(2) })
-            {
-                MarketsPager(
-                    markets = state.markets,
-                    pagerState = pagerState,
-                    onClickPagerItem = listener::onClickPagerItem
-                )
-            }
+        item(
+            span = { GridItemSpan(2) },
+        ) {
+            Markets(
+                markets = state.markets,
+                onClickMarket = listener::onClickPagerItem,
+                onClickSeeAll = {}
+            )
+        }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                SearchBar(
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.dimens.space16)
-                        .padding(top = MaterialTheme.dimens.space8),
-                    icon = painterResource(id = R.drawable.ic_search),
-                    onClick = listener::onClickSearchBar
-                )
-            }
+        item(
+            span = { GridItemSpan(2) },
+        ) {
+            Categories(
+                markets = state.markets,
+                categories = state.categories,
+                selectedMarketId = state.selectedMarketId,
+                onChipClick = listener::onClickChipCategory,
+                onClickSeeAll = {},
+                oncClickCategory = listener::onClickCategory
+            )
+        }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                Markets(
-                    markets = state.markets,
-                    onClickMarket = listener::onClickPagerItem,
-                    onClickSeeAll = {}
-                )
-            }
+        item(
+            span = { GridItemSpan(2) },
+        ) {
+            Coupons(
+                coupons = state.coupons,
+                onClickCoupon = listener::onClickGetCoupon
+            )
+        }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                Categories(
-                    markets = state.markets,
-                    categories = state.categories,
-                    selectedMarketId = state.selectedMarketId,
-                    onChipClick = listener::onClickChipCategory,
-                    onClickSeeAll = {},
-                    oncClickCategory = listener::onClickCategory
-                )
-            }
+        item(
+            span = { GridItemSpan(2) },
+        ) {
+            RecentProducts(
+                recentProducts = state.recentProducts,
+                onClickRecentProduct = listener::onClickProductItem,
+                onClickFavorite = listener::onClickFavoriteNewProduct
+            )
+        }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                Coupons(
-                    coupons = state.coupons,
-                    onClickCoupon = listener::onClickCouponClipped
-                )
-            }
+        item(
+            span = { GridItemSpan(2) },
+        ) {
+            LastPurchases(
+                lastPurchases = state.lastPurchases,
+                onClickProduct = listener::onClickProductItem,
+                onClickSeeAll = {}
+            )
+        }
 
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                RecentProducts(
-                    recentProducts = state.recentProducts,
-                    onClickRecentProduct = listener::onClickProductItem,
-                    onClickFavorite = listener::onClickFavoriteNewProduct
-                )
-            }
-
-            item(
-                span = { GridItemSpan(2) },
-            ) {
-                LastPurchases(
-                    lastPurchases = state.lastPurchases,
-                    onClickProduct = listener::onClickProductItem,
-                    onClickSeeAll = {}
-                )
-            }
-
-            item(span = { GridItemSpan(2) }) {
-                AnimatedVisibility(visible = state.discoverProducts.isNotEmpty()) {
-                    Text(
-                        text = stringResource(R.string.discover_products),
-                        style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                    )
-                }
-            }
-
-            itemsIndexed(
-                items = state.discoverProducts,
-                key = { _, item -> item.productId }) { index, discoverProduct ->
-                ProductItem(
-                    modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
-                    else Modifier.padding(end = MaterialTheme.dimens.space16),
-                    productName = discoverProduct.productName,
-                    productPrice = discoverProduct.productPrice.toString(),
-                    imageUrl = discoverProduct.productImages.takeIf { it.isNotEmpty() }
-                        ?.get(0) ?: "",
-                    onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
-                    onClick = { listener.onClickProductItem(discoverProduct.productId) },
-                    isFavoriteIconClicked = discoverProduct.isFavorite
+        item(span = { GridItemSpan(2) }) {
+            AnimatedVisibility(visible = state.discoverProducts.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.discover_products),
+                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 )
             }
         }
-    }
 
-    LaunchedEffect(key1 = state.markets.isNotEmpty()) {
-        while (true) {
-            delay(3000)
-            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
+        itemsIndexed(
+            items = state.discoverProducts,
+            key = { _, item -> item.productId }) { index, discoverProduct ->
+            ProductItem(
+                modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
+                else Modifier.padding(end = MaterialTheme.dimens.space16),
+                productName = discoverProduct.productName,
+                productPrice = discoverProduct.productPrice.toString(),
+                imageUrl = discoverProduct.productImages.takeIf { it.isNotEmpty() }
+                    ?.get(0) ?: "",
+                onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
+                onClick = { listener.onClickProductItem(discoverProduct.productId) },
+                isFavoriteIconClicked = discoverProduct.isFavorite
+            )
         }
     }
+
+
 }
 
 
@@ -380,7 +368,7 @@ private fun MarketsPager(
         ) {
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
-                contentDescription = "Market Image",
+                contentDescription = stringResource(id = R.string.market_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()

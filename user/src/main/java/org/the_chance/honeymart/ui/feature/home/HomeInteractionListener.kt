@@ -5,7 +5,7 @@ interface HomeInteractionListener {
 
     fun onClickPagerItem(marketId: Long)
 
-    fun onClickCouponClipped(couponId: Long)
+    fun onClickGetCoupon(couponId: Long)
 
     fun onClickProductItem(productId: Long)
 
