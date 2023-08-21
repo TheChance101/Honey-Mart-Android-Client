@@ -6,9 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,14 +27,16 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyCategoriesPlaceholder(state: Boolean){
+fun EmptyCategoriesPlaceholder(state: Boolean) {
     HoneyMartTheme {
         AnimatedVisibility(
             visible = state,
             enter = fadeIn(
-                animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
+                animationSpec = tween(durationMillis = 500)
+            ) + scaleIn(),
             exit = fadeOut(
-                animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
+                animationSpec = tween(durationMillis = 500)
+            )
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -64,6 +63,6 @@ fun EmptyCategoriesPlaceholder(state: Boolean){
 
 @Preview
 @Composable
-fun PreviewEmptyCategoriesScaffold(){
+fun PreviewEmptyCategoriesScaffold() {
     EmptyCategoriesPlaceholder(true)
 }

@@ -15,9 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
@@ -49,7 +50,7 @@ fun CustomChip(
             ),
             text = text,
             color = if (state) white else primary100,
-            style = Typography.displayLarge
+            style = MaterialTheme.typography.displaySmall.copy(baselineShift = BaselineShift(0.3f))
         )
     }
 }
@@ -57,11 +58,13 @@ fun CustomChip(
 @Preview
 @Composable
 fun PreviewCustomChip() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        CustomChip(state = true, text = "Processing", onClick = { })
-        CustomChip(state = false, text = "Done", onClick = { })
-        CustomChip(state = false, text = "Cancel", onClick = { })
+    HoneyMartTheme {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            CustomChip(state = true, text = "Processing", onClick = { })
+            CustomChip(state = false, text = "Done", onClick = { })
+            CustomChip(state = false, text = "Cancel", onClick = { })
+        }
     }
 }

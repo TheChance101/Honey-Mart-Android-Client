@@ -77,65 +77,66 @@ fun OrdersContent(
 ) {
     AppBarScaffold {
         Loading(state = state.firstLoading())
-
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = listener::getAllPendingOrders
         )
-        EmptyOrdersPlaceholder(
-            state = state.emptyOrdersPlaceHolder(),
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.placeholder_title),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
-        )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = MaterialTheme.dimens.space24)
-        ) {
-            LazyRow(
+        ContentVisibility(state = !state.isError && !state.isLoading) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+                    .fillMaxSize()
+                    .padding(top = MaterialTheme.dimens.space24)
             ) {
-                item {
-                    CustomChip(
-                        state = state.pending(),
-                        text = stringResource(id = R.string.Pending),
-                        onClick = listener::getAllPendingOrders
-                    )
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+                ) {
+                    item {
+                        CustomChip(
+                            state = state.pending(),
+                            text = stringResource(id = R.string.Pending),
+                            onClick = listener::getAllPendingOrders
+                        )
+                    }
+                    item {
+                        CustomChip(
+                            state = state.processing(),
+                            text = stringResource(id = R.string.processing),
+                            onClick = listener::getAllProcessingOrders
+                        )
+                    }
+                    item {
+                        CustomChip(
+                            state = state.done(),
+                            text = stringResource(id = R.string.done),
+                            onClick = listener::getAllDoneOrders
+                        )
+                    }
+                    item {
+                        CustomChip(
+                            state = state.cancelledByUser(),
+                            text = stringResource(id = R.string.cancelled),
+                            onClick = listener::getAllCancelledOrdersByUser
+                        )
+                    }
+                    item {
+                        CustomChip(
+                            state = state.cancelledByOwner(),
+                            text = stringResource(id = R.string.declined),
+                            onClick = listener::getAllCancelledOrdersByOwner
+                        )
+                    }
                 }
-                item {
-                    CustomChip(
-                        state = state.processing(),
-                        text = stringResource(id = R.string.processing),
-                        onClick = listener::getAllProcessingOrders
-                    )
-                }
-                item {
-                    CustomChip(
-                        state = state.done(),
-                        text = stringResource(id = R.string.done),
-                        onClick = listener::getAllDoneOrders
-                    )
-                }
-                item {
-                    CustomChip(
-                        state = state.cancelledByUser(),
-                        text = stringResource(id = R.string.cancelled),
-                        onClick = listener::getAllCancelledOrdersByUser
-                    )
-                }
-                item {
-                    CustomChip(
-                        state = state.cancelledByOwner(),
-                        text = stringResource(id = R.string.declined),
-                        onClick = listener::getAllCancelledOrdersByOwner
-                    )
-                }
+                EmptyOrdersPlaceholder(
+                    state = state.emptyOrdersPlaceHolder(),
+                    image = R.drawable.placeholder_order,
+                    title = stringResource(R.string.placeholder_title),
+                    subtitle = stringResource(R.string.placeholder_subtitle),
+                    onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
+                )
             }
 
             ContentVisibility(state = state.screenContent()) {
