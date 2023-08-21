@@ -58,7 +58,7 @@ class ProductDetailsViewModel @Inject constructor(
                 updateProductDetailsUseCase(
                     id = product.id,
                     name = product.productName,
-                    price = product.productPrice,
+                    price = product.productPrice.toDouble(),
                     description = product.productDescription,
                 )
             },

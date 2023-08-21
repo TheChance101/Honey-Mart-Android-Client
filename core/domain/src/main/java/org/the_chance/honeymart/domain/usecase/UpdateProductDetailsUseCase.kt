@@ -9,7 +9,7 @@ class UpdateProductDetailsUseCase @Inject constructor(
     suspend operator fun invoke(
         id: Long,
         name: String,
-        price: String,
+        price: Double,
         description: String
     ): String {
         return honeyMartRepository.updateProduct(id, name, price, description)
