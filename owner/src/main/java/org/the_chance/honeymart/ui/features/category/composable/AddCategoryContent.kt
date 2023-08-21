@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.category.composable
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,24 +38,19 @@ fun AddCategoryContent(
     listener: CategoriesInteractionsListener,
     state: CategoriesUiState,
 ) {
-    AnimatedVisibility(
-        visible = state.showScreenState.showAddCategory,
+
+    Box(
         modifier = Modifier
+            .fillMaxSize()
+            .background(white)
             .padding(
-                end = MaterialTheme.dimens.space16,
-                bottom = MaterialTheme.dimens.space16
+                end = MaterialTheme.dimens.space16, bottom = MaterialTheme.dimens.space16
             )
             .clip(
                 RoundedCornerShape(
-                    topEnd = MaterialTheme.dimens.space16,
-                    topStart = MaterialTheme.dimens.space16
+                    topEnd = MaterialTheme.dimens.space16, topStart = MaterialTheme.dimens.space16
                 )
             )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(white)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
@@ -133,4 +127,4 @@ fun AddCategoryContent(
             )
         }
     }
-}
+

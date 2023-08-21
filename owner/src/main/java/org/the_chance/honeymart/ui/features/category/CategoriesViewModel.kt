@@ -119,7 +119,9 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onDeleteCategorySuccess() {
-        _state.update { it.copy(isLoading = false, error = null, position = 0) }
+        _state.update { it.copy(isLoading = false, error = null, position = 0,
+        showScreenState = it.showScreenState
+            .copy(showFab = true , showAddProduct = false)) }
         getAllCategory()
 
     }
@@ -152,6 +154,7 @@ class CategoriesViewModel @Inject constructor(
                     categoryIconState.copy(isSelected = false)
                 },
                 snackBar = it.snackBar.copy(isShow = true, message = success),
+                showScreenState = it.showScreenState.copy(showFab = true)
             )
         }
         getAllCategory()
@@ -225,6 +228,7 @@ class CategoriesViewModel @Inject constructor(
                 categoryIcons = it.categoryIcons.map { categoryIconState ->
                     categoryIconState.copy(isSelected = false)
                 },
+                showScreenState = it.showScreenState.copy(showFab = true)
 
                 )
         }
@@ -256,16 +260,11 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false,error =null , products = products.toProductUiState())
         }
-        log("${products}")
-        log("success")
-        log("${products.toProductUiState()}")
 
 
     }
 
     private fun onGetProductsError(error: ErrorHandler) {
-        log("error")
-
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -330,9 +329,11 @@ class CategoriesViewModel @Inject constructor(
                     description = "",
                     price = " ",
                     images = emptyList(),
-                )
+                ),
             )
         }
+        val categoryId = _state.value.newCategory.categoryId
+        getProductsByCategoryId(categoryId =categoryId)
     }
 
     private fun onAddProductImagesError(errorHandler: ErrorHandler) {

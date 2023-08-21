@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.category.composable
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +40,6 @@ fun UpdateCategoryContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener
 ) {
-    AnimatedVisibility(visible = state.showScreenState.showUpdateCategory) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -50,8 +48,7 @@ fun UpdateCategoryContent(
             Column(
                 modifier = Modifier
                     .padding(
-                        end = MaterialTheme.dimens.space16,
-                        bottom = MaterialTheme.dimens.space16
+                        end = MaterialTheme.dimens.space16, bottom = MaterialTheme.dimens.space16
                     )
                     .fillMaxSize()
                     .background(
@@ -129,6 +126,6 @@ fun UpdateCategoryContent(
             }
         }
     }
-}
+
 
 

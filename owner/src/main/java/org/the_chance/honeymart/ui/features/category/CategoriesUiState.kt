@@ -146,4 +146,21 @@ fun NewProductsUiState.showButton(): Boolean {
 
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+fun CategoriesUiState.showAddProductContent () =
+    !isLoading
+            && !showScreenState.showFab
+            && showScreenState.showAddProduct
+            && !showScreenState.showAddCategory
+            && !showScreenState.showUpdateCategory
+fun CategoriesUiState.showCategoryProductsInProduct() =
+    !isLoading
+            && !showScreenState.showUpdateCategory
+            && !showScreenState.showAddCategory
+            && !showScreenState.showAddProduct
+            && showScreenState.showFab
+
+fun CategoriesUiState.showEmptyPlaceHolder() =categories.isEmpty()
+        && !isLoading && !isError
+fun CategoriesUiState.showCategoryProductsInCategory()= !this.isLoading
+        && !showScreenState.showFab
 // endregion

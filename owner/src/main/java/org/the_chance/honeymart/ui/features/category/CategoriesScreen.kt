@@ -68,7 +68,7 @@ fun CategoriesContent(
                     .weight(1f)
             ) {
                 EmptyCategory(
-                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    state = state.showEmptyPlaceHolder(),
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
             }
@@ -76,12 +76,17 @@ fun CategoriesContent(
 
 
         Row(modifier = Modifier.fillMaxSize()) {
-        //left
+            Loading(state = state.isLoading && state.categories.isNotEmpty())
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
+                Loading(
+                    state = state.isLoading && state.categories.isNotEmpty() &&
+                            state.showScreenState.showFab
+                )
+
                 EmptyCategory(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
@@ -89,43 +94,34 @@ fun CategoriesContent(
 
                 CategoryItems(state = state, listener = listener)
 
-                AnimatedVisibility(
-                    visible = !state.isLoading
-                            && !state.showScreenState.showFab
-
-                ) {
-                    CategoryProducts(state = state, listener = listener)
-                }
+                AnimatedVisibility(visible = state.showCategoryProductsInCategory())
+                { CategoryProducts(state = state, listener = listener) }
 
             }
-        //right
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                AddCategoryContent(
-                    listener = listener, state = state,
-                )
+                AnimatedVisibility(visible = state.showScreenState.showAddCategory)
+                {
+                    AddCategoryContent(listener = listener, state = state)
+                }
 
-                AnimatedVisibility(
-                    visible = !state.isLoading
-                            && !state.showScreenState.showUpdateCategory
-                            && !state.showScreenState.showAddCategory
-                            && !state.showScreenState.showAddProduct
-                            && state.showScreenState.showFab
-                ) { CategoryProducts(state = state, listener = listener) }
+                AnimatedVisibility(visible = state.showCategoryProductsInProduct())
+                {
+                    CategoryProducts(state = state, listener = listener)
+                }
 
-                UpdateCategoryContent(state = state, listener = listener)
+                AnimatedVisibility(visible =state.showScreenState.showUpdateCategory)
+                {
+                    UpdateCategoryContent(state = state, listener = listener)
+                }
 
-                AnimatedVisibility(
-                    visible = !state.isLoading
-                            && !state.showScreenState.showFab
-                            && state.showScreenState.showAddProduct
-                            && !state.showScreenState.showAddCategory
-                            && !state.showScreenState.showUpdateCategory
-                )
-                { AddProductContent(state = state, listener = listener) }
+                AnimatedVisibility(visible = state.showAddProductContent())
+                {
+                    AddProductContent(state = state, listener = listener)
+                }
             }
         }
     }
