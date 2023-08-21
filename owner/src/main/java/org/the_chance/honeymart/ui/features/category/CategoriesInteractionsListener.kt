@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.category
 
+import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 
 /**
@@ -24,4 +25,10 @@ interface CategoriesInteractionsListener {
     fun onImagesSelected(uris: List<ByteArray>)
     fun onClickRemoveSelectedImage(imageUri: ByteArray)
     fun onClickAddProductButton()
+    fun onUpdateProductName(productName: String)
+    fun onUpdateProductPrice(productPrice: String)
+    fun onUpdateProductDescription(productDescription: String)
+    fun onUpdateProductImage(uris: List<ByteArray>)
+    fun updateProductDetails(product: ProductsDetailsUiState)
+    fun onClickProduct()
 }

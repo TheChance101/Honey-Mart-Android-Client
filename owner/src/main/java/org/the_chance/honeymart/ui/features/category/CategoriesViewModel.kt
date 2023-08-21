@@ -17,7 +17,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
-import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
 import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
 import javax.inject.Inject
 
@@ -38,7 +37,7 @@ class CategoriesViewModel @Inject constructor(
 
 
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
-    CategoriesInteractionsListener, ProductDetailsInteractionListener {
+    CategoriesInteractionsListener {
 
     override val TAG: String
         get() = this::class.simpleName.toString()
@@ -46,7 +45,6 @@ class CategoriesViewModel @Inject constructor(
 
     init {
         getCategoryImages()
-        getData()
     }
 
     // region Categories
@@ -289,7 +287,6 @@ class CategoriesViewModel @Inject constructor(
 
     // region Get Products
 
-
     override fun addProduct(product: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -429,10 +426,6 @@ class CategoriesViewModel @Inject constructor(
 
     // region Update Products
 
-
-    private fun getData() {
-        getProductDetails(28)
-    }
 
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
@@ -605,5 +598,18 @@ class CategoriesViewModel @Inject constructor(
         }
 
     }
+
+    override fun onClickProduct() {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showAddProduct = false,
+                    showFab = false,
+                    showProductDetails = true
+                )
+            )
+        }
+    }
+
     //endRegion
 }

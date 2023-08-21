@@ -93,10 +93,11 @@ fun CategoryProducts(
             ) {
                 items(state.products.size) { index ->
                     ProductCard(
+                        onClick = { listener.onClickProduct() },
                         imageUrl = state.products[index].productImage,
                         productName = state.products[index].productName,
                         productPrice = state.products[index].productPrice,
-                        descrption = state.products[index].productsQuantity
+                        description = state.products[index].productsQuantity
                     )
                 }
             }

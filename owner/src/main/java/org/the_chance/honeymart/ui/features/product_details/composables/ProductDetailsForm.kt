@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.features.product_details.composables
 
-import android.content.Context
-import android.net.Uri
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,27 +30,27 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
-import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
-import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
-private const val MAX_IMAGES = 4
+//private const val MAX_IMAGES = 4
 
 @Composable
-fun ProductDetailsContenet(
+fun ProductDetailsContent(
+    titleScreen:String,
+    confirmButton:String,
+    cancelButton:String,
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-//    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
-//        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
-//    )
+//    val context = LocalContext.current
+////    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+////        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
+////        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+////    )
 
     Column(
         modifier = modifier
@@ -66,7 +65,7 @@ fun ProductDetailsContenet(
             )
     ) {
         FormHeader(
-            title = stringResource(R.string.product_details),
+            title = titleScreen,
             iconPainter = painterResource(id = R.drawable.icon_add_product)
         )
         Column(
@@ -96,7 +95,7 @@ fun ProductDetailsContenet(
                 }
             )
             FormTextField(
-                text = state.productDetails.description,
+                text = state.productDetails.productsQuantity,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onUpdateProductDescription,
@@ -149,23 +148,23 @@ fun ProductDetailsContenet(
         ) {
             Spacer(modifier = Modifier.weight(1F))
             HoneyFilledButton(modifier = Modifier.width(146.dp),
-                label = stringResource(R.string.update), onClick = { /*TODO*/ })
-            HoneyOutlineButton(onClick = { /*TODO*/ }, label = stringResource(R.string.delete))
+                label = confirmButton, onClick = { /*TODO*/ })
+            HoneyOutlineButton(onClick = { /*TODO*/ }, label = cancelButton)
         }
     }
 }
 
-private fun handleImageSelection(
-    uris: List<Uri>,
-    context: Context,
-    state: ProductsUiState,
-    onImageSelected: (List<ByteArray>) -> Unit
-) {
-    val imageByteArrays = uris.mapNotNull { uri ->
-        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            inputStream.readBytes()
-        }
-    }
-    val updatedImages = state.images + imageByteArrays
-    onImageSelected(updatedImages)
-}
+//private fun handleImageSelection(
+//    uris: List<Uri>,
+//    context: Context,
+//    state: ProductsUiState,
+//    onImageSelected: (List<ByteArray>) -> Unit
+//) {
+//    val imageByteArrays = uris.mapNotNull { uri ->
+//        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+//            inputStream.readBytes()
+//        }
+//    }
+//    val updatedImages = state.images + imageByteArrays
+//    onImageSelected(updatedImages)
+//}

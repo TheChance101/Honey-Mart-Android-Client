@@ -26,6 +26,7 @@ import org.the_chance.honeymart.ui.features.category.composable.CategoryProducts
 import org.the_chance.honeymart.ui.features.category.composable.EmptyCategory
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.category.composable.UpdateCategoryContent
+import org.the_chance.honeymart.ui.features.product_details.composables.ProductDetailsContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
@@ -113,7 +114,7 @@ fun CategoriesContent(
                     CategoryProducts(state = state, listener = listener)
                 }
 
-                AnimatedVisibility(visible =state.showScreenState.showUpdateCategory)
+                AnimatedVisibility(visible = state.showScreenState.showUpdateCategory)
                 {
                     UpdateCategoryContent(state = state, listener = listener)
                 }
@@ -121,6 +122,26 @@ fun CategoriesContent(
                 AnimatedVisibility(visible = state.showAddProductContent())
                 {
                     AddProductContent(state = state, listener = listener)
+                }
+                AnimatedVisibility(visible = state.showProductDetailsContent())
+                {
+                    ProductDetailsContent(
+                        titleScreen = stringResource(id = org.the_chance.design_system.R.string.product_details),
+                        confirmButton = stringResource(id = org.the_chance.design_system.R.string.update),
+                        cancelButton = stringResource(id = org.the_chance.design_system.R.string.delete),
+                        state = state,
+                        listener = listener
+                    )
+                }
+                AnimatedVisibility(visible = state.showProductUpdateContent())
+                {
+                    ProductDetailsContent(
+                        titleScreen = stringResource(id = org.the_chance.design_system.R.string.update_product),
+                        confirmButton = stringResource(id = org.the_chance.design_system.R.string.save),
+                        cancelButton = stringResource(id = org.the_chance.design_system.R.string.cancel),
+                        state = state,
+                        listener = listener
+                    )
                 }
             }
         }

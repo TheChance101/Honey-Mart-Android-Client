@@ -153,7 +153,10 @@
 
     <string name="declined">Declined</string>
     <string name="product_details">Product Details</string>
+    <string name="update_product">Update Product</string>
     <string name="product_image">Product Image</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="save">Save</string>
+
 </resources>

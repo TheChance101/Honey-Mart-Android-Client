@@ -4,7 +4,6 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.features.product_details.ProductDetailsUiState
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -27,12 +26,12 @@ data class CategoriesUiState(
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
     val showScreenState: ShowScreenState = ShowScreenState(),
     val newCategory: NewCategoryUiState = NewCategoryUiState(),
-    val newProducts: NewProductsUiState= NewProductsUiState()
+    val newProducts: NewProductsUiState = NewProductsUiState()
 )
 
 data class NewProductsUiState(
     val id: Long = 0L,
-    val categoryId : Long = 0L,
+    val categoryId: Long = 0L,
     val name: String = "",
     val price: String = "",
     val description: String = "",
@@ -47,11 +46,11 @@ data class ShowScreenState(
     val showUpdateCategory: Boolean = false,
     val showAddProduct: Boolean = false,
     val showProductDetails: Boolean = false,
+    val showProductUpdate: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
-    val showFab : Boolean = true ,
-
-    )
+    val showFab: Boolean = true,
+)
 
 data class SnackBarState(
     val isShow: Boolean = false,
@@ -116,6 +115,7 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
         )
     }
 }
+
 fun ProductEntity.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
@@ -157,12 +157,32 @@ fun NewProductsUiState.showButton(): Boolean {
 
 
 fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
-fun CategoriesUiState.showAddProductContent () =
+fun CategoriesUiState.showAddProductContent() =
     !isLoading
             && !showScreenState.showFab
             && showScreenState.showAddProduct
             && !showScreenState.showAddCategory
             && !showScreenState.showUpdateCategory
+
+
+fun CategoriesUiState.showProductDetailsContent() =
+    !isLoading
+            && !showScreenState.showFab
+            && !showScreenState.showAddProduct
+            && !showScreenState.showAddCategory
+            && !showScreenState.showUpdateCategory
+            && showScreenState.showProductDetails
+
+fun CategoriesUiState.showProductUpdateContent() =
+    !isLoading
+            && !showScreenState.showFab
+            && !showScreenState.showAddProduct
+            && !showScreenState.showAddCategory
+            && !showScreenState.showUpdateCategory
+            && !showScreenState.showProductDetails
+            && showScreenState.showProductUpdate
+
+
 fun CategoriesUiState.showCategoryProductsInProduct() =
     !isLoading
             && !showScreenState.showUpdateCategory
@@ -170,8 +190,9 @@ fun CategoriesUiState.showCategoryProductsInProduct() =
             && !showScreenState.showAddProduct
             && showScreenState.showFab
 
-fun CategoriesUiState.showEmptyPlaceHolder() =categories.isEmpty()
+fun CategoriesUiState.showEmptyPlaceHolder() = categories.isEmpty()
         && !isLoading && !isError
-fun CategoriesUiState.showCategoryProductsInCategory()= !this.isLoading
+
+fun CategoriesUiState.showCategoryProductsInCategory() = !this.isLoading
         && !showScreenState.showFab
 // endregion
