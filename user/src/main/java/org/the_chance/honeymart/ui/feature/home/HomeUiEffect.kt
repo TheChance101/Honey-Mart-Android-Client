@@ -7,7 +7,12 @@ sealed class HomeUiEffect : BaseUiEffect {
 
     data class NavigateToMarketScreenEffect(val marketId: Long) : HomeUiEffect()
 
-    data class NavigateToProductScreenEffect(val productId: Long) : HomeUiEffect()
+    data class NavigateToProductsDetailsScreenEffect(val productId: Long) : HomeUiEffect()
     object NavigateToSearchScreenEffect : HomeUiEffect()
+    data class NavigateToProductScreenEffect(
+        val categoryId: Long,
+        val marketId: Long,
+        val position: Int
+    ) : HomeUiEffect()
 
 }
