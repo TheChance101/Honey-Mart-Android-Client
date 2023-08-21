@@ -70,11 +70,11 @@ interface HoneyMartService {
     ): BaseResponse<String>
 
     suspend fun updateProduct(
-        productId: Long,
+        id: Long,
         name: String,
         price: Double,
         description: String,
-    ): BaseResponse<ProductDto>
+    ): BaseResponse<String>
 
     suspend fun updateCategoriesHasProduct(
         productId: Long,
