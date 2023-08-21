@@ -17,7 +17,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
-import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
 import javax.inject.Inject
 
 /**
@@ -450,15 +449,15 @@ class CategoriesViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
-    override fun updateProductDetails(product: ProductsDetailsUiState) {
+    override fun updateProductDetails(product: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             function = {
                 updateProductDetailsUseCase(
-                    id = product.id,
-                    name = product.productName,
-                    price = product.productPrice.toDouble(),
-                    description = product.productDescription,
+                    id = product.productDetails.productId,
+                    name = product.productDetails.productName,
+                    price = product.productDetails.productPrice.toDouble(),
+                    description = product.productDetails.productsQuantity,
                 )
             },
             onSuccess = { onUpdateProductDetailsSuccess() },
@@ -536,8 +535,8 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 newProducts = it.newProducts.copy(
                     productDescriptionState = productDescriptionState,
-                    description = productDescription
-                )
+                ),
+                productDetails = it.productDetails.copy(productsQuantity = productDescription)
             )
         }
     }
@@ -564,6 +563,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
+        getProductDetails(state.value.productDetails.productId)
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {
