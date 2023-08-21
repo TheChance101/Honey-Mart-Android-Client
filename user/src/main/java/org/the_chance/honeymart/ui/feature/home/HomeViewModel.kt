@@ -308,7 +308,7 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { clipCouponsUseCase(couponId) },
-            {onClipCouponSuccess()},
+            { onClipCouponSuccess() },
             ::onClipCouponError
         )
     }

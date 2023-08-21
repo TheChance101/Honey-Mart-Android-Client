@@ -4,8 +4,8 @@ import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
 class GetCouponsUseCase @Inject constructor(
-    private val service: HoneyMartRepository
+    private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend fun getAllValidCoupons() = service.getAllValidCoupons()
-    suspend fun getUserCoupons() = service.getUserCoupons()
+    suspend fun getAllValidCoupons() = honeyMartRepository.getAllValidCoupons()
+    suspend fun getUserCoupons() = honeyMartRepository.getUserCoupons()
 }

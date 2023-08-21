@@ -28,14 +28,14 @@ import org.the_chance.design_system.R
 fun HomeMarketItem(
     name: String,
     image: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onclick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .size(MaterialTheme.dimens.card)
             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space12))
-            .clickable { onclick() }
+            .clickable { onClick() }
     ) {
         ImageNetwork(
             imageUrl = image,
@@ -60,7 +60,8 @@ fun HomeHorizontalItemsPreview() {
     HoneyMartTheme {
         HomeMarketItem(
             name = "Test",
-            image = "Test"
+            image = "Test",
+            onClick = { /*TODO*/ }
         )
     }
 }

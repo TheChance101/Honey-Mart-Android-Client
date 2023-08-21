@@ -340,7 +340,7 @@ private fun Markets(
                     modifier = Modifier.animateItemPlacement(),
                     name = market.marketName,
                     image = market.marketImage,
-                    onclick = { onClickMarket(market.marketId) }
+                    onClick = { onClickMarket(market.marketId) }
                 )
             }
         }
