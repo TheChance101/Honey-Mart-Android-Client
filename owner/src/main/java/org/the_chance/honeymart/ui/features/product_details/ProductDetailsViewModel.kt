@@ -4,8 +4,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateProductUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val productDetailsUseCase: GetProductDetailsUseCase,
-    private val updateProductUseCase: UpdateProductUseCase
+    private val updateProductDetailsUseCase: UpdateProductDetailsUseCase
 
 ) : BaseViewModel<ProductsDetailsUiState, ProductDetailsUiEffect>(ProductsDetailsUiState()),
     ProductDetailsInteractionListener {
@@ -41,7 +42,7 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                products = productDetails.toProductDetailsUiState()
+                productDetails = productDetails.toProductDetailsUiState()
             )
         }
     }
@@ -50,18 +51,87 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
-    override fun onUpdateProductName(name: String) {
+    override fun updateProductDetails(product: ProductsDetailsUiState) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            function = {
+                updateProductDetailsUseCase(
+                    id = product.id,
+                    name = product.productName,
+                    price = product.productPrice,
+                    description = product.productDescription,
+                )
+            },
+            onSuccess = { onUpdateProductDetailsSuccess() },
+            ::onUpdateProductDetailsError
+        )
     }
 
-    override fun onUpdateProductPrice(price: String) {
-        TODO("Not yet implemented")
+    private fun onUpdateProductDetailsSuccess() {
+        _state.update { it.copy(isLoading = false, error = null) }
     }
 
-    override fun onUpdateProductDescription(description: String) {
-        TODO("Not yet implemented")
+    private fun onUpdateProductDetailsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    private fun updateProductNameState(productName: String): ValidationState {
+        val productNameState: ValidationState = when {
+            productName.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            productName.length <= 2 -> ValidationState.SHORT_LENGTH_TEXT
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        return productNameState
+    }
+
+    override fun onUpdateProductName(productName: String) {
+        val productNameState = updateProductNameState(productName)
+        _state.update { it.copy(productNameState = productNameState, productName = productName) }
+    }
+
+    private fun updateProductPriceState(productPrice: String): ValidationState {
+        val priceRegex = Regex("^[0-9]+(\\.[0-9]+)?$")
+        val productPriceState: ValidationState = when {
+            productPrice.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            !productPrice.matches(priceRegex) -> ValidationState.INVALID_PRICE
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        return productPriceState
+    }
+
+    override fun onUpdateProductPrice(productPrice: String) {
+        val productPriceState = updateProductPriceState(productPrice)
+        _state.update {
+            it.copy(
+                productPriceState = productPriceState,
+                productPrice = productPrice
+            )
+        }
+    }
+
+    private fun updateProductDescriptionState(productDescription: String): ValidationState {
+        val productDescriptionState: ValidationState = when {
+            productDescription.isBlank() -> ValidationState.BLANK_TEXT_FIELD
+            productDescription.length < 6 -> ValidationState.SHORT_LENGTH_TEXT
+            else -> ValidationState.VALID_TEXT_FIELD
+        }
+        return productDescriptionState
+    }
+
+    override fun onUpdateProductDescription(productDescription: String) {
+        val productDescriptionState = updateProductDescriptionState(productDescription)
+        _state.update {
+            it.copy(
+                productDescriptionState = productDescriptionState,
+                productDescription = productDescription
+            )
+        }
     }
 
     override fun onUpdateProductImage(uris: List<ByteArray>) {
-        TODO("Not yet implemented")
+
     }
 }
