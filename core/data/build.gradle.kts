@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation(project(BuildModules.CORE_DOMAIN))
     implementation(Dependencies.coreKtxDependency)
+    implementation("androidx.paging:paging-common-ktx:3.2.0")
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))

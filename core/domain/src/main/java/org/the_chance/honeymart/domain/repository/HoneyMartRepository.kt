@@ -1,5 +1,7 @@
 package org.the_chance.honeymart.domain.repository
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
@@ -19,7 +21,7 @@ interface HoneyMartRepository {
 
     suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
-    suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?
+    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): Flow<PagingData<ProductEntity>>
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity>?
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String

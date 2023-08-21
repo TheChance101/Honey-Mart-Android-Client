@@ -1,11 +1,17 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import kotlinx.coroutines.flow.Flow
+import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toGetRecentProductEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
@@ -66,9 +72,11 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetailsEntity()
             ?: throw NotFoundException()
 
-    override suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity> =
-        wrap { honeyMartService.getAllProductsByCategory(categoryId) }.value?.map { it.toProductEntity() }
-            ?: throw NotFoundException()
+    override suspend fun getAllProductsByCategory(page:Int?,categoryId: Long): Flow<PagingData<ProductEntity>> =
+        getAllWithId(
+            categoryId,
+            ::ProductsPagingSource
+        )
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity> =
         wrap { honeyMartService.getCategoriesForSpecificProduct(productId) }.value?.map { it.toCategoryEntity() }
@@ -124,5 +132,16 @@ class HoneyMartRepositoryImp @Inject constructor(
         = wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
             ?: throw NotFoundException()
 
-
+    private fun <I : Any> getAllWithId(
+        id: Long,
+        sourceFactory: (HoneyMartService, Long) -> PagingSource<Int, I>,
+    ): Flow<PagingData<I>> {
+        return Pager(
+            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            pagingSourceFactory = { sourceFactory(honeyMartService, id) }
+        ).flow
+    }
+    companion object {
+        private const val DEFAULT_PAGE_SIZE = 10
+    }
 }
