@@ -11,10 +11,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.UserLoginEntity
-import org.the_chance.honeymart.domain.usecase.RefreshTokenUseCase
 import org.the_chance.honeymart.domain.util.AuthenticationException
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.GeneralException
@@ -25,7 +22,6 @@ import org.the_chance.honeymart.domain.util.handelNetworkException
 import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
-     //private lateinit var refreshTokenUseCase : RefreshTokenUseCase
 
     abstract val TAG: String
     protected open fun log(message: String) {
@@ -69,19 +65,6 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             }
         }
     }
-    /*protected fun refreshToken(){
-        tryToExecute(
-            {refreshTokenUseCase()},
-            ::onRefreshTokenSuccess ,
-            ::onRefreshTokenError
-        )
-    }
-    private fun onRefreshTokenSuccess(tokens : UserLoginEntity){
-
-    }
-    private fun onRefreshTokenError(error: ErrorHandler){
-    }*/
-
 
     protected fun <T : BaseUiEffect> effectActionExecutor(
         _effect: MutableSharedFlow<T>,
@@ -91,6 +74,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             _effect.emit(effect)
         }
     }
+
     protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
