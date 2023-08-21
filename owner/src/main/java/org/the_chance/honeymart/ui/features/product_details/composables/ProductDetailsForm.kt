@@ -29,6 +29,8 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
+import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
+import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
 import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
@@ -40,9 +42,9 @@ import org.the_chance.honymart.ui.theme.dimens
 private const val MAX_IMAGES = 4
 
 @Composable
-fun ProductDetailsForm(
-    state: ProductsDetailsUiState,
-    listener: ProductDetailsInteractionListener,
+fun ProductDetailsContenet(
+    state: CategoriesUiState,
+    listener: CategoriesInteractionsListener,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -72,33 +74,33 @@ fun ProductDetailsForm(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             FormTextField(
-                text = state.name,
+                text = state.productDetails.productName,
                 hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onUpdateProductName,
-                errorMessage = when (state.productNameState) {
+                errorMessage = when (state.newProducts.productNameState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
                     else -> ""
                 }
             )
             FormTextField(
-                text = state.price,
+                text = state.productDetails.productPrice,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = listener::onUpdateProductPrice,
-                errorMessage = when (state.productPriceState) {
+                errorMessage = when (state.newProducts.productPriceState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""
                 }
             )
             FormTextField(
-                text = state.description,
+                text = state.productDetails.description,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onUpdateProductDescription,
-                errorMessage = when (state.productDescriptionState) {
+                errorMessage = when (state.newProducts.productDescriptionState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
                     else -> ""

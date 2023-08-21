@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.features.product_details.ProductDetailsUiState
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -21,6 +22,7 @@ data class CategoriesUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val category: CategoryUiState = CategoryUiState(0, ""),
     val products: List<ProductUiState> = emptyList(),
+    val productDetails: ProductUiState = ProductUiState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
     val showScreenState: ShowScreenState = ShowScreenState(),
@@ -114,6 +116,15 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
         )
     }
 }
+fun ProductEntity.toProductDetailsUiState(): ProductUiState {
+    return ProductUiState(
+        productId = productId,
+        productName = productName,
+        productPrice = "$ProductPrice$",
+        productImage = productImages.first(),
+    )
+}
+
 
 fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
     return map {
