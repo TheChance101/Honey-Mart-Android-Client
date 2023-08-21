@@ -4,7 +4,7 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrdersUiState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val state: Boolean = false,
