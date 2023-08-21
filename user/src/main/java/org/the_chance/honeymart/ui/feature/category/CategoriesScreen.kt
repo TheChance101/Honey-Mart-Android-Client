@@ -1,12 +1,10 @@
 package org.the_chance.honeymart.ui.feature.category
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -68,7 +66,6 @@ fun CategoriesScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -81,87 +78,84 @@ fun CategoryContent(
     ConnectionErrorPlaceholder(state.isError, listener::onGetData)
 
     ContentVisibility(state.showLazyCondition()) {
-        BoxWithConstraints(
-            Modifier.fillMaxSize()
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth(),
+            columns = GridCells.Fixed(3),
+            contentPadding = PaddingValues(
+                bottom = MaterialTheme.dimens.space56,
+                end = MaterialTheme.dimens.space16,
+                start = MaterialTheme.dimens.space16,
+            ),
         ) {
-            val itemSize = (if (maxHeight < maxWidth) maxHeight else maxWidth) * .38f
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                verticalArrangement = Arrangement.spacedBy((-6).dp),
-                contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space56)
-            ) {
-                item(span = { GridItemSpan(3) }) {
-                    Column(
+            item(span = { GridItemSpan(3) }) {
+                Column(
+                    modifier = Modifier.padding(
+                        bottom = MaterialTheme.dimens.space16
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = state.marketName,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.padding(
-                            end = MaterialTheme.dimens.space16,
-                            start = MaterialTheme.dimens.space16,
-                            bottom = MaterialTheme.dimens.space16
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Text(
-                            text = state.marketName,
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(
-                                top = MaterialTheme.dimens.space16,
-                                bottom = MaterialTheme.dimens.space8
-                            )
+                            top = MaterialTheme.dimens.space16,
+                            bottom = MaterialTheme.dimens.space8
                         )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.map_pointer),
-                                contentDescription = stringResource(R.string.map_pointer),
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                            )
-                            Text(
-                                text = state.address,
-                                style = MaterialTheme.typography.displaySmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space16),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-                        ) {
-                            CardChip(
-                                text = "${state.categoriesCount} Categories",
-                                icon = painterResource(id = R.drawable.boxes)
-                            )
-                            CardChip(
-                                text = "${state.productsCount} Items",
-                                icon = painterResource(id = R.drawable.box_minimalistic)
-                            )
-                        }
-                        ImageNetwork(
-                            imageUrl = state.imageUrl,
-                            contentDescription = stringResource(id = R.string.category_image),
-                            modifier = Modifier
-                                .height(198.dp)
-                                .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
-                                .fillMaxWidth(),
-                            contentScale = ContentScale.FillBounds
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.map_pointer),
+                            contentDescription = stringResource(R.string.map_pointer),
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+                        Text(
+                            text = state.address,
+                            style = MaterialTheme.typography.displaySmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            textAlign = TextAlign.Center,
                         )
                     }
-                }
-                itemsIndexed(state.categories) { index, item ->
-                    HexagonItem(
-                        item,
-                        listener::onClickCategory,
-                        index,
-                        hexagonSize = itemSize
+                    Row(
+                        modifier = Modifier.padding(vertical = MaterialTheme.dimens.space16),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                    ) {
+                        CardChip(
+                            text = state.categoriesCountState,
+                            icon = painterResource(id = R.drawable.boxes)
+                        )
+                        CardChip(
+                            text = state.productsCountState,
+                            icon = painterResource(id = R.drawable.box_minimalistic)
+                        )
+                    }
+                    ImageNetwork(
+                        imageUrl = state.imageUrl,
+                        contentDescription = stringResource(id = R.string.category_image),
+                        modifier = Modifier
+                            .height(MaterialTheme.dimens.space198)
+                            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.FillBounds
                     )
                 }
-                item(span = { GridItemSpan(3) }) {
-                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-                    EmptyCategoriesPlaceholder(state.categories.isEmpty())
-                }
+            }
+            itemsIndexed(state.categories) { index, item ->
+                HexagonItem(
+                    item,
+                    listener::onClickCategory,
+                    index,
+                )
+            }
+            item(span = { GridItemSpan(3) }) {
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
+                EmptyCategoriesPlaceholder(state.categories.isEmpty())
             }
         }
+
     }
 }
 

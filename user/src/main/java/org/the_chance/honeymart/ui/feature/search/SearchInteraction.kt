@@ -2,8 +2,8 @@ package org.the_chance.honeymart.ui.feature.search
 
 interface SearchInteraction {
     fun onClickFilter()
-    fun getAllRandomSearch()
-    fun getAllAscendingSearch()
-    fun getAllDescendingSearch()
+    fun onClickRandomSearch()
+    fun onClickAscendingSearch()
+    fun onClickDescendingSearch()
     fun onClickProduct(productId: Long)
 }

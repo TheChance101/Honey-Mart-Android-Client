@@ -14,7 +14,10 @@ data class MarketDetailsUiState(
     val categoriesCount: Int = 0,
     val address: String = "",
     val categories: List<CategoryUiState> = emptyList(),
-)
+) {
+    val productsCountState = "$productsCount Items"
+    val categoriesCountState = "$categoriesCount Categories"
+}
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
