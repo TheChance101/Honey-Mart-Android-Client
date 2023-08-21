@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.product_details.composables.ProductDetailsForm
+import org.the_chance.honeymart.ui.features.product_details.composables.ProductOnProduct
 import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts
@@ -37,8 +38,8 @@ fun ProductDetailsScreen(
 
 @Composable
 fun ProductDetailsContent(
-    state: ProductsUiState,
-    listener: ProductsInteractionsListener
+    state: ProductsDetailsUiState,
+    listener: ProductDetailsInteractionListener
 ) {
 
     ContentVisibility(state = state.contentScreen()) {
@@ -58,7 +59,7 @@ fun ProductDetailsContent(
                         .weight(1f)
                         .padding(horizontal = MaterialTheme.dimens.space12)
                 ) {
-                    ProductsOnProducts(state = state, listener = listener)
+                    ProductOnProduct(state = state, listener = listener)
                 }
 
                 Column(
