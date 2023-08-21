@@ -3,7 +3,7 @@ package org.the_chance.honeymart.domain.usecase
 import org.the_chance.honeymart.domain.util.ValidationState
 import javax.inject.Inject
 
-class ValidationSignupFieldsUseCase @Inject constructor() {
+class ValidateSignupFieldsUseCase @Inject constructor() {
     fun validateEmail(email: String): ValidationState {
         if (email.isBlank()) {
             return ValidationState.BLANK_EMAIL

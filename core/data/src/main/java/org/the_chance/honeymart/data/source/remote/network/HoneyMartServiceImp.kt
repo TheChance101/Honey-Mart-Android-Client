@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.submitFormWithBinaryData
@@ -24,6 +25,7 @@ import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
@@ -44,8 +46,8 @@ class HoneyMartServiceImp @Inject constructor(
         fullName: String,
         email: String,
         password: String,
-    ): BaseResponse<String> =
-        wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
+    ): BaseResponse<Boolean> =
+        wrap(client.submitForm(url = "/owner/signup", formParameters = Parameters.build {
             append("fullName", fullName)
             append("email", email)
             append("password", password)
@@ -56,10 +58,40 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/markets"))
     }
 
-    override suspend fun addMarket(marketName: String): BaseResponse<MarketDto> =
-        wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
-            append("marketName", marketName)
+    override suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+    ): BaseResponse<MarketIdDto> {
+        return wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
+            append("name", marketName)
+            append("address", marketAddress)
+            append("description", marketDescription)
         }))
+    }
+
+    @OptIn(InternalAPI::class)
+    override suspend fun addMarketImage(marketImage: ByteArray): BaseResponse<Boolean> {
+        val response = wrap<BaseResponse<Boolean>>(client.put("/markets/image") {
+            body = MultiPartFormDataContent(
+                formData {
+                    append(
+                        "image",
+                        marketImage,
+                        Headers.build {
+                            append(HttpHeaders.ContentType, "image/jpeg")
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=image; filename=image.jpeg"
+                            )
+                        }
+                    )
+                }
+            )
+        })
+        return response
+    }
+
 
     override suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto> =
         wrap(client.put("/markets/$marketId") {

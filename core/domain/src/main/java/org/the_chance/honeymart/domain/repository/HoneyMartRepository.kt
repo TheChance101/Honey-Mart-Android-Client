@@ -12,6 +12,14 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<MarketEntity>?
+    suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+    ): Boolean
+
+    suspend fun addMarketImage(marketImage: ByteArray): Boolean
+
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
     suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity>?
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity>?
