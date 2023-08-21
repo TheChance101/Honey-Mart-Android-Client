@@ -86,7 +86,8 @@ class CategoriesViewModel @Inject constructor(
                 newCategory = it.newCategory.copy(categoryId = categoryId),
                 showScreenState = it.showScreenState.copy(
                     showAddCategory = false,
-                    showUpdateCategory = false
+                    showUpdateCategory = false,
+                    showFab = true ,
                 ),
                 newProducts = it.newProducts.copy(categoryId =categoryId)
             )
