@@ -1,8 +1,10 @@
 package org.the_chance.honeymart.ui.features.product_details
 
+import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.features.products.CategoryUiState
+import org.the_chance.honeymart.ui.features.products.ProductUiState
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 
 data class ProductsDetailsUiState(
@@ -10,7 +12,7 @@ data class ProductsDetailsUiState(
     val isError: Boolean = false,
     val isEmptyProducts: Boolean = false,
     val error: ErrorHandler? = null,
-    val products: List<ProductDetailsUiState> = emptyList(),
+    val products: ProductDetailsUiState = ProductDetailsUiState(),
     val productsQuantity: String = "",
     val category: CategoryUiState = CategoryUiState(0, ""),
     val id: Long = 0L,
@@ -29,5 +31,15 @@ data class ProductDetailsUiState(
     val productImage: String = "",
     val productPrice: String = "0.0",
 )
+
+fun ProductEntity.toProductDetailsUiState(): ProductDetailsUiState {
+    return ProductDetailsUiState(
+        productId = productId,
+        productName = productName,
+        productPrice = "$ProductPrice$",
+        productImage = productImages[0],
+    )
+}
+
 
 fun ProductsDetailsUiState.contentScreen() = !this.isLoading && !this.isError

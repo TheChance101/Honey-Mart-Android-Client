@@ -2,8 +2,6 @@ package org.the_chance.honeymart.ui.features.product_details.composables
 
 import android.content.Context
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,10 +29,8 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
-import org.the_chance.honeymart.ui.features.add_product.components.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
 import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
-import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
