@@ -109,6 +109,9 @@
     <string name="all">all</string>
     <string name="new_order">new order</string>
     <string name="cancelled">Cancelled</string>
+    <string name="icon_add">Icon Add</string>
+    <string name="image_of_product">Image of product</string>
+    <string name="icon_delete_image">Icon Delete Image</string>
     <string name="placeholder_image">Placeholder Image</string>
 
     <!--Add New Product Region-->
@@ -123,10 +126,7 @@
     <string name="product_description_is_too_short">Product description is too short</string>
     <string name="add_product_image">Add product image</string>
     <string name="add">Add</string>
-    <string name="icon_add">Icon Add</string>
     <string name="icon_cart">Icon Cart</string>
-    <string name="image_of_product">Image of product</string>
-    <string name="icon_delete_image">Icon Delete Image</string>
     <string name="your_products_is_empty">Your Products is empty!!</string>
     <string name="add_product_placeholder_subtitle">Adding a product will increase your chances of attracting interested buyers. What product fits your item?</string>
 
