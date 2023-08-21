@@ -103,11 +103,11 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
             ) {
                 items(state.products.size) { index ->
                     val product = state.products[index]
-                    ProductCard(
-                        imageUrl = product.images[0],
-                        productName = product.name,
-                        productPrice = product.price.toString(),
-                    )
+//                    ProductCard(
+//                        imageUrl = product.images[0],
+//                        productName = product.name,
+//                        productPrice = product.price.toString(),
+//                    )
                 }
             }
 

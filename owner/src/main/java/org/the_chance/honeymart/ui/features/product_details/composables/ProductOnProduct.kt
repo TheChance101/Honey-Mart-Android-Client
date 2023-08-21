@@ -20,9 +20,9 @@ import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.DropDownMenuList
 import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
+import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
 import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
-import org.the_chance.honeymart.ui.features.products.composables.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
@@ -91,11 +91,11 @@ fun ProductOnProduct(
         ) {
             items(state.products.size) { index ->
                 val product = state.products[index]
-                ProductCard(
-                    imageUrl = product.productImage,
-                    productName = product.productName,
-                    productPrice = product.productPrice,
-                )
+//                ProductCard(
+//                    imageUrl = product.productImage,
+//                    productName = product.productName,
+//                    productPrice = product.productPrice.toDouble(),
+//                )
             }
         }
     }

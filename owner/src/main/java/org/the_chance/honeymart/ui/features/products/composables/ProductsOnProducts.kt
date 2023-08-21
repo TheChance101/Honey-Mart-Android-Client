@@ -94,11 +94,12 @@ fun ProductsOnProducts(
                 Log.e("sara",state.products.toString())
                 Log.e("sara",state.toString())
                 val product = state.products[index]
-                ProductCard(
-                    imageUrl = product.productImage,
-                    productName = product.productName,
-                    productPrice = product.productPrice,
-                )
+//                ProductCard(
+//                    onClick=,
+//                    imageUrl = product.productImage,
+//                    productName = product.productName,
+//                    productPrice = product.productPrice,
+//                )
             }
         }
     }
