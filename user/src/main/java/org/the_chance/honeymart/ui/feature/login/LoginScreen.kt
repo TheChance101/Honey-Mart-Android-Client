@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -114,6 +116,7 @@ fun LoginContent(
             }
             HoneyTextField(
                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                oneLineOnly = true,
                 text = state.email,
                 hint = stringResource(R.string.email),
                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -126,8 +129,11 @@ fun LoginContent(
                 color = white200
             )
             HoneyTextField(
+                isPassword = PasswordVisualTransformation(),
                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                oneLineOnly = true,
                 text = state.password,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
@@ -172,3 +178,5 @@ fun LoginContent(
         }
     }
 }
+
+
