@@ -28,10 +28,12 @@ class SignUpViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
+
+
+    // region owner registration
     override fun onClickLogin() {
         effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
-
     override fun onClickContinue() {
         val validationSignupFieldsState = state.value.emailState.isValid &&
                 state.value.passwordState.isValid &&
@@ -201,7 +203,9 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    // endregion
 
+    // region market registration
     override fun onClickSendButton() {
         val market = state.value.marketInfoUiState
         val marketFieldsValidationState =
@@ -329,7 +333,9 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    // endregion
 
+    // region market image
     override fun addMarketImage(image: ByteArray) {
         tryToExecute(
             { addMarketImageUseCase(marketImage = image) },
@@ -381,4 +387,6 @@ class SignUpViewModel @Inject constructor(
             )
         }
     }
+
+    //endregion
 }

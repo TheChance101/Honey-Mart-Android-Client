@@ -69,7 +69,7 @@ fun MarketFieldsScaffold(
         Column(modifier = Modifier.padding(MaterialTheme.dimens.space16)) {
             Text(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
-                text = stringResource(R.string.market_images),
+                text = stringResource(R.string.market_image),
                 style = MaterialTheme.typography.displaySmall,
                 color = if (state.isMarketImageEmpty) org.the_chance.honymart.ui.theme.error else black37,
                 textAlign = TextAlign.Center,

@@ -36,7 +36,8 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun addMarketImage(marketImage: ByteArray): Boolean {
-        return wrap { honeyMartService.addMarketImage(marketImage = marketImage) }.isSuccess
+        return wrap { honeyMartService.addMarketImage(marketImage = marketImage) }.value
+            ?: throw NotFoundException()
     }
 
     override suspend fun addMarket(

@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.submitFormWithBinaryData
@@ -69,18 +70,26 @@ class HoneyMartServiceImp @Inject constructor(
         }))
     }
 
-    override suspend fun addMarketImage(
-        marketImage: ByteArray
-    ): BaseResponse<Boolean> {
-        val response: HttpResponse = client.submitFormWithBinaryData(
-            url = "/markets/image",
-            formData = formData {
-                append("image", marketImage, Headers.build {
-                    append(HttpHeaders.ContentType, "image/jpeg")
-                })
-            }
-        )
-        return wrap(response)
+    @OptIn(InternalAPI::class)
+    override suspend fun addMarketImage(marketImage: ByteArray): BaseResponse<Boolean> {
+        val response = wrap<BaseResponse<Boolean>>(client.put("/markets/image") {
+            body = MultiPartFormDataContent(
+                formData {
+                    append(
+                        "image",
+                        marketImage,
+                        Headers.build {
+                            append(HttpHeaders.ContentType, "image/jpeg")
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=image; filename=image.jpeg"
+                            )
+                        }
+                    )
+                }
+            )
+        })
+        return response
     }
 
 
