@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.design_system.R
 
 @Composable
 fun CouponsItem(
@@ -89,15 +91,15 @@ fun CouponDetails(
 
         CouponDataRow(
             items = listOf(
-                Pair("Expiration Date", expirationDate),
+                Pair(stringResource(R.string.expiration_date), expirationDate),
             )
         )
 
         CouponDataRow(
             items = listOf(
-                Pair("No. Deal", count.toString()),
-                Pair("Price", productPrice.toString()),
-                Pair("Offer Price", discountPercentage.toString())
+                Pair(stringResource(R.string.no_deal), count.toString()),
+                Pair(stringResource(R.string.price), productPrice),
+                Pair(stringResource(R.string.offer_price), discountPercentage)
             )
         )
 
@@ -121,7 +123,7 @@ fun CouponDetails(
             )
         ) {
             Text(
-                text = "Get coupon",
+                text = stringResource(R.string.get_coupon),
                 style = typography.titleMedium,
                 color = colors.onPrimary
             )
@@ -188,13 +190,13 @@ fun CouponImage(
                 .size(dimens.itemProductImage)
                 .clip(RoundedCornerShape(dimens.space12)),
             imageUrl = productImageUrl,
-            contentDescription = "Product Image",
+            contentDescription = stringResource(R.string.product_image),
             contentScale = ContentScale.Crop
         )
 
         Text(
             modifier = Modifier.padding(top = dimens.space4),
-            text = "Coupon Code",
+            text = stringResource(R.string.coupon_code),
             style = typography.titleMedium.copy(color = colors.onPrimary)
         )
         Text(

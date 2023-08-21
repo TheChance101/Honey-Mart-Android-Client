@@ -210,14 +210,17 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
 
-    override suspend fun getAllUserCoupons(): BaseResponse<List<CouponDto>> =
-        wrap(client.get("/coupon/allUserCoupons"))
+    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allUserCoupons"))
+    }
 
-    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> =
-        wrap(client.get("/coupon/allValidCoupons"))
+    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allValidCoupons"))
+    }
 
-    override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> =
-        wrap(client.get("/product/recentProducts"))
+    override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> {
+        return wrap(client.get("/product/recentProducts"))
+    }
 
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {

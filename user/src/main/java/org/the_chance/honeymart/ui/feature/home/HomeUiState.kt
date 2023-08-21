@@ -15,14 +15,13 @@ data class HomeUiState(
     val isConnectionError: Boolean = false,
     val error: ErrorHandler? = null,
     val selectedMarketId: Long = 0L,
-    val categories: List<CategoryUiState> = emptyList(),
     val markets: List<MarketUiState> = emptyList(),
+    val categories: List<CategoryUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
     val recentProducts: List<RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
 )
-
 
 data class CouponUiState(
     val couponId: Long = 0L,
@@ -58,19 +57,18 @@ fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
     isFavorite = false,
 )
 
-fun HomeUiState.showHome() = (!this.isLoading) && !isConnectionError
-
+fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError
 
 fun String.formatDate(): String {
     val date = this
     val year = date.substring(0, 4)
     val month = date.substring(5, 7)
     val day = date.substring(8, 10)
-    return "$day/$month/$year"
+    return "$day.$month.$year"
 }
 
 fun Double.formatCurrencyWithNearestFraction(): String {
-    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    val decimalFormat = DecimalFormat("'$'#,##0.0")
     return decimalFormat.format(this)
 }
 

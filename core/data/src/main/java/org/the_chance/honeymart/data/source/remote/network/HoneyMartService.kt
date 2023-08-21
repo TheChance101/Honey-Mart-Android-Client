@@ -161,7 +161,7 @@ interface HoneyMartService {
 
 
     // region Coupon
-    suspend fun getAllUserCoupons(): BaseResponse<List<CouponDto>>
+    suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
     suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
     suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>

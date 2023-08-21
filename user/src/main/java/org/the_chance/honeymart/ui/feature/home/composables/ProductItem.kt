@@ -44,7 +44,7 @@ fun ProductItem(
     {
         ImageNetwork(
             imageUrl = imageUrl,
-            contentDescription = "Product Item",
+            contentDescription = stringResource(R.string.product_item),
             contentScale = ContentScale.Crop
         )
 

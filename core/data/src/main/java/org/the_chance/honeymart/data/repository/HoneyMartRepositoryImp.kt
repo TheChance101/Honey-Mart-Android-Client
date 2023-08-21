@@ -109,19 +109,23 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
 
-    override suspend fun getAllUserCoupons(): List<CouponEntity> =
-        wrap { honeyMartService.getAllUserCoupons() }.value?.map { it.toCouponEntity() }
+    override suspend fun getUserCoupons(): List<CouponEntity> {
+        return wrap { honeyMartService.getUserCoupons() }.value?.map { it.toCouponEntity() }
             ?: throw NotFoundException()
+    }
 
-    override suspend fun getAllValidCoupons(): List<CouponEntity> =
-        wrap { honeyMartService.getAllValidCoupons() }.value?.map { it.toCouponEntity() }
+    override suspend fun getAllValidCoupons(): List<CouponEntity> {
+        return wrap { honeyMartService.getAllValidCoupons() }.value?.map { it.toCouponEntity() }
             ?: throw NotFoundException()
+    }
 
-    override suspend fun getRecentProducts(): List<RecentProductEntity> =
-        wrap { honeyMartService.getRecentProducts() }.value?.map { it.RecentProductEntity() }
+    override suspend fun getRecentProducts(): List<RecentProductEntity> {
+        return wrap { honeyMartService.getRecentProducts() }.value?.map { it.RecentProductEntity() }
             ?: throw NotFoundException()
+    }
 
-    override suspend fun getAllProducts(): List<ProductEntity> =
-        wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
+    override suspend fun getAllProducts(): List<ProductEntity> {
+        return wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
             ?: throw NotFoundException()
+    }
 }

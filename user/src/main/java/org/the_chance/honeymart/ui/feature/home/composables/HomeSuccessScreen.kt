@@ -23,14 +23,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.delay
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
@@ -108,7 +106,7 @@ fun HomeContentSuccessScreen(
         ) {
             Coupons(
                 coupons = state.coupons,
-                onClickCoupon = listener::onClickCouponClipped
+                onClickCoupon = listener::onClickGetCoupon
             )
         }
 
@@ -159,12 +157,7 @@ fun HomeContentSuccessScreen(
         }
     }
 
-    LaunchedEffect(key1 = state.markets.isNotEmpty()) {
-        while (true) {
-            delay(3000)
-            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
-        }
-    }
+
 }
 
 
@@ -375,7 +368,7 @@ private fun MarketsPager(
         ) {
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
-                contentDescription = "Market Image",
+                contentDescription = stringResource(id = R.string.market_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()

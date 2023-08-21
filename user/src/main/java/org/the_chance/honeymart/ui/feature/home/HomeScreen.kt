@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.delay
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
@@ -60,8 +61,12 @@ fun HomeScreen(
         pagerState = pagerState,
         listener = viewModel
     )
-
-
+    LaunchedEffect(key1 = state.markets.isNotEmpty()) {
+        while (true) {
+            delay(3000)
+            pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % 3)
+        }
+    }
 }
 
 
@@ -78,7 +83,7 @@ fun HomeContent(
             state = state.isConnectionError,
             onClickTryAgain = listener::getData
         )
-        Loading(state.isLoading)
+        Loading(state.isLoading && state.markets.isEmpty())
         ContentVisibility(
             state = state.showHome()
         ) {
@@ -87,6 +92,7 @@ fun HomeContent(
                 pagerState = pagerState,
                 listener = listener
             )
+            Loading(state = state.isLoading && state.markets.isNotEmpty())
         }
     }
 }

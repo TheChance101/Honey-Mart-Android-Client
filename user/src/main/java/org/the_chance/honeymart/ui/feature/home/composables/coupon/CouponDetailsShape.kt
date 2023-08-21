@@ -30,7 +30,7 @@ class CouponDetailsShape(
     }
 }
 
-fun couponDetailsPath(size: Size, cornerRadius: Float, notchRadius: Float): Path {
+private fun couponDetailsPath(size: Size, cornerRadius: Float, notchRadius: Float): Path {
     return Path().apply {
         reset()
         arcTo(

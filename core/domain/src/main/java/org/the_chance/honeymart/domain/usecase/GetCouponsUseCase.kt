@@ -7,5 +7,5 @@ class GetCouponsUseCase @Inject constructor(
     private val service: HoneyMartRepository
 ) {
     suspend fun getAllValidCoupons() = service.getAllValidCoupons()
-    suspend fun getAllUserCoupons() = service.getAllUserCoupons()
+    suspend fun getUserCoupons() = service.getUserCoupons()
 }
