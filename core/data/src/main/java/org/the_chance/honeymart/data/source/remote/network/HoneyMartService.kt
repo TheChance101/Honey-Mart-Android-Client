@@ -177,4 +177,6 @@ interface HoneyMartService {
 
     //endregion
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
+    suspend fun deleteProductById(productId: Long): BaseResponse<String>
+    suspend fun deleteProductImage(productId: Long): BaseResponse<String>
 }

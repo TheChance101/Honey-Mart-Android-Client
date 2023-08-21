@@ -65,5 +65,7 @@ interface HoneyMartRepository {
 
     suspend fun addCategory(name: String, imageId: Int): String
     suspend fun deleteCategory(id: Long): String
+    suspend fun deleteProduct(productId: Long):String
+    suspend fun deleteProductImage(productId: Long):String
 
 }
