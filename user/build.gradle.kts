@@ -83,6 +83,13 @@ dependencies {
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation ("androidx.navigation:navigation-compose:2.6.0")
 
+    // FCM notification
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
+
+
+
     //paging
     implementation(Dependencies.pagingCommon)
     implementation(Dependencies.pagingRuntime)

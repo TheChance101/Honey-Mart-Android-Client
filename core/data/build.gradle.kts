@@ -56,6 +56,11 @@ dependencies {
     // DataStore
     implementation(Dependencies.dateStoreDependency)
     Dependencies.ktorDependency.forEach { implementation(it) }
+
+    // FCM notification
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 }
 kapt {
     correctErrorTypes = true

@@ -4,14 +4,13 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
-import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
-import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 /**
@@ -84,7 +83,13 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
+    suspend fun loginUser(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<UserLoginDto>
+    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>
@@ -158,10 +163,12 @@ interface HoneyMartService {
 
 
     // region Coupon
-    suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>>
+    suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
-    suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>>
-    suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>>
+    suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
+    suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
+
+    suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean>
 
 
     // endregion Coupon

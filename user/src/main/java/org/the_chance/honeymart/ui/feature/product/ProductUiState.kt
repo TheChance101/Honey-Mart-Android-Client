@@ -41,11 +41,13 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productId = productId,
         productName = productName,
         productDescription = productDescription,
-        productPrice = ProductPrice,
+        productPrice = productPrice,
         productImages = productImages
     )
 }
-fun ProductsUiState.firstLoading() = this.isLoadingCategory  || this.isLoadingProduct
+
+
+
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
 fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
         !this.isError && !this.isLoadingProduct
