@@ -135,6 +135,8 @@ fun CategoriesContent(
                 }
                 AnimatedVisibility(visible = state.showProductUpdateContent())
                 {
+
+
                     ProductDetailsContent(
                         titleScreen = stringResource(id = org.the_chance.design_system.R.string.update_product),
                         confirmButton = stringResource(id = org.the_chance.design_system.R.string.save),

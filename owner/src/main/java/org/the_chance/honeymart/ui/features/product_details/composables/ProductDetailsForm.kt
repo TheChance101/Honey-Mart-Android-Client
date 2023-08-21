@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.features.product_details.composables
 
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +33,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
+import org.the_chance.honeymart.ui.features.add_product.components.ItemImageProductDetails
+import org.the_chance.honeymart.ui.features.add_product.components.MAX_IMAGES
+import org.the_chance.honeymart.ui.features.add_product.components.handleImageSelection
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -46,11 +54,12 @@ fun ProductDetailsContent(
     listener: CategoriesInteractionsListener,
     modifier: Modifier = Modifier,
 ) {
-//    val context = LocalContext.current
-////    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-////        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
-////        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
-////    )
+
+    val context = LocalContext.current
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
+        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+    )
 
     Column(
         modifier = modifier
@@ -81,7 +90,8 @@ fun ProductDetailsContent(
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
                     else -> ""
-                }
+                },
+                isEnable = !state.showScreenState.showProductDetails
             )
             FormTextField(
                 text = state.productDetails.productPrice,
@@ -92,10 +102,11 @@ fun ProductDetailsContent(
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""
-                }
+                },
+                isEnable = !state.showScreenState.showProductDetails
             )
             FormTextField(
-                text = state.productDetails.productsQuantity,
+                text = state.productDetails.productDescription,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = listener::onUpdateProductDescription,
@@ -103,7 +114,8 @@ fun ProductDetailsContent(
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
                     else -> ""
-                }
+                },
+                isEnable = !state.showScreenState.showProductDetails
             )
         }
         Text(
@@ -122,12 +134,26 @@ fun ProductDetailsContent(
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
-//            SelectedImagesGrid(
-//                images = state.images,
-//                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-//                multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-//                maxImages = MAX_IMAGES
-//            )
+            if (state.showScreenState.showProductDetails) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(MaterialTheme.dimens.card),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                ) {
+                    items(items = state.productDetails.productImage) { image ->
+                        ItemImageProductDetails(image = image)
+                    }
+                }
+
+            } else if (state.showScreenState.showProductUpdate) {
+//                SelectedImagesGrid(
+//                    images = state.productDetails.productImage,
+//                    onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
+//                    multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
+//                    maxImages = MAX_IMAGES
+//                )
+            }
+
         }
 
         Spacer(modifier = Modifier.weight(1F))
@@ -148,23 +174,8 @@ fun ProductDetailsContent(
         ) {
             Spacer(modifier = Modifier.weight(1F))
             HoneyFilledButton(modifier = Modifier.width(146.dp),
-                label = confirmButton, onClick = { /*TODO*/ })
+                label = confirmButton, onClick = { listener.updateProductDetails(state) })
             HoneyOutlineButton(onClick = { /*TODO*/ }, label = cancelButton)
         }
     }
 }
-
-//private fun handleImageSelection(
-//    uris: List<Uri>,
-//    context: Context,
-//    state: ProductsUiState,
-//    onImageSelected: (List<ByteArray>) -> Unit
-//) {
-//    val imageByteArrays = uris.mapNotNull { uri ->
-//        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-//            inputStream.readBytes()
-//        }
-//    }
-//    val updatedImages = state.images + imageByteArrays
-//    onImageSelected(updatedImages)
-//}

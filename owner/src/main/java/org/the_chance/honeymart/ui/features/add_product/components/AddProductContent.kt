@@ -31,12 +31,11 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
-private const val MAX_IMAGES = 4
+const val MAX_IMAGES = 4
 
 @Composable
 fun AddProductContent(
@@ -143,7 +142,6 @@ fun AddProductContent(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space24
             ),
-            isEnable = state.showButton(),
             label = stringResource(R.string.add),
             iconPainter = painterResource(R.drawable.icon_add_to_cart),
             onClick = { listener.addProduct(state) }
@@ -151,7 +149,7 @@ fun AddProductContent(
     }
 }
 
-private fun handleImageSelection(
+fun handleImageSelection(
     uris: List<Uri>,
     context: Context,
     state: CategoriesUiState,

@@ -81,9 +81,10 @@ data class CategoryIconUIState(
 data class ProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
-    val productImage: String = "",
+    val productImage: List<String> = emptyList(),
     val productPrice: String = "",
     val productsQuantity: String = "",
+    val productDescription: String = ""
 )
 
 enum class Visibility {
@@ -109,9 +110,9 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
         ProductUiState(
             productId = it.productId,
             productName = it.productName,
-            productImage = it.productImages.first(),
+            productImage = it.productImages,
             productPrice = "${it.ProductPrice}$",
-            productsQuantity = it.productDescription
+            productDescription = it.productDescription
         )
     }
 }
@@ -121,7 +122,8 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
         productId = productId,
         productName = productName,
         productPrice = "$ProductPrice$",
-        productImage = productImages.first(),
+        productImage = productImages,
+        productDescription = productDescription
     )
 }
 

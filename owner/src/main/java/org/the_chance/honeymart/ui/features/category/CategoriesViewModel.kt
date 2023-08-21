@@ -536,7 +536,7 @@ class CategoriesViewModel @Inject constructor(
                 newProducts = it.newProducts.copy(
                     productDescriptionState = productDescriptionState,
                 ),
-                productDetails = it.productDetails.copy(productsQuantity = productDescription)
+                productDetails = it.productDetails.copy(productDescription = productDescription)
             )
         }
     }
