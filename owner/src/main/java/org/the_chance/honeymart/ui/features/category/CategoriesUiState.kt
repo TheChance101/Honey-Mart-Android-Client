@@ -30,6 +30,7 @@ data class CategoriesUiState(
 
 data class NewProductsUiState(
     val id: Long = 0L,
+    val categoryId : Long = 0L,
     val name: String = "",
     val price: String = "",
     val description: String = "",

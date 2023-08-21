@@ -87,7 +87,8 @@ class CategoriesViewModel @Inject constructor(
                 showScreenState = it.showScreenState.copy(
                     showAddCategory = false,
                     showUpdateCategory = false
-                )
+                ),
+                newProducts = it.newProducts.copy(categoryId =categoryId)
             )
         }
 
@@ -276,7 +277,6 @@ class CategoriesViewModel @Inject constructor(
 
     // region Get Products
 
-    private val categoryId = 43L
 
     override fun addProduct(product: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
@@ -286,7 +286,7 @@ class CategoriesViewModel @Inject constructor(
                     product.newProducts.name,
                     product.newProducts.price.toDouble(),
                     product.newProducts.description,
-                    categoryId
+                    product.newProducts.categoryId
                 )
             },
             onSuccess = ::onAddProductSuccess,
@@ -322,7 +322,17 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onAddProductImagesSuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false, error = null,
+                newProducts = it.newProducts.copy(
+                    name = "",
+                    description = "",
+                    price = " ",
+                    images = emptyList(),
+                )
+            )
+        }
     }
 
     private fun onAddProductImagesError(errorHandler: ErrorHandler) {
