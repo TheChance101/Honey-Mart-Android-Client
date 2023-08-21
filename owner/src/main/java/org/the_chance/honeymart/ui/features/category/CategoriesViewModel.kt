@@ -19,7 +19,6 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
 import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
-import org.the_chance.honeymart.ui.features.product_details.toProductDetailsUiState
 import javax.inject.Inject
 
 /**
@@ -453,9 +452,6 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    private fun onGetProductDetailsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-    }
 
     private fun onGetProductDetailsError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
@@ -499,8 +495,16 @@ class CategoriesViewModel @Inject constructor(
 
     override fun onUpdateProductName(productName: String) {
         val productNameState = updateProductNameState(productName)
-        _state.update { it.copy(productNameState = productNameState, productName = productName) }
+        _state.update {
+            it.copy(
+                newProducts = it.newProducts.copy(
+                    productNameState = productNameState
+                ),
+                productDetails = it.productDetails.copy(productName = productName)
+            )
+        }
     }
+
 
     private fun updateProductPriceState(productPrice: String): ValidationState {
         val priceRegex = Regex("^[0-9]+(\\.[0-9]+)?$")
@@ -516,8 +520,10 @@ class CategoriesViewModel @Inject constructor(
         val productPriceState = updateProductPriceState(productPrice)
         _state.update {
             it.copy(
-                productPriceState = productPriceState,
-                productPrice = productPrice
+                newProducts = it.newProducts.copy(
+                    productPriceState = productPriceState
+                ),
+                productDetails = it.productDetails.copy(productPrice = productPrice)
             )
         }
     }
@@ -535,8 +541,10 @@ class CategoriesViewModel @Inject constructor(
         val productDescriptionState = updateProductDescriptionState(productDescription)
         _state.update {
             it.copy(
-                productDescriptionState = productDescriptionState,
-                productDescription = productDescription
+                newProducts = it.newProducts.copy(
+                    productDescriptionState = productDescriptionState,
+                    description = productDescription
+                )
             )
         }
     }
