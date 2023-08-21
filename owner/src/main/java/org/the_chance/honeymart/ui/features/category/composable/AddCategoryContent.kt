@@ -66,7 +66,7 @@ fun AddCategoryContent(
 
                 FormTextField(
                     text = state.newCategory.newCategoryName,
-                    modifier = Modifier.padding(top = MaterialTheme.dimens.space64),
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.space36),
                     hint = stringResource(R.string.category_name),
                     keyboardType = KeyboardType.Text,
                     onValueChange = listener::onNewCategoryNameChanged,
