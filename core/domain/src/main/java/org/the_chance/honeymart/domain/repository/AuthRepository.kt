@@ -7,9 +7,13 @@ import org.the_chance.honeymart.domain.model.UserLoginEntity
  */
 interface AuthRepository {
     suspend fun loginUser(email: String, password: String,deviceToken:String): UserLoginEntity
+    suspend fun refreshToken(refreshToken : String ) :UserLoginEntity
 
-    suspend fun saveToken(token: String)
-    fun getToken(): String?
+    suspend fun saveTokens(accessToken: String,refreshToken: String)
+
+    fun getAccessToken(): String?
+    fun getRefreshToken(): String?
+
     suspend fun clearToken()
 
     suspend fun createUserAccount(fullName: String, password: String, email: String): Boolean

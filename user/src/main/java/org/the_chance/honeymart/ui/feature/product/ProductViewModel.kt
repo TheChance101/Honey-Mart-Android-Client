@@ -238,8 +238,9 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-        if (error is ErrorHandler.UnAuthorizedUser)
+        if (error is ErrorHandler.UnAuthorizedUser){
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
+        }
     }
 
 

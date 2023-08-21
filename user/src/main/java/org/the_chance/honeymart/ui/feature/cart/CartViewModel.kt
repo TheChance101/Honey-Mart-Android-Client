@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +42,8 @@ class CartViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
+        }
+        if (error is ErrorHandler.UnAuthorizedUser){
         }
     }
 

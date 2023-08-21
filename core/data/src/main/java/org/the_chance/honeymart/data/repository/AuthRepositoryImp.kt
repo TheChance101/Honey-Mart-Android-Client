@@ -35,13 +35,22 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.loginUser(email, password,deviceToken) }.value?.toUserLoginEntity()
             ?: throw NotFoundException()
 
-    override suspend fun saveToken(token: String) {
-        datastore.saveToken(token)
-        Log.e("Saved Successfully : ", token)
+    override suspend fun refreshToken(refreshToken: String): UserLoginEntity =
+        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toUserLoginEntity()
+            ?: throw NotFoundException()
+
+
+    override suspend fun saveTokens(accessToken: String,refreshToken: String) {
+        datastore.saveTokens(accessToken, refreshToken)
+        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken",)
     }
 
-    override fun getToken(): String? {
-        return datastore.getToken()
+    override fun getAccessToken(): String? {
+        return datastore.getAccessToken()
+    }
+
+    override fun getRefreshToken(): String? {
+        return datastore.getRefreshToken()
     }
 
     override suspend fun clearToken() {

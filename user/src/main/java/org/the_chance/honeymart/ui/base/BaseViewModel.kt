@@ -74,6 +74,7 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             _effect.emit(effect)
         }
     }
+
     protected fun <T> tryToExecuteDebounced(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,

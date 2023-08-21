@@ -140,6 +140,12 @@ class HoneyMartServiceImp @Inject constructor(
             append("deviceToken",deviceToken)
         }))
 
+    override suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto> =
+        wrap(client.submitForm(url = "/token/refresh" , formParameters = Parameters.build {
+            append("refreshToken" ,refreshToken)
+        }) )
+
+
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
         wrap(client.get("/wishList"))
 

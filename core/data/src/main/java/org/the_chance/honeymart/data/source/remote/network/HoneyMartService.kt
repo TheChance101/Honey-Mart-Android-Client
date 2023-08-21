@@ -88,6 +88,8 @@ interface HoneyMartService {
         password: String,
         deviceToken: String
     ): BaseResponse<UserLoginDto>
+    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>
