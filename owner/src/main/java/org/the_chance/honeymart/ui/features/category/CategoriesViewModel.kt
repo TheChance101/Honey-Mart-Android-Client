@@ -599,16 +599,19 @@ class CategoriesViewModel @Inject constructor(
 
     }
 
-    override fun onClickProduct() {
+    override fun onClickProduct(productId: Long) {
         _state.update {
             it.copy(
                 showScreenState = it.showScreenState.copy(
                     showAddProduct = false,
                     showFab = false,
-                    showProductDetails = true
-                )
+                    showProductDetails = true ,
+                ),
+                newProducts = it.newProducts.copy(id =productId)
             )
         }
+        val productID = _state.value.newProducts.id
+        getProductDetails(productID)
     }
 
     //endRegion
