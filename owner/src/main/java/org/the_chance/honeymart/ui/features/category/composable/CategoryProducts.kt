@@ -53,13 +53,19 @@ fun CategoryProducts(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        modifier = Modifier.size(MaterialTheme.dimens.icon48),
-                        painter = painterResource(id = R.drawable.icon_category),
-                        contentDescription = "category icon",
-                        tint = black37
-                    )
+
                     if (state.categories.isNotEmpty()) {
+                        Icon(
+                            modifier = Modifier.size(MaterialTheme.dimens.icon48),
+                            painter = painterResource(
+                                id = categoryIcons[state.categories[state.position]
+                                    .categoryIconUIState.categoryIconId]
+                                    ?: R.drawable.icon_category
+                            ),
+                            contentDescription = "category icon",
+                            tint = black37
+                        )
+
                         Text(
                             text = state.categories[state.position].categoryName,
                             style = MaterialTheme.typography.bodySmall,
