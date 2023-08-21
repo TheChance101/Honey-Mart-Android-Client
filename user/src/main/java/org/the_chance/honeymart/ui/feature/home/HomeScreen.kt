@@ -78,7 +78,7 @@ fun HomeContent(
             state = state.isConnectionError,
             onClickTryAgain = listener::getData
         )
-        Loading(state.isLoading)
+        Loading(state.isLoading && state.markets.isEmpty())
         ContentVisibility(
             state = state.showHome()
         ) {
