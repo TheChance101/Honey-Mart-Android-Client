@@ -2,8 +2,6 @@ package org.the_chance.honeymart.ui.features.product_details.composables
 
 import android.content.Context
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
-import org.the_chance.honeymart.ui.features.add_product.components.SelectedImagesGrid
-import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
+import org.the_chance.honeymart.ui.features.product_details.ProductDetailsInteractionListener
+import org.the_chance.honeymart.ui.features.product_details.ProductsDetailsUiState
 import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
@@ -41,15 +41,15 @@ private const val MAX_IMAGES = 4
 
 @Composable
 fun ProductDetailsForm(
-    state: ProductsUiState,
-    listener: ProductsInteractionsListener,
+    state: ProductsDetailsUiState,
+    listener: ProductDetailsInteractionListener,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
-        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
-    )
+//    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
+//        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+//    )
 
     Column(
         modifier = modifier
@@ -75,7 +75,7 @@ fun ProductDetailsForm(
                 text = state.name,
                 hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
-                onValueChange = listener::onProductNameChanged,
+                onValueChange = listener::onUpdateProductName,
                 errorMessage = when (state.productNameState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_name_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_name_is_too_short)
@@ -86,7 +86,7 @@ fun ProductDetailsForm(
                 text = state.price,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
-                onValueChange = listener::onProductPriceChanged,
+                onValueChange = listener::onUpdateProductPrice,
                 errorMessage = when (state.productPriceState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
@@ -97,7 +97,7 @@ fun ProductDetailsForm(
                 text = state.description,
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
-                onValueChange = listener::onProductDescriptionChanged,
+                onValueChange = listener::onUpdateProductDescription,
                 errorMessage = when (state.productDescriptionState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_description_can_t_be_blank)
                     ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.product_description_is_too_short)
@@ -121,12 +121,12 @@ fun ProductDetailsForm(
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
-            SelectedImagesGrid(
-                images = state.images,
-                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-                multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-                maxImages = MAX_IMAGES
-            )
+//            SelectedImagesGrid(
+//                images = state.images,
+//                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
+//                multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
+//                maxImages = MAX_IMAGES
+//            )
         }
 
         Spacer(modifier = Modifier.weight(1F))
@@ -143,10 +143,12 @@ fun ProductDetailsForm(
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            HoneyFilledButton(label = stringResource(R.string.update), onClick = { /*TODO*/ })
-            HoneyOutlineButton(onClick = { /*TODO*/ }, label = stringResource(R.string.cancel))
+            Spacer(modifier = Modifier.weight(1F))
+            HoneyFilledButton(modifier = Modifier.width(146.dp),
+                label = stringResource(R.string.update), onClick = { /*TODO*/ })
+            HoneyOutlineButton(onClick = { /*TODO*/ }, label = stringResource(R.string.delete))
         }
     }
 }

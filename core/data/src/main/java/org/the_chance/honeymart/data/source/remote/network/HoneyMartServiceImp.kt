@@ -13,6 +13,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
@@ -174,17 +175,24 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(response)
     }
 
-
+    @OptIn(InternalAPI::class)
     override suspend fun updateProduct(
         productId: Long,
         name: String,
         price: Double,
         description: String,
-    ): BaseResponse<ProductDto> = wrap(client.put("/product/$productId") {
-        parameter("price", price)
-        parameter("name", name)
-        parameter("description", description)
-    })
+    ): BaseResponse<String> {
+        val formData = Parameters.build {
+            append("price", price.toString())
+            append("name", name)
+            append("description", description)
+        }
+        val response = wrap<BaseResponse<String>>(client.put("/product/$productId") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
 
     override suspend fun updateCategoriesHasProduct(
         productId: Long,

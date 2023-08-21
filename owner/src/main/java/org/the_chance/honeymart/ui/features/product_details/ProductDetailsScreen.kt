@@ -10,12 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
-import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.product_details.composables.ProductDetailsForm
+import org.the_chance.honeymart.ui.features.product_details.composables.ProductOnProduct
+import org.the_chance.honeymart.ui.features.products.ProductsInteractionsListener
+import org.the_chance.honeymart.ui.features.products.ProductsUiState
+import org.the_chance.honeymart.ui.features.products.composables.ProductsOnProducts
+import org.the_chance.honeymart.ui.features.products.contentScreen
+import org.the_chance.honeymart.ui.orderdetails.OrderDetailsContent
+import org.the_chance.honeymart.ui.orderdetails.OrderDetailsUiState
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -23,16 +33,16 @@ fun ProductDetailsScreen(
     viewModel: ProductDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-//    ProductDetailsContent(state, viewModel)
+    ProductDetailsContent(state, viewModel)
 }
 
 @Composable
 fun ProductDetailsContent(
-    state: CategoriesUiState,
-    listener: CategoriesInteractionsListener
+    state: ProductsDetailsUiState,
+    listener: ProductDetailsInteractionListener
 ) {
 
-    ContentVisibility(state = !state.isLoading) {
+    ContentVisibility(state = state.contentScreen()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -49,7 +59,7 @@ fun ProductDetailsContent(
                         .weight(1f)
                         .padding(horizontal = MaterialTheme.dimens.space12)
                 ) {
-//                    ProductsOnProducts(state = state, listener = listener)
+                    ProductOnProduct(state = state, listener = listener)
                 }
 
                 Column(
@@ -57,7 +67,7 @@ fun ProductDetailsContent(
                         .fillMaxSize()
                         .weight(1f)
                 ) {
-//                    ProductDetailsForm(state = state, listener = listener)
+                    ProductDetailsForm(state = state, listener = listener)
                 }
             }
         }
