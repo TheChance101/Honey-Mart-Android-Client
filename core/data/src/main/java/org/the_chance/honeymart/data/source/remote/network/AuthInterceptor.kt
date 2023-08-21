@@ -92,6 +92,6 @@ class AuthInterceptor @Inject constructor(
     companion object {
         private const val API_KEY = "apiKey"
         private const val AUTHORIZATION = "Authorization"
-        private const val BASE_URL = "http://10.0.2.2:8080/"
+        private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
     }
 }
