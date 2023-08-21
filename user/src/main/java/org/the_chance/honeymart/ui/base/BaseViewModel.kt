@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.LoginEntity
+import org.the_chance.honeymart.domain.model.UserLoginEntity
 import org.the_chance.honeymart.domain.usecase.RefreshTokenUseCase
 import org.the_chance.honeymart.domain.util.AuthenticationException
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -25,7 +25,7 @@ import org.the_chance.honeymart.domain.util.handelNetworkException
 import java.io.IOException
 
 abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
-     private lateinit var refreshTokenUseCase : RefreshTokenUseCase
+     //private lateinit var refreshTokenUseCase : RefreshTokenUseCase
 
     abstract val TAG: String
     protected open fun log(message: String) {
@@ -69,18 +69,18 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             }
         }
     }
-    protected fun refreshToken(){
+    /*protected fun refreshToken(){
         tryToExecute(
             {refreshTokenUseCase()},
             ::onRefreshTokenSuccess ,
             ::onRefreshTokenError
         )
     }
-    private fun onRefreshTokenSuccess(tokens : LoginEntity){
+    private fun onRefreshTokenSuccess(tokens : UserLoginEntity){
 
     }
     private fun onRefreshTokenError(error: ErrorHandler){
-    }
+    }*/
 
 
     protected fun <T : BaseUiEffect> effectActionExecutor(

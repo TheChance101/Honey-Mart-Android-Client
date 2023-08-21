@@ -122,7 +122,6 @@ class WishListViewModel @javax.inject.Inject constructor(
             _state.update { it.copy(isError = true) }
         }
         if (error is ErrorHandler.UnAuthorizedUser){
-            refreshToken()
         }
     }
 

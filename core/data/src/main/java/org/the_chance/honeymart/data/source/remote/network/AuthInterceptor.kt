@@ -4,20 +4,15 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.runBlocking
+import okhttp3.FormBody
 import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.the_chance.honeymart.data.BuildConfig
-import org.json.JSONObject
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
-import org.the_chance.honeymart.data.source.remote.models.LoginDto
-import org.the_chance.honeymart.domain.repository.AuthRepository
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
@@ -29,41 +24,37 @@ class AuthInterceptor @Inject constructor(
         val oldRequest = chain
             .request()
             .newBuilder()
-            .addHeader(AUTHORIZATION, "Bearer $accessToken")
+            .addHeader(
+                AUTHORIZATION,
+                "Bearer $accessToken"
+            )
             .addHeader(API_KEY, BuildConfig.API_KEY)
             .build()
 
         val oldResponse = chain.proceed(oldRequest)
-        val responseBody = oldResponse.body
-        Log.e("refreshResponse if", "intercept: ${refreshToken}")
         if (oldResponse.code == 401 && refreshToken != "" && refreshToken != null) {
             val client = OkHttpClient()
-            val params = JSONObject()
-            params.put("refreshToken", refreshToken)
-            val body: RequestBody = params.toString()
-                .toRequestBody("application/json".toMediaType())
+            val formBody = FormBody.Builder()
+                .add("refreshToken", refreshToken)
+                .build()
             val newRequest = Request.Builder()
-                .post(body)
-                .header("Content-Type", "application/json")
+                .post(formBody)
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .url("${BASE_URL}token/refresh")
                 .build()
             val response = client.newCall(newRequest).execute()
-            Log.e("refreshResponse", "intercept: ${response.code},${response.message}")
-            Log.e("refreshNewRequest", "intercept: ${newRequest.url},${newRequest.body}")
             if (response.code == 200) {
-                Log.e("refreshResponse if", "intercept: ${response.code}")
                 val jsonData = response.body.string()
                 val gson = Gson()
                 try {
-                    val type = object : TypeToken<BaseResponse<LoginDto>>() {}.type
-                    val tokensResponse: BaseResponse<LoginDto> = gson.fromJson(jsonData, type)
+                    val type = object : TypeToken<BaseResponse<UserLoginDto>>() {}.type
+                    val tokensResponse: BaseResponse<UserLoginDto> = gson.fromJson(jsonData, type)
                     runBlocking {
                         val tokens = tokensResponse.value!!
-                        Log.e("intercept", "intercept: ${tokens.refreshToken}")
                         dataStorePreferences.saveTokens(tokens.accessToken!!, tokens.refreshToken!!)
                         val newAccessToken = tokens.accessToken
                         val newRequestWithAccessToken = oldRequest.newBuilder()
-                            .removeHeader(AUTHORIZATION) // Remove the old authorization header
+                            .removeHeader(AUTHORIZATION)
                             .addHeader(AUTHORIZATION, "Bearer $newAccessToken")
                             .build()
 
@@ -74,8 +65,6 @@ class AuthInterceptor @Inject constructor(
                 }
             }
         }
-
-
         return oldResponse
     }
 

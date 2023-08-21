@@ -136,7 +136,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("password", password)
         }))
 
-    override suspend fun refreshToken(refreshToken: String): BaseResponse<LoginDto> =
+    override suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/token/refresh" , formParameters = Parameters.build {
             append("refreshToken" ,refreshToken)
         }) )

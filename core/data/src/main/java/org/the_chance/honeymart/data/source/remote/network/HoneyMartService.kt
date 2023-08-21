@@ -84,7 +84,7 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun refreshToken(refreshToken: String) :BaseResponse<LoginDto>
+    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
     suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
     //region WishList
 

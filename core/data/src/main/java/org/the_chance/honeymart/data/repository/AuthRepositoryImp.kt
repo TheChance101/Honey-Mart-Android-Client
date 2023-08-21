@@ -29,8 +29,8 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.loginUser(email, password) }.value?.toUserLoginEntity()
             ?: throw NotFoundException()
 
-    override suspend fun refreshToken(refreshToken: String): LoginEntity =
-        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toLoginEntity()
+    override suspend fun refreshToken(refreshToken: String): UserLoginEntity =
+        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toUserLoginEntity()
             ?: throw NotFoundException()
 
 
