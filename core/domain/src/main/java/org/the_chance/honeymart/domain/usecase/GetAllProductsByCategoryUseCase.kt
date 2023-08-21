@@ -11,5 +11,4 @@ class GetAllProductsByCategoryUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(categoryId: Long): Flow<PagingData<ProductEntity>> =
         honeyMartRepository.getAllProductsByCategory(page = null,categoryId)
-
 }
