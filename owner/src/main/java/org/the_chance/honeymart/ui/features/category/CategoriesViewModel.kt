@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.category
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -653,13 +654,44 @@ class CategoriesViewModel @Inject constructor(
                 showScreenState = it.showScreenState.copy(
                     showAddProduct = false,
                     showFab = false,
-                    showProductDetails = true ,
+                    showProductDetails = true,
                 ),
-                newProducts = it.newProducts.copy(id =productId)
+                newProducts = it.newProducts.copy(id = productId)
             )
         }
         val productID = _state.value.newProducts.id
         getProductDetails(productID)
+    }
+
+    override fun onClickUpdateProductDetails() {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showAddProduct = false,
+                    showFab = false,
+                    showProductDetails = false,
+                    showProductUpdate = true
+                )
+            )
+        }
+
+        Log.e(
+            "mah",
+            "onClickUpdateProductDetails: ${state.value.showScreenState.showProductUpdate}"
+        )
+    }
+
+    override fun onClickCansle() {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showAddProduct = true,
+                    showFab = false,
+                    showProductDetails = false,
+                    showProductUpdate = false
+                )
+            )
+        }
     }
 
     //endRegion

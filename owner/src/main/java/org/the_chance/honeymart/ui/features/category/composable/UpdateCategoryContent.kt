@@ -29,7 +29,6 @@ import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
-import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
@@ -113,7 +112,7 @@ fun UpdateCategoryContent(
                 ) {
                     HoneyFilledButton(
                         label = "Save update",
-                        isButtonEnabled = state.showButton(),
+                        isButtonEnabled = true,
                         onClick = { listener.updateCategory(state) },
                         modifier = Modifier.width(IntrinsicSize.Max)
                     )

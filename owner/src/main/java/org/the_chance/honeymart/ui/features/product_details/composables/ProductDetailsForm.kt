@@ -64,7 +64,6 @@ fun ProductDetailsContent(
     Column(
         modifier = modifier
             .padding(
-                vertical = MaterialTheme.dimens.space24,
                 horizontal = MaterialTheme.dimens.space16,
             )
             .fillMaxSize()
@@ -160,7 +159,8 @@ fun ProductDetailsContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.space48),
+                .height(MaterialTheme.dimens.space48)
+                .padding(bottom = MaterialTheme.dimens.space32),
             contentAlignment = Alignment.Center
         ) {
             Loading(
@@ -173,9 +173,14 @@ fun ProductDetailsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Spacer(modifier = Modifier.weight(1F))
-            HoneyFilledButton(modifier = Modifier.width(146.dp),
-                label = confirmButton, onClick = { listener.updateProductDetails(state) })
-            HoneyOutlineButton(onClick = { /*TODO*/ }, label = cancelButton)
+            HoneyFilledButton(
+                modifier = Modifier.width(146.dp),
+                label = confirmButton,
+                onClick = listener::onClickUpdateProductDetails
+            )
+            HoneyOutlineButton(onClick = listener::onClickCansle, label = cancelButton)
         }
+
+        Spacer(modifier = Modifier.weight(2F))
     }
 }
