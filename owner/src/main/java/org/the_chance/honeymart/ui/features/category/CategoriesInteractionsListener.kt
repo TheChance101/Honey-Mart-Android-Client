@@ -28,4 +28,5 @@ interface CategoriesInteractionsListener {
     fun onUpdateProductImage(uris: List<ByteArray>)
     fun updateProductDetails(product: CategoriesUiState)
     fun onClickProduct(productId: Long)
+    fun deleteProductById(productId: Long)
 }

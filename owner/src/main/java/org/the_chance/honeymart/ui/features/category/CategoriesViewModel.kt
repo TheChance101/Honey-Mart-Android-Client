@@ -8,6 +8,8 @@ import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
 import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.DeleteProductByIdUseCase
+import org.the_chance.honeymart.domain.usecase.DeleteProductImagesUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
@@ -32,10 +34,12 @@ class CategoriesViewModel @Inject constructor(
     private val addProductUseCase: AddProductUseCase,
     private val addProductImagesUseCase: AddProductImagesUseCase,
     private val productDetailsUseCase: GetProductDetailsUseCase,
-    private val updateProductDetailsUseCase: UpdateProductDetailsUseCase
+    private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
+    private val deleteProductImagesUseCase: DeleteProductImagesUseCase,
+    private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
 
 
-) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
+    ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String
@@ -545,6 +549,50 @@ class CategoriesViewModel @Inject constructor(
 
     }
 
+    // endregion
+    // region Delete Product
+    override fun deleteProductById(productId: Long) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { deleteProductByIdUseCase(productId) },
+            ::onSuccessDeleteProduct,
+            ::onErrorDeleteProduct,
+        )
+    }
+
+    private fun onSuccessDeleteProduct(success: String) {
+        _state.update { it.copy(isLoading = false, isError = false) }
+        val productID = _state.value.newProducts.id
+        deleteProductImages(productId = productID)
+    }
+
+    private fun onErrorDeleteProduct(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    private fun deleteProductImages(productId: Long) {
+        tryToExecute(
+            { deleteProductImagesUseCase(productId) },
+            ::onSuccessDeleteProductImages,
+            ::onErrorDeleteProductImages,
+        )
+    }
+
+    private fun onSuccessDeleteProductImages(success: String) {
+        _state.update { it.copy(isLoading = false, isError = false) }
+        val categoryId = _state.value.newCategory.categoryId
+        getProductsByCategoryId(categoryId = categoryId)
+    }
+
+    private fun onErrorDeleteProductImages(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
     // endregion
 
     // region Helper
