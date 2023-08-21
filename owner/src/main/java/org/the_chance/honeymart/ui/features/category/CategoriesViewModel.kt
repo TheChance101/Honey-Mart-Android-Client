@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.category
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -15,7 +16,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
-import org.the_chance.honeymart.ui.features.products.ProductsUiState
 import javax.inject.Inject
 
 /**
@@ -256,6 +256,7 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false, products = products.toProductUiState())
         }
+        Log.i("mah", products.size.toString())
     }
 
     private fun onGetProductsError(error: ErrorHandler) {
@@ -272,14 +273,14 @@ class CategoriesViewModel @Inject constructor(
 
     private val categoryId = 43L
 
-    override fun addProduct(product: ProductsUiState) {
+    override fun addProduct(product: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
                 addProductUseCase(
-                    product.name,
-                    product.price.toDouble(),
-                    product.description,
+                    product.newProducts.name,
+                    product.newProducts.price.toDouble(),
+                    product.newProducts.description,
                     categoryId
                 )
             },

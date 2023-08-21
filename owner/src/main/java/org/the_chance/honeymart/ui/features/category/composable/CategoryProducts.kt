@@ -94,11 +94,10 @@ fun CategoryProducts(
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
                 items(state.products.size) { index ->
-                    val product = state.products[index]
                     ProductCard(
-                        imageUrl = product.productImage,
-                        productName = product.productName,
-                        productPrice = product.productPrice,
+                        imageUrl = state.products[index].productImage,
+                        productName = state.products[index].productName,
+                        productPrice = state.products[index].productPrice,
                     )
                 }
             }
