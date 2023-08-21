@@ -9,22 +9,21 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.tasks.await
 import org.the_chance.honeymart.data.R
 import javax.inject.Inject
 
-class FireBaseMsgServiceImpl @Inject  constructor(
-    private val firebaseMessaging: FirebaseMessaging
-) : FirebaseMessagingService() , FireBaseMsgService{
-
-
+class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
+    FireBaseMsgService {
+    private val firebaseMessaging = FirebaseMessaging.getInstance()
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")
 
     }
 
 
-    override  fun onMessageReceived(remoteMessage: RemoteMessage) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         val notification = remoteMessage.notification
         if (notification != null) {
             val title = notification.title
@@ -34,7 +33,7 @@ class FireBaseMsgServiceImpl @Inject  constructor(
     }
 
 
-     private fun showNotification(title: String?, message: String?) {
+    private fun showNotification(title: String?, message: String?) {
         val channelId = "default_channel"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.icon_order_nav)
@@ -46,17 +45,17 @@ class FireBaseMsgServiceImpl @Inject  constructor(
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-         val channel = NotificationChannel(
-             channelId,
-             "Default Channel",
-             NotificationManager.IMPORTANCE_HIGH
-         )
-         channel.enableLights(true)
-         channel.lightColor = Color.RED
-         channel.enableVibration(true)
-         notificationManager.createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            channelId,
+            "Default Channel",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        channel.enableLights(true)
+        channel.lightColor = Color.RED
+        channel.enableVibration(true)
+        notificationManager.createNotificationChannel(channel)
 
-         val notificationId = 1
+        val notificationId = 1
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 

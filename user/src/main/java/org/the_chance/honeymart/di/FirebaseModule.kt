@@ -6,13 +6,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgService
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgServiceImpl
+import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class FirebaseModule {
-
-
+internal abstract class FirebaseModule {
+    @Singleton
     @Binds
     abstract fun bindsFireBaseMsgService(firebaseMessaging: FireBaseMsgServiceImpl): FireBaseMsgService
 
