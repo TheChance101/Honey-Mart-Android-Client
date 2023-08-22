@@ -248,4 +248,8 @@ class ProductViewModel @Inject constructor(
     override fun onclickTryAgain() {
         getData()
     }
+
+    override fun onclickTryAgainProducts() {
+        getProductsByCategoryId()
+    }
 }

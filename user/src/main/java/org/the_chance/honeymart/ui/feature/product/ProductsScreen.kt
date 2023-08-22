@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -116,7 +115,6 @@ private fun ProductsContent(
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
                         val products = state.products.collectAsLazyPagingItems()
-                        Log.i("ProductsContent: ", products.itemSnapshotList.items.toString())
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
@@ -144,7 +142,7 @@ private fun ProductsContent(
                                     )
                                 }
                             }
-                            PagingStateVisibility(products)
+                            PagingStateVisibility(products,productInteractionListener::onclickTryAgainProducts)
                         }
                     }
                 }
