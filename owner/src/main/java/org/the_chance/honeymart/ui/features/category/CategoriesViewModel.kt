@@ -481,7 +481,6 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductDetailsSuccess(massege: String) {
-        _state.update { it.copy(isLoading = true, error = null) }
         onUpdateProductImage(
             state.value.newProducts.id,
             state.value.newProducts.images
@@ -562,7 +561,6 @@ class CategoriesViewModel @Inject constructor(
 
 
     override fun onUpdateProductImage(productId: Long, images:List<ByteArray>) {
-        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { updateProductImagesUseCase(productId, images) },
             onSuccess = { onUpdateProductImageSuccess() },
