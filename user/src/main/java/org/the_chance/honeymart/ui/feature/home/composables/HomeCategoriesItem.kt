@@ -54,7 +54,7 @@ fun HomeCategoriesItem(
                     it.drawOutline(
                         outline = Outline.Generic(path),
                         paint = Paint().apply {
-                            color = colors.secondaryContainer
+                            color = colors.onTertiary
                             pathEffect = PathEffect.cornerPathEffect(16.dp.toPx())
                         }
                     )

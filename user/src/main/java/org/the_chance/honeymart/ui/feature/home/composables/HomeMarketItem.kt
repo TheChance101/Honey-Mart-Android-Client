@@ -49,7 +49,7 @@ fun HomeMarketItem(
         Text(
             text = name,
             modifier = Modifier.align(Alignment.Center),
-            style = MaterialTheme.typography.displaySmall
+            style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onPrimary)
         )
     }
 }
