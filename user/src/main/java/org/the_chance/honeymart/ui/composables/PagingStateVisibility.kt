@@ -14,9 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
-fun LazyListScope.PagingStateVisibility(products: LazyPagingItems<ProductUiState>) {
+fun<T : Any> LazyListScope.PagingStateVisibility(products: LazyPagingItems<T>) {
     when {
         products.loadState.refresh is LoadState.Loading -> {
             item {
