@@ -76,14 +76,14 @@ fun ItemRequest(
                 if (image.isNotEmpty()) {
                     ImageNetwork(
                         modifier = Modifier
-                            .size(MaterialTheme.dimens.icon48)
+                            .size(MaterialTheme.dimens.space86)
                             .clip(CircleShape),
                         imageUrl = image,
                     )
                 } else {
                     Box(
                         modifier = Modifier
-                            .size(MaterialTheme.dimens.icon48)
+                            .size(MaterialTheme.dimens.space86)
                             .clip(CircleShape)
                             .background(
                                 MaterialTheme.colorScheme.primary,

@@ -71,14 +71,14 @@ fun RequestDetails(
                 if (state.ownerImage.isNotEmpty()) {
                     ImageNetwork(
                         modifier = Modifier
-                            .size(MaterialTheme.dimens.icon48)
+                            .size(70.dp)
                             .clip(CircleShape),
                         imageUrl = state.ownerImage,
                     )
                 } else {
                     Box(
                         modifier = Modifier
-                            .size(MaterialTheme.dimens.icon48)
+                            .size(70.dp)
                             .clip(CircleShape)
                             .background(
                                 MaterialTheme.colorScheme.primary,

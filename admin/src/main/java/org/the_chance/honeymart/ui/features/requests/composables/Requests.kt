@@ -63,8 +63,8 @@ fun Requests(
                     date = request.date,
                     image = request.ownerImage,
                     ownerNameFirstCharacter = state.ownerNameFirstCharacter,
-                    onCardSelected = request.isRequestSelected,
-                    isRequestNew = request.isRequestNew
+                    onCardSelected = state.isRequestSelected,
+                    isRequestNew = state.isRequestNew
                 )
             }
         }
