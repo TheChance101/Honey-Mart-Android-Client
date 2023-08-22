@@ -30,6 +30,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
+import java.util.Locale
 
 @Composable
 fun ItemRequest(
@@ -37,6 +38,8 @@ fun ItemRequest(
     userName: String,
     marketName: String,
     date: String,
+    image:String,
+    ownerNameFirstCharacter: Char,
     onCardSelected: Boolean,
     isRequestNew: Boolean,
     modifier: Modifier = Modifier,
@@ -70,12 +73,31 @@ fun ItemRequest(
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                ImageNetwork(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.space86)
-                        .clip(CircleShape),
-                    imageUrl = "",
-                )
+                if (image.isNotEmpty()) {
+                    ImageNetwork(
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.icon48)
+                            .clip(CircleShape),
+                        imageUrl = image,
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.icon48)
+                            .clip(CircleShape)
+                            .background(
+                                MaterialTheme.colorScheme.primary,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                color = white
+                            )
+                        )
+                    }
+                }
                 Column(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)

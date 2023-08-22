@@ -8,4 +8,5 @@ interface RequestsInteractionListener {
     fun onClickCancel()
     fun onClickApprove()
     fun resetSnackBarState()
+    fun updateRequests(position: Long, orderState: Int)
 }

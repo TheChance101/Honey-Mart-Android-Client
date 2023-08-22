@@ -33,7 +33,7 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.owner.R
+import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.error
 import org.the_chance.honymart.ui.theme.white200
 
@@ -83,7 +83,7 @@ fun MarketInfoContent(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
-                    text = stringResource(org.the_chance.design_system.R.string.market_images),
+                    text = stringResource(R.string.market_images),
                     style = MaterialTheme.typography.displaySmall,
                     color = if (state.marketImage.errorState.isNotEmpty()) error else black37,
                     textAlign = TextAlign.Center,
@@ -101,7 +101,7 @@ fun MarketInfoContent(
                     ) {
                         Icon(
                             modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                            painter = painterResource(org.the_chance.design_system.R.drawable.icon_add_product),
+                            painter = painterResource(R.drawable.icon_add_product),
                             contentDescription = "Icon Add",
                             tint = black60
                         )
@@ -110,7 +110,7 @@ fun MarketInfoContent(
             }
         }
         HoneyFilledButton(
-            label = stringResource(org.the_chance.design_system.R.string.send),
+            label = stringResource(R.string.send),
             onClick = listener::onClickSendButton,
             background = primary100,
             contentColor = Color.White,

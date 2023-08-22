@@ -150,6 +150,8 @@
     <string name="send">Send</string>
     <string name="market_images">Market Images</string>
     <string name="continue_word">Continue</string>
+    <string name="market_info">Market info</string>
+    <string name="address">Address</string>
 
     <string name="declined">Declined</string>
     <string name="all_requests">All Requests</string>

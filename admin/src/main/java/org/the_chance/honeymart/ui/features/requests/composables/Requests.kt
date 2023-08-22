@@ -54,14 +54,17 @@ fun Requests(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(state.requests.size) {
+            items(state.requests.size) { index ->
+                val request = state.requests[index]
                 ItemRequest(
                     onClickCard = listener::onClickRequest,
-                    userName = state.userName,
-                    marketName = state.marketName,
-                    date = state.requests[it].date,
-                    onCardSelected = state.isRequestSelected,
-                    isRequestNew = state.isRequestNew
+                    userName = request.ownerName,
+                    marketName = request.marketName,
+                    date = request.date,
+                    image = request.ownerImage,
+                    ownerNameFirstCharacter = state.ownerNameFirstCharacter,
+                    onCardSelected = request.isRequestSelected,
+                    isRequestNew = request.isRequestNew
                 )
             }
         }

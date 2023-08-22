@@ -22,13 +22,13 @@ import org.the_chance.honymart.ui.theme.dimens
 fun RequestsScreen(viewModel: RequestsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    RequestsContent(state,viewModel)
+    RequestsContent(state, viewModel)
 }
 
 @Composable
 fun RequestsContent(
     state: RequestsUiState,
-    listener: RequestsInteractionListener
+    listener: RequestsInteractionListener,
 ) {
 
     Column(
@@ -50,12 +50,12 @@ fun RequestsContent(
             ) {
                 Requests(state, listener)
             }
-            ContentVisibility(state = state.isRequestSelected) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                ContentVisibility(state = state.isRequestSelected) {
                     RequestDetails(state, listener)
                 }
             }

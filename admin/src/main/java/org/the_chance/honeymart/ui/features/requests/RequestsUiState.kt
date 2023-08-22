@@ -12,9 +12,10 @@ data class RequestsUiState(
     val requests: List<RequestUiState> = emptyList(),
     val isRequestNew: Boolean = false,
     val isRequestSelected: Boolean = false,
-    val userName: String = "",
-    val userEmail: String = "",
-    val userImage: String = "",
+    val ownerName: String = "",
+    val ownerEmail: String = "",
+    val ownerImage: String = "",
+    val ownerNameFirstCharacter: Char = ' ',
     val marketImage: Int  = 0,
     val marketName: String = "",
     val marketAddress: String = "",
@@ -23,16 +24,21 @@ data class RequestsUiState(
 
 data class RequestUiState(
     val marketId: Int = 0,
-    val userName: String = "",
+    val ownerName: String = "",
     val marketName: String = "",
-    val userImage: String = "",
+    val ownerImage: String = "",
     val date: String = "",
-)
+    val isRequestNew: Boolean = false,
+    val isRequestSelected: Boolean = false,
+    val states: RequestsStates = RequestsStates.ALL_REQUESTS,
+    )
 
 fun RequestEntity.toRequestUiState(): RequestUiState {
     return RequestUiState(
         marketId = marketId,
         marketName = marketName,
+        ownerName = owner.fullName,
+        ownerImage = owner.imageUrl
     )
 }
 

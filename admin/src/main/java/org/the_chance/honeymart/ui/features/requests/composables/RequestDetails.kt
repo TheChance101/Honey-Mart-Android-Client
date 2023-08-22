@@ -33,6 +33,7 @@ import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
+import java.util.Locale
 
 @Composable
 fun RequestDetails(
@@ -67,25 +68,43 @@ fun RequestDetails(
                     thickness = 100.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
-                ImageNetwork(
-                    modifier = Modifier
-                        .padding(top = MaterialTheme.dimens.space8)
-                        .size(70.dp)
-                        .clip(CircleShape),
-                    imageUrl = state.userImage,
-                )
+                if (state.ownerImage.isNotEmpty()) {
+                    ImageNetwork(
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.icon48)
+                            .clip(CircleShape),
+                        imageUrl = state.ownerImage,
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.icon48)
+                            .clip(CircleShape)
+                            .background(
+                                MaterialTheme.colorScheme.primary,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = state.ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                color = white
+                            )
+                        )
+                    }
+                }
                 Column(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
                     horizontalAlignment = Start,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                 ) {
                     Text(
-                        text = state.userName,
+                        text = state.ownerName,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = state.userEmail,
+                        text = state.ownerEmail,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.displayLarge
                     )
