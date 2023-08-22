@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.product_details.composables
 
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.add_product.components.ItemImageProductDetails
 import org.the_chance.honeymart.ui.features.add_product.components.MAX_IMAGES
+import org.the_chance.honeymart.ui.features.add_product.components.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.add_product.components.handleImageSelection
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
@@ -54,6 +56,25 @@ fun ProductDetailsContent(
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
         onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+    )
+
+    val imageUrls = state.productDetails.productImage
+    val uris = mutableListOf<Uri>()
+
+    for (imageUrl in imageUrls) {
+        try {
+            val uri = Uri.parse(imageUrl)
+            uris.add(uri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    handleImageSelection(
+        uris = uris.toList(),
+        context = context,
+        state = state,
+        onImageSelected = { }
     )
 
     Column(
@@ -138,14 +159,13 @@ fun ProductDetailsContent(
                         ItemImageProductDetails(image = image)
                     }
                 }
-
             } else if (state.showScreenState.showProductUpdate) {
-//                SelectedImagesGrid(
-//                    images = state.productDetails.productImage,
-//                    onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-//                    multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-//                    maxImages = MAX_IMAGES
-//                )
+                SelectedImagesGrid(
+                    images = state.newProducts.images,
+                    onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
+                    multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
+                    maxImages = MAX_IMAGES
+                )
             }
 
         }

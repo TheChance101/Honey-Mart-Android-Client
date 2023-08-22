@@ -62,9 +62,9 @@ fun CategoriesContent(
         Loading(state = state.isLoading && state.categories.isEmpty())
         AnimatedVisibility(
             visible = state.categories.isEmpty()
-                    &&!state.isLoading
-                    &&!state.isError
-                    &&!state.showScreenState.showCategoryProducts
+                    && !state.isLoading
+                    && !state.isError
+                    && !state.showScreenState.showCategoryProducts
         ) {
             Column(
                 modifier = Modifier
@@ -134,7 +134,7 @@ fun CategoriesContent(
                         cancelButton = stringResource(id = R.string.delete),
                         state = state,
                         listener = listener,
-                        onClickConfirm = {listener.onClickUpdateProductDetails() },
+                        onClickConfirm = { listener.onClickUpdateProductDetails() },
                         onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
                     )
                 }
@@ -147,7 +147,7 @@ fun CategoriesContent(
                         state = state,
                         listener = listener,
                         onClickConfirm = { },
-                        onClickCancel = {listener.onClickCancel() }
+                        onClickCancel = { listener.onClickCancel() }
                     )
                 }
             }
@@ -187,7 +187,7 @@ fun CategoriesContent(
 
     if (state.showScreenState.showDeleteDialog) {
         CustomAlertDialog(
-            message =stringResource(R.string.you_delete_a_product) +
+            message = stringResource(R.string.you_delete_a_product) +
                     stringResource(R.string.are_you_sure),
             onConfirm = {
                 listener.deleteProductById(state.newProducts.id)
