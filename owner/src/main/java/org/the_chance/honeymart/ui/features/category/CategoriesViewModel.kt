@@ -554,8 +554,37 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    override fun onUpdateProductImage(uris: List<ByteArray>) {
 
+    override fun onUpdateProductImage(productId: Long, images: List<ByteArray>) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { up(productId, images) },
+            onSuccess = { onAddProductImagesSuccess() },
+            onError = ::onAddProductImagesError
+        )
+    }
+
+    private fun onUpdateProductImageSuccess() {
+        _state.update {
+            it.copy(
+                isLoading = false, error = null,
+                newProducts = it.newProducts.copy(
+                    name = "",
+                    description = "",
+                    price = " ",
+                    images = emptyList(),
+                ),
+            )
+        }
+        val categoryId = _state.value.newCategory.categoryId
+        getProductsByCategoryId(categoryId = categoryId)
+    }
+
+    private fun onUpdateProductImage(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     // endregion

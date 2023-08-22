@@ -141,7 +141,7 @@ fun CategoriesContent(
                         cancelButton = stringResource(id = R.string.cancel),
                         state = state,
                         listener = listener,
-                        onClickConfirm = { },
+                        onClickConfirm = {listener.onClickUpdateProductDetails()},
                         onClickCancel = {listener.onClickCancel() }
                     )
                 }

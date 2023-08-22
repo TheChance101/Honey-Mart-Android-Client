@@ -166,8 +166,7 @@ fun ProductDetailsContent(
                 }
             } else if (state.showScreenState.showProductUpdate) {
                 SelectedImagesGrid(
-                    // images = state.newProducts.images,
-                    images = imageByteArrays,
+                     images = state.newProducts.images,
                     onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
                     multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
                     maxImages = MAX_IMAGES
