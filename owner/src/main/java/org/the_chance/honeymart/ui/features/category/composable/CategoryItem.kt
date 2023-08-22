@@ -34,15 +34,13 @@ fun CategoryItem(
     onClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .wrapContentSize(),
+        modifier = modifier.wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
     ) {
         Card(
-            modifier = Modifier.size(140.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.categoryItem),
             shape = MaterialTheme.shapes.medium,
-
             colors = if (isSelected) CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
             else CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
             onClick = onClick
@@ -52,7 +50,6 @@ fun CategoryItem(
                     .fillMaxSize()
                     .padding(bottom = MaterialTheme.dimens.space4),
                 contentAlignment = Alignment.Center
-
             ) {
                 Icon(
                     painter = painterResource(id = icon),
@@ -69,8 +66,5 @@ fun CategoryItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-
     }
-
-
 }

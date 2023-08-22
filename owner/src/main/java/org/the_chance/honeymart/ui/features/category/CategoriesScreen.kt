@@ -54,7 +54,7 @@ fun CategoriesContent(
             .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
-        Loading(state = state.isLoading && state.categories.isEmpty())
+        Loading(state = state.showLoadingWhenCategoriesIsEmpty())
         ContentVisibility(state = state.emptyCategoryPlaceHolder()) {
             Column(
                 modifier = Modifier
@@ -69,19 +69,14 @@ fun CategoriesContent(
         }
 
         Row(modifier = Modifier.fillMaxSize()) {
-            Loading(state = state.isLoading && state.categories.isNotEmpty())
+            Loading(state = state.showLoadingWhenCategoriesIsEmpty())
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                Loading(
-                    state = state.isLoading && state.categories.isNotEmpty() &&
-                            state.showScreenState.showFab
-                )
-
                 EmptyCategory(
-                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    state = state.placeHolderCondition(),
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
                 ContentVisibility(

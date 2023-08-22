@@ -1,14 +1,5 @@
 package org.the_chance.honeymart.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,18 +19,9 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
-    AnimatedVisibility(
-        visible = state,
-        enter = fadeIn(
-            animationSpec = tween(durationMillis = 500)
-        ) + slideInVertically() + scaleIn(),
-        exit = fadeOut(
-            animationSpec = tween(durationMillis = 500)
-        ) + slideOutVertically() + scaleOut()
-    ) {
+    ContentVisibility(state = state) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

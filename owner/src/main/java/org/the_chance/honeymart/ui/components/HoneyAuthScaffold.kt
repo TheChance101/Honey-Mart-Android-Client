@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
@@ -34,7 +35,7 @@ fun HoneyAuthScaffold(
     ) {
         Image(
             painter = painterResource(R.drawable.image_group),
-            contentDescription = "",
+            contentDescription = stringResource(id = R.string.honey_sun_image),
             modifier = Modifier
                 .size(MaterialTheme.dimens.sunImageSize)
                 .align(TopEnd),
@@ -44,7 +45,7 @@ fun HoneyAuthScaffold(
         Row {
             Image(
                 painter = painterResource(id = org.the_chance.owner.R.drawable.auth_image),
-                contentDescription = "authorization background image",
+                contentDescription = stringResource(R.string.authorization_background_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxHeight()
             )

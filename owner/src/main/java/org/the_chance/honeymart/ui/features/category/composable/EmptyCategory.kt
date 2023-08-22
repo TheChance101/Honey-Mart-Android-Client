@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.category.composable
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60
@@ -31,21 +31,19 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
-    AnimatedVisibility(
-        visible = state,
-        modifier = modifier
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+fun EmptyCategory(
+    state: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ContentVisibility(state = state) {
+        Box(modifier = modifier.fillMaxSize()) {
             Column(modifier = Modifier.align(Alignment.Center)) {
                 Image(
                     painter = painterResource(id = R.drawable.img_empty_category),
                     contentDescription = "",
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-
                 Text(
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space32)
@@ -79,9 +77,7 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> 
                             .align(Alignment.CenterVertically),
                         text = stringResource(R.string.please_click_on),
                         style = Typography.displayLarge.copy(color = blackOn37),
-
                         )
-
                     IconButton(
                         modifier = Modifier
                             .clip(CircleShape)
@@ -96,7 +92,6 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> 
                         },
                         onClick = onClick
                     )
-
                     Text(
                         modifier = Modifier
                             .padding(start = MaterialTheme.dimens.space8)
@@ -108,5 +103,4 @@ fun EmptyCategory(state: Boolean, modifier: Modifier = Modifier, onClick: () -> 
             }
         }
     }
-
 }

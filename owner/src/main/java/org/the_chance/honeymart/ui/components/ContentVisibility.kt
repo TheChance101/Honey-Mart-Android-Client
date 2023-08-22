@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun ContentVisibility(
     state: Boolean,
-    content: @Composable() AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit
 ){
     AnimatedVisibility(
         visible = state,

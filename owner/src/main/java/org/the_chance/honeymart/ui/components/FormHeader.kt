@@ -61,7 +61,7 @@ fun FormHeader(
             ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
-                contentDescription = "Honey Sun Image",
+                contentDescription = stringResource(R.string.honey_sun_image),
                 modifier = Modifier.size(MaterialTheme.dimens.card),
                 contentScale = ContentScale.FillBounds
             )

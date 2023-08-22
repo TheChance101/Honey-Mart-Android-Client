@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -36,7 +37,9 @@ fun ProductCard(
     description: String = "",
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().clickable { onClick() },
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
     ) {
@@ -64,13 +67,14 @@ fun ProductCard(
                     color = blackOn60
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
                         painter = painterResource(id = R.drawable.icon_cart),
-                        contentDescription = "cart icon",
+                        contentDescription = stringResource(id = R.string.icon_cart),
                         tint = black37
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -80,7 +84,6 @@ fun ProductCard(
                         style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
                     )
                 }
-
             }
             Text(
                 text = productPrice,
