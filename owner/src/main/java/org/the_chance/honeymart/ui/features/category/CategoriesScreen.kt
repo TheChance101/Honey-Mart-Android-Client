@@ -1,11 +1,5 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +14,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.EmptyCategory
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.category.content.AddCategoryContent
@@ -60,7 +55,7 @@ fun CategoriesContent(
     ) {
         HoneyMartTitle()
         Loading(state = state.isLoading && state.categories.isEmpty())
-        AnimatedVisibility(visible = state.placeHolderCondition()) {
+        ContentVisibility(state = state.emptyCategoryPlaceHolder()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -89,13 +84,13 @@ fun CategoriesContent(
                     state = state.categories.isEmpty() && !state.isLoading && !state.isError,
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
-                AnimatedVisibility(
-                    visible = state.categories.isNotEmpty() && state.showScreenState.showFab
+                ContentVisibility(
+                    state = state.categories.isNotEmpty() && state.showScreenState.showFab
                 ) {
                     CategoryItemsContent(state = state, listener = listener)
                 }
 
-                AnimatedVisibility(visible = state.showCategoryProductsInCategory()) {
+                ContentVisibility(state = state.showCategoryProductsInCategory()) {
                     CategoryProductsContent(state = state, listener = listener)
                 }
             }
@@ -104,23 +99,23 @@ fun CategoriesContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                AnimatedVisibility(visible = state.showScreenState.showAddCategory) {
+                ContentVisibility(state = state.showScreenState.showAddCategory) {
                     AddCategoryContent(listener = listener, state = state)
                 }
 
-                AnimatedVisibility(visible = state.showCategoryProductsInProduct()) {
+                ContentVisibility(state = state.showCategoryProductsInProduct()) {
                     CategoryProductsContent(state = state, listener = listener)
                 }
 
-                AnimatedVisibility(visible = state.showScreenState.showUpdateCategory) {
+                ContentVisibility(state = state.showScreenState.showUpdateCategory) {
                     UpdateCategoryContent(state = state, listener = listener)
                 }
 
-                AnimatedVisibility(visible = state.showAddProductContent()) {
+                ContentVisibility(state = state.showAddProductContent()) {
                     AddProductContent(state = state, listener = listener)
                 }
 
-                AnimatedVisibility(visible = state.showProductDetailsContent()) {
+                ContentVisibility(state = state.showProductDetailsContent()) {
                     ProductDetailsContent(
                         titleScreen = stringResource(id = R.string.product_details),
                         confirmButton = stringResource(id = R.string.update),
@@ -131,7 +126,7 @@ fun CategoriesContent(
                         onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
                     )
                 }
-                AnimatedVisibility(visible = state.showProductUpdateContent()) {
+                ContentVisibility(state = state.showProductUpdateContent()) {
                     ProductDetailsContent(
                         titleScreen = stringResource(id = R.string.update_product),
                         confirmButton = stringResource(id = R.string.save),
@@ -145,10 +140,8 @@ fun CategoriesContent(
             }
         }
     }
-    AnimatedVisibility(
-        visible = state.snackBar.isShow,
-        enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+    ContentVisibility(
+        state = state.snackBar.isShow
     ) {
         SnackBarWithDuration(
             message = state.snackBar.message,
@@ -158,11 +151,11 @@ fun CategoriesContent(
         )
     }
     ConnectionErrorPlaceholder(
-        state = state.isError,
+        state = state.errorPlaceHolderCondition(),
         onClickTryAgain = listener::getAllCategory
     )
 
-    if (state.showScreenState.showDialog) {
+    ContentVisibility(state = state.showScreenState.showDialog) {
         CustomAlertDialog(
             message = stringResource(R.string.you_delete_a_categories) +
                     stringResource(R.string.are_you_sure),
@@ -176,7 +169,7 @@ fun CategoriesContent(
         )
     }
 
-    if (state.showScreenState.showDeleteDialog) {
+    ContentVisibility(state = state.showScreenState.showDeleteDialog) {
         CustomAlertDialog(
             message = stringResource(R.string.you_delete_a_product) + stringResource(R.string.are_you_sure),
             onConfirm = {

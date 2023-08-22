@@ -160,7 +160,8 @@ fun NewProductsUiState.showButton(): Boolean {
 }
 
 
-
+fun CategoriesUiState.emptyCategoryPlaceHolder() =
+    this.placeHolderCondition() &&!showScreenState.showCategoryProducts
 fun CategoriesUiState.errorPlaceHolderCondition() = this.isError
 
 fun CategoriesUiState.placeHolderCondition() =
