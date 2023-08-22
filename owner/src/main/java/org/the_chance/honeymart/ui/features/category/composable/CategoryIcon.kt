@@ -24,5 +24,3 @@ val categoryIcons = mapOf(
     19 to R.drawable.ic_laptop,
     20 to R.drawable.ic_sofa,
 )
-
-

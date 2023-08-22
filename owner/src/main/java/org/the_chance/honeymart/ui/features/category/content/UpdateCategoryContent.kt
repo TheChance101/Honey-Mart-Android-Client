@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.composable
+package org.the_chance.honeymart.ui.features.category.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
-import org.the_chance.honeymart.ui.features.update_category.components.CategoryIconItem
+import org.the_chance.honeymart.ui.features.category.composable.CategoryIconItem
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.theme.dimens

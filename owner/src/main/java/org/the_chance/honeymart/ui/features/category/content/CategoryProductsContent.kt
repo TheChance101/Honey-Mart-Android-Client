@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.composable
+package org.the_chance.honeymart.ui.features.category.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,17 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.components.DropDownMenuList
-import org.the_chance.honeymart.ui.composables.EmptyPlaceholder
+import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
+import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
+import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
+import org.the_chance.honeymart.ui.features.category.composable.ProductCard
+import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun CategoryProducts(
+fun CategoryProductsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
@@ -78,7 +82,7 @@ fun CategoryProducts(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-//                HoneyOutlineText(text = state.productsQuantity)
+                HoneyOutlineText(text = state.products.size.toString())
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
@@ -112,5 +116,4 @@ fun CategoryProducts(
             onClick = listener::onClickAddProductButton
         )
     }
-
 }

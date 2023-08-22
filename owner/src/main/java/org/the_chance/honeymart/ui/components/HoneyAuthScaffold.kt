@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.composables
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
@@ -69,11 +66,4 @@ fun HoneyAuthScaffold(
             titleColor = Color.White
         )
     }
-}
-
-@Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun HoneyRegistrationScaffoldPreview() {
-
 }

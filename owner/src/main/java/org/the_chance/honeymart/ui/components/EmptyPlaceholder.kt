@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.composables
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
