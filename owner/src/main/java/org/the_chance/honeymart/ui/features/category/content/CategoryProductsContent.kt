@@ -82,7 +82,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                HoneyOutlineText(text = state.products.size.toString())
+                HoneyOutlineText(text = "${state.products.size} Products")
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
