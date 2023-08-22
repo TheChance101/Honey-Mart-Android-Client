@@ -46,7 +46,7 @@ interface HoneyMartService {
     //endregion Category
 
     //region Products
-    suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>>
+    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>>
 
     suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 

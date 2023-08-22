@@ -63,6 +63,9 @@ object DependencyVersions {
     //splash
     const val SPLASH_SCREEN= "1.0.1"
 
+    //paging
+    const val PagingRuntimeVersion = "3.1.1"
+
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"

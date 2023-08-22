@@ -89,4 +89,9 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
 
 
+
+    //paging
+    implementation(Dependencies.pagingCommon)
+    implementation(Dependencies.pagingRuntime)
+    implementation(Dependencies.pagingCompose)
 }

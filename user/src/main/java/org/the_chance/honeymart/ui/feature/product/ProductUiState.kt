@@ -1,5 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
@@ -11,7 +14,7 @@ data class ProductsUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
     val position: Int = 0,
-    val products: List<ProductUiState> = emptyList(),
+    val products: Flow<PagingData<ProductUiState>> = flow{},
     val isEmptyProducts: Boolean = false,
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L,
@@ -49,5 +52,4 @@ fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
 fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
         !this.isError && !this.isLoadingProduct
 fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
-        && this.products.isNotEmpty()
 
