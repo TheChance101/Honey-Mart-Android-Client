@@ -38,9 +38,7 @@ class CategoriesViewModel @Inject constructor(
     private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
     private val deleteProductImagesUseCase: DeleteProductImagesUseCase,
     private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
-
-
-    ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
+) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String
@@ -561,6 +559,7 @@ class CategoriesViewModel @Inject constructor(
     }
 
     // endregion
+
     // region Delete Product
     override fun deleteProductById(productId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
@@ -572,9 +571,20 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onSuccessDeleteProduct(success: String) {
-        _state.update { it.copy(isLoading = false, isError = false) }
-        val productID = _state.value.newProducts.id
-        deleteProductImages(productId = productID)
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                showScreenState = it.showScreenState.copy(
+                    showProductDetails = false,
+                    showProductUpdate = false,
+                    showAddProduct = true
+                )
+            )
+        }
+        getProductsByCategoryId(_state.value.newCategory.categoryId)
+        //val productID = _state.value.newProducts.id
+        //deleteProductImages(productId = productID)
     }
 
     private fun onErrorDeleteProduct(errorHandler: ErrorHandler) {

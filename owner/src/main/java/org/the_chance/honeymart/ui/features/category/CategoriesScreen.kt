@@ -31,6 +31,7 @@ import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
+import org.the_chance.design_system.R
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -126,23 +127,25 @@ fun CategoriesContent(
                 AnimatedVisibility(visible = state.showProductDetailsContent())
                 {
                     ProductDetailsContent(
-                        titleScreen = stringResource(id = org.the_chance.design_system.R.string.product_details),
-                        confirmButton = stringResource(id = org.the_chance.design_system.R.string.update),
-                        cancelButton = stringResource(id = org.the_chance.design_system.R.string.delete),
+                        titleScreen = stringResource(id = R.string.product_details),
+                        confirmButton = stringResource(id = R.string.update),
+                        cancelButton = stringResource(id = R.string.delete),
                         state = state,
-                        listener = listener
+                        listener = listener,
+                        onClickConfirm = { },
+                        onClickCancel = { listener.deleteProductById(state.newProducts.id) }
                     )
                 }
                 AnimatedVisibility(visible = state.showProductUpdateContent())
                 {
-
-
                     ProductDetailsContent(
-                        titleScreen = stringResource(id = org.the_chance.design_system.R.string.update_product),
-                        confirmButton = stringResource(id = org.the_chance.design_system.R.string.save),
-                        cancelButton = stringResource(id = org.the_chance.design_system.R.string.cancel),
+                        titleScreen = stringResource(id = R.string.update_product),
+                        confirmButton = stringResource(id = R.string.save),
+                        cancelButton = stringResource(id = R.string.cancel),
                         state = state,
-                        listener = listener
+                        listener = listener,
+                        onClickConfirm = { },
+                        onClickCancel = { }
                     )
                 }
             }

@@ -5,13 +5,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -41,18 +39,17 @@ import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.theme.dimens
 
-//private const val MAX_IMAGES = 4
-
 @Composable
 fun ProductDetailsContent(
-    titleScreen:String,
-    confirmButton:String,
-    cancelButton:String,
+    titleScreen: String,
+    confirmButton: String,
+    cancelButton: String,
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
+    onClickConfirm: () -> Unit,
+    onClickCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
@@ -152,20 +149,7 @@ fun ProductDetailsContent(
             }
 
         }
-
         Spacer(modifier = Modifier.weight(1F))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(MaterialTheme.dimens.space48)
-                .padding(bottom = MaterialTheme.dimens.space32),
-            contentAlignment = Alignment.Center
-        ) {
-//            Loading(
-//                state = state.isLoading,
-//                modifier = Modifier.size(MaterialTheme.dimens.smallLottieLoading)
-//            )
-        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -174,11 +158,10 @@ fun ProductDetailsContent(
             HoneyFilledButton(
                 modifier = Modifier.width(146.dp),
                 label = confirmButton,
-                onClick = listener::onClickUpdateProductDetails
+                onClick = onClickConfirm
             )
-            HoneyOutlineButton(onClick = listener::onClickCancel, label = cancelButton)
+            HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
         }
-
         Spacer(modifier = Modifier.weight(2F))
     }
 }
