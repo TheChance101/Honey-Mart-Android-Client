@@ -61,8 +61,10 @@ fun CategoriesContent(
 
         Loading(state = state.isLoading && state.categories.isEmpty())
         AnimatedVisibility(
-            visible = state.categories.isEmpty() &&
-                    !state.showScreenState.showAddCategory
+            visible = state.categories.isEmpty()
+                    &&!state.isLoading
+                    &&!state.isError
+                    &&!state.showScreenState.showCategoryProducts
         ) {
             Column(
                 modifier = Modifier
@@ -132,7 +134,7 @@ fun CategoriesContent(
                         cancelButton = stringResource(id = R.string.delete),
                         state = state,
                         listener = listener,
-                        onClickConfirm = { },
+                        onClickConfirm = {listener.onClickUpdateProductDetails() },
                         onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
                     )
                 }
@@ -145,7 +147,7 @@ fun CategoriesContent(
                         state = state,
                         listener = listener,
                         onClickConfirm = { },
-                        onClickCancel = { }
+                        onClickCancel = {listener.onClickCancel() }
                     )
                 }
             }
