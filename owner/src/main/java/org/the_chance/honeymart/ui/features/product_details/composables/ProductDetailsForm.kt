@@ -192,13 +192,28 @@ fun ProductDetailsContent(
     }
 }
 
+//private fun covertFromUriToByteArray(
+//    uris: List<Uri>,
+//    context: Context,
+//): List<ByteArray> {
+//    val imageByteArrays = uris.mapNotNull { uri ->
+//        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+//            inputStream.readBytes()
+//        }
+//    }
+//    return imageByteArrays
+//}
 private fun covertFromUriToByteArray(
     uris: List<Uri>,
-    context: Context,
+    context: Context
 ): List<ByteArray> {
     val imageByteArrays = uris.mapNotNull { uri ->
-        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            inputStream.readBytes()
+        try {
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                inputStream.readBytes()
+            }
+        } catch (e: Exception) {
+            null
         }
     }
     return imageByteArrays

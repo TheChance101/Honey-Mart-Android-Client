@@ -160,7 +160,11 @@ fun NewProductsUiState.showButton(): Boolean {
 }
 
 
-fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+
+fun CategoriesUiState.errorPlaceHolderCondition() = this.isError
+
+fun CategoriesUiState.placeHolderCondition() =
+    categories.isEmpty() && isError && isLoading
 fun CategoriesUiState.showAddProductContent() =
     !isLoading
             && !showScreenState.showFab
@@ -193,9 +197,6 @@ fun CategoriesUiState.showCategoryProductsInProduct() =
             && !showScreenState.showAddCategory
             && !showScreenState.showAddProduct
             && showScreenState.showFab
-
-fun CategoriesUiState.showEmptyPlaceHolder() = categories.isEmpty()
-        && !isLoading && !isError
 
 fun CategoriesUiState.showCategoryProductsInCategory() = !this.isLoading
         && !showScreenState.showFab

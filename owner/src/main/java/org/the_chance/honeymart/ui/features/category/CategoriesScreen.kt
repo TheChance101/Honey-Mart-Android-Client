@@ -60,19 +60,14 @@ fun CategoriesContent(
         HoneyMartTitle()
 
         Loading(state = state.isLoading && state.categories.isEmpty())
-        AnimatedVisibility(
-            visible = state.categories.isEmpty()
-                    && !state.isLoading
-                    && !state.isError
-                    && !state.showScreenState.showCategoryProducts
-        ) {
+        AnimatedVisibility(visible = state.placeHolderCondition()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
                 EmptyCategory(
-                    state = state.showEmptyPlaceHolder(),
+                    state = state.placeHolderCondition(),
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
             }
@@ -134,7 +129,7 @@ fun CategoriesContent(
                         cancelButton = stringResource(id = R.string.delete),
                         state = state,
                         listener = listener,
-                        onClickConfirm = { listener.onClickUpdateProductDetails() },
+                        onClickConfirm = {listener.onClickUpdateProductDetails() },
                         onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
                     )
                 }
@@ -147,7 +142,7 @@ fun CategoriesContent(
                         state = state,
                         listener = listener,
                         onClickConfirm = { },
-                        onClickCancel = { listener.onClickCancel() }
+                        onClickCancel = {listener.onClickCancel() }
                     )
                 }
             }
