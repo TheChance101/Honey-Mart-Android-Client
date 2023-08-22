@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.category
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,7 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,6 +27,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,11 +47,14 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
 import org.the_chance.honeymart.ui.feature.category.composables.CardChip
 import org.the_chance.honeymart.ui.feature.category.composables.CategoriesAppBarScaffold
-import org.the_chance.honeymart.ui.feature.category.composables.HexagonItem
+import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
+import org.the_chance.honymart.ui.theme.primary100
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun CategoriesScreen(
@@ -82,21 +95,21 @@ fun CategoryContent(
             modifier = Modifier.fillMaxWidth(),
             columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(
-                bottom = MaterialTheme.dimens.space56,
+                bottom = MaterialTheme.dimens.heightItemMarketCard / 2,
                 end = MaterialTheme.dimens.space16,
                 start = MaterialTheme.dimens.space16,
             ),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
             item(span = { GridItemSpan(3) }) {
                 Column(
-                    modifier = Modifier.padding(
-                        bottom = MaterialTheme.dimens.space16
-                    ),
+                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = state.marketName,
-                        style = MaterialTheme.typography.headlineLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSecondary,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(
@@ -105,7 +118,8 @@ fun CategoryContent(
                         )
                     )
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.map_pointer),
@@ -139,15 +153,28 @@ fun CategoryContent(
                             .height(MaterialTheme.dimens.space198)
                             .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
                             .fillMaxWidth(),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+
+            item(
+                span = { GridItemSpan(3) },
+            ) {
+                ContentVisibility(state = state.categories.isNotEmpty()) {
+                    BottomHalfHexagonCanvas(
+                        modifier = Modifier.wrapContentSize()
                     )
                 }
             }
             itemsIndexed(state.categories) { index, item ->
-                HexagonItem(
-                    item,
-                    listener::onClickCategory,
-                    index,
+                HomeCategoriesItem(
+                    modifier = Modifier.offset(
+                        x = 0.dp,
+                        y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
+                    ),
+                    label = item.categoryName,
+                    onClick = { listener.onClickCategory(item.categoryId, index) },
                 )
             }
             item(span = { GridItemSpan(3) }) {
@@ -164,4 +191,39 @@ fun CategoryContent(
 @Preview
 fun PreviewCategoryScreen() {
     CategoriesScreen()
+}
+
+@Composable
+fun BottomHalfHexagonCanvas(
+    modifier: Modifier = Modifier,
+) {
+    Canvas(
+        modifier = modifier
+            .width(152.dp)
+    ) {
+        val hexagonSize = size.maxDimension
+
+        val path = Path().apply {
+            val angleRadians = Math.toRadians(60.0).toFloat()
+            val radius = hexagonSize / 2f
+
+            (0..3).forEach { i ->
+                val currentAngle = angleRadians * i
+                val x = center.x + radius * cos(currentAngle)
+                val y = center.y + radius * sin(currentAngle)
+                if (i == 0) moveTo(x, y) else lineTo(x, y)
+            }
+            close()
+        }
+
+        drawIntoCanvas {
+            it.drawOutline(
+                outline = Outline.Generic(path),
+                paint = Paint().apply {
+                    color = primary100.copy(alpha = 0.16f)
+                    pathEffect = PathEffect.cornerPathEffect(16.dp.toPx())
+                }
+            )
+        }
+    }
 }

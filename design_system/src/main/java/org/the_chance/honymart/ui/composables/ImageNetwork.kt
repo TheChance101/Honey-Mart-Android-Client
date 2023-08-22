@@ -26,7 +26,7 @@ fun ImageNetwork(
             .crossfade(true)
             .build(),
         colorFilter = colorFilter,
-        placeholder = painterResource(R.drawable.loading),
+        placeholder = painterResource(R.drawable.no_image),
         contentDescription = contentDescription,
         contentScale = contentScale,
         modifier = modifier,

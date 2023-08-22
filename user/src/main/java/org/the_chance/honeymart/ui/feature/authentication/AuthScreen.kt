@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,10 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
@@ -59,8 +61,12 @@ fun AuthContent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
-
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(
+                enabled = true,
+                state = rememberScrollState()
+            )
     ) {
         Image(
             modifier = Modifier.fillMaxWidth(),
@@ -113,4 +119,30 @@ fun AuthContent(
             }
         }
     }
+}
+
+
+@Preview(device = "id:3.2in HVGA slider (ADP1)")
+@Composable
+fun AuthScreenPreview() {
+    AuthContent(listener = object : AuthenticationInteractionListener {
+        override fun onClickLogin() {
+        }
+
+        override fun onClickSignUp() {
+        }
+
+    })
+}
+@Preview
+@Composable
+fun AuthScreenPreview2() {
+    AuthContent(listener = object : AuthenticationInteractionListener {
+        override fun onClickLogin() {
+        }
+
+        override fun onClickSignUp() {
+        }
+
+    })
 }

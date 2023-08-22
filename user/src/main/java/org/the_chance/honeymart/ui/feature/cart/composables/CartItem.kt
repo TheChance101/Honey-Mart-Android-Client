@@ -1,9 +1,10 @@
 package org.the_chance.honeymart.ui.feature.cart.composables
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,23 +15,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
@@ -62,8 +61,7 @@ fun CartItem(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.onTertiary)
         ) {
-            val (imageOrder, textOrderNumber, textItemPrice, imageViewMinusOrder,
-                textViewNumberOfItems, imageViewAddItem) = createRefs()
+            val (imageOrder, textOrderNumber, textItemPrice, textRow) = createRefs()
 
             Image(
                 painter = rememberAsyncImagePainter(model = product.productImage[0]),
@@ -89,7 +87,6 @@ fun CartItem(
                     start.linkTo(imageOrder.end, margin = 8.dp)
                 }
             )
-
             Text(
                 text = formatCurrencyWithNearestFraction(product.productPrice),
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
@@ -97,78 +94,96 @@ fun CartItem(
                 ),
 
                 modifier = Modifier
+                    .constrainAs(
+                        textItemPrice
+                    ) {
+                        bottom.linkTo(parent.bottom, margin = 8.dp)
+                        start.linkTo(imageOrder.end, margin = 8.dp)
+                    }
                     .border(1.dp, primary100, CircleShape)
                     .background(Color.Transparent, CircleShape)
                     .padding(
                         horizontal = MaterialTheme.dimens.space8,
                         vertical = MaterialTheme.dimens.space4
-                    )
-                    .constrainAs(textItemPrice) {
-                        top.linkTo(textOrderNumber.bottom, margin = 16.dp)
-                        bottom.linkTo(parent.bottom, margin = 16.dp)
-                        start.linkTo(imageOrder.end, margin = 8.dp)
-                        width = Dimension.wrapContent
-                        height = Dimension.wrapContent
-                    }
-            )
+                    ),
 
-            Button(
-                onClick = { onClickMinus() },
-                shape = CircleShape,
-                enabled = !isLoading,
-                colors = buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = primary100,
-                    disabledContainerColor = Color.Transparent,
-                ),
-                border = BorderStroke(
-                    color = primary100,
-                    width = 1.dp
-                ),
+                )
+            Row(
                 modifier = Modifier
-                    .paint(
-                        painter = painterResource(id = R.drawable.minus_1),
-                        contentScale = ContentScale.Inside
-                    )
-                    .size(MaterialTheme.dimens.icon24)
-                    .constrainAs(imageViewMinusOrder) {
-                        bottom.linkTo(parent.bottom, margin = 16.dp)
-                        end.linkTo(textViewNumberOfItems.start, margin = 16.dp)
+                    .constrainAs(textRow) {
+                        bottom.linkTo(parent.bottom, margin = 8.dp)
+                        end.linkTo(parent.end, margin = 8.dp)
                     },
-            ) {}
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            ) {
 
+                IconButton(
+                    onClick = { onClickMinus() },
 
-            Text(
-                text = product.productCount.toString(),
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
-                    black60
-                ),
-                modifier = Modifier.constrainAs(textViewNumberOfItems) {
-                    bottom.linkTo(parent.bottom, margin = 16.dp)
-                    end.linkTo(imageViewAddItem.start, margin = 16.dp)
+                    enabled = !isLoading,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = primary100,
+                        disabledContainerColor = Color.Transparent,
+                    ),
+                    modifier = Modifier
+                        .border(
+                            color = primary100,
+                            width = 1.dp,
+                            shape = CircleShape
+                        )
+                        .size(MaterialTheme.dimens.icon24)
+
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.minus_1),
+                        contentDescription = null,
+                        tint = primary100,
+                        modifier = Modifier.padding(4.dp),
+                    )
                 }
 
-            )
 
-
-            IconButton(
-                onClick = { onClickPlus() },
-                enabled = !isLoading,
-                modifier = Modifier
-                    .background(primary100, CircleShape)
-                    .size(MaterialTheme.dimens.icon24)
-                    .constrainAs(imageViewAddItem) {
-                        bottom.linkTo(parent.bottom, margin = 16.dp)
-                        end.linkTo(parent.end, margin = 16.dp)
-                    },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary,
+                Text(
+                    text = product.productCount.toString(),
+                    style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
+                        black60
+                    ),
                 )
+
+
+                IconButton(
+                    onClick = { onClickPlus() },
+                    enabled = !isLoading,
+                    modifier = Modifier
+                        .background(primary100, CircleShape)
+                        .size(MaterialTheme.dimens.icon24)
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         }
     }
 }
 
+@Preview(device = "id:3.2in HVGA slider (ADP1)")
+@Composable
+private fun CartItemPreview() {
+    CartItem(
+        product = CartListProductUiState(
+            productId = 1,
+            productName = "Product Name",
+            productPrice = 10000.0,
+            productImage = listOf("https://picsum.photos/200/300"),
+            productCount = 1
+        ),
+        onClickMinus = {},
+        onClickPlus = {},
+        isLoading = false
+    )
+}

@@ -77,7 +77,7 @@ fun CouponDetails(
                     notchRadius = 8.dp
                 )
             )
-            .background(colors.secondaryContainer)
+            .background(colors.onTertiary)
             .padding(
                 horizontal = dimens.space16,
                 vertical = dimens.space8

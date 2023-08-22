@@ -97,7 +97,7 @@ fun ProductItem(
                 .padding(
                     start = MaterialTheme.dimens.space8,
                     bottom = MaterialTheme.dimens.space8
-                )
+                ),
         ) {
             Text(
                 text = productName,

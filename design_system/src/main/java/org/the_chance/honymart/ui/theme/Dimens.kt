@@ -23,7 +23,7 @@ data class Dimens(
     val space56: Dp = 56.dp,
     val space64: Dp = 46.dp,
     val space100: Dp = 100.dp,
-    val space198: Dp = 100.dp,
+    val space198: Dp = 198.dp,
 
     val fontSizeHeading: Dp = 24.dp,
     val fontSizeSecondary: Dp = 12.dp,

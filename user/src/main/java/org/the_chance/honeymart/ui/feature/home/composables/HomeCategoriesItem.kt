@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +24,9 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
@@ -48,19 +51,20 @@ fun HomeCategoriesItem(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() }
             )
+            .padding(horizontal = MaterialTheme.dimens.space8)
+            .size(MaterialTheme.dimens.widthItemMarketCard)
             .drawBehind {
                 drawIntoCanvas {
                     val path = hexagonPath(size, center)
                     it.drawOutline(
                         outline = Outline.Generic(path),
                         paint = Paint().apply {
-                            color = colors.secondaryContainer
+                            color = colors.onTertiary
                             pathEffect = PathEffect.cornerPathEffect(16.dp.toPx())
                         }
                     )
                 }
-            }
-            .size(MaterialTheme.dimens.widthItemMarketCard),
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -76,10 +80,13 @@ fun HomeCategoriesItem(
             tint = colors.primary
         )
         Text(
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space4),
+            modifier = Modifier
+                .padding(top = MaterialTheme.dimens.space4)
+                .width(MaterialTheme.dimens.space100),
             text = label,
             style = Typography.displaySmall.copy(black60),
             maxLines = 1,
+            textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis
         )
     }
@@ -92,7 +99,7 @@ private fun hexagonPath(size: Size, center: Offset): Path {
 
     return Path().apply {
         val angleRadians = Math.toRadians(60.0).toFloat()
-        val radius = hexagonSize / 2f
+        val radius = hexagonSize / 1.76f
 
         (0..5).forEach { i ->
             val currentAngle = angleRadians * i
@@ -102,4 +109,13 @@ private fun hexagonPath(size: Size, center: Offset): Path {
         }
         close()
     }
+}
+
+@Preview
+@Composable
+fun PreviewHomeCategoriesItem() {
+    HomeCategoriesItem(
+        onClick = {},
+        label = "Coffee",
+    )
 }

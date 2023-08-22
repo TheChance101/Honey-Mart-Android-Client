@@ -53,7 +53,9 @@ class CategoryViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 error = null,
-                categories = market.categories.map { it.toCategoryUiState() },
+                categories = market.categories.map {category -> category.toCategoryUiState() },
+                categoriesCount = market.categoriesCount,
+                productsCount = market.productsCount,
                 imageUrl = market.imageUrl,
                 marketName = market.marketName,
                 address = market.address

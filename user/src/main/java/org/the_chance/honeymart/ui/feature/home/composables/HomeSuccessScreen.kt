@@ -36,6 +36,7 @@ import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
+import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -147,7 +148,7 @@ fun HomeContentSuccessScreen(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
                 productName = discoverProduct.productName,
-                productPrice = discoverProduct.productPrice.toString(),
+                productPrice = discoverProduct.productPrice.formatCurrencyWithNearestFraction(),
                 imageUrl = discoverProduct.productImages.takeIf { it.isNotEmpty() }
                     ?.get(0) ?: "",
                 onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
@@ -225,7 +226,7 @@ private fun RecentProducts(
                     ProductItem(
                         modifier = Modifier.animateItemPlacement(),
                         productName = recentProduct.productName,
-                        productPrice = recentProduct.price.toString(),
+                        productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
                         imageUrl = recentProduct.productImage,
                         onClickFavorite = { onClickFavorite(recentProduct.productId) },
                         isFavoriteIconClicked = recentProduct.isFavorite,
