@@ -215,7 +215,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("state", "$state")
         }
         val response = wrap<BaseResponse<Boolean>>(client.put(url) {
-            contentType(io.ktor.http.ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
             body = FormDataContent(formData)
         })
         return response
@@ -275,5 +275,18 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("admin/markets") {
             parameter("requestState", requestState)
         })
+
+    @OptIn(InternalAPI::class)
+    override suspend fun updateRequestState(id: Long?, state: Int): BaseResponse<Boolean> {
+        val url = "/admin/request/$id"
+        val formData = Parameters.build {
+            append("state", "$state")
+        }
+        val response = wrap<BaseResponse<Boolean>>(client.put(url) {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
     //end region admin
 }

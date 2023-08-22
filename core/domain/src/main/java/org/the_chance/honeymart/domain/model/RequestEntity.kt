@@ -6,4 +6,5 @@ data class RequestEntity(
     val imageUrl: String,
     val description: String,
     val address: String,
+    val owner: OwnerProfileEntity
 )

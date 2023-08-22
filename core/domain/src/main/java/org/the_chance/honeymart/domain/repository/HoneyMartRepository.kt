@@ -54,5 +54,6 @@ interface HoneyMartRepository {
 
     //region admin
     suspend fun getAllRequests(requestState: Int): List<RequestEntity>
+    suspend fun updateRequestState(id: Long?, state: Int):Boolean
     //endregion admin
 }

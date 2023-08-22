@@ -174,5 +174,10 @@ interface HoneyMartService {
     suspend fun getAllRequests(
         requestState: Int,
     ): BaseResponse<List<RequestDto>>
+
+    suspend fun updateRequestState(
+        id: Long?,
+        state: Int,
+    ): BaseResponse<Boolean>
     //endregion admin
 }
