@@ -123,7 +123,7 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productPrice = "$ProductPrice$",
+        productPrice = ProductPrice.toString(),
         productImage = productImages,
         productDescription = productDescription
     )

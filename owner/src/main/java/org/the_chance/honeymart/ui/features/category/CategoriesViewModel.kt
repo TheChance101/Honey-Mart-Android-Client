@@ -453,21 +453,31 @@ class CategoriesViewModel @Inject constructor(
 
     override fun updateProductDetails(product: CategoriesUiState) {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(function = {
-            updateProductDetailsUseCase(
-                id = product.productDetails.productId,
-                name = product.productDetails.productName,
-                price = product.productDetails.productPrice.toDouble(),
-                description = product.productDetails.productsQuantity,
-            )
-        }, onSuccess = { onUpdateProductDetailsSuccess() }, ::onUpdateProductDetailsError
+        tryToExecute(
+            {
+                updateProductDetailsUseCase(
+                    id = product.productDetails.productId,
+                    name = product.productDetails.productName,
+                    price = product.productDetails.productPrice.toDouble(),
+                    description = product.productDetails.productDescription,
+                )
+            }, ::onUpdateProductDetailsSuccess,
+            ::onUpdateProductDetailsError
         )
+
     }
 
-    private fun onUpdateProductDetailsSuccess() {
-        onUpdateProductImage(
-            state.value.newProducts.id, state.value.newProducts.images
-        )
+    private fun onUpdateProductDetailsSuccess(success: String) {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showProductUpdate = false,
+                    showProductDetails = false
+                )
+            )
+        }
+        onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
+
     }
 
     private fun onUpdateProductDetailsError(errorHandler: ErrorHandler) {
@@ -514,7 +524,8 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 newProducts = it.newProducts.copy(
                     productPriceState = productPriceState
-                ), productDetails = it.productDetails.copy(productPrice = productPrice)
+                )
+                , productDetails = it.productDetails.copy(productPrice = productPrice)
             )
         }
     }
@@ -534,7 +545,8 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 newProducts = it.newProducts.copy(
                     productDescriptionState = productDescriptionState,
-                ), productDetails = it.productDetails.copy(productDescription = productDescription)
+                ),
+                productDetails = it.productDetails.copy(productDescription = productDescription)
             )
         }
     }
@@ -549,9 +561,9 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update {
-            it.copy(isLoading = false, error = null)
-        }
+        _state.update { it.copy(isLoading = false, error = null) }
+        getProductsByCategoryId(state.value.newCategory.categoryId)
+
     }
 
     private fun onUpdateProductImageError(errorHandler: ErrorHandler) {
