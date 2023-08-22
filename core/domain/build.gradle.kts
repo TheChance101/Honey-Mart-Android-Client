@@ -11,5 +11,6 @@ java {
 dependencies {
     implementation (Dependencies.daggerAndroid)
     implementation(Dependencies.coroutinesDependency)
-
+    // Paging
+    implementation(Dependencies.pagingCommon)
 }

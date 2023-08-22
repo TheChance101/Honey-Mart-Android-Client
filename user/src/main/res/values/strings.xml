@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="discover_markets_now">Discover Markets Now</string>
-    <string name="order_now">order Now</string>
-    <string name="you_re_delete_this_product_are_you_sure">" you’re delete this product....\nAre you sure?"</string>
-    <string name="content_desc_of_placeholder_image">PlaceHolder Image</string>
-    <string name="discover_market_now">Discover Market Now</string>
-    <string name="total_price">Total Price</string>
-    <string name="your_cart_list_is_empty">Your Cart list is empty!!</string>
-    <string name="adding_items_that_catch_your_eye">It\'s a carttastrophe! Let\'s fix it by adding items that catch your eye!</string>
-    <string name="navigation_icon">Navigation icon</string>
-    <string name="category_image">category image</string>
-    <string name="market_name">Market Name</string>
+
 </resources>

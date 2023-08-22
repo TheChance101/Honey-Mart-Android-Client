@@ -24,11 +24,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
+import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
@@ -37,7 +39,6 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -62,7 +63,6 @@ fun ProductsScreen(
             }
         }
     }
-
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 
@@ -114,6 +114,7 @@ private fun ProductsContent(
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
+                        val products = state.products.collectAsLazyPagingItems()
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
@@ -122,24 +123,26 @@ private fun ProductsContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                             state = rememberLazyListState()
                         ) {
-                            items(state.products.size) { index ->
-                                val product = state.products[index]
-                                ProductCard(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
-                                    productName = product.productName,
-                                    productPrice = product.productPrice.toString(),
-                                    secondaryText = product.productDescription,
-                                    isFavoriteIconClicked = product.isFavorite,
-                                    onClickCard = {
-                                        productInteractionListener.onClickProduct(product.productId)
-                                    },
-                                    enable = !state.snackBar.isShow,
-                                    onClickFavorite = {
-                                        productInteractionListener.onClickFavIcon(product.productId)
-                                    }
-                                )
+                            items(products.itemCount) { index ->
+                                val product = products[index]
+                                if (product != null) {
+                                    ProductCard(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        imageUrl = product.productImages.firstOrNull() ?: "",
+                                        productName = product.productName,
+                                        productPrice = product.productPrice.toString(),
+                                        secondaryText = product.productDescription,
+                                        isFavoriteIconClicked = product.isFavorite,
+                                        onClickCard = {
+                                            productInteractionListener.onClickProduct(product.productId)
+                                        },
+                                        onClickFavorite = {
+                                            productInteractionListener.onClickFavIcon(product.productId)
+                                        }
+                                    )
+                                }
                             }
+                            PagingStateVisibility(products,productInteractionListener::onclickTryAgainProducts)
                         }
                     }
                 }
@@ -156,8 +159,6 @@ private fun ProductsContent(
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
                 })
         }
-
         Loading(state = state.loading())
-
     }
 }

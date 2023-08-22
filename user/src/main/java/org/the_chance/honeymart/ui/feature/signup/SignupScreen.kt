@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,9 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
@@ -52,6 +54,7 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
+import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
@@ -140,6 +143,8 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                oneLineOnly = true,
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 iconPainter = painterResource(id = R.drawable.ic_person),
@@ -149,8 +154,11 @@ fun SignupContent(
                                     ValidationState.INVALID_FULL_NAME -> "Invalid name"
                                     else -> ""
                                 },
+                                color = white200
                             )
                             HoneyTextField(
+                                oneLineOnly = true,
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -160,6 +168,7 @@ fun SignupContent(
                                     ValidationState.INVALID_EMAIL -> "Invalid email"
                                     else -> ""
                                 },
+                                color = white200
                             )
                         }
 
@@ -168,6 +177,10 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                isPassword = PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                                oneLineOnly = true,
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -178,16 +191,21 @@ fun SignupContent(
                                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                                     else -> ""
                                 },
+                                color = white200
                             )
                             HoneyTextField(
+                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                                oneLineOnly = true,
                                 text = state.confirmPassword,
+                                isPassword = PasswordVisualTransformation(),
                                 hint = stringResource(R.string.confirm_password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
                                 onValueChange = listener::onConfirmPasswordChanged,
                                 errorMessage = when (state.confirmPasswordState) {
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
-                                }
+                                },
+                                color = white200
                             )
                         }
                     }

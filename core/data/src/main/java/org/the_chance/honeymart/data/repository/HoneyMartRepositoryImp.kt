@@ -1,11 +1,20 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import kotlinx.coroutines.flow.Flow
+import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
+import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
@@ -15,11 +24,14 @@ import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
 import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -41,6 +53,9 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
+    override suspend fun clipCoupon(couponId: Long): Boolean {
+        return wrap { honeyMartService.clipCoupon(couponId) }.value ?: throw NotFoundException()
+    }
 
     override suspend fun getCart(): CartEntity =
         wrap { honeyMartService.getCart() }.value?.toCartEntity() ?: throw NotFoundException()
@@ -64,6 +79,16 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getAllProductsByCategory(categoryId) }.value?.map { it.toProductEntity() }
             ?: throw NotFoundException()
 
+    override suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity =
+        wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetailsEntity()
+            ?: throw NotFoundException()
+
+    override suspend fun getAllProductsByCategory(page:Int?,categoryId: Long): Flow<PagingData<ProductEntity>> =
+        getAllWithId(
+            categoryId,
+            ::ProductsPagingSource
+        )
+
     override suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity> =
         wrap { honeyMartService.getCategoriesForSpecificProduct(productId) }.value?.map { it.toCategoryEntity() }
             ?: throw NotFoundException()
@@ -86,6 +111,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOrderDetails(orderId) }.value?.toOrderDetailsEntity()
             ?: throw NotFoundException()
 
+    override suspend fun searchForProducts(query: String): List<ProductEntity> =
+        wrap { honeyMartService.searchForProducts(query = query) }.value?.map { it.toProductEntity() }
+            ?: throw NotFoundException()
+
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
         wrap { honeyMartService.updateOrderState(id, state) }.value ?: throw NotFoundException()
 
@@ -96,6 +125,36 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun deleteAllCart(): String =
         wrap { honeyMartService.deleteAllFromCart() }.value ?: throw NotFoundException()
+
+    override suspend fun getUserCoupons(): List<CouponEntity> {
+        return wrap { honeyMartService.getUserCoupons() }.value?.map { it.toCouponEntity() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun getAllValidCoupons(): List<CouponEntity> {
+        return wrap { honeyMartService.getAllValidCoupons() }.value?.map { it.toCouponEntity() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun getRecentProducts(): List<RecentProductEntity> {
+        return wrap { honeyMartService.getRecentProducts() }.value?.map { it.RecentProductEntity() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun getAllProducts(): List<ProductEntity> {
+        return wrap { honeyMartService.getAllProducts() }.value?.map { it.toProductEntity() }
+            ?: throw NotFoundException()
+    }
+
+    private fun <I : Any> getAllWithId(
+        id: Long,
+        sourceFactory: (HoneyMartService, Long) -> PagingSource<Int, I>,
+    ): Flow<PagingData<I>> {
+        return Pager(
+            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            pagingSourceFactory = { sourceFactory(honeyMartService, id) }
+        ).flow
+    }
 
     override suspend fun getProfileUser(): ProfileUserEntity =
         wrap { honeyMartService.getProfileUser() }.value?.toProfileUserEntity()
@@ -115,5 +174,9 @@ class HoneyMartRepositoryImp @Inject constructor(
                 image = image,
             )
         }.value ?: throw NotFoundException()
+    }
+
+    companion object {
+        private const val DEFAULT_PAGE_SIZE = 10
     }
 }

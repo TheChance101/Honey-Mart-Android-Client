@@ -30,23 +30,21 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun ProductCard(
-    modifier: Modifier = Modifier,
+    imageUrl: String,
     productName: String,
     productPrice: String,
     secondaryText: String,
     isFavoriteIconClicked: Boolean,
     onClickFavorite: () -> Unit,
-    enable: Boolean,
     onClickCard: () -> Unit,
-    imageUrl: String,
-    ) {
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier
             .height(height = 200.dp)
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
-            .clickable { if (enable) onClickCard() },
-
+            .clickable { onClickCard() }
     ) {
         ImageNetwork(
             modifier = Modifier.fillMaxSize(),
@@ -61,7 +59,8 @@ fun ProductCard(
                 ),
             backgroundColor = if (isFavoriteIconClicked) MaterialTheme.colorScheme.tertiary
             else MaterialTheme.colorScheme.primary,
-            onClick = { if(enable)onClickFavorite() }
+            onClick = onClickFavorite,
+            size = MaterialTheme.dimens.icon32
         ) {
             Image(
                 painter = painterResource(
@@ -128,7 +127,6 @@ fun ProductCardPreview() {
         productPrice = "30,000",
         secondaryText = "Secondary Text",
         isFavoriteIconClicked = true,
-        enable = true,
         onClickFavorite = {},
         onClickCard = {}
     )
