@@ -8,7 +8,6 @@ data class ProfileUiState(
     val isError: Boolean = false,
     val isDark: Boolean = false,
     val error: ErrorHandler? = null,
-    val dialog: DialogState = DialogState(),
     val isConnectionError: Boolean = false,
     val isShowDialog: Boolean = false,
     val accountInfo: AccountState = AccountState(),
@@ -21,14 +20,6 @@ data class ProfileUiState(
         val profileImage: String = "",
     )
 }
-
-data class DialogState(
-    val isShow: Boolean = false,
-    val massage: String = "",
-)
-
-fun ProfileUiState.contentScreen() = !this.isLoading && !this.isConnectionError
-
 
 fun ProfileUserEntity.toProfileUiState(): ProfileUiState.AccountState {
     return ProfileUiState.AccountState(
