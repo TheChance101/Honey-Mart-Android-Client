@@ -69,7 +69,7 @@ fun CategoriesContent(
         }
 
         Row(modifier = Modifier.fillMaxSize()) {
-            Loading(state = state.showLoadingWhenCategoriesIsEmpty())
+            Loading(state = state.isLoading && state.categories.isNotEmpty())
             Column(
                 modifier = Modifier
                     .fillMaxSize()
