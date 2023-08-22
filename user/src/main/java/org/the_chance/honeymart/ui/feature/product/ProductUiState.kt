@@ -39,7 +39,7 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productName = productName,
         productDescription = productDescription,
         productPrice = productPrice,
-        productImages = productImages
+        productImages = productImages.ifEmpty { listOf("","") }
     )
 }
 
