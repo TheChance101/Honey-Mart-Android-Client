@@ -15,6 +15,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateImageProductUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -38,6 +39,7 @@ class CategoriesViewModel @Inject constructor(
     private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
     private val deleteProductImagesUseCase: DeleteProductImagesUseCase,
     private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
+    private val updateProductImagesUseCase: UpdateImageProductUseCase,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
@@ -555,32 +557,22 @@ class CategoriesViewModel @Inject constructor(
     }
 
 
-    override fun onUpdateProductImage(productId: Long, images: List<ByteArray>) {
+    override fun onUpdateProductImage(productId: Long, images:List<ByteArray>) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { up(productId, images) },
-            onSuccess = { onAddProductImagesSuccess() },
-            onError = ::onAddProductImagesError
+            { updateProductImagesUseCase(productId, images) },
+            onSuccess = { onUpdateProductImageSuccess() },
+            onError = ::onUpdateProductImageError
         )
     }
 
     private fun onUpdateProductImageSuccess() {
         _state.update {
-            it.copy(
-                isLoading = false, error = null,
-                newProducts = it.newProducts.copy(
-                    name = "",
-                    description = "",
-                    price = " ",
-                    images = emptyList(),
-                ),
-            )
+            it.copy(isLoading = false, error = null)
         }
-        val categoryId = _state.value.newCategory.categoryId
-        getProductsByCategoryId(categoryId = categoryId)
     }
 
-    private fun onUpdateProductImage(errorHandler: ErrorHandler) {
+    private fun onUpdateProductImageError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }

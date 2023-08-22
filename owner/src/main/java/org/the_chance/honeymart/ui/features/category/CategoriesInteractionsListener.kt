@@ -25,10 +25,10 @@ interface CategoriesInteractionsListener {
     fun onUpdateProductName(productName: String)
     fun onUpdateProductPrice(productPrice: String)
     fun onUpdateProductDescription(productDescription: String)
-    fun onUpdateProductImage(uris: List<ByteArray>)
     fun updateProductDetails(product: CategoriesUiState)
     fun onClickProduct(productId: Long)
     fun onClickUpdateProductDetails()
     fun onClickCancel()
     fun deleteProductById(productId: Long)
+    fun onUpdateProductImage(productId: Long, images: List<ByteArray>)
 }
