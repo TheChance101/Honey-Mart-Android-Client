@@ -217,7 +217,7 @@ class CategoriesViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         showScreenState = it.showScreenState.copy(
-                            showDialog = !it.showScreenState.showDialog
+                            showDeleteDialog = !it.showScreenState.showDeleteDialog
                         ),
                     )
                 }

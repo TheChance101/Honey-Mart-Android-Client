@@ -49,6 +49,7 @@ data class ShowScreenState(
     val showProductUpdate: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
+    val showDeleteDialog: Boolean = false,
     val showFab: Boolean = true,
 )
 

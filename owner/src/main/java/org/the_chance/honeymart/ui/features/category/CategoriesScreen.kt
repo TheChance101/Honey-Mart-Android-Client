@@ -133,7 +133,7 @@ fun CategoriesContent(
                         state = state,
                         listener = listener,
                         onClickConfirm = { },
-                        onClickCancel = { listener.deleteProductById(state.newProducts.id) }
+                        onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
                     )
                 }
                 AnimatedVisibility(visible = state.showProductUpdateContent())
@@ -171,8 +171,8 @@ fun CategoriesContent(
 
     if (state.showScreenState.showDialog) {
         CustomAlertDialog(
-            message = stringResource(org.the_chance.owner.R.string.you_delete_a_categories) +
-                    "Are you sure?",
+            message = stringResource(R.string.you_delete_a_categories) +
+                    stringResource(R.string.are_you_sure),
             onConfirm = {
                 listener.deleteCategory(state.newCategory.categoryId)
                 listener.resetShowState(Visibility.DELETE_CATEGORY)
@@ -180,6 +180,20 @@ fun CategoriesContent(
 
             onCancel = { listener.resetShowState(Visibility.DELETE_CATEGORY) },
             onDismissRequest = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
+        )
+    }
+
+    if (state.showScreenState.showDeleteDialog) {
+        CustomAlertDialog(
+            message =stringResource(R.string.you_delete_a_product) +
+                    stringResource(R.string.are_you_sure),
+            onConfirm = {
+                listener.deleteProductById(state.newProducts.id)
+                listener.resetShowState(Visibility.DELETE_PRODUCT)
+            },
+
+            onCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
+            onDismissRequest = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
         )
     }
 }

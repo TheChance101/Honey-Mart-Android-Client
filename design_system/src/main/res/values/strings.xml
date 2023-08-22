@@ -158,5 +158,8 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="you_delete_a_categories">You delete a categories ....\n</string>
+    <string name="you_delete_a_product">You delete a product ....\n</string>
 
 </resources>
