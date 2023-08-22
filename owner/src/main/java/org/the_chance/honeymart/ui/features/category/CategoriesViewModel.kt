@@ -475,13 +475,17 @@ class CategoriesViewModel @Inject constructor(
                     description = product.productDetails.productsQuantity,
                 )
             },
-            onSuccess = { onUpdateProductDetailsSuccess() },
+            onSuccess = ::onUpdateProductDetailsSuccess,
             ::onUpdateProductDetailsError
         )
     }
 
-    private fun onUpdateProductDetailsSuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
+    private fun onUpdateProductDetailsSuccess(massege: String) {
+        _state.update { it.copy(isLoading = true, error = null) }
+        onUpdateProductImage(
+            state.value.newProducts.id,
+            state.value.newProducts.images
+        )
     }
 
     private fun onUpdateProductDetailsError(errorHandler: ErrorHandler) {
