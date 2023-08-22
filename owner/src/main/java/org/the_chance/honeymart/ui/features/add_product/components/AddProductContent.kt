@@ -52,7 +52,6 @@ fun AddProductContent(
     Column(
         modifier = modifier
             .padding(
-                vertical = MaterialTheme.dimens.space24,
                 horizontal = MaterialTheme.dimens.space16,
             )
             .fillMaxSize()

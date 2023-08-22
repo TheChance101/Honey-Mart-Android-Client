@@ -160,7 +160,6 @@ fun CategoriesContent(
             text = ""
         )
     }
-    Loading(state = state.isLoading)
     ConnectionErrorPlaceholder(
         state = state.isError,
         onClickTryAgain = listener::getAllCategory

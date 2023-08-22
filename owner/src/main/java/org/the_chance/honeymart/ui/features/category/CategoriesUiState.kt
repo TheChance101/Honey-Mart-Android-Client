@@ -91,6 +91,7 @@ enum class Visibility {
     UPDATE_CATEGORY,
     ADD_CATEGORY,
     DELETE_CATEGORY,
+    DELETE_PRODUCT,
 }
 // endregion
 

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -40,7 +39,6 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 //private const val MAX_IMAGES = 4
@@ -163,10 +161,10 @@ fun ProductDetailsContent(
                 .padding(bottom = MaterialTheme.dimens.space32),
             contentAlignment = Alignment.Center
         ) {
-            Loading(
-                state = state.isLoading,
-                modifier = Modifier.size(MaterialTheme.dimens.smallLottieLoading)
-            )
+//            Loading(
+//                state = state.isLoading,
+//                modifier = Modifier.size(MaterialTheme.dimens.smallLottieLoading)
+//            )
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -178,7 +176,7 @@ fun ProductDetailsContent(
                 label = confirmButton,
                 onClick = listener::onClickUpdateProductDetails
             )
-            HoneyOutlineButton(onClick = listener::onClickCansle, label = cancelButton)
+            HoneyOutlineButton(onClick = listener::onClickCancel, label = cancelButton)
         }
 
         Spacer(modifier = Modifier.weight(2F))

@@ -214,6 +214,16 @@ class CategoriesViewModel @Inject constructor(
                     )
                 }
             }
+
+            Visibility.DELETE_PRODUCT -> {
+                _state.update {
+                    it.copy(
+                        showScreenState = it.showScreenState.copy(
+                            showDialog = !it.showScreenState.showDialog
+                        ),
+                    )
+                }
+            }
         }
     }
     // endregion
@@ -681,13 +691,13 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    override fun onClickCansle() {
+    override fun onClickCancel() {
         _state.update {
             it.copy(
                 showScreenState = it.showScreenState.copy(
-                    showAddProduct = true,
+                    showAddProduct = false,
                     showFab = false,
-                    showProductDetails = false,
+                    showProductDetails = true,
                     showProductUpdate = false
                 )
             )

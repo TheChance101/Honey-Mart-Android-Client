@@ -29,6 +29,6 @@ interface CategoriesInteractionsListener {
     fun updateProductDetails(product: CategoriesUiState)
     fun onClickProduct(productId: Long)
     fun onClickUpdateProductDetails()
-    fun onClickCansle()
+    fun onClickCancel()
     fun deleteProductById(productId: Long)
 }
