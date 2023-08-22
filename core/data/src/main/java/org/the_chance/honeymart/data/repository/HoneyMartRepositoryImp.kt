@@ -169,6 +169,12 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value ?: throw NotFoundException()
     }
 
+    override suspend fun updateImageProduct(productId: Long, images: List<ByteArray>): String {
+        return wrap {
+            honeyMartService.updateImageProduct(productId, images)
+        }.value ?: throw NotFoundException()
+    }
+
     override suspend fun updateCategory(
         id: Long,
         name: String,

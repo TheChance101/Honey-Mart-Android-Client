@@ -72,15 +72,6 @@ fun ProductDetailsContent(
     }
 
     val imageByteArrays = covertFromUriToByteArray(uris, context)
-    // val updatedImages = state.newProducts.images + imageByteArrays
-
-
-    /*handleImageSelection2(
-        uris = uris.toList(),
-        context = context,
-        state = state,
-        onImageSelected = { }
-    )*/
 
     Column(
         modifier = modifier
@@ -166,7 +157,7 @@ fun ProductDetailsContent(
                 }
             } else if (state.showScreenState.showProductUpdate) {
                 SelectedImagesGrid(
-                     images = state.newProducts.images,
+                    images = state.newProducts.images,
                     onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
                     multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
                     maxImages = MAX_IMAGES
@@ -191,17 +182,6 @@ fun ProductDetailsContent(
     }
 }
 
-//private fun covertFromUriToByteArray(
-//    uris: List<Uri>,
-//    context: Context,
-//): List<ByteArray> {
-//    val imageByteArrays = uris.mapNotNull { uri ->
-//        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-//            inputStream.readBytes()
-//        }
-//    }
-//    return imageByteArrays
-//}
 private fun covertFromUriToByteArray(
     uris: List<Uri>,
     context: Context

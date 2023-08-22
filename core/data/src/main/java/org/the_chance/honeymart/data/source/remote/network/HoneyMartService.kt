@@ -85,6 +85,11 @@ interface HoneyMartService {
         description: String,
     ): BaseResponse<String>
 
+    suspend fun updateImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String>
+
     suspend fun updateCategoriesHasProduct(
         productId: Long,
         categoriesId: List<Long>,

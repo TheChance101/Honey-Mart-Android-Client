@@ -55,6 +55,7 @@ interface HoneyMartRepository {
     ): String
 
     suspend fun addImageProduct(productId: Long, images: List<ByteArray>): String
+    suspend fun updateImageProduct(productId: Long, images: List<ByteArray>): String
 
     suspend fun updateCategory(
         id: Long,
