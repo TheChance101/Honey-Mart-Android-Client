@@ -99,7 +99,6 @@ fun CartItem(
                     ) {
                         bottom.linkTo(parent.bottom, margin = 8.dp)
                         start.linkTo(imageOrder.end, margin = 8.dp)
-                        end.linkTo(textRow.start, margin = 8.dp)
                     }
                     .border(1.dp, primary100, CircleShape)
                     .background(Color.Transparent, CircleShape)
