@@ -40,6 +40,7 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.theme.nullColor
@@ -59,7 +60,10 @@ fun ProfileScreen(
                 is ProfileUiEffect.ClickMyOrderEffect -> {} // navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
-                is ProfileUiEffect.ClickLogoutEffect -> {} // navController.navigateToLogin()
+                is ProfileUiEffect.ClickLogoutEffect -> {
+                    navController.navigateToLogin()
+                }
+
                 ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
                 ProfileUiEffect.ShowToastEffect -> {}
@@ -93,7 +97,7 @@ private fun ProfileContent(
         Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
-            state = state.contentScreen(),
+            state = state.isError,
             onClickTryAgain = listener::getData
         )
 

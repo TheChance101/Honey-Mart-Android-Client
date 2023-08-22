@@ -84,11 +84,7 @@ class ProfileViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun showDialog() {
-        _state.update {
-            it.copy(isShowDialog = true)
-        }
-    }
+
 
     override fun resetDialogState() {
         _state.update { it.copy(isShowDialog = false) }
@@ -120,16 +116,22 @@ class ProfileViewModel @Inject constructor(
     }
 
 
+    override fun showDialog() {
+        _state.update {
+            it.copy(isShowDialog = true)
+        }
+    }
+
     override fun onClickLogout() {
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
             onError = ::onLogoutError
         )
-        resetDialogState()
     }
 
     private fun onLogoutSuccess() {
+        resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
 
