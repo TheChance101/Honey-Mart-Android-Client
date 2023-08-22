@@ -45,7 +45,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, isError = true ,error = error) }
+        _state.update { it.copy(isLoading = false, isError = true, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -64,26 +64,25 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onClickTheme() {
-        _state.update { it.copy(isDark = ! it.isDark) }
+        _state.update { it.copy(isDark = !it.isDark) }
         effectActionExecutor(_effect, ProfileUiEffect.ClickThemeEffect)
     }
 
-     fun onClickThemeState(isDark :Boolean) {
+    fun onClickThemeState(isDark: Boolean) {
         tryToExecute(
             function = { saveThemeUseCase(isDark) },
-            onSuccess = { ::onChangeThemeSuccess },
+            onSuccess = ::onChangeThemeSuccess,
             onError = {}
         )
     }
 
-    private fun onChangeThemeSuccess(isDark: Boolean) {
+    private fun onChangeThemeSuccess(theme: Unit) {
 //        _state.update { it.copy(isDark  = ! it.isDark) }
     }
 
     override fun showSnackBar(massage: String) {
         TODO("Not yet implemented")
     }
-
 
 
     override fun resetDialogState() {

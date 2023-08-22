@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AppDataStorePreferencesImp @Inject constructor(context: Context) : AppDataStorePreferences {
 
     companion object {
-        private const val PREFERENCES_FILE_NAME = "honey_mart"
+        private const val PREFERENCES_FILE_NAME = "honey_mart_app"
         private val KEY_THEME = booleanPreferencesKey("theme")
     }
 

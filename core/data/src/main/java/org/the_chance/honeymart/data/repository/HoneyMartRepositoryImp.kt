@@ -8,9 +8,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
-import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
-import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
@@ -73,10 +71,6 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity> =
         wrap { honeyMartService.getCategoriesInMarket(marketId) }.value?.map { it.toCategoryEntity() }
-            ?: throw NotFoundException()
-
-    override suspend fun getAllProductsByCategory(categoryId: Long): List<ProductEntity> =
-        wrap { honeyMartService.getAllProductsByCategory(categoryId) }.value?.map { it.toProductEntity() }
             ?: throw NotFoundException()
 
     override suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity =
