@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.composables
+package org.the_chance.honeymart.ui.features.requests.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -24,21 +24,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
+fun EmptyPlaceholder(state: Boolean, ) {
     AnimatedVisibility(
         visible = state,
-        enter = fadeIn(
-            animationSpec = tween(durationMillis = 500)
-        ) + slideInVertically() + scaleIn(),
-        exit = fadeOut(
-            animationSpec = tween(durationMillis = 500)
-        ) + slideOutVertically() + scaleOut()
+        enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
+        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -46,23 +41,15 @@ fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.placeholder_wish_list),
+                painter = painterResource(id = R.drawable.owner_empty_order),
                 contentDescription = stringResource(R.string.empty_product),
                 contentScale = ContentScale.Crop
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
-                text = "Your $emptyObjectName is empty!!",
+                text = "There are no Market requests!!",
                 style = MaterialTheme.typography.bodyMedium,
                 color = blackOn60,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-                text = "Adding a $emptyObjectName will increase your chances \n of attracting interested buyers. " +
-                        "What $emptyObjectName \n fits your item? ",
-                style = MaterialTheme.typography.displayLarge,
-                color = black37,
                 textAlign = TextAlign.Center
             )
         }

@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.ui.features.requests
 
 interface RequestsInteractionListener {
-    fun onClickAllRequests()
-    fun onClickNewRequests()
-    fun onClickApproved()
+    fun onGetAllRequests()
+    fun onGetNewRequests()
+    fun onGetApproved()
     fun onClickRequest()
     fun onClickCancel()
     fun onClickApprove()

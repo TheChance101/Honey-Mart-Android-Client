@@ -36,17 +36,17 @@ fun Requests(
             CustomChip(
                 state = state.allRequests(),
                 text = stringResource(R.string.all_requests),
-                onClick = listener::onClickAllRequests
+                onClick = listener::onGetAllRequests
             )
             CustomChip(
                 state = state.newRequests(),
                 text = stringResource(R.string.new_requests),
-                onClick = listener::onClickNewRequests
+                onClick = listener::onGetNewRequests
             )
             CustomChip(
                 state = state.approved(),
                 text = stringResource(R.string.approved),
-                onClick = listener::onClickApproved
+                onClick = listener::onGetApproved
             )
         }
         LazyColumn(

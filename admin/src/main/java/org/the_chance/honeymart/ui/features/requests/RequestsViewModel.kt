@@ -73,26 +73,26 @@ class RequestsViewModel @Inject constructor(
     private fun updateRequestsSuccess(state: Boolean) {
         _state.update { it.copy(isLoading = false) }
         when (_state.value.requestsStates) {
-            RequestsStates.ALL_REQUESTS -> onClickAllRequests()
-            RequestsStates.NEW_REQUESTS -> onClickNewRequests()
-            RequestsStates.APPROVED -> onClickApproved()
+            RequestsStates.ALL_REQUESTS -> onGetAllRequests()
+            RequestsStates.NEW_REQUESTS -> onGetNewRequests()
+            RequestsStates.APPROVED -> onGetApproved()
         }
     }
 
-    override fun onClickAllRequests() {
+    override fun onGetAllRequests() {
         _state.update {
             it.copy(requestsStates = RequestsStates.ALL_REQUESTS)
         }
         getAllRequests()
     }
 
-    override fun onClickNewRequests() {
+    override fun onGetNewRequests() {
         _state.update {
             it.copy(requestsStates = RequestsStates.NEW_REQUESTS)
         }
     }
 
-    override fun onClickApproved() {
+    override fun onGetApproved() {
         _state.update {
             it.copy(
                 requestsStates = RequestsStates.APPROVED,)

@@ -14,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.requests.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.requests.composables.RequestDetails
 import org.the_chance.honeymart.ui.features.requests.composables.Requests
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -30,7 +33,10 @@ fun RequestsContent(
     state: RequestsUiState,
     listener: RequestsInteractionListener,
 ) {
-
+    Loading(state = state.isLoading && state.requests.isNotEmpty())
+    ConnectionErrorPlaceholder(state = state.isError,
+        onClickTryAgain =listener::onGetAllRequests )
+    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
     Column(
         modifier = Modifier
             .fillMaxSize()
