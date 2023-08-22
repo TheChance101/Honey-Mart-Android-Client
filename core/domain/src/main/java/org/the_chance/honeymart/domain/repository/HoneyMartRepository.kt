@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
@@ -47,4 +48,10 @@ interface HoneyMartRepository {
     suspend fun getRecentProducts(): List<RecentProductEntity>
 
     suspend fun getAllProducts(): List<ProductEntity>
+
+    suspend fun getProfileUser(): ProfileUserEntity
+    suspend fun saveThemeState(isDark: Boolean)
+    suspend fun getThemeState(): Boolean
+
+    suspend fun addProfileImage(image: ByteArray): String
 }

@@ -11,6 +11,7 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 /**
@@ -138,7 +139,6 @@ interface HoneyMartService {
 
     suspend fun getCart(): BaseResponse<CartDto>
 
-
     suspend fun addToCart(
         productId: Long,
         count: Int,
@@ -172,4 +172,13 @@ interface HoneyMartService {
 
 
     // endregion Coupon
+
+
+    //region profile
+    suspend fun getProfileUser(): BaseResponse<ProfileUserDto>
+
+    suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
+    //endregion
+
+
 }

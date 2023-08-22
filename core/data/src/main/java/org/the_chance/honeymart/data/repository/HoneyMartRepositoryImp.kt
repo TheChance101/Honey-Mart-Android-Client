@@ -8,6 +8,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
+import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
@@ -16,6 +17,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toProfileUserEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
@@ -26,6 +28,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -35,6 +38,7 @@ import javax.inject.Inject
 
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
+    private val datastore: AppDataStorePreferences,
 ) : BaseRepository(), HoneyMartRepository {
 
     override suspend fun checkout(): String {
@@ -145,6 +149,27 @@ class HoneyMartRepositoryImp @Inject constructor(
             pagingSourceFactory = { sourceFactory(honeyMartService, id) }
         ).flow
     }
+
+    override suspend fun getProfileUser(): ProfileUserEntity =
+        wrap { honeyMartService.getProfileUser() }.value?.toProfileUserEntity()
+            ?: throw NotFoundException()
+
+    override suspend fun saveThemeState(isDark: Boolean) {
+        datastore.saveThemeState(isDark)
+    }
+
+    override suspend fun getThemeState(): Boolean {
+        return datastore.getThemeState()
+    }
+
+    override suspend fun addProfileImage(image: ByteArray): String {
+        return wrap {
+            honeyMartService.addProfileImage(
+                image = image,
+            )
+        }.value ?: throw NotFoundException()
+    }
+
     companion object {
         private const val DEFAULT_PAGE_SIZE = 10
     }
