@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import PagingStateVisibilityGridScop
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -28,15 +29,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -87,18 +86,11 @@ fun SearchContent(
 ) {
     AppBarScaffold {
         Loading(state = state.isLoading)
-        ConnectionErrorPlaceholder(
-            state = state.isError,
-            onClickTryAgain = {},
-        )
-        EmptyOrdersPlaceholder(
-            state = state.emptySearchPlaceHolder(),
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.the_search_result_is_empty),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = {},
-            visibility = false
-        )
+        ConnectionErrorPlaceholder(state.isError, {})
+        /*
+                EmptyProductPlaceholder(state.emptyPlaceHolder())
+        */
+
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -178,23 +170,28 @@ fun SearchContent(
                     }
                 }
             }
-            ContentVisibility(state = state.screenContent()) {
-                if (isSearching) {
-                    Loading(state = state.isLoading)
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 160.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .shadow(0.6.dp),
-                        contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        state = rememberLazyGridState(),
-                        content = {
-                            items(state.updatedProducts.size) { itemResult ->
-                                val product = state.updatedProducts[itemResult]
+            /*
+                        ContentVisibility(state = state.screenContent()) {
+            */
+            val products = state.products.collectAsLazyPagingItems()
+
+            if (isSearching) {
+                Loading(state = state.isLoading)
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .shadow(0.6.dp),
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    state = rememberLazyGridState(),
+                    content = {
+                        items(products.itemCount) { index ->
+                            val product = products[index]
+                            if (product != null) {
                                 CardSearch(
                                     imageUrl = product.productImages.firstOrNull() ?: "",
                                     productName = product.productName,
@@ -203,11 +200,13 @@ fun SearchContent(
                                 )
                             }
                         }
-                    )
-                }
+                        PagingStateVisibilityGridScop(products)
+                    }
+                )
             }
         }
     }
+
 }
 
 

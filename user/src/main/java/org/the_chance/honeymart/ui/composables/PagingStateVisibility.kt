@@ -28,32 +28,44 @@ fun <T : Any> LazyListScope.PagingStateVisibility(
         products.loadState.refresh is LoadState.Loading -> {
             item {
                 Box(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                 ) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.dimens.space64)
-                            .padding(MaterialTheme.dimens.space16).align(Alignment.Center)
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.space64)
+                            .padding(MaterialTheme.dimens.space16)
+                            .align(Alignment.Center)
                     )
                 }
             }
         }
+
         products.loadState.append is LoadState.Loading -> {
             item {
                 Box(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                 ) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.dimens.space64)
-                            .padding(MaterialTheme.dimens.space16).align(Alignment.Center)
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.space64)
+                            .padding(MaterialTheme.dimens.space16)
+                            .align(Alignment.Center)
                     )
                 }
             }
         }
+
         products.loadState.refresh is LoadState.Error || products.loadState.append is LoadState.Error -> {
             item {
                 Text(
                     text = stringResource(id = R.string.error_loading_data),
-                    modifier = Modifier.fillMaxWidth().padding(MaterialTheme.dimens.space16),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.dimens.space16),
                     textAlign = TextAlign.Center
                 )
                 HoneyFilledButton(

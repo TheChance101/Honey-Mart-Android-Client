@@ -1,13 +1,17 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -39,20 +43,32 @@ class SearchViewModel @Inject constructor(
 
 
     private fun searchForProducts(query: String) {
-        tryToExecute(
+        tryToExecutePaging(
             { searchForProductUseCase(query) },
             ::searchForProductsSuccess,
             ::onError
         )
     }
 
-    private fun searchForProductsSuccess(products: List<ProductEntity>) {
+    private fun searchForProductsSuccess(products: PagingData<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
         _state.update { searchUiState ->
             searchUiState.copy(
-                products = products.map { it.toProductUiState() },
-                updatedProducts = products.map { it.toProductUiState() })
+                products = flowOf(mappedProducts),
+                updatedProducts = flowOf(mappedProducts)
+            )
         }
         filter()
+    }
+
+    private suspend fun collectPagingDataToList(pagingData: Flow<PagingData<ProductUiState>>): List<ProductUiState> {
+        val list = mutableListOf<ProductUiState>()
+        pagingData.collect { paging ->
+            paging.map { productUiState ->
+                list.add(productUiState)
+            }
+        }
+        return list
     }
 
     fun onSearchTextChange(text: String) {
@@ -93,14 +109,18 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun filter() {
-        _state.update {
-            it.copy(
-                updatedProducts = when (it.searchStates) {
-                    SearchStates.RANDOM -> it.products
-                    SearchStates.ASCENDING -> it.products.sortedBy { it.productPrice }
-                    SearchStates.DESCENDING -> it.products.sortedByDescending { it.productPrice }
-                }
-            )
+        viewModelScope.launch {
+            val sortedProducts = when (_state.value.searchStates) {
+                SearchStates.RANDOM -> collectPagingDataToList(_state.value.updatedProducts)
+                SearchStates.ASCENDING -> collectPagingDataToList(_state.value.updatedProducts)
+                    .sortedBy { it.productPrice }
+
+                SearchStates.DESCENDING -> collectPagingDataToList(_state.value.updatedProducts)
+                    .sortedByDescending { it.productPrice }
+            }
+            _state.update {
+                it.copy(updatedProducts = flowOf(PagingData.from(sortedProducts)))
+            }
         }
     }
 
