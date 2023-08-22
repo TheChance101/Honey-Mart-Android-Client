@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
+import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
@@ -74,7 +75,7 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
 
     override suspend fun getAllProductsByCategory(page:Int?,categoryId: Long): Flow<PagingData<ProductEntity>> =
-        getAllWithId(
+        getAllWithParameter(
             categoryId,
             ::ProductsPagingSource
         )
@@ -101,9 +102,11 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOrderDetails(orderId) }.value?.toOrderDetailsEntity()
             ?: throw NotFoundException()
 
-    override suspend fun searchForProducts(query: String): List<ProductEntity> =
-        wrap { honeyMartService.searchForProducts(query = query) }.value?.map { it.toProductEntity() }
-            ?: throw NotFoundException()
+    override suspend fun searchForProducts(query: String,page: Int?): Flow<PagingData<ProductEntity>> =
+        getAllWithParameter(
+            query,
+            ::SearchProductsPagingSource
+        )
 
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
         wrap { honeyMartService.updateOrderState(id, state) }.value ?: throw NotFoundException()
@@ -136,13 +139,13 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
-    private fun <I : Any> getAllWithId(
-        id: Long,
-        sourceFactory: (HoneyMartService, Long) -> PagingSource<Int, I>,
+    private fun <I : Any,P> getAllWithParameter(
+        parameter: P,
+        sourceFactory: (HoneyMartService, P) -> PagingSource<Int, I>,
     ): Flow<PagingData<I>> {
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
-            pagingSourceFactory = { sourceFactory(honeyMartService, id) }
+            pagingSourceFactory = { sourceFactory(honeyMartService, parameter) }
         ).flow
     }
     companion object {

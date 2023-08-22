@@ -128,8 +128,8 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search") {
+    override suspend fun searchForProducts(query: String,page: Int?): BaseResponse<List<ProductDto>> =
+        wrap(client.get("product/search?page=$page") {
             parameter("query", query)
         })
 

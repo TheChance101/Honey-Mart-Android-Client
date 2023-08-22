@@ -78,7 +78,7 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
-    suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>>
+    suspend fun searchForProducts(query: String,page: Int?): BaseResponse<List<ProductDto>>
 
 
     //endregion Product
