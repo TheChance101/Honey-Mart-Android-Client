@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.orders
 import SwipeBackground
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,7 +83,7 @@ fun OrdersContent(
             onClickTryAgain = listener::getAllPendingOrders
         )
 
-        ContentVisibility(state = !state.isError && !state.isLoading) {
+        ContentVisibility(state = state.screenContent()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -130,81 +131,81 @@ fun OrdersContent(
                         )
                     }
                 }
-                EmptyOrdersPlaceholder(
-                    state = state.emptyOrdersPlaceHolder(),
-                    image = R.drawable.placeholder_order,
-                    title = stringResource(R.string.placeholder_title),
-                    subtitle = stringResource(R.string.placeholder_subtitle),
-                    onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
-                )
-            }
+                Box {
+                    EmptyOrdersPlaceholder(
+                        state = state.emptyOrdersPlaceHolder(),
+                        image = R.drawable.placeholder_order,
+                        title = stringResource(R.string.placeholder_title),
+                        subtitle = stringResource(R.string.placeholder_subtitle),
+                        onClickDiscoverMarkets = listener::onClickDiscoverMarkets,
+                    )
 
-            ContentVisibility(state = state.screenContent()) {
-                LazyColumn(
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.dimens.space16,
-                        end = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space16
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
-                ) {
-                    itemsIndexed(
-                        items = state.orders,
-                    ) { index, orderItem ->
-                        var showDialog by remember { mutableStateOf(false) }
-                        val dismissState = rememberDismissState(
-                            confirmValueChange = { it == DismissValue.DismissedToStart })
-                        val updatedDismissState by rememberUpdatedState(dismissState)
+                    LazyColumn(
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16,
+                            top = MaterialTheme.dimens.space16
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
+                    ) {
+                        itemsIndexed(
+                            items = state.orders,
+                        ) { index, orderItem ->
+                            var showDialog by remember { mutableStateOf(false) }
+                            val dismissState = rememberDismissState(
+                                confirmValueChange = { it == DismissValue.DismissedToStart })
+                            val updatedDismissState by rememberUpdatedState(dismissState)
 
-                        SwipeToDismiss(
-                            modifier = Modifier.animateItemPlacement(),
-                            state = dismissState,
-                            background = { SwipeBackground() },
-                            directions = setOf(DismissDirection.EndToStart),
-                            dismissContent = {
-                                ItemOrder(
-                                    imageUrl = orderItem.imageUrl,
-                                    orderId = orderItem.orderId,
-                                    marketName = orderItem.marketName,
-                                    quantity = orderItem.quantity,
-                                    price = orderItem.totalPrice,
-                                    onClickCard = listener::onClickOrder,
-                                )
-                            })
-                        LaunchedEffect(showDialog) {
-                            if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                                dismissState.reset()
-                            }
-                        }
-                        LaunchedEffect(updatedDismissState.dismissDirection) {
-                            if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
-                                showDialog = true
-                            }
-                        }
-                        if (showDialog) {
-                            val textOrderStates = when (state.orderStates) {
-                                OrderStates.PENDING, OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
-                                else -> stringResource(id = R.string.order_dialog_Delete_Text)
-                            }
-
-                            val buttonOrderStates = when (state.orderStates) {
-                                OrderStates.PENDING -> OrderStates.CANCELLED_BY_USER.state
-                                OrderStates.PROCESSING -> OrderStates.CANCELLED_BY_USER.state
-                                else -> OrderStates.DELETE.state
-                            }
-                            CustomAlertDialog(
-                                message = textOrderStates,
-                                onConfirm = {
-                                    listener.updateOrders(
-                                        index.toLong(),
-                                        buttonOrderStates
+                            SwipeToDismiss(
+                                modifier = Modifier.animateItemPlacement(),
+                                state = dismissState,
+                                background = { SwipeBackground() },
+                                directions = setOf(DismissDirection.EndToStart),
+                                dismissContent = {
+                                    ItemOrder(
+                                        imageUrl = orderItem.imageUrl,
+                                        orderId = orderItem.orderId,
+                                        marketName = orderItem.marketName,
+                                        quantity = orderItem.quantity,
+                                        price = orderItem.totalPrice,
+                                        onClickCard = listener::onClickOrder,
                                     )
-                                    showDialog = false
-                                },
-                                onCancel = { showDialog = false },
-                                onDismissRequest = { showDialog = false }
-                            )
+                                })
+                            LaunchedEffect(showDialog) {
+                                if (!showDialog && updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                                    dismissState.reset()
+                                }
+                            }
+                            LaunchedEffect(updatedDismissState.dismissDirection) {
+                                if (updatedDismissState.dismissDirection == DismissDirection.EndToStart) {
+                                    showDialog = true
+                                }
+                            }
+                            if (showDialog) {
+                                val textOrderStates = when (state.orderStates) {
+                                    OrderStates.PENDING, OrderStates.PROCESSING -> stringResource(id = R.string.order_dialog_Cancel_Text)
+                                    else -> stringResource(id = R.string.order_dialog_Delete_Text)
+                                }
+
+                                val buttonOrderStates = when (state.orderStates) {
+                                    OrderStates.PENDING -> OrderStates.CANCELLED_BY_USER.state
+                                    OrderStates.PROCESSING -> OrderStates.CANCELLED_BY_USER.state
+                                    else -> OrderStates.DELETE.state
+                                }
+                                CustomAlertDialog(
+                                    message = textOrderStates,
+                                    onConfirm = {
+                                        listener.updateOrders(
+                                            index.toLong(),
+                                            buttonOrderStates
+                                        )
+                                        showDialog = false
+                                    },
+                                    onCancel = { showDialog = false },
+                                    onDismissRequest = { showDialog = false }
+                                )
+                            }
                         }
                     }
                 }
@@ -213,6 +214,7 @@ fun OrdersContent(
         }
     }
 }
+
 
 @Preview
 @Composable
