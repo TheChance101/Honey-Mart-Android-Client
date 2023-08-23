@@ -1,11 +1,10 @@
 package org.the_chance.honeymart.ui.features.requests
 
 interface RequestsInteractionListener {
-    fun onGetAllRequests()
-    fun onGetApproved()
+    fun onGetFilteredRequests(isApproved: Boolean)
     fun onClickRequest(position: Int)
-    fun onClickCancel()
-    fun onClickApprove()
+    fun onClickCancel(marketId: Int)
+    fun onClickApprove(marketId: Int)
     fun resetSnackBarState()
-    fun updateRequests(position: Long, isApproved: Boolean)
+    fun updateRequest(marketId: Int, isApproved: Boolean)
 }

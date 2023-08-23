@@ -271,9 +271,11 @@ class HoneyMartServiceImp @Inject constructor(
     //endregion
 
     //region admin
-    override suspend fun getAllRequests(): BaseResponse<List<RequestDto>> =
-        wrap(client.get("admin/markets") {
+    override suspend fun getAllRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
+        return wrap(client.get("admin/markets") {
+            parameter("isApproved", "$isApproved")
         })
+    }
 
     @OptIn(InternalAPI::class)
     override suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): BaseResponse<Boolean> {

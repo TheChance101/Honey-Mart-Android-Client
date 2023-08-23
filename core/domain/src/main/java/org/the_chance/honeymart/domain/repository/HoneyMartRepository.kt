@@ -53,7 +53,7 @@ interface HoneyMartRepository {
     suspend fun deleteCategory(id: Long): String
 
     //region admin
-    suspend fun getAllRequests(): List<RequestEntity>
+    suspend fun getAllRequests(isApproved: Boolean): List<RequestEntity>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean):Boolean
     //endregion admin
 }

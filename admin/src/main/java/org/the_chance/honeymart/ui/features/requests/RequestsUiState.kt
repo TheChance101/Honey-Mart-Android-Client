@@ -9,7 +9,8 @@ data class RequestsUiState(
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
     val requests: List<RequestUiState> = emptyList(),
-    val selectedRequest: RequestUiState? = null
+    val selectedRequest: RequestUiState? = null,
+    val requestsStates: RequestsStates = RequestsStates.UNAPPROVED
 )
 
 data class RequestUiState(
@@ -21,7 +22,7 @@ data class RequestUiState(
     val ownerEmail: String = "",
     val isRequestNew: Boolean = false,
     val isRequestSelected: Boolean = false,
-    val state: RequestsStates = RequestsStates.ALL_REQUESTS,
+    val state: RequestsStates = RequestsStates.UNAPPROVED,
     val isSelected: Boolean = false
 ) {
     fun ownerNameFirstCharacter(): Char = this.ownerName.first()
@@ -37,16 +38,6 @@ fun RequestEntity.toRequestUiState(): RequestUiState {
         marketDescription = marketDescription
     )
 }
-//fun RequestEntity.toRequestUiState(): RequestUiState {
-//    return RequestUiState(
-//        marketId = marketId,
-//        marketName = marketName,
-//        ownerName = ownerName,
-//        ownerEmail = ownerEmail,
-//        marketAddress = marketAddress,
-//        marketDescription = marketDescription
-//    )
-//}
 
 data class SnackBarState(
     val isShow: Boolean = false,
@@ -54,14 +45,9 @@ data class SnackBarState(
 )
 
 enum class RequestsStates(val state: Int) {
-    ALL_REQUESTS(1),
-//    NEW_REQUESTS(2),
-    APPROVED(3)
+    UNAPPROVED(1),
+    APPROVED(2)
 }
-
-//fun RequestsUiState.allRequests() = this.requestsStates == RequestsStates.ALL_REQUESTS
-//fun RequestsUiState.newRequests() = this.requestsStates == RequestsStates.NEW_REQUESTS
-//fun RequestsUiState.approved() = this.requestsStates == RequestsStates.APPROVED
 
 fun RequestsUiState.emptyRequestsPlaceHolder() =
     this.requests.isEmpty() && !this.isError && !this.isLoading

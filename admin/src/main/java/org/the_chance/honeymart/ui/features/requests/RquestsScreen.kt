@@ -42,16 +42,18 @@ fun RequestsContent(
 ) {
     Loading(state = state.isLoading)
     ConnectionErrorPlaceholder(state = state.isError,
-        onClickTryAgain =listener::onGetAllRequests )
+        onClickTryAgain = { listener.onGetFilteredRequests(false) } )
     EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
     ContentVisibility(state = state.contentScreen()) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             HoneyMartTitle()
             Row(
-                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40),
+                modifier = Modifier.fillMaxSize()
+                    .padding(horizontal = MaterialTheme.dimens.space40),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 Column(
@@ -63,14 +65,14 @@ fun RequestsContent(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CustomChip(
-                            state = true,
-                            text = stringResource(R.string.all_requests),
-                            onClick = listener::onGetAllRequests
+                            state = state.requestsStates == RequestsStates.UNAPPROVED,
+                            text = stringResource(R.string.pending),
+                            onClick = { listener.onGetFilteredRequests(false) }
                         )
                         CustomChip(
-                            state = false,
+                            state = state.requestsStates == RequestsStates.APPROVED,
                             text = stringResource(R.string.approved),
-                            onClick = listener::onGetApproved
+                            onClick = { listener.onGetFilteredRequests(true) }
                         )
                     }
                     LazyColumn(
@@ -93,7 +95,9 @@ fun RequestsContent(
                 Column(
                     modifier = Modifier.fillMaxSize().weight(1f)
                 ) {
-                        RequestDetails(state.selectedRequest, listener)
+                    RequestDetails(
+                        state = state.requestsStates == RequestsStates.UNAPPROVED,
+                        request = state.selectedRequest, listener = listener)
                 }
             }
         }

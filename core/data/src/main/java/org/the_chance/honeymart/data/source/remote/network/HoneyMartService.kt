@@ -171,8 +171,7 @@ interface HoneyMartService {
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
 
     //region admin
-    suspend fun getAllRequests(
-    ): BaseResponse<List<RequestDto>>
+    suspend fun getAllRequests(isApproved: Boolean): BaseResponse<List<RequestDto>>
 
     suspend fun updateMarketRequest(
         id: Long?,

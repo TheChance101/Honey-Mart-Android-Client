@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.requests.composables
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,12 +39,16 @@ import java.util.Locale
 
 @Composable
 fun RequestDetails(
+    state: Boolean,
     request: RequestUiState?,
     listener: RequestsInteractionListener
 ) {
     ContentVisibility(state = request != null) {
         Box(
-            modifier = Modifier.fillMaxSize().clip(Shapes.medium).background(white)
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(Shapes.medium)
+                .background(white)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
@@ -147,51 +152,30 @@ fun RequestDetails(
                         textAlign = TextAlign.Center
                     )
                 }
+                AnimatedVisibility(visible = state) {
+
+                }
                 Row(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     HoneyOutlineButton(
-                        onClick = listener::onClickCancel,
+                        onClick = { request?.marketId?.let { listener.onClickCancel(it) } },
                         label = stringResource(R.string.cancel),
                     )
-                    HoneyOutlineButton(
-                        modifier = Modifier.background(
-                            MaterialTheme.colorScheme.primary, Shapes.medium
-                        ),
-                        onClick = listener::onClickApprove,
-                        label = stringResource(R.string.approve),
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                    )
+                    AnimatedVisibility(visible = state) {
+                        HoneyOutlineButton(
+                            modifier = Modifier.background(
+                                MaterialTheme.colorScheme.primary, Shapes.medium
+                            ),
+                            onClick = { request?.marketId?.let { listener.onClickApprove(it) } },
+                            label = stringResource(R.string.approve),
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun RequestDetailsPreview(){
-    RequestDetails(
-        RequestUiState(
-
-        ),
-        object :RequestsInteractionListener{
-            override fun onGetAllRequests() {
-            }
-            override fun onGetApproved() {
-            }
-            override fun onClickRequest(position: Int) {
-            }
-            override fun onClickCancel() {
-            }
-            override fun onClickApprove() {
-            }
-            override fun resetSnackBarState() {
-            }
-            override fun updateRequests(position: Long, isApproved: Boolean) {
-            }
-        }
-    )
 }
