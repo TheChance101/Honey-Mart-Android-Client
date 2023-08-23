@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.orders
 
+import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -20,7 +21,7 @@ data class OrderUiState(
     val state: Int = 0,
     )
 
-fun OrderEntity.toOrderUiState(): OrderUiState {
+fun MarketOrderEntity.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
         totalPrice = totalPrice,
@@ -47,6 +48,6 @@ fun OrdersUiState.processing() =this.orderStates == OrderStates.PROCESSING
 fun OrdersUiState.done() =this.orderStates == OrderStates.DONE
 fun OrdersUiState.cancel() =this.orderStates == OrderStates.CANCELED
 
-fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
+fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !this.isError && !this.isLoading
 
 fun OrdersUiState.screenContent() = this.orders.isNotEmpty() && !this.isError

@@ -2,7 +2,6 @@ package org.the_chance.honeymart.data.source.remote.network
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -18,7 +17,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -28,6 +26,7 @@ import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
@@ -269,6 +268,12 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("order/userOrders") {
             parameter("orderState", orderState)
         })
+
+    override suspend fun getAllMarketOrders(orderState: Int): BaseResponse<List<MarketOrderDto>> {
+        return wrap(client.get("order/marketOrders") {
+            parameter("orderState", orderState)
+        })
+    }
 
 
     @OptIn(InternalAPI::class)

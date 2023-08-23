@@ -67,34 +67,34 @@ fun OrdersContent(
                 CustomChip(
                     state = state.all(),
                     text = stringResource(R.string.all),
-                    onClick = listener::getAllOrders
+                    onClick = { listener.getAllMarketOrders(OrderStates.ALL) }
                 )
                 CustomChip(
                     state = state.pending(),
                     text = stringResource(R.string.new_order),
-                    onClick = listener::getAllPendingOrders
+                    onClick = { listener.getAllMarketOrders(OrderStates.PENDING) }
                 )
                 CustomChip(
                     state = state.processing(),
                     text = stringResource(id = R.string.processing),
-                    onClick = listener::getAllProcessingOrders
+                    onClick = { listener.getAllMarketOrders(OrderStates.PROCESSING) }
                 )
                 CustomChip(
                     state = state.done(),
                     text = stringResource(id = R.string.done),
-                    onClick = listener::getAllDoneOrders
+                    onClick = { listener.getAllMarketOrders(OrderStates.DONE) }
                 )
                 CustomChip(
                     state = state.cancel(),
                     text = stringResource(id = R.string.cancel),
-                    onClick = listener::getAllCancelOrders
+                    onClick = { listener.getAllMarketOrders(OrderStates.CANCELED) }
                 )
             }
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(MaterialTheme.dimens.space16)
             ) {
-                items(5) {
+                items(state.orders.size) {
                     ItemOrder(
                         onClickCard = listener::onClickOrder,
                         orderId = state.orders[it].orderId,

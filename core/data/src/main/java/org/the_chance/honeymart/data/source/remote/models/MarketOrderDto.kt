@@ -2,7 +2,7 @@ package org.the_chance.honeymart.data.source.remote.models
 
 import com.google.gson.annotations.SerializedName
 
-data class OrderDto(
+data class MarketOrderDto(
     @SerializedName("orderId")
     val orderId: Long? = null,
     @SerializedName("totalPrice")
@@ -11,8 +11,14 @@ data class OrderDto(
     val state: Int? = null,
     @SerializedName("date")
     val date: Long? = null,
-    @SerializedName("market")
-    val market: MarketDto,
-    @SerializedName("numItems")
-    val numItems: Int? = null,
+    @SerializedName("user")
+    val user: UserDto
 )
+
+data class UserDto(
+    @SerializedName("userId")
+    val userId: Int,
+    @SerializedName("fullName")
+    val fullName: String,
+)
+
