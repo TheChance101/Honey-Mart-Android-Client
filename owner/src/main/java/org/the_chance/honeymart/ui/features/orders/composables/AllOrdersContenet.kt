@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderStates
@@ -20,6 +21,7 @@ import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.features.orders.all
 import org.the_chance.honeymart.ui.features.orders.cancel
 import org.the_chance.honeymart.ui.features.orders.done
+import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
 import org.the_chance.honeymart.ui.features.orders.processing
 import org.the_chance.honymart.ui.theme.background
@@ -72,6 +74,12 @@ fun AllOrdersContent(
                 onClick = { listener.getAllMarketOrders(OrderStates.CANCELED) }
             )
         }
+        EmptyOrdersPlaceholder(
+            painter = painterResource(id = R.drawable.owner_empty_order),
+            text = stringResource(R.string.there_are_no_order_for_this_day),
+            visibilityState = state.emptyOrdersPlaceHolder(),
+
+            )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)
@@ -82,7 +90,8 @@ fun AllOrdersContent(
                     orderId = state.orders[it].orderId,
                     userName = state.orders[it].userName,
                     price = state.orders[it].totalPrice,
-                    time = state.orders[it].time
+                    time = state.orders[it].time,
+                    isSelected =state.orders[it].isOrderSelected
                 )
             }
         }

@@ -38,19 +38,19 @@ fun OrdersContent(
             .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
-        EmptyOrdersPlaceholder(
-            painter = painterResource(id = R.drawable.owner_empty_order),
-            text = stringResource(R.string.there_are_no_order_for_this_day),
-            visibilityState = state.emptyOrdersPlaceHolder(),
-
-            )
+//        EmptyOrdersPlaceholder(
+//            painter = painterResource(id = R.drawable.owner_empty_order),
+//            text = stringResource(R.string.there_are_no_order_for_this_day),
+//            visibilityState = state.emptyOrdersPlaceHolder(),
+//
+//            )
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = state.screenContent())
+                ContentVisibility(state = true)
                 {
                     AllOrdersContent(state = state, listener = listener)
                 }

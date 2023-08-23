@@ -11,7 +11,6 @@ data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val state: Boolean = false,
     val orders: List<OrderUiState> = emptyList(),
     val orderStates: OrderStates = OrderStates.ALL,
 )
@@ -21,6 +20,7 @@ data class OrderUiState(
     val totalPrice: String = "",
     val time: String = "",
     val userName: String = "",
+    val isOrderSelected :Boolean = false ,
     val state: Int = 0,
 )
 

@@ -17,8 +17,25 @@ class OrdersViewModel @Inject constructor(
         getAllMarketOrders(OrderStates.ALL)
     }
 
-    override fun onClickOrder(orderId: Long) {
-        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
+    override fun onClickOrder(id: Long) {
+        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
+        val updatedOrders = updateSelectedOrder(_state.value.orders, id)
+        _state.update {
+            it.copy(
+                orders = updatedOrders
+            )
+        }
+
+
+    }
+
+    private fun updateSelectedOrder(
+        orders: List<OrderUiState>,
+        selectedOrderId: Long,
+    ): List<OrderUiState> {
+        return orders.map { order ->
+            order.copy(isOrderSelected = order.orderId == selectedOrderId)
+        }
     }
 
     override fun getAllMarketOrders(orderState: OrderStates) {
