@@ -26,8 +26,8 @@ class NavigationRailViewModel @Inject constructor(
     private fun getOwnerInfo() {
         _state.update {
             it.copy(
-                adminName = ownerProfileInfo.getOwnerNameFirstCharacter(),
-                adminImageUrl = ownerProfileInfo.getOwnerImageUrl()
+//                adminName = ownerProfileInfo.getOwnerNameFirstCharacter(),
+//                adminImageUrl = ownerProfileInfo.getOwnerImageUrl()
             )
         }
     }

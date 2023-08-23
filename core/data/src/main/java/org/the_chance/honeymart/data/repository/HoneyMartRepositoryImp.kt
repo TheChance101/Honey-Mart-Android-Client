@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
-    private val datastore: AppDataStorePreferences,
+//    private val datastore: AppDataStorePreferences,
 ) : BaseRepository(), HoneyMartRepository {
 
     override suspend fun checkout(): String {
@@ -160,11 +160,11 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
 
     override suspend fun saveThemeState(isDark: Boolean) {
-        datastore.saveThemeState(isDark)
+//        datastore.saveThemeState(isDark)
     }
 
     override suspend fun getThemeState(): Boolean {
-        return datastore.getThemeState()
+        return false
     }
 
     override suspend fun addProfileImage(image: ByteArray): String {

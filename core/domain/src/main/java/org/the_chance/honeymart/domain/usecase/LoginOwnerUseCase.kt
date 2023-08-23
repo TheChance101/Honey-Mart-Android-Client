@@ -6,9 +6,9 @@ import javax.inject.Inject
 class LoginOwnerUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
-    suspend operator fun invoke(email: String, password: String) {
-        val token = authRepository.loginOwner(email, password)
-        authRepository.saveToken(token.tokens.accessToken)
-        authRepository.saveOwnerName(token.fullName)
-    }
+//    suspend operator fun invoke(email: String, password: String) {
+//        val token = authRepository.loginOwner(email, password)
+//        authRepository.saveToken(token.tokens.accessToken)
+//        authRepository.saveOwnerName(token.fullName)
+//    }
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetOwnerProfileUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke():OwnerProfileEntity {
-        return authRepository.getOwnerProfile()
-    }
+//    suspend operator fun invoke():OwnerProfileEntity {
+//        return authRepository.getOwnerProfile()
+//    }
 }

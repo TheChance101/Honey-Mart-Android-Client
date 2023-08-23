@@ -20,13 +20,13 @@ import javax.inject.Inject
 class AuthRepositoryImp @Inject constructor(
     private val datastore: AuthDataStorePreferences,
     private val honeyMartService: HoneyMartService,
-    private val fireBaseMsgService: FireBaseMsgService
+//    private val fireBaseMsgService: FireBaseMsgService
 ) : BaseRepository(), AuthRepository {
 
-    override suspend fun createOwnerAccount(
-        fullName: String, email: String, password: String,
-    ): Boolean =
-        wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
+//    override suspend fun createOwnerAccount(
+//        fullName: String, email: String, password: String,
+//    ): Boolean =
+//        wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
 
     override suspend fun createUserAccount(
         fullName: String,
@@ -36,7 +36,7 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
 
     override suspend fun getDeviceToken(): String {
-        return fireBaseMsgService.getDeviceToken()
+        return "fireBaseMsgService.getDeviceToken()"
     }
 
 
@@ -66,25 +66,25 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
-    override suspend fun loginOwner(email: String, password: String): OwnerLoginEntity {
-        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
-            ?: throw NotFoundException()
-    }
+//    override suspend fun loginOwner(email: String, password: String): OwnerLoginEntity {
+//        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
+//            ?: throw NotFoundException()
+//    }
 
-    override suspend fun saveOwnerName(name: String) {
-        datastore.saveOwnerName(name)
-    }
+//    override suspend fun saveOwnerName(name: String) {
+//        datastore.saveOwnerName(name)
+//    }
 
-    override fun getOwnerName(): String? = datastore.getOwnerName()
-
-    override suspend fun saveOwnerImageUrl(imageUrl: String) {
-        datastore.saveOwnerImageUrl(imageUrl)
-    }
-
-    override fun getOwnerImageUrl(): String? = datastore.getOwnerImageUrl()
-
-    override suspend fun getOwnerProfile(): OwnerProfileEntity =
-        wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfileEntity("")
-            ?: throw NotFoundException()
+//    override fun getOwnerName(): String? = datastore.getOwnerName()
+//
+//    override suspend fun saveOwnerImageUrl(imageUrl: String) {
+//        datastore.saveOwnerImageUrl(imageUrl)
+//    }
+//
+//    override fun getOwnerImageUrl(): String? = datastore.getOwnerImageUrl()
+//
+//    override suspend fun getOwnerProfile(): OwnerProfileEntity =
+//        wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfileEntity("")
+//            ?: throw NotFoundException()
 
 }
