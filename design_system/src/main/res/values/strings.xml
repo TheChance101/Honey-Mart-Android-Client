@@ -152,4 +152,17 @@
     <string name="continue_word">Continue</string>
 
     <string name="declined">Declined</string>
+    <string name="product_details">Product Details</string>
+    <string name="update_product">Update Product</string>
+    <string name="product_image">Product Image</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="you_delete_a_categories">You delete a categories ....\n</string>
+    <string name="you_delete_a_product">You delete a product ....\n</string>
+    <string name="honey_sun_image">Honey Sun Image</string>
+    <string name="authorization_background_image">authorization background image</string>
+    <string name="more">More</string>
+
 </resources>

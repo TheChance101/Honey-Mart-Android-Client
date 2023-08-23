@@ -24,8 +24,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.features.products.composables.ProductCard
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -103,11 +102,11 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
             ) {
                 items(state.products.size) { index ->
                     val product = state.products[index]
-                    ProductCard(
-                        imageUrl = product.images[0],
-                        productName = product.name,
-                        productPrice = product.price.toString(),
-                    )
+//                    ProductCard(
+//                        imageUrl = product.images[0],
+//                        productName = product.name,
+//                        productPrice = product.price.toString(),
+//                    )
                 }
             }
 

@@ -79,11 +79,16 @@ interface HoneyMartService {
     ): BaseResponse<String>
 
     suspend fun updateProduct(
-        productId: Long,
+        id: Long,
         name: String,
         price: Double,
         description: String,
-    ): BaseResponse<ProductDto>
+    ): BaseResponse<String>
+
+    suspend fun updateImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String>
 
     suspend fun updateCategoriesHasProduct(
         productId: Long,
@@ -177,4 +182,6 @@ interface HoneyMartService {
 
     //endregion
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
+    suspend fun deleteProductById(productId: Long): BaseResponse<String>
+    suspend fun deleteProductImage(productId: Long): BaseResponse<String>
 }

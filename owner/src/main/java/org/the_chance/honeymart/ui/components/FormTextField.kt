@@ -34,6 +34,7 @@ fun FormTextField(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
+    isEnable: Boolean = true
 ) {
     Column {
         OutlinedTextField(
@@ -69,6 +70,7 @@ fun FormTextField(
                 }
             },
             isError = isError,
+            enabled = isEnable
         )
         if (isError) {
             Text(

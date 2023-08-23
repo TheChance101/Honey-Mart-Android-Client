@@ -117,6 +117,14 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.deleteCategory(id) }.value ?: throw NotFoundException()
     }
 
+    override suspend fun deleteProduct(productId: Long): String {
+        return wrap { honeyMartService.deleteProduct(productId) }.value ?: throw NotFoundException()
+    }
+
+    override suspend fun deleteProductImage(productId: Long): String {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun addProduct(
         name: String,
         price: Double,
@@ -133,6 +141,22 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value?.toProductEntity() ?: throw NotFoundException()
     }
 
+    override suspend fun updateProduct(
+        id: Long,
+        name: String,
+        price: Double,
+        description: String
+    ): String {
+        return wrap {
+            honeyMartService.updateProduct(
+                id = id,
+                name = name,
+                price = price,
+                description = description,
+            )
+        }.value ?: throw NotFoundException()
+    }
+
     override suspend fun addImageProduct(
         productId: Long,
         images: List<ByteArray>
@@ -142,6 +166,12 @@ class HoneyMartRepositoryImp @Inject constructor(
                 productId = productId,
                 images = images
             )
+        }.value ?: throw NotFoundException()
+    }
+
+    override suspend fun updateImageProduct(productId: Long, images: List<ByteArray>): String {
+        return wrap {
+            honeyMartService.updateImageProduct(productId, images)
         }.value ?: throw NotFoundException()
     }
 

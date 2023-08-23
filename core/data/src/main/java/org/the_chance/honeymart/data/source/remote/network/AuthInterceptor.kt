@@ -15,7 +15,9 @@ class AuthInterceptor @Inject constructor(
             .request()
             .newBuilder()
             .addHeader(API_KEY, BuildConfig.API_KEY)
-            .addHeader(AUTHORIZATION, "Bearer $token")
+            .addHeader(
+                AUTHORIZATION, "Bearer $token"
+            )
             .build()
         return chain.proceed(newRequest)
     }

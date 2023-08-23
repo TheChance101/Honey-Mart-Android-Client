@@ -1,20 +1,9 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,29 +12,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.addCategory.AddCategoryContent
-import org.the_chance.honeymart.ui.addCategory.categoryIcons
-import org.the_chance.honeymart.ui.addCategory.composable.CategoryItem
-import org.the_chance.honeymart.ui.addCategory.composable.EmptyCategory
-import org.the_chance.honeymart.ui.addCategory.composable.HoneyMartTitle
-import org.the_chance.honeymart.ui.features.category.categories.ProductsOnCategory
-import org.the_chance.honeymart.ui.features.update_category.UpdateCategoryContent
+import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.category.composable.EmptyCategory
+import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.category.content.AddCategoryContent
+import org.the_chance.honeymart.ui.features.category.content.AddProductContent
+import org.the_chance.honeymart.ui.features.category.content.CategoryItemsContent
+import org.the_chance.honeymart.ui.features.category.content.CategoryProductsContent
+import org.the_chance.honeymart.ui.features.category.content.ProductDetailsContent
+import org.the_chance.honeymart.ui.features.category.content.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
-import org.the_chance.honymart.ui.theme.dimens
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
  */
+
 @Composable
 fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by categoriesViewModel.state.collectAsState()
+
     CategoriesContent(state, categoriesViewModel)
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
@@ -63,94 +54,89 @@ fun CategoriesContent(
             .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
-
-        Loading(state = state.isLoading && state.categories.isEmpty())
-        AnimatedVisibility(visible = state.categories.isEmpty() && !state.showAddCategory) {
+        Loading(state = state.showLoadingWhenCategoriesIsEmpty())
+        ContentVisibility(state = state.emptyCategoryPlaceHolder()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
                 EmptyCategory(
-                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    state = state.placeHolderCondition(),
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
             }
         }
 
-
         Row(modifier = Modifier.fillMaxSize()) {
+            Loading(state = state.isLoading && state.categories.isNotEmpty())
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
                 EmptyCategory(
-                    state = state.categories.isEmpty() && !state.isLoading && !state.isError,
+                    state = state.placeHolderCondition(),
                     onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
                 )
-                AnimatedVisibility(
-                    visible = state.categories.isNotEmpty(),
+                ContentVisibility(
+                    state = state.categories.isNotEmpty() && state.showScreenState.showFab
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = MaterialTheme.dimens.space12)
-                    ) {
+                    CategoryItemsContent(state = state, listener = listener)
+                }
 
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(140.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        ) {
-                            items(count = state.categories.size) { index ->
-                                CategoryItem(
-                                    categoryName = state.categories[index].categoryName,
-                                    onClick = {
-                                        listener.onClickCategory(state.categories[index].categoryId)
-                                    },
-                                    icon = categoryIcons[state.categories[index].categoryImageId]
-                                        ?: R.drawable.icon_category,
-                                    isSelected = state.categories[index].isCategorySelected
-                                )
-                            }
-                            item {
-                                CategoryItem(
-                                    categoryName = stringResource(id = R.string.add),
-                                    onClick =
-                                    { listener.resetShowState(Visibility.ADD_CATEGORY) },
-                                    icon = R.drawable.icon_add_to_cart,
-                                    isSelected = false
-                                )
-                            }
-                        }
-                    }
+                ContentVisibility(state = state.showCategoryProductsInCategory()) {
+                    CategoryProductsContent(state = state, listener = listener)
                 }
             }
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                AddCategoryContent(
-                    listener = listener, state = state,
-                )
-
-                AnimatedVisibility(visible = !state.isLoading && !state.showUpdateCategory) {
-                    ProductsOnCategory(state = state, listener = listener)
+                ContentVisibility(state = state.showScreenState.showAddCategory) {
+                    AddCategoryContent(listener = listener, state = state)
                 }
 
+                ContentVisibility(state = state.showCategoryProductsInProduct()) {
+                    CategoryProductsContent(state = state, listener = listener)
+                }
 
-                UpdateCategoryContent(state = state, listener = listener)
+                ContentVisibility(state = state.showScreenState.showUpdateCategory) {
+                    UpdateCategoryContent(state = state, listener = listener)
+                }
+
+                ContentVisibility(state = state.showAddProductContent()) {
+                    AddProductContent(state = state, listener = listener)
+                }
+
+                ContentVisibility(state = state.showProductDetailsContent()) {
+                    ProductDetailsContent(
+                        titleScreen = stringResource(id = R.string.product_details),
+                        confirmButton = stringResource(id = R.string.update),
+                        cancelButton = stringResource(id = R.string.delete),
+                        state = state,
+                        listener = listener,
+                        onClickConfirm = { listener.onClickUpdateProductDetails() },
+                        onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
+                    )
+                }
+                ContentVisibility(state = state.showProductUpdateContent()) {
+                    ProductDetailsContent(
+                        titleScreen = stringResource(id = R.string.update_product),
+                        confirmButton = stringResource(id = R.string.save),
+                        cancelButton = stringResource(id = R.string.cancel),
+                        state = state,
+                        listener = listener,
+                        onClickConfirm = { listener.updateProductDetails(state) },
+                        onClickCancel = { listener.onClickCancel() }
+                    )
+                }
             }
         }
     }
-    AnimatedVisibility(
-        visible = state.snackBar.isShow,
-        enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+    ContentVisibility(
+        state = state.snackBar.isShow
     ) {
         SnackBarWithDuration(
             message = state.snackBar.message,
@@ -159,23 +145,34 @@ fun CategoriesContent(
             text = ""
         )
     }
-    Loading(state = state.isLoading && state.categories.isNotEmpty())
-    ConnectionErrorPlaceholder(state = state.isError,
-        onClickTryAgain =listener::getAllCategory )
+    ConnectionErrorPlaceholder(
+        state = state.errorPlaceHolderCondition(),
+        onClickTryAgain = listener::getAllCategory
+    )
 
+    ContentVisibility(state = state.showScreenState.showDialog) {
+        CustomAlertDialog(
+            message = stringResource(R.string.you_delete_a_categories) +
+                    stringResource(R.string.are_you_sure),
+            onConfirm = {
+                listener.deleteCategory(state.newCategory.categoryId)
+                listener.resetShowState(Visibility.DELETE_CATEGORY)
+            },
 
-        if (state.showDialog) {
-            CustomAlertDialog(
-                message = stringResource(org.the_chance.owner.R.string.you_delete_a_categories) +
-                        "Are you sure?",
-                onConfirm = {
-                    listener.deleteCategory(state.categoryId)
-                    listener.resetShowState(Visibility.DELETE_CATEGORY)
-                },
+            onCancel = { listener.resetShowState(Visibility.DELETE_CATEGORY) },
+            onDismissRequest = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
+        )
+    }
 
-                onCancel = { listener.resetShowState(Visibility.DELETE_CATEGORY) },
-                onDismissRequest = { listener.resetShowState(Visibility.DELETE_CATEGORY)}
-            )
-        }
+    ContentVisibility(state = state.showScreenState.showDeleteDialog) {
+        CustomAlertDialog(
+            message = stringResource(R.string.you_delete_a_product) + stringResource(R.string.are_you_sure),
+            onConfirm = {
+                listener.deleteProductById(state.newProducts.id)
+                listener.resetShowState(Visibility.DELETE_PRODUCT)
+            },
+            onCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
+            onDismissRequest = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
+        )
+    }
 }
-

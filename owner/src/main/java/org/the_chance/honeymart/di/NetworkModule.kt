@@ -27,6 +27,7 @@ internal object NetworkModule {
 
     private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
 
+
     @Singleton
     @Provides
     fun provideHttpClient(
