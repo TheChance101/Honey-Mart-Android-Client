@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -100,15 +102,17 @@ fun OrderDetailsContent(state: OrderDetailsUiState) {
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
-                items(state.products.size) { index ->
-                    val product = state.products[index]
-//                    ProductCard(
-//                        imageUrl = product.images[0],
-//                        productName = product.name,
-//                        productPrice = product.price.toString(),
-//                    )
+                items(state.orderDetails.product) { product ->
+                    if(product.images.isEmpty()){
+
+                        ProductCard(
+                        onClick ={ },
+                        imageUrl ="https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff",
+                        productName = product.name,
+                        productPrice = product.price.toString(),
+                    )
                 }
-            }
+            }}
 
             HoneyFilledIconButton(
                 label = "Done",
