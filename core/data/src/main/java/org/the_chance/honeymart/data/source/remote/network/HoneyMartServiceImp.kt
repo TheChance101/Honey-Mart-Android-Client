@@ -20,6 +20,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
@@ -300,4 +301,12 @@ class HoneyMartServiceImp @Inject constructor(
     //endregion
 
     //endregion
+
+    // region Admin
+    override suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto> =
+        wrap(client.submitForm(url = "/admin/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
+    //endregion Admin
 }

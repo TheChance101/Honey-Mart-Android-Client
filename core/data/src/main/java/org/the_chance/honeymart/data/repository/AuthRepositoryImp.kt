@@ -2,10 +2,12 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toAdminLoginEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerLoginEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfileEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.AdminLoginEntity
 import org.the_chance.honeymart.domain.model.OwnerLoginEntity
 import org.the_chance.honeymart.domain.model.OwnerProfileEntity
 import org.the_chance.honeymart.domain.model.UserLoginEntity
@@ -70,5 +72,10 @@ class AuthRepositoryImp @Inject constructor(
     override suspend fun getOwnerProfile(): OwnerProfileEntity =
         wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfileEntity()
             ?: throw NotFoundException()
+
+    override suspend fun loginAdmin(email: String, password: String): AdminLoginEntity {
+        return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLoginEntity()
+            ?: throw NotFoundException()
+    }
 
 }

@@ -17,15 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.theme.dimens
 
-/**
- * Created by Aziza Helmy on 8/5/2023.
- */
 @Composable
 fun HoneyAuthScaffold(
     modifier: Modifier = Modifier,
@@ -68,11 +63,4 @@ fun HoneyAuthScaffold(
             titleColor = Color.White
         )
     }
-}
-
-@Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-fun HoneyRegistrationScaffoldPreview() {
-
 }

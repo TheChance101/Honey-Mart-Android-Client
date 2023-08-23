@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -177,4 +178,8 @@ interface HoneyMartService {
 
     //endregion
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
+
+    // region Admin
+    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
+    //endregion Admin
 }
