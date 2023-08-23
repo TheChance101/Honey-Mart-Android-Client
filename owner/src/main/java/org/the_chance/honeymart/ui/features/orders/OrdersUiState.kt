@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.features.orders
 
 import org.the_chance.honeymart.domain.model.MarketOrderEntity
+import org.the_chance.honeymart.domain.model.OrderDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -13,6 +15,13 @@ data class OrdersUiState(
     val error: ErrorHandler? = null,
     val orders: List<OrderUiState> = emptyList(),
     val orderStates: OrderStates = OrderStates.ALL,
+    val orderDetails: OrderUiState = OrderUiState(),
+    val products: List<OrderDetailsProductUiState> = emptyList(),
+    val showState: ShowState = ShowState()
+)
+
+data class ShowState(
+    val showProductDetails: Boolean = false
 )
 
 data class OrderUiState(
@@ -20,8 +29,16 @@ data class OrderUiState(
     val totalPrice: String = "",
     val time: String = "",
     val userName: String = "",
-    val isOrderSelected :Boolean = false ,
+    val isOrderSelected: Boolean = false,
     val state: Int = 0,
+)
+
+data class OrderDetailsProductUiState(
+    val id: Long = 0L,
+    val name: String = "",
+    val count: Int = 0,
+    val price: Double = 0.0,
+    val images: List<String> = emptyList(),
 )
 
 enum class OrderStates(val state: Int) {
@@ -49,6 +66,33 @@ fun Long.toDateFormat(): String {
     val date = Date(this)
 
     return dateFormat.format(date)
+}
+
+fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderUiState {
+    return OrderUiState(
+        totalPrice = totalPrice.toString(),
+        state = state,
+        time = date,
+        orderId = orderId
+    )
+}
+
+fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
+    return map {
+        OrderDetailsProductUiState(
+            id = it.id,
+            name = it.name,
+            price = it.price,
+            count = it.count,
+            images = it.images
+        )
+    }
+}
+
+fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
+
+fun OrderUiState.formatOrder(order: Long): String {
+    return "Order #${order}"
 }
 
 fun Double.toPriceFormat(): String = "$this$"
