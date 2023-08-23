@@ -31,6 +31,7 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -298,6 +299,30 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/owner/Profile"))
     }
     //endregion
+
+    //region admin
+    override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
+        return wrap(client.get("admin/markets") {
+            parameter("isApproved", "$isApproved")
+        })
+    }
+
+    @OptIn(InternalAPI::class)
+    override suspend fun updateMarketRequest(
+        id: Long?,
+        isApproved: Boolean
+    ): BaseResponse<Boolean> {
+        val url = "admin/request/$id"
+        val formData = Parameters.build {
+            append("isApproved", "$isApproved")
+        }
+        val response = wrap<BaseResponse<Boolean>>(client.put(url) {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
+//end region admin
 
     //endregion
 }

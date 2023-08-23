@@ -7,6 +7,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toRequestEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
@@ -15,6 +16,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -160,4 +162,16 @@ class HoneyMartRepositoryImp @Inject constructor(
             )
         }.value ?: throw NotFoundException()
     }
+
+    //region admin
+    override suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity> {
+        return wrap { honeyMartService.getMarketRequests(isApproved) }.value?.map { it.toRequestEntity() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean {
+        return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
+            ?: throw NotFoundException()
+    }
+//endregion admin
 }
