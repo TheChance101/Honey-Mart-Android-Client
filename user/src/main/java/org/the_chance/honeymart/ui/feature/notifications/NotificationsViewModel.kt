@@ -30,7 +30,7 @@ class NotificationsViewModel @Inject constructor(
     override fun onGetAllNotifications() {
         _state.update {
             it.copy(notificationState = NotificationStates.ALL,
-                notifications = it.notifications,
+                updatedNotifications = it.notifications,
             )
         }
     }
@@ -38,7 +38,7 @@ class NotificationsViewModel @Inject constructor(
     override fun onGetOrderNotifications() {
         _state.update {
             it.copy(notificationState = NotificationStates.ORDER,
-                notifications = it.notifications.filter { it.title != "Order Is Complete!" },
+                updatedNotifications = it.notifications.filter { it.title != "Order Is Complete!" },
             )
         }
     }
@@ -47,7 +47,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 notificationState = NotificationStates.DELIVERY,
-                notifications = it.notifications.filter { it.title == "Order Is Complete!" },
+                updatedNotifications = it.notifications.filter { it.title == "Order Is Complete!" },
             )
         }
     }
@@ -56,6 +56,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 notifications = notifications.map { it.toNotificationUiState() },
+                updatedNotifications = notifications.map { it.toNotificationUiState() }
                )
         }
     }

@@ -8,9 +8,8 @@ data class NotificationsUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.ALL,
+    val updatedNotifications: List<Notification> = emptyList(),
     val notifications: List<Notification> = emptyList(),
-    val orderNotifications: List<Notification> = emptyList(),
-    val deliveryNotifications: List<Notification> = emptyList()
 )
 
 enum class NotificationStates(val state: Int){
@@ -44,4 +43,4 @@ fun NotificationsUiState.order() = this.notificationState == NotificationStates.
 fun NotificationsUiState.delivery() = this.notificationState == NotificationStates.DELIVERY
 
 fun NotificationsUiState.emptyNotificationsPlaceHolder() =
-    this.notifications.isEmpty() && !this.isError && !this.isLoading
+    this.updatedNotifications.isEmpty() && !this.isError && !this.isLoading
