@@ -157,6 +157,14 @@ fun NewProductsUiState.showButton(): Boolean {
             && productNameState == ValidationState.VALID_TEXT_FIELD
             && productPriceState == ValidationState.VALID_TEXT_FIELD
             && productDescriptionState == ValidationState.VALID_TEXT_FIELD
+            &&images.isNotEmpty()
+}
+fun ProductUiState.shoButton():Boolean{
+    return productName.isNotBlank()
+            &&productPrice.isNotBlank()
+            && productDescription.isNotBlank()
+            &&productImage.isNotEmpty()
+
 }
 
 
