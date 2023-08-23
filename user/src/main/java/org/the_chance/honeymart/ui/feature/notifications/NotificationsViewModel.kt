@@ -15,10 +15,11 @@ class NotificationsViewModel @Inject constructor(
     NotificationsInteractionListener {
     override val TAG: String = this::class.simpleName.toString()
 
-    override fun onClickAll() {
-        _state.update {
-            it.copy(isLoading = true, isError = false, notificationState = NotificationStates.ALL)
-        }
+    init {
+        getAllNotifications()
+    }
+
+    override fun getAllNotifications() {
         tryToExecute(
             { getAllNotifications(NotificationStates.ALL.state) },
             ::onGetAllNotificationsSuccess,
@@ -26,49 +27,36 @@ class NotificationsViewModel @Inject constructor(
         )
     }
 
+    override fun onGetAllNotifications() {
+        _state.update {
+            it.copy(notificationState = NotificationStates.ALL,
+                notifications = it.notifications,
+            )
+        }
+    }
+
+    override fun onGetOrderNotifications() {
+        _state.update {
+            it.copy(notificationState = NotificationStates.ORDER,
+                notifications = it.notifications.filter { it.title != "Order Is Complete!" },
+            )
+        }
+    }
+
+    override fun onGetDeliveryNotifications() {
+        _state.update {
+            it.copy(
+                notificationState = NotificationStates.DELIVERY,
+                notifications = it.notifications.filter { it.title == "Order Is Complete!" },
+            )
+        }
+    }
+
     private fun onGetAllNotificationsSuccess(notifications: List<NotificationEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                notifications = notifications.map { it.toNotificationUiState() })
-        }
-    }
-
-    override fun onClickOrder() {
-        _state.update {
-            it.copy(isLoading = true, isError = false, notificationState = NotificationStates.ORDER)
-        }
-        tryToExecute(
-            { getAllNotifications(NotificationStates.ORDER.state) },
-            ::onGetOrderNotificationsSuccess,
-            ::onError
-        )
-    }
-
-    private fun onGetOrderNotificationsSuccess(notifications: List<NotificationEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                notifications = notifications.map { it.toNotificationUiState() })
-        }
-    }
-
-    override fun onClickDelivery() {
-        _state.update {
-            it.copy(isLoading = true, isError = false, notificationState = NotificationStates.DELIVERY)
-        }
-        tryToExecute(
-            { getAllNotifications(NotificationStates.DELIVERY.state) },
-            ::onGetDeliveryNotificationsSuccess,
-            ::onError
-        )
-    }
-
-    private fun onGetDeliveryNotificationsSuccess(notifications: List<NotificationEntity>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                notifications = notifications.map { it.toNotificationUiState() })
+        _state.update { notificationsUiState ->
+            notificationsUiState.copy(
+                notifications = notifications.map { it.toNotificationUiState() },
+               )
         }
     }
 

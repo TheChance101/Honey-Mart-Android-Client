@@ -5,6 +5,11 @@ import org.the_chance.honeymart.domain.model.NotificationEntity
 
 fun NotificationDto.toNotificationEntity(): NotificationEntity {
     return NotificationEntity(
-        date = date
+        notificationId = notificationId ?: 0L,
+        userId = userId ?: 0L,
+        orderId = orderId ?: 0L,
+        title = title ?: "",
+        body = body ?: "",
+        date = date ?: ""
     )
 }

@@ -8,7 +8,9 @@ data class NotificationsUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.ALL,
-    val notifications: List<Notification> = emptyList()
+    val notifications: List<Notification> = emptyList(),
+    val orderNotifications: List<Notification> = emptyList(),
+    val deliveryNotifications: List<Notification> = emptyList()
 )
 
 enum class NotificationStates(val state: Int){
@@ -18,13 +20,22 @@ enum class NotificationStates(val state: Int){
 }
 
 data class Notification(
-    val date: String,
-    val message: String,
+    val notificationId: Long,
+    val userId: Long,
+    val orderId: Long,
+    val title: String,
+    val body: String,
+    val date: String
 )
 
 fun NotificationEntity.toNotificationUiState(): Notification{
     return Notification(
-        date, ""
+        notificationId = notificationId,
+        userId = userId,
+        orderId = orderId,
+        title = title,
+        body = body,
+        date = date
     )
 }
 
@@ -34,5 +45,3 @@ fun NotificationsUiState.delivery() = this.notificationState == NotificationStat
 
 fun NotificationsUiState.emptyNotificationsPlaceHolder() =
     this.notifications.isEmpty() && !this.isError && !this.isLoading
-
-fun NotificationsUiState.screenContent() = this.notifications.isNotEmpty() && !this.isError
