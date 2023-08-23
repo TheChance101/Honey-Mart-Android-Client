@@ -7,7 +7,7 @@ import org.the_chance.honeymart.ui.feature.profile.profileRoute
 
 fun NavGraphBuilder.profileNavGraph() {
     navigation(
-        startDestination = Screen.OrderScreen.route,
+        startDestination = Screen.ProfileScreen.route,
         route = Graph.PROFILE
     ) {
         profileRoute()
