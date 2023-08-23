@@ -107,7 +107,6 @@ fun HoneyMartTheme(
             typography = Typography,
             shapes = Shapes,
             content = content,
-
             )
     }
 }

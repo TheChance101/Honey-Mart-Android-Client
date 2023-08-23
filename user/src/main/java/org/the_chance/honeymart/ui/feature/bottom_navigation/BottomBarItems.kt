@@ -23,17 +23,18 @@ sealed class BottomBarItems(
         unSelectedIcon = R.drawable.icon_cart_nav
     )
 
-    object Order : BottomBarItems(
-        route = Graph.ORDERS,
-        label = "Order",
-        selectedIcon = R.drawable.icon_order_nav,
-        unSelectedIcon = R.drawable.icon_order_nav
-    )
-
     object WishList : BottomBarItems(
         route = Graph.WISH_LIST,
         label = "Wishlist",
         selectedIcon = R.drawable.icon_favorite_nav,
         unSelectedIcon = R.drawable.icon_favorite_nav
     )
+
+    object Profile : BottomBarItems(
+        route = Graph.PROFILE,
+        label = "Profile",
+        selectedIcon = R.drawable.icon_user,
+        unSelectedIcon = R.drawable.icon_user
+    )
+
 }
