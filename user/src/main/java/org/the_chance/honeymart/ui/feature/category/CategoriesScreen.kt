@@ -104,7 +104,7 @@ fun CategoryContent(
         ) {
             item(span = { GridItemSpan(3) }) {
                 Column(
-                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space16),
+                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
@@ -175,6 +175,11 @@ fun CategoryContent(
                     ),
                     label = item.categoryName,
                     onClick = { listener.onClickCategory(item.categoryId, index) },
+                    backgroundColor = if (index / 3 % 2 == 0) {
+                        MaterialTheme.colorScheme.onTertiary
+                    } else {
+                        primary100.copy(alpha = 0.16f)
+                    },
                 )
             }
             item(span = { GridItemSpan(3) }) {
@@ -199,13 +204,13 @@ fun BottomHalfHexagonCanvas(
 ) {
     Canvas(
         modifier = modifier
-            .width(152.dp)
+            .width(MaterialTheme.dimens.widthItemMarketCard)
     ) {
         val hexagonSize = size.maxDimension
 
         val path = Path().apply {
             val angleRadians = Math.toRadians(60.0).toFloat()
-            val radius = hexagonSize / 2f
+            val radius = hexagonSize / 1.7f
 
             (0..3).forEach { i ->
                 val currentAngle = angleRadians * i
