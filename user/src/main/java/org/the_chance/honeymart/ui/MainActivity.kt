@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.usecase.GetThemeUseCase
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
-import org.the_chance.honeymart.ui.feature.profile.ProfileScreen
+import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import javax.inject.Inject
@@ -55,8 +55,8 @@ class MainActivity: AppCompatActivity() {
                                 .padding(innerPadding)
                         )
                         {
-                            ProfileScreen()
-                           // MainNavGraph()
+
+                            MainNavGraph()
                         }
                     }
                 }
@@ -72,6 +72,7 @@ class MainActivity: AppCompatActivity() {
 
         val bottomBarScreens = listOf(
             Screen.HomeScreen.route,
+            Screen.ProfileScreen.route,
             Screen.CategoryScreenWithArgs.route,
             Screen.ProductScreenWithArgs.route,
             Screen.CartScreen.route,

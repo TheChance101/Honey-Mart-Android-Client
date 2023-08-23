@@ -34,15 +34,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
+import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
-import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
-import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.theme.nullColor
 
 
@@ -57,7 +58,7 @@ fun ProfileScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is ProfileUiEffect.ClickMyOrderEffect -> {} // navController.navigateToOrderScreen()
+                is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
                 is ProfileUiEffect.ClickLogoutEffect -> {
