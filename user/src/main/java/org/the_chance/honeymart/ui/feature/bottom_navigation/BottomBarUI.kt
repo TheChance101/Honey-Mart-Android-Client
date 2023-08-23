@@ -34,8 +34,8 @@ fun BottomBarUi(bottomNavState: MutableState<Boolean>) {
     val screens = listOf(
         BottomBarItems.Home,
         BottomBarItems.Cart,
-        BottomBarItems.Order,
         BottomBarItems.WishList,
+        BottomBarItems.Profile,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -103,12 +103,12 @@ fun RowScope.AddItem(
                     navController.popBackStack(Screen.CartScreen.route, false)
                 }
 
-                BottomBarItems.Order -> {
-                    navController.popBackStack(Screen.OrderScreen.route, false)
-                }
-
                 BottomBarItems.WishList -> {
                     navController.popBackStack(Screen.WishListScreen.route, false)
+                }
+
+                BottomBarItems.Profile -> {
+                    navController.popBackStack(Screen.ProfileScreen.route, false)
                 }
             }
 
