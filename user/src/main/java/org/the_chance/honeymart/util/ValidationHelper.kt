@@ -30,6 +30,15 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.PASSWORD_REGEX_ERROR_LETTER -> TODO()
         ValidationState.PASSWORD_REGEX_ERROR_DIGIT -> TODO()
         ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER -> TODO()
+        ValidationState.INVALID_MARKET_NAME -> TODO()
+        ValidationState.VALID_MARKET_NAME -> TODO()
+        ValidationState.BLANK_MARKET_NAME -> TODO()
+        ValidationState.BLANK_MARKET_ADDRESS -> TODO()
+        ValidationState.INVALID_MARKET_ADDRESS -> TODO()
+        ValidationState.VALID_MARKET_ADDRESS -> TODO()
+        ValidationState.BLANK_MARKET_DESCRIPTION -> TODO()
+        ValidationState.SHORT_MARKET_DESCRIPTION -> TODO()
+        ValidationState.VALID_MARKET_DESCRIPTION -> TODO()
     }
 
 }
