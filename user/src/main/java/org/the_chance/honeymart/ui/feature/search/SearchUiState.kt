@@ -29,24 +29,15 @@ data class ProductUiState(
     val productImages: List<String> = emptyList()
 )
 
-enum class SearchStates(val state: Int) {
-    RANDOM(1),
-    ASCENDING(2),
-    DESCENDING(3),
+enum class SearchStates(val state: String) {
+    RANDOM("random"),
+    ASCENDING("asc"),
+    DESCENDING("desc"),
 }
 
 fun SearchUiState.random() = this.searchStates == SearchStates.RANDOM
 fun SearchUiState.ascending() = this.searchStates == SearchStates.ASCENDING
 fun SearchUiState.descending() = this.searchStates == SearchStates.DESCENDING
-
-/*
-fun SearchUiState.emptySearchPlaceHolder() =
-    this.updatedProducts.&& !this.isError && !this.isLoading
-*/
-
-/*
-fun SearchUiState.screenContent() = this.updatedProducts.isNotEmpty() && !this.isError
-*/
 
 fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(

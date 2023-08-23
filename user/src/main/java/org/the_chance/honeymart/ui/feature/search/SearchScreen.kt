@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import PagingStateVisibilityGridScop
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -36,6 +37,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -85,12 +88,10 @@ fun SearchContent(
     listener: SearchInteraction,
 ) {
     AppBarScaffold {
+        val products = state.products.collectAsLazyPagingItems()
         Loading(state = state.isLoading)
-        ConnectionErrorPlaceholder(state.isError, {})
-        /*
-                EmptyProductPlaceholder(state.emptyPlaceHolder())
-        */
-
+        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -170,41 +171,40 @@ fun SearchContent(
                     }
                 }
             }
-            /*
-                        ContentVisibility(state = state.screenContent()) {
-            */
-            val products = state.products.collectAsLazyPagingItems()
 
-            if (isSearching) {
-                Loading(state = state.isLoading)
-            } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 160.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .shadow(0.6.dp),
-                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    state = rememberLazyGridState(),
-                    content = {
-                        items(products.itemCount) { index ->
-                            val product = products[index]
-                            if (product != null) {
-                                CardSearch(
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
-                                    productName = product.productName,
-                                    productPrice = product.productPrice.toString(),
-                                    onClickCard = { listener.onClickProduct(product.productId) }
-                                )
+            ContentVisibility(state = products.itemCount > 0) {
+                if (isSearching) {
+                    Loading(state = state.isLoading)
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 160.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .shadow(0.6.dp),
+                        contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        state = rememberLazyGridState(),
+                        content = {
+                            items(products.itemCount) { index ->
+                                val product = products[index]
+                                if (product != null) {
+                                    CardSearch(
+                                        imageUrl = product.productImages.firstOrNull() ?: "",
+                                        productName = product.productName,
+                                        productPrice = product.productPrice.toString(),
+                                        onClickCard = { listener.onClickProduct(product.productId) }
+                                    )
+                                }
                             }
+                                PagingStateVisibilityGridScop(products)
                         }
-                        PagingStateVisibilityGridScop(products)
-                    }
-                )
+                    )
+                }
             }
         }
+
     }
 
 }

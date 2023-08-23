@@ -1,6 +1,7 @@
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -13,32 +14,16 @@ import org.the_chance.honymart.ui.theme.dimens
 fun <T : Any> LazyGridScope.PagingStateVisibilityGridScop(
     products: LazyPagingItems<T>,
 ) {
-    when {
-        products.loadState.refresh is LoadState.Loading -> {
-            item {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.dimens.space64)
-                    )
-                }
+    if (products.loadState.append is LoadState.Loading) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(MaterialTheme.dimens.space64)
+                )
             }
         }
-
-        products.loadState.append is LoadState.Loading -> {
-            item {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.dimens.space64)
-                    )
-                }
-            }
-        }
-
     }
 }
