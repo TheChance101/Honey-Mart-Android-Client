@@ -6,6 +6,8 @@ import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.usecase.GetAllNotificationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +22,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun getAllNotifications() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { getAllNotifications(NotificationStates.ALL.state) },
             ::onGetAllNotificationsSuccess,
@@ -55,8 +58,9 @@ class NotificationsViewModel @Inject constructor(
     private fun onGetAllNotificationsSuccess(notifications: List<NotificationEntity>) {
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
-                notifications = notifications.map { it.toNotificationUiState() },
-                updatedNotifications = notifications.map { it.toNotificationUiState() }
+                isLoading = false,
+                notifications = notifications.map { it.toNotificationUiState().copy(date = convertDate(it.date)) },
+                updatedNotifications = notifications.map { it.toNotificationUiState().copy(date = convertDate(it.date)) }
                )
         }
     }
@@ -66,5 +70,13 @@ class NotificationsViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+    }
+
+    private fun convertDate(date: String): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy   HH:mm")
+
+        val localDateTime = LocalDateTime.parse(date, inputFormatter)
+        return localDateTime.format(outputFormatter)
     }
 }

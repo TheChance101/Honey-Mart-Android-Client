@@ -109,8 +109,8 @@ fun NotificationsContent(
                         .background(white)
                         .fillMaxSize()
                 ) {
-                    items(state.notifications.size) {
-                        val notification = state.notifications[it]
+                    items(state.updatedNotifications.size) {
+                        val notification = state.updatedNotifications[it]
                         NotificationCard(
                             painter =
                             when {
@@ -130,8 +130,7 @@ fun NotificationsContent(
                         )
                     }
                 }
-
-        }
+            }
     }
 }
 
