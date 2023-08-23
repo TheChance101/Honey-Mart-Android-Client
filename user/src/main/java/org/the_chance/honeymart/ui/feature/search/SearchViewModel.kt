@@ -6,7 +6,6 @@ import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,37 +40,35 @@ class SearchViewModel @Inject constructor(
         observeKeyword()
     }
 
-
-    private fun searchForProducts(query: String) {
+    private fun searchForProducts() {
+        val query = _searchText.value
+        val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
-            { searchForProductUseCase(query) },
-            ::searchForProductsSuccess,
-            ::onError
+            { searchForProductUseCase(query, sortOrder) },
+            ::onSearchForProductsSuccess,
+            ::onSearchForProductsError
         )
     }
 
-    private fun searchForProductsSuccess(products: PagingData<ProductEntity>) {
+    private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
+        _state.update { it.copy(isLoading = false, error = null, isError = false) }
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update { searchUiState ->
             searchUiState.copy(
                 products = flowOf(mappedProducts),
-                updatedProducts = flowOf(mappedProducts)
             )
         }
-        filter()
     }
 
-    private suspend fun collectPagingDataToList(pagingData: Flow<PagingData<ProductUiState>>): List<ProductUiState> {
-        val list = mutableListOf<ProductUiState>()
-        pagingData.collect { paging ->
-            paging.map { productUiState ->
-                list.add(productUiState)
-            }
+    private fun onSearchForProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
-        return list
     }
 
     fun onSearchTextChange(text: String) {
+        _state.update { it.copy(isLoading = true, error = null, isError = false) }
         _searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }
@@ -79,62 +76,49 @@ class SearchViewModel @Inject constructor(
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStreamDebounced.collect { searchForProducts(it) }
+            actionStreamDebounced.collect {
+                searchForProducts()
+            }
         }
     }
 
 
     override fun onClickFilter() {
-        if (state.value.filtering) {
-            _state.update { it.copy(filtering = false) }
-        } else {
-            _state.update { it.copy(filtering = true) }
-        }
+        val newState = !state.value.filtering
+        _state.update { it.copy(filtering = newState) }
     }
 
 
     override fun onClickRandomSearch() {
-        _state.update { it.copy(searchStates = SearchStates.RANDOM) }
-        filter()
+        filter(SearchStates.RANDOM.state)
     }
 
     override fun onClickAscendingSearch() {
-        _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
-        filter()
+        filter(SearchStates.ASCENDING.state)
     }
 
     override fun onClickDescendingSearch() {
-        _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
-        filter()
+        filter(SearchStates.DESCENDING.state)
     }
 
-    private fun filter() {
-        viewModelScope.launch {
-            val sortedProducts = when (_state.value.searchStates) {
-                SearchStates.RANDOM -> collectPagingDataToList(_state.value.updatedProducts)
-                SearchStates.ASCENDING -> collectPagingDataToList(_state.value.updatedProducts)
-                    .sortedBy { it.productPrice }
-
-                SearchStates.DESCENDING -> collectPagingDataToList(_state.value.updatedProducts)
-                    .sortedByDescending { it.productPrice }
-            }
-            _state.update {
-                it.copy(updatedProducts = flowOf(PagingData.from(sortedProducts)))
+    private fun filter(sortOrder: String) {
+        _state.update { it.copy(isLoading = true, error = null, isError = false) }
+        when (sortOrder) {
+            SearchStates.ASCENDING.state -> _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
+            SearchStates.DESCENDING.state -> _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
+            else -> {
+                _state.update { it.copy(searchStates = SearchStates.RANDOM) }
             }
         }
+        searchForProducts()
     }
-
-
-    private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
-
 
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(_effect, SearchUiEffect.OnClickProductCard(productId))
+    }
+
+    override fun onclickTryAgain() {
+        searchForProducts()
     }
 
 }
