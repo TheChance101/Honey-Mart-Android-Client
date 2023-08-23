@@ -5,7 +5,6 @@ interface ProfileInteractionsListener {
     fun onClickCoupons()
     fun onClickNotification()
     fun onClickLogout()
-    fun showSnackBar(massage: String)
     fun showDialog()
     fun resetDialogState()
     fun updateImage(image: ByteArray)

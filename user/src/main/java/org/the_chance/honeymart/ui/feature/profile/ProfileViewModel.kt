@@ -19,10 +19,7 @@ class ProfileViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-    init {
-
-        getData()
-    }
+    init { getData() }
 
     override fun getData() {
         _state.update {
@@ -67,11 +64,6 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    override fun showSnackBar(massage: String) {
-        TODO("Not yet implemented")
-    }
-
-
     override fun resetDialogState() {
         _state.update { it.copy(isShowDialog = false) }
     }
@@ -112,15 +104,12 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = ::onLogoutError
+            onError = {onLogoutError()}
         )
     }
-
     private fun onLogoutSuccess() {
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
-
-    private fun onLogoutError(error: ErrorHandler) {
-    }
+    private fun onLogoutError() {}
 }

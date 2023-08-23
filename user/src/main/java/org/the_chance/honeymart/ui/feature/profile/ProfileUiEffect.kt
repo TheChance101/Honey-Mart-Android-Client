@@ -7,8 +7,6 @@ sealed class ProfileUiEffect: BaseUiEffect {
     object ClickCouponsEffect : ProfileUiEffect()
     object ClickNotificationEffect : ProfileUiEffect()
     object ClickLogoutEffect : ProfileUiEffect()
-    object ShowToastEffect : ProfileUiEffect()
-    object ShowDialogEffect : ProfileUiEffect()
     object UnAuthorizedUserEffect : ProfileUiEffect()
 
 }

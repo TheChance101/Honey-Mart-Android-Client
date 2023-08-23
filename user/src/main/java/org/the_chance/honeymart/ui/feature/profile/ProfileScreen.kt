@@ -67,12 +67,7 @@ fun ProfileScreen(
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
-                is ProfileUiEffect.ClickLogoutEffect -> {
-                    navController.navigateToHomeScreen()
-                }
-
-                ProfileUiEffect.ShowDialogEffect -> {}
-                ProfileUiEffect.ShowToastEffect -> {}
+                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
