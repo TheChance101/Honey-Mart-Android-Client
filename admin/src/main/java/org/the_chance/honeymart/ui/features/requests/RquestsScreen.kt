@@ -63,12 +63,12 @@ fun RequestsContent(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CustomChip(
-                            state = false,
+                            state = true,
                             text = stringResource(R.string.all_requests),
                             onClick = listener::onGetAllRequests
                         )
                         CustomChip(
-                            state = true,
+                            state = false,
                             text = stringResource(R.string.approved),
                             onClick = listener::onGetApproved
                         )
