@@ -11,7 +11,7 @@ sealed class BottomBarItems(
 ) {
     object Home : BottomBarItems(
         route = Graph.HOME,
-        label = "Market",
+        label = "Home",
         selectedIcon = R.drawable.icon_market_nav,
         unSelectedIcon = R.drawable.icon_market_nav,
     )

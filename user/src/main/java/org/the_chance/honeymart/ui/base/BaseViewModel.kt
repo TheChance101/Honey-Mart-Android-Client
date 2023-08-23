@@ -3,10 +3,13 @@ package org.the_chance.honeymart.ui.base
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -66,6 +69,36 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         }
     }
 
+    fun <T : Any> tryToExecutePaging(
+        flowFactory: suspend () -> Flow<PagingData<T>>,
+        onSuccess: suspend (PagingData<T>) -> Unit,
+        onError: (t: ErrorHandler) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                val request = flowFactory().cachedIn(viewModelScope)
+                request.collect { result ->
+                    onSuccess(result)
+                }
+            } catch (exception: GeneralException) {
+                handelGeneralException(exception, onError)
+                log("tryToExecuteFlow error GeneralException: $exception")
+            } catch (exception: NetworkException) {
+                handelNetworkException(exception, onError)
+                log("tryToExecuteFlow error NetworkException: $exception")
+            } catch (exception: AuthenticationException) {
+                handelAuthenticationException(exception, onError)
+                log("tryToExecuteFlow error AuthenticationException: $exception")
+            } catch (exception: IOException) {
+                log("tryToExecuteFlow error IOException: $exception")
+                onError(ErrorHandler.NoConnection)
+            } catch (exception: Exception) {
+                log("tryToExecuteFlow error Exception: $exception")
+                onError(ErrorHandler.UnKnownError)
+            }
+        }
+    }
     protected fun <T : BaseUiEffect> effectActionExecutor(
         _effect: MutableSharedFlow<T>,
         effect: T,

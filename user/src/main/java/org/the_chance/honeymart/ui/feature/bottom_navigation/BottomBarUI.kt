@@ -15,16 +15,17 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.user.R
 
 @Composable
 fun BottomBarUi(bottomNavState: MutableState<Boolean>) {
@@ -46,6 +47,7 @@ fun BottomBarUi(bottomNavState: MutableState<Boolean>) {
         content = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.onTertiary,
+                tonalElevation = 0.dp,
             ) {
                 screens.forEach { screen ->
                     AddItem(
@@ -78,7 +80,12 @@ fun RowScope.AddItem(
             )
         },
         selected = selected,
-        label = { Text(text = if (selected) screen.label else "", color = MaterialTheme.colorScheme.onErrorContainer) },
+        label = {
+            Text(
+                text = if (selected) screen.label else "",
+                color = MaterialTheme.colorScheme.onErrorContainer
+            )
+        },
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -89,7 +96,7 @@ fun RowScope.AddItem(
             }
             when (screen) {
                 BottomBarItems.Home -> {
-                    navController.popBackStack(Screen.MarketScreen.route, false)
+                    navController.popBackStack(Screen.HomeScreen.route, false)
                 }
 
                 BottomBarItems.Cart -> {

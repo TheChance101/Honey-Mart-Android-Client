@@ -21,6 +21,8 @@ private val localDimens = compositionLocalOf { Dimens() }
 
 private val DarkColorScheme = darkColorScheme(
     primary = primary100,
+    inverseSurface = primary16,
+    surface = grey,
     onPrimary = darkText87,
     secondary = darkBackground200,
     onSecondary = white,
@@ -43,6 +45,8 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = primary100,
+    inverseSurface = primary16,
+    surface = white,
     onPrimary = white,
     secondary = white,
     onSecondary = black87,
@@ -103,7 +107,6 @@ fun HoneyMartTheme(
             typography = Typography,
             shapes = Shapes,
             content = content,
-
             )
     }
 }

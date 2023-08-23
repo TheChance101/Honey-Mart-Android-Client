@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.market.compoaseable
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,7 +25,7 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.user.R
+import org.the_chance.design_system.R
 
 
 @Composable
@@ -41,7 +40,6 @@ fun MarketItem(
             .clip(shape = Shapes.medium)
             .height(MaterialTheme.dimens.heightItemMarketCard)
             .clickable(onClick = {
-                Log.e("MarketItem", "MarketItem: ${state.marketImage}" )
                 onClickItem(state.marketId)
             }),
 

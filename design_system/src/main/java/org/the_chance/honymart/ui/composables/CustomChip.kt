@@ -3,6 +3,8 @@ package org.the_chance.honymart.ui.composables
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -17,6 +19,10 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black8
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
@@ -40,6 +46,8 @@ fun CustomChip(
         else CardDefaults.cardColors(Transparent),
         border = if (state) BorderStroke(width = 0.dp, color = Transparent)
         else BorderStroke(width = 1.dp, color = black8),
+        border = if (state) BorderStroke(width = 0.dp, color = primary100)
+        else BorderStroke(width = 1.dp, color = primary100),
         shape = CircleShape
     ) {
         Text(
@@ -50,5 +58,23 @@ fun CustomChip(
             color = if (state) white else black37,
             style = Typography.displayLarge
         )
+    }
+            color = if (state) white else primary100,
+            style = MaterialTheme.typography.displaySmall.copy(baselineShift = BaselineShift(0.3f))
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewCustomChip() {
+    HoneyMartTheme {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            CustomChip(state = true, text = "Processing", onClick = { })
+            CustomChip(state = false, text = "Done", onClick = { })
+            CustomChip(state = false, text = "Cancel", onClick = { })
+        }
     }
 }

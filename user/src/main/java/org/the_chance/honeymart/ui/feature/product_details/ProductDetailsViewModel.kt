@@ -46,12 +46,17 @@ class ProductDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun showDialog(productId: Long, count: Int){
-        _state.update { it.copy(dialogState = it.dialogState.copy(
-            showDialog = true,productId = productId, count = count))}
+    override fun showDialog(productId: Long, count: Int) {
+        _state.update {
+            it.copy(
+                dialogState = it.dialogState.copy(
+                    showDialog = true, productId = productId, count = count
+                )
+            )
+        }
     }
 
-    override fun resetDialogState(){
+    override fun resetDialogState() {
         _state.update { it.copy(dialogState = it.dialogState.copy(showDialog = false)) }
     }
 
@@ -70,7 +75,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
         tryToExecute(
-            {getProductDetailsUseCase(productId)},
+            { getProductDetailsUseCase(productId) },
             ::onGetProductSuccess,
             ::onGetProductError,
         )
@@ -80,9 +85,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null, isConnectionError = false, product = product.toProductUiState(),
-                image = product.productImages.first(),
-                smallImages = product.productImages.drop(1),
-                totalPrice = product.ProductPrice
+            )
+        }
+        _state.update {
+            it.copy(
+                image = it.product.productImages.first(),
+                smallImages = it.product.productImages.drop(1),
+                totalPrice = it.product.productPrice
             )
         }
         checkIfProductInWishList(args.productId.toLong())
@@ -173,6 +182,7 @@ class ProductDetailsViewModel @Inject constructor(
                     )
                 )
             }
+
             else -> {}
         }
     }

@@ -3,14 +3,21 @@ package org.the_chance.honeymart.ui.feature.category
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
-
-data class CategoriesUiState(
+data class MarketDetailsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
+    val marketName: String = "",
+    val imageUrl: String = "",
+    val productsCount: Int = 0,
+    val categoriesCount: Int = 0,
+    val address: String = "",
     val categories: List<CategoryUiState> = emptyList(),
-)
+) {
+    val productsCountState = "$productsCount Items"
+    val categoriesCountState = "$categoriesCount Categories"
+}
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
@@ -22,9 +29,9 @@ fun CategoryEntity.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,
-        categoryImageId = categoryImageId
+        categoryImageId = categoryImageId,
     )
 }
 
-fun CategoriesUiState.showLazyCondition() = !this.isLoading && !this.isError
+fun MarketDetailsUiState.showLazyCondition() = !this.isLoading && !this.isError
 

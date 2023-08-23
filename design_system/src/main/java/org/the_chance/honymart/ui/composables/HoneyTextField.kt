@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -36,15 +38,24 @@ fun HoneyTextField(
     iconPainter: Painter? = null,
     text: String = "",
     errorMessage: String = "",
+    oneLineOnly: Boolean = false,
+    isPassword: VisualTransformation = VisualTransformation.None,
     isError: Boolean = errorMessage.isNotEmpty(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
         imeAction = ImeAction.Next
     ),
 ) {
+    color: Color,
+    keyboardOptions: KeyboardOptions =  KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search)
+    ) {
     Column {
+
         OutlinedTextField(
+            singleLine = oneLineOnly,
             modifier = modifier
                 .fillMaxWidth()
+                .padding(start = MaterialTheme.dimens.space16)
                 .padding(
                     end = MaterialTheme.dimens.space16,
                     start = MaterialTheme.dimens.space16,
@@ -60,6 +71,8 @@ fun HoneyTextField(
                     style = Typography.displaySmall,
                 )
             },
+            visualTransformation = isPassword,
+            keyboardOptions=keyboardOptions,
             keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
@@ -87,6 +100,11 @@ fun HoneyTextField(
                         tint = if (isError) error else white200
                     )
                 }
+                Icon(
+                    painter = iconPainter,
+                    contentDescription = stringResource(R.string.copy_button),
+                    tint = if (isError) error else color
+                )
             },
             isError = isError,
         )
@@ -114,7 +132,20 @@ fun TextFieldPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
+        color = white200
     )
 }
 
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
+@Composable
+fun TextFieldTabletPreview() {
+    HoneyTextField(
+        hint = "Email",
+        iconPainter = painterResource(id = R.drawable.ic_email),
+        isError = true,
+        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
+        onValueChange = {},
+        color = white200
+    )
+}
