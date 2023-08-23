@@ -22,11 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationArrivedCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
-import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationSuccessCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
@@ -59,7 +56,7 @@ fun NotificationsContent(
             Loading(state = state.isLoading)
             ConnectionErrorPlaceholder(
                 state = state.isError,
-                onClickTryAgain = {},
+                onClickTryAgain = listener::onGetAllNotifications,
             )
             EmptyOrdersPlaceholder(
                 state = state.emptyNotificationsPlaceHolder(),
@@ -69,83 +66,71 @@ fun NotificationsContent(
                 onClickDiscoverMarkets = {},
                 visibility = false
             )
-            ContentVisibility(state = state.screenContent()) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(32.dp),
-                    modifier = Modifier
-                        .padding(top = MaterialTheme.dimens.space24)
-                ) {
-                    StateItem(
-                        painter = painterResource(R.drawable.ic_notification),
-                        color = if (state.all()) {
-                            primary100
-                        } else {
-                            black37
-                        },
-                        text = stringResource(R.string.all),
-                        onClickState = listener::onClickAll
-                    )
-                    StateItem(
-                        painter = painterResource(R.drawable.icon_order_nav),
-                        color = if (state.order()) {
-                            primary100
-                        } else {
-                            black37
-                        },
-                        text = stringResource(R.string.order_title),
-                        onClickState = listener::onClickOrder
-                    )
-                    StateItem(
-                        painter = painterResource(R.drawable.ic_delivery),
-                        color = if (state.delivery()) {
-                            primary100
-                        } else {
-                            black37
-                        },
-                        text = stringResource(R.string.delivery),
-                        onClickState = listener::onClickDelivery
-                    )
-                }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(32.dp),
+                modifier = Modifier
+                    .padding(top = MaterialTheme.dimens.space24)
+            ) {
+                StateItem(
+                    painter = painterResource(R.drawable.ic_notification),
+                    color = if (state.all()) {
+                        primary100
+                    } else {
+                        black37
+                    },
+                    text = stringResource(R.string.all),
+                    onClickState = listener::onGetAllNotifications
+                )
+                StateItem(
+                    painter = painterResource(R.drawable.icon_order_nav),
+                    color = if (state.order()) {
+                        primary100
+                    } else {
+                        black37
+                    },
+                    text = stringResource(R.string.order_title),
+                    onClickState = listener::onGetOrderNotifications
+                )
+                StateItem(
+                    painter = painterResource(R.drawable.ic_delivery),
+                    color = if (state.delivery()) {
+                        primary100
+                    } else {
+                        black37
+                    },
+                    text = stringResource(R.string.delivery),
+                    onClickState = listener::onGetDeliveryNotifications
+                )
+            }
                 LazyColumn(
                     modifier = Modifier
                         .clip(RoundedCornerShape(24.dp))
                         .background(white)
                         .fillMaxSize()
                 ) {
-                    items(4) {
-                        if (state.all()) {
-                            NotificationSuccessCard()
-                            NotificationArrivedCard()
-                        } else {
-                            NotificationCard(
-                                painter = if (state.order()) {
+                    items(state.notifications.size) {
+                        val notification = state.notifications[it]
+                        NotificationCard(
+                            painter =
+                            when {
+                                state.order() -> {
                                     painterResource(R.drawable.icon_order_nav)
-                                } else {
+                                }
+                                state.delivery() -> {
                                     painterResource(R.drawable.ic_delivery)
-                                },
-                                title = if (state.order()) {
-                                    "Order Success"
-                                } else {
-                                    "Order Arrived"
-                                },
-                                date = if (state.order()) {
-                                    "12:30"
-                                } else {
-                                    "1 Aug, 2023"
-                                },
-                                message = if (state.order()) {
-                                    "Order #2453 has been success.\n" +
-                                            "Please wait for the product to be sent"
-                                } else {
-                                    "Order #46567 has been Completed &\n" +
-                                            "and arrived at the destination address."
-                                },
-                            )
-                        }
+                                }
+                                else -> {
+                                    painterResource(id = R.drawable.ic_notification)
+                                }
+                            },
+                            title = notification.title,
+                            date = notification.date,
+                            message = notification.body
+                        )
                     }
                 }
-            }
+
         }
     }
 }
