@@ -25,7 +25,7 @@ data class RequestUiState(
     val state: RequestsStates = RequestsStates.UNAPPROVED,
     val isSelected: Boolean = false
 ) {
-    fun ownerNameFirstCharacter(): Char = this.ownerName.first()
+    fun ownerNameFirstCharacter(): Char = this.ownerName.firstOrNull() ?: ' '
 }
 
 fun RequestEntity.toRequestUiState(): RequestUiState {

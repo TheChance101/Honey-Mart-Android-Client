@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
-import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
+import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
@@ -29,9 +29,9 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -79,7 +79,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetailsEntity()
             ?: throw NotFoundException()
 
-    override suspend fun getAllProductsByCategory(page:Int?,categoryId: Long): Flow<PagingData<ProductEntity>> =
+    override suspend fun getAllProductsByCategory(
+        page: Int?,
+        categoryId: Long
+    ): Flow<PagingData<ProductEntity>> =
         getAllWithId(
             categoryId,
             ::ProductsPagingSource
@@ -227,14 +230,14 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    override suspend fun getAllRequests(isApproved: Boolean): List<RequestEntity> {
-        return wrap { honeyMartService.getAllRequests(isApproved) }.value?.map { it.toRequestEntity() }
+    override suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity> {
+        return wrap { honeyMartService.getMarketRequests(isApproved) }.value?.map { it.toRequestEntity() }
             ?: throw NotFoundException()
     }
 
     override suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean {
-      return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
-          ?: throw NotFoundException()
+        return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
+            ?: throw NotFoundException()
     }
     //endregion admin
 }

@@ -4,10 +4,10 @@ import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
-class GetRequestsUseCase @Inject constructor(
+class GetMarketRequests @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
     suspend operator fun invoke(isApproved:Boolean): List<RequestEntity> {
-        return honeyMartRepository.getAllRequests(isApproved)
+        return honeyMartRepository.getMarketRequests(isApproved)
     }
 }

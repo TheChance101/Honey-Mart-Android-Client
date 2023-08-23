@@ -4,31 +4,31 @@ import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.RequestEntity
-import org.the_chance.honeymart.domain.usecase.GetRequestsUseCase
+import org.the_chance.honeymart.domain.usecase.GetMarketRequests
 import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class RequestsViewModel @Inject constructor(
-    private val getMarketRequests: GetRequestsUseCase,
+class MarketsViewModel @Inject constructor(
+    private val getMarketRequests: GetMarketRequests,
     private val updateMarketRequest: UpdateMarketRequestUseCase,
-) : BaseViewModel<RequestsUiState, RequestsUiEffect>(RequestsUiState()),
-    RequestsInteractionListener {
+) : BaseViewModel<RequestsUiState, MarketsUiEffect>(RequestsUiState()),
+    MarketsInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
     init {
-        getRequests()
+        getMarkets()
         Log.e("TAG", "Requests:Size is ${state.value.requests.size}")
     }
 
-    private fun getRequests(isApproved: Boolean = false) {
+    private fun getMarkets(isApproved: Boolean = false) {
         _state.update { it.copy(isLoading = true,isError = false) }
         tryToExecute(
             { getMarketRequests(isApproved) },
             ::onMarketRequestSuccess,
-            ::onUpdateRequestError
+            ::onMarketRequestError
         )
     }
 
@@ -41,20 +41,28 @@ class RequestsViewModel @Inject constructor(
         Log.e(TAG, "Requests:Value is ${state.value}")
     }
 
-    override fun updateRequest(marketId: Int, isApproved: Boolean) {
+    private fun onMarketRequestError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+        Log.e(TAG, "Requests:Value is ${state.value}")
+    }
+
+    override fun updateMarket(marketId: Int, isApproved: Boolean) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { updateMarketRequest(marketId.toLong(), isApproved) },
-            ::onUpdateRequestSuccess,
-            ::onUpdateRequestError
+            ::onUpdateMarketSuccess,
+            ::onUpdateMarketError
         )
     }
 
-    private fun onUpdateRequestSuccess(isApproved: Boolean) {
+    private fun onUpdateMarketSuccess(isApproved: Boolean) {
         _state.update { it.copy(isLoading = false) }
     }
 
-    private fun onUpdateRequestError(error: ErrorHandler) {
+    private fun onUpdateMarketError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -67,7 +75,7 @@ class RequestsViewModel @Inject constructor(
             requestsStates = if(isApproved) RequestsStates.APPROVED else RequestsStates.UNAPPROVED,
             selectedRequest = null)
         }
-        getRequests(isApproved)
+        getMarkets(isApproved)
     }
 
     override fun onClickRequest(position: Int) {
@@ -75,21 +83,18 @@ class RequestsViewModel @Inject constructor(
             request.copy(isSelected = index == position)
         }
         _state.update { it.copy(requests = updatedRequests, selectedRequest = updatedRequests[position]) }
-        effectActionExecutor(_effect, RequestsUiEffect.onClickRequest)
+        effectActionExecutor(_effect, MarketsUiEffect.onClickMarket)
     }
-
 
     override fun onClickCancel(marketId: Int) {
         _state.update { it.copy(selectedRequest = null) }
-        updateRequest(marketId,false)
+        updateMarket(marketId,false)
+        getMarkets(_state.value.requestsStates == RequestsStates.APPROVED)
     }
 
     override fun onClickApprove(marketId: Int) {
         _state.update { it.copy(selectedRequest = null) }
-        updateRequest(marketId,true)
-    }
-
-    override fun resetSnackBarState() {
-        TODO("Not yet implemented")
+        updateMarket(marketId,true)
+        getMarkets()
     }
 }

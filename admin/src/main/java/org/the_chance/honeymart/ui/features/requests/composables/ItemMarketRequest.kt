@@ -33,7 +33,7 @@ import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
 
 @Composable
-fun ItemRequest(
+fun ItemMarketRequest(
     onClickCard: () -> Unit,
     ownerName: String,
     marketName: String,
@@ -115,7 +115,7 @@ fun ItemRequest(
 @Preview
 @Composable
 fun ItemRequestPreview() {
-    ItemRequest(
+    ItemMarketRequest(
         {},
         "shehab",
         "market",

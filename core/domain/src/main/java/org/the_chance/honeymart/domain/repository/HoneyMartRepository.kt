@@ -55,7 +55,6 @@ interface HoneyMartRepository {
     suspend fun getThemeState(): Boolean
 
     suspend fun addProfileImage(image: ByteArray): String
-    suspend fun deleteAllCart(): String
 
     suspend fun addProduct(
         name: String,
@@ -77,7 +76,7 @@ interface HoneyMartRepository {
     suspend fun deleteCategory(id: Long): String
 
     //region admin
-    suspend fun getAllRequests(isApproved: Boolean): List<RequestEntity>
+    suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean):Boolean
     //endregion admin
 }

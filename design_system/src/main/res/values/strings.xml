@@ -120,7 +120,6 @@
     <string name="add_new_product">Add New Product</string>
     <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
     <string name="product_name_is_too_short">Product name is too short</string>
-    <string name="price">Price</string>
     <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
     <string name="invalid_product_price">Invalid product price</string>
     <string name="description">Description</string>

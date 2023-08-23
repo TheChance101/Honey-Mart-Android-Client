@@ -70,7 +70,7 @@ interface HoneyMartService {
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto>
 
     suspend fun addImageProduct(
@@ -188,7 +188,7 @@ interface HoneyMartService {
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
 
     //region admin
-    suspend fun getAllRequests(isApproved: Boolean): BaseResponse<List<RequestDto>>
+    suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>>
 
     suspend fun updateMarketRequest(
         id: Long?,

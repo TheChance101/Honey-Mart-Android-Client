@@ -25,12 +25,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.requests.RequestUiState
-import org.the_chance.honeymart.ui.features.requests.RequestsInteractionListener
+import org.the_chance.honeymart.ui.features.requests.MarketsInteractionListener
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
@@ -38,10 +37,10 @@ import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
 
 @Composable
-fun RequestDetails(
+fun MarketRequestDetails(
     state: Boolean,
     request: RequestUiState?,
-    listener: RequestsInteractionListener
+    listener: MarketsInteractionListener
 ) {
     ContentVisibility(state = request != null) {
         Box(

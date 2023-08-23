@@ -21,15 +21,15 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.requests.composables.EmptyPlaceholder
-import org.the_chance.honeymart.ui.features.requests.composables.ItemRequest
-import org.the_chance.honeymart.ui.features.requests.composables.RequestDetails
+import org.the_chance.honeymart.ui.features.requests.composables.ItemMarketRequest
+import org.the_chance.honeymart.ui.features.requests.composables.MarketRequestDetails
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun RequestsScreen(viewModel: RequestsViewModel = hiltViewModel()) {
+fun RequestsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
     RequestsContent(state, viewModel)
@@ -38,50 +38,45 @@ fun RequestsScreen(viewModel: RequestsViewModel = hiltViewModel()) {
 @Composable
 fun RequestsContent(
     state: RequestsUiState,
-    listener: RequestsInteractionListener,
+    listener: MarketsInteractionListener,
 ) {
-    Loading(state = state.isLoading)
-    ConnectionErrorPlaceholder(state = state.isError,
-        onClickTryAgain = { listener.onGetFilteredRequests(false) } )
-    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
-    ContentVisibility(state = state.contentScreen()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             HoneyMartTitle()
             Row(
-                modifier = Modifier.fillMaxSize()
-                    .padding(horizontal = MaterialTheme.dimens.space40),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            ) {
+                CustomChip(
+                    state = state.requestsStates == RequestsStates.UNAPPROVED,
+                    text = stringResource(R.string.pending),
+                    onClick = { listener.onGetFilteredRequests(false) }
+                )
+                CustomChip(
+                    state = state.requestsStates == RequestsStates.APPROVED,
+                    text = stringResource(R.string.approved),
+                    onClick = { listener.onGetFilteredRequests(true) }
+                )
+            }
+            ContentVisibility(state = state.contentScreen()) {
+            Row(
+                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
+                    .padding(top = MaterialTheme.dimens.space24),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize().weight(1f),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-                    ) {
-                        CustomChip(
-                            state = state.requestsStates == RequestsStates.UNAPPROVED,
-                            text = stringResource(R.string.pending),
-                            onClick = { listener.onGetFilteredRequests(false) }
-                        )
-                        CustomChip(
-                            state = state.requestsStates == RequestsStates.APPROVED,
-                            text = stringResource(R.string.approved),
-                            onClick = { listener.onGetFilteredRequests(true) }
-                        )
-                    }
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         itemsIndexed(state.requests) { index,item ->
-                            ItemRequest(
+                            ItemMarketRequest(
                                 onClickCard = { listener.onClickRequest(index) },
                                 ownerName = item.ownerName,
                                 marketName = item.marketName,
@@ -95,11 +90,15 @@ fun RequestsContent(
                 Column(
                     modifier = Modifier.fillMaxSize().weight(1f)
                 ) {
-                    RequestDetails(
+                    MarketRequestDetails(
                         state = state.requestsStates == RequestsStates.UNAPPROVED,
                         request = state.selectedRequest, listener = listener)
                 }
             }
         }
     }
+    Loading(state = state.isLoading)
+    ConnectionErrorPlaceholder(state = state.isError,
+        onClickTryAgain = { listener.onGetFilteredRequests(false) } )
+    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }
