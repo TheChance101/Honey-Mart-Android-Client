@@ -8,39 +8,45 @@ data class RequestsUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
-    val requestsStates: RequestsStates = RequestsStates.ALL_REQUESTS,
     val requests: List<RequestUiState> = emptyList(),
-    val isRequestNew: Boolean = false,
-    val isRequestSelected: Boolean = false,
-    val ownerName: String = "",
-    val ownerEmail: String = "",
-    val ownerImage: String = "",
-    val ownerNameFirstCharacter: Char = ' ',
-    val marketImage: Int  = 0,
-    val marketName: String = "",
-    val marketAddress: String = "",
-    val marketDescription: String = "",
-    )
+    val selectedRequest: RequestUiState? = null
+)
 
 data class RequestUiState(
     val marketId: Int = 0,
     val ownerName: String = "",
     val marketName: String = "",
-    val ownerImage: String = "",
-    val date: String = "",
+    val marketAddress: String = "",
+    val marketDescription: String = "",
+    val ownerEmail: String = "",
     val isRequestNew: Boolean = false,
     val isRequestSelected: Boolean = false,
-    val states: RequestsStates = RequestsStates.ALL_REQUESTS,
-    )
+    val state: RequestsStates = RequestsStates.ALL_REQUESTS,
+    val isSelected: Boolean = false
+) {
+    fun ownerNameFirstCharacter(): Char = this.ownerName.first()
+}
 
 fun RequestEntity.toRequestUiState(): RequestUiState {
     return RequestUiState(
         marketId = marketId,
         marketName = marketName,
-        ownerName = owner.fullName,
-        ownerImage = owner.imageUrl
+        ownerName = ownerName,
+        ownerEmail = ownerEmail,
+        marketAddress = marketAddress,
+        marketDescription = marketDescription
     )
 }
+//fun RequestEntity.toRequestUiState(): RequestUiState {
+//    return RequestUiState(
+//        marketId = marketId,
+//        marketName = marketName,
+//        ownerName = ownerName,
+//        ownerEmail = ownerEmail,
+//        marketAddress = marketAddress,
+//        marketDescription = marketDescription
+//    )
+//}
 
 data class SnackBarState(
     val isShow: Boolean = false,
@@ -49,13 +55,15 @@ data class SnackBarState(
 
 enum class RequestsStates(val state: Int) {
     ALL_REQUESTS(1),
-    NEW_REQUESTS(2),
+//    NEW_REQUESTS(2),
     APPROVED(3)
 }
 
-fun RequestsUiState.allRequests() = this.requestsStates == RequestsStates.ALL_REQUESTS
-fun RequestsUiState.newRequests() = this.requestsStates == RequestsStates.NEW_REQUESTS
-fun RequestsUiState.approved() = this.requestsStates == RequestsStates.APPROVED
+//fun RequestsUiState.allRequests() = this.requestsStates == RequestsStates.ALL_REQUESTS
+//fun RequestsUiState.newRequests() = this.requestsStates == RequestsStates.NEW_REQUESTS
+//fun RequestsUiState.approved() = this.requestsStates == RequestsStates.APPROVED
 
-fun RequestsUiState.emptyRequestsPlaceHolder() = this.requests.isEmpty() && !this.isError && !this.isLoading
+fun RequestsUiState.emptyRequestsPlaceHolder() =
+    this.requests.isEmpty() && !this.isError && !this.isLoading
 
+fun RequestsUiState.contentScreen() = !this.isLoading && !this.isError

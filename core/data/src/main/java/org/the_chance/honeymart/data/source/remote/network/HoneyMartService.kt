@@ -172,12 +172,11 @@ interface HoneyMartService {
 
     //region admin
     suspend fun getAllRequests(
-        requestState: Int,
     ): BaseResponse<List<RequestDto>>
 
-    suspend fun updateRequestState(
+    suspend fun updateMarketRequest(
         id: Long?,
-        state: Int,
+        isApproved: Boolean,
     ): BaseResponse<Boolean>
     //endregion admin
 }

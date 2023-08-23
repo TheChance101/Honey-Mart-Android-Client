@@ -4,18 +4,18 @@ import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.RequestEntity
-import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
+import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRequestsUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateRequestStateUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class RequestsViewModel @Inject constructor(
-    private val getRequests: GetRequestsUseCase,
-    private val updateRequestState: UpdateRequestStateUseCase,
-    private val ownerProfileInfo: GetOwnerInfoUseCase,
+    private val getMarketRequests: GetRequestsUseCase,
+    private val updateRequest: UpdateMarketRequestUseCase,
+//    private val getApprovedMarkets: GetAllMarketsUseCase,
 ) : BaseViewModel<RequestsUiState, RequestsUiEffect>(RequestsUiState()),
     RequestsInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -23,36 +23,27 @@ class RequestsViewModel @Inject constructor(
     init {
         getAllRequests()
         Log.e("TAG", "Requests:Size is ${state.value.requests.size}")
-        getOwnerInfo()
-    }
-
-    private fun getOwnerInfo() {
-        _state.update {
-            it.copy(
-                ownerNameFirstCharacter = ownerProfileInfo.getOwnerNameFirstCharacter(),
-                ownerImage = ownerProfileInfo.getOwnerImageUrl()
-            )
-        }
     }
 
     private fun getAllRequests() {
+        _state.update { it.copy(isLoading = true,isError = false) }
         tryToExecute(
-            { getRequests(RequestsStates.ALL_REQUESTS.state) },
-            ::onRequestSuccess,
-            ::onError
+            { getMarketRequests() },
+            ::onMarketRequestSuccess,
+            ::onMarketRequestError
         )
     }
 
-    private fun onRequestSuccess(requests: List<RequestEntity>) {
+    private fun onMarketRequestSuccess(requests: List<RequestEntity>) {
         _state.update { requestUiState ->
             requestUiState.copy(
-                requestsStates = RequestsStates.ALL_REQUESTS,
+                isLoading = false,
                 requests = requests.map { it.toRequestUiState() })
         }
-        Log.e("TAG", "Requests:Value is ${state.value}")
+        Log.e(TAG, "Requests:Value is ${state.value}")
     }
 
-    private fun onError(error: ErrorHandler) {
+    private fun onMarketRequestError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -60,52 +51,60 @@ class RequestsViewModel @Inject constructor(
         Log.e("TAG", "Requests:Error is ${state.value.error}")
     }
 
-    override fun updateRequests(position: Long, orderState: Int) {
+    override fun updateRequests(position: Long, isApproved: Boolean) {
         val marketId = state.value.requests[position.toInt()].marketId.toLong()
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { updateRequestState(marketId, orderState) },
+            { updateRequest(marketId, isApproved) },
             ::updateRequestsSuccess,
-            ::onError
+            ::onMarketRequestError
         )
     }
 
-    private fun updateRequestsSuccess(state: Boolean) {
+    private fun updateRequestsSuccess(isApproved: Boolean) {
         _state.update { it.copy(isLoading = false) }
-        when (_state.value.requestsStates) {
-            RequestsStates.ALL_REQUESTS -> onGetAllRequests()
-            RequestsStates.NEW_REQUESTS -> onGetNewRequests()
-            RequestsStates.APPROVED -> onGetApproved()
-        }
     }
 
     override fun onGetAllRequests() {
-        _state.update {
-            it.copy(requestsStates = RequestsStates.ALL_REQUESTS)
-        }
         getAllRequests()
     }
 
-    override fun onGetNewRequests() {
-        _state.update {
-            it.copy(requestsStates = RequestsStates.NEW_REQUESTS)
-        }
-    }
-
     override fun onGetApproved() {
-        _state.update {
-            it.copy(
-                requestsStates = RequestsStates.APPROVED,)
-        }
+//        _state.update { it.copy(isLoading = true,isError = false) }
+//        tryToExecute(
+//            {getApprovedMarkets().map { it.to }},
+//            ::onApprovedMarketsSuccess,
+//            ::onApprovedMarketsError
+//        )
     }
 
-    override fun onClickRequest() {
-        _state.update { it.copy(isRequestSelected = true) }
+    private fun onApprovedMarketsSuccess(requests: List<RequestEntity>) {
+        _state.update { requestUiState ->
+            requestUiState.copy(
+                isLoading = false,
+                requests = requests.map { it.toRequestUiState() })
+        }
+        Log.e(TAG, "Requests:Value is ${state.value}")
+    }
+
+    private fun onApprovedMarketsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+        Log.e("TAG", "Requests:Error is ${state.value.error}")
+    }
+    override fun onClickRequest(position: Int) {
+        val updatedRequests = _state.value.requests.mapIndexed { index, request ->
+            request.copy(isSelected = index == position)
+        }
+        _state.update { it.copy(requests = updatedRequests, selectedRequest = updatedRequests[position]) }
         effectActionExecutor(_effect, RequestsUiEffect.onClickRequest)
     }
 
+
     override fun onClickCancel() {
-        TODO("Not yet implemented")
+        _state.update { it.copy(selectedRequest = null) }
     }
 
     override fun onClickApprove() {

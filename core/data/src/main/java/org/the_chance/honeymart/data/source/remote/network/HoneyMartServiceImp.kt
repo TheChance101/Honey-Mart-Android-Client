@@ -20,16 +20,16 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
-import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
-import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -271,16 +271,15 @@ class HoneyMartServiceImp @Inject constructor(
     //endregion
 
     //region admin
-    override suspend fun getAllRequests(requestState: Int): BaseResponse<List<RequestDto>> =
+    override suspend fun getAllRequests(): BaseResponse<List<RequestDto>> =
         wrap(client.get("admin/markets") {
-            parameter("requestState", requestState)
         })
 
     @OptIn(InternalAPI::class)
-    override suspend fun updateRequestState(id: Long?, state: Int): BaseResponse<Boolean> {
-        val url = "/admin/request/$id"
+    override suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): BaseResponse<Boolean> {
+        val url = "admin/request/$id"
         val formData = Parameters.build {
-            append("state", "$state")
+            append("isApproved", "$isApproved")
         }
         val response = wrap<BaseResponse<Boolean>>(client.put(url) {
             contentType(ContentType.Application.Json)

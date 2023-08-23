@@ -13,6 +13,8 @@ data class RequestDto(
     val description: String? = null,
     @SerializedName("address")
     val address: String? = null,
-    @SerializedName("owner")
-    val owner: OwnerProfileDto? = null
+    @SerializedName("ownerName")
+    val ownerName: String? = null,
+    @SerializedName("ownerEmail")
+    val ownerEmail: String? = null
 )

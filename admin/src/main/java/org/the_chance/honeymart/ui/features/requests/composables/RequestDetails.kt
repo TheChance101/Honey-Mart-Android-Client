@@ -24,12 +24,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.features.requests.RequestUiState
 import org.the_chance.honeymart.ui.features.requests.RequestsInteractionListener
-import org.the_chance.honeymart.ui.features.requests.RequestsUiState
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
-import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
@@ -37,45 +38,35 @@ import java.util.Locale
 
 @Composable
 fun RequestDetails(
-    state: RequestsUiState,
+    request: RequestUiState?,
     listener: RequestsInteractionListener
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clip(Shapes.medium)
-            .background(white)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_honey_sun),
-            contentDescription = "",
-            modifier = Modifier.align(Alignment.TopEnd)
-        )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+    ContentVisibility(state = request != null) {
+        Box(
+            modifier = Modifier.fillMaxSize().clip(Shapes.medium).background(white)
         ) {
-            Row(
-                modifier = Modifier.align(Start),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                verticalAlignment = Alignment.CenterVertically,
+            Image(
+                painter = painterResource(id = R.drawable.ic_honey_sun),
+                contentDescription = "",
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                Divider(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.space12, 100.dp)
-                        .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16)),
-                    thickness = 100.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                if (state.ownerImage.isNotEmpty()) {
-                    ImageNetwork(
+                Row(
+                    modifier = Modifier.align(Start),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Divider(
                         modifier = Modifier
-                            .size(70.dp)
-                            .clip(CircleShape),
-                        imageUrl = state.ownerImage,
+                            .size(MaterialTheme.dimens.space12, 100.dp)
+                            .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16)),
+                        thickness = 100.dp,
+                        color = MaterialTheme.colorScheme.primary
                     )
-                } else {
                     Box(
                         modifier = Modifier
                             .size(70.dp)
@@ -86,85 +77,121 @@ fun RequestDetails(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = state.ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                            text = request?.ownerNameFirstCharacter().toString()
+                                .uppercase(Locale.ROOT),
                             style = MaterialTheme.typography.headlineMedium.copy(
                                 color = white
                             )
                         )
                     }
+                    Column(
+                        modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
+                        horizontalAlignment = Start,
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                    ) {
+                        if (request != null) {
+                            Text(
+                                text = request.ownerName,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        if (request != null) {
+                            Text(
+                                text = request.ownerEmail,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
+                    }
                 }
-                Column(
-                    modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    horizontalAlignment = Start,
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-                ) {
-                    Text(
-                        text = state.ownerName,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Text(
-                        text = state.ownerEmail,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        style = MaterialTheme.typography.displayLarge
-                    )
-                }
-            }
-            Image(
-                modifier = Modifier
-                    .padding(vertical = MaterialTheme.dimens.space32)
-                    .size(327.dp, 184.dp)
-                    .clip(Shapes.small)
-                    .align(CenterHorizontally),
-                painter = painterResource(R.drawable.fruite_image),
-                contentDescription = "",
-            )
-            Text(
-                text = state.marketName,
-                color = MaterialTheme.colorScheme.onSecondary,
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.icon_map_point),
+                Image(
+                    modifier = Modifier
+                        .padding(vertical = MaterialTheme.dimens.space32)
+                        .size(327.dp, 184.dp)
+                        .clip(Shapes.small)
+                        .align(CenterHorizontally),
+                    painter = painterResource(R.drawable.fruite_image),
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
-                Text(
-                    text = state.marketAddress,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    style = MaterialTheme.typography.displayLarge
-                )
-            }
-            Text(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space112),
-                text = state.marketDescription,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                style = MaterialTheme.typography.displaySmall,
-                textAlign = TextAlign.Center
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                HoneyOutlineButton(
-                    onClick = listener::onClickCancel,
-                    label = stringResource(R.string.cancel),
-                )
-                HoneyOutlineButton(
-                    modifier = Modifier.background(
-                        MaterialTheme.colorScheme.primary,
-                        Shapes.medium
-                    ),
-                    onClick = listener::onClickApprove,
-                    label = stringResource(R.string.approve),
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                )
+                if (request != null) {
+                    Text(
+                        text = request.marketName,
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        style = MaterialTheme.typography.headlineMedium,
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_map_point),
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    if (request != null) {
+                        Text(
+                            text = request.marketAddress,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            style = MaterialTheme.typography.displayLarge
+                        )
+                    }
+                }
+                if (request != null) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space112),
+                        text = request.marketDescription,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        style = MaterialTheme.typography.displaySmall,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    HoneyOutlineButton(
+                        onClick = listener::onClickCancel,
+                        label = stringResource(R.string.cancel),
+                    )
+                    HoneyOutlineButton(
+                        modifier = Modifier.background(
+                            MaterialTheme.colorScheme.primary, Shapes.medium
+                        ),
+                        onClick = listener::onClickApprove,
+                        label = stringResource(R.string.approve),
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun RequestDetailsPreview(){
+    RequestDetails(
+        RequestUiState(
+
+        ),
+        object :RequestsInteractionListener{
+            override fun onGetAllRequests() {
+            }
+            override fun onGetApproved() {
+            }
+            override fun onClickRequest(position: Int) {
+            }
+            override fun onClickCancel() {
+            }
+            override fun onClickApprove() {
+            }
+            override fun resetSnackBarState() {
+            }
+            override fun updateRequests(position: Long, isApproved: Boolean) {
+            }
+        }
+    )
 }

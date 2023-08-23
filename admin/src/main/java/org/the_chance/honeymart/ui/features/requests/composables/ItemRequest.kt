@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -15,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,11 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
@@ -35,10 +35,8 @@ import java.util.Locale
 @Composable
 fun ItemRequest(
     onClickCard: () -> Unit,
-    userName: String,
+    ownerName: String,
     marketName: String,
-    date: String,
-    image:String,
     ownerNameFirstCharacter: Char,
     onCardSelected: Boolean,
     isRequestNew: Boolean,
@@ -48,19 +46,18 @@ fun ItemRequest(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
-            .clickable { onClickCard() },
+            .clickable { onClickCard() }
+            .height(120.dp),
         colors = CardDefaults.cardColors(containerColor = (white))
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             ContentVisibility(state = onCardSelected) {
                 Divider(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(10.dp),
+                    modifier = Modifier.fillMaxHeight().width(10.dp),
                     thickness = 100.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -73,78 +70,57 @@ fun ItemRequest(
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                if (image.isNotEmpty()) {
-                    ImageNetwork(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space86)
-                            .clip(CircleShape),
-                        imageUrl = image,
+                Box(
+                    modifier = Modifier
+                        .size(MaterialTheme.dimens.space86)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary,),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                        style = MaterialTheme.typography.headlineMedium.copy(color = white)
                     )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space86)
-                            .clip(CircleShape)
-                            .background(
-                                MaterialTheme.colorScheme.primary,
-                            ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                color = white
-                            )
-                        )
-                    }
                 }
                 Column(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                 ) {
                     Text(
-                        text = userName,
+                        text = ownerName,
                         color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.titleLarge
                     )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = MaterialTheme.dimens.space16),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = marketName,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.displayLarge
-                        )
-                        ContentVisibility(state = isRequestNew) {
-                            Box(
-                                modifier = Modifier
-                                    .size(MaterialTheme.dimens.space16)
-                                    .clip(shape = CircleShape)
-                                    .background(MaterialTheme.colorScheme.primary),
-                            )
-                        }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.icon_clock),
-                            contentDescription = "time",
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                        )
-                        Text(
-                            text = date,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.displaySmall
-                        )
-                    }
+                    Text(
+                        text = marketName,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                ContentVisibility(state = isRequestNew) {
+                    Box(
+                        modifier = Modifier.size(MaterialTheme.dimens.space16)
+                            .clip(shape = CircleShape)
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(end = MaterialTheme.dimens.space16),
+                    )
+                }
+                Spacer(modifier = Modifier.padding(MaterialTheme.dimens.space16))
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ItemRequestPreview() {
+    ItemRequest(
+        {},
+        "shehab",
+        "market",
+        'U',
+        true,
+        true,
+    )
 }

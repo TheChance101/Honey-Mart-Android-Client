@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetRequestsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(requestState:Int): List<RequestEntity> {
-        return honeyMartRepository.getAllRequests(requestState)
+    suspend operator fun invoke(): List<RequestEntity> {
+        return honeyMartRepository.getAllRequests()
     }
 }

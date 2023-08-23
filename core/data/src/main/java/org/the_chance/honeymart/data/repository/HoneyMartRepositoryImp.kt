@@ -145,13 +145,13 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    override suspend fun getAllRequests(requestState: Int): List<RequestEntity> {
-        return wrap { honeyMartService.getAllRequests(requestState) }.value?.map { it.toRequestEntity() }
+    override suspend fun getAllRequests(): List<RequestEntity> {
+        return wrap { honeyMartService.getAllRequests() }.value?.map { it.toRequestEntity() }
             ?: throw NotFoundException()
     }
 
-    override suspend fun updateRequestState(id: Long?, state: Int): Boolean {
-      return wrap { honeyMartService.updateRequestState(id, state) }.value
+    override suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean {
+      return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
           ?: throw NotFoundException()
     }
     //endregion admin
