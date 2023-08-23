@@ -32,7 +32,7 @@ interface HoneyMartRepository {
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun searchForProducts(query: String,page: Int?): Flow<PagingData<ProductEntity>>
+    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): Flow<PagingData<ProductEntity>>
     suspend fun getAllOrders(orderState: Int): List<OrderEntity>
     suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
