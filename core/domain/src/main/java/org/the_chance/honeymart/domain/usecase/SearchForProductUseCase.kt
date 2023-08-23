@@ -9,6 +9,6 @@ import javax.inject.Inject
 class SearchForProductUseCase @Inject constructor(
     private val repository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(query: String): Flow<PagingData<ProductEntity>> =
-        repository.searchForProducts(query, page = null)
+    suspend operator fun invoke(query: String,sortOrder:String): Flow<PagingData<ProductEntity>> =
+        repository.searchForProducts(query, page = null,sortOrder)
 }
