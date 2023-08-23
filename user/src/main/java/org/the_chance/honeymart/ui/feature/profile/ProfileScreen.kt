@@ -37,10 +37,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -65,12 +68,12 @@ fun ProfileScreen(
                 is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
                 is ProfileUiEffect.ClickLogoutEffect -> {
-                    navController.navigateToLogin()
+                    navController.navigateToHomeScreen()
                 }
 
-                ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
                 ProfileUiEffect.ShowToastEffect -> {}
+                ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
     }
@@ -101,7 +104,7 @@ private fun ProfileContent(
         Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
-            state = state.isError,
+            state = state.isConnectionError,
             onClickTryAgain = listener::getData
         )
 
@@ -116,10 +119,19 @@ private fun ProfileContent(
             )
         }
 
+        EmptyOrdersPlaceholder(
+            state = state.error is ErrorHandler.UnAuthorizedUser,
+            image = R.drawable.placeholder_order,
+            title = stringResource(R.string.you_are_not_logged_in),
+            subtitle = stringResource(R.string.login_and_get_access_to_your_orders_wishlist_and_more),
+            buttonLabel = stringResource(R.string.login),
+            onClickDiscoverMarkets = listener::onClickLogin
+        )
         ContentVisibility(!state.isError && !state.isLoading) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize().verticalScroll(
+                    .fillMaxSize()
+                    .verticalScroll(
                         enabled = true,
                         state = rememberScrollState()
                     )
@@ -222,14 +234,6 @@ private fun ProfileContent(
                     iconId = R.drawable.ic_notification,
                     title = "Notification",
                     onClick = listener::onClickNotification
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_sun,
-                    title = "Theme",
-                    onClick = listener::onClickTheme
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
