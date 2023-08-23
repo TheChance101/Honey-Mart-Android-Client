@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.internal.isLiveLiteralsEnabled
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,6 +37,7 @@ import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.theme.dimens
@@ -68,8 +70,6 @@ fun ProductDetailsContent(
             e.printStackTrace()
         }
     }
-
-    val imageByteArrays = covertFromUriToByteArray(uris, context)
 
     Column(
         modifier = modifier
@@ -172,7 +172,8 @@ fun ProductDetailsContent(
             HoneyFilledButton(
                 modifier = Modifier.width(146.dp),
                 label = confirmButton,
-                onClick = onClickConfirm
+                onClick = onClickConfirm,
+                isButtonEnabled=state.productDetails.showButton()
             )
             HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
         }

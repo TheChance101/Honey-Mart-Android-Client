@@ -123,9 +123,9 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productDescription = productDescription,
-        productPrice = ProductPrice.toString(),
         productImage = productImages,
+        productPrice = ProductPrice.toString(),
+        productDescription = productDescription,
     )
 }
 
@@ -159,12 +159,11 @@ fun NewProductsUiState.showButton(): Boolean {
             && productDescriptionState == ValidationState.VALID_TEXT_FIELD
             &&images.isNotEmpty()
 }
-fun ProductUiState.shoButton():Boolean{
+fun ProductUiState.showButton():Boolean{
     return productName.isNotBlank()
             &&productPrice.isNotBlank()
-            && productDescription.isNotBlank()
+//            && productDescription.isNotBlank()
             &&productImage.isNotEmpty()
-
 }
 
 

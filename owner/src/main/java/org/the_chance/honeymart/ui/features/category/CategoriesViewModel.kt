@@ -440,7 +440,7 @@ class CategoriesViewModel @Inject constructor(
                     id = product.productDetails.productId,
                     name = product.productDetails.productName,
                     price = product.productDetails.productPrice.toDouble(),
-                    description = product.productDetails.productsQuantity,
+                    description = product.productDetails.productDescription,
                 )
             },
             { onUpdateProductDetailsSuccess() },
