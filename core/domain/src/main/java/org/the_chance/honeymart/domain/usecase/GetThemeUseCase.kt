@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetThemeUseCase @Inject constructor(
     private val repository: HoneyMartRepository,
 ) {
-     operator suspend fun invoke():Boolean? {
-      return repository.getThemeState()?:false
+     operator  fun invoke():Boolean {
+      return repository.getThemeState()
     }
 }

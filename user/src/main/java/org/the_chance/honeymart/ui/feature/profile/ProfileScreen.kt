@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
@@ -102,7 +105,7 @@ private fun ProfileContent(
             onClickTryAgain = listener::getData
         )
 
-        if (state.isShowDialog) {
+        ContentVisibility(state.isShowDialog) {
             CustomAlertDialog(
                 message = stringResource(R.string.dialog_title),
                 onConfirm = {
@@ -113,10 +116,13 @@ private fun ProfileContent(
             )
         }
 
-        if (!state.isError && !state.isLoading)
+        ContentVisibility(!state.isError && !state.isLoading) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize().verticalScroll(
+                        enabled = true,
+                        state = rememberScrollState()
+                    )
                     .padding(all = MaterialTheme.dimens.space16),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -178,7 +184,7 @@ private fun ProfileContent(
                 }
 
                 Text(
-                    text = "${state.accountInfo.fullName}",
+                    text = state.accountInfo.fullName,
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space16),
                     style = MaterialTheme.typography.bodyMedium,
@@ -186,7 +192,7 @@ private fun ProfileContent(
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "${state.accountInfo.email}",
+                    text = state.accountInfo.email,
                     modifier = Modifier
                         .padding(
                             top = MaterialTheme.dimens.space4,
@@ -237,6 +243,7 @@ private fun ProfileContent(
 
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
             }
+        }
     }
 }
 

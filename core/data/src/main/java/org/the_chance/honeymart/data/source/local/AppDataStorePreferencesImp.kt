@@ -30,7 +30,7 @@ class AppDataStorePreferencesImp @Inject constructor(context: Context) : AppData
         }
     }
 
-    override suspend fun getThemeState(): Boolean {
+    override  fun getThemeState(): Boolean {
         return runBlocking {
             prefDataStore.data.map { preferences -> preferences[KEY_THEME] }.first()?:false
         }

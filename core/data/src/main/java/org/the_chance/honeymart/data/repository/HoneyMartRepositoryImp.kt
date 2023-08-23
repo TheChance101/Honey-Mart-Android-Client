@@ -158,7 +158,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         datastore.saveThemeState(isDark)
     }
 
-    override suspend fun getThemeState(): Boolean {
+    override  fun getThemeState(): Boolean {
         return datastore.getThemeState()
     }
 

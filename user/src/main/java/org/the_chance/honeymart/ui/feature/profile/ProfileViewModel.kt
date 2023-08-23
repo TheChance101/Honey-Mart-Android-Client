@@ -1,11 +1,11 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
+import org.the_chance.honeymart.domain.usecase.GetThemeUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
 import org.the_chance.honeymart.domain.usecase.SaveThemeUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -18,7 +18,7 @@ class ProfileViewModel @Inject constructor(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,
-    savedStateHandle: SavedStateHandle,
+    private val getThemeState: GetThemeUseCase
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
     ProfileInteractionsListener {
 
@@ -26,6 +26,7 @@ class ProfileViewModel @Inject constructor(
 
 
     init {
+        _state.update { it.copy(isDark = getThemeState()) }
         getData()
     }
 
@@ -64,7 +65,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onClickTheme() {
-        _state.update { it.copy(isDark = !it.isDark) }
         effectActionExecutor(_effect, ProfileUiEffect.ClickThemeEffect)
     }
 
@@ -77,7 +77,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onChangeThemeSuccess(theme: Unit) {
-//        _state.update { it.copy(isDark  = ! it.isDark) }
+       _state.update { it.copy(isDark  = ! it.isDark) }
     }
 
     override fun showSnackBar(massage: String) {

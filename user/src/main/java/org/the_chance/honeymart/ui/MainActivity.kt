@@ -22,7 +22,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.usecase.GetThemeUseCase
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
@@ -40,7 +39,7 @@ class MainActivity: AppCompatActivity() {
         installSplashScreen()
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
-                HoneyMartTheme(darkTheme = runBlocking {getThemeState()?:false}) {
+                HoneyMartTheme(darkTheme =  getThemeState()?:false) {
                     val bottomNavState = checkBottomBarState()
                     Scaffold(
                         bottomBar = {
