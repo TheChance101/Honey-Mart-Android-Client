@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
     private val getAllOrders: GetAllOrdersUseCase,
-): BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
+) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
     override fun onClickOrder(orderId: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(orderId))
@@ -27,12 +27,12 @@ class OrdersViewModel @Inject constructor(
         )
     }
 
-    override fun getAllNewOrders() {
+    override fun getAllPendingOrders() {
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = OrderStates.NEW_ORDER)
+            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PENDING)
         }
         tryToExecute(
-            { getAllOrders(OrderStates.NEW_ORDER.state).map { it.toOrderUiState() } },
+            { getAllOrders(OrderStates.PENDING.state).map { it.toOrderUiState() } },
             ::onSuccess,
             ::onError
         )
@@ -71,11 +71,12 @@ class OrdersViewModel @Inject constructor(
         )
     }
 
+
     private fun onSuccess(orders: List<OrderUiState>) {
         _state.update { it.copy(isLoading = false, orders = orders) }
     }
 
-    private fun onError(error: ErrorHandler){
+    private fun onError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }

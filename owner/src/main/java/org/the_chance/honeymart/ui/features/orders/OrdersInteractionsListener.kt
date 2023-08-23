@@ -4,7 +4,7 @@ interface OrdersInteractionsListener {
 
     fun onClickOrder(orderId: Long)
     fun getAllOrders()
-    fun getAllNewOrders()
+    fun getAllPendingOrders()
     fun getAllProcessingOrders()
     fun getAllDoneOrders()
     fun getAllCancelOrders()

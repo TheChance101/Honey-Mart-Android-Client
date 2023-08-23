@@ -70,9 +70,9 @@ fun OrdersContent(
                     onClick = listener::getAllOrders
                 )
                 CustomChip(
-                    state = state.newOrder(),
+                    state = state.pending(),
                     text = stringResource(R.string.new_order),
-                    onClick = listener::getAllNewOrders
+                    onClick = listener::getAllPendingOrders
                 )
                 CustomChip(
                     state = state.processing(),

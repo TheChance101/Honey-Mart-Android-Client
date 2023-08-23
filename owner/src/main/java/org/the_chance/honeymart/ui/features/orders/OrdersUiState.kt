@@ -31,15 +31,18 @@ fun OrderEntity.toOrderUiState(): OrderUiState {
 }
 
 enum class OrderStates(val state: Int) {
-    ALL(1),
-    NEW_ORDER(2),
-    PROCESSING(3),
-    DONE(4),
+    ALL(0),
+    PENDING(1),
+    PROCESSING(2),
+    DONE(3),
     CANCELED(5),
+
+
+
 }
 
 fun OrdersUiState.all() = this.orderStates == OrderStates.ALL
-fun OrdersUiState.newOrder() = this.orderStates == OrderStates.NEW_ORDER
+fun OrdersUiState.pending() = this.orderStates == OrderStates.PENDING
 fun OrdersUiState.processing() =this.orderStates == OrderStates.PROCESSING
 fun OrdersUiState.done() =this.orderStates == OrderStates.DONE
 fun OrdersUiState.cancel() =this.orderStates == OrderStates.CANCELED
