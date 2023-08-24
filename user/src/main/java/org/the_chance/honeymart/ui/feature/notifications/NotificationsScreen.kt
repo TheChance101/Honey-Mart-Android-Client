@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,8 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -37,6 +40,15 @@ fun NotificationsScreen(
     viewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+ val navController = LocalNavigationProvider.current
+    LaunchedEffect(true) {
+        viewModel.effect.collect {
+            when (it) {
+                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToHomeScreen()
+            }
+        }
+    }
+
 
     NotificationsContent(state = state, listener = viewModel)
 }
@@ -56,7 +68,7 @@ fun NotificationsContent(
             Loading(state = state.isLoading)
             ConnectionErrorPlaceholder(
                 state = state.isError,
-                onClickTryAgain = listener::onGetAllNotifications,
+                onClickTryAgain =listener::onClickTryAgain ,
             )
             EmptyOrdersPlaceholder(
                 state = state.emptyNotificationsPlaceHolder(),

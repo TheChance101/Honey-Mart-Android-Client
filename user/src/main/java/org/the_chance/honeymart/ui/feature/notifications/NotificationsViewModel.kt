@@ -55,6 +55,11 @@ class NotificationsViewModel @Inject constructor(
         }
     }
 
+    override fun onClickTryAgain() {
+
+        effectActionExecutor(_effect, NotificationsUiEffect.OnClickTryAgain)
+    }
+
     private fun onGetAllNotificationsSuccess(notifications: List<NotificationEntity>) {
         _state.update { notificationsUiState ->
             notificationsUiState.copy(

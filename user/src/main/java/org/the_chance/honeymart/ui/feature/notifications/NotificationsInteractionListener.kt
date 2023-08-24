@@ -6,4 +6,6 @@ interface NotificationsInteractionListener {
     fun onGetAllNotifications()
     fun onGetOrderNotifications()
     fun onGetDeliveryNotifications()
+
+    fun onClickTryAgain()
 }
