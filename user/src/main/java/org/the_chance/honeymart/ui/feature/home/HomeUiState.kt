@@ -5,7 +5,7 @@ import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
-import org.the_chance.honeymart.ui.feature.market.MarketUiState
+import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState

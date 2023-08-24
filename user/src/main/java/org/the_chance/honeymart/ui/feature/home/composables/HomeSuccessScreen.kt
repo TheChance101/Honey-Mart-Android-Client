@@ -37,7 +37,7 @@ import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.market.MarketUiState
+import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -85,7 +85,7 @@ fun HomeContentSuccessScreen(
             Markets(
                 markets = state.markets,
                 onClickMarket = listener::onClickPagerItem,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickSeeAllMarkets
             )
         }
 

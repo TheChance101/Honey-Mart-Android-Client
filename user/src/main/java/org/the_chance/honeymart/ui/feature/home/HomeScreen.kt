@@ -16,6 +16,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
+import org.the_chance.honeymart.ui.feature.markets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
@@ -49,6 +50,8 @@ fun HomeScreen(
                     it.marketId,
                     it.position
                 )
+
+                HomeUiEffect.NavigateToSeeAllMarketEffect -> navController.navigateToMarketsScreen()
             }
         }
     }
