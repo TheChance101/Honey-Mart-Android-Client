@@ -63,8 +63,7 @@ fun NotificationsContent(
                 image = R.drawable.placeholder_wish_list,
                 title = stringResource(R.string.your_notifications_is_empty),
                 subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = {},
-                visibility = false
+                onClickDiscoverMarkets = listener::onGetAllNotifications,
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
