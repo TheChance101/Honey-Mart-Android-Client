@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.feature.home
 
 import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
@@ -18,7 +17,7 @@ data class HomeUiState(
     val markets: List<MarketUiState> = emptyList(),
     val categories: List<CategoryUiState> = emptyList(),
     val coupons: List<CouponUiState> = emptyList(),
-    val recentProducts: List<RecentProductUiState> = emptyList(),
+    val recentProducts: List<org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
 )
@@ -32,13 +31,6 @@ data class CouponUiState(
     val isClipped: Boolean = false,
 )
 
-data class RecentProductUiState(
-    val productId: Long = 0L,
-    val productName: String = "",
-    val productImage: String = "",
-    val price: Double = 0.0,
-    val isFavorite: Boolean = false
-)
 
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
@@ -49,13 +41,6 @@ fun CouponEntity.toCouponUiState() = CouponUiState(
     isClipped = isClipped,
 )
 
-fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
-    productId = productId,
-    productName = productName,
-    productImage = productImages[0],
-    price = productPrice,
-    isFavorite = false,
-)
 
 fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError
 
