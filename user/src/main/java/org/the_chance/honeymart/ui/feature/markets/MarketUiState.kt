@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.market
+package org.the_chance.honeymart.ui.feature.markets
 
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
