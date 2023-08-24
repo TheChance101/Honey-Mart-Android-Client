@@ -2,10 +2,10 @@ package org.the_chance.honeymart.ui.feature.home
 
 import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
-import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -22,6 +22,21 @@ data class HomeUiState(
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
 )
+data class MarketsUiState(
+    val isLoading: Boolean = true,
+    val isError: Boolean = false,
+    val error: ErrorHandler? = null,
+    val markets: List<MarketUiState> = emptyList(),
+)
+
+data class MarketUiState(
+    val marketId: Long = 0L,
+    val marketName: String = "",
+    val marketImage: String = "",
+    val isClicked : Boolean = false
+)
+
+
 
 data class CouponUiState(
     val couponId: Long = 0L,
@@ -74,4 +89,12 @@ fun Double.formatCurrencyWithNearestFraction(): String {
 
 fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
+}
+
+fun MarketEntity.toMarketUiState(): MarketUiState {
+    return MarketUiState(
+        marketId = marketId,
+        marketName = marketName,
+        marketImage = imageUrl
+    )
 }
