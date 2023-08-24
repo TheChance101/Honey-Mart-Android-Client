@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.orders
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
@@ -81,7 +82,6 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
-                showState = it.showState.copy(showProductDetails = true)
             )
         }
     }
@@ -111,4 +111,16 @@ class OrdersViewModel @Inject constructor(
     private fun onGetOrderProductDetailsError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
     }
+
+    override fun onClickProduct(product  : OrderDetailsProductUiState){
+        _state.update {
+            it.copy(
+                product = product,
+                showState = it.showState.copy(showProductDetails = true)
+            )
+        }
+        log(_state.value.product.id.toString())
+
+    }
+
 }

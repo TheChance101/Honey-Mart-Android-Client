@@ -25,6 +25,8 @@ import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
+import org.the_chance.honeymart.ui.features.orders.toCountFormat
+import org.the_chance.honeymart.ui.features.orders.toPriceFormat
 import org.the_chance.honymart.ui.theme.dimens
 
 
@@ -54,21 +56,21 @@ fun ProductDetailsInOrderContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             FormTextField(
-                text = state.productDetails.name,
+                text = state.product.name,
                 hint = stringResource(R.string.product_name),
                 keyboardType = KeyboardType.Text,
                 onValueChange = { },
                 isEnable = false
             )
             FormTextField(
-                text = state.productDetails.price,
+                text = state.product.price.toPriceFormat(),
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = { },
                 isEnable = false
             )
             FormTextField(
-                text = state.productDetails.count,
+                text = state.product.count.toCountFormat(),
                 hint = stringResource(R.string.description),
                 keyboardType = KeyboardType.Text,
                 onValueChange = { },
@@ -96,7 +98,7 @@ fun ProductDetailsInOrderContent(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
-                items(items = state.productDetails.images) { image ->
+                items(items = state.product.images) { image ->
                     ItemImageProductDetails(image = image)
                 }
             }
