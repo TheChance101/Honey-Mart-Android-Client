@@ -158,9 +158,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getAllNotifications(notificationsState) }.value?.map { it.toNotificationEntity() }
             ?: throw NotFoundException()
 
-    override suspend fun saveThemeState(isDark: Boolean) {
-        datastore.saveThemeState(isDark)
-    }
+
 
     override suspend fun addProfileImage(image: ByteArray): String {
         return wrap {

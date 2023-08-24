@@ -44,6 +44,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
+import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -65,8 +66,8 @@ fun ProfileScreen(
         viewModel.effect.collect {
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
+                is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
+                is ProfileUiEffect.ClickCouponsEffect -> {}
                 is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
