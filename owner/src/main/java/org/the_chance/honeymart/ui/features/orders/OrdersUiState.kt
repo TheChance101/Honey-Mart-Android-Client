@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -95,7 +96,7 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
 fun OrdersUiState.formatOrder(order: Long): String {
     return "Order #${order}"
 }
-
+fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
 
 

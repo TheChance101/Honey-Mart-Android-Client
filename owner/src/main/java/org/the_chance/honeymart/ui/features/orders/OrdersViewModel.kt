@@ -24,26 +24,7 @@ class OrdersViewModel @Inject constructor(
         getAllMarketOrders(OrderStates.ALL)
     }
 
-    override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
-        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
-        getOrderDetails(id)
-        val updatedOrders = updateSelectedOrder(_state.value.orders, id)
-        _state.update {
-            it.copy(
-                orders = updatedOrders,
-                orderId = id
-            )
-        }
-    }
 
-    private fun updateSelectedOrder(
-        orders: List<OrderUiState>,
-        selectedOrderId: Long,
-    ): List<OrderUiState> {
-        return orders.map { order ->
-            order.copy(isOrderSelected = order.orderId == selectedOrderId)
-        }
-    }
 
     override fun getAllMarketOrders(orderState: OrderStates) {
         _state.update {
@@ -87,8 +68,11 @@ class OrdersViewModel @Inject constructor(
         }
     }
 
-    private fun onGetOrderDetailsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+    private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = errorHandler) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
     }
 
     private fun getOrderProductDetails(orderId: Long) {
@@ -109,8 +93,12 @@ class OrdersViewModel @Inject constructor(
         }
     }
 
-    private fun onGetOrderProductDetailsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+    private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+
     }
 
     override fun onClickProduct(product  : OrderDetailsProductUiState){
@@ -120,8 +108,26 @@ class OrdersViewModel @Inject constructor(
                 showState = it.showState.copy(showProductDetails = true)
             )
         }
-        log(_state.value.product.id.toString())
+    }
+    override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
+        effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
+        getOrderDetails(id)
+        val updatedOrders = updateSelectedOrder(_state.value.orders, id)
+        _state.update {
+            it.copy(
+                orders = updatedOrders,
+                orderId = id
+            )
+        }
+    }
 
+    private fun updateSelectedOrder(
+        orders: List<OrderUiState>,
+        selectedOrderId: Long,
+    ): List<OrderUiState> {
+        return orders.map { order ->
+            order.copy(isOrderSelected = order.orderId == selectedOrderId)
+        }
     }
 
 }
