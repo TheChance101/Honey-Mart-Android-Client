@@ -4,7 +4,7 @@ import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrdersUiState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val state: Boolean = false,
@@ -53,5 +53,5 @@ fun OrdersUiState.cancelledByOwner() = this.orderStates == OrderStates.CANCELLED
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
 
-fun OrdersUiState.screenContent() = this.orders.isNotEmpty() && !this.isError
+fun OrdersUiState.screenContent() = !this.isLoading && !this.isError
 fun OrdersUiState.loading() = this.isLoading && this.orders.isNotEmpty()

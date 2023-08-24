@@ -1,12 +1,12 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
-import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
-import org.the_chance.honeymart.domain.model.GetRecentProductsEntity
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.domain.model.RecentProductEntity
 
-fun GetRecentProductDto.toGetRecentProductEntity() = GetRecentProductsEntity(
+fun RecentProductDto.RecentProductEntity() = RecentProductEntity(
     productId = id ?: 0L,
     productName =  name ?: "",
     productDescription = description ?: "",
-    ProductPrice = price ?: 0.0,
+    productPrice = price ?: 0.0,
     productImages = images ?: emptyList()
 )

@@ -4,20 +4,18 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
-import org.the_chance.honeymart.data.source.remote.models.GetRecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
-import org.the_chance.honeymart.data.source.remote.models.ValidCouponDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
-/**
- * Created by Aziza Helmy on 7/2/2023.
- */
+
 interface HoneyMartService {
 
     //region Market
@@ -48,7 +46,7 @@ interface HoneyMartService {
     //endregion Category
 
     //region Products
-    suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>>
+    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>>
 
     suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 
@@ -85,7 +83,13 @@ interface HoneyMartService {
 
     //endregion Product
 
-    suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto>
+    suspend fun loginUser(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<UserLoginDto>
+    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
     //region WishList
 
     suspend fun getWishList(): BaseResponse<List<WishListDto>>
@@ -134,7 +138,6 @@ interface HoneyMartService {
 
     suspend fun getCart(): BaseResponse<CartDto>
 
-
     suspend fun addToCart(
         productId: Long,
         count: Int,
@@ -159,10 +162,12 @@ interface HoneyMartService {
 
 
     // region Coupon
-    suspend fun getCouponOfUser(): BaseResponse<List<CouponDto>>
+    suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
-    suspend fun getCouponOfValidUser(): BaseResponse<List<ValidCouponDto>>
-    suspend fun getRecentProducts(): BaseResponse<List<GetRecentProductDto>>
+    suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
+    suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
+
+    suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean>
 
 
     // endregion Coupon
@@ -174,4 +179,11 @@ interface HoneyMartService {
     ): BaseResponse<List<NotificationDto>>
 
     //endregion notifications
+
+    //region profile
+    suspend fun getProfileUser(): BaseResponse<ProfileUserDto>
+
+    suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
+    //endregion
+
 }

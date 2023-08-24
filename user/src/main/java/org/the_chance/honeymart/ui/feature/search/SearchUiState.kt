@@ -8,6 +8,7 @@ data class SearchUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
+    val updatedProducts: List<ProductUiState> = emptyList(),
     val products: List<ProductUiState> = emptyList(),
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false
@@ -32,15 +33,15 @@ fun SearchUiState.ascending() = this.searchStates == SearchStates.ASCENDING
 fun SearchUiState.descending() = this.searchStates == SearchStates.DESCENDING
 
 fun SearchUiState.emptySearchPlaceHolder() =
-    this.products.isEmpty() && !this.isError && !this.isLoading
+    this.updatedProducts.isEmpty() && !this.isError && !this.isLoading
 
-fun SearchUiState.screenContent() = this.products.isNotEmpty() && !this.isError
+fun SearchUiState.screenContent() = this.updatedProducts.isNotEmpty() && !this.isError
 
 fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productPrice = ProductPrice,
+        productPrice = productPrice,
         productImages = productImages
     )
 }

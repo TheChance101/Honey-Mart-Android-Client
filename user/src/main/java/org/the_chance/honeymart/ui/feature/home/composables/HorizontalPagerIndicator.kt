@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HorizontalPagerIndicator(
@@ -27,7 +27,7 @@ fun HorizontalPagerIndicator(
     ) {
         for (i in 0 until itemCount) {
             PagerIndicatorItem(selected = i == selectedPage)
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.space8))
         }
     }
 }
@@ -37,9 +37,9 @@ fun PagerIndicatorItem(selected: Boolean) {
     val color =
         if (selected) MaterialTheme.colorScheme.primary
         else MaterialTheme.colorScheme.outlineVariant
-    val width = if (selected) 20.dp else 10.dp
-    val height = 6.dp
-    val cornerRadius = 3.dp
+    val width = if (selected) MaterialTheme.dimens.space20 else MaterialTheme.dimens.space12
+    val height = MaterialTheme.dimens.space6
+    val cornerRadius = MaterialTheme.dimens.space4
 
     Box(
         modifier = Modifier

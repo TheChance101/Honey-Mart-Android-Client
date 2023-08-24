@@ -4,7 +4,7 @@ import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
 class GetRecentProductsUseCase @Inject constructor(
-    private val repo: HoneyMartRepository
+    private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke() = repo.getRecentProducts()
+    suspend operator fun invoke() = honeyMartRepository.getRecentProducts()
 }

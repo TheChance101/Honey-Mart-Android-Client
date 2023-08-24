@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,9 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
@@ -141,6 +143,7 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                oneLineOnly = true,
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
@@ -154,6 +157,7 @@ fun SignupContent(
                                 color = white200
                             )
                             HoneyTextField(
+                                oneLineOnly = true,
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.email,
                                 hint = stringResource(R.string.email),
@@ -173,7 +177,10 @@ fun SignupContent(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
                             HoneyTextField(
+                                isPassword = PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                                oneLineOnly = true,
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -188,7 +195,9 @@ fun SignupContent(
                             )
                             HoneyTextField(
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
+                                oneLineOnly = true,
                                 text = state.confirmPassword,
+                                isPassword = PasswordVisualTransformation(),
                                 hint = stringResource(R.string.confirm_password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
                                 onValueChange = listener::onConfirmPasswordChanged,
