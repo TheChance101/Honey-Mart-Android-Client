@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.repository
 
+import org.the_chance.honeymart.domain.model.AdminLoginEntity
 import org.the_chance.honeymart.domain.model.UserLoginEntity
 
 /**
@@ -19,5 +20,7 @@ interface AuthRepository {
     suspend fun createUserAccount(fullName: String, password: String, email: String): Boolean
 
     suspend fun getDeviceToken(): String
+
+    suspend fun loginAdmin(email: String, password: String): AdminLoginEntity
 
 }
