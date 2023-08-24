@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
+import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
@@ -49,6 +50,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")
         return wrap { honeyMartService.getAllMarkets() }.value?.map { it.toMarketEntity() }
             ?: throw NotFoundException()
+    }
+
+    override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<MarketEntity>> {
+       return getAllWithParameter(page,::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -168,6 +173,15 @@ class HoneyMartRepositoryImp @Inject constructor(
                 image = image,
             )
         }.value ?: throw NotFoundException()
+    }
+
+    private fun <I : Any, P> getAllWithParameter(
+        parameter: P, sourceFactory: (HoneyMartService, P) -> PagingSource<Int, I>,)
+    : Flow<PagingData<I>>{
+        return Pager(
+            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            pagingSourceFactory = { sourceFactory(honeyMartService, parameter) }
+        ).flow
     }
 
     companion object {

@@ -20,6 +20,7 @@ interface HoneyMartService {
 
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
+    suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>>
     suspend fun addMarket(marketName: String): BaseResponse<MarketDto>
 
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>

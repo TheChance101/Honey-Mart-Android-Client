@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
@@ -44,7 +45,8 @@ fun MarketContent(
     listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-        ContentVisibility(state = state.showMarket()) {
+        val markets= state.markets.collectAsLazyPagingItems()
+        ContentVisibility(state = markets.itemCount > 0) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
@@ -54,19 +56,21 @@ fun MarketContent(
                     vertical = MaterialTheme.dimens.space8
                 ),
             ) {
-                items(state.markets.size) { position ->
-                    val market = state.markets[position]
-                    MarketItem(
-                        onClickItem = listener::onClickMarket,
-                        marketId = market.marketId,
-                        marketImage = market.marketImage,
-                        marketName = market.marketName)
+                items(markets.itemCount) { position ->
+                    val market = markets[position]
+                    if (market != null) {
+                        MarketItem(
+                            onClickItem = listener::onClickMarket,
+                            marketId = market.marketId,
+                            marketImage = market.marketImage,
+                            marketName = market.marketName)
+                    }
                 }
             }
         }
         ConnectionErrorPlaceholder(
-            state = state.errorPlaceHolder(),
-            onClickTryAgain = listener::getChosenMarkets
+            state = state.isError,
+            onClickTryAgain = listener::getAllMarkets
         )
         Loading(state.isLoading)
     }

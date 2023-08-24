@@ -51,6 +51,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/markets"))
     }
 
+    override suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>> {
+        return wrap(client.get("/markets?page= $page"))
+    }
+
     override suspend fun addMarket(marketName: String): BaseResponse<MarketDto> =
         wrap(client.submitForm(url = "/markets", formParameters = Parameters.build {
             append("marketName", marketName)
