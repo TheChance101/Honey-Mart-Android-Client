@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.the_chance.honeymart.data.repository.AuthRepositoryImp
 import org.the_chance.honeymart.data.repository.HoneyMartRepositoryImp
-import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
 import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgService
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService

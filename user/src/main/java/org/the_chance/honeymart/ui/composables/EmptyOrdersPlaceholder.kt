@@ -29,6 +29,7 @@ fun EmptyOrdersPlaceholder(
     title: String,
     subtitle: String,
     onClickDiscoverMarkets: () -> Unit,
+    buttonLabel: String = stringResource(id = R.string.discover_market_now),
     visibility: Boolean = true
 ) {
     ContentVisibility(state = state) {
@@ -62,7 +63,7 @@ fun EmptyOrdersPlaceholder(
             )
             ContentVisibility(state = visibility) {
                 HoneyFilledIconButton(
-                    label = stringResource(id = R.string.discover_market_now),
+                    label = buttonLabel,
                     onClick = onClickDiscoverMarkets,
                     iconPainter = painterResource(id = R.drawable.icon_cart),
                     modifier = Modifier.padding(

@@ -50,8 +50,8 @@ interface HoneyMartRepository {
     suspend fun getAllProducts(): List<ProductEntity>
 
     suspend fun getProfileUser(): ProfileUserEntity
-    suspend fun saveThemeState(isDark: Boolean)
-    suspend fun getThemeState(): Boolean
+
+
 
     suspend fun addProfileImage(image: ByteArray): String
 }
