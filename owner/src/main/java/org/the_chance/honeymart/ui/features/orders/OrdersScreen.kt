@@ -9,14 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.orders.composables.AllOrdersContent
-import org.the_chance.honeymart.ui.features.orders.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsContent
 
 @Composable
 fun OrdersScreen(
@@ -61,7 +58,7 @@ fun OrdersContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-
+                OrderDetailsContent(state = state)
             }
 
         }

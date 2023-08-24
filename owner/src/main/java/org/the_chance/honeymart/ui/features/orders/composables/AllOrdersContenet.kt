@@ -29,8 +29,8 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun AllOrdersContent(
-    state : OrdersUiState ,
-    listener : OrdersInteractionsListener
+    state: OrdersUiState,
+    listener: OrdersInteractionsListener
 ) {
     Column(
         modifier = Modifier
@@ -84,18 +84,19 @@ fun AllOrdersContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)
         ) {
-            items(state.orders.size) {
+            items(state.orders.size) { index ->
                 ItemOrder(
-                    onClickCard = listener::onClickOrder,
-                    orderId = state.orders[it].orderId,
-                    userName = state.orders[it].userName,
-                    price = state.orders[it].totalPrice,
-                    time = state.orders[it].time,
-                    isSelected =state.orders[it].isOrderSelected
+                    onClickCard = { listener.onClickOrder(orderId = state.orders[index].orderId) },
+                    orderId = state.orders[index].orderId,
+                    userName = state.orders[index].userName,
+                    price = state.orders[index].totalPrice,
+                    time = state.orders[index].time,
+                    isSelected = state.orders[index].isOrderSelected,
+                    icon = true
                 )
             }
         }
     }
 
-    
+
 }

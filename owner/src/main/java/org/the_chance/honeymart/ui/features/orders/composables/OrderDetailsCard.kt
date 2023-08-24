@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.composable
+package org.the_chance.honeymart.ui.features.orders.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,14 +27,17 @@ import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun ProductCard(
+fun OrderDetailsCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     imageUrl: String = "",
     productName: String = "",
     productPrice: String = "",
-    description: String = "",
+    count: Int = 0,
+    isSelected: Boolean = false
 ) {
+
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -79,13 +82,13 @@ fun ProductCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = description,
+                        text = "$count",
                         style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
                     )
                 }
             }
             Text(
-                text = productPrice,
+                text = "$productPrice $",
                 style = MaterialTheme.typography.bodyMedium,
                 color = blackOn60
             )

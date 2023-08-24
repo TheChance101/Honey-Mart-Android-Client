@@ -17,7 +17,8 @@ data class OrdersUiState(
     val orderStates: OrderStates = OrderStates.ALL,
     val orderDetails: OrderUiState = OrderUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
-    val showState: ShowState = ShowState()
+    val showState: ShowState = ShowState(),
+    val isSelected: Boolean = false
 )
 
 data class ShowState(
@@ -89,11 +90,16 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
     }
 }
 
-fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
-
-fun OrderUiState.formatOrder(order: Long): String {
+fun OrdersUiState.formatOrder(order: Long): String {
     return "Order #${order}"
 }
+
+fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
+
+fun OrdersUiState.formatPrice(price: Double): String {
+    return "$price$"
+}
+
 
 fun Double.toPriceFormat(): String = "$this$"
 // endregion

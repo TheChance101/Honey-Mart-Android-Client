@@ -27,11 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.features.orders.toDateFormat
-import org.the_chance.honeymart.ui.features.orders.toPriceFormat
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -40,11 +37,13 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ItemOrder(
-    onClickCard: (orderId: Long) -> Unit,
-    orderId: Long,
-    userName: String,
-    price: String,
-    time: String,
+    onClickCard: (orderId: Long) -> Unit = {},
+    orderId: Long = 0,
+    userName: String = "",
+    price: String = "",
+    count: Int = 0,
+    time: String = "",
+    icon: Boolean = false,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false
 ) {
@@ -96,26 +95,61 @@ fun ItemOrder(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_person),
-                            contentDescription = "userName",
-                            tint = black37,
-                        )
-                        Text(
-                            text = userName,
-                            color = black37,
-                            style = MaterialTheme.typography.displayLarge
-                        )
+                    if (icon) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (icon) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_person),
+                                    contentDescription = "userName",
+                                    tint = black37,
+                                )
+                            }
+
+                            Text(
+                                text = userName,
+                                color = black37,
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
+                    } else {
+                        Column {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (icon) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_person),
+                                        contentDescription = "userName",
+                                        tint = black37,
+                                    )
+                                }
+
+                                Text(
+                                    text = userName,
+                                    color = black37,
+                                    style = MaterialTheme.typography.displayLarge
+                                )
+                            }
+                            Text(
+                                text = "$count Product",
+                                color = black60,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
-                    Text(
-                        text = price,
-                        color = black60,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    if (icon) {
+                        Text(
+                            text = price,
+                            color = black60,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } else {
+                        HoneyOutlineText(text = price)
+                    }
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -133,31 +167,6 @@ fun ItemOrder(
                     )
                 }
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewItemOrder() {
-    HoneyMartTheme {
-        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24)) {
-            ItemOrder(
-                onClickCard = {},
-                orderId = 4,
-                userName = "Mohamed Shaban",
-                price = 9999.0.toPriceFormat(),
-                time = 1692699751209.toDateFormat(),
-                isSelected = true
-            )
-            ItemOrder(
-                onClickCard = {},
-                orderId = 4,
-                userName = "Mohamed Shaban",
-                price = 9999.0.toPriceFormat(),
-                time = 1692699751209.toDateFormat(),
-                isSelected = false
-            )
         }
     }
 }
