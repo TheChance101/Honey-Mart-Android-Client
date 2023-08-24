@@ -86,11 +86,10 @@ fun AllOrdersContent(
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)
         ) {
             items(state.orders.size) { index ->
-                Log.i("mah", "${state.orders[index]}")
                 ItemOrder(
                     onClickCard = {
                         listener.onClickOrder(
-                            orderDetails = state.orderDetails,
+                            orderDetails = state.orders[index],
                             id = state.orders[index].orderId
                         )
                     },

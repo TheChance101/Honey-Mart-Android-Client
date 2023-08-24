@@ -39,7 +39,7 @@ import org.the_chance.honymart.ui.theme.white
 @Composable
 fun ItemOrder(
     onClickCard: (orderId: Long) -> Unit = {},
-    orderId: Long = 0,
+    orderId: Long ,
     userName: String = "",
     price: String = "",
     count: Int = 0,
@@ -80,7 +80,6 @@ fun ItemOrder(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Log.i("orderId", "$orderId")
                     Text(
                         text = stringResource(R.string.order, orderId),
                         color = black60,

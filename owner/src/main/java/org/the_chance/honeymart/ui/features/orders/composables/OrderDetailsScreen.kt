@@ -34,7 +34,7 @@ fun OrderDetailsContent(
                 )
         ) {
             ItemOrder(
-                orderId = state.orderDetails.orderId,
+                orderId = state.orderId,
                 count = state.products.size,
                 price = state.orderDetails.totalPrice,
                 isSelected = !state.isSelected

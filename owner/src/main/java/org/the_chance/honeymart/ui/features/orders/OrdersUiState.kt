@@ -19,7 +19,8 @@ data class OrdersUiState(
     val products: List<OrderDetailsProductUiState> = emptyList(),
     val product: OrderDetailsProductUiState= OrderDetailsProductUiState(),
     val showState: ShowState = ShowState(),
-    val isSelected: Boolean = false
+    val isSelected: Boolean = false,
+    val orderId: Long = 0,
 )
 
 data class ShowState(
