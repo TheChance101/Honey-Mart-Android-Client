@@ -51,13 +51,13 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
-        _state.update { it.copy(isLoading = false, error = null, isError = false) }
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update { searchUiState ->
             searchUiState.copy(
                 products = flowOf(mappedProducts),
             )
         }
+        _state.update { it.copy(isLoading = false, isError = false) }
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {
@@ -68,7 +68,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isLoading = true, error = null, isError = false) }
+        _state.update { it.copy(isLoading = true, isError = false) }
         _searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }
@@ -102,7 +102,6 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun filter(sortOrder: String) {
-        _state.update { it.copy(isLoading = true, error = null, isError = false) }
         when (sortOrder) {
             SearchStates.ASCENDING.state -> _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
             SearchStates.DESCENDING.state -> _state.update { it.copy(searchStates = SearchStates.DESCENDING) }

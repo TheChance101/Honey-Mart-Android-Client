@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.ui.feature.search
 
-import PagingStateVisibilityGridScop
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -52,6 +50,7 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
+import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -89,9 +88,6 @@ fun SearchContent(
 ) {
     AppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
-        Loading(state = state.isLoading)
-        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
-        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -198,13 +194,15 @@ fun SearchContent(
                                     )
                                 }
                             }
-                                PagingStateVisibilityGridScop(products)
+                            pagingStateVisibilityGridScope(products)
                         }
                     )
                 }
             }
         }
-
+        Loading(state = state.isLoading)
+        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
     }
 
 }

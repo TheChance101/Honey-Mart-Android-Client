@@ -3,11 +3,9 @@ package org.the_chance.honeymart.ui.composables
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -18,6 +16,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 fun <T : Any> LazyListScope.PagingStateVisibility(
@@ -32,11 +31,10 @@ fun <T : Any> LazyListScope.PagingStateVisibility(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space64)
-                            .padding(MaterialTheme.dimens.space16)
-                            .align(Alignment.Center)
+                    Loading(
+                        modifier = Modifier.padding(MaterialTheme.dimens.space12).align(Alignment.Center),
+                        size = MaterialTheme.dimens.space64,
+                        state = true
                     )
                 }
             }
@@ -49,11 +47,10 @@ fun <T : Any> LazyListScope.PagingStateVisibility(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space64)
-                            .padding(MaterialTheme.dimens.space16)
-                            .align(Alignment.Center)
+                    Loading(
+                        modifier = Modifier.padding(MaterialTheme.dimens.space12).align(Alignment.Center),
+                        size = MaterialTheme.dimens.space64,
+                        state = true
                     )
                 }
             }
