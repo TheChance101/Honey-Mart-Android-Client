@@ -159,7 +159,7 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
 
     override suspend fun saveThemeState(isDark: Boolean) {
-        datastore.saveThemeState(isDark)
+//        datastore.saveThemeState(isDark)
     }
 
     override suspend fun addProfileImage(image: ByteArray): String {

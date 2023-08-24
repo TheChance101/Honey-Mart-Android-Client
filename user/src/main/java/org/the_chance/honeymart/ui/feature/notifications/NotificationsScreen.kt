@@ -24,7 +24,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -35,12 +34,13 @@ import org.the_chance.honymart.ui.theme.dimens
 fun NotificationsScreen(
     viewModel: NotificationsViewModel = hiltViewModel(),
 ) {
+    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
- val navController = LocalNavigationProvider.current
+
     LaunchedEffect(true) {
         viewModel.effect.collect {
             when (it) {
-                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToHomeScreen()
+                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
             }
         }
     }
