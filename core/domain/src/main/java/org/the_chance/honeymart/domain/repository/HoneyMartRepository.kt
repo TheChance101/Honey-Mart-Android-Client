@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -49,9 +50,11 @@ interface HoneyMartRepository {
 
     suspend fun getAllProducts(): List<ProductEntity>
 
+    suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity>
+
     suspend fun getProfileUser(): ProfileUserEntity
-    suspend fun saveThemeState(isDark: Boolean)
-    suspend fun getThemeState(): Boolean
+
+
 
     suspend fun addProfileImage(image: ByteArray): String
 }

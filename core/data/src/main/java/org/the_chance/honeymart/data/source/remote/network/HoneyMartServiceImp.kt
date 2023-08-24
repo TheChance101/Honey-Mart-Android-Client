@@ -26,6 +26,7 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
@@ -248,6 +249,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(response)
     }
 
+    override suspend fun getAllNotifications(notificationState: Int): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/userNotifications") {
+            parameter("notificationState", notificationState)
+        })
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
