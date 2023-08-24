@@ -112,6 +112,7 @@ class ProductViewModel @Inject constructor(
             ::onGetProductSuccess,
             ::onGetProductError
         )
+
     }
 
     private fun updateProducts(
@@ -123,12 +124,27 @@ class ProductViewModel @Inject constructor(
 
     private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
         val mappedProducts = products.map { it.toProductUiState() }
+        val mappedProduct = mutableListOf<ProductUiState>()
+        log("loading: ${state.value.isLoadingProduct}")
+        mappedProducts.map {
+            mappedProduct.add(it)
+
+        }
+        log("response: ${mappedProduct}")
         _state.update {
             it.copy(
                 isEmptyProducts = false,
                 products = flowOf(mappedProducts),
             )
         }
+        log("loading: ${state.value.isLoadingProduct}")
+        mappedProduct.clear()
+        _state.value.products.map {
+            it.map {
+                mappedProduct.add(it)
+            }
+        }
+        log("response: ${mappedProduct}")
         getWishListProducts(mappedProducts)
     }
 

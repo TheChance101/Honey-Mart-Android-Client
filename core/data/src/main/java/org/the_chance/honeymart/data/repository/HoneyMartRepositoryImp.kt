@@ -8,7 +8,6 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
-import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
@@ -161,9 +160,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getAllNotifications(notificationsState) }.value?.map { it.toNotificationEntity() }
             ?: throw NotFoundException()
 
-    override suspend fun saveThemeState(isDark: Boolean) {
-        datastore.saveThemeState(isDark)
-    }
+
 
     override suspend fun addProfileImage(image: ByteArray): String {
         return wrap {

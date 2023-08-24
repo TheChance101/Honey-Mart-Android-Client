@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -41,6 +42,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchForProducts() {
+
         val query = _searchText.value
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
@@ -52,12 +54,28 @@ class SearchViewModel @Inject constructor(
 
     private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
         val mappedProducts = products.map { it.toProductUiState() }
+       val mappedProduct = mutableListOf<ProductUiState>()
+        log("onSearchForProductsSuccess: ${state.value.isLoading}")
+        mappedProducts.map {
+            mappedProduct.add(it)
+
+        }
+        log("onSearchForProductsSuccess: ${mappedProduct}")
         _state.update { searchUiState ->
             searchUiState.copy(
                 products = flowOf(mappedProducts),
+                isError = false,
             )
         }
-        _state.update { it.copy(isLoading = false, isError = false) }
+        log("onSearchForProductsSuccess: ${state.value.isLoading}")
+        mappedProduct.clear()
+        _state.value.products.map {
+            it.map {
+                mappedProduct.add(it)
+            }
+        }
+        log("onSearchForProductsSuccess: ${mappedProduct}")
+
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {

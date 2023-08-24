@@ -226,7 +226,7 @@ private fun ProfileContent(
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
                 NavCard(
-                    iconId = R.drawable.ic_notification,
+                    iconId = R.drawable.round_corner_dialog,
                     title = "Notification",
                     onClick = listener::onClickNotification
                 )
