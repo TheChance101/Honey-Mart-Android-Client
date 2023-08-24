@@ -39,7 +39,7 @@ import org.the_chance.honymart.ui.theme.white
 @Composable
 fun ItemOrder(
     onClickCard: (orderId: Long) -> Unit = {},
-    orderId: Long ,
+    orderId: Long,
     userName: String = "",
     price: String = "",
     count: Int = 0,

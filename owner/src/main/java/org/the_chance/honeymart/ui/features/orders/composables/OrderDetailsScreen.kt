@@ -9,13 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.features.orders.contentScreen
-import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -53,11 +50,7 @@ fun OrderDetailsContent(
                 }
             }
 
-            HoneyFilledIconButton(
-                label = "Done",
-                onClick = {},
-                iconPainter = painterResource(id = R.drawable.icon_cart)
-            )
+            OrderStatus()
 
         }
     }

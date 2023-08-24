@@ -32,10 +32,7 @@ fun OrderDetailsCard(
     onClick: () -> Unit,
     state: OrderDetailsProductUiState,
     modifier: Modifier = Modifier,
-
-    ) {
-
-
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
