@@ -45,7 +45,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                LoginUiEffect.ShowValidationToastEffect -> {
+                LoginUiEffect.ShowLoginErrorToastEffect -> {
                     Toast.makeText(
                         context,
                         state.validationToast.message,

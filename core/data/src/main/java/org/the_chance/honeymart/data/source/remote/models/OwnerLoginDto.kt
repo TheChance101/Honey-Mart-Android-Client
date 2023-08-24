@@ -7,6 +7,8 @@ import kotlinx.serialization.Serializable
 data class OwnerLoginDto(
     @SerializedName("fullName")
     val fullName: String?,
+    @SerializedName("marketId")
+    val marketId: Long?,
     @SerializedName("tokens")
     val tokens: TokensDto
 )
