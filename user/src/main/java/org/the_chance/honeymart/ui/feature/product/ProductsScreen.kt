@@ -29,9 +29,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
+import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -75,7 +75,7 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
-        EmptyProductPlaceholder(state.emptyPlaceHolder())
+        ShowEmptyPlaceholder(state.emptyPlaceHolder())
 
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {

@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.usecase.GetThemeUseCase
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
+import org.the_chance.honeymart.ui.feature.coupons.CouponsScreen
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -56,7 +57,7 @@ class MainActivity: AppCompatActivity() {
                         )
                         {
 
-                            MainNavGraph()
+                            CouponsScreen()
                         }
                     }
                 }
