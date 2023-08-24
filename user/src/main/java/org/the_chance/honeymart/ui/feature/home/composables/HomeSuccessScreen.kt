@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,13 +35,14 @@ import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
+import org.the_chance.honeymart.ui.feature.home.MarketUiState
 import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -375,8 +377,10 @@ private fun MarketsPager(
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)
                     .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                    .background(black16)
                     .height(MaterialTheme.dimens.heightItemMarketCard)
-                    .clickable(onClick = { onClickPagerItem(markets[it].marketId) }),
+                    .clickable(onClick = { onClickPagerItem(markets[it].marketId) })
+                ,
             )
         }
         HorizontalPagerIndicator(
