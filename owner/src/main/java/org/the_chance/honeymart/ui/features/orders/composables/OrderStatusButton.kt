@@ -14,10 +14,10 @@ import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 @Composable
 fun OrderStatusButton(
     modifier: Modifier = Modifier,
-    modifierFillButton: Modifier = Modifier,
-    modifierOnlineButton: Modifier = Modifier,
     confirmText: String,
     cancelText: String,
+    onClickConfirm: () -> Unit,
+    onClickCancel: () -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -25,14 +25,14 @@ fun OrderStatusButton(
     ) {
         Spacer(modifier = Modifier.weight(1F))
         HoneyFilledButton(
-            modifier = modifierFillButton.width(165.dp),
+            modifier = modifier.width(165.dp),
             label = confirmText,
-            onClick = {},
+            onClick = onClickConfirm,
         )
         HoneyOutlineButton(
-            modifier = modifierOnlineButton.width(165.dp),
+            modifier = modifier.width(165.dp),
             label = cancelText,
-            onClick = {},
+            onClick = onClickCancel,
         )
 
     }

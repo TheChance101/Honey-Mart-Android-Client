@@ -4,7 +4,6 @@ import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -18,14 +17,23 @@ data class OrdersUiState(
     val orderStates: OrderStates = OrderStates.ALL,
     val orderDetails: OrderUiState = OrderUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
-    val product: OrderDetailsProductUiState= OrderDetailsProductUiState(),
+    val product: OrderDetailsProductUiState = OrderDetailsProductUiState(),
     val showState: ShowState = ShowState(),
     val isSelected: Boolean = false,
     val orderId: Long = 0,
+    val order: OrderState = OrderState(),
 )
 
 data class ShowState(
-    val showProductDetails: Boolean = false
+    val showProductDetails: Boolean = false,
+    val showProcessingState: Boolean = false,
+    val showDoneState: Boolean = false,
+    val showCancelState: Boolean = false,
+)
+
+data class OrderState(
+    val orderId: Long = 0,
+    val states: OrderStates = OrderStates.ALL,
 )
 
 data class OrderUiState(
@@ -96,9 +104,9 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
 fun OrdersUiState.formatOrder(order: Long): String {
     return "Order #${order}"
 }
+
 fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
-
 
 
 fun Double.toPriceFormat(): String = "$this$"

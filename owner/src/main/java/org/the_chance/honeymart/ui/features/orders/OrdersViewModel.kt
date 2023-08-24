@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.orders
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
@@ -8,6 +7,7 @@ import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -16,14 +16,15 @@ import javax.inject.Inject
 class OrdersViewModel @Inject constructor(
     private val getAllMarketOrders: GetAllMarketOrdersUseCase,
     private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
-    private val getOrderProductDetailsUseCase: GetOrderProductsDetailsUseCase
+    private val getOrderProductDetailsUseCase: GetOrderProductsDetailsUseCase,
+    private val updateOrderStateUseCase: UpdateOrderStateUseCase,
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
     init {
         getAllMarketOrders(OrderStates.ALL)
+        updateStateOrder(_state.value.orderId, OrderStates.PROCESSING)
     }
-
 
 
     override fun getAllMarketOrders(orderState: OrderStates) {
@@ -101,7 +102,7 @@ class OrdersViewModel @Inject constructor(
 
     }
 
-    override fun onClickProduct(product  : OrderDetailsProductUiState){
+    override fun onClickProduct(product: OrderDetailsProductUiState) {
         _state.update {
             it.copy(
                 product = product,
@@ -109,6 +110,7 @@ class OrdersViewModel @Inject constructor(
             )
         }
     }
+
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
         getOrderDetails(id)
@@ -128,6 +130,33 @@ class OrdersViewModel @Inject constructor(
         return orders.map { order ->
             order.copy(isOrderSelected = order.orderId == selectedOrderId)
         }
+    }
+
+    override fun updateStateOrder(id: Long?, updateState: OrderStates) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { updateOrderStateUseCase(id = id, state = updateState.state) },
+            ::onUpdateStateOrderSuccess,
+            ::onUpdateStateOrderError
+        )
+        _state.update { it.copy(order = it.order.copy(orderId = id!!, states = updateState)) }
+    }
+
+    private fun onUpdateStateOrderSuccess(success: Boolean) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+
+                )
+        }
+    }
+
+    private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+
     }
 
 }

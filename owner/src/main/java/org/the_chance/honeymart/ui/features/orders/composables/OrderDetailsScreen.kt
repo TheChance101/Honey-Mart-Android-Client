@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.features.orders.contentScreen
@@ -59,12 +61,32 @@ fun OrderDetailsContent(
                     }
                 }
             }
+//            when (state.order.states) {
+//                OrderStates.ALL -> TODO()
+//                OrderStates.PENDING -> TODO()
+//                OrderStates.PROCESSING -> TODO()
+//                OrderStates.DONE -> TODO()
+//                OrderStates.CANCELED -> TODO()
+//            }
             ContentVisibility(state = state.products.isNotEmpty() && !state.showState.showProductDetails) {
                 OrderStatusButton(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(bottom = 24.dp),
                     confirmText = "Approve",
                     cancelText = "Decline",
-                    modifierFillButton = Modifier.padding(bottom = 14.dp),
-                    modifierOnlineButton = Modifier.padding(end = 24.dp, bottom = 14.dp)
+                    onClickConfirm = {
+                        listener.updateStateOrder(
+                            id = state.orderId,
+                            updateState = OrderStates.PROCESSING
+                        )
+                    },
+                    onClickCancel = {
+                        listener.updateStateOrder(
+                            state.orderId,
+                            updateState = OrderStates.CANCELED
+                        )
+                    }
                 )
             }
         }
