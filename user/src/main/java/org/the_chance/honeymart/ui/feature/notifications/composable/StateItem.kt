@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
@@ -28,13 +27,13 @@ fun StateItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
             modifier = modifier
                 .border(
-                    width = 1.dp,
+                    width = MaterialTheme.dimens.space1,
                     color = color,
                     shape = CircleShape
                 ),
@@ -46,7 +45,7 @@ fun StateItem(
                 painter = painter,
                 contentDescription = "",
                 tint = color,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.space20)
             )
         }
         Text(

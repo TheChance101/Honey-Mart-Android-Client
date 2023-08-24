@@ -17,11 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
-import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black87
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
 
 @Composable
@@ -34,44 +30,44 @@ fun NotificationCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(white)
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
             verticalAlignment = Alignment.Top,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.space16)
         ) {
             Icon(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(MaterialTheme.dimens.space8)
                     .size(MaterialTheme.dimens.icon24),
                 painter = painter,
                 contentDescription = "",
-                tint = black60
+                tint = MaterialTheme.colorScheme.onBackground
             )
             Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
             ) {
                 Text(
                     text = title,
-                    color = black87
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
                 Text(
                     text = date,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = message,
-                    color = black60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
         Divider(
             color = white200,
             modifier = Modifier
-                .height(1.dp)
+                .height(MaterialTheme.dimens.space1)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = MaterialTheme.dimens.space16)
         )
     }
 }
