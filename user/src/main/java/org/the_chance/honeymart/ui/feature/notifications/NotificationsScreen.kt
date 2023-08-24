@@ -18,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
@@ -27,10 +26,7 @@ import org.the_chance.honeymart.ui.feature.notifications.composable.Notification
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun NotificationsScreen(
@@ -51,7 +47,7 @@ fun NotificationsContent(
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24)
         ) {
             Loading(state = state.isLoading)
             ConnectionErrorPlaceholder(
@@ -66,47 +62,47 @@ fun NotificationsContent(
                 onClickDiscoverMarkets = {},
                 visibility = false
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(32.dp),
-                modifier = Modifier
-                    .padding(top = MaterialTheme.dimens.space24)
-            ) {
-                StateItem(
-                    painter = painterResource(R.drawable.ic_notification),
-                    color = if (state.all()) {
-                        primary100
-                    } else {
-                        black37
-                    },
-                    text = stringResource(R.string.all),
-                    onClickState = listener::onGetAllNotifications
-                )
-                StateItem(
-                    painter = painterResource(R.drawable.icon_order_nav),
-                    color = if (state.order()) {
-                        primary100
-                    } else {
-                        black37
-                    },
-                    text = stringResource(R.string.order_title),
-                    onClickState = listener::onGetOrderNotifications
-                )
-                StateItem(
-                    painter = painterResource(R.drawable.ic_delivery),
-                    color = if (state.delivery()) {
-                        primary100
-                    } else {
-                        black37
-                    },
-                    text = stringResource(R.string.delivery),
-                    onClickState = listener::onGetDeliveryNotifications
-                )
-            }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.dimens.space24)
+                ) {
+                    StateItem(
+                        painter = painterResource(R.drawable.ic_notification),
+                        color = if (state.all()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.all),
+                        onClickState = listener::onGetAllNotifications
+                    )
+                    StateItem(
+                        painter = painterResource(R.drawable.icon_order_nav),
+                        color = if (state.order()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.order_title),
+                        onClickState = listener::onGetOrderNotifications
+                    )
+                    StateItem(
+                        painter = painterResource(R.drawable.ic_delivery),
+                        color = if (state.delivery()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.delivery),
+                        onClickState = listener::onGetDeliveryNotifications
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(white)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
+                        .background(MaterialTheme.colorScheme.secondary)
                         .fillMaxSize()
                 ) {
                     items(state.updatedNotifications.size) {
@@ -125,7 +121,7 @@ fun NotificationsContent(
                                 }
                             },
                             title = notification.title,
-                            date = notification.date,
+                            date = convertDate(notification),
                             message = notification.body
                         )
                     }

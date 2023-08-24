@@ -2,6 +2,8 @@ package org.the_chance.honeymart.ui.feature.notifications
 
 import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 data class NotificationsUiState(
     val isLoading: Boolean = false,
@@ -44,3 +46,12 @@ fun NotificationsUiState.delivery() = this.notificationState == NotificationStat
 
 fun NotificationsUiState.emptyNotificationsPlaceHolder() =
     this.updatedNotifications.isEmpty() && !this.isError && !this.isLoading
+
+fun convertDate(notification: Notification): String {
+    val date = notification.date
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy   HH:mm")
+
+    val localDateTime = LocalDateTime.parse(date, inputFormatter)
+    return localDateTime.format(outputFormatter)
+}
