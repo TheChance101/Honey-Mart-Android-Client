@@ -52,7 +52,7 @@ fun OrdersContent(
             state = state.errorPlaceHolderCondition(),
             onClickTryAgain = { listener.getAllMarketOrders(OrderStates.ALL) }
         )
-        Loading(state = state.isLoading  && state.orders.isEmpty())
+        Loading(state = state.isLoading)
 //        EmptyOrdersPlaceholder(
 //            painter = painterResource(id = R.drawable.owner_empty_order),
 //            text = stringResource(R.string.there_are_no_order_for_this_day),

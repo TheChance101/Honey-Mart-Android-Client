@@ -11,21 +11,27 @@ import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 
 @Composable
-fun OrderStatus() {
-    Row (
-        modifier = Modifier.fillMaxWidth(),
+fun OrderStatusButton(
+    modifier: Modifier=Modifier,
+    confirmText: String,
+    cancelText: String,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-    ){
-        Spacer(modifier = Modifier.weight(1F))
+    ) {
+        Spacer(modifier = modifier.weight(2F))
         HoneyFilledButton(
-            modifier = Modifier.width(146.dp),
-            label = "Approve",
+            modifier = modifier.width(146.dp),
+            label = confirmText,
             onClick = {},
         )
         HoneyFilledButton(
-            modifier = Modifier.width(146.dp),
-            label = "Declined",
+            modifier = modifier.width(146.dp),
+            label = cancelText,
             onClick = {},
         )
+
     }
+
 }

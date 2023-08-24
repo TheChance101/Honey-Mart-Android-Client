@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
@@ -25,6 +27,7 @@ fun OrderDetailsContent(
     ContentVisibility(state = state.contentScreen()) {
         Column(
             modifier = Modifier
+                .background(color = Color.White, shape = MaterialTheme.shapes.medium)
                 .fillMaxSize()
                 .padding(
                     all = MaterialTheme.dimens.space24,
@@ -36,22 +39,24 @@ fun OrderDetailsContent(
                 price = state.orderDetails.totalPrice,
                 isSelected = !state.isSelected
             )
+            ContentVisibility(state = state.products.isNotEmpty() && !state.isLoading) {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+                ) {
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
-            ) {
 
-                items(state.products.size) { index ->
-                    OrderDetailsCard(
-                        onClick = { listener.onClickProduct(state.products[index]) },
-                        state = state.products[index]
-                    )
+                    items(state.products.size) { index ->
+                        OrderDetailsCard(
+                            onClick = { listener.onClickProduct(state.products[index]) },
+                            state = state.products[index]
+                        )
+                    }
                 }
             }
-
-            OrderStatus()
-
+            ContentVisibility(state = state.products.isNotEmpty() && !state.showState.showProductDetails) {
+                OrderStatusButton(modifier = Modifier.fillMaxSize(),confirmText = "Approve", cancelText = "Decline")
+            }
         }
     }
 }
