@@ -140,4 +140,7 @@
     <string name="market_image">Market Image</string>
     <string name="product_item">Product Item</string>
     <string name="search">Search</string>
+    <string name="login">Login</string>
+    <string name="login_and_get_access_to_your_orders_wishlist_and_more">Login and get access to your orders, wishlist, and more.</string>
+    <string name="you_are_not_logged_in">You are not Logged In</string>
 </resources>

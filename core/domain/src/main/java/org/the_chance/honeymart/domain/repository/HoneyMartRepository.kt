@@ -53,8 +53,8 @@ interface HoneyMartRepository {
     suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity>
 
     suspend fun getProfileUser(): ProfileUserEntity
-    suspend fun saveThemeState(isDark: Boolean)
-    suspend fun getThemeState(): Boolean
+
+
 
     suspend fun addProfileImage(image: ByteArray): String
 }

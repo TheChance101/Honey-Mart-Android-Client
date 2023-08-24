@@ -1,13 +1,11 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
-import org.the_chance.honeymart.domain.usecase.SaveThemeUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -17,17 +15,11 @@ class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUserUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
-    private val saveThemeUseCase: SaveThemeUseCase,
-    savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
-    ProfileInteractionsListener {
+) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()), ProfileInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
-
-    init {
-        getData()
-    }
+    init { getData() }
 
     override fun getData() {
         _state.update {
@@ -40,14 +32,22 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    override fun onClickLogin() {
+        effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
+    }
+
     private fun onGetProfileSuccess(user: ProfileUserEntity) {
-        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState()) }
+        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, isError = true, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = error,
+                isError = true,
+                isConnectionError = error is ErrorHandler.NoConnection,
+            )
         }
     }
 
@@ -61,27 +61,6 @@ class ProfileViewModel @Inject constructor(
 
     override fun onClickNotification() {
         effectActionExecutor(_effect, ProfileUiEffect.ClickNotificationEffect)
-    }
-
-    override fun onClickTheme() {
-        _state.update { it.copy(isDark = !it.isDark) }
-        effectActionExecutor(_effect, ProfileUiEffect.ClickThemeEffect)
-    }
-
-    fun onClickThemeState(isDark: Boolean) {
-        tryToExecute(
-            function = { saveThemeUseCase(isDark) },
-            onSuccess = ::onChangeThemeSuccess,
-            onError = {}
-        )
-    }
-
-    private fun onChangeThemeSuccess(theme: Unit) {
-//        _state.update { it.copy(isDark  = ! it.isDark) }
-    }
-
-    override fun showSnackBar(massage: String) {
-        TODO("Not yet implemented")
     }
 
 
@@ -125,15 +104,12 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = ::onLogoutError
+            onError = {onLogoutError()}
         )
     }
-
     private fun onLogoutSuccess() {
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
-
-    private fun onLogoutError(error: ErrorHandler) {
-    }
+    private fun onLogoutError() {}
 }

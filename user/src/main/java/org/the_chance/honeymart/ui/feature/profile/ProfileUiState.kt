@@ -6,7 +6,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class ProfileUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val isDark: Boolean = false,
     val error: ErrorHandler? = null,
     val isConnectionError: Boolean = false,
     val isShowDialog: Boolean = false,

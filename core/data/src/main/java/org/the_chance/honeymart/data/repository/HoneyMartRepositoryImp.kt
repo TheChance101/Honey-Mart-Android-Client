@@ -8,7 +8,6 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.RecentProductEntity
-import org.the_chance.honeymart.data.source.local.AppDataStorePreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toCartEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
@@ -40,7 +39,6 @@ import javax.inject.Inject
 
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
-    private val datastore: AppDataStorePreferences,
 ) : BaseRepository(), HoneyMartRepository {
 
     override suspend fun checkout(): String {
@@ -162,10 +160,6 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun saveThemeState(isDark: Boolean) {
         datastore.saveThemeState(isDark)
-    }
-
-    override suspend fun getThemeState(): Boolean {
-        return datastore.getThemeState()
     }
 
     override suspend fun addProfileImage(image: ByteArray): String {
