@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -85,8 +86,14 @@ fun AllOrdersContent(
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)
         ) {
             items(state.orders.size) { index ->
+                Log.i("mah", "${state.orders[index]}")
                 ItemOrder(
-                    onClickCard = { listener.onClickOrder(orderId = state.orders[index].orderId) },
+                    onClickCard = {
+                        listener.onClickOrder(
+                            orderDetails = state.orderDetails,
+                            id = state.orders[index].orderId
+                        )
+                    },
                     orderId = state.orders[index].orderId,
                     userName = state.orders[index].userName,
                     price = state.orders[index].totalPrice,

@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.orders.OrderDetailsProductUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
@@ -29,13 +30,10 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun OrderDetailsCard(
     onClick: () -> Unit,
+    state: OrderDetailsProductUiState,
     modifier: Modifier = Modifier,
-    imageUrl: String = "",
-    productName: String = "",
-    productPrice: String = "",
-    count: Int = 0,
-    isSelected: Boolean = false
-) {
+
+    ) {
 
 
     Row(
@@ -49,7 +47,7 @@ fun OrderDetailsCard(
             modifier = Modifier
                 .size(MaterialTheme.dimens.itemProductImage)
                 .clip(CircleShape),
-            imageUrl = imageUrl
+            imageUrl = if (state.images.isNotEmpty()) state.images.first() else "https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff"
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -64,7 +62,7 @@ fun OrderDetailsCard(
                     )
             ) {
                 Text(
-                    text = productName,
+                    text = state.name,
                     style = MaterialTheme.typography.bodyMedium,
                     color = blackOn60
                 )
@@ -82,13 +80,13 @@ fun OrderDetailsCard(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "$count",
+                        text = "${state.count}",
                         style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
                     )
                 }
             }
             Text(
-                text = "$productPrice $",
+                text = "${state.price} $",
                 style = MaterialTheme.typography.bodyMedium,
                 color = blackOn60
             )

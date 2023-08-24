@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.orders
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
@@ -24,12 +23,13 @@ class OrdersViewModel @Inject constructor(
         getAllMarketOrders(OrderStates.ALL)
     }
 
-    override fun onClickOrder(id: Long) {
+    override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
         _state.update {
             it.copy(
-                orders = updatedOrders
+                orders = updatedOrders,
+                orderDetails = orderDetails
             )
         }
         getOrderDetails(id)

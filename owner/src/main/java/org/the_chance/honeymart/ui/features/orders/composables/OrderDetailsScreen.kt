@@ -22,8 +22,9 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun OrderDetailsContent(
     state: OrdersUiState,
-    listener : OrdersInteractionsListener
+    listener: OrdersInteractionsListener
 ) {
+    Loading(state = state.isLoading)
     ContentVisibility(state = state.contentScreen()) {
         Column(
             modifier = Modifier
@@ -45,25 +46,10 @@ fun OrderDetailsContent(
             ) {
 
                 items(state.products.size) { index ->
-                    if (state.products[index].images.isEmpty()) {
-
-                        OrderDetailsCard(
-                            onClick = { listener.onClickProduct(state.products[index]) },
-                            imageUrl = "https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff",
-                            productName = state.products[index].name,
-                            productPrice = state.products[index].price.toString(),
-                            count = state.products[index].count
-                        )
-
-                    } else {
-                        OrderDetailsCard(
-                            onClick = { listener.onClickProduct(state.products[index]) },
-                            imageUrl = state.products[index].images.first(),
-                            productName = state.products[index].name,
-                            productPrice = state.products[index].price.toString(),
-                            count = state.products[index].count
-                        )
-                    }
+                    OrderDetailsCard(
+                        onClick = { listener.onClickProduct(state.products[index]) },
+                        state = state.products[index]
+                    )
                 }
             }
 

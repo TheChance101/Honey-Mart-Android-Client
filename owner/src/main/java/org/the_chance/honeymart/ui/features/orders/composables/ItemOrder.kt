@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -79,6 +80,7 @@ fun ItemOrder(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Log.i("orderId", "$orderId")
                     Text(
                         text = stringResource(R.string.order, orderId),
                         color = black60,

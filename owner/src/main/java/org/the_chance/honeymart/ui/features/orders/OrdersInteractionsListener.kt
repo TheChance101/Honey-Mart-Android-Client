@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.features.orders
 
 interface OrdersInteractionsListener {
-    fun onClickOrder(orderId: Long)
+    fun onClickOrder(orderDetails: OrderUiState, id: Long)
     fun getAllMarketOrders(orderState: OrderStates)
     fun onClickProduct(product: OrderDetailsProductUiState)
 }
