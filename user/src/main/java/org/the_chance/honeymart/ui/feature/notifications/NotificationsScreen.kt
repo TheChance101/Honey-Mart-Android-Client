@@ -24,7 +24,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.feature.market.navigateToHomeScreen
+import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
