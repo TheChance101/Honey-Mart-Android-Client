@@ -51,27 +51,27 @@ fun AllOrdersContent(
             CustomChip(
                 state = state.all(),
                 text = stringResource(R.string.all),
-                onClick = { listener.getAllMarketOrders(OrderStates.ALL) }
+                onClick = { listener.getAllMarketOrder(OrderStates.ALL) }
             )
             CustomChip(
                 state = state.pending(),
                 text = stringResource(R.string.new_order),
-                onClick = { listener.getAllMarketOrders(OrderStates.PENDING) }
+                onClick = { listener.getAllMarketOrder(OrderStates.PENDING) }
             )
             CustomChip(
                 state = state.processing(),
                 text = stringResource(id = R.string.processing),
-                onClick = { listener.getAllMarketOrders(OrderStates.PROCESSING) }
+                onClick = { listener.getAllMarketOrder(OrderStates.PROCESSING) }
             )
             CustomChip(
                 state = state.done(),
                 text = stringResource(id = R.string.done),
-                onClick = { listener.getAllMarketOrders(OrderStates.DONE) }
+                onClick = { listener.getAllMarketOrder(OrderStates.DONE) }
             )
             CustomChip(
                 state = state.cancel(),
                 text = stringResource(id = R.string.cancel),
-                onClick = { listener.getAllMarketOrders(OrderStates.CANCELED) }
+                onClick = { listener.getAllMarketOrder(OrderStates.CANCELED) }
             )
         }
         EmptyOrdersPlaceholder(

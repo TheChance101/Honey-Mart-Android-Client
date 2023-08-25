@@ -43,6 +43,7 @@ data class OrderUiState(
     val isOrderSelected: Boolean = false,
     val state: Int = 0,
     val isSelected: Boolean = false,
+    val buttonsState: ButtonsState = ButtonsState()
 )
 
 data class OrderDetailsProductUiState(
@@ -60,6 +61,14 @@ enum class OrderStates(val state: Int) {
     DONE(3),
     CANCELED(5)
 }
+
+data class ButtonsState(
+    val confirmText: String = "",
+    val cancelText: String = "",
+    val onClickConfirm: () -> Unit = {},
+    val onClickCancel: () -> Unit = {}
+)
+
 // endregion
 
 // region Mappers

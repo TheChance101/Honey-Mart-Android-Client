@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.features.orders.contentScreen
@@ -56,97 +55,10 @@ fun OrderDetailsContent(
                 }
             }
 
-            when (state.order.states) {
-                OrderStates.ALL -> OrderStatusButton(
-                    confirmText = "Approved",
-                    cancelText = "Cancel",
-                    state = state,
-                    onClickConfirm = {
-                        listener.updateStateOrder(
-                            id = state.orderId,
-                            updateState = OrderStates.PROCESSING
-                        )
-                    },
-                    onClickCancel = {
-                        listener.updateStateOrder(
-                            state.orderId,
-                            updateState = OrderStates.CANCELED
-                        )
-                    },
-                )
-
-                OrderStates.PENDING -> OrderStatusButton(
-                    confirmText = "Pending",
-                    cancelText = "Cancel",
-                    state = state,
-                    onClickConfirm = {
-                        listener.updateStateOrder(
-                            id = state.orderId,
-                            updateState = OrderStates.PROCESSING
-                        )
-                    },
-                    onClickCancel = {
-                        listener.updateStateOrder(
-                            state.orderId,
-                            updateState = OrderStates.CANCELED
-                        )
-                    },
-                )
-
-                OrderStates.PROCESSING -> OrderStatusButton(
-                    confirmText = "Approved",
-                    cancelText = "Declined",
-                    state = state,
-                    onClickConfirm = {
-                        listener.updateStateOrder(
-                            id = state.orderId,
-                            updateState = OrderStates.DONE
-                        )
-                    },
-                    onClickCancel = {
-                        listener.updateStateOrder(
-                            state.orderId,
-                            updateState = OrderStates.CANCELED
-                        )
-                    },
-                )
-
-                OrderStates.DONE -> OrderStatusButton(
-                    confirmText = "Approved",
-                    cancelText = "Declined",
-                    state = state,
-                    onClickConfirm = {
-                        listener.updateStateOrder(
-                            id = state.orderId,
-                            updateState = OrderStates.ALL
-                        )
-                    },
-                    onClickCancel = {
-                        listener.updateStateOrder(
-                            state.orderId,
-                            updateState = OrderStates.CANCELED
-                        )
-                    },
-                )
-
-                OrderStates.CANCELED -> OrderStatusButton(
-                    onClickConfirm = {
-                        listener.updateStateOrder(
-                            id = state.orderId,
-                            updateState = OrderStates.PROCESSING
-                        )
-                    },
-                    onClickCancel = {
-                        listener.updateStateOrder(
-                            state.orderId,
-                            updateState = OrderStates.CANCELED
-                        )
-                    },
-                    confirmText = "Approved",
-                    cancelText = "Declined",
-                    state = state,
-                )
-            }
+            OrderStatusButtons(
+                visablite = state.products.isNotEmpty() && !state.showState.showProductDetails,
+                buttonState = state.orderDetails.buttonsState
+            )
         }
     }
 }

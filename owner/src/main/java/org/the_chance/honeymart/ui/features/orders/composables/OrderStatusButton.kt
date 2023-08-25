@@ -10,20 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.features.orders.OrdersUiState
+import org.the_chance.honeymart.ui.features.orders.ButtonsState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 
 @Composable
-fun OrderStatusButton(
-    confirmText: String,
-    cancelText: String,
-    state: OrdersUiState,
-    onClickConfirm: () -> Unit,
-    onClickCancel: () -> Unit,
+fun OrderStatusButtons(
+    visablite: Boolean,
+    buttonState: ButtonsState,
     modifier: Modifier = Modifier
 ) {
-    ContentVisibility(state = state.products.isNotEmpty() && !state.showState.showProductDetails) {
+    ContentVisibility(visablite) {
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -31,15 +28,15 @@ fun OrderStatusButton(
             Spacer(modifier = Modifier.weight(1F))
             HoneyFilledButton(
                 modifier = modifier.width(165.dp),
-                label = confirmText,
-                onClick = onClickConfirm,
+                label = buttonState.confirmText,
+                onClick = buttonState.onClickConfirm,
             )
             HoneyOutlineButton(
                 modifier = modifier
                     .width(165.dp)
                     .padding(bottom = 24.dp),
-                label = cancelText,
-                onClick = onClickCancel,
+                label = buttonState.cancelText,
+                onClick = buttonState.onClickCancel,
             )
         }
     }

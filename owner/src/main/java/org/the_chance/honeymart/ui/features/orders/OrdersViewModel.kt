@@ -22,12 +22,12 @@ class OrdersViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getAllMarketOrders(OrderStates.ALL)
+        getAllMarketOrder(OrderStates.ALL)
         updateStateOrder(_state.value.orderId, OrderStates.PROCESSING)
     }
 
 
-    override fun getAllMarketOrders(orderState: OrderStates) {
+    override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
             it.copy(isLoading = true, isError = false, orderStates = orderState)
         }
@@ -67,6 +67,7 @@ class OrdersViewModel @Inject constructor(
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
             )
         }
+        updateButtonsState()
     }
 
     private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
@@ -148,6 +149,7 @@ class OrdersViewModel @Inject constructor(
 
                 )
         }
+        getAllMarketOrder(_state.value.orderStates)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
@@ -155,6 +157,53 @@ class OrdersViewModel @Inject constructor(
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
+
+    }
+
+    private fun updateButtonsState() {
+        val newButtonsState = when (state.value.orderDetails.state) {
+            OrderStates.PENDING.state -> ButtonsState(
+                confirmText = "Approve",
+                cancelText = "Decline",
+                onClickConfirm = {
+                    updateStateOrder(
+                        id = state.value.orderId,
+                        updateState = OrderStates.PROCESSING
+                    )
+                    getAllMarketOrder(OrderStates.PENDING)
+                },
+                onClickCancel = {
+                    updateStateOrder(
+                        state.value.orderId,
+                        updateState = OrderStates.CANCELED
+                    )
+                    getAllMarketOrder(OrderStates.PENDING)
+                }
+            )
+
+            OrderStates.PROCESSING.state -> ButtonsState(
+                confirmText = "Done",
+                cancelText = "Cancel",
+                onClickConfirm = {
+                    updateStateOrder(
+                        id = state.value.orderId,
+                        updateState = OrderStates.DONE
+                    )
+
+                    getAllMarketOrder(OrderStates.PROCESSING)
+                },
+                onClickCancel = {
+                    updateStateOrder(
+                        state.value.orderId,
+                        updateState = OrderStates.CANCELED
+                    )
+                    getAllMarketOrder(OrderStates.PROCESSING)
+                }
+            )
+
+            else -> return
+        }
+        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
 
     }
 
