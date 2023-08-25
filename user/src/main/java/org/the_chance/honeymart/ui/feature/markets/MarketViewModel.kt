@@ -37,7 +37,6 @@ class MarketViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isError = false,
                 markets = flowOf(mappedMarkets)
             )
         }
@@ -52,5 +51,9 @@ class MarketViewModel @Inject constructor(
 
     override fun onClickMarket(marketId: Long) {
         effectActionExecutor(_effect, MarketUiEffect.ClickMarketEffect(marketId))
+    }
+
+    override fun onclickTryAgainMarkets() {
+        getAllMarkets()
     }
 }

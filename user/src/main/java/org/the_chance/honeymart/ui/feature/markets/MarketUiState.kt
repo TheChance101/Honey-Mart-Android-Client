@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class MarketsUiState(
     val isLoading: Boolean = true,
+    val isMarketsLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val markets: Flow<PagingData<MarketUiState>>  = flow{},

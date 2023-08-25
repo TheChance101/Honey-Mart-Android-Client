@@ -15,6 +15,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.markets.compoaseable.MarketItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -66,6 +67,7 @@ fun MarketContent(
                             marketName = market.marketName)
                     }
                 }
+                PagingStateVisibility(markets,listener::onclickTryAgainMarkets)
             }
         }
         ConnectionErrorPlaceholder(

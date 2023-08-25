@@ -53,7 +53,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<MarketEntity>> {
-       return getAllWithParameter(page,::MarketsPagingSource)
+       return getAll(::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -175,12 +175,12 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value ?: throw NotFoundException()
     }
 
-    private fun <I : Any, P> getAllWithParameter(
-        parameter: P, sourceFactory: (HoneyMartService, P) -> PagingSource<Int, I>,)
+    private fun <I : Any> getAll(
+        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,)
     : Flow<PagingData<I>>{
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
-            pagingSourceFactory = { sourceFactory(honeyMartService, parameter) }
+            pagingSourceFactory = { sourceFactory(honeyMartService) }
         ).flow
     }
 
