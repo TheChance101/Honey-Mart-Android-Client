@@ -19,7 +19,6 @@ data class OrdersUiState(
     val products: List<OrderDetailsProductUiState> = emptyList(),
     val product: OrderDetailsProductUiState = OrderDetailsProductUiState(),
     val showState: ShowState = ShowState(),
-    val isSelected: Boolean = false,
     val orderId: Long = 0,
     val order: OrderState = OrderState(),
 )
@@ -43,6 +42,7 @@ data class OrderUiState(
     val userName: String = "",
     val isOrderSelected: Boolean = false,
     val state: Int = 0,
+    val isSelected: Boolean = false,
 )
 
 data class OrderDetailsProductUiState(
@@ -111,6 +111,7 @@ fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
 
 fun Double.toPriceFormat(): String = "$this$"
 fun Int.toCountFormat(): String = "$this items"
+fun Int.toCountProductFormat(): String = "$this Product"
 // endregion
 
 // region Extensions

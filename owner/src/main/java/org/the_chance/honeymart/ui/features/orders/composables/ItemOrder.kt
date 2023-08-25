@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.orders.OrderUiState
+import org.the_chance.honeymart.ui.features.orders.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
@@ -38,14 +39,12 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ItemOrder(
-    onClickCard: (orderId: Long) -> Unit = {},
-    orderId: Long,
-    userName: String = "",
-    price: String = "",
-    count: Int = 0,
-    time: String = "",
-    icon: Boolean = false,
+    state: OrderUiState,
     modifier: Modifier = Modifier,
+    orderId: Long = 1L,
+    count: Int = 0,
+    onClickCard: (orderId: Long) -> Unit = {},
+    icon: Boolean = false,
     isSelected: Boolean = false
 ) {
     val selectedColor by animateColorAsState(
@@ -58,7 +57,7 @@ fun ItemOrder(
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .height(MaterialTheme.dimens.itemOrder)
-            .clickable { onClickCard(orderId) },
+            .clickable { onClickCard(state.orderId) },
         colors = CardDefaults.cardColors(containerColor = white)
     ) {
         Row {
@@ -81,7 +80,7 @@ fun ItemOrder(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(R.string.order, orderId),
+                        text = stringResource(R.string.order, if (icon) state.orderId else orderId),
                         color = black60,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -110,7 +109,7 @@ fun ItemOrder(
                             }
 
                             Text(
-                                text = userName,
+                                text = state.userName,
                                 color = black37,
                                 style = MaterialTheme.typography.displayLarge
                             )
@@ -130,13 +129,13 @@ fun ItemOrder(
                                 }
 
                                 Text(
-                                    text = userName,
+                                    text = state.userName,
                                     color = black37,
                                     style = MaterialTheme.typography.displayLarge
                                 )
                             }
                             Text(
-                                text = "$count Product",
+                                text = count.toCountProductFormat(),
                                 color = black60,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -144,12 +143,12 @@ fun ItemOrder(
                     }
                     if (icon) {
                         Text(
-                            text = price,
+                            text = state.totalPrice,
                             color = black60,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     } else {
-                        HoneyOutlineText(text = price)
+                        HoneyOutlineText(text = state.totalPrice)
                     }
                 }
                 Row(
@@ -162,7 +161,7 @@ fun ItemOrder(
                         tint = black37,
                     )
                     Text(
-                        text = time,
+                        text = state.time,
                         color = black37,
                         style = MaterialTheme.typography.displayLarge
                     )

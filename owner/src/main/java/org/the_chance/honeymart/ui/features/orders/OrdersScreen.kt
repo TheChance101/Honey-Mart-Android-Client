@@ -13,15 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.orders.composables.AllOrdersContent
 import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsContent
 import org.the_chance.honeymart.ui.features.orders.composables.ProductDetailsInOrderContent
-import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.features.category.errorPlaceHolderCondition
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.Loading
 
 @Composable
 fun OrdersScreen(

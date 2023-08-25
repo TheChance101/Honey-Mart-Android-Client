@@ -77,7 +77,6 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun getOrderProductDetails(orderId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
             { getOrderProductDetailsUseCase(orderId) },
             ::onGetOrderProductDetailsSuccess,

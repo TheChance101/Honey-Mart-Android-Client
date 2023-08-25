@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -79,8 +78,7 @@ fun AllOrdersContent(
             painter = painterResource(id = R.drawable.owner_empty_order),
             text = stringResource(R.string.there_are_no_order_for_this_day),
             visibilityState = state.emptyOrdersPlaceHolder(),
-
-            )
+        )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)
@@ -93,10 +91,7 @@ fun AllOrdersContent(
                             id = state.orders[index].orderId
                         )
                     },
-                    orderId = state.orders[index].orderId,
-                    userName = state.orders[index].userName,
-                    price = state.orders[index].totalPrice,
-                    time = state.orders[index].time,
+                    state = state.orders[index],
                     isSelected = state.orders[index].isOrderSelected,
                     icon = true
                 )
