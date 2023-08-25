@@ -11,12 +11,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.orders.composables.AllOrdersContent
+import org.the_chance.honeymart.ui.features.orders.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsContent
 import org.the_chance.honeymart.ui.features.orders.composables.ProductDetailsInOrderContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -51,13 +53,13 @@ fun OrdersContent(
             state = state.errorPlaceHolderCondition(),
             onClickTryAgain = { listener.getAllMarketOrders(OrderStates.ALL) }
         )
-        Loading(state = state.isLoading)
-//        EmptyOrdersPlaceholder(
-//            painter = painterResource(id = R.drawable.owner_empty_order),
-//            text = stringResource(R.string.there_are_no_order_for_this_day),
-//            visibilityState = state.emptyOrdersPlaceHolder(),
-//
-//            )
+        Loading(state = state.isLoading &&state.orders.isEmpty())
+        EmptyOrdersPlaceholder(
+            painter = painterResource(id = R.drawable.owner_empty_order),
+            text = stringResource(R.string.there_are_no_order_for_this_day),
+            visibilityState = state.emptyOrdersPlaceHolder(),
+
+            )
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
