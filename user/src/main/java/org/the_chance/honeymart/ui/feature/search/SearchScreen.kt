@@ -38,6 +38,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
+import org.the_chance.honeymart.ui.composables.pagingStateVisibilityGridScope
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -51,7 +52,6 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
-import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -177,9 +177,10 @@ fun SearchContent(
                         contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        state = rememberLazyGridState(),
-                        content = {
-                            items(products.itemCount) { index ->
+                        state = rememberLazyGridState()
+                        ){
+                        pagingStateVisibilityGridScope(products)
+                        items(products.itemCount) { index ->
                                 val product = products[index]
                                 if (product != null) {
                                     CardSearch(
@@ -190,13 +191,10 @@ fun SearchContent(
                                     )
                                 }
                             }
-                            pagingStateVisibilityGridScope(products)
                         }
-                    )
                 }
             }
         }
-        Loading(state = state.isLoading)
         ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
         EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
     }

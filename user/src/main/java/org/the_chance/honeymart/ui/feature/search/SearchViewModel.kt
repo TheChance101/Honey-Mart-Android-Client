@@ -7,11 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -44,30 +41,13 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
-        val mappedProducts = products.map { it.toProductUiState() }
-       val mappedProduct = mutableListOf<ProductUiState>()
-        log("onSearchForProductsSuccess: ${state.value.isLoading}")
-        mappedProducts.map {
-            mappedProduct.add(it)
-
-        }
-        log("onSearchForProductsSuccess: ${mappedProduct}")
         _state.update { searchUiState ->
             searchUiState.copy(
-                products = flowOf(mappedProducts),
+                products = flowOf(products.map { it.toProductUiState() }),
                 isError = false,
                 isLoading = false
             )
         }
-        log("onSearchForProductsSuccess: ${state.value.isLoading}")
-        mappedProduct.clear()
-        _state.value.products.map {
-            it.map {
-                mappedProduct.add(it)
-            }
-        }
-        log("onSearchForProductsSuccess: ${mappedProduct}")
-
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {
