@@ -14,7 +14,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import org.the_chance.honeymart.ui.composables.coupon.CouponUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponsInteractionListener
 import org.the_chance.honeymart.ui.feature.coupons.CouponsUiState
@@ -30,17 +32,14 @@ fun CouponsContentScreen(
     state: CouponsUiState,
     listener: CouponsInteractionListener
 ) {
-    LazyVerticalGrid(
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
-        columns = GridCells.Fixed(2)
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        item(
-            span = { GridItemSpan(2) },
-        ) {
+        item {
             Row(
                 modifier = Modifier.padding(
                     start = MaterialTheme.dimens.space16,
@@ -51,56 +50,25 @@ fun CouponsContentScreen(
                 CustomChip(
                     state = state.all(),
                     text = "All",
-                    onClick = listener::onClickAllCoupons
+                    onClick = { listener.onClickAllCoupons() }
                 )
                 CustomChip(
                     state = state.valid(),
                     text = "Valid",
-                    onClick = listener::onClickValidCoupons
+                    onClick = { listener.onClickValidCoupons() }
                 )
                 CustomChip(
                     state = state.expired(),
                     text = "Expired",
-                    onClick = listener::onClickExpiredCoupons
+                    onClick = { listener.onClickExpiredCoupons() }
                 )
             }
         }
 
-
-        item(
-            span = { GridItemSpan(2) },
-        ) {
-            Coupons(
-                coupons = state.coupons,
-                onClickCoupon = listener::onClickGetCoupon
-            )
-        }
-
-    }
-}
-
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun Coupons(
-    coupons: List<CouponUiState>,
-    onClickCoupon: (Long) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(
-            horizontal = MaterialTheme.dimens.space16,
-            vertical = MaterialTheme.dimens.space8
-        )
-    )
-    {
-        items(items = coupons, key = { it.couponId }) { coupon ->
+        items(items = state.coupons, key = { it.couponId }) { coupon ->
             CouponsItem(
-                modifier = Modifier.animateItemPlacement(),
                 coupon = coupon,
-                onClickGetCoupon = { onClickCoupon(coupon.couponId) })
+                onClickGetCoupon = { listener.onClickGetCoupon(coupon.couponId) })
         }
     }
 }
