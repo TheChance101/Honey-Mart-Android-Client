@@ -10,17 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.orders.ButtonsState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 
 @Composable
 fun OrderStatusButtons(
-    visablite: Boolean,
+    visibility: Boolean,
     buttonState: ButtonsState,
     modifier: Modifier = Modifier
 ) {
-    ContentVisibility(visablite) {
+    ContentVisibility(visibility) {
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,

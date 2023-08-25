@@ -24,6 +24,7 @@ import org.the_chance.honeymart.ui.features.orders.done
 import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
 import org.the_chance.honeymart.ui.features.orders.processing
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.dimens
 

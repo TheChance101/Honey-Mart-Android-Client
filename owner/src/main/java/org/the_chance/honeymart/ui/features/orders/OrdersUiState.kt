@@ -25,9 +25,6 @@ data class OrdersUiState(
 
 data class ShowState(
     val showProductDetails: Boolean = false,
-    val showProcessingState: Boolean = false,
-    val showDoneState: Boolean = false,
-    val showCancelState: Boolean = false,
 )
 
 data class OrderState(
@@ -110,12 +107,11 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
     }
 }
 
-fun OrdersUiState.formatOrder(order: Long): String {
-    return "Order #${order}"
-}
 
 fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
+fun OrdersUiState.showOrdersState() =!showState.showProductDetails
+        &&!isError
 
 
 fun Double.toPriceFormat(): String = "$this$"
@@ -135,6 +131,8 @@ fun OrdersUiState.done() = orderStates == OrderStates.DONE
 fun OrdersUiState.cancel() = orderStates == OrderStates.CANCELED
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoading
+fun OrdersUiState.showOrderDetails() =products.isNotEmpty()
+        && showState.showProductDetails
 
 fun OrdersUiState.screenContent() = orders.isNotEmpty() && !isError
 // endregion

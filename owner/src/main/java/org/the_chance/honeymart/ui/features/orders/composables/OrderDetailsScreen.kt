@@ -16,7 +16,9 @@ import androidx.compose.ui.graphics.Color
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
+import org.the_chance.honeymart.ui.features.orders.cancel
 import org.the_chance.honeymart.ui.features.orders.contentScreen
+import org.the_chance.honeymart.ui.features.orders.done
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -56,7 +58,8 @@ fun OrderDetailsContent(
             }
 
             OrderStatusButtons(
-                visablite = state.products.isNotEmpty() && !state.showState.showProductDetails,
+                visibility = state.products.isNotEmpty() && !state.showState.showProductDetails
+                        && !state.done() && !state.cancel(),
                 buttonState = state.orderDetails.buttonsState
             )
         }

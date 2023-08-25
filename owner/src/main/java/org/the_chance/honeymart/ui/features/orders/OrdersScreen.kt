@@ -30,6 +30,7 @@ fun OrdersScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(lifecycleOwner) {
+        viewModel.resetStateScreen()
         viewModel.getAllMarketOrder(OrderStates.ALL)
     }
 
@@ -64,12 +65,11 @@ fun OrdersContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = !state.showState.showProductDetails)
+                ContentVisibility(state = state.showOrdersState())
                 {
                     AllOrdersContent(state = state, listener = listener)
                 }
-                ContentVisibility(state = state.products.isNotEmpty()
-                        && state.showState.showProductDetails) {
+                ContentVisibility(state = state.showOrderDetails()) {
                     OrderDetailsContent(
                         state = state,
                         listener = listener
@@ -82,7 +82,8 @@ fun OrdersContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = state.products.isNotEmpty()
+                ContentVisibility(state = state.orders.isNotEmpty()
+                        &&state.products.isNotEmpty()
                         && !state.showState.showProductDetails) {
                     OrderDetailsContent(
                         state = state,
@@ -98,7 +99,6 @@ fun OrdersContent(
             }
 
         }
-
 
 
     }

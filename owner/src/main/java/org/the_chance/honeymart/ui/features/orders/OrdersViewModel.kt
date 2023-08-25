@@ -24,6 +24,7 @@ class OrdersViewModel @Inject constructor(
     init {
         getAllMarketOrder(OrderStates.ALL)
         updateStateOrder(_state.value.orderId, OrderStates.PROCESSING)
+        resetStateScreen()
     }
 
 
@@ -205,6 +206,13 @@ class OrdersViewModel @Inject constructor(
         }
         _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
 
+    }
+     fun resetStateScreen(){
+        _state.update {
+            it.copy(showState = it.showState.copy(
+                showProductDetails = false,
+            ))
+        }
     }
 
 }
