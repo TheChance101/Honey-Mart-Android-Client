@@ -87,14 +87,16 @@ class MarketsViewModel @Inject constructor(
     }
 
     override fun onClickCancel(marketId: Int) {
-        _state.update { it.copy(selectedRequest = null) }
+        val approvedMarket = _state.value.requests.find { it.marketId == marketId }
+        val updatedMarkets = _state.value.requests.toMutableList().apply { remove(approvedMarket) }
         updateMarket(marketId,false)
-        getMarkets(_state.value.requestsStates == RequestsStates.APPROVED)
+        _state.update { it.copy(selectedRequest = null, requests = updatedMarkets) }
     }
 
     override fun onClickApprove(marketId: Int) {
-        _state.update { it.copy(selectedRequest = null) }
+        val approvedMarket = _state.value.requests.find { it.marketId == marketId }
+        val updatedMarkets = _state.value.requests.toMutableList().apply { remove(approvedMarket) }
         updateMarket(marketId,true)
-        getMarkets()
+        _state.update { it.copy(selectedRequest = null, requests = updatedMarkets ) }
     }
 }
