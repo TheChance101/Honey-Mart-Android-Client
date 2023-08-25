@@ -13,21 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.home.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -40,7 +33,6 @@ fun NewProductsScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                RecentProductUiEffect.ClickDiscoverEffect -> navController.navigateToHomeScreen()
                 is RecentProductUiEffect.ClickProductEffect ->
                     navController.navigateToProductDetailsScreen(it.productId)
             }
@@ -52,7 +44,6 @@ fun NewProductsScreen(
         onClickRecentProduct = viewModel::onClickProductItem,
         onClickFavorite = viewModel::onClickFavoriteNewProduct
     )
-
 }
 
 
@@ -66,50 +57,35 @@ fun NewProductsContent(
 ) {
     AppBarScaffold {
 
-        Loading(state = state.isLoading)
+//        Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = recentProductInteractionListener::getRecentProducts,
         )
 
-        EmptyOrdersPlaceholder(
-            state = state.emptyRecentProductPlaceHolder(),
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.the_search_result_is_empty),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = {},
-            visibility = false
-        )
-
-        ContentVisibility(state = state.screenContent()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 160.dp),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-                ) {
-                    items(state.recentProducts) { recentProduct ->
-                        ProductItem(
-                            modifier = Modifier.animateItemPlacement(),
-                            productName = recentProduct.productName,
-                            productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
-                            imageUrl = recentProduct.productImage,
-                            onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                            isFavoriteIconClicked = recentProduct.isFavorite,
-                            onClick = { onClickRecentProduct(recentProduct.productId) }
-                        )
-                    }
+        Column(modifier = Modifier.fillMaxSize()) {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 160.dp),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            ) {
+                items(state.recentProducts) { recentProduct ->
+                    ProductItem(
+                        modifier = Modifier.animateItemPlacement(),
+                        productName = recentProduct.productName,
+                        productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
+                        imageUrl = recentProduct.productImage,
+                        onClickFavorite = { onClickFavorite(recentProduct.productId) },
+                        isFavoriteIconClicked = recentProduct.isFavorite,
+                        onClick = { onClickRecentProduct(recentProduct.productId) }
+                    )
                 }
             }
         }
     }
+
 }
 
-@Preview
-@Composable
-fun jlk() {
-    NewProductsScreen()
-}

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.new_products
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
@@ -11,13 +12,19 @@ import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
 
+@HiltViewModel
 class NewProductsViewModel @Inject constructor(
-    private val getRecentProducts: GetRecentProductsUseCase, override val TAG: String,
+    private val getRecentProducts: GetRecentProductsUseCase,
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getAllWishList: GetAllWishListUseCase,
 ) : BaseViewModel<RecentProductsUiState, RecentProductUiEffect>(RecentProductsUiState()),
     RecentProductListener {
 
+    override val TAG: String = this::class.simpleName.toString()
+
+    init {
+        getRecentProducts
+    }
 
     override fun getRecentProducts() {
         tryToExecute(
@@ -31,6 +38,7 @@ class NewProductsViewModel @Inject constructor(
     private fun onGetRecentProductsSuccess(products: List<RecentProductEntity>) {
         _state.update {
             it.copy(
+                isLoading = false,
                 recentProducts = products.map { product -> product.toRecentProductUiState() }
             )
         }
@@ -141,7 +149,4 @@ class NewProductsViewModel @Inject constructor(
         }
     }
 
-    override fun onClickDiscoverButton() {
-        effectActionExecutor(_effect, RecentProductUiEffect.ClickDiscoverEffect)
-    }
 }

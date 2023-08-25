@@ -4,5 +4,4 @@ interface RecentProductListener {
     fun onClickProductItem(productId: Long)
     fun getRecentProducts()
     fun onClickFavoriteNewProduct(productId: Long)
-    fun onClickDiscoverButton()
 }
