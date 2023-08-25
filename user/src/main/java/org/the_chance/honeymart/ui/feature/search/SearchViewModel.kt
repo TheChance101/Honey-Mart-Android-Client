@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchForProducts() {
+        _state.update { it.copy(isLoading = true, isError = false) }
         val query = _state.value.searchText.value
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
@@ -44,29 +46,26 @@ class SearchViewModel @Inject constructor(
         _state.update { searchUiState ->
             searchUiState.copy(
                 products = flowOf(products.map { it.toProductUiState() }),
-                isError = false,
-                isLoading = false
             )
         }
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = true) }
         _state.value.searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }
 
-
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStream.debounce(700).collect {
+            actionStream.debounce(700).distinctUntilChanged().collect {
                 searchForProducts()
             }
         }
@@ -78,18 +77,18 @@ class SearchViewModel @Inject constructor(
     }
 
     override fun onClickRandomSearch() {
-        filter(SearchStates.RANDOM.state)
+        filterSearch(SearchStates.RANDOM.state)
     }
 
     override fun onClickAscendingSearch() {
-        filter(SearchStates.ASCENDING.state)
+        filterSearch(SearchStates.ASCENDING.state)
     }
 
     override fun onClickDescendingSearch() {
-        filter(SearchStates.DESCENDING.state)
+        filterSearch(SearchStates.DESCENDING.state)
     }
 
-    private fun filter(sortOrder: String) {
+    private fun filterSearch(sortOrder: String) {
         when (sortOrder) {
             SearchStates.ASCENDING.state -> _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
             SearchStates.DESCENDING.state -> _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
@@ -103,10 +102,5 @@ class SearchViewModel @Inject constructor(
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(_effect, SearchUiEffect.OnClickProductCard(productId))
     }
-
-    override fun onclickTryAgain() {
-        searchForProducts()
-    }
-
 }
 

@@ -12,13 +12,11 @@ data class SearchUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val updatedProducts: Flow<PagingData<ProductUiState>> = flow{},
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false,
     val searchText: MutableStateFlow<String> = MutableStateFlow(""),
-    val isSearching: MutableStateFlow<Boolean> = MutableStateFlow(false),
-    )
+)
 
 data class ProductUiState(
     val productId: Long = 0L,
