@@ -1,4 +1,6 @@
 package org.the_chance.honeymart.ui.composables.coupon
+
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,16 +28,21 @@ import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFractio
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
+import java.time.LocalDate
 
 @Composable
 fun CouponsItem(
-    coupon: CouponUiState ,
+    coupon: CouponUiState,
     onClickGetCoupon: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.height(IntrinsicSize.Min),
     ) {
+        Log.i("jii", "CouponsItem: ${coupon.expirationDate.formatDate() <= LocalDate.now().toString()}")
+        Log.i("jii", "CouponsItem expirationDate is : ${coupon.expirationDate.formatDate()}")
+        Log.i("jii", "CouponsItem expirationDate is : ${LocalDate.now().toString()}")
+        Log.i("jii", "CouponsItem isValid: ${coupon.isExpired}")
         CouponDetails(
             modifier = Modifier.fillMaxHeight(),
             productName = coupon.product.productName,

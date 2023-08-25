@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.coupons
 
-import android.widget.DatePicker
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CouponEntity
@@ -8,12 +8,7 @@ import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.composables.coupon.formatDate
 import org.the_chance.honeymart.ui.composables.coupon.toCouponUiState
-import org.the_chance.honeymart.ui.feature.home.HomeUiEffect
-import org.the_chance.honeymart.ui.feature.search.SearchStates
-import java.time.DateTimeException
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -86,6 +81,7 @@ class CouponsViewModel @Inject constructor(
     }
 
     override fun onClickValidCoupons() {
+        Log.i("ji", "onClickValidCoupons: tesstttt ")
         _state.update { it.copy(couponsState = CouponsState.VALID) }
         updateData()
     }
@@ -99,13 +95,13 @@ class CouponsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 updatedCoupons = when (it.couponsState) {
-                    CouponsState.ALL -> it.coupons
+                    CouponsState.ALL -> it.coupons.filter { !it.isExpired }
                     CouponsState.VALID -> it.coupons.filter { coupon ->
-                        coupon.expirationDate < Date().toString().formatDate()
+                        !coupon.isExpired
                     }
 
                     CouponsState.EXPIRED -> it.coupons.filter { coupon ->
-                        coupon.expirationDate > Date().toString().formatDate()
+                        coupon.isExpired
                     }
                 }
             )

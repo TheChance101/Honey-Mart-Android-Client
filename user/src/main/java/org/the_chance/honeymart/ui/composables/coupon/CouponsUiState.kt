@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
+import java.time.LocalDate
 
 data class CouponUiState(
     val couponId: Long = 0L,
@@ -12,7 +13,10 @@ data class CouponUiState(
     val expirationDate: String = "",
     val product: ProductUiState = ProductUiState(),
     val isClipped: Boolean = false,
-)
+) {
+    val isExpired: Boolean =
+        expirationDate.formatDate() <= LocalDate.now().toString()
+}
 
 fun CouponEntity.toCouponUiState() = CouponUiState(
     couponId = couponId,
@@ -25,11 +29,10 @@ fun CouponEntity.toCouponUiState() = CouponUiState(
 
 
 fun String.formatDate(): String {
-    val date = this
-    val year = date.substring(0, 4)
-    val month = date.substring(5, 7)
-    val day = date.substring(8, 10)
-    return "$day.$month.$year"
+    val year = this.substring(0, 4)
+    val month = this.substring(5, 7)
+    val day = this.substring(8, 10)
+    return "$year-$month-$day"
 }
 
 fun Double.formatCurrencyWithNearestFraction(): String {
