@@ -32,7 +32,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchForProducts() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isSearching = true, isError = false) }
         val query = _state.value.searchText.value
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
@@ -58,7 +58,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isSearching = true) }
         _state.value.searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }

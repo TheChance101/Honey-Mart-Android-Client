@@ -9,7 +9,7 @@ import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class SearchUiState(
-    val isLoading: Boolean = false,
+    val isSearching: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val products: Flow<PagingData<ProductUiState>> = flow{},

@@ -182,7 +182,7 @@ fun SearchContent(
                         )
                     }
                 }
-                if (state.isLoading) {
+                if (state.isSearching) {
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         PagingStateVisibility(products)
                     }
