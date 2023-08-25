@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -56,8 +57,6 @@ import pagingStateVisibilityGridScope
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
-    val searchText by viewModel.searchText.collectAsState()
-    val isSearching by viewModel.isSearching.collectAsState()
     val navController = LocalNavigationProvider.current
 
     LaunchedEffect(key1 = true) {
@@ -71,19 +70,16 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     SearchContent(
         state = state,
-        searchText = searchText,
         onSearchTextChange = viewModel::onSearchTextChange,
-        isSearching = isSearching,
         listener = viewModel
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SearchContent(
     state: SearchUiState,
-    searchText: String,
     onSearchTextChange: (String) -> Unit,
-    isSearching: Boolean,
     listener: SearchInteraction,
 ) {
     AppBarScaffold {
@@ -101,7 +97,7 @@ fun SearchContent(
             ) {
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = searchText,
+                    text = state.searchText.value,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
@@ -169,7 +165,7 @@ fun SearchContent(
             }
 
             ContentVisibility(state = products.itemCount > 0) {
-                if (isSearching) {
+                if (state.isSearching.value) {
                     Loading(state = state.isLoading)
                 } else {
                     LazyVerticalGrid(

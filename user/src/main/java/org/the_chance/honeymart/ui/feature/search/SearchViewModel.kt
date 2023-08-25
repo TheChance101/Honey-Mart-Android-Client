@@ -27,23 +27,14 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel<SearchUiState, SearchUiEffect>(SearchUiState()), SearchInteraction {
     override val TAG: String = this::class.simpleName.toString()
 
-    private val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
-
     private val actionStream = MutableSharedFlow<String>()
-    private val actionStreamDebounced = actionStream.debounce(1000)
-
-    private val _isSearching = MutableStateFlow(false)
-    val isSearching = _isSearching.asStateFlow()
-
 
     init {
         observeKeyword()
     }
 
     private fun searchForProducts() {
-
-        val query = _searchText.value
+        val query = _state.value.searchText.value
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
             { searchForProductUseCase(query, sortOrder) },
@@ -65,6 +56,7 @@ class SearchViewModel @Inject constructor(
             searchUiState.copy(
                 products = flowOf(mappedProducts),
                 isError = false,
+                isLoading = false
             )
         }
         log("onSearchForProductsSuccess: ${state.value.isLoading}")
@@ -87,25 +79,23 @@ class SearchViewModel @Inject constructor(
 
     fun onSearchTextChange(text: String) {
         _state.update { it.copy(isLoading = true, isError = false) }
-        _searchText.value = text
+        _state.value.searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }
 
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStreamDebounced.collect {
+            actionStream.debounce(700).collect {
                 searchForProducts()
             }
         }
     }
 
-
     override fun onClickFilter() {
         val newState = !state.value.filtering
         _state.update { it.copy(filtering = newState) }
     }
-
 
     override fun onClickRandomSearch() {
         filter(SearchStates.RANDOM.state)

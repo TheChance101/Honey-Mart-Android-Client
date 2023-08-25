@@ -164,13 +164,31 @@ class ProductViewModel @Inject constructor(
 
 
     private fun getWishListProducts(products: PagingData<ProductUiState>) {
+        val mappedProducts = products
+        val mappedProduct = mutableListOf<ProductUiState>()
+        log("loading: ${state.value.isLoadingProduct}")
+        mappedProducts.map {
+            mappedProduct.add(it)
+
+        }
+        log("response: $mappedProduct")
         _state.update { it.copy(isLoadingProduct = true, isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }
         )
+        log("loading: ${state.value.isLoadingProduct}")
+        mappedProduct.clear()
+        _state.value.products.map {
+            it.map {
+                mappedProduct.add(it)
+            }
+        }
+        log("response: $mappedProduct")
     }
+
+
 
     private fun onGetWishListProductSuccess(
         wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,

@@ -1,12 +1,9 @@
 package org.the_chance.honeymart.ui.feature.search
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.model.ProductEntity
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -18,8 +15,10 @@ data class SearchUiState(
     val updatedProducts: Flow<PagingData<ProductUiState>> = flow{},
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
-    val filtering: Boolean = false
-)
+    val filtering: Boolean = false,
+    val searchText: MutableStateFlow<String> = MutableStateFlow(""),
+    val isSearching: MutableStateFlow<Boolean> = MutableStateFlow(false),
+    )
 
 data class ProductUiState(
     val productId: Long = 0L,
