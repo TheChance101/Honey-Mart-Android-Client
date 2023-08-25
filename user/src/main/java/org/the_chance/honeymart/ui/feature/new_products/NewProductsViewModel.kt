@@ -23,7 +23,7 @@ class NewProductsViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getRecentProducts
+        getRecentProducts()
     }
 
     override fun getRecentProducts() {
@@ -90,6 +90,9 @@ class NewProductsViewModel @Inject constructor(
                 isError = error is ErrorHandler.NoConnection
             )
         }
+
+        if (error is ErrorHandler.UnAuthorizedUser)
+            effectActionExecutor(_effect, RecentProductUiEffect.UnAuthorizedUserEffect)
     }
 
     private fun deleteProductFromWishList(productId: Long) {

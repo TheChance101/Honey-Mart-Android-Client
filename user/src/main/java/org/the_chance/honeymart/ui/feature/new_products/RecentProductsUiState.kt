@@ -24,7 +24,7 @@ data class RecentProductUiState(
 fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
     productId = productId,
     productName = productName,
-    productImage = productImages[0],
+    productImage = productImages.ifEmpty { listOf("") }.first(),
     price = productPrice,
     isFavorite = false,
 )

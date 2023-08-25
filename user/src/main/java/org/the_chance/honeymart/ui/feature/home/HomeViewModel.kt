@@ -408,6 +408,11 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    override fun onClickSeeAllNewProducts() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToNewProductsScreenEffect)
+    }
+
     /// endregion
 }
 

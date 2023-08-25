@@ -17,10 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.home.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -33,6 +35,7 @@ fun NewProductsScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
+                RecentProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
                 is RecentProductUiEffect.ClickProductEffect ->
                     navController.navigateToProductDetailsScreen(it.productId)
             }
@@ -57,7 +60,7 @@ fun NewProductsContent(
 ) {
     AppBarScaffold {
 
-//        Loading(state = state.isLoading)
+        Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
             state = state.isError,
