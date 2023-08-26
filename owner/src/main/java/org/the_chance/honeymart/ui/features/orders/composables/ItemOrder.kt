@@ -115,23 +115,25 @@ fun ItemOrder(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_clock),
+                        contentDescription = "time",
+                        tint = black37,
+                    )
+                    Text(
+                        text = state.time,
+                        color = black37,
+                        style = MaterialTheme.typography.displayLarge
+                    )
+                }
             }
         }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.icon_clock),
-                contentDescription = "time",
-                tint = black37,
-            )
-            Text(
-                text = state.time,
-                color = black37,
-                style = MaterialTheme.typography.displayLarge
-            )
-        }
+
     }
 }
 

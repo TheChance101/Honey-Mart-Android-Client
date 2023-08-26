@@ -36,10 +36,11 @@ fun OrderDetailsContent(
                     .fillMaxSize()
                     .padding(all = MaterialTheme.dimens.space24)
             ) {
-                ItemOrder(
+                OrderHeader(
                     state = state.orderDetails,
                     isSelected = !state.orderDetails.isSelected
                 )
+
                 ContentVisibility(state = state.products.isNotEmpty() && !state.isLoading) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
