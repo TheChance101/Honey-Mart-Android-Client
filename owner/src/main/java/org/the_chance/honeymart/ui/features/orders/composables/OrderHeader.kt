@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderUiState
+import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black60
@@ -35,9 +36,8 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderHeader(
-    state: OrderUiState,
+    state: OrdersUiState,
     modifier: Modifier = Modifier,
-    count: Int = 0,
     isSelected: Boolean = false
 ) {
     val selectedColor by animateColorAsState(
@@ -83,11 +83,11 @@ fun OrderHeader(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = count.toCountProductFormat(),
+                        text = state.products.size.toCountProductFormat(),
                         color = black60,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    HoneyOutlineText(text = state.totalPrice)
+                    HoneyOutlineText(text = state.orderDetails.totalPrice)
                 }
 
 

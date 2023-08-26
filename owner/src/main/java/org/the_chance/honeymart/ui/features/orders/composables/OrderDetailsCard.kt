@@ -46,7 +46,8 @@ fun OrderDetailsCard(
             modifier = Modifier
                 .size(MaterialTheme.dimens.itemProductImage)
                 .clip(CircleShape),
-            imageUrl = if (state.images.isNotEmpty()) state.images.first() else "https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff"
+            imageUrl = state.images.first()
+
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

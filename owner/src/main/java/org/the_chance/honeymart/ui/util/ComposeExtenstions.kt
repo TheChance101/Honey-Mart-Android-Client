@@ -36,5 +36,5 @@ fun List<Uri>.handleImageSelection(
 }
 
 fun Double.toPriceFormat(): String = "$this$"
-fun Int.toCountFormat(): String = "$this items"
-fun Int.toCountProductFormat(): String = "$this Product"
+fun Int.toCountFormat(): String = if (this == 1) "$this item" else "$this items"
+fun Int.toCountProductFormat(): String = if (this == 1) "$this Product" else "$this Products"

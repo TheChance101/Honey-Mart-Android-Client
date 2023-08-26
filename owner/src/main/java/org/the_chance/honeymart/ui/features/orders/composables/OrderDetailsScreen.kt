@@ -34,17 +34,18 @@ fun OrderDetailsContent(
                 modifier = Modifier
                     .background(color = Color.White, shape = MaterialTheme.shapes.medium)
                     .fillMaxSize()
-                    .padding(all = MaterialTheme.dimens.space24)
             ) {
                 OrderHeader(
-                    state = state.orderDetails,
-                    isSelected = !state.orderDetails.isSelected
+                    state = state,
+                    isSelected = !state.orderDetails.isSelected,
                 )
 
                 ContentVisibility(state = state.products.isNotEmpty() && !state.isLoading) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
+                        contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24,
+                            horizontal = MaterialTheme.dimens.space24),
+
                     ) {
                         items(state.products.size) { index ->
                             OrderDetailsCard(
