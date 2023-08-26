@@ -10,5 +10,6 @@ class LoginOwnerUseCase @Inject constructor(
         val token = authRepository.loginOwner(email, password)
         authRepository.saveToken(token.tokens.accessToken)
         authRepository.saveOwnerName(token.fullName)
+
     }
 }

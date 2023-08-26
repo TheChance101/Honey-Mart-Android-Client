@@ -6,11 +6,12 @@ import org.the_chance.honeymart.domain.model.OwnerLoginEntity
 import org.the_chance.honeymart.domain.model.TokensEntity
 
 fun OwnerLoginDto.toOwnerLoginEntity(): OwnerLoginEntity = OwnerLoginEntity(
-    fullName = fullName!!,
-    tokens = tokens.toTokenEntity()
+    fullName = fullName ?: "",
+    marketId = marketId ?: 0L,
+    tokens = tokens?.toTokenEntity() ?: TokensEntity("", "")
 )
 
 fun TokensDto.toTokenEntity(): TokensEntity = TokensEntity(
-    refreshToken = refreshToken?:"",
-    accessToken = accessToken?:""
+    refreshToken = refreshToken ?: "",
+    accessToken = accessToken ?: ""
 )

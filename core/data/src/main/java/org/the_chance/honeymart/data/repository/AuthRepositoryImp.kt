@@ -25,6 +25,7 @@ class AuthRepositoryImp @Inject constructor(
         fullName: String, email: String, password: String,
     ): Boolean =
         wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
+
     override suspend fun createUserAccount(
         fullName: String,
         password: String,
