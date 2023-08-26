@@ -18,7 +18,7 @@ class WishListViewModel @javax.inject.Inject constructor(
 
 
     override fun onShowSnackBar(message:String){
-        _state.update { it.copy(snackBar = it.snackBar.copy(message = message, isShow = true)) }
+        _state.update { it.copy(snackBar = it.snackBar.copy(message = "Item Removed", isShow = true)) }
     }
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
@@ -66,24 +66,24 @@ class WishListViewModel @javax.inject.Inject constructor(
          }
         tryToExecute(
             { wishListOperationsUseCase.addToWishList(productId) },
-            ::onAddToWishListSuccess,
+            {onAddToWishListSuccess()},
             { onAddToWishListError(it, productId) }
         )
     }
-    private fun onAddToWishListSuccess(successMessage: String) {
+    private fun onAddToWishListSuccess() {
         getWishListProducts()
 
     }
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorizedUser) {
-            updateFavoriteState(productId, false)
+            updateFavoriteState(productId)
         }
     }
 
-    private fun updateFavoriteState(productId: Long, isFavorite: Boolean) {
+    private fun updateFavoriteState(productId: Long) {
         val newProduct = _state.value.products.map {
             if (it.productId == productId) {
-                it.copy(isFavorite = isFavorite)
+                it.copy(isFavorite = false)
             } else {
                 it
             }
@@ -121,6 +121,7 @@ class WishListViewModel @javax.inject.Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+
     }
 
     override fun onClickDiscoverButton() {

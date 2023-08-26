@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 
 data class Dimens(
     val zero: Dp = 0.dp,
+    val space1: Dp = 1.dp,
     val space2: Dp = 2.dp,
     val space4: Dp = 4.dp,
     val space6: Dp = 6.dp,
@@ -23,6 +24,8 @@ data class Dimens(
     val space64: Dp = 64.dp,
     val space86: Dp = 86.dp,
     val space112: Dp = 112.dp,
+    val space100: Dp = 100.dp,
+    val space198: Dp = 198.dp,
 
     val fontSizeHeading: Dp = 24.dp,
     val fontSizeSecondary: Dp = 12.dp,
@@ -50,7 +53,11 @@ data class Dimens(
     val icon36: Dp = 36.dp,
     val icon48: Dp = 48.dp,
     val heightItemMarketCard: Dp = 164.dp,
+    val widthItemMarketCard: Dp = 132.dp,
+    val heightItemLastPurchases: Dp = 156.dp,
+    val widthItemLastPurchases: Dp = 148.dp,
     val heightItem: Dp = 192.dp,
+    val sizeProfileImage: Dp = 164.dp,
     val card: Dp = 120.dp,
     val sunImageSize: Dp = 120.dp,
     val categoryIconItem: Dp = 82.dp,
