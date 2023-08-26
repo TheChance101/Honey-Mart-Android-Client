@@ -22,6 +22,10 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -40,6 +44,7 @@ import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
+import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
@@ -374,14 +379,32 @@ class HoneyMartServiceImp @Inject constructor(
         }
     }
 
+    private suspend inline fun <reified T> wrapLogin(response: HttpResponse): T {
+        if (response.status.isSuccess()) {
+            val responseBody = response.body<String>()
+            val responseObject = Json.decodeFromString<JsonObject>(responseBody)
+            val isLoginSuccess = responseObject["isSuccess"]?.jsonPrimitive?.booleanOrNull
+            if (isLoginSuccess == true)
+                return response.body()
+            else
+                throw UnAuthorizedCredential()
+        } else {
+            if (response.status.value == 500) {
+                throw InternalServerException()
+            } else {
+                throw Exception(response.status.description)
+            }
+        }
+    }
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> =
-        wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> {
+        return wrapLogin(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
+    }
 
     override suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto> {
         return wrap(client.get("/owner/Profile"))
