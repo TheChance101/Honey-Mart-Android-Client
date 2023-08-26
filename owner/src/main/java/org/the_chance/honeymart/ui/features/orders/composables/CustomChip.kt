@@ -21,10 +21,10 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CustomChip(
-    modifier: Modifier = Modifier,
     state: Boolean,
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(

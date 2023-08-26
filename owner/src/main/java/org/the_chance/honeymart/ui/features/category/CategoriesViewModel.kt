@@ -588,10 +588,26 @@ class CategoriesViewModel @Inject constructor(
     }
     //endregion
 
-    private fun onError(errorHandler: ErrorHandler){
+    private fun onError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    fun resetStateScreen() {
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showProductDetails = false,
+                    showAddCategory = false,
+                    showUpdateCategory = false,
+                    showAddProduct = false,
+                    showProductUpdate = false,
+                    showCategoryProducts = false,
+                    showFab = true,
+                )
+            )
         }
     }
 }

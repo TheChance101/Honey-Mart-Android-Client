@@ -29,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderUiState
+import org.the_chance.honeymart.ui.util.toCountProductFormat
+import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -36,12 +38,12 @@ import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 
 @Composable
-fun ItemOrder(
+fun OrderHeader(
     state: OrderUiState,
     modifier: Modifier = Modifier,
     orderId: Long = 1L,
     count: Int = 0,
-    onClickCard: (orderId: Long) -> Unit = {},
+    icon: Boolean = false,
     isSelected: Boolean = false
 ) {
     val selectedColor by animateColorAsState(
@@ -53,8 +55,7 @@ fun ItemOrder(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
-            .height(MaterialTheme.dimens.itemOrder)
-            .clickable { onClickCard(state.orderId) },
+            .height(MaterialTheme.dimens.itemOrder),
         colors = CardDefaults.cardColors(containerColor = white)
     ) {
         Row {
@@ -77,7 +78,7 @@ fun ItemOrder(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(R.string.order, state.orderId),
+                        text = stringResource(R.string.order, if (icon) state.orderId else orderId),
                         color = black60,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -88,43 +89,84 @@ fun ItemOrder(
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement
-                        .spacedBy(MaterialTheme.dimens.space8),
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    if (icon) {
+                        Row(
+                            horizontalArrangement = Arrangement
+                                .spacedBy(MaterialTheme.dimens.space8),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (icon) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_person),
+                                    contentDescription = "userName",
+                                    tint = black37,
+                                )
+                            }
+
+                            Text(
+                                text = state.userName,
+                                color = black37,
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
+                    } else {
+                        Column {
+                            Row(
+                                horizontalArrangement = Arrangement
+                                    .spacedBy(MaterialTheme.dimens.space8),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (icon) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_person),
+                                        contentDescription = "userName",
+                                        tint = black37,
+                                    )
+                                }
+
+                                Text(
+                                    text = state.userName,
+                                    color = black37,
+                                    style = MaterialTheme.typography.displayLarge
+                                )
+                            }
+                            Text(
+                                text = count.toCountProductFormat(),
+                                color = black60,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                    if (icon) {
+                        Text(
+                            text = state.totalPrice,
+                            color = black60,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } else {
+                        HoneyOutlineText(text = state.totalPrice)
+                    }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_person),
-                        contentDescription = "userName",
+                        painter = painterResource(R.drawable.icon_clock),
+                        contentDescription = "time",
                         tint = black37,
                     )
                     Text(
-                        text = state.userName,
+                        text = state.time,
                         color = black37,
                         style = MaterialTheme.typography.displayLarge
                     )
                 }
-                Text(
-                    text = state.totalPrice,
-                    color = black60,
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
-        }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.icon_clock),
-                contentDescription = "time",
-                tint = black37,
-            )
-            Text(
-                text = state.time,
-                color = black37,
-                style = MaterialTheme.typography.displayLarge
-            )
         }
     }
 }
-

@@ -92,7 +92,6 @@ fun AllOrdersContent(
                     },
                     state = state.orders[index],
                     isSelected = state.orders[index].isOrderSelected,
-                    icon = true
                 )
             }
         }
