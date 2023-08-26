@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -41,10 +40,10 @@ fun HoneyTextField(
     oneLineOnly: Boolean = false,
     isPassword: VisualTransformation = VisualTransformation.None,
     isError: Boolean = errorMessage.isNotEmpty(),
-    color: Color,
-    keyboardOptions: KeyboardOptions =  KeyboardOptions.Default.copy(
-        imeAction = ImeAction.Search)
-    ) {
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search
+    )
+) {
     Column {
 
         OutlinedTextField(
@@ -67,7 +66,7 @@ fun HoneyTextField(
                 )
             },
             visualTransformation = isPassword,
-            keyboardOptions=keyboardOptions,
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -122,7 +121,6 @@ fun TextFieldPreview() {
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
         onValueChange = {},
-        color = white200
     )
 }
 
@@ -135,6 +133,5 @@ fun TextFieldTabletPreview() {
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
         onValueChange = {},
-        color = white200
     )
 }

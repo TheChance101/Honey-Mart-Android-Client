@@ -39,15 +39,15 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -68,7 +68,10 @@ fun ProfileScreen(
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> {}
-                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
+                is ProfileUiEffect.ClickLogoutEffect -> {
+                    navController.navigateToHomeScreen()
+                }
+
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
@@ -95,7 +98,7 @@ private fun ProfileContent(
         onResult = { handleImageSelection(it, context, listener::onImageSelected) }
     )
 
-    AppBarScaffold {
+    HoneyAppBarScaffold {
 
         Loading(state = state.isLoading)
 

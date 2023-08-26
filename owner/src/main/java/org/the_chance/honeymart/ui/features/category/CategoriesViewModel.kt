@@ -11,10 +11,6 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import javax.inject.Inject
 
-/**
- * Created by Aziza Helmy on 8/7/2023.
- */
-
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val getAllCategories: GetAllCategoriesInMarketUseCase,
@@ -139,7 +135,7 @@ class CategoriesViewModel @Inject constructor(
         tryToExecute(
             { addCategoryUseCase(name, categoryIconID) },
             ::addCategorySuccess,
-            ::addCategoryError
+            ::onError
         )
     }
 
@@ -157,13 +153,6 @@ class CategoriesViewModel @Inject constructor(
         }
         getAllCategory()
         resetShowState(Visibility.ADD_CATEGORY)
-    }
-
-    private fun addCategoryError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
     }
 
     override fun resetShowState(visibility: Visibility) {
@@ -224,7 +213,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             },
             { onUpdateCategorySuccess() },
-            ::onUpdateCategoryError
+            ::onError
         )
     }
 
@@ -244,13 +233,6 @@ class CategoriesViewModel @Inject constructor(
         getAllCategory()
     }
 
-    private fun onUpdateCategoryError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
-    }
-
     // endregion
 
     // region Category Products
@@ -259,20 +241,13 @@ class CategoriesViewModel @Inject constructor(
         tryToExecute(
             { getAllProducts(categoryId) },
             ::onGetProductsSuccess,
-            ::onGetProductsError
+            ::onError
         )
     }
 
     private fun onGetProductsSuccess(products: List<ProductEntity>) {
         _state.update {
             it.copy(isLoading = false, error = null, products = products.toProductUiState())
-        }
-    }
-
-    private fun onGetProductsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
         }
     }
 
@@ -305,7 +280,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             },
             ::onAddProductSuccess,
-            ::onAddProductError
+            ::onError
         )
     }
 
@@ -320,19 +295,12 @@ class CategoriesViewModel @Inject constructor(
         addProductImage(productId = product.productId, images = _state.value.newProducts.images)
     }
 
-    private fun onAddProductError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
-    }
-
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { addProductImagesUseCase(productId, images) },
             onSuccess = { onAddProductImagesSuccess() },
-            onError = ::onAddProductImagesError
+            onError = ::onError
         )
     }
 
@@ -351,13 +319,6 @@ class CategoriesViewModel @Inject constructor(
         }
         val categoryId = _state.value.newCategory.categoryId
         getProductsByCategoryId(categoryId = categoryId)
-    }
-
-    private fun onAddProductImagesError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
     }
 
     override fun onProductNameChanged(name: String) {
@@ -444,7 +405,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             },
             { onUpdateProductDetailsSuccess() },
-            ::onUpdateProductDetailsError
+            ::onError
         )
     }
 
@@ -458,13 +419,6 @@ class CategoriesViewModel @Inject constructor(
             )
         }
         onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
-    }
-
-    private fun onUpdateProductDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
     }
 
     override fun onUpdateProductName(productName: String) {
@@ -501,20 +455,13 @@ class CategoriesViewModel @Inject constructor(
         tryToExecute(
             { updateProductImagesUseCase(productId, images) },
             { onUpdateProductImageSuccess() },
-            ::onUpdateProductImageError
+            ::onError
         )
     }
 
     private fun onUpdateProductImageSuccess() {
         _state.update { it.copy(isLoading = false, error = null) }
         getProductsByCategoryId(state.value.newCategory.categoryId)
-    }
-
-    private fun onUpdateProductImageError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
     }
 
     override fun onClickUpdateProductDetails() {
@@ -550,7 +497,7 @@ class CategoriesViewModel @Inject constructor(
         tryToExecute(
             { deleteProductByIdUseCase(productId) },
             { onSuccessDeleteProduct() },
-            ::onErrorDeleteProduct,
+            ::onError,
         )
     }
 
@@ -565,12 +512,6 @@ class CategoriesViewModel @Inject constructor(
         getProductsByCategoryId(_state.value.newCategory.categoryId)
     }
 
-    private fun onErrorDeleteProduct(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
-        }
-    }
     // endregion
 
     // region Helper
@@ -631,4 +572,11 @@ class CategoriesViewModel @Inject constructor(
         return state
     }
     //endregion
+
+    private fun onError(errorHandler: ErrorHandler){
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
 }

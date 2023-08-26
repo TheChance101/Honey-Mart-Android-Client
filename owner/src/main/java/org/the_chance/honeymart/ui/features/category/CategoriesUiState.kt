@@ -113,7 +113,7 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
             productId = it.productId,
             productName = it.productName,
             productImage = it.productImages,
-            productPrice = "${it.ProductPrice}$",
+            productPrice = "${it.productPrice}$",
             productDescription = it.productDescription
         )
     }
@@ -124,7 +124,7 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
         productId = productId,
         productName = productName,
         productImage = productImages,
-        productPrice = ProductPrice.toString(),
+        productPrice = productPrice.toString(),
         productDescription = productDescription,
     )
 }

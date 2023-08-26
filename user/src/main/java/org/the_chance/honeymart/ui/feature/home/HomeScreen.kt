@@ -11,15 +11,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -78,7 +79,7 @@ fun HomeContent(
     listener: HomeInteractionListener,
 ) {
 
-    AppBarScaffold {
+    HoneyAppBarScaffold {
         ConnectionErrorPlaceholder(
             state = state.isConnectionError,
             onClickTryAgain = listener::getData

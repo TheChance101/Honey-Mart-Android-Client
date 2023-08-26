@@ -154,7 +154,6 @@ fun SignupContent(
                                     ValidationState.INVALID_FULL_NAME -> "Invalid name"
                                     else -> ""
                                 },
-                                color = white200
                             )
                             HoneyTextField(
                                 oneLineOnly = true,
@@ -168,7 +167,6 @@ fun SignupContent(
                                     ValidationState.INVALID_EMAIL -> "Invalid email"
                                     else -> ""
                                 },
-                                color = white200
                             )
                         }
 
@@ -191,7 +189,6 @@ fun SignupContent(
                                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                                     else -> ""
                                 },
-                                color = white200
                             )
                             HoneyTextField(
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
@@ -205,7 +202,6 @@ fun SignupContent(
                                     ValidationState.INVALID_CONFIRM_PASSWORD -> "Invalid confirm password"
                                     else -> ""
                                 },
-                                color = white200
                             )
                         }
                     }

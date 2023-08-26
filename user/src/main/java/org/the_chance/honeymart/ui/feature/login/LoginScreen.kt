@@ -129,7 +129,6 @@ fun LoginContent(
                     ValidationState.INVALID_EMAIL -> "Invalid email"
                     else -> ""
                 },
-                color = white200
             )
             HoneyTextField(
                 isPassword = PasswordVisualTransformation(),
@@ -146,7 +145,6 @@ fun LoginContent(
                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                     else -> ""
                 },
-                color = white200
             )
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),

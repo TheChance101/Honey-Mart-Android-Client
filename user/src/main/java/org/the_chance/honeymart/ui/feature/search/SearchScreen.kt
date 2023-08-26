@@ -34,12 +34,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
@@ -86,7 +86,7 @@ fun SearchContent(
     isSearching: Boolean,
     listener: SearchInteraction,
 ) {
-    AppBarScaffold {
+    HoneyAppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -105,7 +105,6 @@ fun SearchContent(
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
-                    color = black37
                 )
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
