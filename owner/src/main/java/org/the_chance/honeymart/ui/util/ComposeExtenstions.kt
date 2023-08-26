@@ -10,17 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 
-
-fun <T> LifecycleOwner.collect(flow: Flow<T>, action: suspend (T) -> Unit) {
-    lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.collect {
-                action.invoke(it)
-            }
-        }
-    }
-}
-
 fun List<Uri>.handleImageSelection(
     context: Context,
     state: CategoriesUiState,
