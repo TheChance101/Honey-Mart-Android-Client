@@ -62,5 +62,7 @@ data class Dimens(
     val sunImageSize: Dp = 120.dp,
     val categoryIconItem: Dp = 82.dp,
     val productButton: Dp = 96.dp,
-    val categoryItem: Dp = 140.dp
+    val categoryItem: Dp = 140.dp,
+    val itemOrder: Dp = 124.dp,
+    val withOrderStatusButton: Dp = 165.dp
 )

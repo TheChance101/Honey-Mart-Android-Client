@@ -8,6 +8,7 @@ import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.NotificationEntity
+import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -43,6 +44,8 @@ interface HoneyMartRepository {
 
     suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): Flow<PagingData<ProductEntity>>
     suspend fun getAllOrders(orderState: Int): List<OrderEntity>
+
+    suspend fun getAllMarketOrders(orderState: Int): List<MarketOrderEntity>
     suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
 
@@ -92,7 +95,7 @@ interface HoneyMartRepository {
 
     suspend fun addCategory(name: String, imageId: Int): String
     suspend fun deleteCategory(id: Long): String
-    suspend fun deleteProduct(productId: Long):String
-    suspend fun deleteProductImage(productId: Long):String
+    suspend fun deleteProduct(productId: Long): String
+    suspend fun deleteProductImage(productId: Long): String
 
 }

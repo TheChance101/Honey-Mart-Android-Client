@@ -8,6 +8,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
+import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
@@ -155,6 +156,9 @@ interface HoneyMartService {
         orderState: Int,
     ): BaseResponse<List<OrderDto>>
 
+    suspend fun getAllMarketOrders(
+        orderState: Int,
+    ):BaseResponse<List<MarketOrderDto>>
 
     suspend fun updateOrderState(
         id: Long?,

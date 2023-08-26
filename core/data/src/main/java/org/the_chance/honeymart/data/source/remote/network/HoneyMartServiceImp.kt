@@ -19,6 +19,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.Parameters
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
@@ -34,6 +35,7 @@ import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -298,6 +300,12 @@ class HoneyMartServiceImp @Inject constructor(
         wrap(client.get("order/userOrders") {
             parameter("orderState", orderState)
         })
+
+    override suspend fun getAllMarketOrders(orderState: Int): BaseResponse<List<MarketOrderDto>> {
+        return wrap(client.get("order/marketOrders") {
+            parameter("orderState", orderState)
+        })
+    }
 
 
     @OptIn(InternalAPI::class)

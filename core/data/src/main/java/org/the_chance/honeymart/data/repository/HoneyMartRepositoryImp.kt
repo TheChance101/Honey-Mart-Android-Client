@@ -14,9 +14,10 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toNotificationEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toUserEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProfileUserEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
@@ -26,6 +27,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
@@ -121,8 +123,13 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.deleteFromWishList(productId) }.value ?: throw NotFoundException()
 
     override suspend fun getAllOrders(orderState: Int): List<OrderEntity> =
-        wrap { honeyMartService.getAllOrders(orderState) }.value?.map { it.toOrderEntity() }
+        wrap { honeyMartService.getAllOrders(orderState) }.value?.map { it.toUserEntity() }
             ?: throw NotFoundException()
+
+    override suspend fun getAllMarketOrders(orderState: Int): List<MarketOrderEntity> =
+        wrap { honeyMartService.getAllMarketOrders(orderState) }.value?.map { it.toMarketOrderEntity() }
+            ?: throw NotFoundException()
+
 
     override suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity =
         wrap { honeyMartService.getOrderDetails(orderId) }.value?.toOrderDetailsEntity()
