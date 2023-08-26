@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -8,6 +9,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -44,6 +46,7 @@ import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -82,7 +85,15 @@ fun SearchContent(
 ) {
     AppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
-        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError)
+        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
+        EmptyProductPlaceholder(
+            (products.itemCount == 0
+                    && products.loadState.refresh != LoadState.Loading)
+                    || !state.isSearching
+        )
+        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+        Log.d("Error",state.isError.toString())
+        Log.d("Error",state.error.toString())
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -96,7 +107,7 @@ fun SearchContent(
             ) {
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = state.searchText.value,
+                    text = state.searchText,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,

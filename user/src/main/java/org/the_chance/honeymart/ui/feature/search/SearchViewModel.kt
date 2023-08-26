@@ -33,7 +33,7 @@ class SearchViewModel @Inject constructor(
 
     private fun searchForProducts() {
         _state.update { it.copy(isSearching = true, isError = false) }
-        val query = _state.value.searchText.value
+        val query = _state.value.searchText
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
             { searchForProductUseCase(query, sortOrder) },
@@ -58,8 +58,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isSearching = true) }
-        _state.value.searchText.value = text
+        _state.update { it.copy(isSearching = true, searchText = text) }
         viewModelScope.launch { actionStream.emit(text) }
     }
 
@@ -101,6 +100,10 @@ class SearchViewModel @Inject constructor(
 
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(_effect, SearchUiEffect.OnClickProductCard(productId))
+    }
+
+    override fun onclickTryAgain() {
+        searchForProducts()
     }
 }
 

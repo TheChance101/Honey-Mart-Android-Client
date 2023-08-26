@@ -15,7 +15,7 @@ data class SearchUiState(
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false,
-    val searchText: MutableStateFlow<String> = MutableStateFlow(""),
+    val searchText: String= "",
 )
 
 data class ProductUiState(

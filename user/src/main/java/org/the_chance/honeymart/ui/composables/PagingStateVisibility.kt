@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,21 +24,6 @@ fun <T : Any> PagingStateVisibility(
     items: LazyPagingItems<T>,
 ) {
     when {
-        items.loadState.refresh is LoadState.Loading -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
-                Loading(
-                    modifier = Modifier
-                        .padding(MaterialTheme.dimens.space12)
-                        .align(Alignment.Center),
-                    size = MaterialTheme.dimens.space64,
-                    state = true
-                )
-            }
-        }
         items.loadState.append is LoadState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -54,7 +38,7 @@ fun <T : Any> PagingStateVisibility(
                 )
             }
         }
-        items.loadState.refresh is LoadState.Error || items.loadState.append is LoadState.Error -> {
+        items.loadState.append is LoadState.Error -> {
             Text(
                 text = stringResource(id = R.string.error_loading_data),
                 modifier = Modifier
