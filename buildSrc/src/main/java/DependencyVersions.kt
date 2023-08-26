@@ -65,6 +65,7 @@ object DependencyVersions {
 
     //paging
     const val PagingRuntimeVersion = "3.1.1"
+    const val PagingComposeVersion = "3.2.0"
 
 
     object ClasspathVersions{

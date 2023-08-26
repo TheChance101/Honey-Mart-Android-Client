@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
@@ -25,6 +26,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
+import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisibility
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
@@ -37,6 +39,8 @@ fun CategoryProductsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
+    val products = state.products.collectAsLazyPagingItems()
+
     Box(contentAlignment = Alignment.BottomEnd) {
         Column(
             modifier = Modifier
@@ -82,7 +86,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                HoneyOutlineText(text = "${state.products.size} Products")
+                    HoneyOutlineText(text = "${products.itemCount} Products")
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
@@ -90,19 +94,25 @@ fun CategoryProductsContent(
                     )
                 }
             }
-            EmptyPlaceholder(state = state.products.isEmpty(), emptyObjectName = "Product")
+            EmptyPlaceholder(state = products.itemCount > 0, emptyObjectName = "Product")
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
-                items(state.products.size) { index ->
-                    ProductCard(
-                        onClick = { listener.onClickProduct(state.products[index].productId) },
-                        imageUrl = state.products[index].productImage.first(),
-                        productName = state.products[index].productName,
-                        productPrice = state.products[index].productPrice,
-                        description = state.products[index].productDescription
-                    )
+                items(products.itemCount) { index ->
+                    val product = products[index]
+                    if (product != null) {
+                        ProductCard(
+                            onClick = { listener.onClickProduct(product.productId) },
+                            imageUrl = product.productImage.firstOrNull() ?: "",
+                            productName = product.productName,
+                            productPrice = product.productPrice,
+                            description = product.productDescription
+                        )
+                    }
+                }
+                item {
+                    PagingStateVisibility(products)
                 }
             }
         }

@@ -1,5 +1,8 @@
 package org.the_chance.honeymart.ui.features.category
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -20,7 +23,7 @@ data class CategoriesUiState(
     val position: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
     val category: CategoryUiState = CategoryUiState(0, ""),
-    val products: List<ProductUiState> = emptyList(),
+    val products: Flow<PagingData<ProductUiState>> = flow{},
     val productDetails: ProductUiState = ProductUiState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
@@ -107,7 +110,7 @@ fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
     }
 }
 
-fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
+/*fun ProductEntity.toProductUiState(): ProductUiState {
     return map {
         ProductUiState(
             productId = it.productId,
@@ -117,6 +120,15 @@ fun List<ProductEntity>.toProductUiState(): List<ProductUiState> {
             productDescription = it.productDescription
         )
     }
+}*/
+fun ProductEntity.toProductUiState(): ProductUiState {
+    return ProductUiState(
+        productId = productId,
+        productName = productName,
+        productDescription = productDescription,
+        productPrice = "${productPrice}$",
+        productImage = productImages.ifEmpty { listOf("","") }
+    )
 }
 
 fun ProductEntity.toProductDetailsUiState(): ProductUiState {

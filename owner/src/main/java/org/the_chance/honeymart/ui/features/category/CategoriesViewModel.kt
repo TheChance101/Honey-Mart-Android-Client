@@ -1,6 +1,9 @@
 package org.the_chance.honeymart.ui.features.category
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -238,16 +241,18 @@ class CategoriesViewModel @Inject constructor(
     // region Category Products
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
+        tryToExecutePaging(
             { getAllProducts(categoryId) },
             ::onGetProductsSuccess,
             ::onError
         )
     }
 
-    private fun onGetProductsSuccess(products: List<ProductEntity>) {
+    private fun onGetProductsSuccess(products: PagingData<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
+
         _state.update {
-            it.copy(isLoading = false, error = null, products = products.toProductUiState())
+            it.copy(isLoading = false, error = null, products = flowOf(mappedProducts))
         }
     }
 

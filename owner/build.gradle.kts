@@ -66,4 +66,8 @@ dependencies {
     //Hilt
     kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.hiltDependency)
+    //paging
+    implementation(Dependencies.pagingCommon)
+    implementation(Dependencies.pagingRuntime)
+    implementation(Dependencies.pagingCompose)
 }
