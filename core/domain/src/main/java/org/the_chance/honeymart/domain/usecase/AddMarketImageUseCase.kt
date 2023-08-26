@@ -6,9 +6,9 @@ import javax.inject.Inject
 class AddMarketImageUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(
-        marketImage: ByteArray
-    ): Boolean {
-        return honeyMartRepository.addMarketImage(marketImage)
-    }
+//    suspend operator fun invoke(
+//        marketImage: ByteArray
+//    ): Boolean {
+//        return honeyMartRepository.addMarketImage(marketImage)
+//    }
 }
