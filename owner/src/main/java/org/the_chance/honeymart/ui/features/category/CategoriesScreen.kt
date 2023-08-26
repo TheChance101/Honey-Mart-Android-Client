@@ -28,10 +28,6 @@ import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 
-/**
- * Created by Aziza Helmy on 8/7/2023.
- */
-
 @Composable
 fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current

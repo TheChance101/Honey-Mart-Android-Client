@@ -94,7 +94,7 @@ fun CategoryProductsContent(
                     )
                 }
             }
-            EmptyPlaceholder(state = products.itemCount > 0, emptyObjectName = "Product")
+            EmptyPlaceholder(state = products.itemCount <= 0, emptyObjectName = "Product")
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
