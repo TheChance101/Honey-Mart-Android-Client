@@ -10,5 +10,5 @@ data class OwnerLoginDto(
     @SerializedName("marketId")
     val marketId: Long?,
     @SerializedName("tokens")
-    val tokens: TokensDto
+    val tokens: TokensDto?
 )

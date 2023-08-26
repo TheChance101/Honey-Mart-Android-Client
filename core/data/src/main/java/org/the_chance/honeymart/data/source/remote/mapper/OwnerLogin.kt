@@ -8,7 +8,7 @@ import org.the_chance.honeymart.domain.model.TokensEntity
 fun OwnerLoginDto.toOwnerLoginEntity(): OwnerLoginEntity = OwnerLoginEntity(
     fullName = fullName ?: "",
     marketId = marketId ?: 0L,
-    tokens = tokens.toTokenEntity()
+    tokens = tokens?.toTokenEntity() ?: TokensEntity("", "")
 )
 
 fun TokensDto.toTokenEntity(): TokensEntity = TokensEntity(

@@ -76,39 +76,41 @@ class LoginViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { loginOwnerUseCase(email, password) },
-            ::onLoginSuccess,
+            { onLoginSuccess() },
             ::onLoginError,
         )
     }
 
-    private fun onLoginSuccess(token: String) {
-        val errorMessage = "Invalid username or password"
-        if (token.isBlank()) {
+    private fun onLoginSuccess() {
+        _state.update { it.copy(isLoading = false, isError = false, error = null) }
+        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+    }
+
+    private fun onLoginError(error: ErrorHandler) {
+        if (error is ErrorHandler.UnAuthorizedUser) {
+            val errorMessage = "Invalid username or password"
             _state.update {
                 it.copy(
                     isLoading = false,
+                    isError = true,
+                    error = error,
                     emailState = state.value.emailState.copy(errorState = errorMessage),
                     passwordState = state.value.passwordState.copy(errorState = errorMessage),
                     validationToast = ValidationToast(isShow = true, message = errorMessage)
                 )
             }
-            effectActionExecutor(_effect, LoginUiEffect.ShowLoginErrorToastEffect)
         } else {
-            _state.update { it.copy(isLoading = false) }
-            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
-        }
-    }
-
-    private fun onLoginError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                validationToast = ValidationToast(
-                    isShow = true,
-                    message = "Something went wrong, please check your network and try again"
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    isError = true,
+                    error = error,
+                    validationToast = ValidationToast(
+                        isShow = true,
+                        message = "Something went wrong, please check your network and try again"
+                    )
                 )
-            )
+            }
         }
         effectActionExecutor(_effect, LoginUiEffect.ShowLoginErrorToastEffect)
     }
@@ -125,5 +127,5 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    // endregion
+// endregion
 }

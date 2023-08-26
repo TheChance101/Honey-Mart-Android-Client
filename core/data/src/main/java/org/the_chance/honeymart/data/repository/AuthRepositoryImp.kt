@@ -8,7 +8,6 @@ import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.OwnerLoginEntity
 import org.the_chance.honeymart.domain.model.OwnerProfileEntity
-import org.the_chance.honeymart.domain.model.TokensEntity
 import org.the_chance.honeymart.domain.model.UserLoginEntity
 import org.the_chance.honeymart.domain.repository.AuthRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
@@ -53,12 +52,8 @@ class AuthRepositoryImp @Inject constructor(
     }
 
     override suspend fun loginOwner(email: String, password: String): OwnerLoginEntity {
-        return try {
-            wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
-                ?: throw NotFoundException()
-        } catch (e: Exception) {
-            OwnerLoginEntity("", 0L, TokensEntity("", ""))
-        }
+        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
+            ?: throw NotFoundException()
     }
 
     override suspend fun saveOwnerName(name: String) {
