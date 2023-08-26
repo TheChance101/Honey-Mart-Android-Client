@@ -23,7 +23,7 @@ internal object RepositoryModule {
         honeyMartService: HoneyMartService,
         appDataStorePreferences: AppDataStorePreferences
     ): HoneyMartRepository {
-        return HoneyMartRepositoryImp(honeyMartService, appDataStorePreferences)
+        return HoneyMartRepositoryImp(honeyMartService)
     }
 
     @Singleton
@@ -33,6 +33,6 @@ internal object RepositoryModule {
         honeyMartService: HoneyMartService,
         fireBaseMsgService: FireBaseMsgService
     ): AuthRepository {
-        return AuthRepositoryImp(authDataStorePreferencesImp, honeyMartService, fireBaseMsgService)
+        return AuthRepositoryImp(authDataStorePreferencesImp, honeyMartService)
     }
 }

@@ -35,9 +35,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.requests.MarketsUiEffect
+import org.the_chance.honeymart.ui.features.requests.MarketsViewModel
+import org.the_chance.honeymart.ui.features.requests.contentScreen
 import org.the_chance.honeymart.ui.navigation.NavigationScreen
-import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
@@ -45,24 +48,18 @@ import java.util.Locale
 
 @Composable
 fun NavigationRail(
-    viewModel: NavigationRailViewModel = hiltViewModel(),
+    viewModel: MarketsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-
     val navController = LocalNavigationProvider.current
-
 
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is NavigationRailEffect.OnClickProfileEffect -> {
-                    //TODO: Navigate to Profile
-                }
-
-                is NavigationRailEffect.OnClickLogoutEffect -> {
-                    //TODO: Clear Token
+                is MarketsUiEffect.OnClickLogoutEffect -> {
                     navController.navigateToLogin()
                 }
+                else -> {}
             }
         }
     }
@@ -72,26 +69,17 @@ fun NavigationRail(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationRail(
-        containerColor = MaterialTheme.colorScheme.onTertiary,
-        header = {
-            if (state.adminImageUrl.isNotEmpty()) {
-                ImageNetwork(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.icon48)
-                        .clip(CircleShape)
-                        .clickable { viewModel.onClickProfile() },
-                    imageUrl = state.adminImageUrl,
-                )
-            } else {
+    ContentVisibility(state = state.contentScreen()) {
+        NavigationRail(
+            containerColor = MaterialTheme.colorScheme.onTertiary,
+            header = {
                 Box(
                     modifier = Modifier
                         .size(MaterialTheme.dimens.icon48)
                         .clip(CircleShape)
                         .background(
                             MaterialTheme.colorScheme.primary,
-                        )
-                        .clickable { viewModel.onClickProfile() },
+                        ),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -102,26 +90,26 @@ fun NavigationRail(
                     )
                 }
             }
-        }
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        screens.forEach { screen ->
-            NavRailItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            screens.forEach { screen ->
+                NavRailItem(
+                    screen = screen,
+                    currentDestination = currentDestination,
+                    navController = navController
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable { viewModel.onClickLogout() }
+                    .padding(16.dp),
+                painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
+                contentDescription = "Logout Icon",
+                tint = black60
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            modifier = Modifier
-                .clip(CircleShape)
-                .clickable { viewModel.onClickLogout() }
-                .padding(16.dp),
-            painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
-            contentDescription = "Logout Icon",
-            tint = black60
-        )
     }
 }
 

@@ -39,7 +39,7 @@ class AuthInterceptor @Inject constructor(
             .request()
             .newBuilder()
             .addHeader(API_KEY, BuildConfig.API_KEY)
-            .addHeader(AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDdiOTQ4ZjNlIiwiUk9MRV9UWVBFIjoiQWRtaW4iLCJpc3MiOiJpby5rdG9yLnNlcnZlci5jb25maWcuTWFwQXBwbGljYXRpb25Db25maWdANThmMzk1NjQiLCJleHAiOjE2OTI4NzM2MzEsInRva2VuVHlwZSI6ImFjY2Vzc1Rva2VuIn0.D9tySensgvBhmdnEGwqRme6ZbCk6uyKd2ZkGiwtQlBY")
+            .addHeader(AUTHORIZATION, "Bearer $accessToken")
             .build()
 
         val oldResponse = chain.proceed(oldRequest)
@@ -89,7 +89,7 @@ class AuthInterceptor @Inject constructor(
     companion object {
         private const val API_KEY = "apiKey"
         private const val AUTHORIZATION = "Authorization"
-//        private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
-        private const val BASE_URL = "http://10.0.2.2:8080"
+        private const val BASE_URL = "https://honey-mart-server-oe345.ondigitalocean.app/"
+//        private const val BASE_URL = "http://10.0.2.2:8080"
     }
 }

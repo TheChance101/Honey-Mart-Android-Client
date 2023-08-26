@@ -6,11 +6,14 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class RequestsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
+    val isAuthenticationError: Boolean = false,
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
     val requests: List<RequestUiState> = emptyList(),
     val selectedRequest: RequestUiState? = null,
-    val requestsStates: RequestsStates = RequestsStates.UNAPPROVED
+    val requestsStates: RequestsStates = RequestsStates.UNAPPROVED,
+    val adminName: Char = 'n',
+    val adminImageUrl: String = "",
 )
 
 data class RequestUiState(
@@ -23,7 +26,7 @@ data class RequestUiState(
     val isRequestNew: Boolean = false,
     val isRequestSelected: Boolean = false,
     val state: RequestsStates = RequestsStates.UNAPPROVED,
-    val isSelected: Boolean = false
+    val isSelected: Boolean = false,
 ) {
     fun ownerNameFirstCharacter(): Char = this.ownerName.firstOrNull() ?: ' '
 }
@@ -52,4 +55,5 @@ enum class RequestsStates(val state: Int) {
 fun RequestsUiState.emptyRequestsPlaceHolder() =
     this.requests.isEmpty() && !this.isError && !this.isLoading
 
-fun RequestsUiState.contentScreen() = !this.isLoading && !this.isError
+fun RequestsUiState.contentScreen() =
+    !this.isLoading && !this.isError && !this.isAuthenticationError
