@@ -39,92 +39,92 @@ fun UpdateCategoryContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener
 ) {
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(bottom = 40.dp)
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(bottom = 40.dp)
+                .padding(
+                    end = MaterialTheme.dimens.space16, bottom = MaterialTheme.dimens.space16
+                )
+                .fillMaxSize()
+                .background(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    shape = MaterialTheme.shapes.medium
+                )
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(
-                        end = MaterialTheme.dimens.space16, bottom = MaterialTheme.dimens.space16
-                    )
-                    .fillMaxSize()
-                    .background(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        shape = MaterialTheme.shapes.medium
-                    )
+            FormHeader(
+                title = stringResource(R.string.update_category),
+                iconPainter = painterResource(id = R.drawable.icon_update_category)
+            )
+            FormTextField(
+                text = state.newCategory.newCategoryName,
+                hint = stringResource(R.string.new_category_name),
+                keyboardType = KeyboardType.Text,
+                onValueChange = listener::onNewCategoryNameChanged,
+                errorMessage = when (state.newCategory.categoryNameState) {
+                    ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
+                    ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
+                    else -> ""
+                }
+            )
+            Text(
+                modifier = Modifier.padding(
+                    top = MaterialTheme.dimens.space24, start = MaterialTheme.dimens.space16
+                ),
+                text = stringResource(R.string.select_category_image),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                textAlign = TextAlign.Center,
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                modifier = Modifier.padding(MaterialTheme.dimens.space16)
             ) {
-                FormHeader(
-                    title = stringResource(R.string.update_category),
-                    iconPainter = painterResource(id = R.drawable.icon_update_category)
-                )
-                FormTextField(
-                    text = state.newCategory.newCategoryName,
-                    hint = stringResource(R.string.new_category_name),
-                    keyboardType = KeyboardType.Text,
-                    onValueChange = listener::onNewCategoryNameChanged,
-                    errorMessage = when (state.newCategory.categoryNameState) {
-                        ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
-                        ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
-                        else -> ""
+                if (state.categoryIcons.isNotEmpty())
+                    items(count = state.categoryIcons.size) { index ->
+                        CategoryIconItem(
+                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                            isSelected = state.categoryIcons[index].isSelected,
+                            categoryIconId = state.categoryIcons[index].categoryIconId,
+                            onClick = {
+                                listener.onClickNewCategoryIcon(
+                                    state.categoryIcons[index]
+                                        .categoryIconId
+                                )
+                            }
+                        )
                     }
-                )
-                Text(
-                    modifier = Modifier.padding(
-                        top = MaterialTheme.dimens.space24, start = MaterialTheme.dimens.space16
+            }
+            Spacer(modifier = Modifier.weight(1F))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = MaterialTheme.dimens.space16,
+                        vertical = MaterialTheme.dimens.space24
                     ),
-                    text = stringResource(R.string.select_category_image),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
+                horizontalArrangement = Arrangement.End
+            ) {
+                HoneyFilledButton(
+                    label = stringResource(R.string.save),
+                    isButtonEnabled = true,
+                    onClick = { listener.updateCategory(state) },
+                    modifier = Modifier.width(IntrinsicSize.Max)
                 )
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
-                ) {
-                    if (state.categoryIcons.isNotEmpty())
-                        items(count = state.categoryIcons.size) { index ->
-                            CategoryIconItem(
-                                iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                                isSelected = state.categoryIcons[index].isSelected,
-                                categoryIconId = state.categoryIcons[index].categoryIconId,
-                                onClick = {
-                                    listener.onClickNewCategoryIcon(
-                                        state.categoryIcons[index]
-                                            .categoryIconId
-                                    )
-                                }
-                            )
-                        }
-                }
-                Spacer(modifier = Modifier.weight(1F))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = MaterialTheme.dimens.space16,
-                            vertical = MaterialTheme.dimens.space24
-                        ),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    HoneyFilledButton(
-                        label = "Save update",
-                        isButtonEnabled = true,
-                        onClick = { listener.updateCategory(state) },
-                        modifier = Modifier.width(IntrinsicSize.Max)
-                    )
-                    HoneyOutlineButton(
-                        label = "Cancel",
-                        onClick = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
-                        modifier = Modifier.width(IntrinsicSize.Max)
-                    )
-                }
+                HoneyOutlineButton(
+                    label = stringResource(R.string.cancel),
+                    onClick = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
+                    modifier = Modifier.width(IntrinsicSize.Max)
+                )
             }
         }
     }
+}
 
 
 

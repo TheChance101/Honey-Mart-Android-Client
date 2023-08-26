@@ -29,7 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderUiState
-import org.the_chance.honeymart.ui.features.orders.toCountProductFormat
+import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.black60

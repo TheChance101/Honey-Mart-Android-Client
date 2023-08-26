@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.util.toPriceFormat
 
 /**
  * Created by Aziza Helmy on 8/7/2023.
@@ -22,8 +23,8 @@ data class CategoriesUiState(
     val productsQuantity: String = "",
     val position: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
-    val category: CategoryUiState = CategoryUiState(0, ""),
-    val products: Flow<PagingData<ProductUiState>> = flow{},
+    val category: CategoryUiState = CategoryUiState(),
+    val products: Flow<PagingData<ProductUiState>> = flow {},
     val productDetails: ProductUiState = ProductUiState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
@@ -92,10 +93,7 @@ data class ProductUiState(
 )
 
 enum class Visibility {
-    UPDATE_CATEGORY,
-    ADD_CATEGORY,
-    DELETE_CATEGORY,
-    DELETE_PRODUCT,
+    UPDATE_CATEGORY, ADD_CATEGORY, DELETE_CATEGORY, DELETE_PRODUCT,
 }
 // endregion
 
@@ -110,24 +108,13 @@ fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
     }
 }
 
-/*fun ProductEntity.toProductUiState(): ProductUiState {
-    return map {
-        ProductUiState(
-            productId = it.productId,
-            productName = it.productName,
-            productImage = it.productImages,
-            productPrice = "${it.productPrice}$",
-            productDescription = it.productDescription
-        )
-    }
-}*/
 fun ProductEntity.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
         productDescription = productDescription,
-        productPrice = "${productPrice}$",
-        productImage = productImages.ifEmpty { listOf("","") }
+        productPrice = productPrice.toPriceFormat(),
+        productImage = productImages.ifEmpty { listOf("", "") }
     )
 }
 
@@ -135,8 +122,8 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productImage = productImages,
-        productPrice = productPrice.toString(),
+        productImage = productImages.ifEmpty { listOf("", "") },
+        productPrice = productPrice.toPriceFormat(),
         productDescription = productDescription,
     )
 }
@@ -155,27 +142,16 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // region Extension
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
-        newCategory.newCategoryName.isNotBlank() &&
-                !category.categoryIconUIState.isSelected &&
-                !isLoading &&
-                newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+        newCategory.newCategoryName.isNotBlank() && !category.categoryIconUIState.isSelected && !isLoading && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
 }
 
 fun NewProductsUiState.showButton(): Boolean {
-    return name.isNotBlank()
-            && price.isNotBlank()
-            && description.isNotBlank()
-            && productNameState == ValidationState.VALID_TEXT_FIELD
-            && productPriceState == ValidationState.VALID_TEXT_FIELD
-            && productDescriptionState == ValidationState.VALID_TEXT_FIELD
-            &&images.isNotEmpty()
+    return name.isNotBlank() && price.isNotBlank() && description.isNotBlank() && productNameState == ValidationState.VALID_TEXT_FIELD && productPriceState == ValidationState.VALID_TEXT_FIELD && productDescriptionState == ValidationState.VALID_TEXT_FIELD && images.isNotEmpty()
 }
-fun ProductUiState.showButton():Boolean{
-    return productName.isNotBlank()
-            &&productPrice.isNotBlank()
-//            && productDescription.isNotBlank()
-            &&productImage.isNotEmpty()
+
+fun ProductUiState.showButton(): Boolean {
+    return productName.isNotBlank() && productPrice.isNotBlank() && productDescription.isNotBlank() && productImage.isNotEmpty()
 }
 
 
@@ -184,46 +160,24 @@ fun CategoriesUiState.emptyCategoryPlaceHolder() =
 
 fun CategoriesUiState.errorPlaceHolderCondition() = isError
 
-fun CategoriesUiState.placeHolderCondition() =
-    categories.isEmpty() && !isError && !isLoading
+fun CategoriesUiState.placeHolderCondition() = categories.isEmpty() && !isError && !isLoading
 
 fun CategoriesUiState.showAddProductContent() =
-    !isLoading
-            && !showScreenState.showFab
-            && showScreenState.showAddProduct
-            && !showScreenState.showAddCategory
-            && !showScreenState.showUpdateCategory
+    !isLoading && !showScreenState.showFab && showScreenState.showAddProduct && !showScreenState.showAddCategory && !showScreenState.showUpdateCategory
 
 
 fun CategoriesUiState.showProductDetailsContent() =
-    !isLoading
-            && !showScreenState.showFab
-            && !showScreenState.showAddProduct
-            && !showScreenState.showAddCategory
-            && !showScreenState.showUpdateCategory
-            && showScreenState.showProductDetails
+    !isLoading && !showScreenState.showFab && !showScreenState.showAddProduct && !showScreenState.showAddCategory && !showScreenState.showUpdateCategory && showScreenState.showProductDetails
 
 fun CategoriesUiState.showProductUpdateContent() =
-    !isLoading
-            && !showScreenState.showFab
-            && !showScreenState.showAddProduct
-            && !showScreenState.showAddCategory
-            && !showScreenState.showUpdateCategory
-            && !showScreenState.showProductDetails
-            && showScreenState.showProductUpdate
+    !isLoading && !showScreenState.showFab && !showScreenState.showAddProduct && !showScreenState.showAddCategory && !showScreenState.showUpdateCategory && !showScreenState.showProductDetails && showScreenState.showProductUpdate
 
 
 fun CategoriesUiState.showCategoryProductsInProduct() =
-    !isLoading
-            && !showScreenState.showUpdateCategory
-            && !showScreenState.showAddCategory
-            && !showScreenState.showAddProduct
-            && showScreenState.showFab
+    !isLoading && !showScreenState.showUpdateCategory && !showScreenState.showAddCategory && !showScreenState.showAddProduct && showScreenState.showFab
 
 fun CategoriesUiState.showCategoryProductsInCategory() = !isLoading && !showScreenState.showFab
 
 fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categories.isEmpty()
-
-fun CategoriesUiState.showLoadingWhenCategoriesIsNotEmpty() = isLoading && categories.isNotEmpty()
 
 // endregion

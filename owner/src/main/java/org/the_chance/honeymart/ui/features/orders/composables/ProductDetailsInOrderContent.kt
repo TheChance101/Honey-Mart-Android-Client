@@ -23,10 +23,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
-import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
-import org.the_chance.honeymart.ui.features.orders.toCountFormat
-import org.the_chance.honeymart.ui.features.orders.toPriceFormat
+import org.the_chance.honeymart.ui.util.toCountFormat
+import org.the_chance.honeymart.ui.util.toPriceFormat
 import org.the_chance.honymart.ui.theme.dimens
 
 

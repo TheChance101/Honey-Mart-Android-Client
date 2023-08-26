@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.MarketOrderEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.util.toPriceFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -109,9 +110,7 @@ fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
 fun OrdersUiState.showOrdersState() = !showState.showProductDetails && !isError
 
-fun Double.toPriceFormat(): String = "$this$"
-fun Int.toCountFormat(): String = "$this items"
-fun Int.toCountProductFormat(): String = "$this Product"
+
 // endregion
 
 // region Extensions

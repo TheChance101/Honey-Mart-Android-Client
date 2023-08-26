@@ -44,6 +44,7 @@ fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -138,7 +139,6 @@ fun CategoriesContent(
             message = state.snackBar.message,
             onDismiss = listener::resetSnackBarState,
             undoAction = {},
-            text = ""
         )
     }
     ConnectionErrorPlaceholder(

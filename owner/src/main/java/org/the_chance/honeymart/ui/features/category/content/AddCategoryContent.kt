@@ -51,80 +51,80 @@ fun AddCategoryContent(
                     topEnd = MaterialTheme.dimens.space16, topStart = MaterialTheme.dimens.space16
                 )
             )
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_honey_sun),
-                contentDescription = "",
-                modifier = Modifier.align(Alignment.TopEnd)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_honey_sun),
+            contentDescription = "",
+            modifier = Modifier.align(Alignment.TopEnd)
+        )
+
+        Column(modifier = Modifier.fillMaxSize()) {
+            FormHeader(
+                title = stringResource(R.string.add_new_category),
+                iconPainter = painterResource(id = R.drawable.icon_add_product)
             )
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                FormHeader(
-                    title = stringResource(R.string.add_new_category),
-                    iconPainter = painterResource(id = R.drawable.icon_add_product)
-                )
-
-                FormTextField(
-                    text = state.newCategory.newCategoryName,
-                    modifier = Modifier.padding(top = MaterialTheme.dimens.space36),
-                    hint = stringResource(R.string.category_name),
-                    keyboardType = KeyboardType.Text,
-                    onValueChange = listener::onNewCategoryNameChanged,
-                    errorMessage = when (state.newCategory.categoryNameState) {
-                        ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
-                        ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
-                        else -> ""
-                    }
-                )
-
-                Text(
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space32
-                    ),
-                    text = stringResource(R.string.select_category_image),
-                    style = Typography.bodyMedium.copy(color = blackOn37)
-                )
-
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
-                ) {
-                    items(count = state.categoryIcons.size) { index ->
-                        CategoryIconItem(
-                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                            isSelected = state.categoryIcons[index].isSelected,
-                            categoryIconId = state.categoryIcons[index].categoryIconId,
-                            onClick = {
-                                listener.onClickNewCategoryIcon(
-                                    state.categoryIcons[index].categoryIconId
-                                )
-                            }
-                        )
-                    }
+            FormTextField(
+                text = state.newCategory.newCategoryName,
+                modifier = Modifier.padding(top = MaterialTheme.dimens.space36),
+                hint = stringResource(R.string.category_name),
+                keyboardType = KeyboardType.Text,
+                onValueChange = listener::onNewCategoryNameChanged,
+                errorMessage = when (state.newCategory.categoryNameState) {
+                    ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
+                    ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
+                    else -> ""
                 }
-
-            }
-            HoneyFilledIconButton(
-                label = stringResource(R.string.add),
-                onClick = {
-                    listener.onClickAddCategory(
-                        name = state.newCategory.newCategoryName,
-                        categoryIconID = state.newCategory.newIconId
-                    )
-                },
-                isEnable = state.showButton(),
-                iconPainter = painterResource(id = R.drawable.icon_add_product),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(
-                        bottom = MaterialTheme.dimens.space64,
-                        start = MaterialTheme.dimens.space24,
-                        end = MaterialTheme.dimens.space24
-                    )
             )
+
+            Text(
+                modifier = Modifier.padding(
+                    start = MaterialTheme.dimens.space16,
+                    top = MaterialTheme.dimens.space32
+                ),
+                text = stringResource(R.string.select_category_image),
+                style = Typography.bodyMedium.copy(color = blackOn37)
+            )
+
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                modifier = Modifier.padding(MaterialTheme.dimens.space16)
+            ) {
+                items(count = state.categoryIcons.size) { index ->
+                    CategoryIconItem(
+                        iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                        isSelected = state.categoryIcons[index].isSelected,
+                        categoryIconId = state.categoryIcons[index].categoryIconId,
+                        onClick = {
+                            listener.onClickNewCategoryIcon(
+                                state.categoryIcons[index].categoryIconId
+                            )
+                        }
+                    )
+                }
+            }
+
         }
+        HoneyFilledIconButton(
+            label = stringResource(R.string.add),
+            onClick = {
+                listener.onClickAddCategory(
+                    name = state.newCategory.newCategoryName,
+                    categoryIconID = state.newCategory.newIconId
+                )
+            },
+            isEnable = state.showButton(),
+            iconPainter = painterResource(id = R.drawable.icon_add_product),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(
+                    bottom = MaterialTheme.dimens.space64,
+                    start = MaterialTheme.dimens.space24,
+                    end = MaterialTheme.dimens.space24
+                )
+        )
     }
+}
 

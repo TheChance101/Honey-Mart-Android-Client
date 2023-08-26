@@ -22,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderDetailsProductUiState
-import org.the_chance.honeymart.ui.features.orders.toCountFormat
-import org.the_chance.honeymart.ui.features.orders.toPriceFormat
+import org.the_chance.honeymart.ui.util.toCountFormat
+import org.the_chance.honeymart.ui.util.toPriceFormat
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60

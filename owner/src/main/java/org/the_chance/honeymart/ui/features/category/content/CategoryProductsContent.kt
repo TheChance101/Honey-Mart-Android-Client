@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
@@ -29,6 +30,7 @@ import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
 import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisibility
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
+import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
@@ -86,7 +88,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HoneyOutlineText(text = "${products.itemCount} Products")
+                    HoneyOutlineText(text = products.itemCount.toCountProductFormat())
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
@@ -99,14 +101,13 @@ fun CategoryProductsContent(
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
                 items(products.itemCount) { index ->
-                    val product = products[index]
-                    if (product != null) {
+                    products[index]?.let {
                         ProductCard(
-                            onClick = { listener.onClickProduct(product.productId) },
-                            imageUrl = product.productImage.firstOrNull() ?: "",
-                            productName = product.productName,
-                            productPrice = product.productPrice,
-                            description = product.productDescription
+                            onClick = { listener.onClickProduct(it.productId) },
+                            imageUrl = it.productImage.firstOrNull() ?: "",
+                            productName = it.productName,
+                            productPrice = it.productPrice,
+                            description = it.productDescription
                         )
                     }
                 }
@@ -115,7 +116,7 @@ fun CategoryProductsContent(
                 }
             }
             EmptyPlaceholder(
-                state = products.itemCount <= 0 && !state.isLoading,
+                state = products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading,
                 emptyObjectName = "Product"
             )
         }

@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.ui.features.category.content
 
-import android.content.Context
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -33,11 +31,12 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.category.showButton
+import org.the_chance.honeymart.ui.util.Constant.MAX_IMAGES
+import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
-const val MAX_IMAGES = 4
 
 @Composable
 fun AddProductContent(
@@ -48,7 +47,7 @@ fun AddProductContent(
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_IMAGES),
-        onResult = { handleImageSelection(it, context, state, listener::onImagesSelected) }
+        onResult = { it.handleImageSelection(context, state, listener::onImagesSelected) }
     )
 
     Column(
@@ -151,17 +150,3 @@ fun AddProductContent(
     }
 }
 
-fun handleImageSelection(
-    uris: List<Uri>,
-    context: Context,
-    state: CategoriesUiState,
-    onImageSelected: (List<ByteArray>) -> Unit
-) {
-    val imageByteArrays = uris.mapNotNull { uri ->
-        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            inputStream.readBytes()
-        }
-    }
-    val updatedImages = state.newProducts.images + imageByteArrays
-    onImageSelected(updatedImages)
-}
