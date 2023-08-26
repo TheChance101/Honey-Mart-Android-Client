@@ -94,7 +94,6 @@ fun CategoryProductsContent(
                     )
                 }
             }
-            EmptyPlaceholder(state = products.itemCount <= 0, emptyObjectName = "Product")
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
@@ -115,6 +114,10 @@ fun CategoryProductsContent(
                     PagingStateVisibility(products)
                 }
             }
+            EmptyPlaceholder(
+                state = products.itemCount <= 0 && !state.isLoading,
+                emptyObjectName = "Product"
+            )
         }
 
         AddProductButton(
