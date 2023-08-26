@@ -56,7 +56,6 @@ fun OrderDetailsContent(
                     }
                 }
             }
-
             OrderStatusButtons(
                 visibility = state.products.isNotEmpty() && !state.showState.showProductDetails
                         && !state.done() && !state.cancel(),

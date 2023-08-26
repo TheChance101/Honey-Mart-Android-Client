@@ -97,7 +97,8 @@ fun ItemOrder(
                 ) {
                     if (icon) {
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                            horizontalArrangement = Arrangement
+                                .spacedBy(MaterialTheme.dimens.space8),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             if (icon) {
@@ -117,7 +118,8 @@ fun ItemOrder(
                     } else {
                         Column {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                                horizontalArrangement = Arrangement
+                                    .spacedBy(MaterialTheme.dimens.space8),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 if (icon) {

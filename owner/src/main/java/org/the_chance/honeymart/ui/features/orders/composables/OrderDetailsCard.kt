@@ -46,7 +46,7 @@ fun OrderDetailsCard(
             modifier = Modifier
                 .size(MaterialTheme.dimens.itemProductImage)
                 .clip(CircleShape),
-            imageUrl = if (state.images.isNotEmpty()) state.images.first() else "https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff"
+            imageUrl = "https://lh3.googleusercontent.com/OPo1J6Cvyq28QdAqC5SlW6io6YV9FUCLzGM0OmKbkdZgdMM-ziLJYF96DeJ1YaNi0Kpr9CIqPm8=w128-h128-e365-rj-sc0x00ffffff"
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -65,7 +65,6 @@ fun OrderDetailsCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = blackOn60
                 )
-
                 Row(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
                     verticalAlignment = Alignment.CenterVertically
@@ -77,7 +76,6 @@ fun OrderDetailsCard(
                         tint = black37
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-
                     Text(
                         text = state.count.toCountFormat(),
                         style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)

@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.orders.ButtonsState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun OrderStatusButtons(
@@ -28,14 +28,14 @@ fun OrderStatusButtons(
         ) {
             Spacer(modifier = Modifier.weight(1F))
             HoneyFilledButton(
-                modifier = modifier.width(165.dp),
+                modifier = modifier.width(MaterialTheme.dimens.withOrderStatusButton),
                 label = buttonState.confirmText,
                 onClick = buttonState.onClickConfirm,
             )
             HoneyOutlineButton(
                 modifier = modifier
-                    .width(165.dp)
-                    .padding(bottom = 24.dp),
+                    .width(MaterialTheme.dimens.withOrderStatusButton)
+                    .padding(bottom = MaterialTheme.dimens.space24),
                 label = buttonState.cancelText,
                 onClick = buttonState.onClickCancel,
             )

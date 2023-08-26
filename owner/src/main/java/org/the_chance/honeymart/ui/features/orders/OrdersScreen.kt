@@ -53,12 +53,6 @@ fun OrdersContent(
             onClickTryAgain = { listener.getAllMarketOrder(OrderStates.ALL) }
         )
         Loading(state = state.isLoading && state.orders.isEmpty())
-//        EmptyOrdersPlaceholder(
-//            painter = painterResource(id = R.drawable.owner_empty_order),
-//            text = stringResource(R.string.there_are_no_order_for_this_day),
-//            visibilityState = state.emptyOrdersPlaceHolder(),
-//
-//            )
         Row(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
@@ -75,7 +69,6 @@ fun OrdersContent(
                         listener = listener
                     )
                 }
-
             }
             Column(
                 modifier = Modifier
@@ -95,11 +88,7 @@ fun OrdersContent(
                     stringResource(id = R.string.product_details), state =state )
 
                 }
-
             }
-
         }
-
-
     }
 }

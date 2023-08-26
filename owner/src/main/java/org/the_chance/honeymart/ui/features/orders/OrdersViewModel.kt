@@ -27,7 +27,6 @@ class OrdersViewModel @Inject constructor(
         resetStateScreen()
     }
 
-
     override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
             it.copy(isLoading = true, isError = false, orderStates = orderState)
@@ -100,7 +99,6 @@ class OrdersViewModel @Inject constructor(
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
-
     }
 
     override fun onClickProduct(product: OrderDetailsProductUiState) {
@@ -145,10 +143,7 @@ class OrdersViewModel @Inject constructor(
 
     private fun onUpdateStateOrderSuccess(success: Boolean) {
         _state.update {
-            it.copy(
-                isLoading = false,
-
-                )
+            it.copy(isLoading = false)
         }
         getAllMarketOrder(_state.value.orderStates)
     }
@@ -158,7 +153,6 @@ class OrdersViewModel @Inject constructor(
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
-
     }
 
     private fun updateButtonsState() {
@@ -205,13 +199,15 @@ class OrdersViewModel @Inject constructor(
             else -> return
         }
         _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
-
     }
-     fun resetStateScreen(){
+
+    fun resetStateScreen() {
         _state.update {
-            it.copy(showState = it.showState.copy(
-                showProductDetails = false,
-            ))
+            it.copy(
+                showState = it.showState.copy(
+                    showProductDetails = false,
+                )
+            )
         }
     }
 
