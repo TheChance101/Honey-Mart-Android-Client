@@ -130,6 +130,7 @@
     <string name="price">Price</string>
     <string name="offer_price">Offer Price</string>
     <string name="expiration_date">Expiration Date</string>
+    <string name="expired">Expired</string>
     <string name="get_coupon">Get coupon</string>
     <string name="product_image">Product Image</string>
     <string name="coupon_code">Coupon Code</string>

@@ -40,7 +40,7 @@ class AuthInterceptor @Inject constructor(
             .newBuilder()
             .addHeader(
                 AUTHORIZATION,
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDRjMWJkY2MyIiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0A3MmY5ZjI3YyIsImV4cCI6MTY5MzA0OTM5MiwidG9rZW5UeXBlIjoiYWNjZXNzVG9rZW4ifQ.HkuXy9EFz58lCcAV1zCWUG71RYEhAaylpTiMhqiMh4M"
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiYXVkIjoiaW8ua3Rvci5zZXJ2ZXIuY29uZmlnLk1hcEFwcGxpY2F0aW9uQ29uZmlnQDRjMWJkY2MyIiwiUk9MRV9UWVBFIjoiTm9ybWFsVXNlciIsImlzcyI6ImlvLmt0b3Iuc2VydmVyLmNvbmZpZy5NYXBBcHBsaWNhdGlvbkNvbmZpZ0A3MmY5ZjI3YyIsImV4cCI6MTY5MzE2NDA5MywidG9rZW5UeXBlIjoiYWNjZXNzVG9rZW4ifQ.YtRZxrAEponbv6K4HK7ni1YoZnpprthWG6JfY1kOtl8"
             )
             .addHeader(API_KEY, BuildConfig.API_KEY)
             .build()

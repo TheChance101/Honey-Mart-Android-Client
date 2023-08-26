@@ -39,15 +39,17 @@ fun CouponsItem(
     Row(
         modifier = modifier.height(IntrinsicSize.Min),
     ) {
-        Log.i("jii", "CouponsItem: ${coupon.expirationDate.formatDate() <= LocalDate.now().toString()}")
+        Log.i("jii", "CouponsItem isExpired : ${coupon.expirationDate.formatDate() <= LocalDate.now().toString()}")
         Log.i("jii", "CouponsItem expirationDate is : ${coupon.expirationDate.formatDate()}")
-        Log.i("jii", "CouponsItem expirationDate is : ${LocalDate.now().toString()}")
-        Log.i("jii", "CouponsItem isValid: ${coupon.isExpired}")
+        Log.i("jii", "CouponsItem LocalDate is : ${LocalDate.now().toString()}")
+        Log.i("jii", "CouponsItem isExpired: ${coupon.isExpired}")
+
         CouponDetails(
             modifier = Modifier.fillMaxHeight(),
             productName = coupon.product.productName,
             expirationDate = coupon.expirationDate,
             count = coupon.count,
+            isExpired = coupon.isExpired,
             productPrice = coupon.product.productPrice.formatCurrencyWithNearestFraction(),
             discountPercentage = coupon.discountPrice.formatCurrencyWithNearestFraction(),
             onClick = onClickGetCoupon
@@ -65,6 +67,7 @@ fun CouponDetails(
     productName: String,
     expirationDate: String,
     count: Int,
+    isExpired: Boolean,
     productPrice: String,
     discountPercentage: String,
     onClick: () -> Unit,
@@ -108,29 +111,37 @@ fun CouponDetails(
             )
         )
 
-        Button(
-            onClick = { onClick() },
-            shape = RoundedCornerShape(4.dp),
-            modifier = Modifier
-                .height(21.dp)
-                .width(74.dp),
-            contentPadding = PaddingValues(
-                bottom = 2.dp,
-                top = 0.dp,
-                end = 0.dp,
-                start = 0.dp
-            ),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colors.primary,
-                contentColor = colors.onPrimary,
-                disabledContentColor = colors.onPrimary,
-                disabledContainerColor = colors.primary.copy(.5F),
-            )
-        ) {
+        if(!isExpired){
+            Button(
+                onClick = { onClick() },
+                shape = RoundedCornerShape(4.dp),
+                modifier = Modifier
+                    .height(21.dp)
+                    .width(74.dp),
+                contentPadding = PaddingValues(
+                    bottom = 2.dp,
+                    top = 0.dp,
+                    end = 0.dp,
+                    start = 0.dp
+                ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colors.primary,
+                    contentColor = colors.onPrimary,
+                    disabledContentColor = colors.onPrimary,
+                    disabledContainerColor = colors.primary.copy(.5F),
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.get_coupon),
+                    style = typography.titleMedium,
+                    color = colors.onPrimary
+                )
+            }
+        }else {
             Text(
-                text = stringResource(R.string.get_coupon),
+                text = stringResource(R.string.expired),
                 style = typography.titleMedium,
-                color = colors.onPrimary
+                color = colors.error
             )
         }
     }

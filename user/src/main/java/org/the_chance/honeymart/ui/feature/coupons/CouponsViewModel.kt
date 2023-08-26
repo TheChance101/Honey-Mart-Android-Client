@@ -95,7 +95,7 @@ class CouponsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 updatedCoupons = when (it.couponsState) {
-                    CouponsState.ALL -> it.coupons.filter { !it.isExpired }
+                    CouponsState.ALL -> it.coupons
                     CouponsState.VALID -> it.coupons.filter { coupon ->
                         !coupon.isExpired
                     }

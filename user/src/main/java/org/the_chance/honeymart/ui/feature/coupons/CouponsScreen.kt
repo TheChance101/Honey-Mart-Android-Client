@@ -53,11 +53,13 @@ fun CouponsContent(
 ) {
 
     AppBarScaffold {
+
+        Loading(state.isLoading)
+
         ConnectionErrorPlaceholder(
-            state = state.isError,
+            state = state.isError ,
             onClickTryAgain = listener::getData
         )
-        Loading(state.isLoading && state.coupons.isEmpty())
 
         ShowEmptyPlaceholder(
             state = !state.showCouponsContent() && !state.isLoading,
