@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,7 +8,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -92,8 +90,6 @@ fun SearchContent(
                     || !state.isSearching
         )
         ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
-        Log.d("Error",state.isError.toString())
-        Log.d("Error",state.error.toString())
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier

@@ -38,6 +38,7 @@ fun <T : Any> PagingStateVisibility(
                 )
             }
         }
+
         items.loadState.append is LoadState.Error -> {
             Text(
                 text = stringResource(id = R.string.error_loading_data),
