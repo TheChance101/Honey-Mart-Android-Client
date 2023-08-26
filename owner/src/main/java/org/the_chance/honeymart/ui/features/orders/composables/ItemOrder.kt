@@ -39,8 +39,6 @@ import org.the_chance.honymart.ui.theme.white
 fun ItemOrder(
     state: OrderUiState,
     modifier: Modifier = Modifier,
-    orderId: Long = 1L,
-    count: Int = 0,
     onClickCard: (orderId: Long) -> Unit = {},
     isSelected: Boolean = false
 ) {
@@ -87,27 +85,36 @@ fun ItemOrder(
                             .size(MaterialTheme.dimens.icon14)
                     )
                 }
+
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement
-                        .spacedBy(MaterialTheme.dimens.space8),
+                        .SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_person),
-                        contentDescription = "userName",
-                        tint = black37,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement
+                            .spacedBy(MaterialTheme.dimens.space8),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_person),
+                            contentDescription = "userName",
+                            tint = black37,
+                        )
+                        Text(
+                            text = state.userName,
+                            color = black37,
+                            style = MaterialTheme.typography.displayLarge
+                        )
+                    }
+
                     Text(
-                        text = state.userName,
-                        color = black37,
-                        style = MaterialTheme.typography.displayLarge
+                        text = state.totalPrice,
+                        color = black60,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                Text(
-                    text = state.totalPrice,
-                    color = black60,
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
         }
         Row(

@@ -37,8 +37,6 @@ fun OrderDetailsContent(
                     .padding(all = MaterialTheme.dimens.space24)
             ) {
                 ItemOrder(
-                    orderId = state.orderId,
-                    count = state.products.size,
                     state = state.orderDetails,
                     isSelected = !state.orderDetails.isSelected
                 )
