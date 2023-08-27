@@ -152,7 +152,7 @@ private fun ProfileContent(
                                 color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.onTertiary else nullColor,
                                 shape = CircleShape
                             ),
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Crop,
                     )
 
                     Box(
