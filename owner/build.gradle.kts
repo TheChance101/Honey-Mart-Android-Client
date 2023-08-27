@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_LIBRARY)
+    id(Plugins.KSP)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -76,4 +75,9 @@ dependencies {
     implementation(Dependencies.pagingCommon)
     implementation(Dependencies.pagingRuntime)
     implementation(Dependencies.pagingCompose)
+    //Arrow
+    implementation(Dependencies.arrowCore)
+    implementation(Dependencies.arrowFxCoroutines)
+    implementation(Dependencies.arrowOptics)
+    ksp(Dependencies.arrowOpticsKSP)
 }

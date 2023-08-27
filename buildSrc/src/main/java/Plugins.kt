@@ -9,4 +9,5 @@ object Plugins {
     const val NAVIGATION_ARGS = "androidx.navigation.safeargs.kotlin"
     const val SERIALIZATION = "org.jetbrains.kotlin.plugin.serialization"
     const val PLUGIN_SERIALIZATION = "plugin.serialization"
+    const val KSP = "com.google.devtools.ksp"
 }

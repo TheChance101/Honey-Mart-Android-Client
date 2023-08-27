@@ -67,6 +67,8 @@ object DependencyVersions {
     const val PagingRuntimeVersion = "3.1.1"
     const val PagingComposeVersion = "3.2.0"
 
+    //Arrow
+    const val ARROW = "1.2.0"
 
     object ClasspathVersions{
         const val NAVIGATION_CLASSPATH = "2.5.3"
