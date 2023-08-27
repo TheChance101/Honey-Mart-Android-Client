@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.feature.notifications.notificationsRoute
 
 @Composable
 fun MainNavGraph() {
@@ -18,6 +19,7 @@ fun MainNavGraph() {
         wishListNavGraph()
         profileNavGraph()
         orderNavGraph()
+        notificationsRoute()
 
     }
 }

@@ -24,7 +24,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -36,11 +35,11 @@ fun NotificationsScreen(
     viewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
- val navController = LocalNavigationProvider.current
+    val navController = LocalNavigationProvider.current
     LaunchedEffect(true) {
         viewModel.effect.collect {
             when (it) {
-                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToHomeScreen()
+                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
             }
         }
     }
@@ -64,7 +63,7 @@ fun NotificationsContent(
             Loading(state = state.isLoading)
             ConnectionErrorPlaceholder(
                 state = state.isError,
-                onClickTryAgain =listener::onClickTryAgain ,
+                onClickTryAgain = listener::onClickTryAgain,
             )
             EmptyOrdersPlaceholder(
                 state = state.emptyNotificationsPlaceHolder(),
@@ -73,71 +72,74 @@ fun NotificationsContent(
                 subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
                 onClickDiscoverMarkets = listener::onGetAllNotifications,
             )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
-                    modifier = Modifier
-                        .padding(top = MaterialTheme.dimens.space24)
-                ) {
-                    StateItem(
-                        painter = painterResource(R.drawable.round_corner_dialog),
-                        color = if (state.all()) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSecondaryContainer
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
+                modifier = Modifier
+                    .padding(top = MaterialTheme.dimens.space24)
+            ) {
+                StateItem(
+                    painter = painterResource(R.drawable.ic_notification),
+                    color = if (state.all()) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    },
+                    text = stringResource(R.string.all),
+                    onClickState = listener::onGetAllNotifications
+                )
+                StateItem(
+                    painter = painterResource(R.drawable.icon_order_nav),
+                    color = if (state.order()) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    },
+                    text = stringResource(R.string.order_title),
+                    onClickState = listener::onGetOrderNotifications
+                )
+                StateItem(
+                    painter = painterResource(R.drawable.ic_delivery),
+                    color = if (state.delivery()) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    },
+                    text = stringResource(R.string.delivery),
+                    onClickState = listener::onGetDeliveryNotifications
+                )
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .padding(vertical = MaterialTheme.dimens.space16)
+                    .background(MaterialTheme.colorScheme.secondary)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
+            ) {
+                items(state.updatedNotifications.size) {
+                    val notification = state.updatedNotifications[it]
+                    NotificationCard(
+                        painter =
+                        when {
+                            state.order() -> {
+                                painterResource(R.drawable.icon_order_nav)
+                            }
+
+                            state.delivery() -> {
+                                painterResource(R.drawable.ic_delivery)
+                            }
+
+                            else -> {
+                                painterResource(id = R.drawable.ic_notification)
+                            }
                         },
-                        text = stringResource(R.string.all),
-                        onClickState = listener::onGetAllNotifications
+                        title = notification.title,
+                        date = convertDate(notification),
+                        message = notification.body,
+                        index = it
                     )
-                    StateItem(
-                        painter = painterResource(R.drawable.icon_order_nav),
-                        color = if (state.order()) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSecondaryContainer
-                        },
-                        text = stringResource(R.string.order_title),
-                        onClickState = listener::onGetOrderNotifications
-                    )
-                    StateItem(
-                        painter = painterResource(R.drawable.ic_delivery),
-                        color = if (state.delivery()) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSecondaryContainer
-                        },
-                        text = stringResource(R.string.delivery),
-                        onClickState = listener::onGetDeliveryNotifications
-                    )
-                }
-                LazyColumn(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
-                        .background(MaterialTheme.colorScheme.secondary)
-                        .fillMaxSize()
-                ) {
-                    items(state.updatedNotifications.size) {
-                        val notification = state.updatedNotifications[it]
-                        NotificationCard(
-                            painter =
-                            when {
-                                state.order() -> {
-                                    painterResource(R.drawable.icon_order_nav)
-                                }
-                                state.delivery() -> {
-                                    painterResource(R.drawable.ic_delivery)
-                                }
-                                else -> {
-                                    painterResource(id = R.drawable.round_corner_dialog)
-                                }
-                            },
-                            title = notification.title,
-                            date = convertDate(notification),
-                            message = notification.body
-                        )
-                    }
                 }
             }
+        }
     }
 }
 
