@@ -24,7 +24,7 @@
             </intent-filter>
         </service>
         <activity
-            android:name="org.the_chance.honeymart.ui.MainActivity"
+            android:name="org.the_chance.honeymart.ui.main.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:screenOrientation="landscape">
