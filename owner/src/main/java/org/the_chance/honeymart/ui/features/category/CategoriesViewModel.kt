@@ -305,13 +305,13 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null,
-                newProducts = it.newProducts.copy(id = product.productId,
-                    images = emptyList()),
+                newProducts = it.newProducts.copy(id = product.productId),
                 showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true),
 
             )
         }
-        addProductImage(productId = product.productId, images = _state.value.newProducts.images)
+        addProductImage(productId = product.productId,
+            images = _state.value.newProducts.images)
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
@@ -435,9 +435,7 @@ class CategoriesViewModel @Inject constructor(
                     showProductUpdate = false,
                     showProductDetails = false,
                     showFab = true
-                ),
-                newProducts = it.newProducts.copy(images = emptyList()),
-
+                )
                 )
         }
         onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
@@ -482,7 +480,9 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update { it.copy(isLoading = false, error = null,) }
+        _state.update { it.copy(isLoading = false, error = null,
+            newProducts = it.newProducts.copy(images = emptyList()),
+        ) }
         getProductsByCategoryId(state.value.newCategory.categoryId)
 
     }
