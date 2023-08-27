@@ -20,8 +20,7 @@ internal object RepositoryModule {
     @Provides
     fun bindHoneyMartRepository(
         honeyMartService: HoneyMartService,
-
-        ): HoneyMartRepository {
+    ): HoneyMartRepository {
         return HoneyMartRepositoryImp(honeyMartService)
     }
 

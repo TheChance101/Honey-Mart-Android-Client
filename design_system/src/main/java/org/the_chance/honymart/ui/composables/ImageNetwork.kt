@@ -29,7 +29,8 @@ fun ImageNetwork(
         placeholder = painterResource(R.drawable.no_image),
         contentDescription = contentDescription,
         contentScale = contentScale,
-        modifier = modifier,
+        modifier = modifier
+        ,
     )
 
 

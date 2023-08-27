@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
@@ -42,6 +43,7 @@ fun HomeCategoriesItem(
     label: String,
     modifier: Modifier = Modifier,
     imageUrl: String = "",
+    backgroundColor: Color = MaterialTheme.colorScheme.onTertiary,
 ) {
     val colors = MaterialTheme.colorScheme
     Column(
@@ -51,7 +53,7 @@ fun HomeCategoriesItem(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() }
             )
-            .padding(horizontal = MaterialTheme.dimens.space8)
+            .padding(horizontal = MaterialTheme.dimens.space16)
             .size(MaterialTheme.dimens.widthItemMarketCard)
             .drawBehind {
                 drawIntoCanvas {
@@ -59,7 +61,7 @@ fun HomeCategoriesItem(
                     it.drawOutline(
                         outline = Outline.Generic(path),
                         paint = Paint().apply {
-                            color = colors.onTertiary
+                            color = backgroundColor
                             pathEffect = PathEffect.cornerPathEffect(16.dp.toPx())
                         }
                     )
@@ -99,7 +101,7 @@ private fun hexagonPath(size: Size, center: Offset): Path {
 
     return Path().apply {
         val angleRadians = Math.toRadians(60.0).toFloat()
-        val radius = hexagonSize / 1.76f
+        val radius = hexagonSize / 1.7f
 
         (0..5).forEach { i ->
             val currentAngle = angleRadians * i
