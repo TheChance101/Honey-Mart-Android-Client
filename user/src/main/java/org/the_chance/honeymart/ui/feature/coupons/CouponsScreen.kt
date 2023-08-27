@@ -2,13 +2,18 @@ package org.the_chance.honeymart.ui.feature.coupons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,7 +23,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
-import org.the_chance.honeymart.ui.feature.coupons.composables.CouponsContentScreen
+import org.the_chance.honeymart.ui.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -65,7 +70,7 @@ fun CouponsContent(
         Loading(state.isLoading)
 
         ConnectionErrorPlaceholder(
-            state = state.isError && !state.showCouponsContent() ,
+            state = state.isError && !state.showCouponsContent(),
             onClickTryAgain = listener::getData
         )
 
@@ -100,13 +105,22 @@ fun CouponsContent(
                 description = stringResource(R.string.there_is_no_coupons_here),
             )
 
+
             ContentVisibility(
                 state = state.showCouponsContent()
             ) {
-                CouponsContentScreen(
-                    state = state,
-                    listener = listener
-                )
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(items = state.coupons, key = { it.couponId }) { coupon ->
+                        CouponsItem(
+                            coupon = coupon,
+                            onClickGetCoupon = { listener.onClickGetCoupon(coupon.couponId) })
+                    }
+                }
             }
         }
 
