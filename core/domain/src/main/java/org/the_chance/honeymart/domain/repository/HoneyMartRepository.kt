@@ -7,9 +7,11 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.NotificationEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
@@ -17,6 +19,7 @@ import org.the_chance.honeymart.domain.model.WishListEntity
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<MarketEntity>?
+    suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<MarketEntity>>
     suspend fun clipCoupon(couponId: Long): Boolean
     suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity
     suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
@@ -31,7 +34,7 @@ interface HoneyMartRepository {
     suspend fun deleteFromCart(productId: Long): String
     suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
 
-    suspend fun searchForProducts(query: String): List<ProductEntity>
+    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): Flow<PagingData<ProductEntity>>
     suspend fun getAllOrders(orderState: Int): List<OrderEntity>
     suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
@@ -47,4 +50,10 @@ interface HoneyMartRepository {
     suspend fun getRecentProducts(): List<RecentProductEntity>
 
     suspend fun getAllProducts(): List<ProductEntity>
+
+    suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity>
+
+    suspend fun getProfileUser(): ProfileUserEntity
+
+    suspend fun addProfileImage(image: ByteArray): String
 }

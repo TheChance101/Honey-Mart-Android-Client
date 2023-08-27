@@ -29,6 +29,7 @@ import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +50,7 @@ class MainActivity : AppCompatActivity() {
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         )
-                        {
-                            MainNavGraph()
-                        }
+                        { MainNavGraph() }
                     }
                 }
             }
@@ -66,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomBarScreens = listOf(
             Screen.HomeScreen.route,
+            Screen.ProfileScreen.route,
             Screen.CategoryScreenWithArgs.route,
             Screen.ProductScreenWithArgs.route,
             Screen.CartScreen.route,

@@ -98,7 +98,7 @@ private fun ProductDetailsContent(
                             .shadow(elevation = 8.dp)
                             .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(
-                                bottom = MaterialTheme.dimens.space56,
+                                 bottom = MaterialTheme.dimens.space56,
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,

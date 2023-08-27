@@ -52,5 +52,6 @@ data class Dimens(
     val heightItemLastPurchases: Dp = 156.dp,
     val widthItemLastPurchases: Dp = 148.dp,
     val heightItem: Dp = 192.dp,
+    val sizeProfileImage: Dp = 164.dp,
     val card: Dp = 120.dp,
     )
