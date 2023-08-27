@@ -21,6 +21,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
+import org.the_chance.honeymart.ui.feature.markets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -302,6 +303,10 @@ class HomeViewModel @Inject constructor(
 
     override fun onClickPagerItem(marketId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreenEffect(marketId))
+    }
+
+    override fun onClickSeeAllMarkets() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToSeeAllMarketEffect )
     }
 
     override fun onClickGetCoupon(couponId: Long) {
