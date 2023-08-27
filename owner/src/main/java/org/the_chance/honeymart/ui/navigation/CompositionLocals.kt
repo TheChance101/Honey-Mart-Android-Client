@@ -1,4 +1,4 @@
-package org.the_chance.honeymart
+package org.the_chance.honeymart.ui.navigation
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavHostController

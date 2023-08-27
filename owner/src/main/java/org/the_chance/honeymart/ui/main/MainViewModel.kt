@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.navigation.navigation_rail
+package org.the_chance.honeymart.ui.main
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -9,12 +9,11 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class NavigationRailViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val ownerProfileInfo: GetOwnerInfoUseCase,
     private val logOutOwnerUseCase: LogOutOwnerUseCase,
-
-    ) : BaseViewModel<NavigationRailUiState, NavigationRailEffect>(NavigationRailUiState()),
-    NavigationRailInteractionListener {
+) : BaseViewModel<MainUiState, MainEffect>(MainUiState()),
+    MainInteractionListener {
 
     override val TAG: String
         get() = this::class.simpleName.toString()
@@ -33,7 +32,7 @@ class NavigationRailViewModel @Inject constructor(
     }
 
     override fun onClickProfile() {
-        effectActionExecutor(_effect, NavigationRailEffect.OnClickProfileEffect)
+        effectActionExecutor(_effect, MainEffect.OnClickProfileEffect)
     }
 
     override fun onClickLogout() {
@@ -45,7 +44,7 @@ class NavigationRailViewModel @Inject constructor(
     }
 
     private fun onLogoutSuccess() {
-        effectActionExecutor(_effect, NavigationRailEffect.OnClickLogoutEffect)
+        effectActionExecutor(_effect, MainEffect.OnClickLogoutEffect)
     }
 
     private fun onLogoutError(error: ErrorHandler) {
