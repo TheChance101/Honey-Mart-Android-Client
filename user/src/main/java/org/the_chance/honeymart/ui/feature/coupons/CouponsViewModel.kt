@@ -35,7 +35,8 @@ class CouponsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                coupons = coupons.map { coupon -> coupon.toCouponUiState() }
+                coupons = coupons.map { coupon -> coupon.toCouponUiState() },
+                updatedCoupons = coupons.map { coupon -> coupon.toCouponUiState() }
             )
         }
     }
@@ -94,7 +95,7 @@ class CouponsViewModel @Inject constructor(
     private fun updateData() {
         _state.update {
             it.copy(
-                updatedCoupons = when (it.couponsState) {
+                coupons = when (it.couponsState) {
                     CouponsState.ALL -> it.coupons
                     CouponsState.VALID -> it.coupons.filter { coupon ->
                         !coupon.isExpired
