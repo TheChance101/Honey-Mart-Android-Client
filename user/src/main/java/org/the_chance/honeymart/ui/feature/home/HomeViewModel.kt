@@ -20,7 +20,6 @@ import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
-import org.the_chance.honeymart.ui.feature.market.toMarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
