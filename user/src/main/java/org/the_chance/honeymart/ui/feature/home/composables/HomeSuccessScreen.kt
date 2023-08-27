@@ -1,7 +1,10 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
@@ -23,24 +27,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
-import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
+import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -50,14 +57,18 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
+
+    val listState = rememberLazyGridState()
+    val scope = rememberCoroutineScope()
+
     LazyVerticalGrid(
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
         columns = GridCells.Fixed(2)
     ) {
-
         item(span = { GridItemSpan(2) })
         {
             MarketsPager(
@@ -117,7 +128,8 @@ fun HomeContentSuccessScreen(
             RecentProducts(
                 recentProducts = state.recentProducts,
                 onClickRecentProduct = listener::onClickProductItem,
-                onClickFavorite = listener::onClickFavoriteNewProduct
+                onClickFavorite = listener::onClickFavoriteNewProduct,
+                onClickSeeAll = listener::onClickSeeAllNewProducts
             )
         }
 
@@ -158,6 +170,13 @@ fun HomeContentSuccessScreen(
         }
     }
 
+    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
+        ScrollToTopButton {
+            scope.launch {
+                listState.animateScrollToItem(0)
+            }
+        }
+    }
 
 }
 
@@ -212,10 +231,12 @@ private fun RecentProducts(
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            Text(
-                text = stringResource(R.string.new_products),
-                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+            ItemLabel(
+                label = stringResource(R.string.new_products),
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(top = MaterialTheme.dimens.space8),
+                onClick = onClickSeeAll
             )
 
             LazyRow(
@@ -375,6 +396,7 @@ private fun MarketsPager(
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)
                     .clip(shape = RoundedCornerShape(MaterialTheme.dimens.space24))
+                    .background(black16)
                     .height(MaterialTheme.dimens.heightItemMarketCard)
                     .clickable(onClick = { onClickPagerItem(markets[it].marketId) }),
             )

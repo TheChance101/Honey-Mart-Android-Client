@@ -6,4 +6,5 @@ interface SearchInteraction {
     fun onClickAscendingSearch()
     fun onClickDescendingSearch()
     fun onClickProduct(productId: Long)
+    fun onclickTryAgain()
 }

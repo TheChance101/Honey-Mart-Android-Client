@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -37,25 +40,35 @@ class SearchViewModel @Inject constructor(
         observeKeyword()
     }
 
-
-    private fun searchForProducts(query: String) {
-        tryToExecute(
-            { searchForProductUseCase(query) },
-            ::searchForProductsSuccess,
-            ::onError
+    private fun searchForProducts() {
+        val query = _searchText.value
+        val sortOrder = _state.value.searchStates.state
+        tryToExecutePaging(
+            { searchForProductUseCase(query, sortOrder) },
+            ::onSearchForProductsSuccess,
+            ::onSearchForProductsError
         )
     }
 
-    private fun searchForProductsSuccess(products: List<ProductEntity>) {
+    private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
         _state.update { searchUiState ->
             searchUiState.copy(
-                products = products.map { it.toProductUiState() },
-                updatedProducts = products.map { it.toProductUiState() })
+                products = flowOf(mappedProducts),
+            )
         }
-        filter()
+        _state.update { it.copy(isLoading = false, isError = false) }
+    }
+
+    private fun onSearchForProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     fun onSearchTextChange(text: String) {
+        _state.update { it.copy(isLoading = true, isError = false) }
         _searchText.value = text
         viewModelScope.launch { actionStream.emit(text) }
     }
@@ -63,58 +76,48 @@ class SearchViewModel @Inject constructor(
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStreamDebounced.collect { searchForProducts(it) }
+            actionStreamDebounced.collect {
+                searchForProducts()
+            }
         }
     }
 
 
     override fun onClickFilter() {
-        if (state.value.filtering) {
-            _state.update { it.copy(filtering = false) }
-        } else {
-            _state.update { it.copy(filtering = true) }
-        }
+        val newState = !state.value.filtering
+        _state.update { it.copy(filtering = newState) }
     }
 
 
     override fun onClickRandomSearch() {
-        _state.update { it.copy(searchStates = SearchStates.RANDOM) }
-        filter()
+        filter(SearchStates.RANDOM.state)
     }
 
     override fun onClickAscendingSearch() {
-        _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
-        filter()
+        filter(SearchStates.ASCENDING.state)
     }
 
     override fun onClickDescendingSearch() {
-        _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
-        filter()
+        filter(SearchStates.DESCENDING.state)
     }
 
-    private fun filter() {
-        _state.update {
-            it.copy(
-                updatedProducts = when (it.searchStates) {
-                    SearchStates.RANDOM -> it.products
-                    SearchStates.ASCENDING -> it.products.sortedBy { it.productPrice }
-                    SearchStates.DESCENDING -> it.products.sortedByDescending { it.productPrice }
-                }
-            )
+    private fun filter(sortOrder: String) {
+        when (sortOrder) {
+            SearchStates.ASCENDING.state -> _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
+            SearchStates.DESCENDING.state -> _state.update { it.copy(searchStates = SearchStates.DESCENDING) }
+            else -> {
+                _state.update { it.copy(searchStates = SearchStates.RANDOM) }
+            }
         }
+        searchForProducts()
     }
-
-
-    private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
-
 
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(_effect, SearchUiEffect.OnClickProductCard(productId))
+    }
+
+    override fun onclickTryAgain() {
+        searchForProducts()
     }
 
 }

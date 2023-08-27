@@ -21,5 +21,6 @@ interface HomeInteractionListener {
 
     fun onClickChipCategory(marketId: Long)
 
+    fun onClickSeeAllNewProducts()
 
 }

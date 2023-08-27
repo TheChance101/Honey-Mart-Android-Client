@@ -1,6 +1,8 @@
 package org.the_chance.honeymart.ui.feature.notifications.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,14 +23,16 @@ import org.the_chance.honymart.ui.theme.white200
 @Composable
 fun NotificationCard(
     modifier: Modifier = Modifier,
+    index: Int,
     painter: Painter,
     title: String,
     date: String,
     message: String,
 ) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.tertiary)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -62,12 +64,15 @@ fun NotificationCard(
                 )
             }
         }
-        Divider(
-            color = white200,
-            modifier = Modifier
-                .height(MaterialTheme.dimens.space1)
-                .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.dimens.space16)
-        )
+        if (index != 0) {
+            Divider(
+                color = white200,
+                modifier = Modifier
+                    .height(MaterialTheme.dimens.space1)
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+            )
+        }
+
     }
 }

@@ -9,6 +9,8 @@ sealed class HomeUiEffect : BaseUiEffect {
     object NavigateToSeeAllMarketEffect : HomeUiEffect()
     data class NavigateToProductsDetailsScreenEffect(val productId: Long) : HomeUiEffect()
     object NavigateToSearchScreenEffect : HomeUiEffect()
+
+    object NavigateToNewProductsScreenEffect : HomeUiEffect()
     data class NavigateToProductScreenEffect(
         val categoryId: Long,
         val marketId: Long,

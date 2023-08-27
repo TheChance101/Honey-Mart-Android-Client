@@ -20,6 +20,7 @@ import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.markets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
@@ -411,6 +412,11 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    override fun onClickSeeAllNewProducts() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToNewProductsScreenEffect)
+    }
+
     /// endregion
 }
 
