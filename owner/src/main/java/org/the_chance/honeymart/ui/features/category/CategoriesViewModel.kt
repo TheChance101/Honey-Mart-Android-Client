@@ -555,7 +555,6 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
-        getProductDetails(state.value.productDetails.productId)
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {
