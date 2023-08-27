@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.Placeholder
 import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
@@ -73,7 +74,7 @@ fun AllOrdersContent(
                 onClick = { listener.getAllMarketOrder(OrderStates.CANCELED) }
             )
         }
-        EmptyOrdersPlaceholder(
+        Placeholder(
             painter = painterResource(id = R.drawable.owner_empty_order),
             text = stringResource(R.string.there_are_no_order_for_this_day),
             visibilityState = state.emptyOrdersPlaceHolder(),

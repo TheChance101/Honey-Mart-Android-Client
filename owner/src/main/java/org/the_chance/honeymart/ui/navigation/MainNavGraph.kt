@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import org.the_chance.honeymart.ui.features.category.categoryRoute
+import org.the_chance.honeymart.ui.features.coupons.couponsRoute
 import org.the_chance.honeymart.ui.features.orders.ordersRoute
 
 
@@ -13,5 +14,6 @@ fun NavGraphBuilder.mainNavGraph() {
     ) {
         ordersRoute()
         categoryRoute()
+        couponsRoute()
     }
 }

@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         val navigationRailScreens = listOf(
             Screen.Category.route,
             Screen.Orders.route,
+            Screen.Coupons.route,
         )
         when (navBackStackEntry?.destination?.route) {
             in navigationRailScreens -> {
