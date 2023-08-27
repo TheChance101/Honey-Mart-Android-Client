@@ -104,7 +104,8 @@ fun SearchContent(
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
-                    color = black37
+                    color = black37,
+                    oneLineOnly = true
                 )
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
