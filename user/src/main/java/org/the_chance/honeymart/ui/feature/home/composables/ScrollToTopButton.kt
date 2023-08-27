@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -15,8 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
@@ -31,7 +30,9 @@ fun ScrollToTopButton(onClick: () -> Unit) {
                 .size(40.dp)
                 .align(Alignment.BottomEnd),
             onClick = onClick,
-            backgroundColor = White, contentColor = Black
+            backgroundColor = MaterialTheme.colorScheme.inverseOnSurface,
+            contentColor =MaterialTheme.colorScheme.onError
+
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.arrow_up),
