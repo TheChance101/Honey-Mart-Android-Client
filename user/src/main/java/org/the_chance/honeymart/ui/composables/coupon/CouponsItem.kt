@@ -39,10 +39,6 @@ fun CouponsItem(
     Row(
         modifier = modifier.height(IntrinsicSize.Min),
     ) {
-        Log.i("jii", "CouponsItem isExpired : ${coupon.expirationDate.formatDate() <= LocalDate.now().toString()}")
-        Log.i("jii", "CouponsItem expirationDate is : ${coupon.expirationDate.formatDate()}")
-        Log.i("jii", "CouponsItem LocalDate is : ${LocalDate.now().toString()}")
-        Log.i("jii", "CouponsItem isExpired: ${coupon.isExpired}")
 
         CouponDetails(
             modifier = Modifier.fillMaxHeight(),
@@ -87,8 +83,10 @@ fun CouponDetails(
             )
             .background(colors.onTertiary)
             .padding(
-                horizontal = dimens.space16,
-                vertical = dimens.space8
+                start = dimens.space16,
+                top = dimens.space8,
+                bottom = dimens.space8,
+                end = dimens.space36,
             ),
         verticalArrangement = Arrangement.spacedBy(dimens.space8)
     ) {

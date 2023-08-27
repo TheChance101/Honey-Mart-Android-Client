@@ -112,7 +112,6 @@ fun CouponsContent(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(items = state.coupons, key = { it.couponId }) { coupon ->
