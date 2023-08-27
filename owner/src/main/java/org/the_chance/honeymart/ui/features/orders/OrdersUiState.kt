@@ -1,8 +1,7 @@
 package org.the_chance.honeymart.ui.features.orders
 
-import org.the_chance.honeymart.domain.model.MarketOrderEntity
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.util.toPriceFormat
 import java.text.SimpleDateFormat
@@ -68,7 +67,7 @@ data class ButtonsState(
 // endregion
 
 // region Mappers
-fun MarketOrderEntity.toOrderUiState(): OrderUiState {
+fun Market.Order.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
         totalPrice = totalPrice.toPriceFormat(),
@@ -85,7 +84,7 @@ fun Long.toDateFormat(): String {
     return dateFormat.format(date)
 }
 
-fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderUiState {
+fun OrderDetails.toOrderParentDetailsUiState(): OrderUiState {
     return OrderUiState(
         totalPrice = totalPrice.toString(),
         state = state,
@@ -94,7 +93,7 @@ fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderUiState {
     )
 }
 
-fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
+fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
     return map {
         OrderDetailsProductUiState(
             id = it.id,

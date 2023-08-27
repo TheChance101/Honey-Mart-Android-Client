@@ -2,8 +2,7 @@ package org.the_chance.honeymart.ui.features.orders
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
@@ -60,7 +59,7 @@ class OrdersViewModel @Inject constructor(
         getOrderProductDetails(orderId)
     }
 
-    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetailsEntity) {
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetails) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -85,7 +84,7 @@ class OrdersViewModel @Inject constructor(
         )
     }
 
-    private fun onGetOrderProductDetailsSuccess(products: List<OrderProductDetailsEntity>) {
+    private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
         _state.update {
             it.copy(
                 isLoading = false,

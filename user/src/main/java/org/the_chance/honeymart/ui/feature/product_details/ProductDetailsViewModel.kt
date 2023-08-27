@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.feature.product_details
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
 import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
@@ -81,7 +81,7 @@ class ProductDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProductSuccess(product: ProductEntity) {
+    private fun onGetProductSuccess(product: Product) {
         _state.update {
             it.copy(
                 error = null, isConnectionError = false, product = product.toProductUiState(),

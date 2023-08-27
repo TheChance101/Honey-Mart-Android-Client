@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.domain.model
 
-data class NotificationEntity(
+data class Notification(
     val notificationId: Long,
     val userId: Long,
     val orderId: Long,

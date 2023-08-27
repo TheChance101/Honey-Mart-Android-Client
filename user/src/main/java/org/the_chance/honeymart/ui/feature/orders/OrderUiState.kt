@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrdersUiState(
@@ -22,7 +22,7 @@ data class OrderUiState(
     val quantity: Int = 1
 )
 
-fun OrderEntity.toOrderUiState(): OrderUiState {
+fun Order.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
         totalPrice = totalPrice,
