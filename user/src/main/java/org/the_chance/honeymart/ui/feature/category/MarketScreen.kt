@@ -58,7 +58,7 @@ import kotlin.math.sin
 
 @Composable
 fun CategoriesScreen(
-    viewModel: CategoryViewModel = hiltViewModel(),
+    viewModel: MarketViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
@@ -69,7 +69,7 @@ fun CategoriesScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is CategoryUiEffect.ClickCategoryEffect -> {
+                is MarketUiEffect.ClickMarketEffect -> {
                     navController.navigateToProductScreen(
                         it.categoryId,
                         it.marketId,
@@ -84,7 +84,7 @@ fun CategoriesScreen(
 @Composable
 fun CategoryContent(
     state: MarketDetailsUiState,
-    listener: CategoryInteractionListener,
+    listener: MarketInteractionListener,
 ) {
     Loading(state.isLoading)
 

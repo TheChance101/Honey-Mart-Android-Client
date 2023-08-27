@@ -207,12 +207,12 @@ class ProductViewModel @Inject constructor(
     private fun deleteProductFromWishList(productId: Long) {
         tryToExecute(
             { wishListOperationsUseCase.deleteFromWishList(productId) },
-            ::onDeleteWishListSuccess,
+            { onDeleteWishListSuccess() },
             ::onDeleteWishListError
         )
     }
 
-    private fun onDeleteWishListSuccess(successMessage: String) {
+    private fun onDeleteWishListSuccess() {
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -223,7 +223,7 @@ class ProductViewModel @Inject constructor(
         tryToExecute(
             { wishListOperationsUseCase.addToWishList(productId) },
             ::onAddToWishListSuccess,
-            { onAddToWishListError(it, productId) }
+            { onAddToWishListError(it) }
         )
         _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
@@ -240,7 +240,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
-    private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
+    private fun onAddToWishListError(error: ErrorHandler) {
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
     }

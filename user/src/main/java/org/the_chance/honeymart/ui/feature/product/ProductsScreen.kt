@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -45,9 +46,14 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
+
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
+
+
+
     LaunchedEffect(key1 = true) {
+
         viewModel.effect.collect {
             when (it) {
                 is ProductUiEffect.AddedToWishListEffect -> {
@@ -62,6 +68,7 @@ fun ProductsScreen(
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
+
     }
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
@@ -71,6 +78,8 @@ private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
 ) {
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = state.position)
+
     AppBarScaffold {
         Loading(state.isLoadingCategory || state.isLoadingProduct)
 
@@ -90,14 +99,17 @@ private fun ProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
                 ) {
                     LazyColumn(
+                        state = listState,
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
                             end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                     ) {
-                        items(state.categories.size) { index ->
-                            val category = state.categories[index]
+
+                        itemsIndexed(
+                            state.categories,
+                            key = { _, category -> category.categoryId }) { _, category ->
                             CategoryItem(
                                 iconPainter = painterResource(id = R.drawable.ic_bed),
                                 categoryName = category.categoryName,
@@ -105,8 +117,9 @@ private fun ProductsContent(
                                 enable = !state.snackBar.isShow,
                                 onClick = {
                                     productInteractionListener.onClickCategory(category.categoryId)
-                                }
-                            )
+                                },
+
+                                )
                         }
                     }
                     AnimatedVisibility(
@@ -121,9 +134,12 @@ private fun ProductsContent(
                                 bottom = MaterialTheme.dimens.space8,
                             ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            state = rememberLazyListState()
                         ) {
-                            items(products.itemCount) { index ->
+
+                            items(
+                                products.itemCount,
+                                key = { products.itemSnapshotList.items[it].productId })
+                            { index ->
                                 val product = products[index]
                                 if (product != null) {
                                     ProductCard(
@@ -142,7 +158,10 @@ private fun ProductsContent(
                                     )
                                 }
                             }
-                            PagingStateVisibility(products,productInteractionListener::onclickTryAgainProducts)
+                            PagingStateVisibility(
+                                products,
+                                productInteractionListener::onclickTryAgainProducts
+                            )
                         }
                     }
                 }
@@ -160,5 +179,7 @@ private fun ProductsContent(
                 })
         }
         Loading(state = state.loading())
+
+
     }
 }
