@@ -155,6 +155,7 @@
 
     <string name="pending">Pending</string>
     <string name="approved">Approved</string>
+    <string name="all_capitalized">All</string>
     <string name="new_requests">2 new requests</string>
     <string name="approve">Approve</string>
 </resources>

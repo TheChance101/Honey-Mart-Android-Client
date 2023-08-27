@@ -31,7 +31,7 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.data.source.remote.models.RequestDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -301,9 +301,9 @@ class HoneyMartServiceImp @Inject constructor(
     //endregion
 
     //region admin
-    override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
+    override suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>> {
         return wrap(client.get("admin/markets") {
-            parameter("isApproved", "$isApproved")
+                parameter("isApproved", "$isApproved")
         })
     }
 

@@ -6,7 +6,7 @@ import org.the_chance.honeymart.domain.model.MarketEntity
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.RequestEntity
+import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.WishListEntity
 
 
@@ -61,7 +61,7 @@ interface HoneyMartRepository {
     suspend fun deleteCategory(id: Long): String
 
     //region admin
-    suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity>
+    suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean):Boolean
 //endregion admin
 }

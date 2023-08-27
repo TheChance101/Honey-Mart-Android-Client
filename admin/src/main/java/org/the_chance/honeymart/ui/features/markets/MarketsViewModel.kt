@@ -3,8 +3,8 @@ package org.the_chance.honeymart.ui.features.markets
 import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.RequestEntity
-import org.the_chance.honeymart.domain.usecase.GetMarketRequests
+import org.the_chance.honeymart.domain.model.MarketRequest
+import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
 import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -12,9 +12,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarketsViewModel @Inject constructor(
-    private val getMarketRequests: GetMarketRequests,
+    private val getMarketsRequests: GetMarketsRequests,
     private val updateMarketRequest: UpdateMarketRequestUseCase,
-) : BaseViewModel<RequestsUiState, MarketsUiEffect>(RequestsUiState()),
+) : BaseViewModel<MarketsRequestUiState, MarketsUiEffect>(MarketsRequestUiState()),
     MarketsInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
@@ -23,20 +23,21 @@ class MarketsViewModel @Inject constructor(
         Log.e("TAG", "Requests:Size is ${state.value.requests.size}")
     }
 
-    private fun getMarkets(isApproved: Boolean = false) {
+    private fun getMarkets(isApproved: Boolean? = false) {
         _state.update { it.copy(isLoading = true,isError = false) }
+        log(isApproved.toString())
         tryToExecute(
-            { getMarketRequests(isApproved) },
+            { getMarketsRequests(isApproved) },
             ::onMarketRequestSuccess,
             ::onMarketRequestError
         )
     }
 
-    private fun onMarketRequestSuccess(requests: List<RequestEntity>) {
+    private fun onMarketRequestSuccess(requests: List<MarketRequest>) {
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
-                requests = requests.map { it.toRequestUiState() })
+                requests = requests.map { it.toMarketRequestUiState() })
         }
         Log.e(TAG, "Requests:Value is ${state.value}")
     }
@@ -70,17 +71,22 @@ class MarketsViewModel @Inject constructor(
         Log.e("TAG", "Requests:Error is ${state.value.error}")
     }
 
-    override fun onGetFilteredRequests(isApproved: Boolean) {
-        _state.update { it.copy(
-            requestsStates = if(isApproved) RequestsStates.APPROVED else RequestsStates.UNAPPROVED,
-            selectedRequest = null)
+    override fun onGetMarkets(isApproved: Boolean?) {
+        val requestState = when (isApproved) {
+            true -> RequestsState.APPROVED
+            false -> RequestsState.UNAPPROVED
+            else -> RequestsState.ALL
         }
+        _state.update { it.copy(requestsState = requestState, selectedRequest = null) }
         getMarkets(isApproved)
     }
 
-    override fun onClickRequest(position: Int) {
-        val updatedRequests = _state.value.requests.mapIndexed { index, request ->
-            request.copy(isSelected = index == position)
+    override fun onClickMarket(position: Int) {
+        val updatedRequests = _state.value.requests.mapIndexed { index, market ->
+            market.copy(
+                isSelected = index == position,
+                state = if (market.isApproved) RequestsState.APPROVED else RequestsState.UNAPPROVED
+            )
         }
         _state.update { it.copy(requests = updatedRequests, selectedRequest = updatedRequests[position]) }
         effectActionExecutor(_effect, MarketsUiEffect.onClickMarket)
@@ -99,4 +105,5 @@ class MarketsViewModel @Inject constructor(
         updateMarket(marketId,true)
         _state.update { it.copy(selectedRequest = null, requests = updatedMarkets ) }
     }
+
 }
