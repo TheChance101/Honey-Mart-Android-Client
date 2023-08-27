@@ -6,6 +6,7 @@ import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
@@ -14,9 +15,7 @@ import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
-/**
- * Created by Aziza Helmy on 7/2/2023.
- */
+
 interface HoneyMartService {
 
     //region Market
@@ -79,7 +78,7 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
-    suspend fun searchForProducts(query: String): BaseResponse<List<ProductDto>>
+    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>>
 
 
     //endregion Product
@@ -173,12 +172,18 @@ interface HoneyMartService {
 
     // endregion Coupon
 
+    //region notifications
+
+    suspend fun getAllNotifications(
+        notificationState: Int,
+    ): BaseResponse<List<NotificationDto>>
+
+    //endregion notifications
 
     //region profile
     suspend fun getProfileUser(): BaseResponse<ProfileUserDto>
 
     suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
     //endregion
-
 
 }
