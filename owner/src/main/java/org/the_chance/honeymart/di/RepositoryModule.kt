@@ -20,9 +20,8 @@ internal object RepositoryModule {
     @Provides
     fun bindHoneyMartRepository(
         honeyMartService: HoneyMartService,
-        appDataStorePreferences: AppDataStorePreferences
     ): HoneyMartRepository {
-        return HoneyMartRepositoryImp(honeyMartService, appDataStorePreferences)
+        return HoneyMartRepositoryImp(honeyMartService)
     }
 
     @Singleton

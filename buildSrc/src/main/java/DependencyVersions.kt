@@ -64,7 +64,7 @@ object DependencyVersions {
     const val SPLASH_SCREEN= "1.0.1"
 
     //paging
-    const val PagingRuntimeVersion = "3.1.1"
+    const val PagingRuntimeVersion = "3.2.0"
 
 
     object ClasspathVersions{

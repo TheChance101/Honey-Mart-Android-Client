@@ -41,7 +41,7 @@ import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.MarketUiState
-import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
+import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
@@ -128,7 +128,8 @@ fun HomeContentSuccessScreen(
             RecentProducts(
                 recentProducts = state.recentProducts,
                 onClickRecentProduct = listener::onClickProductItem,
-                onClickFavorite = listener::onClickFavoriteNewProduct
+                onClickFavorite = listener::onClickFavoriteNewProduct,
+                onClickSeeAll = listener::onClickSeeAllNewProducts
             )
         }
 
@@ -224,16 +225,19 @@ private fun LastPurchases(
 private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
+    onClickSeeAll: () -> Unit,
     onClickFavorite: (Long) -> Unit,
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            Text(
-                text = stringResource(R.string.new_products),
-                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+            ItemLabel(
+                label = stringResource(R.string.new_products),
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(top = MaterialTheme.dimens.space8),
+                onClick = onClickSeeAll
             )
 
             LazyRow(
