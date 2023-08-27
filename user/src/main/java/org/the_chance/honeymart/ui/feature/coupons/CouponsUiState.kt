@@ -22,4 +22,4 @@ fun CouponsUiState.all() = this.couponsState == CouponsState.ALL
 fun CouponsUiState.valid() = this.couponsState == CouponsState.VALID
 fun CouponsUiState.expired() = this.couponsState == CouponsState.EXPIRED
 
-fun CouponsUiState.showCouponsContent() = this.coupons.isNotEmpty() && !this.isError
+fun CouponsUiState.showCouponsContent() = this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError

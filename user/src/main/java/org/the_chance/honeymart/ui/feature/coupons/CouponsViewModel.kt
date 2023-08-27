@@ -79,6 +79,7 @@ class CouponsViewModel @Inject constructor(
     override fun onClickAllCoupons() {
         _state.update { it.copy(couponsState = CouponsState.ALL) }
         updateData()
+        getData()
     }
 
     override fun onClickValidCoupons() {

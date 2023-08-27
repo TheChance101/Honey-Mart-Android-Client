@@ -1,9 +1,20 @@
 package org.the_chance.honeymart.ui.feature.coupons
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +27,9 @@ import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDeta
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.coupon.CouponsItem
+import org.the_chance.honymart.ui.composables.CustomChip
+import org.the_chance.honymart.ui.theme.dimens
 
 
 @Composable
@@ -61,20 +75,47 @@ fun CouponsContent(
             onClickTryAgain = listener::getData
         )
 
-        ShowEmptyPlaceholder(
-            state = !state.showCouponsContent() && !state.isLoading,
-            title = stringResource(R.string.empty_coupons),
-            description = stringResource(R.string.there_is_no_coupons_here),
-        )
+        Column {
+            Row(
+                modifier = Modifier.padding(
+                    start = MaterialTheme.dimens.space16,
+                    bottom = MaterialTheme.dimens.space16
+                ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            ) {
+                CustomChip(
+                    state = state.all(),
+                    text = "All",
+                    onClick = listener::onClickAllCoupons
+                )
+                CustomChip(
+                    state = state.valid(),
+                    text = "Valid",
+                    onClick = listener::onClickValidCoupons
+                )
+                CustomChip(
+                    state = state.expired(),
+                    text = "Expired",
+                    onClick = listener::onClickExpiredCoupons
+                )
+            }
 
-        ContentVisibility(
-            state = state.showCouponsContent()
-        ) {
-            CouponsContentScreen(
-                state = state,
-                listener = listener
+            ShowEmptyPlaceholder(
+                state = !state.showCouponsContent() && !state.isLoading,
+                title = stringResource(R.string.empty_coupons),
+                description = stringResource(R.string.there_is_no_coupons_here),
             )
+
+            ContentVisibility(
+                state = state.showCouponsContent()
+            ) {
+                CouponsContentScreen(
+                    state = state,
+                    listener = listener
+                )
+            }
         }
+
     }
 }
 
