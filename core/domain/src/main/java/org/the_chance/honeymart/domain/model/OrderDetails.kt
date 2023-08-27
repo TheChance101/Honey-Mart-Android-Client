@@ -1,9 +1,11 @@
 package org.the_chance.honeymart.domain.model
 
+import java.util.Date
+
 data class OrderDetails(
     val products: List<ProductDetails>,
     val totalPrice: Double,
-    val date: String,
+    val date: Date,
     val state: Int,
     val orderId: Long
 ) {

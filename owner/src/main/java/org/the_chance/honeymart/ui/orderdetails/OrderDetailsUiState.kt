@@ -46,7 +46,7 @@ fun OrderDetails.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
     return OrderParentDetailsUiState(
         totalPrice = totalPrice,
         state = state,
-        date = date,
+        date = date.toString(),
         orderId = orderId,
         product = products.toOrderDetailsProductUiState()
     )

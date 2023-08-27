@@ -72,7 +72,7 @@ fun Market.Order.toOrderUiState(): OrderUiState {
         orderId = orderId,
         totalPrice = totalPrice.toPriceFormat(),
         state = state,
-        time = date.toDateFormat(),
+        time = date.toString(),
         userName = user.fullName
     )
 }
@@ -88,7 +88,7 @@ fun OrderDetails.toOrderParentDetailsUiState(): OrderUiState {
     return OrderUiState(
         totalPrice = totalPrice.toString(),
         state = state,
-        time = date,
+        time = date.toString(),
         orderId = orderId
     )
 }

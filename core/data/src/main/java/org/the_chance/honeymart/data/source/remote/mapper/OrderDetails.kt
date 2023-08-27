@@ -2,12 +2,14 @@ package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderProductDto
+import org.the_chance.honeymart.data.source.remote.util.convertTimestampToDate
 import org.the_chance.honeymart.domain.model.OrderDetails
+import java.util.Date
 
 fun OrderDetailsDto.toOrderDetails() = OrderDetails(
     products = products?.map { it.toOrderProductDetails() } ?: emptyList(),
     totalPrice = totalPrice ?: 0.0,
-    date = date ?: "",
+    date = date?.convertTimestampToDate() ?: Date(),
     state = state ?: 0,
     orderId = 0L,
 )

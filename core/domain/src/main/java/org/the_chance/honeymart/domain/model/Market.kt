@@ -1,5 +1,7 @@
 package org.the_chance.honeymart.domain.model
 
+import java.util.Date
+
 
 data class Market(
     val marketId: Long,
@@ -14,7 +16,7 @@ data class Market(
         val orderId: Long,
         val totalPrice: Double,
         val state: Int,
-        val date: Long,
+        val date: Date,
         val user: UserFields,
     )
 }
