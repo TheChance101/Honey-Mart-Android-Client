@@ -226,6 +226,7 @@ private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
     onClickFavorite: (Long) -> Unit,
+    onClickSeeAll: () -> Unit
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
         Column(
