@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.composables.coupon.toCouponUiState
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +63,7 @@ class CouponsViewModel @Inject constructor(
     }
 
     private fun onClipCouponSuccess() {
-        //  getData()
+        _state.update { it.copy(isLoading = false) }
     }
 
     private fun onClipCouponError(errorHandler: ErrorHandler) {
@@ -77,34 +78,30 @@ class CouponsViewModel @Inject constructor(
 
 
     override fun onClickAllCoupons() {
-        _state.update { it.copy(couponsState = CouponsState.ALL) }
-        updateData()
-        getData()
+        _state.update {
+            it.copy(
+                couponsState = CouponsState.ALL,
+                updatedCoupons = it.coupons
+            )
+        }
     }
 
     override fun onClickValidCoupons() {
-        Log.i("ji", "onClickValidCoupons: tesstttt ")
-        _state.update { it.copy(couponsState = CouponsState.VALID) }
-        updateData()
+        _state.update {
+            it.copy(
+                couponsState = CouponsState.VALID,
+                updatedCoupons = it.coupons.filter { coupon ->
+                    !coupon.isExpired
+                }
+            )
+        }
     }
 
     override fun onClickExpiredCoupons() {
-        _state.update { it.copy(couponsState = CouponsState.EXPIRED) }
-        updateData()
-    }
-
-    private fun updateData() {
         _state.update {
-            it.copy(
-                coupons = when (it.couponsState) {
-                    CouponsState.ALL -> it.coupons
-                    CouponsState.VALID -> it.coupons.filter { coupon ->
-                        !coupon.isExpired
-                    }
-
-                    CouponsState.EXPIRED -> it.coupons.filter { coupon ->
-                        coupon.isExpired
-                    }
+            it.copy(couponsState = CouponsState.EXPIRED,
+                updatedCoupons = it.coupons.filter { coupon ->
+                    coupon.isExpired
                 }
             )
         }
