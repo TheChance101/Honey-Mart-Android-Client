@@ -9,7 +9,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.ProductEntity
@@ -33,7 +35,7 @@ class SearchViewModel @Inject constructor(
 
     private fun searchForProducts() {
         _state.update { it.copy(isSearching = true, isError = false) }
-        val query = _state.value.searchText
+        val query = _state.value.searchQuery
         val sortOrder = _state.value.searchStates.state
         tryToExecutePaging(
             { searchForProductUseCase(query, sortOrder) },
@@ -58,13 +60,14 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isSearching = true, searchText = text) }
+        _state.update { it.copy(isSearching = true, searchQuery = text) }
         viewModelScope.launch { actionStream.emit(text) }
     }
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
             actionStream.debounce(700).distinctUntilChanged().collect {
+                    log(it)
                 searchForProducts()
             }
         }

@@ -103,11 +103,11 @@ fun SearchContent(
             ) {
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = state.searchText,
+                    text = state.searchQuery,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
-                    color = black37
+                    color = black37,
                 )
                 IconButton(
                     size = MaterialTheme.dimens.icon48,

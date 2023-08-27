@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.feature.search
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.ProductEntity
 
@@ -15,7 +14,7 @@ data class SearchUiState(
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false,
-    val searchText: String= "",
+    val searchQuery: String= "",
 )
 
 data class ProductUiState(

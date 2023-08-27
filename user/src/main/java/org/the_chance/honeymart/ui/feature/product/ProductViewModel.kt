@@ -89,7 +89,6 @@ class ProductViewModel @Inject constructor(
                 products = flow { },
                 position = position.inc(),
                 categoryId = categoryId,
-                isLoadingProduct = true,
                 isEmptyProducts = false
             )
         }
@@ -106,13 +105,30 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getProductsByCategoryId() {
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        _state.update { it.copy(isError = false) }
         tryToExecutePaging(
             { getAllProducts(state.value.categoryId) },
             ::onGetProductSuccess,
             ::onGetProductError
         )
 
+    }
+    private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
+        val mappedProducts = products.map { it.toProductUiState() }
+        _state.update {
+            it.copy(
+                isEmptyProducts = false,
+                products = flowOf(mappedProducts),
+            )
+        }
+        getWishListProducts(mappedProducts)
+    }
+
+    private fun onGetProductError(error: ErrorHandler) {
+        _state.update { it.copy(error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
     private fun updateProducts(
@@ -122,38 +138,6 @@ class ProductViewModel @Inject constructor(
         product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
     }
 
-    private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
-        val mappedProducts = products.map { it.toProductUiState() }
-        val mappedProduct = mutableListOf<ProductUiState>()
-        log("loading: ${state.value.isLoadingProduct}")
-        mappedProducts.map {
-            mappedProduct.add(it)
-
-        }
-        log("response: ${mappedProduct}")
-        _state.update {
-            it.copy(
-                isEmptyProducts = false,
-                products = flowOf(mappedProducts),
-            )
-        }
-        log("loading: ${state.value.isLoadingProduct}")
-        mappedProduct.clear()
-        _state.value.products.map {
-            it.map {
-                mappedProduct.add(it)
-            }
-        }
-        log("response: ${mappedProduct}")
-        getWishListProducts(mappedProducts)
-    }
-
-    private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(isLoadingProduct = false, error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
 
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(
@@ -164,28 +148,12 @@ class ProductViewModel @Inject constructor(
 
 
     private fun getWishListProducts(products: PagingData<ProductUiState>) {
-        val mappedProducts = products
-        val mappedProduct = mutableListOf<ProductUiState>()
-        log("loading: ${state.value.isLoadingProduct}")
-        mappedProducts.map {
-            mappedProduct.add(it)
-
-        }
-        log("response: $mappedProduct")
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        _state.update { it.copy(isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
             { onGetWishListProductError(it, products) }
         )
-        log("loading: ${state.value.isLoadingProduct}")
-        mappedProduct.clear()
-        _state.value.products.map {
-            it.map {
-                mappedProduct.add(it)
-            }
-        }
-        log("response: $mappedProduct")
     }
 
 
@@ -194,11 +162,7 @@ class ProductViewModel @Inject constructor(
         wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,
     ) {
         _state.update { productsUiState ->
-            productsUiState.copy(
-                isLoadingProduct = false,
-                products = flowOf(updateProducts(products, wishListProducts))
-            )
-        }
+            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts))) }
     }
 
     private fun onGetWishListProductError(
@@ -206,12 +170,7 @@ class ProductViewModel @Inject constructor(
         products: PagingData<ProductUiState>
     ) {
         _state.update {
-            it.copy(
-                isLoadingProduct = false,
-                error = error,
-                products = flowOf(products)
-            )
-        }
+            it.copy(error = error, products = flowOf(products)) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
