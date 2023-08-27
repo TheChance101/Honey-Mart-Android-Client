@@ -20,10 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
-                    Row {
-                        MainScreen()
-                        RootNavigationGraph()
-                    }
+                    MainScreen()
                 }
             }
         }
