@@ -40,10 +40,10 @@ import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.home.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
-import org.the_chance.honeymart.ui.feature.home.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -96,7 +96,7 @@ fun HomeContentSuccessScreen(
             Markets(
                 markets = state.markets,
                 onClickMarket = listener::onClickPagerItem,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickSeeAllMarkets
             )
         }
 
@@ -225,8 +225,8 @@ private fun LastPurchases(
 private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
-    onClickSeeAll: () -> Unit,
     onClickFavorite: (Long) -> Unit,
+    onClickSeeAll: () -> Unit
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
         Column(
