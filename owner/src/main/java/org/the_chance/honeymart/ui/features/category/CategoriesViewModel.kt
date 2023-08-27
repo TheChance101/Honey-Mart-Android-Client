@@ -65,6 +65,7 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false, error = null, categories = updatedCategories, position = 0)
         }
+        getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
@@ -555,6 +556,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
+
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {

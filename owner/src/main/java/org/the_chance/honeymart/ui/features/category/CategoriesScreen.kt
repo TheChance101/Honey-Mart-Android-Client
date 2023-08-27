@@ -67,7 +67,10 @@ fun CategoriesContent(
         }
 
         Row(modifier = Modifier.fillMaxSize()) {
-            Loading(state = state.isLoading && state.categories.isNotEmpty())
+            Loading(
+                state = state.isLoading && state.categories.isNotEmpty()
+                        && !state.showScreenState.showAddCategory
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()

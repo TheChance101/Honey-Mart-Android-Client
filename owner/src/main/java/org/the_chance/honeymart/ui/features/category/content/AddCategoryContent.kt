@@ -27,7 +27,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.CategoryIconItem
 import org.the_chance.honeymart.ui.features.category.showButton
-import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
@@ -107,7 +107,8 @@ fun AddCategoryContent(
             }
 
         }
-        HoneyFilledIconButton(
+
+        HoneyFilledButton(
             label = stringResource(R.string.add),
             onClick = {
                 listener.onClickAddCategory(
@@ -115,8 +116,9 @@ fun AddCategoryContent(
                     categoryIconID = state.newCategory.newIconId
                 )
             },
-            isEnable = state.showButton(),
-            iconPainter = painterResource(id = R.drawable.icon_add_product),
+            isButtonEnabled = state.showButton(),
+            isLoading = state.isLoading,
+            icon = R.drawable.icon_add_product,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(
@@ -125,6 +127,7 @@ fun AddCategoryContent(
                     end = MaterialTheme.dimens.space24
                 )
         )
+
     }
 }
 

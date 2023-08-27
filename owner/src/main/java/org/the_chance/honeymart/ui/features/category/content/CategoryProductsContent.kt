@@ -30,7 +30,6 @@ import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
 import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisibility
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
-import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.blackOn60
@@ -43,11 +42,20 @@ fun CategoryProductsContent(
 ) {
     val products = state.products.collectAsLazyPagingItems()
 
-    Box(contentAlignment = Alignment.BottomEnd) {
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+        modifier = Modifier.padding(
+            start = MaterialTheme.dimens.space20,
+            end = MaterialTheme.dimens.space16
+        )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    shape = MaterialTheme.shapes.medium
+                )
                 .padding(
                     top = MaterialTheme.dimens.space24,
                     start = MaterialTheme.dimens.space16,
@@ -88,7 +96,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HoneyOutlineText(text = products.itemCount.toCountProductFormat())
+                    HoneyOutlineText(text = "${products.itemCount} Products")
 
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
