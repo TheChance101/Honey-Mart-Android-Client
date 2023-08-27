@@ -8,12 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
@@ -28,15 +26,14 @@ fun MarketScreen(
     viewModel: MarketViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                is MarketUiEffect.ClickMarketEffect -> navController.navigateToCategoryScreen(it.marketId)
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
+                is MarketUiEffect.ClickMarketEffect -> navController.navigateToCategoryScreen(effect.marketId)
             }
-        }
-    }
+    })
 
     MarketContent(state = state, listener = viewModel)
 }

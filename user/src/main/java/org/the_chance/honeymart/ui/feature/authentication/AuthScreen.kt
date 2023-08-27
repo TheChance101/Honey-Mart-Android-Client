@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.NavigationHandler
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -39,17 +38,14 @@ import org.the_chance.honymart.ui.theme.primary100
 fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavigationProvider.current
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 is AuthenticationUiEffect.ClickLoginEffect -> navController.navigateToLogin()
                 is AuthenticationUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
-
             }
-        }
-    }
+    })
 
     AuthContent(listener = viewModel)
 }

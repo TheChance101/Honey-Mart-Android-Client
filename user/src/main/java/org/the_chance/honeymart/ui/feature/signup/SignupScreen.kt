@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
@@ -58,25 +57,23 @@ import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
-    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
                 SignupUiEffect.ClickSignupEffect -> navController.popBackStack(
                     Screen.AuthenticationScreen.route,
                     true
                 )
-
                 SignupUiEffect.ShowToastEffect ->
                     Toast.makeText(context, "User name or email already exist", Toast.LENGTH_SHORT)
                         .show()
             }
-        }
-    }
+        })
 
     SignupContent(listener = viewModel, state = state)
 }
