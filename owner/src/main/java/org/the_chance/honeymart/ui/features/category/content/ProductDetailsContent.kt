@@ -34,7 +34,8 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
 import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
-import org.the_chance.honeymart.ui.features.category.showButton
+import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
+import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.Constant.MAX_IMAGES
 import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -160,7 +161,8 @@ fun ProductDetailsContent(
                 modifier = Modifier.width(146.dp),
                 label = confirmButton,
                 onClick = onClickConfirm,
-                isButtonEnabled = state.productDetails.showButton()
+                isButtonEnabled = if (state.showProductUpdateContent())
+                    state.showSaveUpdateButton() else true
             )
             HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
         }

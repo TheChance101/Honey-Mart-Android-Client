@@ -274,8 +274,10 @@ class CategoriesViewModel @Inject constructor(
                     showFab = false,
                     showProductDetails = true,
                 ),
-                newProducts = it.newProducts.copy(id = productId)
+                newProducts = it.newProducts.copy(id = productId,
+                )
             )
+
         }
         val productID = _state.value.newProducts.id
         getProductDetails(productID)
@@ -303,8 +305,10 @@ class CategoriesViewModel @Inject constructor(
         _state.update {
             it.copy(
                 error = null,
-                newProducts = it.newProducts.copy(id = product.productId),
-                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true)
+                newProducts = it.newProducts.copy(id = product.productId,
+                    images = emptyList()),
+                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true),
+
             )
         }
         addProductImage(productId = product.productId, images = _state.value.newProducts.images)
@@ -429,9 +433,12 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 showScreenState = it.showScreenState.copy(
                     showProductUpdate = false,
-                    showProductDetails = false
+                    showProductDetails = false,
+                    showFab = true
+                ),
+                newProducts = it.newProducts.copy(images = emptyList()),
+
                 )
-            )
         }
         onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
     }
@@ -475,8 +482,9 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
+        _state.update { it.copy(isLoading = false, error = null,) }
         getProductsByCategoryId(state.value.newCategory.categoryId)
+
     }
 
     override fun onClickUpdateProductDetails() {
@@ -487,7 +495,10 @@ class CategoriesViewModel @Inject constructor(
                     showFab = false,
                     showProductDetails = false,
                     showProductUpdate = true
-                )
+                ),
+                productDetails = it.productDetails.copy(
+                    productPrice = it.productDetails.productPrice.removeDollarSign()
+                ),
             )
         }
     }

@@ -122,7 +122,8 @@ fun ProductEntity.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productImage = productImages.ifEmpty { listOf("", "") },
+        productImage = if (productImages.isNotEmpty())
+            productImages else listOf("", ""),
         productPrice = productPrice.toPriceFormat(),
         productDescription = productDescription,
     )
@@ -142,16 +143,31 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // region Extension
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
-        newCategory.newCategoryName.isNotBlank() && !category.categoryIconUIState.isSelected && !isLoading && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+        newCategory.newCategoryName.isNotBlank() &&
+                !category.categoryIconUIState.isSelected
+                && !isLoading &&
+                newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
 }
 
 fun NewProductsUiState.showButton(): Boolean {
-    return name.isNotBlank() && price.isNotBlank() && description.isNotBlank() && productNameState == ValidationState.VALID_TEXT_FIELD && productPriceState == ValidationState.VALID_TEXT_FIELD && productDescriptionState == ValidationState.VALID_TEXT_FIELD && images.isNotEmpty()
+    return name.isNotBlank() && price.isNotBlank()
+            && description.isNotBlank() &&
+            productNameState == ValidationState.VALID_TEXT_FIELD
+            && productPriceState == ValidationState.VALID_TEXT_FIELD
+            && productDescriptionState == ValidationState.VALID_TEXT_FIELD
+            && images.isNotEmpty()
 }
 
-fun ProductUiState.showButton(): Boolean {
-    return productName.isNotBlank() && productPrice.isNotBlank() && productDescription.isNotBlank() && productImage.isNotEmpty()
+fun CategoriesUiState.showSaveUpdateButton(): Boolean {
+    return productDetails.productName.isNotBlank() &&
+            productDetails. productPrice.isNotBlank() &&
+            productDetails.productDescription.isNotBlank() &&
+            newProducts.images.isNotEmpty()
+
+}
+fun String.removeDollarSign(): String {
+    return this.replace("$", "").trim()
 }
 
 

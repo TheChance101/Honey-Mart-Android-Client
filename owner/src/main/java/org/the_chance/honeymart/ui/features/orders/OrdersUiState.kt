@@ -101,7 +101,7 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
             name = it.name,
             price = it.price,
             count = it.count,
-            images = it.images
+            images = it.images.ifEmpty { listOf("", "") },
         )
     }
 }
