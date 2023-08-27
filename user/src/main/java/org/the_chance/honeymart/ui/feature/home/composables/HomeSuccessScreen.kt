@@ -138,7 +138,7 @@ fun HomeContentSuccessScreen(
         ) {
             LastPurchases(
                 lastPurchases = state.lastPurchases,
-                onClickProduct = listener::onClickProductItem,
+                onClickProduct = listener::onClickLastPurchases,
                 onClickSeeAll = {}
             )
         }
@@ -160,9 +160,8 @@ fun HomeContentSuccessScreen(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
                 productName = discoverProduct.productName,
-                productPrice = discoverProduct.productPrice.formatCurrencyWithNearestFraction(),
-                imageUrl = discoverProduct.productImages.takeIf { it.isNotEmpty() }
-                    ?.get(0) ?: "",
+                productPrice = discoverProduct.priceInCurrency,
+                imageUrl = discoverProduct.imageUrl,
                 onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
                 isFavoriteIconClicked = discoverProduct.isFavorite

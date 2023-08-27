@@ -16,8 +16,9 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
-import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
 import org.the_chance.honeymart.ui.feature.markets.navigateToMarketsScreen
+import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
+import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
@@ -54,6 +55,9 @@ fun HomeScreen(
                 )
 
                 HomeUiEffect.NavigateToSeeAllMarketEffect -> navController.navigateToMarketsScreen()
+                is HomeUiEffect.NavigateToOrderDetailsScreenEffect -> navController.navigateToOrderDetailsScreen(
+                    it.productId
+                )
             }
         }
     }
@@ -97,7 +101,7 @@ fun HomeContent(
                 pagerState = pagerState,
                 listener = listener
             )
-            Loading(state = state.isLoading && state.markets.isNotEmpty())
+                Loading(state = state.isLoading && state.markets.isNotEmpty())
         }
     }
 }
