@@ -9,13 +9,12 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.tasks.await
 import org.the_chance.honeymart.data.R
 import javax.inject.Inject
 
 class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
-    FireBaseMsgService {
+    FireBaseMessageService {
     private val firebaseMessaging = FirebaseMessaging.getInstance()
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")

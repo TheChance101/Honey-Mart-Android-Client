@@ -1,11 +1,11 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
-import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerFields
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginFields
-import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgService
+import org.the_chance.honeymart.data.source.remote.network.FireBaseMessageService
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.OwnerFields
 import org.the_chance.honeymart.domain.model.OwnerProfile
@@ -17,9 +17,9 @@ import javax.inject.Inject
  * Created by Aziza Helmy on 6/16/2023.
  */
 class AuthRepositoryImp @Inject constructor(
-    private val datastore: AuthDataStorePreferences,
+    private val datastore: AuthorizationPreferences,
     private val honeyMartService: HoneyMartService,
-    private val fireBaseMsgService: FireBaseMsgService
+    private val fireBaseMsgService: FireBaseMessageService
 ) : BaseRepository(), AuthRepository {
 
     override suspend fun createOwnerAccount(
