@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.market
+package org.the_chance.honeymart.ui.feature.markets
 
 
 import androidx.compose.foundation.background
@@ -17,10 +17,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.feature.markets.MarketInteractionListener
-import org.the_chance.honeymart.ui.feature.markets.MarketUiEffect
-import org.the_chance.honeymart.ui.feature.markets.MarketViewModel
-import org.the_chance.honeymart.ui.feature.markets.MarketsUiState
 import org.the_chance.honeymart.ui.feature.markets.compoaseable.MarketItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
