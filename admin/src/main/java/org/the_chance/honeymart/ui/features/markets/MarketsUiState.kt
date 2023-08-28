@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.requests
+package org.the_chance.honeymart.ui.features.markets
 
 import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -26,7 +26,7 @@ data class RequestUiState(
     val isRequestNew: Boolean = false,
     val isRequestSelected: Boolean = false,
     val state: RequestsStates = RequestsStates.UNAPPROVED,
-    val isSelected: Boolean = false,
+    val isSelected: Boolean = false
 ) {
     fun ownerNameFirstCharacter(): Char = this.ownerName.firstOrNull() ?: ' '
 }

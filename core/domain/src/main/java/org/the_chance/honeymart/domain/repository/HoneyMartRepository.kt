@@ -13,6 +13,7 @@ import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
 
 
@@ -78,5 +79,5 @@ interface HoneyMartRepository {
     //region admin
     suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean):Boolean
-    //endregion admin
+//endregion admin
 }

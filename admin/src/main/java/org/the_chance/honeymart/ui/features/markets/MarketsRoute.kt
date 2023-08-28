@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.requests
+package org.the_chance.honeymart.ui.features.markets
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -21,6 +21,6 @@ fun NavGraphBuilder.requestsRoute() {
     composable(
         route = ROUTE,
     ) {
-        RequestsScreen()
+        MarketsScreen()
     }
 }

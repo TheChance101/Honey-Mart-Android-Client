@@ -30,7 +30,6 @@ class ProductViewModel @Inject constructor(
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
-
     override val TAG: String = this::class.simpleName.toString()
 
     private val args = ProductArgs(savedStateHandle)

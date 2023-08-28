@@ -14,6 +14,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
@@ -195,8 +196,9 @@ interface HoneyMartService {
         id: Long?,
         isApproved: Boolean,
     ): BaseResponse<Boolean>
-    //endregion admin
 
+    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
+//endregion admin
 
     // region Coupon
     suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
@@ -215,8 +217,4 @@ interface HoneyMartService {
 
     suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
     //endregion
-
-    // region Admin
-    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
-    //endregion Admin
 }

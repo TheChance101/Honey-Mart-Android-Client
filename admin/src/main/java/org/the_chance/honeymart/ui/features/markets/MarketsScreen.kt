@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.requests
+package org.the_chance.honeymart.ui.features.markets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,20 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
-import org.the_chance.honeymart.ui.features.login.navigateToLogin
-import org.the_chance.honeymart.ui.features.requests.composables.EmptyPlaceholder
-import org.the_chance.honeymart.ui.features.requests.composables.ItemMarketRequest
-import org.the_chance.honeymart.ui.features.requests.composables.MarketRequestDetails
+import org.the_chance.honeymart.ui.features.markets.composables.EmptyPlaceholder
+import org.the_chance.honeymart.ui.features.markets.composables.ItemMarketRequest
+import org.the_chance.honeymart.ui.features.markets.composables.MarketRequestDetails
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun RequestsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
+fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
 
@@ -53,11 +51,8 @@ fun RequestsContent(
     state: RequestsUiState,
     listener: MarketsInteractionListener,
 ) {
-    ContentVisibility(state = state.contentScreen()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             HoneyMartTitle()
             Row(
@@ -76,46 +71,41 @@ fun RequestsContent(
                     onClick = { listener.onGetFilteredRequests(true) }
                 )
             }
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = MaterialTheme.dimens.space40)
-                        .padding(top = MaterialTheme.dimens.space24),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            ContentVisibility(state = state.contentScreen()) {
+            Row(
+                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
+                    .padding(top = MaterialTheme.dimens.space24),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize().weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            itemsIndexed(state.requests) { index,item ->
-                                ItemMarketRequest(
-                                    onClickCard = { listener.onClickRequest(index) },
-                                    ownerName = item.ownerName,
-                                    marketName = item.marketName,
-                                    ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
-                                    onCardSelected = item.isSelected,
-                                    isRequestNew = item.isRequestNew
-                                )
-                            }
+                        itemsIndexed(state.requests) { index,item ->
+                            ItemMarketRequest(
+                                onClickCard = { listener.onClickRequest(index) },
+                                ownerName = item.ownerName,
+                                marketName = item.marketName,
+                                ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
+                                onCardSelected = item.isSelected,
+                                isRequestNew = item.isRequestNew
+                            )
                         }
                     }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                    ) {
-                        MarketRequestDetails(
-                            state = state.requestsStates == RequestsStates.UNAPPROVED,
-                            request = state.selectedRequest, listener = listener)
-                    }
                 }
+                Column(
+                    modifier = Modifier.fillMaxSize().weight(1f)
+                ) {
+                    MarketRequestDetails(
+                        state = state.requestsStates == RequestsStates.UNAPPROVED,
+                        request = state.selectedRequest, listener = listener)
+                }
+            }
         }
     }
     Loading(state = state.isLoading)

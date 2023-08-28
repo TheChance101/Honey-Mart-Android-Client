@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.requests
+package org.the_chance.honeymart.ui.features.markets
 
 interface MarketsInteractionListener {
     fun onGetFilteredRequests(isApproved: Boolean)

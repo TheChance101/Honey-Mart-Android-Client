@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import org.the_chance.honeymart.ui.features.requests.requestsRoute
+import org.the_chance.honeymart.ui.features.markets.requestsRoute
 
 
 fun NavGraphBuilder.mainNavGraph() {
