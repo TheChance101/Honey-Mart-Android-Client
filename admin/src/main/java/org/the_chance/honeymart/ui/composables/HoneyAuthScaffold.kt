@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.components
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,9 +22,6 @@ import org.the_chance.honymart.ui.composables.HoneyAppBarTitle
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
 
-/**
- * Created by Aziza Helmy on 8/5/2023.
- */
 @Composable
 fun HoneyAuthScaffold(
     modifier: Modifier = Modifier,

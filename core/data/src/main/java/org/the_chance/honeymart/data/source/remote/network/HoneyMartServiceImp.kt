@@ -25,6 +25,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonPrimitive
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -456,5 +457,11 @@ class HoneyMartServiceImp @Inject constructor(
         })
         return response
     }
+
+    override suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto> =
+        wrap(client.submitForm(url = "/admin/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
 //end region admin
 }
