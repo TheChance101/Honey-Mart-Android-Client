@@ -89,7 +89,6 @@ class ProductViewModel @Inject constructor(
                 products = flow { },
                 position = position.inc(),
                 categoryId = categoryId,
-                isLoadingProduct = true,
                 isEmptyProducts = false
             )
         }
@@ -106,21 +105,14 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getProductsByCategoryId() {
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        _state.update { it.copy(isError = false) }
         tryToExecutePaging(
             { getAllProducts(state.value.categoryId) },
             ::onGetProductSuccess,
             ::onGetProductError
         )
-    }
 
-    private fun updateProducts(
-        products: PagingData<ProductUiState>,
-        wishListProducts: List<WishListProductUiState>,
-    ) = products.map { product ->
-        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
     }
-
     private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update {
@@ -133,11 +125,19 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(isLoadingProduct = false, error = error) }
+        _state.update { it.copy(error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
+
+    private fun updateProducts(
+        products: PagingData<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
+    ) = products.map { product ->
+        product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
+    }
+
 
     override fun onClickProduct(productId: Long) {
         effectActionExecutor(
@@ -148,7 +148,7 @@ class ProductViewModel @Inject constructor(
 
 
     private fun getWishListProducts(products: PagingData<ProductUiState>) {
-        _state.update { it.copy(isLoadingProduct = true, isError = false) }
+        _state.update { it.copy(isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
             { onGetWishListProductSuccess(it, products) },
@@ -156,15 +156,13 @@ class ProductViewModel @Inject constructor(
         )
     }
 
+
+
     private fun onGetWishListProductSuccess(
         wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,
     ) {
         _state.update { productsUiState ->
-            productsUiState.copy(
-                isLoadingProduct = false,
-                products = flowOf(updateProducts(products, wishListProducts))
-            )
-        }
+            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts))) }
     }
 
     private fun onGetWishListProductError(
@@ -172,12 +170,7 @@ class ProductViewModel @Inject constructor(
         products: PagingData<ProductUiState>
     ) {
         _state.update {
-            it.copy(
-                isLoadingProduct = false,
-                error = error,
-                products = flowOf(products)
-            )
-        }
+            it.copy(error = error, products = flowOf(products)) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }

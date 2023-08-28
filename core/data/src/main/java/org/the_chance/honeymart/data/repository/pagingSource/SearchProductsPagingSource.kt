@@ -11,7 +11,13 @@ class SearchProductsPagingSource @Inject constructor(
     private val sortOrder: String,
 ) : BasePagingSource<ProductEntity>(honeyMartService) {
     override suspend fun fetchData(page: Int): List<ProductEntity> {
-        return wrap { honeyMartService.searchForProducts(page = page, query = query, sortOrder = sortOrder) }.value?.map { it.toProductEntity() }
+        return wrap {
+            honeyMartService.searchForProducts(
+                page = page,
+                query = query,
+                sortOrder = sortOrder
+            )
+        }.value?.map { it.toProductEntity() }
             ?: throw Throwable("paging error")
     }
 

@@ -9,7 +9,6 @@ import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 
 data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
-    val isLoadingProduct: Boolean = false,
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
@@ -45,11 +44,5 @@ fun ProductEntity.toProductUiState(): ProductUiState {
         productImages = productImages.ifEmpty { listOf("","") }
     )
 }
-
-
-
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
-fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
-        !this.isError && !this.isLoadingProduct
-fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
 

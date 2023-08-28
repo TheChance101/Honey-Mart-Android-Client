@@ -23,14 +23,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
-import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -57,6 +57,8 @@ fun ProductsScreen(
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     effect.productId
                 )
+
+
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
@@ -69,18 +71,15 @@ private fun ProductsContent(
     productInteractionListener: ProductInteractionListener,
 ) {
     AppBarScaffold {
-        Loading(state.isLoadingCategory || state.isLoadingProduct)
-
+        val products = state.products.collectAsLazyPagingItems()
+        Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
-        ShowEmptyPlaceholder(state.emptyPlaceHolder())
+//        EmptyProductPlaceholder(products.itemCount == 0 && products.loadState.refresh != LoadState.Loading)
 
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                        .padding(
+                    modifier = Modifier.fillMaxSize().weight(1f).padding(
                             start = MaterialTheme.dimens.space16,
                             end = MaterialTheme.dimens.space16
                         ),
@@ -111,7 +110,6 @@ private fun ProductsContent(
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
-                        val products = state.products.collectAsLazyPagingItems()
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
@@ -139,7 +137,9 @@ private fun ProductsContent(
                                     )
                                 }
                             }
-                            PagingStateVisibility(products,productInteractionListener::onclickTryAgainProducts)
+                            item {
+                                PagingStateVisibility(products)
+                            }
                         }
                     }
                 }
@@ -156,6 +156,5 @@ private fun ProductsContent(
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
                 })
         }
-        Loading(state = state.loading())
     }
 }

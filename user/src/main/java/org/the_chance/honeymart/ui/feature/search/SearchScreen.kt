@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -15,8 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,17 +26,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
+import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -49,14 +50,12 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
-import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
-    val searchText by viewModel.searchText.collectAsState()
-    val isSearching by viewModel.isSearching.collectAsState()
+    val navController = LocalNavigationProvider.current
 
     NavigationHandler(
         effects = viewModel.effect,
@@ -69,23 +68,27 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     SearchContent(
         state = state,
-        searchText = searchText,
         onSearchTextChange = viewModel::onSearchTextChange,
-        isSearching = isSearching,
         listener = viewModel
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SearchContent(
     state: SearchUiState,
-    searchText: String,
     onSearchTextChange: (String) -> Unit,
-    isSearching: Boolean,
     listener: SearchInteraction,
 ) {
     AppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
+        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
+//        EmptyProductPlaceholder(
+//            (products.itemCount == 0
+//                    && products.loadState.refresh != LoadState.Loading)
+//                    || !state.isSearching
+//        )
+        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -99,11 +102,11 @@ fun SearchContent(
             ) {
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = searchText,
+                    text = state.searchQuery,
                     hint = "Search",
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
-                    color = black37
+                    color = black37,
                 )
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
@@ -165,44 +168,34 @@ fun SearchContent(
                     }
                 }
             }
-
-            ContentVisibility(state = products.itemCount > 0) {
-                if (isSearching) {
-                    Loading(state = state.isLoading)
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 160.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .shadow(0.6.dp),
-                        contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        state = rememberLazyGridState(),
-                        content = {
-                            items(products.itemCount) { index ->
-                                val product = products[index]
-                                if (product != null) {
-                                    CardSearch(
-                                        imageUrl = product.productImages.firstOrNull() ?: "",
-                                        productName = product.productName,
-                                        productPrice = product.productPrice.toString(),
-                                        onClickCard = { listener.onClickProduct(product.productId) }
-                                    )
-                                }
-                            }
-                            pagingStateVisibilityGridScope(products)
-                        }
-                    )
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 160.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            ) {
+                items(products.itemCount) { index ->
+                    val product = products[index]
+                    if (product != null) {
+                        CardSearch(
+                            imageUrl = product.productImages.firstOrNull() ?: "",
+                            productName = product.productName,
+                            productPrice = product.productPrice.toString(),
+                            onClickCard = { listener.onClickProduct(product.productId) }
+                        )
+                    }
+                }
+                if (state.isSearching) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        PagingStateVisibility(products)
+                    }
                 }
             }
         }
-        Loading(state = state.isLoading)
-        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
-        ShowEmptyPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
     }
-
 }
 
 
