@@ -122,7 +122,8 @@ class HoneyMartRepositoryImp @Inject constructor(
         search(
             query,
             sortOrder,
-            ::SearchProductsPagingSource
+            ::SearchProductsPagingSource,
+            page
         )
 
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
@@ -194,9 +195,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         parameter: P,
         sortOrder: S,
         sourceFactory: (HoneyMartService, P, S) -> PagingSource<Int, I>,
+        page: Int?
     ): Flow<PagingData<I>> {
         return Pager(
-            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            config = PagingConfig(pageSize = page ?: DEFAULT_PAGE_SIZE),
             pagingSourceFactory = { sourceFactory(honeyMartService, parameter, sortOrder) }
         ).flow
     }
