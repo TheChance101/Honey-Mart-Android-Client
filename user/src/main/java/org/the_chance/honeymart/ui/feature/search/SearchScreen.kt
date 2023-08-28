@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +36,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
@@ -49,7 +49,6 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.honymart.ui.theme.white200
 import pagingStateVisibilityGridScope
 
 @Composable
@@ -101,7 +100,7 @@ fun SearchContent(
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
                     text = searchText,
-                    hint = "Search",
+                    hint = stringResource(org.the_chance.user.R.string.search),
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
                     color = black37
@@ -112,7 +111,7 @@ fun SearchContent(
                     backgroundColor = if (state.filtering) {
                         primary100
                     } else {
-                        white200
+                        MaterialTheme.colorScheme.tertiaryContainer
                     }
                 ) {
                     Icon(
@@ -121,7 +120,7 @@ fun SearchContent(
                         tint = if (state.filtering) {
                             white
                         } else {
-                            black37
+                            MaterialTheme.colorScheme.onTertiaryContainer
                         },
                     )
                 }
@@ -133,7 +132,7 @@ fun SearchContent(
             ) {
                 Column {
                     Text(
-                        text = "Sort by price",
+                        text = stringResource(org.the_chance.user.R.string.sort_by_price),
                         color = black37,
                         modifier = Modifier.padding(
                             start = MaterialTheme.dimens.space16,
@@ -150,17 +149,17 @@ fun SearchContent(
                     ) {
                         CustomChip(
                             state = state.random(),
-                            text = "Random",
+                            text = stringResource(org.the_chance.user.R.string.random),
                             onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
-                            text = "Ascending",
+                            text = stringResource(org.the_chance.user.R.string.ascending),
                             onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
-                            text = "Descending",
+                            text = stringResource(org.the_chance.user.R.string.descending),
                             onClick = listener::onClickDescendingSearch
                         )
                     }
