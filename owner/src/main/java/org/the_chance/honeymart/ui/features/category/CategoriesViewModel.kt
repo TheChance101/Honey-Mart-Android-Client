@@ -60,13 +60,28 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
         val categoriesUiState = categories.toCategoryUiState()
+        if (categories.isEmpty()) {
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = null,
+                    categories = categoriesUiState,
+                )
+            }
+        }
         val updatedCategories =
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
 
         _state.update {
-            it.copy(isLoading = false, error = null, categories = updatedCategories, position = 0)
+            it.copy(
+                isLoading = false,
+                error = null,
+                categories = updatedCategories,
+                position = 0
+            )
         }
         getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
+
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
@@ -130,8 +145,10 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
                 error = null,
                 position = 0,
-                showScreenState = it.showScreenState.copy(showFab = true,
-                    showAddProduct = false)
+                showScreenState = it.showScreenState.copy(
+                    showFab = true,
+                    showAddProduct = false
+                )
             )
         }
         getAllCategory()
@@ -277,7 +294,8 @@ class CategoriesViewModel @Inject constructor(
                     showFab = false,
                     showProductDetails = true,
                 ),
-                newProducts = it.newProducts.copy(id = productId,
+                newProducts = it.newProducts.copy(
+                    id = productId,
                 )
             )
 
@@ -311,10 +329,12 @@ class CategoriesViewModel @Inject constructor(
                 newProducts = it.newProducts.copy(id = product.productId),
                 showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true),
 
-            )
+                )
         }
-        addProductImage(productId = product.productId,
-            images = _state.value.newProducts.images)
+        addProductImage(
+            productId = product.productId,
+            images = _state.value.newProducts.images
+        )
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
@@ -439,7 +459,7 @@ class CategoriesViewModel @Inject constructor(
                     showProductDetails = false,
                     showFab = true
                 )
-                )
+            )
         }
         onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
     }
@@ -483,9 +503,12 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update { it.copy(isLoading = false, error = null,
-            newProducts = it.newProducts.copy(images = emptyList()),
-        ) }
+        _state.update {
+            it.copy(
+                isLoading = false, error = null,
+                newProducts = it.newProducts.copy(images = emptyList()),
+            )
+        }
         getProductsByCategoryId(state.value.newCategory.categoryId)
 
     }
