@@ -14,6 +14,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteProductByIdUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateImageProductUseCase
@@ -37,11 +38,11 @@ class CategoriesViewModel @Inject constructor(
     private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
     private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
     private val updateProductImagesUseCase: UpdateImageProductUseCase,
+    private val getOwnerMarketId: GetOwnerInfoUseCase,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
-    private val marketID: Long = 5L
 
     init {
         getCategoryImages()
@@ -51,7 +52,7 @@ class CategoriesViewModel @Inject constructor(
     override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(marketID) },
+            { getAllCategories(getOwnerMarketId.getOwnerMarketId()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -223,7 +224,7 @@ class CategoriesViewModel @Inject constructor(
                     imageId = category.newCategory.newIconId,
                     name = category.newCategory.newCategoryName,
                     id = category.newCategory.categoryId,
-                    marketId = marketID
+                    marketId = getOwnerMarketId.getOwnerMarketId()
                 )
             },
             { onUpdateCategorySuccess() },
