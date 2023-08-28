@@ -28,6 +28,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
@@ -74,7 +75,7 @@ private fun ProductsContent(
         val products = state.products.collectAsLazyPagingItems()
         Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
-//        EmptyProductPlaceholder(products.itemCount == 0 && products.loadState.refresh != LoadState.Loading)
+        EmptyProductsPlaceholder(products.itemCount == 0 && products.loadState.refresh != LoadState.Loading)
 
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
