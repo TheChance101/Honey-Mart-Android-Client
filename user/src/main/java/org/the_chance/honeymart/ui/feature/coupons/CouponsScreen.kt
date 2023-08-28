@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.feature.coupons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
-import org.the_chance.honeymart.ui.composables.coupon.CouponsItem
+import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -80,21 +79,22 @@ fun CouponsContent(
                     start = MaterialTheme.dimens.space16,
                     bottom = MaterialTheme.dimens.space16
                 ),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 CustomChip(
                     state = state.all(),
-                    text = "All",
+                    text = stringResource(R.string.all),
                     onClick = listener::onClickAllCoupons
                 )
                 CustomChip(
                     state = state.valid(),
-                    text = "Valid",
+                    text = stringResource(R.string.valid),
                     onClick = listener::onClickValidCoupons
                 )
                 CustomChip(
                     state = state.expired(),
-                    text = "Expired",
+                    text = stringResource(R.string.expired),
                     onClick = listener::onClickExpiredCoupons
                 )
             }

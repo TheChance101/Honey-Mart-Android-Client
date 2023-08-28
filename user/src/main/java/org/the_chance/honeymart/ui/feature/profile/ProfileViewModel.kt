@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
@@ -18,7 +17,6 @@ class ProfileViewModel @Inject constructor(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,
-    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
     ProfileInteractionsListener {
 

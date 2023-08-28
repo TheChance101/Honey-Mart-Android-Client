@@ -20,7 +20,6 @@ fun ContentVisibility(
         enter = fadeIn(animationSpec = tween(durationMillis = 500)) + scaleIn(),
         exit = fadeOut(animationSpec = tween(durationMillis = 500))
     ) {
-        if (state)
             content()
     }
 }

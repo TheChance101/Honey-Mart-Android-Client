@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.coupons
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CouponEntity
@@ -8,8 +7,7 @@ import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.composables.coupon.toCouponUiState
-import java.time.LocalDate
+import org.the_chance.honeymart.ui.feature.home.toCouponUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +17,7 @@ class CouponsViewModel @Inject constructor(
 ) : BaseViewModel<CouponsUiState, CouponsUiEffect>(CouponsUiState()),
     CouponsInteractionListener {
 
-    override val TAG = this::class.java.simpleName
+    override val TAG: String = this::class.java.simpleName
 
     override fun getData() {
         _state.update {

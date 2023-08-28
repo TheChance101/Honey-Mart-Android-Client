@@ -137,4 +137,6 @@
     <string name="market_image">Market Image</string>
     <string name="product_item">Product Item</string>
     <string name="search">Search</string>
+    <string name="all">All</string>
+    <string name="valid">Valid</string>
 </resources>

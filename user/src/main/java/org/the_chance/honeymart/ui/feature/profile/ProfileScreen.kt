@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
@@ -59,11 +62,9 @@ fun ProfileScreen(
         viewModel.effect.collect {
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                is ProfileUiEffect.ClickNotificationEffect -> {} //navController.navigateToNotificationScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {} //navController.navigateToCouponsScreen()
-                is ProfileUiEffect.ClickLogoutEffect -> {
-                    navController.navigateToLogin()
-                }
+                is ProfileUiEffect.ClickNotificationEffect -> {  }
+                is ProfileUiEffect.ClickCouponsEffect -> {navController.navigateToCouponsScreen()}
+                is ProfileUiEffect.ClickLogoutEffect -> {navController.navigateToLogin()}
 
                 ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
                 ProfileUiEffect.ShowDialogEffect -> {}
@@ -116,6 +117,10 @@ private fun ProfileContent(
         if (!state.isError && !state.isLoading)
             Column(
                 modifier = Modifier
+                    .verticalScroll(
+                        enabled = true,
+                        state = rememberScrollState()
+                    )
                     .fillMaxSize()
                     .padding(all = MaterialTheme.dimens.space16),
                 horizontalAlignment = Alignment.CenterHorizontally

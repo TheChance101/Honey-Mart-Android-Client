@@ -5,6 +5,7 @@ import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.market.MarketUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
@@ -23,14 +24,7 @@ data class HomeUiState(
     val discoverProducts: List<ProductUiState> = emptyList(),
 )
 
-data class CouponUiState(
-    val couponId: Long = 0L,
-    val count: Int = 0,
-    val discountPrice: Double = 0.0,
-    val expirationDate: String = "",
-    val product: ProductUiState = ProductUiState(),
-    val isClipped: Boolean = false,
-)
+
 
 data class RecentProductUiState(
     val productId: Long = 0L,
