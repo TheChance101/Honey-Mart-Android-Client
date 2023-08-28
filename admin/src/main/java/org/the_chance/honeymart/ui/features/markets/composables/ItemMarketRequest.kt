@@ -1,5 +1,9 @@
 package org.the_chance.honeymart.ui.features.markets.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.base.composables.ContentVisibility
+import org.the_chance.honeymart.ui.features.markets.RequestsState
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
@@ -37,9 +42,12 @@ fun ItemMarketRequest(
     onClickCard: () -> Unit,
     ownerName: String,
     marketName: String,
+    state: Boolean,
+    marketStateText: String,
+    requestsState: RequestsState,
     ownerNameFirstCharacter: Char,
     onCardSelected: Boolean,
-    isRequestNew: Boolean,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -63,17 +71,14 @@ fun ItemMarketRequest(
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(start = MaterialTheme.dimens.space16)
                     .padding(vertical = MaterialTheme.dimens.space8),
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.space86)
-                        .clip(CircleShape)
+                    modifier = Modifier.size(MaterialTheme.dimens.space86).clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary,),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -91,20 +96,28 @@ fun ItemMarketRequest(
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge
                     )
-                    Text(
-                        text = marketName,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                ContentVisibility(state = isRequestNew) {
-                    Box(
-                        modifier = Modifier.size(MaterialTheme.dimens.space16)
-                            .clip(shape = CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(end = MaterialTheme.dimens.space16),
-                    )
+                    Row(Modifier.fillMaxWidth()) {
+                        Text(
+                            text = marketName,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        AnimatedVisibility(
+                            visible = requestsState == RequestsState.ALL && !isLoading,
+                            enter = slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(1000)),
+                            exit = slideOutHorizontally(targetOffsetX = { it },animationSpec = tween(500)),
+                        ){
+                            Text(
+                                text = marketStateText,
+                                color = if (state) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = MaterialTheme.typography.displaySmall,
+                                modifier = Modifier.padding(end = 32.dp)
+                            )
+                        }
+                    }
+
                 }
                 Spacer(modifier = Modifier.padding(MaterialTheme.dimens.space16))
             }
@@ -119,8 +132,11 @@ fun ItemRequestPreview() {
         {},
         "shehab",
         "market",
+        true,
+        "pending",
+        RequestsState.APPROVED,
         'U',
         true,
-        true,
+        false
     )
 }

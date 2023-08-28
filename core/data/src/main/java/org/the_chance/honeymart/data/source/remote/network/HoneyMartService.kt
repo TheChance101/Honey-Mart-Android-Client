@@ -14,6 +14,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
@@ -189,7 +190,7 @@ interface HoneyMartService {
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
 
     //region admin
-    suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>>
+    suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
 
     suspend fun updateMarketRequest(
         id: Long?,
