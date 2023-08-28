@@ -28,9 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.base.composables.ContentVisibility
-import org.the_chance.honeymart.ui.features.markets.MarketsInteractionListener
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.markets.MarketRequestUiState
+import org.the_chance.honeymart.ui.features.markets.MarketsInteractionListener
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens

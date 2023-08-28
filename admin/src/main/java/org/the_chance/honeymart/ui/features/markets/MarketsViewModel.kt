@@ -5,8 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
-import org.the_chance.honeymart.domain.model.RequestEntity
-import org.the_chance.honeymart.domain.usecase.GetMarketRequests
 import org.the_chance.honeymart.domain.usecase.LogOutAdminUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -17,9 +15,8 @@ import javax.inject.Inject
 class MarketsViewModel @Inject constructor(
     private val getMarketsRequests: GetMarketsRequests,
     private val updateMarketRequest: UpdateMarketRequestUseCase,
-) : BaseViewModel<MarketsRequestUiState, MarketsUiEffect>(MarketsRequestUiState()),
     private val logOutAdmin: LogOutAdminUseCase
-) : BaseViewModel<RequestsUiState, MarketsUiEffect>(RequestsUiState()),
+) : BaseViewModel<MarketsRequestUiState, MarketsUiEffect>(MarketsRequestUiState()),
     MarketsInteractionListener {
     override val TAG: String = this::class.java.simpleName
 
@@ -42,8 +39,9 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
-                requests = requests.map { it.toMarketRequestUiState() })
+                requests = requests.map { it.toMarketRequestUiState() },
                 isLoggedIn = true
+
             )
         }
         Log.e(TAG, "Requests:Value is ${state.value}")
@@ -105,7 +103,7 @@ class MarketsViewModel @Inject constructor(
             )
         }
         _state.update { it.copy(requests = updatedRequests, selectedRequest = updatedRequests[position]) }
-        effectActionExecutor(_effect, MarketsUiEffect.onClickMarket)
+        effectActionExecutor(_effect, MarketsUiEffect.OnClickMarket)
     }
 
     override fun onClickCancel(marketId: Int) {
@@ -137,5 +135,4 @@ class MarketsViewModel @Inject constructor(
     private fun onLogoutError(error: ErrorHandler) {
 
     }
-}
 }

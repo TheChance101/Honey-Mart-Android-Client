@@ -13,12 +13,11 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCategoryEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toCouponEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketEntity
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketRequest
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetailsEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toProductEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toMarketRequest
 import org.the_chance.honeymart.data.source.remote.mapper.toProfileUserEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toRequestEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toWishListEntity
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.CartEntity
@@ -26,15 +25,13 @@ import org.the_chance.honeymart.domain.model.CategoryEntity
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.model.MarketDetailsEntity
 import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderEntity
 import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
-import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
-import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 

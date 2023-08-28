@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.honeymart.ui.base.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.markets.RequestsState
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white

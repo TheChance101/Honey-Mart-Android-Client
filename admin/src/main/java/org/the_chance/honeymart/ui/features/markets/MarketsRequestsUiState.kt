@@ -11,7 +11,7 @@ data class MarketsRequestUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val requests: List<MarketRequestUiState> = emptyList(),
     val selectedRequest: MarketRequestUiState? = null,
-    val requestsState: RequestsState = RequestsState.UNAPPROVED
+    val requestsState: RequestsState = RequestsState.UNAPPROVED,
     val adminName: Char = 'n',
     val adminImageUrl: String = "",
 )
@@ -53,9 +53,7 @@ enum class RequestsState { UNAPPROVED, APPROVED, ALL, }
 fun MarketsRequestUiState.emptyRequestsPlaceHolder() =
     this.requests.isEmpty() && !this.isError && !this.isLoading
 
-fun MarketsRequestUiState.contentScreen() = !this.isLoading && !this.isError
-
-fun RequestsUiState.contentScreen() =
+fun MarketsRequestUiState.contentScreen() =
     !this.isLoading && !this.isError
 
-fun RequestsUiState.navRailVisibility() = this.isLoggedIn
+fun MarketsRequestUiState.navRailVisibility() = this.isLoggedIn
