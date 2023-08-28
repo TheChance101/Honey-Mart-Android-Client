@@ -146,6 +146,11 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
+    override suspend fun getClippedUserCoupons(): List<CouponEntity> {
+        return wrap { honeyMartService.getClippedUserCoupons() }.value?.map { it.toCouponEntity() }
+            ?: throw NotFoundException()
+    }
+
     override suspend fun getRecentProducts(): List<RecentProductEntity> {
         return wrap { honeyMartService.getRecentProducts() }.value?.map { it.RecentProductEntity() }
             ?: throw NotFoundException()

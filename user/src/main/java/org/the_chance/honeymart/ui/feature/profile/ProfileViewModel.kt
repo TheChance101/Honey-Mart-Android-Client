@@ -15,11 +15,15 @@ class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUserUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
-) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()), ProfileInteractionsListener {
+) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
+    ProfileInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
 
-    init { getData() }
+
+    init {
+        getData()
+    }
 
     override fun getData() {
         _state.update {
@@ -36,8 +40,15 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
+
     private fun onGetProfileSuccess(user: ProfileUserEntity) {
-        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                accountInfo = user.toProfileUiState(),
+                error = null
+            )
+        }
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
@@ -104,12 +115,14 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = {onLogoutError()}
+            onError = { onLogoutError() }
         )
     }
+
     private fun onLogoutSuccess() {
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
+
     private fun onLogoutError() {}
 }

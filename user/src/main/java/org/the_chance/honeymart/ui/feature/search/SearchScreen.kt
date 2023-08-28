@@ -34,9 +34,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -201,7 +200,7 @@ fun SearchContent(
         }
         Loading(state = state.isLoading)
         ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
-        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
+        ShowEmptyPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
     }
 
 }

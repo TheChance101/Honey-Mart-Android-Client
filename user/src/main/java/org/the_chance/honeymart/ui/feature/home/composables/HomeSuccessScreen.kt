@@ -37,7 +37,7 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
-import org.the_chance.honeymart.ui.feature.home.CouponUiState
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState

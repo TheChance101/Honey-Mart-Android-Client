@@ -27,7 +27,11 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyProductPlaceholder(state: Boolean) {
+fun ShowEmptyPlaceholder(
+    state: Boolean ,
+    title: String = stringResource(R.string.empty_product),
+    description: String = stringResource(R.string.empty_product),
+) {
     HoneyMartTheme {
         AnimatedVisibility(
             visible = state,
@@ -45,12 +49,12 @@ fun EmptyProductPlaceholder(state: Boolean) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.placeholder_wish_list),
-                    contentDescription = stringResource(R.string.empty_product),
+                    contentDescription = title,
                     contentScale = ContentScale.Crop
                 )
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
-                    text = stringResource(R.string.there_is_no_product_here),
+                    text = description,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -64,5 +68,5 @@ fun EmptyProductPlaceholder(state: Boolean) {
 @Preview
 @Composable
 fun PreviewEmptyProductScaffold() {
-    EmptyProductPlaceholder(true)
+    ShowEmptyPlaceholder(true,"","")
 }
