@@ -19,8 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
+import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.markets.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.markets.composables.ItemMarketRequest
 import org.the_chance.honeymart.ui.features.markets.composables.MarketRequestDetails
@@ -51,7 +53,8 @@ fun RequestsContent(
     state: RequestsUiState,
     listener: MarketsInteractionListener,
 ) {
-        Column(
+    ContentVisibility(state = state.contentScreen()) {
+    Column(
             modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             HoneyMartTitle()
@@ -71,7 +74,6 @@ fun RequestsContent(
                     onClick = { listener.onGetFilteredRequests(true) }
                 )
             }
-            ContentVisibility(state = state.contentScreen()) {
             Row(
                 modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
                     .padding(top = MaterialTheme.dimens.space24),

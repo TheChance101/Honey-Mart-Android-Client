@@ -159,10 +159,6 @@
 
     <string name="declined">Declined</string>
 
-    <string name="pending">Pending</string>
-    <string name="approved">Approved</string>
-    <string name="new_requests">2 new requests</string>
-    <string name="approve">Approve</string>
     <string name="the_search_result_is_empty">The search result is empty!!</string>
     <string name="discover_markets_now">Discover Markets Now</string>
     <string name="you_re_delete_this_product_are_you_sure">" you’re delete this product....\nAre you sure?"</string>

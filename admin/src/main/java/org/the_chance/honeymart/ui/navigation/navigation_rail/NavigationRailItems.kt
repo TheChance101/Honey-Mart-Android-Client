@@ -37,9 +37,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
-import org.the_chance.honeymart.ui.features.requests.MarketsUiEffect
-import org.the_chance.honeymart.ui.features.requests.MarketsViewModel
-import org.the_chance.honeymart.ui.features.requests.contentScreen
+import org.the_chance.honeymart.ui.features.markets.MarketsUiEffect
+import org.the_chance.honeymart.ui.features.markets.MarketsViewModel
+import org.the_chance.honeymart.ui.features.markets.navRailVisibility
 import org.the_chance.honeymart.ui.navigation.NavigationScreen
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
@@ -69,7 +69,7 @@ fun NavigationRail(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    ContentVisibility(state = state.contentScreen()) {
+    ContentVisibility(state = state.navRailVisibility()) {
         NavigationRail(
             containerColor = MaterialTheme.colorScheme.onTertiary,
             header = {

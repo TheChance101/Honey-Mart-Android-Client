@@ -6,7 +6,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class RequestsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-    val isAuthenticationError: Boolean = false,
+    val isLoggedIn: Boolean = false,
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
     val requests: List<RequestUiState> = emptyList(),
@@ -56,4 +56,6 @@ fun RequestsUiState.emptyRequestsPlaceHolder() =
     this.requests.isEmpty() && !this.isError && !this.isLoading
 
 fun RequestsUiState.contentScreen() =
-    !this.isLoading && !this.isError && !this.isAuthenticationError
+    !this.isLoading && !this.isError
+
+fun RequestsUiState.navRailVisibility() = this.isLoggedIn
