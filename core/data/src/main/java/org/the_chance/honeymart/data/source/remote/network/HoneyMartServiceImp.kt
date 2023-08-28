@@ -34,6 +34,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -436,7 +437,7 @@ class HoneyMartServiceImp @Inject constructor(
 
     //endregion
     //region admin
-    override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
+    override suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>> {
         return wrap(client.get("admin/markets") {
             parameter("isApproved", "$isApproved")
         })
