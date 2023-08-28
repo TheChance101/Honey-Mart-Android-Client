@@ -88,7 +88,7 @@ fun CartItem(
                 }
             )
             Text(
-                text = formatCurrencyWithNearestFraction(product.productPrice * product.productCount),
+                text = formatCurrencyWithNearestFraction(product.totalPrice),
                 style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
                     primary100
                 ),

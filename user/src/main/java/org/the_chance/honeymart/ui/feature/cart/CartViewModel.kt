@@ -7,7 +7,6 @@ import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,7 +16,7 @@ class CartViewModel @Inject constructor(
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
-
+    private var isOrdering = false
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
@@ -36,6 +35,14 @@ class CartViewModel @Inject constructor(
                 total = cart.total,
             )
         }
+        if (isOrdering) {
+            _state.update { it.copy(isLoading = true) }
+            tryToExecute(
+                { checkout() },
+                ::onCheckOutSuccess,
+                ::onCheckOutError
+            )
+        }
     }
 
     private fun onGetAllCartError(error: ErrorHandler) {
@@ -48,45 +55,29 @@ class CartViewModel @Inject constructor(
     }
 
 
-    private fun incrementProductCountByOne(productId: Long) {
-        val currentState = _state.value
-        val updatedProducts = currentState.products.map { product ->
-            if (product.productId == productId) {
-                val currentCount = product.productCount
-                val newProductCount = if (currentCount >= 100) 100 else currentCount + 1
-                product.copy(productCount = newProductCount)
-            } else {
-                product
-            }
-        }
-
-        val updatedState = currentState.copy(products = updatedProducts)
-        _state.value = updatedState
-
-        onUpdateProductInCart(
-            productId,
-            updatedProducts.find { it.productId == productId }?.productCount ?: 0
-        )
-    }
-
-    private fun decrementProductCountByOne(productId: Long) {
+    private fun updateProductCount(productId: Long, increment: Boolean) {
         val currentState = _state.value
 
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
                 val currentCount = product.productCount
-                val newProductCount = if (currentCount > 1) currentCount - 1 else 1
-                product.copy(productCount = newProductCount)
+                val newProductCount = when {
+                    increment && currentCount < 100 -> currentCount + 1
+                    !increment && currentCount > 1 -> currentCount - 1
+                    else -> currentCount
+                }
+                val newTotalPrice = product.productPrice * newProductCount
+                product.copy(productCount = newProductCount, totalPrice = newTotalPrice)
             } else {
                 product
             }
         }
-        val updatedState = currentState.copy(products = updatedProducts)
+
+        val updatedTotal = updatedProducts.sumByDouble { it.totalPrice }
+
+        val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal)
         _state.value = updatedState
-        onUpdateProductInCart(
-            productId,
-            updatedProducts.find { it.productId == productId }?.productCount ?: 0
-        )
+        onUpdateProductInCart(productId, updatedProducts.find { it.productId == productId }?.productCount ?: 0)
     }
 
     private fun onUpdateProductInCart(productId: Long, count: Int) {
@@ -101,7 +92,7 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false, error = null)
         }
-        getChosenCartProducts()
+//        getChosenCartProducts()
     }
 
     private fun onUpdateProductInCartError(error: ErrorHandler) {
@@ -112,13 +103,11 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickAddCountProductInCart(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        incrementProductCountByOne(productId)
+        updateProductCount(productId, true)
     }
 
     override fun onClickMinusCountProductInCart(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        decrementProductCountByOne(productId)
+        updateProductCount(productId, false)
     }
 
     override fun onClickViewOrders() {
@@ -126,12 +115,9 @@ class CartViewModel @Inject constructor(
     }
 
     override fun onClickOrderNowButton() {
+        isOrdering = true
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { checkout() },
-            ::onCheckOutSuccess,
-            ::onCheckOutError
-        )
+        getChosenCartProducts()
     }
 
     private fun onCheckOutSuccess(message: String) {

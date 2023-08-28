@@ -17,7 +17,8 @@ data class CartUiState(
 data class CartListProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
-    val productPrice: Double = formatCurrencyWithNearestFraction(0.0).toDouble(),
+    val productPrice: Double = 0.0,
+    val totalPrice: Double = 0.0,
     val productCount: Int = 0,
     val productImage: List<String> = emptyList()
 )
@@ -36,7 +37,8 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
             productName = it.name,
             productPrice = it.price,
             productCount = it.count,
-            productImage = it.images
+            productImage = it.images,
+            totalPrice = it.price * it.count
         )
     }
 }
