@@ -10,6 +10,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.signup.FieldState
 import org.the_chance.honeymart.ui.features.signup.ValidationToast
+import org.the_chance.honeymart.ui.util.StringResource
 import javax.inject.Inject
 
 
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
+    private val stringResourceImpl: StringResource
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
@@ -60,7 +62,7 @@ class LoginViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     validationToast = ValidationToast(
-                        isShow = true, message = "Please fill required fields"
+                        isShow = true, message = stringResourceImpl.requiredFieldsMessageString
                     )
                 )
             }
@@ -87,8 +89,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
+        val errorMessage = stringResourceImpl.errorStringDictionary.getOrDefault(error, "")
         if (error is ErrorHandler.UnAuthorizedUser) {
-            val errorMessage = "Invalid username or password"
             _state.update {
                 it.copy(
                     isLoading = false,
@@ -107,7 +109,7 @@ class LoginViewModel @Inject constructor(
                     error = error,
                     validationToast = ValidationToast(
                         isShow = true,
-                        message = "Something went wrong, please check your network and try again"
+                        message = errorMessage
                     )
                 )
             }

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.signup
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
@@ -12,6 +13,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.util.StringResource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +23,8 @@ class SignUpViewModel @Inject constructor(
     private val createMarketUseCase: CreateMarketUseCase,
     private val addMarketImageUseCase: AddMarketImageUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
-    private val loginOwnerUseCase: LoginOwnerUseCase
+    private val loginOwnerUseCase: LoginOwnerUseCase,
+    private val stringResourceImpl: StringResource
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
     MarketInfoInteractionsListener {
@@ -29,11 +32,11 @@ class SignUpViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
 
-
     // region owner registration
     override fun onClickLogin() {
         effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
+
     override fun onClickContinue() {
         val validationSignupFieldsState = state.value.emailState.isValid &&
                 state.value.passwordState.isValid &&
@@ -76,28 +79,16 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
-        if (error is ErrorHandler.AlreadyExist) {
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    validationToast = ValidationToast(
-                        isShow = true,
-                        message = "This account already exist"
-                    ),
-                    error = error
-                )
-            }
-        } else {
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    validationToast = ValidationToast(
-                        isShow = true,
-                        message = "Something went wrong,please try again."
-                    ),
-                    error = error
-                )
-            }
+        Log.d("Tarek", "create owner error : $error")
+        _state.update {
+            it.copy(
+                isLoading = false,
+                validationToast = ValidationToast(
+                    isShow = true,
+                    message = stringResourceImpl.errorStringDictionary.getOrDefault(error, "")
+                ),
+                error = error
+            )
         }
         effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
     }
@@ -116,7 +107,15 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        Log.d("Tarek","login error : $error")
+        _state.update {
+            it.copy(
+                isLoading = false, error = error, validationToast = ValidationToast(
+                    isShow = true,
+                    message = stringResourceImpl.errorStringDictionary.getOrDefault(error, "")
+                )
+            )
+        }
     }
 
     override fun onFullNameInputChange(fullName: CharSequence) {
@@ -126,11 +125,10 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 fullNameState = FieldState(
-                    errorState = when (fullNameState) {
-                        ValidationState.BLANK_FULL_NAME -> "name shouldn't be empty"
-                        ValidationState.INVALID_FULL_NAME -> "Invalid name"
-                        else -> ""
-                    },
+                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        fullNameState,
+                        ""
+                    ),
                     value = fullName.toString(),
                     isValid = fullNameState == ValidationState.VALID_FULL_NAME
                 ),
@@ -143,11 +141,10 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 emailState = FieldState(
-                    errorState = when (emailState) {
-                        ValidationState.BLANK_EMAIL -> "email shouldn't be empty"
-                        ValidationState.INVALID_EMAIL -> "Invalid email"
-                        else -> ""
-                    },
+                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        emailState,
+                        ""
+                    ),
                     value = email.toString(),
                     isValid = emailState == ValidationState.VALID_EMAIL
                 ),
@@ -160,14 +157,10 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 passwordState = FieldState(
-                    errorState = when (passwordState) {
-                        ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
-                        ValidationState.INVALID_PASSWORD_LENGTH -> "Password length must be at least 8"
-                        ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER -> "Please write at least 1 special character"
-                        ValidationState.PASSWORD_REGEX_ERROR_LETTER -> "Please write at least 1 letter"
-                        ValidationState.PASSWORD_REGEX_ERROR_DIGIT -> "Please write at least 1 digit"
-                        else -> ""
-                    },
+                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        passwordState,
+                        ""
+                    ),
                     value = password.toString(),
                     isValid = passwordState == ValidationState.VALID_PASSWORD
                 ),
@@ -180,11 +173,14 @@ class SignUpViewModel @Inject constructor(
             state.value.passwordState.value,
             confirmPassword.toString()
         )
-        if (!passwordState) {
+        if (passwordState == ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH) {
             _state.update {
                 it.copy(
                     confirmPasswordState = FieldState(
-                        errorState = "password doesn't match",
+                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                            passwordState,
+                            ""
+                        ),
                         value = confirmPassword.toString(),
                         isValid = false
                     )
@@ -203,7 +199,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    // endregion
+// endregion
 
     // region market registration
     override fun onClickSendButton() {
@@ -246,12 +242,14 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateMarketError(errorHandler: ErrorHandler) {
+        Log.d("Tarek","market error : $errorHandler")
         _state.update {
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
                     error = errorHandler
-                )
+                ),
+
             )
         }
     }
@@ -276,11 +274,10 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketNameState =
                     FieldState(
-                        errorState = when (marketNameState) {
-                            ValidationState.BLANK_MARKET_NAME -> "market name shouldn't be empty"
-                            ValidationState.INVALID_MARKET_NAME -> "Invalid market name"
-                            else -> ""
-                        },
+                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                            marketNameState,
+                            ""
+                        ),
                         value = marketName.toString(),
                         isValid = marketNameState == ValidationState.VALID_MARKET_NAME
                     ),
@@ -298,11 +295,10 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketAddressState =
                     FieldState(
-                        errorState = when (marketAddressState) {
-                            ValidationState.BLANK_MARKET_DESCRIPTION -> "market address shouldn't be empty"
-                            ValidationState.INVALID_MARKET_ADDRESS -> "invalid market address"
-                            else -> ""
-                        },
+                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                            marketAddressState,
+                            ""
+                        ),
                         value = address.toString(),
                         isValid = marketAddressState == ValidationState.VALID_MARKET_ADDRESS
                     ),
@@ -320,11 +316,10 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketDescriptionState =
                     FieldState(
-                        errorState = when (marketDescriptionState) {
-                            ValidationState.BLANK_MARKET_DESCRIPTION -> "market description shouldn't be empty"
-                            ValidationState.SHORT_MARKET_DESCRIPTION -> "market description should be 20 letter at least"
-                            else -> ""
-                        },
+                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                            marketDescriptionState,
+                            ""
+                        ),
                         value = description.toString(),
                         isValid = marketDescriptionState == ValidationState.VALID_MARKET_DESCRIPTION
                     ),
@@ -333,7 +328,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    // endregion
+// endregion
 
     // region market image
     override fun addMarketImage(image: ByteArray) {
@@ -345,14 +340,16 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onAddMarketImageError(errorHandler: ErrorHandler) {
+        Log.d("Tarek","Image error : $errorHandler")
         _state.update {
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
-                    error = errorHandler
-                )
+                    error = errorHandler,
+                ),
             )
         }
+
     }
 
     private fun onAddMarketImageSuccess(isMaretImageAdded: Boolean) {
@@ -388,5 +385,5 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    //endregion
+//endregion
 }
