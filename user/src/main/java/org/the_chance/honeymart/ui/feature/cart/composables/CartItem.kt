@@ -4,13 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -23,21 +24,17 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.cart.CartListProductUiState
-import org.the_chance.honeymart.ui.feature.cart.formatCurrencyWithNearestFraction
-import org.the_chance.honymart.ui.theme.Shapes
-import org.the_chance.honymart.ui.theme.black60
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun CartItem(
@@ -50,140 +47,145 @@ fun CartItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(100.dp)
-            .padding(bottom = MaterialTheme.dimens.space8),
+            .height(MaterialTheme.dimens.space100),
         colors =
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
-        shape = Shapes.medium
+        shape = MaterialTheme.shapes.medium
     ) {
-        ConstraintLayout(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onTertiary)
+                .fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            val (imageOrder, textOrderNumber, textItemPrice, textRow) = createRefs()
-
             Image(
-                painter = rememberAsyncImagePainter(model = product.productImage[0]),
+                painter = rememberAsyncImagePainter(model = product.productImageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .width(MaterialTheme.dimens.card)
-                    .height(MaterialTheme.dimens.card)
-                    .constrainAs(imageOrder) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                    }, contentScale = ContentScale.Crop
+                    .weight(0.5f)
+                    .height(MaterialTheme.dimens.card),
+                contentScale = ContentScale.Crop
             )
 
-            Text(
-                text = product.productName,
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
-                    MaterialTheme.colorScheme.onSecondary
-                ),
-                modifier = Modifier.constrainAs(textOrderNumber) {
-                    top.linkTo(parent.top, margin = 8.dp)
-                    start.linkTo(imageOrder.end, margin = 8.dp)
-                }
-            )
-            Text(
-                text = formatCurrencyWithNearestFraction(product.productPrice),
-                style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
-                    primary100
-                ),
-
+            Column(
                 modifier = Modifier
-                    .constrainAs(
-                        textItemPrice
-                    ) {
-                        bottom.linkTo(parent.bottom, margin = 8.dp)
-                        start.linkTo(imageOrder.end, margin = 8.dp)
-                    }
-                    .border(1.dp, primary100, CircleShape)
-                    .background(Color.Transparent, CircleShape)
+                    .weight(1f)
+                    .fillMaxSize()
                     .padding(
-                        horizontal = MaterialTheme.dimens.space8,
-                        vertical = MaterialTheme.dimens.space4
+                        vertical = MaterialTheme.dimens.space16,
+                        horizontal = MaterialTheme.dimens.space8
                     ),
-
-                )
-            Row(
-                modifier = Modifier
-                    .constrainAs(textRow) {
-                        bottom.linkTo(parent.bottom, margin = 8.dp)
-                        end.linkTo(parent.end, margin = 8.dp)
-                    },
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-
-                IconButton(
-                    onClick = { onClickMinus() },
-
-                    enabled = !isLoading,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = primary100,
-                        disabledContainerColor = Color.Transparent,
-                    ),
-                    modifier = Modifier
-                        .border(
-                            color = primary100,
-                            width = 1.dp,
-                            shape = CircleShape
-                        )
-                        .size(MaterialTheme.dimens.icon24)
-
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.minus_1),
-                        contentDescription = null,
-                        tint = primary100,
-                        modifier = Modifier.padding(4.dp),
-                    )
-                }
-
-
                 Text(
-                    text = product.productCount.toString(),
-                    style = org.the_chance.honymart.ui.theme.Typography.displayLarge.copy(
-                        black60
-                    ),
+                    text = product.productName,
+                    style = MaterialTheme.typography.displayLarge.copy(
+                        MaterialTheme.colorScheme.onSecondary
+                    )
                 )
 
-
-                IconButton(
-                    onClick = { onClickPlus() },
-                    enabled = !isLoading,
-                    modifier = Modifier
-                        .background(primary100, CircleShape)
-                        .size(MaterialTheme.dimens.icon24)
-
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    Text(
+                        modifier = Modifier
+                            .border(
+                                width = MaterialTheme.dimens.space1,
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .background(
+                                color = Color.Transparent,
+                                shape = CircleShape
+                            )
+                            .padding(
+                                horizontal = MaterialTheme.dimens.space8,
+                                vertical = MaterialTheme.dimens.space4
+                            ),
+                        text = product.productPriceFormatted,
+                        style = MaterialTheme.typography.displayLarge.copy(
+                            MaterialTheme.colorScheme.primary
+                        )
                     )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = { onClickMinus() },
+                        enabled = !isLoading,
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = MaterialTheme.colorScheme.primary,
+                            disabledContainerColor = Color.Transparent,
+                        ),
+                        modifier = Modifier
+                            .border(
+                                color = MaterialTheme.colorScheme.primary,
+                                width = MaterialTheme.dimens.space1,
+                                shape = CircleShape
+                            )
+                            .size(MaterialTheme.dimens.icon24)
+
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(MaterialTheme.dimens.space4),
+                            painter = painterResource(id = R.drawable.minus_1),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+
+                    Text(
+                        modifier = Modifier.padding(
+                            horizontal = MaterialTheme.dimens.space8
+                        ),
+                        text = product.productCount.toString(),
+                        style = MaterialTheme.typography.displayLarge.copy(
+                            MaterialTheme.colorScheme.onSecondary
+                        )
+                    )
+
+
+                    IconButton(
+                        onClick = { onClickPlus() },
+                        enabled = !isLoading,
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .size(MaterialTheme.dimens.icon24)
+
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(MaterialTheme.dimens.space4),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@Preview(device = "id:3.2in HVGA slider (ADP1)")
+@Preview(widthDp = 320)
 @Composable
 private fun CartItemPreview() {
-    CartItem(
-        product = CartListProductUiState(
-            productId = 1,
-            productName = "Product Name",
-            productPrice = 10000.0,
-            productImage = listOf("https://picsum.photos/200/300"),
-            productCount = 1
-        ),
-        onClickMinus = {},
-        onClickPlus = {},
-        isLoading = false
-    )
+    HoneyMartTheme {
+        CartItem(
+            product = CartListProductUiState(
+                productId = 1,
+                productName = "Product Name",
+                productPrice = 10000.0,
+                productImage = listOf("https://picsum.photos/200/300"),
+                productCount = 100
+            ),
+            onClickMinus = {},
+            onClickPlus = {},
+            isLoading = false
+        )
+    }
 }

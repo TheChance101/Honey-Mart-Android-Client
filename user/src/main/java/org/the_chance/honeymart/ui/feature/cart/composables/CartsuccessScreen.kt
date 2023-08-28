@@ -37,7 +37,6 @@ fun CartSuccessScreen(
     state: CartUiState,
     cartInteractionListener: CartInteractionListener,
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,9 +47,11 @@ fun CartSuccessScreen(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space16
             ),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
-            itemsIndexed(state.products) { index, product ->
+            itemsIndexed(
+                items = state.products,
+                key = { _, product -> product.productId }) { index, product ->
                 var showDialog by remember { mutableStateOf(false) }
                 val dismissState = rememberDismissState(
                     confirmValueChange = { it == DismissValue.DismissedToStart })
