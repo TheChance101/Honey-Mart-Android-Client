@@ -13,7 +13,7 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.gson.gson
 import okhttp3.logging.HttpLoggingInterceptor
-import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
 import org.the_chance.honeymart.data.source.remote.network.AuthInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -64,7 +64,7 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHeaderInterceptor(dataStorePreferences: AuthDataStorePreferences): AuthInterceptor {
+    fun provideHeaderInterceptor(dataStorePreferences: AuthorizationPreferences): AuthInterceptor {
         return AuthInterceptor(dataStorePreferences)
     }
 }

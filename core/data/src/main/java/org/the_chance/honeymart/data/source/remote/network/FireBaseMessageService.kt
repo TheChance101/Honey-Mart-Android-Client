@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
-interface FireBaseMsgService {
+interface FireBaseMessageService {
    suspend fun getDeviceToken(): String
 
 }

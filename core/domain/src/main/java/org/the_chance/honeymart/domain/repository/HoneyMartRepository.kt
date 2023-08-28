@@ -2,26 +2,25 @@ package org.the_chance.honeymart.domain.repository
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import org.the_chance.honeymart.domain.model.CartEntity
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.MarketDetailsEntity
-import org.the_chance.honeymart.domain.model.MarketEntity
-import org.the_chance.honeymart.domain.model.NotificationEntity
-import org.the_chance.honeymart.domain.model.MarketOrderEntity
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.ProfileUserEntity
-import org.the_chance.honeymart.domain.model.RecentProductEntity
-import org.the_chance.honeymart.domain.model.WishListEntity
+import org.the_chance.honeymart.domain.model.Cart
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Coupon
+import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.Notification
+import org.the_chance.honeymart.domain.model.OrderDetails
+import org.the_chance.honeymart.domain.model.Order
+import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.UserProfile
+import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.WishList
 
 
 interface HoneyMartRepository {
 
-    suspend fun getAllMarkets(): List<MarketEntity>?
+    suspend fun getAllMarkets(): List<Market>?
     suspend fun clipCoupon(couponId: Long): Boolean
-    suspend fun getMarketDetails(marketId: Long): MarketDetailsEntity
+    suspend fun getMarketDetails(marketId: Long): MarketDetails
     suspend fun addMarket(
         marketName: String,
         marketAddress: String,
@@ -30,41 +29,45 @@ interface HoneyMartRepository {
 
     suspend fun addMarketImage(marketImage: ByteArray): Boolean
 
-    suspend fun getCategoriesInMarket(marketId: Long): List<CategoryEntity>?
-    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): Flow<PagingData<ProductEntity>>
-    suspend fun getCategoriesForSpecificProduct(productId: Long): List<CategoryEntity>?
+    suspend fun getCategoriesInMarket(marketId: Long): List<Category>?
+    suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): Flow<PagingData<Product>>
+    suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category>?
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String
-    suspend fun getWishList(): List<WishListEntity>
-    suspend fun getCart(): CartEntity
+    suspend fun getWishList(): List<WishList>
+    suspend fun getCart(): Cart
 
     suspend fun addToCart(productId: Long, count: Int): String
     suspend fun deleteFromCart(productId: Long): String
-    suspend fun getOrderDetails(orderId: Long): OrderDetailsEntity
+    suspend fun getOrderDetails(orderId: Long): OrderDetails
 
-    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): Flow<PagingData<ProductEntity>>
-    suspend fun getAllOrders(orderState: Int): List<OrderEntity>
+    suspend fun searchForProducts(
+        query: String,
+        page: Int?,
+        sortOrder: String
+    ): Flow<PagingData<Product>>
 
-    suspend fun getAllMarketOrders(orderState: Int): List<MarketOrderEntity>
+    suspend fun getAllOrders(orderState: Int): List<Order>
+
+    suspend fun getAllMarketOrders(orderState: Int): List<Market.Order>
     suspend fun updateOrderState(id: Long?, state: Int): Boolean
     suspend fun checkout(): String
 
-    suspend fun getProductDetails(productId: Long): ProductEntity
+    suspend fun getProductDetails(productId: Long): Product
 
     suspend fun deleteAllCart(): String
 
-    suspend fun getUserCoupons(): List<CouponEntity>
+    suspend fun getUserCoupons(): List<Coupon>
 
-    suspend fun getAllValidCoupons(): List<CouponEntity>
+    suspend fun getAllValidCoupons(): List<Coupon>
 
-    suspend fun getRecentProducts(): List<RecentProductEntity>
+    suspend fun getRecentProducts(): List<RecentProduct>
 
-    suspend fun getAllProducts(): List<ProductEntity>
+    suspend fun getAllProducts(): List<Product>
 
-    suspend fun getAllNotifications(notificationsState: Int): List<NotificationEntity>
+    suspend fun getAllNotifications(notificationsState: Int): List<Notification>
 
-    suspend fun getProfileUser(): ProfileUserEntity
-
+    suspend fun getProfileUser(): UserProfile
 
 
     suspend fun addProfileImage(image: ByteArray): String
@@ -74,7 +77,7 @@ interface HoneyMartRepository {
         price: Double,
         description: String,
         categoryId: Long,
-    ): ProductEntity
+    ): Product
 
     suspend fun updateProduct(
         id: Long,

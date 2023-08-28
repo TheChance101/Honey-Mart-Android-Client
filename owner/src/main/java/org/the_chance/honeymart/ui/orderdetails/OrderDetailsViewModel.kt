@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -37,7 +37,7 @@ class OrderDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetailsEntity) {
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetails) {
         _state.update { it.copy(isLoading = false,
             orderDetails = orderDetails.toOrderParentDetailsUiState()) }
         Log.e("sara",_state.value.orderDetails.product.toString())
