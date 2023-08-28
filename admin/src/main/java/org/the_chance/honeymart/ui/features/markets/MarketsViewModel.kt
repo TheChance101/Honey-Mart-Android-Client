@@ -26,7 +26,7 @@ class MarketsViewModel @Inject constructor(
     }
 
     private fun getMarkets(isApproved: Boolean? = false) {
-        _state.update { it.copy(isLoading = true,isError = false) }
+        _state.update { it.copy(isLoading = true,isError = false,isLoggedIn = true) }
         log(isApproved.toString())
         tryToExecute(
             { getMarketsRequests(isApproved) },
@@ -40,8 +40,6 @@ class MarketsViewModel @Inject constructor(
             requestUiState.copy(
                 isLoading = false,
                 requests = requests.map { it.toMarketRequestUiState() },
-                isLoggedIn = true
-
             )
         }
         Log.e(TAG, "Requests:Value is ${state.value}")
@@ -53,12 +51,10 @@ class MarketsViewModel @Inject constructor(
             is ErrorHandler.NoConnection -> {
                 _state.update { it.copy(isError = true) }
             }
-
             ErrorHandler.UnAuthorizedUser -> {
                 _state.update { it.copy(isLoggedIn = false) }
                 effectActionExecutor(_effect, MarketsUiEffect.UnAuthorizedUserEffect)
             }
-
             else -> {}
         }
         Log.e(TAG, "Requests:Value is ${state.value}")

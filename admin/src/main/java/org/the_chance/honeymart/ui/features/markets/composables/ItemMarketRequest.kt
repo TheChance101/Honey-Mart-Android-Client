@@ -1,8 +1,8 @@
 package org.the_chance.honeymart.ui.features.markets.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -91,7 +91,7 @@ fun ItemMarketRequest(
                 ) {
                     Text(
                         text = ownerName,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleLarge
                     )
                     Row(Modifier.fillMaxWidth()) {
@@ -103,7 +103,7 @@ fun ItemMarketRequest(
                         Spacer(modifier = Modifier.weight(1f))
                         AnimatedVisibility(
                             visible = requestsState == RequestsState.ALL && !isLoading,
-                            enter = slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(1000)),
+                            enter = EnterTransition.None,
                             exit = slideOutHorizontally(targetOffsetX = { it },animationSpec = tween(500)),
                         ){
                             Text(
