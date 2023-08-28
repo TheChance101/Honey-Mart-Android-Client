@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.cart
 
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.CartEntity
@@ -37,6 +38,7 @@ class CartViewModel @Inject constructor(
         }
         if (isOrdering) {
             _state.update { it.copy(isLoading = true) }
+            isOrdering = false
             tryToExecute(
                 { checkout() },
                 ::onCheckOutSuccess,
@@ -47,6 +49,7 @@ class CartViewModel @Inject constructor(
 
     private fun onGetAllCartError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
+        isOrdering = false
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -132,6 +135,7 @@ class CartViewModel @Inject constructor(
 
     private fun onCheckOutError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
+        isOrdering = false
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
