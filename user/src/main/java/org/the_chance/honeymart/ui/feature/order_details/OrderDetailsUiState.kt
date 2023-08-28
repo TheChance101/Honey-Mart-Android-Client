@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
+import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.OrderDetailsEntity
 import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -17,9 +18,15 @@ data class OrderParentDetailsUiState(
     val totalPrice: Double = 0.0,
     val date: String = "",
     val state: Int = 1,
-)
- {
-    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
+) {
+    val stateText = when (state) {
+        1 -> "Pending"
+        2 -> "Processing"
+        3 -> "Done"
+        4 -> "Cancelled"
+        else -> "Declined"
+    }
+    val totalPriceCurrency = formatCurrencyWithNearestFraction(totalPrice)
 }
 
 data class OrderDetailsProductUiState(
@@ -28,7 +35,10 @@ data class OrderDetailsProductUiState(
     val count: Int = 0,
     val price: Double = 0.0,
     val images: List<String> = emptyList(),
-)
+) {
+    val imageUrl = images.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val priceCurrency = formatCurrencyWithNearestFraction(price)
+}
 
 fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
     return OrderDetailsProductUiState(
@@ -46,4 +56,9 @@ fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState 
         state = state,
         date = date,
     )
+}
+
+fun formatCurrencyWithNearestFraction(amount: Double): String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(amount)
 }

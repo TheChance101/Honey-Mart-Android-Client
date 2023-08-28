@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
@@ -54,7 +56,6 @@ fun ProductsScreen(
                 is ProductUiEffect.AddedToWishListEffect -> {
                     viewModel.showSnackBar(effect.message)
                 }
-
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     effect.productId
                 )
@@ -71,12 +72,14 @@ private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
 ) {
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = state.position)
+
     AppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
         Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
-        EmptyProductsPlaceholder(products.itemCount == 0 && products.loadState.refresh != LoadState.Loading)
 
+        EmptyProductPlaceholder(state.emptyPlaceHolder())
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
@@ -87,14 +90,16 @@ private fun ProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
                 ) {
                     LazyColumn(
+                        state = listState,
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
                             end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                     ) {
-                        items(state.categories.size) { index ->
-                            val category = state.categories[index]
+                        itemsIndexed(
+                            state.categories,
+                            key = { _, category -> category.categoryId }) { _, category ->
                             CategoryItem(
                                 iconPainter = painterResource(id = R.drawable.ic_bed),
                                 categoryName = category.categoryName,
@@ -102,8 +107,9 @@ private fun ProductsContent(
                                 enable = !state.snackBar.isShow,
                                 onClick = {
                                     productInteractionListener.onClickCategory(category.categoryId)
-                                }
-                            )
+                                },
+
+                                )
                         }
                     }
                     AnimatedVisibility(
@@ -117,9 +123,12 @@ private fun ProductsContent(
                                 bottom = MaterialTheme.dimens.space8,
                             ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                            state = rememberLazyListState()
                         ) {
-                            items(products.itemCount) { index ->
+
+                            items(
+                                products.itemCount,
+                                key = { products.itemSnapshotList.items[it].productId })
+                            { index ->
                                 val product = products[index]
                                 if (product != null) {
                                     ProductCard(
@@ -138,9 +147,11 @@ private fun ProductsContent(
                                     )
                                 }
                             }
+
                             item {
                                 PagingStateVisibility(products)
                             }
+
                         }
                     }
                 }
@@ -157,5 +168,6 @@ private fun ProductsContent(
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
                 })
         }
+        Loading(state = state.loading())
     }
 }

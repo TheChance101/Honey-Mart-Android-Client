@@ -15,11 +15,9 @@ class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUserUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
-) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
-    ProfileInteractionsListener {
+) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()), ProfileInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
-
 
     init {
         getData()
@@ -40,13 +38,14 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
-
     private fun onGetProfileSuccess(user: ProfileUserEntity) {
         _state.update {
             it.copy(
                 isLoading = false,
                 accountInfo = user.toProfileUiState(),
-                error = null
+                error = null,
+                isError = false,
+                isConnectionError = false,
             )
         }
     }

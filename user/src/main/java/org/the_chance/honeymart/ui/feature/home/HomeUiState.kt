@@ -22,7 +22,10 @@ data class HomeUiState(
     val recentProducts: List<RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
-)
+){
+    val shuffledMarket = if (markets.size > 3 ) markets.shuffled().take(3) else markets
+}
+
 
 
 
@@ -35,7 +38,6 @@ fun CouponEntity.toCouponUiState() = CouponUiState(
     product = product.toProductUiState(),
     isClipped = isClipped,
 )
-
 
 
 fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError

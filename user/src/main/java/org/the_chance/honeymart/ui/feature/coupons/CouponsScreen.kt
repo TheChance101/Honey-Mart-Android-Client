@@ -21,7 +21,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
+import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -99,7 +99,7 @@ fun CouponsContent(
                 )
             }
 
-            ShowEmptyPlaceholder(
+            EmptyProductPlaceholder(
                 state = !state.showCouponsContent() && !state.isLoading,
                 title = stringResource(R.string.empty_coupons),
                 description = stringResource(R.string.there_is_no_coupons_here),
