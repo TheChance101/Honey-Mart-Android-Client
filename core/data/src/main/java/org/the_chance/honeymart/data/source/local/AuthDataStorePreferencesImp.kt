@@ -39,7 +39,6 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     }
 
     override fun getAccessToken(): String? {
-        Log.e("getAccessToken", "getAccessToken: ")
         return runBlocking {
             storedAccessToken =
                 prefDataStore.data.map { preferences -> preferences[KEY_ACCESS_TOKEN] }.first()
@@ -48,7 +47,6 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     }
 
     override fun getRefreshToken(): String? {
-        Log.e("getRefreshToken", "getRefreshToken: ")
         return runBlocking {
             storedRefreshToken =
                 prefDataStore.data.map { preferences -> preferences[KEY_REFRESH_TOKEN] }.first()
