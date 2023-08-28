@@ -11,7 +11,8 @@ data class CartUiState(
     val error: ErrorHandler? = null,
     val total: Double = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
-    val bottomSheetIsDisplayed: Boolean = false
+    val bottomSheetIsDisplayed: Boolean = false,
+    val showDialog :Boolean = false
 )
 
 data class CartListProductUiState(

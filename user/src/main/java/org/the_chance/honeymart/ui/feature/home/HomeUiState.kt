@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
@@ -25,14 +26,8 @@ data class HomeUiState(
     val shuffledMarket = if (markets.size > 3 ) markets.shuffled().take(3) else markets
 }
 
-data class CouponUiState(
-    val couponId: Long = 0L,
-    val count: Int = 0,
-    val discountPrice: Double = 0.0,
-    val expirationDate: String = "",
-    val product: ProductUiState = ProductUiState(),
-    val isClipped: Boolean = false,
-)
+
+
 
 
 fun CouponEntity.toCouponUiState() = CouponUiState(

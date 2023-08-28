@@ -18,6 +18,7 @@ import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
@@ -39,12 +40,9 @@ fun ProfileScreen(
         viewModel.effect.collect {
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {}
-                is ProfileUiEffect.ClickLogoutEffect -> {
-                    navController.navigateToHomeScreen()
-                }
-
+                 ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
+                is ProfileUiEffect.ClickCouponsEffect -> { navController.navigateToCouponsScreen()}
+                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         }
@@ -104,121 +102,6 @@ private fun ProfileContent(
             ProfileSuccessScreen(state, photoPickerLauncher, listener)
         }
 
-        if (!state.isError && !state.isLoading)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(all = MaterialTheme.dimens.space16),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box {
-                    Image(
-                        painter = rememberAsyncImagePainter(state.accountInfo.profileImage),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.sizeProfileImage)
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .border(
-                                width = MaterialTheme.dimens.space6,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                shape = CircleShape
-                            )
-                            .align(Alignment.Center)
-                            .background(
-                                color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.onTertiary else nullColor,
-                                shape = CircleShape
-                            ),
-                        contentScale = ContentScale.FillBounds,
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space48)
-                            .align(Alignment.BottomEnd)
-                            .padding(MaterialTheme.dimens.space4)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .border(
-                                width = MaterialTheme.dimens.space2,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                shape = CircleShape
-                            )
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_camera),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(MaterialTheme.dimens.space24)
-                                .clickable {
-                                    photoPickerLauncher.launch(
-                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                    )
-                                    state.image?.let {
-                                        listener.updateImage(image = it)
-                                    }
-                                }
-                                .align(Alignment.Center),
-                            tint = MaterialTheme.colorScheme.onTertiary,
-                        )
-                    }
-
-                }
-
-                Text(
-                    text = "${state.accountInfo.fullName}",
-                    modifier = Modifier
-                        .padding(top = MaterialTheme.dimens.space16),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "${state.accountInfo.email}",
-                    modifier = Modifier
-                        .padding(
-                            top = MaterialTheme.dimens.space4,
-                            bottom = MaterialTheme.dimens.space32
-                        ),
-                    style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
-                )
-
-                NavCard(
-                    iconId = R.drawable.ic_bill_list,
-                    title = "My Order",
-                    onClick = listener::onClickMyOrder
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_coupons,
-                    title = "Coupons",
-                    onClick = listener::onClickCoupons
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.round_corner_dialog,
-                    title = "Notification",
-                    onClick = listener::onClickNotification
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_logout,
-                    title = "Logout",
-                    onClick = listener::showDialog,
-                    color = MaterialTheme.colorScheme.error
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-            }
 
     }
 }

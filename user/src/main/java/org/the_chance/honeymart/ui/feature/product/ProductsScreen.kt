@@ -147,11 +147,6 @@ private fun ProductsContent(
                                 }
                             }
 
-                            PagingStateVisibility(
-                                products,
-                                productInteractionListener::onclickTryAgainProducts
-                            )
-
                             item {
                                 PagingStateVisibility(products)
                             }

@@ -27,7 +27,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun ShowEmptyPlaceholder(
+fun EmptyProductPlaceholder(
     state: Boolean ,
     title: String = stringResource(R.string.empty_product),
     description: String = stringResource(R.string.empty_product),
@@ -68,5 +68,5 @@ fun ShowEmptyPlaceholder(
 @Preview
 @Composable
 fun PreviewEmptyProductScaffold() {
-    ShowEmptyPlaceholder(true,"","")
+    EmptyProductPlaceholder(true,"","")
 }

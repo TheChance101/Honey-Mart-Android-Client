@@ -8,13 +8,10 @@ import org.the_chance.honeymart.ui.navigation.Screen
 private val ROUTE = Screen.NotificationsScreen.route
 
 fun NavController.navigateToNotificationsScreen() {
-    navigate(ROUTE)
+    navigate(route = ROUTE)
 }
 
 fun NavGraphBuilder.notificationsRoute() {
-    composable(
-        route = ROUTE,
-    ) {
-        NotificationsScreen()
-    }
+    composable(route = ROUTE)
+    {NotificationsScreen()}
 }
