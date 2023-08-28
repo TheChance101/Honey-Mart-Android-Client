@@ -22,18 +22,13 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
-import org.the_chance.honeymart.domain.usecase.GetThemeUseCase
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var getThemeState: GetThemeUseCase
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
-                HoneyMartTheme(darkTheme = runBlocking { getThemeState() ?: false }) {
+                HoneyMartTheme {
                     val bottomNavState = checkBottomBarState()
                     Scaffold(
                         bottomBar = {
@@ -55,9 +50,7 @@ class MainActivity : AppCompatActivity() {
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         )
-                        {
-                            MainNavGraph()
-                        }
+                        { MainNavGraph() }
                     }
                 }
             }
@@ -95,4 +88,3 @@ class MainActivity : AppCompatActivity() {
         return bottomBarState
     }
 }
-

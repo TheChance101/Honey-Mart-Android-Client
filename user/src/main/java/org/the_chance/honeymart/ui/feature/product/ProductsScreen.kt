@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
@@ -45,24 +44,22 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is ProductUiEffect.AddedToWishListEffect -> {
-                    viewModel.showSnackBar(it.message)
+                    viewModel.showSnackBar(effect.message)
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
-
-
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-    }
+        })
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 

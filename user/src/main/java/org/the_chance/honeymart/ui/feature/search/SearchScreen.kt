@@ -21,22 +21,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -50,6 +50,7 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
+import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -57,16 +58,15 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
-    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is SearchUiEffect.OnClickProductCard ->
-                    navController.navigateToProductDetailsScreen(it.productId)
+                    navController.navigateToProductDetailsScreen(effect.productId)
             }
-        }
-    }
+        })
 
     SearchContent(
         state = state,
@@ -86,19 +86,7 @@ fun SearchContent(
     listener: SearchInteraction,
 ) {
     AppBarScaffold {
-        Loading(state = state.isLoading)
-        ConnectionErrorPlaceholder(
-            state = state.isError,
-            onClickTryAgain = {},
-        )
-        EmptyOrdersPlaceholder(
-            state = state.emptySearchPlaceHolder(),
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.the_search_result_is_empty),
-            subtitle = stringResource(R.string.placeholder_subtitle),
-            onClickDiscoverMarkets = {},
-            visibility = false
-        )
+        val products = state.products.collectAsLazyPagingItems()
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -178,7 +166,8 @@ fun SearchContent(
                     }
                 }
             }
-            ContentVisibility(state = state.screenContent()) {
+
+            ContentVisibility(state = products.itemCount > 0) {
                 if (isSearching) {
                     Loading(state = state.isLoading)
                 } else {
@@ -193,21 +182,28 @@ fun SearchContent(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         state = rememberLazyGridState(),
                         content = {
-                            items(state.updatedProducts.size) { itemResult ->
-                                val product = state.updatedProducts[itemResult]
-                                CardSearch(
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
-                                    productName = product.productName,
-                                    productPrice = product.productPrice.toString(),
-                                    onClickCard = { listener.onClickProduct(product.productId) }
-                                )
+                            items(products.itemCount) { index ->
+                                val product = products[index]
+                                if (product != null) {
+                                    CardSearch(
+                                        imageUrl = product.productImages.firstOrNull() ?: "",
+                                        productName = product.productName,
+                                        productPrice = product.productPrice.toString(),
+                                        onClickCard = { listener.onClickProduct(product.productId) }
+                                    )
+                                }
                             }
+                            pagingStateVisibilityGridScope(products)
                         }
                     )
                 }
             }
         }
+        Loading(state = state.isLoading)
+        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+        EmptyProductPlaceholder(products.itemCount == 0 && !state.isError && !state.isLoading)
     }
+
 }
 
 
