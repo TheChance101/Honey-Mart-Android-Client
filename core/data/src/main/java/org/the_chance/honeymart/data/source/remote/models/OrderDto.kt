@@ -15,13 +15,4 @@ data class OrderDto(
     val market: MarketDto,
     @SerializedName("numItems")
     val numItems: Int? = null,
-    @SerializedName("user")
-    val user: User
-)
-
-data class User(
-    @SerializedName("userId")
-    val userId: Int,
-    @SerializedName("fullName")
-    val fullName: String,
 )

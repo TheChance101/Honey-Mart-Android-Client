@@ -19,8 +19,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 
-
-
 @Composable
 fun SnackBarWithDuration(
     message: String,

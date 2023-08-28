@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
@@ -12,28 +13,40 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
+import io.ktor.http.Parameters
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
-import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
+import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
-import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
+import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
@@ -54,6 +67,10 @@ class HoneyMartServiceImp @Inject constructor(
             append("password", password)
         }))
 
+
+    override suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean> {
+        return wrap(client.put("/coupon/clip/$couponId"))
+    }
 
     override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {
         return wrap(client.get("/markets"))
@@ -105,6 +122,9 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/markets/$marketId/categories"))
 
+    override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
+        wrap(client.get("/markets/$marketId"))
+
     override suspend fun addCategory(
         name: String, imageId: Int,
     ): BaseResponse<String> =
@@ -138,8 +158,11 @@ class HoneyMartServiceImp @Inject constructor(
     }
 
 
-    override suspend fun getAllProductsByCategory(categoryId: Long): BaseResponse<List<ProductDto>> =
-        wrap(client.get("/category/$categoryId/allProduct"))
+    override suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>> =
+        wrap(client.get("/category/$categoryId/allProduct?page=$page"))
+
+    override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
+        wrap(client.get("/product"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/product/$productId"))
@@ -175,17 +198,46 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(response)
     }
 
-
+    @OptIn(InternalAPI::class)
     override suspend fun updateProduct(
         productId: Long,
         name: String,
         price: Double,
         description: String,
-    ): BaseResponse<ProductDto> = wrap(client.put("/product/$productId") {
-        parameter("price", price)
-        parameter("name", name)
-        parameter("description", description)
-    })
+    ): BaseResponse<String> {
+        val formData = Parameters.build {
+            append("price", price.toString())
+            append("name", name)
+            append("description", description)
+        }
+        val response = wrap<BaseResponse<String>>(client.put("/product/$productId") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
+
+    override suspend fun updateImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String> {
+        val response: HttpResponse = client.put("/product/$productId/updateImages") {
+            setBody(
+                MultiPartFormDataContent(
+                    formData {
+                        images.forEachIndexed { index, bytes ->
+                            append("images", bytes, Headers.build {
+                                append(HttpHeaders.ContentType, "image/jpeg")
+                                append(HttpHeaders.ContentDisposition, "filename=image$index.jpeg")
+                            })
+                        }
+                    },
+                    boundary = "WebAppBoundary"
+                )
+            )
+        }
+        return wrap(response)
+    }
 
     override suspend fun updateCategoriesHasProduct(
         productId: Long,
@@ -197,11 +249,21 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun loginUser(email: String, password: String): BaseResponse<UserLoginDto> =
+    override suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>> =
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder") )
+
+    override suspend fun loginUser(email: String, password: String, deviceToken:String ): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
+            append("deviceToken",deviceToken)
         }))
+
+    override suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto> =
+        wrap(client.submitForm(url = "/token/refresh" , formParameters = Parameters.build {
+            append("refreshToken" ,refreshToken)
+        }) )
+
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
         wrap(client.get("/wishList"))
@@ -239,6 +301,12 @@ class HoneyMartServiceImp @Inject constructor(
             parameter("orderState", orderState)
         })
 
+    override suspend fun getAllMarketOrders(orderState: Int): BaseResponse<List<MarketOrderDto>> {
+        return wrap(client.get("order/marketOrders") {
+            parameter("orderState", orderState)
+        })
+    }
+
 
     @OptIn(InternalAPI::class)
     override suspend fun updateOrderState(id: Long?, state: Int): BaseResponse<Boolean> {
@@ -273,6 +341,39 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
 
+    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allUserCoupons"))
+    }
+
+    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allValidCoupons"))
+    }
+
+    override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> {
+        return wrap(client.get("/product/recentProducts"))
+    }
+
+    override suspend fun getProfileUser(): BaseResponse<ProfileUserDto> =
+        wrap(client.get("/user/myProfile"))
+
+    override suspend fun addProfileImage(image: ByteArray)
+            : BaseResponse<String> {
+        val response: HttpResponse = client.submitFormWithBinaryData(
+            url = "/user/profileImage",
+            formData = formData {
+                append("image", image, Headers.build {
+                    append(HttpHeaders.ContentType, "image/jpeg")
+                    append(HttpHeaders.ContentDisposition, "filename=image${image.toString()}.jpeg")
+                })
+            }
+        )
+        return wrap(response)
+    }
+
+    override suspend fun getAllNotifications(notificationState: Int): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/userNotifications") {
+            parameter("notificationState", notificationState)
+        })
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
@@ -286,20 +387,45 @@ class HoneyMartServiceImp @Inject constructor(
         }
     }
 
+    private suspend inline fun <reified T> wrapLogin(response: HttpResponse): T {
+        if (response.status.isSuccess()) {
+            val responseBody = response.body<String>()
+            val responseObject = Json.decodeFromString<JsonObject>(responseBody)
+            val isLoginSuccess = responseObject["isSuccess"]?.jsonPrimitive?.booleanOrNull
+            if (isLoginSuccess == true)
+                return response.body()
+            else
+                throw UnAuthorizedCredential()
+        } else {
+            if (response.status.value == 500) {
+                throw InternalServerException()
+            } else {
+                throw Exception(response.status.description)
+            }
+        }
+    }
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> =
-        wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> {
+        return wrapLogin(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
+    }
 
     override suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto> {
         return wrap(client.get("/owner/Profile"))
     }
     //endregion
 
+    //region Delete
+    override suspend fun deleteProductById(productId: Long): BaseResponse<String> =
+        wrap(client.delete("/product/$productId"))
+
+    override suspend fun deleteProductImage(productId: Long): BaseResponse<String> =
+        wrap(client.delete("/product/$productId/image/$productId}"))
+    //endregion
     //region admin
     override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
         return wrap(client.get("admin/markets") {
@@ -323,6 +449,4 @@ class HoneyMartServiceImp @Inject constructor(
         return response
     }
 //end region admin
-
-    //endregion
 }

@@ -16,6 +16,13 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.HoneyMart">
+        <service
+            android:name="org.the_chance.honeymart.data.source.remote.network.FireBaseMsgServiceImpl"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity
             android:name="org.the_chance.honeymart.ui.MainActivity"
             android:windowSoftInputMode="adjustResize"

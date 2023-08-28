@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -36,13 +37,17 @@ fun HoneyTextField(
     iconPainter: Painter? = null,
     text: String = "",
     errorMessage: String = "",
+    oneLineOnly: Boolean = false,
+    isPassword: VisualTransformation = VisualTransformation.None,
     isError: Boolean = errorMessage.isNotEmpty(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
-        imeAction = ImeAction.Next
-    ),
+        imeAction = ImeAction.Search
+    )
 ) {
     Column {
+
         OutlinedTextField(
+            singleLine = oneLineOnly,
             modifier = modifier
                 .fillMaxWidth()
                 .padding(
@@ -60,6 +65,7 @@ fun HoneyTextField(
                     style = Typography.displaySmall,
                 )
             },
+            visualTransformation = isPassword,
             keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
@@ -114,7 +120,18 @@ fun TextFieldPreview() {
         iconPainter = painterResource(id = R.drawable.ic_email),
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
-        onValueChange = {}
+        onValueChange = {},
     )
 }
 
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
+@Composable
+fun TextFieldTabletPreview() {
+    HoneyTextField(
+        hint = "Email",
+        iconPainter = painterResource(id = R.drawable.ic_email),
+        isError = true,
+        errorMessage = stringResource(R.string.that_s_not_a_valid_email),
+        onValueChange = {},
+    )
+}

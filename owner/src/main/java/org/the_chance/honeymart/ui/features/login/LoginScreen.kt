@@ -21,8 +21,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
+import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.features.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
@@ -45,7 +45,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                LoginUiEffect.ShowValidationToastEffect -> {
+                LoginUiEffect.ShowLoginErrorToastEffect -> {
                     Toast.makeText(
                         context,
                         state.validationToast.message,
@@ -113,7 +113,7 @@ fun LoginContent(
                 text = stringResource(R.string.don_t_have_an_account),
                 textButtonText = stringResource(R.string.Sign_up),
                 onTextButtonClicked = listener::onClickSignup,
-                modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
     }

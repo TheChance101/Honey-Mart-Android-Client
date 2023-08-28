@@ -18,6 +18,7 @@ object DatabaseModule {
     @Provides
     fun provideAuthDataStorePreferences(@ApplicationContext context: Context): AuthDataStorePreferences {
         return AuthDataStorePreferencesImp(context)
-
     }
+
+
 }

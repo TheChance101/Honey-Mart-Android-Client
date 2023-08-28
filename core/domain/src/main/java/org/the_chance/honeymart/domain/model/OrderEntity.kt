@@ -7,10 +7,5 @@ data class OrderEntity(
     val date: Long,
     val market: MarketEntity,
     val numItems: Int,
-    val user: UserEntity,
 )
 
-data class UserEntity(
-    val userId: Int,
-    val fullName: String,
-)

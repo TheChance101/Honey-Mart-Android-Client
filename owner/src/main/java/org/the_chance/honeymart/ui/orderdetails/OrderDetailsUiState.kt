@@ -19,11 +19,9 @@ data class OrderParentDetailsUiState(
     val totalPrice: Double = 0.0,
     val date: String = "",
     val state: Int = 1,
+    val product: List<OrderDetailsProductUiState> = emptyList(),
+)
 
-    )
-{
-    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
-}
 
 data class OrderDetailsProductUiState(
     val id: Long = 0L,
@@ -33,14 +31,16 @@ data class OrderDetailsProductUiState(
     val images: List<String> = emptyList(),
 )
 
-fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
-    return OrderDetailsProductUiState(
-        id = id,
-        name = name,
-        price = price,
-        count = count,
-        images = images
-    )
+fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
+    return map {
+        OrderDetailsProductUiState(
+            id = it.id,
+            name = it.name,
+            price = it.price,
+            count = it.count,
+            images = it.images
+        )
+    }
 }
 
 fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
@@ -48,7 +48,8 @@ fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState 
         totalPrice = totalPrice,
         state = state,
         date = date,
-        orderId = orderId
+        orderId = orderId,
+        product = products.toOrderDetailsProductUiState()
     )
 }
 

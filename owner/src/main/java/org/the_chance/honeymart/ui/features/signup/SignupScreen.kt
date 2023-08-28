@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
+import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.signup.composables.OwnerFieldsScaffold

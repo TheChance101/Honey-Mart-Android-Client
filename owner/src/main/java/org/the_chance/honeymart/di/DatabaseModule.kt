@@ -16,8 +16,9 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAuthDataStorePref(@ApplicationContext context: Context): AuthDataStorePreferences {
+    fun provideAuthDataStorePreferences(@ApplicationContext context: Context): AuthDataStorePreferences {
         return AuthDataStorePreferencesImp(context)
-
     }
+
+
 }
