@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,6 +36,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.markets.MarketsUiEffect
 import org.the_chance.honeymart.ui.features.markets.MarketsViewModel
 import org.the_chance.honeymart.ui.navigation.NavigationScreen
 import org.the_chance.honymart.ui.theme.black60
@@ -49,23 +52,23 @@ fun NavigationRail(
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.effect.collect {
-//            when (it) {
-//                is MarketsUiEffect.OnClickLogoutEffect -> {
-//                    navController.navigateToLogin()
-//                }
-//                else -> {}
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                is MarketsUiEffect.OnClickLogoutEffect -> {
+                    navController.navigateToLogin()
+                }
+                else -> {}
+            }
+        }
+    }
     val screens = listOf(
         NavigationScreen.Requests,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-//    ContentVisibility(state = state.navRailVisibility()) {
+    ContentVisibility(state = state.isLoggedIn) {
         NavigationRail(
             containerColor = MaterialTheme.colorScheme.onTertiary,
             header = {
@@ -78,12 +81,12 @@ fun NavigationRail(
                         ),
                     contentAlignment = Alignment.Center,
                 ) {
-//                    Text(
-////                        text = state.adminName.toString().uppercase(Locale.ROOT),
-//                        style = MaterialTheme.typography.headlineMedium.copy(
-//                            color = white
-//                        )
-//                    )
+                    Text(
+                        text = state.adminName.toString().uppercase(Locale.ROOT),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            color = white
+                        )
+                    )
                 }
             }
         ) {
@@ -99,14 +102,14 @@ fun NavigationRail(
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-//                    .clickable { viewModel.onClickLogout() }
+                    .clickable { viewModel.onClickLogout() }
                     .padding(16.dp),
                 painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
                 contentDescription = "Logout Icon",
                 tint = black60
             )
         }
-//    }
+    }
 }
 
 @Composable

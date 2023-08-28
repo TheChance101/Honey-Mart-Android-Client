@@ -53,6 +53,7 @@ fun RequestsContent(
     state: MarketsRequestUiState,
     listener: MarketsInteractionListener,
 ) {
+    ContentVisibility(state = state.isContentScreenVisible()) {
     Column(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
@@ -78,7 +79,6 @@ fun RequestsContent(
                 onClick = ( listener::onGetMarkets)
             )
         }
-        ContentVisibility(state = !state.isLoading) {
             Row(
                 modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
                     .padding(top = MaterialTheme.dimens.space24),

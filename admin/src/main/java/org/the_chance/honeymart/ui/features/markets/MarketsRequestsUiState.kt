@@ -48,6 +48,4 @@ enum class RequestsState { UNAPPROVED, APPROVED, ALL }
 fun MarketsRequestUiState.emptyRequestsPlaceHolder() =
     this.requests.isEmpty() && !this.isError && !this.isLoading
 
-fun MarketsRequestUiState.contentScreen() = !this.isLoading && !this.isError
-
-fun MarketsRequestUiState.navRailVisibility() = this.isLoggedIn
+fun MarketsRequestUiState.isContentScreenVisible() = !this.isLoading && !this.isError

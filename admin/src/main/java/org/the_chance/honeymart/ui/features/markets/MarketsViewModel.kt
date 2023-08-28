@@ -26,7 +26,7 @@ class MarketsViewModel @Inject constructor(
     }
 
     private fun getMarkets(isApproved: Boolean? = false) {
-        _state.update { it.copy(isLoading = true,isError = false,isLoggedIn = true) }
+        _state.update { it.copy(isLoading = true,isError = false) }
         log(isApproved.toString())
         tryToExecute(
             { getMarketsRequests(isApproved) },
@@ -39,6 +39,7 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
+                isLoggedIn = true,
                 requests = requests.map { it.toMarketRequestUiState() },
             )
         }
