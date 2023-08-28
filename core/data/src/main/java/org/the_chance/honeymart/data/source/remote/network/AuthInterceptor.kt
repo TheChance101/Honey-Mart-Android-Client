@@ -19,8 +19,12 @@ class AuthInterceptor @Inject constructor(
     private val dataStorePreferences: AuthorizationPreferences,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val accessToken = dataStorePreferences.getAccessToken()
-        val refreshToken = dataStorePreferences.getRefreshToken()
+
+        val accessToken = dataStorePreferences.storedAccessToken.takeUnless { it.isNullOrEmpty() }
+            ?: dataStorePreferences.getAccessToken()
+        val refreshToken = dataStorePreferences.storedRefreshToken.takeUnless { it.isNullOrEmpty() }
+            ?: dataStorePreferences.getRefreshToken()
+
         val (oldRequest, oldResponse) = makeRequest(chain, accessToken)
         if (oldResponse.code == 401 && refreshToken != "" && refreshToken != null) {
             val response = refreshToken(refreshToken)

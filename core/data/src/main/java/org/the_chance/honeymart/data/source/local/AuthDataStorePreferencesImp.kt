@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.data.source.local
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -21,13 +22,16 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         private val OWNER_IMAGE = stringPreferencesKey("owner_image")
     }
 
+    override var storedAccessToken: String? = null
+    override var storedRefreshToken: String? = null
+
     private val Context.preferencesDataStore: DataStore<
             androidx.datastore.preferences.core.Preferences> by preferencesDataStore(
         PREFERENCES_FILE_NAME
     )
     private val prefDataStore = context.preferencesDataStore
 
-    override suspend fun saveTokens(accessToken: String,refreshToken: String) {
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         prefDataStore.edit { preferences ->
             preferences[KEY_ACCESS_TOKEN] = accessToken
             preferences[KEY_REFRESH_TOKEN] = refreshToken
@@ -35,14 +39,20 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     }
 
     override fun getAccessToken(): String? {
+        Log.e("getAccessToken", "getAccessToken: ")
         return runBlocking {
-            prefDataStore.data.map { preferences -> preferences[KEY_ACCESS_TOKEN] }.first()
+            storedAccessToken =
+                prefDataStore.data.map { preferences -> preferences[KEY_ACCESS_TOKEN] }.first()
+            storedAccessToken
         }
     }
 
     override fun getRefreshToken(): String? {
+        Log.e("getRefreshToken", "getRefreshToken: ")
         return runBlocking {
-            prefDataStore.data.map { preferences -> preferences[KEY_REFRESH_TOKEN] }.first()
+            storedRefreshToken =
+                prefDataStore.data.map { preferences -> preferences[KEY_REFRESH_TOKEN] }.first()
+            storedRefreshToken
         }
     }
 
