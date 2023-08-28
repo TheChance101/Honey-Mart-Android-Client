@@ -2,12 +2,11 @@ package org.the_chance.honeymart.ui.feature.cart
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CartEntity
+import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +25,7 @@ class CartViewModel @Inject constructor(
         )
     }
 
-    private fun onGetAllCartSuccess(cart: CartEntity) {
+    private fun onGetAllCartSuccess(cart: Cart) {
         _state.update {
             it.copy(
                 isLoading = false,

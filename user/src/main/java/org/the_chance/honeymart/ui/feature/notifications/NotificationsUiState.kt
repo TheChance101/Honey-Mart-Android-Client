@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.notifications
 
-import org.the_chance.honeymart.domain.model.NotificationEntity
+import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,7 +29,7 @@ data class Notification(
     val date: String
 )
 
-fun NotificationEntity.toNotificationUiState(): Notification{
+fun Notification.toNotificationUiState(): Notification{
     return Notification(
         notificationId = notificationId,
         userId = userId,

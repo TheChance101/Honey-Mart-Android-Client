@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.data.source.local
 
-interface AuthDataStorePreferences {
+interface AuthorizationPreferences {
     suspend fun clearToken()
     suspend fun saveTokens(accessToken: String,refreshToken: String)
     fun getAccessToken(): String?

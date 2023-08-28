@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.domain.model
 
-data class MarketDetailsEntity(
+data class MarketDetails(
     val marketId: Long,
     val marketName: String,
     val imageUrl: String,
@@ -10,5 +10,5 @@ data class MarketDetailsEntity(
     val address: String,
     val latitude: Long,
     val longitude: Long,
-    val categories: List<CategoryEntity>,
+    val categories: List<Category>,
 )

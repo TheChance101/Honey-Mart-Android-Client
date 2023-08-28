@@ -14,5 +14,5 @@ data class NotificationDto(
     @SerializedName("body")
     val body: String? = null,
     @SerializedName("date")
-    val date: String? = null
+    val date: Long? = null
 )

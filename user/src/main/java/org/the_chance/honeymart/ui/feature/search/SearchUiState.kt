@@ -1,13 +1,9 @@
 package org.the_chance.honeymart.ui.feature.search
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -39,7 +35,7 @@ fun SearchUiState.random() = this.searchStates == SearchStates.RANDOM
 fun SearchUiState.ascending() = this.searchStates == SearchStates.ASCENDING
 fun SearchUiState.descending() = this.searchStates == SearchStates.DESCENDING
 
-fun ProductEntity.toProductUiState(): ProductUiState {
+fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
