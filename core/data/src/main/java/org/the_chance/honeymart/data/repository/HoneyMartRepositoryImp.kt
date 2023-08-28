@@ -28,6 +28,7 @@ import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
@@ -304,8 +305,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    override suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity> {
-        return wrap { honeyMartService.getMarketRequests(isApproved) }.value?.map { it.toRequestEntity() }
+    //region admin
+    override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {
+        return wrap { honeyMartService.getMarketsRequests(isApproved) }.value?.map { it.toMarketRequest() }
             ?: throw NotFoundException()
     }
 
@@ -313,5 +315,6 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
             ?: throw NotFoundException()
     }
+//endregion admin
 //endregion admin
 }

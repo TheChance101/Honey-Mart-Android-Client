@@ -103,7 +103,7 @@ interface HoneyMartRepository {
 
 
     //region admin
-    suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity>
+    suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean
 //endregion admin
 }
