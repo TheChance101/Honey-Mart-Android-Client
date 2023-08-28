@@ -111,7 +111,7 @@ fun SearchContent(
                     backgroundColor = if (state.filtering) {
                         primary100
                     } else {
-                        MaterialTheme.colorScheme.tertiaryContainer
+                        MaterialTheme.colorScheme.secondaryContainer
                     }
                 ) {
                     Icon(
