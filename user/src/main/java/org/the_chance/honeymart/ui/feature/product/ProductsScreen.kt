@@ -27,12 +27,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
+import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -46,24 +46,24 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is ProductUiEffect.AddedToWishListEffect -> {
-                    viewModel.showSnackBar(it.message)
+                    viewModel.showSnackBar(effect.message)
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
 
 
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-    }
+        })
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 

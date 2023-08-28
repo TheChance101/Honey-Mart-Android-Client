@@ -16,9 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,12 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
@@ -67,9 +63,10 @@ fun ProfileScreen(
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {}
                 is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+                is ProfileUiEffect.ClickCouponsEffect -> {navController.navigateToCouponsScreen()}
+
             }
         }
     }
@@ -100,11 +97,11 @@ private fun ProfileContent(
         Loading(state = state.isLoading)
 
         ConnectionErrorPlaceholder(
-            state = state.isConnectionError,
+            state = state.isError,
             onClickTryAgain = listener::getData
         )
 
-        ContentVisibility(state.isShowDialog) {
+        if (state.isShowDialog) {
             CustomAlertDialog(
                 message = stringResource(R.string.dialog_title),
                 onConfirm = {
@@ -115,22 +112,10 @@ private fun ProfileContent(
             )
         }
 
-        EmptyOrdersPlaceholder(
-            state = state.error is ErrorHandler.UnAuthorizedUser,
-            image = R.drawable.placeholder_order,
-            title = stringResource(R.string.you_are_not_logged_in),
-            subtitle = stringResource(R.string.login_and_get_access_to_your_orders_wishlist_and_more),
-            buttonLabel = stringResource(R.string.login),
-            onClickDiscoverMarkets = listener::onClickLogin
-        )
-        ContentVisibility(!state.isError && !state.isLoading) {
+        if (!state.isError && !state.isLoading)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(
-                        enabled = true,
-                        state = rememberScrollState()
-                    )
                     .padding(all = MaterialTheme.dimens.space16),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -192,7 +177,7 @@ private fun ProfileContent(
                 }
 
                 Text(
-                    text = state.accountInfo.fullName,
+                    text = "${state.accountInfo.fullName}",
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.space16),
                     style = MaterialTheme.typography.bodyMedium,
@@ -200,7 +185,7 @@ private fun ProfileContent(
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = state.accountInfo.email,
+                    text = "${state.accountInfo.email}",
                     modifier = Modifier
                         .padding(
                             top = MaterialTheme.dimens.space4,
@@ -231,7 +216,6 @@ private fun ProfileContent(
                     title = "Notification",
                     onClick = listener::onClickNotification
                 )
-
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
                 NavCard(
@@ -243,7 +227,6 @@ private fun ProfileContent(
 
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
             }
-        }
     }
 }
 

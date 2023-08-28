@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
@@ -31,32 +31,32 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 1)
-    val navController = LocalNavigationProvider.current
+//    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
                 HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
                 HomeUiEffect.NavigateToNewProductsScreenEffect -> navController.navigateToNewProductsScreen()
                 is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
-                    it.marketId
+                    effect.marketId
                 )
 
                 is HomeUiEffect.NavigateToProductsDetailsScreenEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
 
                 is HomeUiEffect.NavigateToProductScreenEffect -> navController.navigateToProductScreen(
-                    it.categoryId,
-                    it.marketId,
-                    it.position
+                    effect.categoryId,
+                    effect.marketId,
+                    effect.position
                 )
 
                 HomeUiEffect.NavigateToSeeAllMarketEffect -> navController.navigateToMarketsScreen()
             }
-        }
-    }
+        })
 
     LaunchedEffect(key1 = true) {
         viewModel.getData()
