@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -8,6 +9,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -240,11 +242,13 @@ interface HoneyMartService {
     suspend fun deleteProductImage(productId: Long): BaseResponse<String>
 
     //region admin
-    suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>>
+    suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
 
     suspend fun updateMarketRequest(
         id: Long?,
         isApproved: Boolean,
     ): BaseResponse<Boolean>
+
+    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
 }

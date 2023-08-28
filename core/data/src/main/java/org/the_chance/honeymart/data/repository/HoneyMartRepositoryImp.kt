@@ -14,12 +14,12 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCoupon
 import org.the_chance.honeymart.data.source.remote.mapper.toMarket
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketOrder
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketRequest
 import org.the_chance.honeymart.data.source.remote.mapper.toNotification
 import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
-import org.the_chance.honeymart.data.source.remote.mapper.toRequestEntity
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -28,12 +28,12 @@ import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
-import org.the_chance.honeymart.domain.model.RequestEntity
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -304,8 +304,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    override suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity> {
-        return wrap { honeyMartService.getMarketRequests(isApproved) }.value?.map { it.toRequestEntity() }
+    //region admin
+    override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {
+        return wrap { honeyMartService.getMarketsRequests(isApproved) }.value?.map { it.toMarketRequest() }
             ?: throw NotFoundException()
     }
 
@@ -313,5 +314,6 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.updateMarketRequest(id, isApproved) }.value
             ?: throw NotFoundException()
     }
+//endregion admin
 //endregion admin
 }

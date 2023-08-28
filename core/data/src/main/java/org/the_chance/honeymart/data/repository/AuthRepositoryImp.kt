@@ -2,11 +2,13 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toAdminLogin
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerFields
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginFields
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMessageService
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
+import org.the_chance.honeymart.domain.model.AdminLogin
 import org.the_chance.honeymart.domain.model.OwnerFields
 import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.repository.AuthRepository
@@ -90,4 +92,8 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfile()
             ?: throw NotFoundException()
 
+    override suspend fun loginAdmin(email: String, password: String): AdminLogin {
+        return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLogin()
+            ?: throw NotFoundException()
+    }
 }

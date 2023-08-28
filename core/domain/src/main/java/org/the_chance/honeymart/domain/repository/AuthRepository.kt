@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.domain.repository
 
+import org.the_chance.honeymart.domain.model.AdminLogin
 import org.the_chance.honeymart.domain.model.OwnerFields
 import org.the_chance.honeymart.domain.model.OwnerProfile
 
@@ -32,4 +33,5 @@ interface AuthRepository {
     suspend fun saveOwnerImageUrl(imageUrl: String)
     fun getOwnerImageUrl(): String?
     suspend fun getOwnerProfile(): OwnerProfile
+    suspend fun loginAdmin(email: String, password: String): AdminLogin
 }

@@ -25,6 +25,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonPrimitive
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -33,6 +34,7 @@ import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
@@ -435,7 +437,7 @@ class HoneyMartServiceImp @Inject constructor(
 
     //endregion
     //region admin
-    override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
+    override suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>> {
         return wrap(client.get("admin/markets") {
             parameter("isApproved", "$isApproved")
         })
@@ -456,5 +458,11 @@ class HoneyMartServiceImp @Inject constructor(
         })
         return response
     }
+
+    override suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto> =
+        wrap(client.submitForm(url = "/admin/login", formParameters = Parameters.build {
+            append("email", email)
+            append("password", password)
+        }))
 //end region admin
 }
