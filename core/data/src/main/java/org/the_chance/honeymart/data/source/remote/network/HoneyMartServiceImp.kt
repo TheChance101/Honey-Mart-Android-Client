@@ -232,6 +232,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/coupon/allValidCoupons"))
     }
 
+    override suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allClippedUserCoupons"))
+    }
+
     override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> {
         return wrap(client.get("/product/recentProducts"))
     }
