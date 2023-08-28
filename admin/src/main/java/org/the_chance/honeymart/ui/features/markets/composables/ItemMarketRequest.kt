@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -54,8 +53,7 @@ fun ItemMarketRequest(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
-            .clickable { onClickCard() }
-            .height(120.dp),
+            .clickable { onClickCard() },
         colors = CardDefaults.cardColors(containerColor = (white))
     ) {
         Row(
@@ -73,12 +71,12 @@ fun ItemMarketRequest(
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .padding(start = MaterialTheme.dimens.space16)
-                    .padding(vertical = MaterialTheme.dimens.space8),
+                    .padding(vertical = MaterialTheme.dimens.space16),
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 Box(
-                    modifier = Modifier.size(MaterialTheme.dimens.space86).clip(CircleShape)
+                    modifier = Modifier.size(MaterialTheme.dimens.space56).clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary,),
                     contentAlignment = Alignment.Center,
                 ) {

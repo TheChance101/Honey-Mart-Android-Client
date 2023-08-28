@@ -69,7 +69,7 @@ fun MarketRequestDetails(
                         color = MaterialTheme.colorScheme.primary
                     )
                     Box(
-                        modifier = Modifier.size(70.dp).clip(CircleShape)
+                        modifier = Modifier.size(56.dp).clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary,),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -80,7 +80,10 @@ fun MarketRequestDetails(
                         )
                     }
                     Column(
-                        modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
+                        modifier = Modifier.padding(
+                            top = MaterialTheme.dimens.space8,
+                            start = MaterialTheme.dimens.space8,
+                        ),
                         horizontalAlignment = Start,
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {

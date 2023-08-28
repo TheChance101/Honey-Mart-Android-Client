@@ -75,7 +75,7 @@ fun NavigationRail(
             header = {
                 Box(
                     modifier = Modifier
-                        .size(MaterialTheme.dimens.icon48)
+                        .size(MaterialTheme.dimens.space56)
                         .clip(CircleShape)
                         .background(
                             MaterialTheme.colorScheme.primary,
