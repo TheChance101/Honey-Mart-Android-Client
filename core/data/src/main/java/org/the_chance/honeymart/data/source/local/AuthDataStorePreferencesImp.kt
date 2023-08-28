@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthDataStorePreferences {
+class AuthDataStorePreferencesImp @Inject constructor(context: Context) : AuthorizationPreferences {
 
     companion object {
         private const val PREFERENCES_FILE_NAME = "honey_mart"

@@ -5,8 +5,8 @@ import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
 import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
@@ -58,7 +58,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
+    private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
         if (categories.isEmpty()) {
             _state.update {
@@ -278,7 +278,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProductsSuccess(products: PagingData<ProductEntity>) {
+    private fun onGetProductsSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
 
         _state.update {
@@ -322,7 +322,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onAddProductSuccess(product: ProductEntity) {
+    private fun onAddProductSuccess(product: Product) {
         _state.update {
             it.copy(
                 error = null,
@@ -423,7 +423,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProductDetailsSuccess(productDetails: ProductEntity) {
+    private fun onGetProductDetailsSuccess(productDetails: Product) {
         _state.update {
             it.copy(isLoading = false, productDetails = productDetails.toProductDetailsUiState())
         }

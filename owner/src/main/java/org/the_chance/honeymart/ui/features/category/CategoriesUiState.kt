@@ -3,8 +3,8 @@ package org.the_chance.honeymart.ui.features.category
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.util.toPriceFormat
@@ -98,7 +98,7 @@ enum class Visibility {
 // endregion
 
 // region Mapper
-fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
+fun List<Category>.toCategoryUiState(): List<CategoryUiState> {
     return map {
         CategoryUiState(
             categoryId = it.categoryId,
@@ -108,7 +108,7 @@ fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
     }
 }
 
-fun ProductEntity.toProductUiState(): ProductUiState {
+fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
@@ -118,7 +118,7 @@ fun ProductEntity.toProductUiState(): ProductUiState {
     )
 }
 
-fun ProductEntity.toProductDetailsUiState(): ProductUiState {
+fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,

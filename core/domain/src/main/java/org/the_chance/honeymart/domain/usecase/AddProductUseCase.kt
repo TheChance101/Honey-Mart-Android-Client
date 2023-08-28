@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class AddProductUseCase @Inject constructor(
         price: Double,
         description: String,
         categoryId: Long
-    ): ProductEntity {
+    ): Product {
         return honeyMartRepository.addProduct(name, price, description, categoryId)
     }
 }

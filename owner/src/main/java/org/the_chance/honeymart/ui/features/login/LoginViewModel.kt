@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.features.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OwnerProfileEntity
+import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProfileSuccess(profile: OwnerProfileEntity) {
+    private fun onGetProfileSuccess(profile: OwnerProfile) {
         _state.update { it.copy(authLoading = false) }
         effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }

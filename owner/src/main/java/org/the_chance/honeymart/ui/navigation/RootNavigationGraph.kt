@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import org.the_chance.honeymart.LocalNavigationProvider
 
 @Composable
 fun RootNavigationGraph() {

@@ -2,16 +2,15 @@ package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.TokensDto
-import org.the_chance.honeymart.domain.model.OwnerLoginEntity
-import org.the_chance.honeymart.domain.model.TokensEntity
+import org.the_chance.honeymart.domain.model.OwnerFields
 
-fun OwnerLoginDto.toOwnerLoginEntity(): OwnerLoginEntity = OwnerLoginEntity(
+fun OwnerLoginDto.toOwnerFields(): OwnerFields = OwnerFields(
     fullName = fullName ?: "",
     marketId = marketId ?: 0L,
-    tokens = tokens?.toTokenEntity() ?: TokensEntity("", "")
+    tokens = tokens?.toTokenFields() ?: OwnerFields.TokensFields("", "")
 )
 
-fun TokensDto.toTokenEntity(): TokensEntity = TokensEntity(
+fun TokensDto.toTokenFields(): OwnerFields.TokensFields = OwnerFields.TokensFields(
     refreshToken = refreshToken ?: "",
     accessToken = accessToken ?: ""
 )
