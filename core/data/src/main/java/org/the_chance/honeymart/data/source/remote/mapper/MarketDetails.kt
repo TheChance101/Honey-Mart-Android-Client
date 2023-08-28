@@ -1,10 +1,9 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.MarketDetailsEntity
+import org.the_chance.honeymart.domain.model.MarketDetails
 
-fun MarketDetailsDto.toMarketDetailsEntity() = MarketDetailsEntity(
+fun MarketDetailsDto.toMarketDetails() = MarketDetails(
     marketId = marketId ?: 0L,
     marketName = marketName ?: "",
     imageUrl = imageUrl ?: "",
@@ -14,5 +13,5 @@ fun MarketDetailsDto.toMarketDetailsEntity() = MarketDetailsEntity(
     address = address ?: "",
     latitude = latitude ?: 0L,
     longitude = longitude ?: 0L,
-    categories = categories?.map { it.toCategoryEntity() } ?: emptyList(),
+    categories = categories?.map { it.toCategory() } ?: emptyList(),
 )

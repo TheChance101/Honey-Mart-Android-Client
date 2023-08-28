@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.ui.feature.home
 
 import android.icu.text.DecimalFormat
-import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.MarketEntity
-import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.Coupon
+import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
@@ -55,16 +55,16 @@ data class RecentProductUiState(
     val isFavorite: Boolean = false
 )
 
-fun CouponEntity.toCouponUiState() = CouponUiState(
+fun Coupon.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
     discountPrice = product.productPrice.discountedPrice(discountPercentage = discountPercentage),
-    expirationDate = expirationDate.formatDate(),
+    expirationDate = expirationDate.toString(),
     product = product.toProductUiState(),
     isClipped = isClipped,
 )
 
-fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
+fun RecentProduct.toRecentProductUiState() = RecentProductUiState(
     productId = productId,
     productName = productName,
     productImage = productImages[0],
@@ -91,7 +91,7 @@ fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
 }
 
-fun MarketEntity.toMarketUiState(): MarketUiState {
+fun Market.toMarketUiState(): MarketUiState {
     return MarketUiState(
         marketId = marketId,
         marketName = marketName,

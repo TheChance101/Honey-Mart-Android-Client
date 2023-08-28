@@ -58,9 +58,6 @@ dependencies {
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
     androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
-    //Hilt
-    kapt(Dependencies.hiltCompiler)
-    implementation(Dependencies.hiltDependency)
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit

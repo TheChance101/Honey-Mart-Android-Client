@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.profile
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
@@ -36,7 +36,7 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
-    private fun onGetProfileSuccess(user: ProfileUserEntity) {
+    private fun onGetProfileSuccess(user: UserProfile) {
         _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
     }
 

@@ -1,12 +1,12 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
-import org.the_chance.honeymart.domain.model.WishListEntity
+import org.the_chance.honeymart.domain.model.WishList
 
-fun WishListDto.toWishListEntity() = WishListEntity(
-    productId = productId!!,
-    name = name!!,
-    price = price!!,
-    images = images!! ,
-    description = description!!
+fun WishListDto.toWishList() = WishList(
+    productId = productId ?: 0L,
+    name = name ?: "",
+    price = price ?: 0.0,
+    images = images ?: emptyList(),
+    description = description ?: ""
 )

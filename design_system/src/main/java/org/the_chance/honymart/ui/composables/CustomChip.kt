@@ -40,7 +40,7 @@ fun CustomChip(
         },
         colors = if (state) CardDefaults.cardColors(primary100)
         else CardDefaults.cardColors(Transparent),
-        border = if (state) BorderStroke(width = 0.dp, color = primary100)
+        border = if (state) BorderStroke(width = 0.dp, color = Transparent)
         else BorderStroke(width = 1.dp, color = primary100),
         shape = CircleShape
     ) {
