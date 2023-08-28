@@ -111,7 +111,7 @@ fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<Order
 fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
 fun OrdersUiState.showOrdersState() =
-    !showState.showProductDetails && !isError && !isLoading
+    !showState.showProductDetails && !isError
 
 
 // endregion

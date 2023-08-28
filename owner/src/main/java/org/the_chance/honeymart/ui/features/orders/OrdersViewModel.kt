@@ -104,7 +104,8 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(
                 product = product,
-                showState = it.showState.copy(showProductDetails = true)
+                showState = it.showState.copy(showProductDetails = true,
+                showOrderDetails = false)
             )
         }
     }

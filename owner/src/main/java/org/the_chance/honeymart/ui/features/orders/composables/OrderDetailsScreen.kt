@@ -27,7 +27,6 @@ fun OrderDetailsContent(
     state: OrdersUiState,
     listener: OrdersInteractionsListener
 ) {
-    Loading(state = state.isLoading)
     ContentVisibility(state = state.contentScreen()) {
         Box(contentAlignment = Alignment.BottomCenter) {
             Column(

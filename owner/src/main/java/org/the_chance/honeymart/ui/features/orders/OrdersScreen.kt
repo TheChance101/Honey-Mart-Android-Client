@@ -94,6 +94,7 @@ fun OrdersContent(
                     )
 
                 }
+                Loading(state = state.isLoading)
             }
         }
     }
