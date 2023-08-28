@@ -33,12 +33,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
-import org.the_chance.honeymart.ui.composables.PagingStateVisibility
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.composables.ShowEmptyPlaceholder
+import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -52,7 +50,6 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
 import org.the_chance.honymart.ui.theme.white200
-import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -86,11 +83,11 @@ fun SearchContent(
     AppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
         Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
-        EmptyProductPlaceholder(
-            (products.itemCount == 0
-                    && products.loadState.refresh != LoadState.Loading)
-                    || !state.isSearching
-        )
+//        EmptyProductPlaceholder(
+//            (products.itemCount == 0
+//                    && products.loadState.refresh != LoadState.Loading)
+//                    || !state.isSearching
+//        )
         ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
