@@ -29,7 +29,7 @@ object DependencyVersions {
     const val LIVE_DATA_LIFE_CYCLE = "2.6.1"
     const val LIVE_DATA_ACTIVITY = "1.3.1"
     const val LIVE_DATA_FRAGMENT = "1.3.6"
-    const val HILT = "2.44"
+    const val HILT = "2.47"
     const val DATA_BINDING = "7.1.0"
     const val DAGGER_ANDROID = "2.35.1"
     const val SWIPE = "1.4"

@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.category
 
 import androidx.paging.PagingData
+import arrow.optics.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.CategoryEntity
@@ -14,6 +15,7 @@ import org.the_chance.honeymart.ui.util.toPriceFormat
  */
 
 // region Ui State
+@optics
 data class CategoriesUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
@@ -31,8 +33,11 @@ data class CategoriesUiState(
     val showScreenState: ShowScreenState = ShowScreenState(),
     val newCategory: NewCategoryUiState = NewCategoryUiState(),
     val newProducts: NewProductsUiState = NewProductsUiState()
-)
+) {
+    companion object
+}
 
+@optics
 data class NewProductsUiState(
     val id: Long = 0L,
     val categoryId: Long = 0L,
@@ -43,8 +48,11 @@ data class NewProductsUiState(
     val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
-)
+) {
+    companion object
+}
 
+@optics
 data class ShowScreenState(
     val showAddCategory: Boolean = false,
     val showUpdateCategory: Boolean = false,
@@ -55,34 +63,49 @@ data class ShowScreenState(
     val showDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val showFab: Boolean = true,
-)
+) {
+    companion object
+}
 
+@optics
 data class SnackBarState(
     val isShow: Boolean = false,
     val message: String = "",
-)
+) {
+    companion object
+}
 
+@optics
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
     val categoryIconUIState: CategoryIconUIState = CategoryIconUIState(),
     val isCategorySelected: Boolean = false,
-)
+) {
+    companion object
+}
 
+@optics
 data class NewCategoryUiState(
     val categoryId: Long = 0L,
     val newCategoryName: String = "",
     val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val newIconId: Int = 0,
     val newIcon: Int = 0,
-)
+) {
+    companion object
+}
 
+@optics
 data class CategoryIconUIState(
     val categoryIconId: Int = 0,
     val icon: Int = 0,
     val isSelected: Boolean = false,
-)
+) {
+    companion object
+}
 
+@optics
 data class ProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
@@ -90,7 +113,9 @@ data class ProductUiState(
     val productPrice: String = "",
     val productDescription: String = "",
     val productsQuantity: String = "",
-)
+) {
+    companion object
+}
 
 enum class Visibility {
     UPDATE_CATEGORY, ADD_CATEGORY, DELETE_CATEGORY, DELETE_PRODUCT,
@@ -161,11 +186,12 @@ fun NewProductsUiState.showButton(): Boolean {
 
 fun CategoriesUiState.showSaveUpdateButton(): Boolean {
     return productDetails.productName.isNotBlank() &&
-            productDetails. productPrice.isNotBlank() &&
+            productDetails.productPrice.isNotBlank() &&
             productDetails.productDescription.isNotBlank() &&
             newProducts.images.isNotEmpty()
 
 }
+
 fun String.removeDollarSign(): String {
     return this.replace("$", "").trim()
 }
@@ -206,3 +232,7 @@ fun CategoriesUiState.showCategoryProductsInCategory() = !isLoading && !showScre
 fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categories.isEmpty()
 
 // endregion
+
+fun CategoriesUiState.toTest() = copy {
+    CategoriesUiState.category.categoryIconUIState.isSelected
+}

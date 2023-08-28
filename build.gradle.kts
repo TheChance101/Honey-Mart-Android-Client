@@ -7,7 +7,7 @@ buildscript {
         classpath(Dependencies.Classpath.googleFirebaseCrashClasspath)
         classpath(Dependencies.Classpath.kotlinSerializationClasspath)
     }
-    val compose_version by extra("1.4.3")
+    val compose_version by extra("1.5.0")
 }
 
 plugins {
