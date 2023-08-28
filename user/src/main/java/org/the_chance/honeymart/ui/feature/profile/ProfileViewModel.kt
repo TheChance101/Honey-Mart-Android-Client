@@ -1,13 +1,11 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
-import org.the_chance.honeymart.domain.usecase.SaveThemeUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -17,7 +15,6 @@ class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUserUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val addProfileImageUseCase: AddProfileImageUseCase,
-    private val saveThemeUseCase: SaveThemeUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()),
     ProfileInteractionsListener {
 
@@ -39,10 +36,19 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    override fun onClickLogin() {
+        effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
+    }
 
 
     private fun onGetProfileSuccess(user: ProfileUserEntity) {
-        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                accountInfo = user.toProfileUiState(),
+                error = null
+            )
+        }
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
@@ -109,7 +115,7 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = {onLogoutError()}
+            onError = { onLogoutError() }
         )
     }
 
@@ -117,5 +123,6 @@ class ProfileViewModel @Inject constructor(
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
+
     private fun onLogoutError() {}
 }

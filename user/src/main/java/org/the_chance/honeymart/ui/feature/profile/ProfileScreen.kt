@@ -37,7 +37,10 @@ import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
+import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
+import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -60,16 +63,10 @@ fun ProfileScreen(
             when (it) {
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {}
                 is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
-                is ProfileUiEffect.ClickNotificationEffect -> {  }
                 is ProfileUiEffect.ClickCouponsEffect -> {navController.navigateToCouponsScreen()}
-                is ProfileUiEffect.ClickLogoutEffect -> {navController.navigateToLogin()}
 
-                ProfileUiEffect.ClickThemeEffect -> viewModel.onClickThemeState(state.isDark)
-                ProfileUiEffect.ShowDialogEffect -> {}
-                ProfileUiEffect.ShowToastEffect -> {}
             }
         }
     }
@@ -219,15 +216,6 @@ private fun ProfileContent(
                     title = "Notification",
                     onClick = listener::onClickNotification
                 )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_sun,
-                    title = "Theme",
-                    onClick = listener::onClickTheme
-                )
-
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
                 NavCard(
