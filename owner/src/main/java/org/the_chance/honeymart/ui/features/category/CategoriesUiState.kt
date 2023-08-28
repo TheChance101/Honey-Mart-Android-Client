@@ -144,7 +144,7 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
         newCategory.newCategoryName.isNotBlank() &&
-                !category.categoryIconUIState.isSelected
+                category.categoryIconUIState.isSelected
                 && !isLoading &&
                 newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
@@ -173,6 +173,7 @@ fun String.removeDollarSign(): String {
 
 fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts
+            && !showScreenState.showAddCategory
 
 fun CategoriesUiState.errorPlaceHolderCondition() = isError
 
@@ -199,9 +200,12 @@ fun CategoriesUiState.showCategoryProductsInProduct() =
     !isLoading && !showScreenState.showUpdateCategory
             && !showScreenState.showAddCategory &&
             !showScreenState.showAddProduct &&
-            showScreenState.showFab
+            showScreenState.showFab &&
+            categories.isNotEmpty()
 
-fun CategoriesUiState.showCategoryProductsInCategory() = !isLoading && !showScreenState.showFab
+fun CategoriesUiState.showCategoryProductsInCategory() =
+    !isLoading && !showScreenState.showFab
+
 
 fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categories.isEmpty()
 

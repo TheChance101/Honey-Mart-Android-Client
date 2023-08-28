@@ -65,7 +65,6 @@ fun CategoriesContent(
                 )
             }
         }
-
         Row(modifier = Modifier.fillMaxSize()) {
             Loading(
                 state = state.isLoading && state.categories.isNotEmpty()
@@ -95,7 +94,8 @@ fun CategoriesContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = state.showScreenState.showAddCategory) {
+                ContentVisibility(state = state.showScreenState.showAddCategory
+                        && state.showScreenState.showFab) {
                     AddCategoryContent(listener = listener, state = state)
                 }
 
@@ -166,7 +166,8 @@ fun CategoriesContent(
 
     ContentVisibility(state = state.showScreenState.showDeleteDialog) {
         CustomAlertDialog(
-            message = stringResource(R.string.you_delete_a_product) + stringResource(R.string.are_you_sure),
+            message = stringResource(R.string.you_delete_a_product)
+                    + stringResource(R.string.are_you_sure),
             onConfirm = {
                 listener.deleteProductById(state.newProducts.id)
                 listener.resetShowState(Visibility.DELETE_PRODUCT)

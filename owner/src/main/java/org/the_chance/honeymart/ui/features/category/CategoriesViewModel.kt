@@ -130,7 +130,8 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
                 error = null,
                 position = 0,
-                showScreenState = it.showScreenState.copy(showFab = true, showAddProduct = false)
+                showScreenState = it.showScreenState.copy(showFab = true,
+                    showAddProduct = false)
             )
         }
         getAllCategory()

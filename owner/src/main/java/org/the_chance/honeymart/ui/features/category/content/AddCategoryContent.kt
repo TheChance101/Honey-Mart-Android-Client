@@ -116,7 +116,7 @@ fun AddCategoryContent(
                     categoryIconID = state.newCategory.newIconId
                 )
             },
-            isButtonEnabled = state.showButton(),
+            isButtonEnabled = true,
             isLoading = state.isLoading,
             icon = R.drawable.icon_add_product,
             modifier = Modifier
