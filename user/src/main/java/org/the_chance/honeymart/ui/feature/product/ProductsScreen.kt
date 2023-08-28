@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -46,30 +45,23 @@ import org.the_chance.honymart.ui.theme.dimens
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
-
     val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
 
-
-
-    LaunchedEffect(key1 = true) {
-
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is ProductUiEffect.AddedToWishListEffect -> {
-                    viewModel.showSnackBar(it.message)
+                    viewModel.showSnackBar(effect.message)
                 }
 
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
-
-
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-
-    }
+        })
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 

@@ -66,19 +66,19 @@ fun CategoriesScreen(
     CategoriesAppBarScaffold(navController) {
         CategoryContent(state, listener = viewModel)
     }
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                is MarketUiEffect.ClickMarketEffect -> {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
+                is CategoryUiEffect.ClickCategoryEffect -> {
                     navController.navigateToProductScreen(
-                        it.categoryId,
-                        it.marketId,
-                        it.position
+                        effect.categoryId,
+                        effect.marketId,
+                        effect.position
                     )
                 }
             }
-        }
-    }
+        })
 }
 
 @Composable
