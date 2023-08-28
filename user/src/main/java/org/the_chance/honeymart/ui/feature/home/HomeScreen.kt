@@ -10,9 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
@@ -57,7 +57,7 @@ fun HomeScreen(
 
                 HomeUiEffect.NavigateToSeeAllMarketEffect -> navController.navigateToMarketsScreen()
                 is HomeUiEffect.NavigateToOrderDetailsScreenEffect -> navController.navigateToOrderDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
             }
         })
