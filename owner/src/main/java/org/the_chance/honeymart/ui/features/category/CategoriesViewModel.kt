@@ -161,12 +161,12 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecute(
-            { getAllProducts(categoryId) },
-            ::onGetProductsSuccess,
-            ::onGetProductsError
-        )
+//        _state.update { it.copy(isLoading = true, isError = false) }
+//        tryToExecute(
+//            { getAllProducts(categoryId) },
+//            ::onGetProductsSuccess,
+//            ::onGetProductsError
+//        )
     }
 
     private fun onGetProductsError(error: ErrorHandler) {

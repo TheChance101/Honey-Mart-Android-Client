@@ -29,12 +29,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun checkAuthAndNavigate() {
-        _state.update { it.copy(authLoading = true) }
-        tryToExecute(
-            { getOwnerProfileUseCase() },
-            ::onGetProfileSuccess,
-            ::onGetProfileError
-        )
+//        _state.update { it.copy(authLoading = true) }
+//        tryToExecute(
+//            { getOwnerProfileUseCase() },
+//            ::onGetProfileSuccess,
+//            ::onGetProfileError
+//        )
     }
 
     private fun onGetProfileSuccess(profile: OwnerProfileEntity) {
@@ -48,12 +48,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun loginOwner(email: String, password: String) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { loginOwnerUseCase(email, password) },
-            { onLoginSuccess() },
-            ::onLoginError,
-        )
+//        _state.update { it.copy(isLoading = true) }
+//        tryToExecute(
+//            { loginOwnerUseCase(email, password) },
+//            { onLoginSuccess() },
+//            ::onLoginError,
+//        )
     }
 
     private fun onLoginSuccess() {

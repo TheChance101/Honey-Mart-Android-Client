@@ -1,9 +1,7 @@
 package org.the_chance.honeymart.ui.features.products
 
-import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.features.add_product.AddProductUiState
 
 data class ProductsUiState(
     val isLoading: Boolean = false,
@@ -44,13 +42,13 @@ fun ProductsUiState.showButton(): Boolean {
             && productDescriptionState == ValidationState.VALID_TEXT_FIELD
 }
 
-fun ProductEntity.toProductUiState(): ProductUiState {
-    return ProductUiState(
-        productId = productId,
-        productName = productName,
-        productPrice = "$ProductPrice$",
-        productImage = productImages[0],
-    )
-}
+//fun ProductEntity.toProductUiState(): ProductUiState {
+//    return ProductUiState(
+//        productId = productId,
+//        productName = productName,
+//        productPrice = "$ProductPrice$",
+//        productImage = productImages[0],
+//    )
+//}
 
 fun ProductsUiState.contentScreen() = !this.isLoading && !this.isError

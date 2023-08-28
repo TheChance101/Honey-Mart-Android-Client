@@ -32,6 +32,7 @@ import org.the_chance.honeymart.domain.model.ProductEntity
 import org.the_chance.honeymart.domain.model.ProfileUserEntity
 import org.the_chance.honeymart.domain.model.RecentProductEntity
 import org.the_chance.honeymart.domain.model.WishListEntity
+import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 

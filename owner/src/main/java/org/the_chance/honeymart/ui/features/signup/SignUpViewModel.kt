@@ -4,7 +4,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
 import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
-import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
@@ -16,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val createOwnerAccount: CreateOwnerAccountUseCase,
     private val validateSignupFields: ValidateSignupFieldsUseCase,
     private val createMarketUseCase: CreateMarketUseCase,
     private val addMarketImageUseCase: AddMarketImageUseCase,
@@ -56,18 +54,18 @@ class SignUpViewModel @Inject constructor(
         email: String,
         password: String,
     ) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            {
-                createOwnerAccount(
-                    fullName = fullName,
-                    password = password,
-                    email = email,
-                )
-            },
-            ::onCreateOwnerAccountSuccess,
-            ::onCreateOwnerAccountError,
-        )
+//        _state.update { it.copy(isLoading = true) }
+//        tryToExecute(
+//            {
+//                createOwnerAccount(
+//                    fullName = fullName,
+//                    password = password,
+//                    email = email,
+//                )
+//            },
+//            ::onCreateOwnerAccountSuccess,
+//            ::onCreateOwnerAccountError,
+//        )
     }
 
     private fun onCreateOwnerAccountSuccess(isSignUp: Boolean) {
@@ -103,12 +101,12 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun loginOwner(email: String, password: String) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { loginOwnerUseCase(email, password) },
-            ::onLoginSuccess,
-            ::onLoginError,
-        )
+//        _state.update { it.copy(isLoading = true) }
+//        tryToExecute(
+//            { loginOwnerUseCase(email, password) },
+//            ::onLoginSuccess,
+//            ::onLoginError,
+//        )
     }
 
     private fun onLoginSuccess(unit: Unit) {
@@ -214,36 +212,36 @@ class SignUpViewModel @Inject constructor(
 
         if (marketFieldsValidationState) {
 
-            createMarket(
-                marketName = market.marketNameState.value,
-                marketAddress = market.marketAddressState.value,
-                marketDescription = market.marketDescriptionState.value,
-            )
+//            createMarket(
+//                marketName = market.marketNameState.value,
+//                marketAddress = market.marketAddressState.value,
+//                marketDescription = market.marketDescriptionState.value,
+//            )
         } else {
             effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
     }
 
-    private fun createMarket(
-        marketName: String,
-        marketAddress: String,
-        marketDescription: String,
-    ) {
-        _state.update {
-            it.copy(marketInfoUiState = state.value.marketInfoUiState.copy(isLoading = true))
-        }
-        tryToExecute(
-            {
-                createMarketUseCase(
-                    marketName = marketName,
-                    marketAddress = marketAddress,
-                    marketDescription = marketDescription,
-                )
-            },
-            ::onCreateMarketSuccess,
-            ::onCreateMarketError
-        )
-    }
+//    private fun createMarket(
+//        marketName: String,
+//        marketAddress: String,
+//        marketDescription: String,
+//    ) {
+//        _state.update {
+//            it.copy(marketInfoUiState = state.value.marketInfoUiState.copy(isLoading = true))
+//        }
+//        tryToExecute(
+//            {
+//                createMarketUseCase(
+//                    marketName = marketName,
+//                    marketAddress = marketAddress,
+//                    marketDescription = marketDescription,
+//                )
+//            },
+//            ::onCreateMarketSuccess,
+//            ::onCreateMarketError
+//        )
+//    }
 
     private fun onCreateMarketError(errorHandler: ErrorHandler) {
         _state.update {
@@ -337,11 +335,11 @@ class SignUpViewModel @Inject constructor(
 
     // region market image
     override fun addMarketImage(image: ByteArray) {
-        tryToExecute(
-            { addMarketImageUseCase(marketImage = image) },
-            ::onAddMarketImageSuccess,
-            ::onAddMarketImageError
-        )
+//        tryToExecute(
+//            { addMarketImageUseCase(marketImage = image) },
+//            ::onAddMarketImageSuccess,
+//            ::onAddMarketImageError
+//        )
     }
 
     private fun onAddMarketImageError(errorHandler: ErrorHandler) {
