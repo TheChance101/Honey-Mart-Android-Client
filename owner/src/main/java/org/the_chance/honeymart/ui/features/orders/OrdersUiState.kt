@@ -23,7 +23,10 @@ data class OrdersUiState(
     val order: OrderState = OrderState(),
 )
 
-data class ShowState(val showProductDetails: Boolean = false)
+data class ShowState(
+    val showProductDetails: Boolean = false,
+    val showOrderDetails : Boolean = false ,
+)
 
 data class OrderState(
     val orderId: Long = 0,
@@ -107,7 +110,8 @@ fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<Order
 
 fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
-fun OrdersUiState.showOrdersState() = !showState.showProductDetails && !isError
+fun OrdersUiState.showOrdersState() =
+    !showState.showProductDetails && !isError && !isLoading
 
 
 // endregion

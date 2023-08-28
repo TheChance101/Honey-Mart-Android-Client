@@ -22,13 +22,13 @@ class OrdersViewModel @Inject constructor(
 
     init {
         getAllMarketOrder(OrderStates.ALL)
-        updateStateOrder(_state.value.orderId, OrderStates.PROCESSING)
         resetStateScreen()
     }
 
     override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = orderState)
+            it.copy(isLoading = true, isError = false, orderStates = orderState,
+            showState = it.showState.copy(showOrderDetails = false))
         }
         tryToExecute(
             { getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
@@ -111,14 +111,15 @@ class OrdersViewModel @Inject constructor(
 
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
-        getOrderDetails(id)
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
         _state.update {
             it.copy(
                 orders = updatedOrders,
-                orderId = id
+                orderId = id,
+                showState = it.showState.copy(showOrderDetails = true)
             )
         }
+        getOrderDetails(id)
     }
 
     private fun updateSelectedOrder(
@@ -205,6 +206,7 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 showState = it.showState.copy(
                     showProductDetails = false,
+                    showOrderDetails = false
                 )
             )
         }

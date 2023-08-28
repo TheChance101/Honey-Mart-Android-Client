@@ -60,18 +60,11 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
-        if (categories.isEmpty()) {
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    error = null,
-                    categories = categoriesUiState,
-                )
-            }
-        }
-        val updatedCategories =
+        val updatedCategories = if (categories.isEmpty()) {
+            categoriesUiState
+        } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
-
+        }
         _state.update {
             it.copy(
                 isLoading = false,
