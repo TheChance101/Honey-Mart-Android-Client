@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.orders
 
+import okhttp3.internal.http.toHttpDateString
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -27,7 +28,7 @@ fun Order.toOrderUiState(): OrderUiState {
         orderId = orderId,
         totalPrice = totalPrice,
         state = state,
-        date = date,
+        date = date.time,
         marketName = market.marketName,
         imageUrl = market.imageUrl,
         quantity = numItems

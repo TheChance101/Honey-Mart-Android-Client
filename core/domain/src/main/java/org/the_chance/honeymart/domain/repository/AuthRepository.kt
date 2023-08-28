@@ -3,9 +3,6 @@ package org.the_chance.honeymart.domain.repository
 import org.the_chance.honeymart.domain.model.OwnerFields
 import org.the_chance.honeymart.domain.model.OwnerProfile
 
-/**
- * Created by Aziza Helmy on 6/16/2023.
- */
 interface AuthRepository {
     suspend fun loginUser(
         email: String,

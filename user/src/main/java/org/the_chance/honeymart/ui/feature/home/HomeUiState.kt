@@ -59,7 +59,7 @@ fun Coupon.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
     discountPrice = product.productPrice.discountedPrice(discountPercentage = discountPercentage),
-    expirationDate = expirationDate.formatDate(),
+    expirationDate = expirationDate.toString(),
     product = product.toProductUiState(),
     isClipped = isClipped,
 )

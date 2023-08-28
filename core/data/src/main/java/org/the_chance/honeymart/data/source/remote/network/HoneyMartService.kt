@@ -7,17 +7,17 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
-import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
-import org.the_chance.honeymart.data.source.remote.models.RequestDto
-import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
-import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.RequestDto
+import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 
@@ -66,7 +66,10 @@ interface HoneyMartService {
     //endregion Category
 
     //region Products
-    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>>
+    suspend fun getAllProductsByCategory(
+        page: Int?,
+        categoryId: Long
+    ): BaseResponse<List<ProductDto>>
 
     suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 
@@ -107,7 +110,11 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
-    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>>
+    suspend fun searchForProducts(
+        query: String,
+        page: Int?,
+        sortOrder: String
+    ): BaseResponse<List<ProductDto>>
 
 
     //endregion Product
@@ -117,7 +124,8 @@ interface HoneyMartService {
         password: String,
         deviceToken: String
     ): BaseResponse<UserLoginDto>
-    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
+    suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto>
 
     //region WishList
 
@@ -159,7 +167,7 @@ interface HoneyMartService {
 
     suspend fun getAllMarketOrders(
         orderState: Int,
-    ):BaseResponse<List<MarketOrderDto>>
+    ): BaseResponse<List<MarketOrderDto>>
 
     suspend fun updateOrderState(
         id: Long?,
@@ -217,7 +225,6 @@ interface HoneyMartService {
 
     suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
     //endregion
-
 
 
     // region Owner

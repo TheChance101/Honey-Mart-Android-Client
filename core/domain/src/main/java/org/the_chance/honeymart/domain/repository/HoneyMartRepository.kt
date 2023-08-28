@@ -70,7 +70,6 @@ interface HoneyMartRepository {
 
     suspend fun getProfileUser(): UserProfile
 
-
     suspend fun addProfileImage(image: ByteArray): String
 
     suspend fun addProduct(
@@ -105,6 +104,6 @@ interface HoneyMartRepository {
 
     //region admin
     suspend fun getMarketRequests(isApproved: Boolean): List<RequestEntity>
-    suspend fun updateMarketRequest(id: Long?, isApproved: Boolean):Boolean
+    suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean
 //endregion admin
 }

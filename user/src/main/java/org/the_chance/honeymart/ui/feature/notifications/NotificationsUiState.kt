@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.notifications
 
+import okhttp3.internal.http.toHttpDateString
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import java.time.LocalDateTime
@@ -49,9 +50,7 @@ fun NotificationsUiState.emptyNotificationsPlaceHolder() =
 
 fun convertDate(notification: Notification): String {
     val date = notification.date
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy   HH:mm")
-
-    val localDateTime = LocalDateTime.parse(date, inputFormatter)
+    val localDateTime = date.toHttpDateString()
     return localDateTime.format(outputFormatter)
 }

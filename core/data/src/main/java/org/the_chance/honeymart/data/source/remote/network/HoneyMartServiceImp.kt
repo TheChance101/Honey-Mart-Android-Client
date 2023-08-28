@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.forms.FormDataContent
-import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitForm
@@ -16,9 +15,9 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
-import io.ktor.http.Parameters
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
@@ -30,7 +29,6 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
-import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
@@ -41,18 +39,16 @@ import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
+import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
-import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
-/**
- * Created by Aziza Helmy on 7/2/2023.
- */
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
@@ -158,7 +154,10 @@ class HoneyMartServiceImp @Inject constructor(
     }
 
 
-    override suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>> =
+    override suspend fun getAllProductsByCategory(
+        page: Int?,
+        categoryId: Long
+    ): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct?page=$page"))
 
     override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
@@ -249,20 +248,28 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun deleteProduct(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId"))
 
-    override suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder") )
+    override suspend fun searchForProducts(
+        query: String,
+        page: Int?,
+        sortOrder: String
+    ): BaseResponse<List<ProductDto>> =
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"))
 
-    override suspend fun loginUser(email: String, password: String, deviceToken:String ): BaseResponse<UserLoginDto> =
+    override suspend fun loginUser(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
-            append("deviceToken",deviceToken)
+            append("deviceToken", deviceToken)
         }))
 
     override suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto> =
-        wrap(client.submitForm(url = "/token/refresh" , formParameters = Parameters.build {
-            append("refreshToken" ,refreshToken)
-        }) )
+        wrap(client.submitForm(url = "/token/refresh", formParameters = Parameters.build {
+            append("refreshToken", refreshToken)
+        }))
 
 
     override suspend fun getWishList(): BaseResponse<List<WishListDto>> =
@@ -425,6 +432,7 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun deleteProductImage(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId/image/$productId}"))
+
     //endregion
     //region admin
     override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
