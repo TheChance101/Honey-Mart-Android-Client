@@ -63,17 +63,17 @@ fun RequestsContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             CustomChip(
-                state = state.requestsState == RequestsState.UNAPPROVED,
+                state = state.marketsState == MarketsState.UNAPPROVED,
                 text = stringResource(R.string.pending),
                 onClick = { listener.onGetMarkets(false) }
             )
             CustomChip(
-                state = state.requestsState == RequestsState.APPROVED,
+                state = state.marketsState == MarketsState.APPROVED,
                 text = stringResource(R.string.approved),
                 onClick = { listener.onGetMarkets(true) }
             )
             CustomChip(
-                state = state.requestsState == RequestsState.ALL,
+                state = state.marketsState == MarketsState.ALL,
                 text = stringResource(R.string.all_capitalized),
                 onClick = ( listener::onGetMarkets)
             )
@@ -92,7 +92,7 @@ fun RequestsContent(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        itemsIndexed(state.requests) { index, item ->
+                        itemsIndexed(state.markets) { index, item ->
                             ItemMarketRequest(
                                 onClickCard = { listener.onClickMarket(index) },
                                 ownerName = item.ownerName,
@@ -101,7 +101,7 @@ fun RequestsContent(
                                 onCardSelected = item.isSelected,
                                 marketStateText = item.marketStateText,
                                 state = item.isApproved,
-                                requestsState = state.requestsState,
+                                marketsState = state.marketsState,
                                 isLoading = state.isLoading
                             )
                         }
@@ -112,7 +112,7 @@ fun RequestsContent(
                 ) {
                     state.selectedMarket?.let {
                         MarketRequestDetails(
-                            state = state.selectedMarket.state == RequestsState.UNAPPROVED,
+                            state = state.selectedMarket.state == MarketsState.UNAPPROVED,
                             request = state.selectedMarket, listener = listener,
                             imageUrl = it.imageUrl
                         )
