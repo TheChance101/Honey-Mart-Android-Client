@@ -18,4 +18,10 @@ sealed class NavigationRailScreen(
         label = "Category",
         selectedIcon = R.drawable.ic_category,
     )
+
+    object Coupons : NavigationRailScreen(
+        route = Screen.Coupons.route,
+        label = "Coupons",
+        selectedIcon = R.drawable.ic_coupon,
+    )
 }

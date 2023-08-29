@@ -58,6 +58,11 @@ class ValidateSignupFieldsUseCase @Inject constructor() {
 
     }
 
-    fun validateConfirmPassword(password: String, repeatedPassword: String) =
-        password == repeatedPassword
+    fun validateConfirmPassword(password: String, repeatedPassword: String): ValidationState {
+        return if (password == repeatedPassword) {
+            ValidationState.CONFIRM_PASSWORD_MATCH
+        } else {
+            ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH
+        }
+    }
 }

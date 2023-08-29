@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.login
 
 
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OwnerProfile
@@ -10,6 +11,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.signup.FieldState
 import org.the_chance.honeymart.ui.features.signup.ValidationToast
+import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
 
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
+    private val stringResourceImpl: StringDictionary
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
@@ -60,7 +63,7 @@ class LoginViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     validationToast = ValidationToast(
-                        isShow = true, message = "Please fill required fields"
+                        isShow = true, message = stringResourceImpl.requiredFieldsMessageString
                     )
                 )
             }
@@ -87,8 +90,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
+        val errorMessage = stringResourceImpl.errorString.getOrDefault(error, "")
         if (error is ErrorHandler.UnAuthorizedUser) {
-            val errorMessage = "Invalid username or password"
             _state.update {
                 it.copy(
                     isLoading = false,
@@ -107,7 +110,7 @@ class LoginViewModel @Inject constructor(
                     error = error,
                     validationToast = ValidationToast(
                         isShow = true,
-                        message = "Something went wrong, please check your network and try again"
+                        message = errorMessage
                     )
                 )
             }
