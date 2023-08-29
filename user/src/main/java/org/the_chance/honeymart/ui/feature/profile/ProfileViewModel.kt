@@ -38,6 +38,10 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
+    override fun onClickCameraIcon() {
+        effectActionExecutor(_effect, ProfileUiEffect.ClickCameraEffect)
+    }
+
     private fun onGetProfileSuccess(user: ProfileUserEntity) {
         _state.update {
             it.copy(

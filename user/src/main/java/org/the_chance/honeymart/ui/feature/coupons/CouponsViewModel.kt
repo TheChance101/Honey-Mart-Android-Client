@@ -7,7 +7,6 @@ import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.home.toCouponUiState
 import javax.inject.Inject
 
 @HiltViewModel

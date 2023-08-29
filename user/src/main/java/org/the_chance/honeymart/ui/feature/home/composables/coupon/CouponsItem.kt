@@ -40,10 +40,10 @@ fun CouponsItem(
         CouponDetails(
             modifier = Modifier.fillMaxHeight(),
             productName = coupon.product.productName,
-            expirationDate = coupon.expirationDate,
+            expirationDate = coupon.expirationDateFormat,
             count = coupon.count,
-            productPrice = coupon.couponProductPrice,
-            discountPercentage =coupon.couponDiscountProductPrice,
+            productPrice = coupon.product.priceInCurrency,
+            discountPercentage =coupon.discountPriceInCurrency,
             onClick = onClickGetCoupon
         )
         CouponImage(

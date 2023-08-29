@@ -9,4 +9,7 @@ sealed interface ProfileUiEffect: BaseUiEffect {
     object ClickLogoutEffect : ProfileUiEffect
     object UnAuthorizedUserEffect : ProfileUiEffect
 
+    object ClickCameraEffect : ProfileUiEffect()
+
+
 }

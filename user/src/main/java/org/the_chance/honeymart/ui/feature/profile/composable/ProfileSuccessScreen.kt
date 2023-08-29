@@ -1,9 +1,5 @@
 package org.the_chance.honeymart.ui.feature.profile.composable
 
-import android.net.Uri
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,7 +34,6 @@ import org.the_chance.honymart.ui.theme.nullColor
 @Composable
  fun ProfileSuccessScreen(
     state: ProfileUiState,
-    photoPickerLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
     listener: ProfileInteractionsListener
 ) {
     Column(
@@ -94,9 +89,7 @@ import org.the_chance.honymart.ui.theme.nullColor
                         .clip(CircleShape)
                         .size(MaterialTheme.dimens.space24)
                         .clickable {
-                            photoPickerLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
+                            listener.onClickCameraIcon()
                             state.image?.let {
                                 listener.updateImage(image = it)
                             }

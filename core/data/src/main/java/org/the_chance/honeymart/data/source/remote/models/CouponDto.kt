@@ -10,7 +10,7 @@ data class CouponDto(
     @SerializedName("discountPercentage")
     val discountPercentage: Double? = null,
     @SerializedName("expirationDate")
-    val expirationDate: String? = null,
+    val expirationDate: Long? = null,
     @SerializedName("product")
     val product: ProductDto? = null,
     @SerializedName("isClipped")
