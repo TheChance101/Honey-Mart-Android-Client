@@ -24,7 +24,7 @@ data class CartListProductUiState(
     val productImage: List<String> = emptyList()
 ) {
     val productImageUrl = productImage.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
-    val productPriceFormatted = formatCurrencyWithNearestFraction(productPrice)
+    val productPriceFormatted = formatCurrencyWithNearestFraction(totalPrice)
 }
 
 fun CartEntity.toCartListProductUiState(): CartUiState {
