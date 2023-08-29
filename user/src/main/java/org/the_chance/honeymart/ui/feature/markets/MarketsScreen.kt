@@ -67,7 +67,9 @@ fun MarketContent(
                         )
                     }
                 }
-                PagingStateVisibility(markets, listener::onclickTryAgainMarkets)
+                item {
+                    PagingStateVisibility(markets)
+                }
             }
         }
         ConnectionErrorPlaceholder(

@@ -2,11 +2,11 @@ package org.the_chance.honeymart.ui.feature.home
 
 import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.MarketEntity
-import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.markets.MarketUiState
+import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -22,31 +22,12 @@ data class HomeUiState(
     val recentProducts: List<RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
-)
-data class MarketsUiState(
-    val isLoading: Boolean = true,
-    val isError: Boolean = false,
-    val error: ErrorHandler? = null,
-    val markets: List<MarketUiState> = emptyList(),
-)
-
-data class MarketUiState(
-    val marketId: Long = 0L,
-    val marketName: String = "",
-    val marketImage: String = "",
-    val isClicked : Boolean = false
-)
+){
+    val shuffledMarket = if (markets.size > 3 ) markets.shuffled().take(3) else markets
+}
 
 
 
-data class CouponUiState(
-    val couponId: Long = 0L,
-    val count: Int = 0,
-    val discountPrice: Double = 0.0,
-    val expirationDate: String = "",
-    val product: ProductUiState = ProductUiState(),
-    val isClipped: Boolean = false,
-)
 
 
 fun CouponEntity.toCouponUiState() = CouponUiState(
@@ -76,12 +57,4 @@ fun Double.formatCurrencyWithNearestFraction(): String {
 
 fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
-}
-
-fun MarketEntity.toMarketUiState(): MarketUiState {
-    return MarketUiState(
-        marketId = marketId,
-        marketName = marketName,
-        marketImage = imageUrl
-    )
 }

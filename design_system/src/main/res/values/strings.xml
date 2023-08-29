@@ -100,7 +100,9 @@
     <string name="icon">icon</string>
     <string name="warning_icon">warning Icon</string>
     <string name="empty_product">empty product</string>
+    <string name="empty_coupons">empty coupons</string>
     <string name="there_is_no_product_here">There is no product here !!</string>
+    <string name="there_is_no_coupons_here">There is no coupons here !!</string>
     <string name="there_is_no_categories_here">There is no categories here !!</string>
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
@@ -126,7 +128,6 @@
     <string name="shop_details">shop details</string>
     <string name="your_notifications_is_empty">Your Notifications is empty!!</string>
     <string name="you_ll_receive_a_notification_after_placing_your_order">You’ll receive a notification after placing your order</string>
-    <string name="all">All</string>
     <string name="order_title">Order</string>
     <string name="delivery">Delivery</string>
     <string name="shop_detail">Shop details</string>
@@ -143,4 +144,7 @@
     <string name="login">Login</string>
     <string name="login_and_get_access_to_your_orders_wishlist_and_more">Login and get access to your orders, wishlist, and more.</string>
     <string name="you_are_not_logged_in">You are not Logged In</string>
+    <string name="all">All</string>
+    <string name="valid">Valid</string>
+    <string name="expired">Expired</string>
 </resources>

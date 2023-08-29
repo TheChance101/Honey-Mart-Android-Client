@@ -6,6 +6,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,20 +30,14 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyProductPlaceholder(
-    state: Boolean ,
-    title: String = stringResource(R.string.empty_product),
-    description: String = stringResource(R.string.empty_product),
-) {
+fun EmptyProductsPlaceholder(state: Boolean){
     HoneyMartTheme {
         AnimatedVisibility(
             visible = state,
             enter = fadeIn(
-                animationSpec = tween(durationMillis = 500)
-            ) + scaleIn(),
+                animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
             exit = fadeOut(
-                animationSpec = tween(durationMillis = 500)
-            )
+                animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -49,12 +46,12 @@ fun EmptyProductPlaceholder(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.placeholder_wish_list),
-                    contentDescription = title,
+                    contentDescription = stringResource(R.string.empty_product),
                     contentScale = ContentScale.Crop
                 )
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space56),
-                    text = description,
+                    text = stringResource(R.string.there_is_no_product_here),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -67,6 +64,6 @@ fun EmptyProductPlaceholder(
 
 @Preview
 @Composable
-fun PreviewEmptyProductScaffold() {
-    EmptyProductPlaceholder(true,"","")
+fun PreviewEmptyProductsScaffold(){
+    EmptyProductsPlaceholder(true)
 }

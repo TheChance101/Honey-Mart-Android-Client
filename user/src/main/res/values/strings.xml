@@ -2,6 +2,7 @@
 <resources>
 
 
+    <string name="expired">expired</string>
     <string name="sort_by_price">Sort by price</string>
     <string name="random">Random</string>
     <string name="ascending">Ascending</string>

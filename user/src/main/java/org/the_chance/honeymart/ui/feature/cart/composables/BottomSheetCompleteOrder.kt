@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -69,6 +71,10 @@ private fun BottomSheetContent(
             topStart = MaterialTheme.dimens.space28,
             topEnd = MaterialTheme.dimens.space28
         ),
+        modifier = Modifier.verticalScroll(
+            enabled = true,
+            state = rememberScrollState()
+        )
     ) {
         Column(
             modifier = Modifier

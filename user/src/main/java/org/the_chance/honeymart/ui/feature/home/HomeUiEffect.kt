@@ -17,4 +17,5 @@ sealed class HomeUiEffect : BaseUiEffect {
         val position: Int
     ) : HomeUiEffect()
 
+    data class NavigateToOrderDetailsScreenEffect(val productId: Long) : HomeUiEffect()
 }
