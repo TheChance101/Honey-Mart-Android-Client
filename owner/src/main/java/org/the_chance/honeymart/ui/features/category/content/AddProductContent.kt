@@ -4,15 +4,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +29,13 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
-import org.the_chance.honeymart.ui.features.category.showButton
-import org.the_chance.honeymart.ui.util.Constant.MAX_IMAGES
+import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
+import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.util.handleImageSelection
-import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
-import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.dimens
 
+const val MAX_IMAGES = 4
 
 @Composable
 fun AddProductContent(
@@ -118,34 +117,31 @@ fun AddProductContent(
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
-            SelectedImagesGrid(
-                images = state.newProducts.images,
-                onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-                multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-                maxImages = MAX_IMAGES
-            )
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(MaterialTheme.dimens.card),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            ) {
+                items(items = state.newProducts.images) { image ->
+                    ItemImageProduct(image, listener::onClickRemoveSelectedImage)
+                }
+                if (state.newProducts.images.size < MAX_IMAGES) {
+                    item {
+                        AddImageButton(multiplePhotoPickerLauncher)
+                    }
+                }
+            }
         }
         Spacer(modifier = Modifier.weight(1F))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(MaterialTheme.dimens.space48),
-            contentAlignment = Alignment.Center
-        ) {
-            Loading(
-                state = state.isLoading,
-                modifier = Modifier.size(MaterialTheme.dimens.smallLottieLoading)
-            )
-        }
-        HoneyFilledIconButton(
+        HoneyFilledButton(
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space24
             ),
             label = stringResource(R.string.add),
-            iconPainter = painterResource(R.drawable.icon_add_to_cart),
             onClick = { listener.addProduct(state) },
-            isEnable = state.newProducts.showButton()
+            icon = R.drawable.icon_add_to_cart,
+            isLoading = state.isLoading
         )
     }
 }

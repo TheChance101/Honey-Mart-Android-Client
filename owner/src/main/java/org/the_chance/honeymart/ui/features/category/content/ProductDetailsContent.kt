@@ -36,7 +36,6 @@ import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
 import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
-import org.the_chance.honeymart.ui.util.Constant.MAX_IMAGES
 import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
