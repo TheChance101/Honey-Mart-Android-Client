@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.orders
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OrderEntity
+import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -27,7 +27,7 @@ class OrderViewModel @Inject constructor(
         )
     }
 
-    private fun onGetPendingOrdersSuccess(orders: List<OrderEntity>) {
+    private fun onGetPendingOrdersSuccess(orders: List<Order>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
@@ -50,7 +50,7 @@ class OrderViewModel @Inject constructor(
     }
 
 
-    private fun onGetProcessingOrdersSuccess(orders: List<OrderEntity>) {
+    private fun onGetProcessingOrdersSuccess(orders: List<Order>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
@@ -72,7 +72,7 @@ class OrderViewModel @Inject constructor(
         )
     }
 
-    private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
+    private fun onGetDoneOrdersSuccess(orders: List<Order>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
@@ -94,7 +94,7 @@ class OrderViewModel @Inject constructor(
         )
     }
 
-    private fun onGetCancelledOrdersByUserSuccess(orders: List<OrderEntity>) {
+    private fun onGetCancelledOrdersByUserSuccess(orders: List<Order>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 
@@ -116,7 +116,7 @@ class OrderViewModel @Inject constructor(
         )
     }
 
-    private fun onGetCancelledOrdersByOwnerSuccess(orders: List<OrderEntity>) {
+    private fun onGetCancelledOrdersByOwnerSuccess(orders: List<Order>) {
         _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
     }
 

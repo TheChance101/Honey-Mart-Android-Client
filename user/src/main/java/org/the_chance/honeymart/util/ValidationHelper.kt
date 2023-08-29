@@ -23,6 +23,26 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.VALID_PASSWORD -> R.string.valid_password
         ValidationState.VALID_FULL_NAME -> R.string.valid_full_name
         ValidationState.SUCCESS -> R.string.success
+        ValidationState.BLANK_TEXT_FIELD -> TODO()
+        ValidationState.VALID_TEXT_FIELD -> TODO()
+        ValidationState.SHORT_LENGTH_TEXT -> TODO()
+        ValidationState.INVALID_PRICE -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_LETTER -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_DIGIT -> TODO()
+        ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER -> TODO()
+        ValidationState.INVALID_MARKET_NAME -> TODO()
+        ValidationState.VALID_MARKET_NAME -> TODO()
+        ValidationState.BLANK_MARKET_NAME -> TODO()
+        ValidationState.BLANK_MARKET_ADDRESS -> TODO()
+        ValidationState.INVALID_MARKET_ADDRESS -> TODO()
+        ValidationState.VALID_MARKET_ADDRESS -> TODO()
+        ValidationState.BLANK_MARKET_DESCRIPTION -> TODO()
+        ValidationState.SHORT_MARKET_DESCRIPTION -> TODO()
+        ValidationState.VALID_MARKET_DESCRIPTION -> TODO()
+        ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH -> TODO()
+        ValidationState.CONFIRM_PASSWORD_MATCH -> TODO()
+        ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
+        ValidationState.INVALID_COUPON_COUNT -> TODO()
     }
 
 }

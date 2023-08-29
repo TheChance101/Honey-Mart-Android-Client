@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.new_products
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
@@ -35,7 +35,7 @@ class NewProductsViewModel @Inject constructor(
     }
 
 
-    private fun onGetRecentProductsSuccess(products: List<RecentProductEntity>) {
+    private fun onGetRecentProductsSuccess(products: List<RecentProduct>) {
         _state.update {
             it.copy(
                 isLoading = false,

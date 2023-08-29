@@ -15,6 +15,7 @@
     <string name="already_have_account">already have account?</string>
     <string name="log_in">Log in</string>
     <string name="reconnect_with_your_favorite_brands_and_saved_items_log_in_today">Reconnect with your favorite brands and saved items. Log in today!</string>
+    <string name="login_to_discover_a_curated_selection_of_products_just_for_you">Login to discover a curated selection of products just for you</string>
     <string name="welcome_back">Welcome Back!!</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="email">Email</string>
@@ -107,10 +108,55 @@
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
+    <string name="icon_visible">icon visible</string>
+    <string name="there_are_no_order_for_this_day">There are no order for this \n day!!</string>
+    <string name="new_order">new order</string>
     <string name="cancelled">Cancelled</string>
     <string name="new_products">New Products</string>
     <string name="last_purchases">Last Purchases</string>
     <string name="discover_products">Discover products</string>
+    <string name="icon_add">Icon Add</string>
+    <string name="image_of_product">Image of product</string>
+    <string name="icon_delete_image">Icon Delete Image</string>
+    <string name="placeholder_image">Placeholder Image</string>
+
+    <!--Add New Product Region-->
+    <string name="add_new_product">Add New Product</string>
+    <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
+    <string name="product_name_is_too_short">Product name is too short</string>
+    <string name="price">Price</string>
+    <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
+    <string name="invalid_product_price">Invalid product price</string>
+    <string name="description">Description</string>
+    <string name="product_description_can_t_be_blank">Product description can\'t be blank</string>
+    <string name="product_description_is_too_short">Product description is too short</string>
+    <string name="add_product_image">Add product image</string>
+    <string name="add">Add</string>
+    <string name="icon_cart">Icon Cart</string>
+    <string name="your_products_is_empty">Your Products is empty!!</string>
+    <string name="add_product_placeholder_subtitle">Adding a product will increase your chances of attracting interested buyers. What product fits your item?</string>
+
+    <!--Update Category Region-->
+    <string name="category_name_can_t_be_blank">Category name can\'t be blank</string>
+    <string name="category_name_is_too_short">Category name is too short</string>
+    <string name="update_category">Update category</string>
+    <string name="new_category_name">New category name</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="add_new_category">Add New category</string>
+    <string name="category_name">Category Name</string>
+    <string name="select_category_image">Select category image</string>
+    <string name="your_market_is_empty">Your Market is empty!!</string>
+    <string name="body_empty_category">Adding a category will increase your chances of attracting interested buyers. What category fits your item?</string>
+    <string name="please_click_on">"Please click on "</string>
+    <string name="to_add_category">to Add Category</string>
+    <string name="create_an_account_name_your_market">Welcome to Honey Mart!! \n Create an account, Name your market and choose its category to start selling your products</string>
+
+
+    <!--Owner Region-->
+    <string name="send">Send</string>
+    <string name="market_images">Market Images</string>
+    <string name="continue_word">Continue</string>
+
     <string name="declined">Declined</string>
     <string name="the_search_result_is_empty">The search result is empty!!</string>
     <string name="discover_markets_now">Discover Markets Now</string>
@@ -132,7 +178,6 @@
     <string name="delivery">Delivery</string>
     <string name="shop_detail">Shop details</string>
     <string name="no_deal">No. Deal</string>
-    <string name="price">Price</string>
     <string name="offer_price">Offer Price</string>
     <string name="expiration_date">Expiration Date</string>
     <string name="get_coupon">Get coupon</string>
@@ -144,6 +189,35 @@
     <string name="login">Login</string>
     <string name="login_and_get_access_to_your_orders_wishlist_and_more">Login and get access to your orders, wishlist, and more.</string>
     <string name="you_are_not_logged_in">You are not Logged In</string>
+    <string name="product_details">Product Details</string>
+    <string name="update_product">Update Product</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="you_delete_a_categories">You delete a categories ....\n</string>
+    <string name="you_delete_a_product">You delete a product ....\n</string>
+    <string name="honey_sun_image">Honey Sun Image</string>
+    <string name="authorization_background_image">authorization background image</string>
+    <string name="more">More</string>
+
+
+    <string name="pending">Pending</string>
+    <string name="approved">Approved</string>
+    <string name="new_requests">2 new requests</string>
+    <string name="approve">Approve</string>
+    <string name="product">Product</string>
+    <string name="add_new_coupon">Add New Coupon</string>
+    <string name="discount_percentage_can_t_be_blank">Discount Percentage can\'t be blank</string>
+    <string name="invalid_coupon_discount_percentage">Invalid  Coupon Discount Percentage</string>
+    <string name="coupon_count">Coupon Count</string>
+    <string name="coupon_count_can_t_be_blank">Coupon Count can\'t be blank</string>
+    <string name="invalid_coupon_count">Invalid Coupon Count</string>
+    <string name="select_product_to_start_adding_your_coupon">Select Product to start adding your coupon</string>
+    <string name="offer_percentage">Offer Percentage</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="all_capitalized">All</string>
+
     <string name="all">All</string>
     <string name="valid">Valid</string>
     <string name="expired">Expired</string>

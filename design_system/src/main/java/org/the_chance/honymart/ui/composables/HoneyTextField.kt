@@ -30,26 +30,30 @@ import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun HoneyTextField(
-    modifier: Modifier = Modifier,
     hint: String,
-    iconPainter: Painter,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    iconPainter: Painter? = null,
     text: String = "",
     errorMessage: String = "",
     oneLineOnly: Boolean = false,
     isPassword: VisualTransformation = VisualTransformation.None,
     isError: Boolean = errorMessage.isNotEmpty(),
-    color: Color,
-    keyboardOptions: KeyboardOptions =  KeyboardOptions.Default.copy(
-        imeAction = ImeAction.Search)
-    ) {
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search
+    )
+) {
     Column {
 
         OutlinedTextField(
             singleLine = oneLineOnly,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(start = MaterialTheme.dimens.space16)
+                .padding(
+                    end = MaterialTheme.dimens.space16,
+                    start = MaterialTheme.dimens.space16,
+                    bottom = MaterialTheme.dimens.space8
+                )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
             value = text,
             onValueChange = onValueChange,
@@ -61,7 +65,7 @@ fun HoneyTextField(
                 )
             },
             visualTransformation = isPassword,
-            keyboardOptions=keyboardOptions,
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
@@ -81,11 +85,13 @@ fun HoneyTextField(
                 }
             },
             leadingIcon = {
-                Icon(
-                    painter = iconPainter,
-                    contentDescription = stringResource(R.string.copy_button),
-                    tint = if (isError) error else color
-                )
+                if (iconPainter != null) {
+                    Icon(
+                        painter = iconPainter,
+                        contentDescription = stringResource(R.string.copy_button),
+                        tint = if (isError) error else white200
+                    )
+                }
             },
             isError = isError,
         )
@@ -105,6 +111,7 @@ fun HoneyTextField(
 
 
 @Preview(name = "phone", device = Devices.PHONE, showSystemUi = true)
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
 fun TextFieldPreview() {
     HoneyTextField(
@@ -113,7 +120,6 @@ fun TextFieldPreview() {
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
         onValueChange = {},
-        color = white200
     )
 }
 
@@ -126,6 +132,5 @@ fun TextFieldTabletPreview() {
         isError = true,
         errorMessage = stringResource(R.string.that_s_not_a_valid_email),
         onValueChange = {},
-        color = white200
     )
 }

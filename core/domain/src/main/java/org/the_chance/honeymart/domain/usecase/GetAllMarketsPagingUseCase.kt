@@ -2,14 +2,14 @@ package org.the_chance.honeymart.domain.usecase
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
 class GetAllMarketsPagingUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
 ) {
-    suspend operator fun invoke(): Flow<PagingData<MarketEntity>> {
+    suspend operator fun invoke(): Flow<PagingData<Market>> {
         return honeyMartRepository.getAllMarketsPaging(null)
     }
 

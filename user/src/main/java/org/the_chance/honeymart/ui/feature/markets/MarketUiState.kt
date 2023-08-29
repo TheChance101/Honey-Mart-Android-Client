@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.feature.markets
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 
@@ -23,7 +23,7 @@ data class MarketUiState(
 )
 
 
-fun MarketEntity.toMarketUiState(): MarketUiState {
+fun Market.toMarketUiState(): MarketUiState {
     return MarketUiState(
         marketId = marketId,
         marketName = marketName,

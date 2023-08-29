@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.new_products
 
-import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
@@ -21,7 +21,7 @@ data class RecentProductUiState(
     val isFavorite: Boolean = false
 )
 
-fun RecentProductEntity.toRecentProductUiState() = RecentProductUiState(
+fun RecentProduct.toRecentProductUiState() = RecentProductUiState(
     productId = productId,
     productName = productName,
     productImage = productImages.ifEmpty { listOf("") }.first(),

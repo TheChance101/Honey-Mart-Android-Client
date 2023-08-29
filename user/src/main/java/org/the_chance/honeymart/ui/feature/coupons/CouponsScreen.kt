@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -65,7 +65,7 @@ fun CouponsContent(
     listener: CouponsInteractionListener,
 ) {
 
-    AppBarScaffold {
+    HoneyAppBarScaffold {
 
         Loading(state.isLoading)
 

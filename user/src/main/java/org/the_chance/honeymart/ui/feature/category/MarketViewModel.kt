@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.feature.category
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.MarketDetailsEntity
+import org.the_chance.honeymart.domain.model.MarketDetails
 import org.the_chance.honeymart.domain.usecase.GetMarketDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -48,7 +48,7 @@ class MarketViewModel @Inject constructor(
         )
     }
 
-    private fun onGetCategorySuccess(market: MarketDetailsEntity) {
+    private fun onGetCategorySuccess(market: MarketDetails) {
         this._state.update {
             it.copy(
                 isLoading = false,
