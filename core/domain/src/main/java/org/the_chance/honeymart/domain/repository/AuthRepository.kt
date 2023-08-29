@@ -32,4 +32,6 @@ interface AuthRepository {
     suspend fun saveOwnerImageUrl(imageUrl: String)
     fun getOwnerImageUrl(): String?
     suspend fun getOwnerProfile(): OwnerProfile
+    suspend fun saveOwnerMarketId(marketId: Long)
+     fun getOwnerMarketId(): Long?
 }

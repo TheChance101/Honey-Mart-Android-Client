@@ -90,4 +90,9 @@ class AuthRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfile()
             ?: throw NotFoundException()
 
+    override suspend fun saveOwnerMarketId(marketId: Long) =
+        datastore.saveOwnerMarketId(marketId)
+
+    override  fun getOwnerMarketId(): Long? = datastore.getOwnerMarketId()
+
 }
