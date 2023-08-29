@@ -41,10 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.category.composables.CardChip
 import org.the_chance.honeymart.ui.feature.category.composables.CategoriesAppBarScaffold
 import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
@@ -58,7 +58,7 @@ import kotlin.math.sin
 
 @Composable
 fun CategoriesScreen(
-    viewModel: CategoryViewModel = hiltViewModel(),
+    viewModel: MarketViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
@@ -66,13 +66,12 @@ fun CategoriesScreen(
     CategoriesAppBarScaffold(navController) {
         CategoryContent(state, listener = viewModel)
     }
-
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = { effect, navController ->
+        handleEffect = { effect, navControllers ->
             when (effect) {
-                is CategoryUiEffect.ClickCategoryEffect -> {
-                    navController.navigateToProductScreen(
+                is MarketUiEffect.ClickMarketEffect -> {
+                    navControllers.navigateToProductScreen(
                         effect.categoryId,
                         effect.marketId,
                         effect.position
@@ -85,7 +84,7 @@ fun CategoriesScreen(
 @Composable
 fun CategoryContent(
     state: MarketDetailsUiState,
-    listener: CategoryInteractionListener,
+    listener: MarketInteractionListener,
 ) {
     Loading(state.isLoading)
 

@@ -15,6 +15,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.markets.compoaseable.MarketItem
@@ -30,11 +31,11 @@ fun MarketsScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is MarketUiEffect.ClickMarketEffect -> navController.navigateToCategoryScreen(effect.marketId)
             }
-    })
+        })
 
     MarketContent(state = state, listener = viewModel)
 }
@@ -45,7 +46,7 @@ fun MarketContent(
     listener: MarketInteractionListener,
 ) {
     AppBarScaffold {
-        val markets= state.markets.collectAsLazyPagingItems()
+        val markets = state.markets.collectAsLazyPagingItems()
         ContentVisibility(state = markets.itemCount > 0) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
@@ -63,10 +64,13 @@ fun MarketContent(
                             onClickItem = listener::onClickMarket,
                             marketId = market.marketId,
                             marketImage = market.marketImage,
-                            marketName = market.marketName)
+                            marketName = market.marketName
+                        )
                     }
                 }
-                PagingStateVisibility(markets,listener::onclickTryAgainMarkets)
+                item {
+                    PagingStateVisibility(markets)
+                }
             }
         }
         ConnectionErrorPlaceholder(

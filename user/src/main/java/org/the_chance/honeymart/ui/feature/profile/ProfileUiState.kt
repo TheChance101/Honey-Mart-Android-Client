@@ -28,3 +28,6 @@ fun ProfileUserEntity.toProfileUiState(): ProfileUiState.AccountState {
         profileImage = profileImage,
     )
 }
+
+
+fun ProfileUiState.showProfile() = !isConnectionError && !isError && !isLoading
