@@ -73,7 +73,7 @@ fun CouponDetails(
                     notchRadius = 16.dp
                 )
             )
-            .background(colors.onTertiary)
+            .background(colors.background)
             .padding(dimens.space16),
         verticalArrangement = Arrangement.SpaceAround
     ) {
