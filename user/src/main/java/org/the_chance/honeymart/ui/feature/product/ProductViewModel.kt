@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
@@ -60,7 +60,7 @@ class ProductViewModel @Inject constructor(
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
+    private fun onGetCategorySuccess(categories: List<Category>) {
         _state.update {
             it.copy(
                 error = null, isLoadingCategory = false,
@@ -113,7 +113,7 @@ class ProductViewModel @Inject constructor(
         )
 
     }
-    private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
+    private fun onGetProductSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update {
             it.copy(

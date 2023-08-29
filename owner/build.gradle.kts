@@ -1,6 +1,12 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.HILT_LIBRARY)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -32,6 +38,11 @@ android {
     }
      buildFeatures {
         dataBinding = true
+         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
     }
 }
 
@@ -51,4 +62,15 @@ dependencies {
     Dependencies.navigationDependencies.forEach { implementation(it) }
     //retrofit
     Dependencies.retrofitDependencies.forEach { implementation(it) }
+    //Hilt
+    kapt(Dependencies.hiltCompiler)
+    implementation(Dependencies.hiltDependency)
+    // FCM notification
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    //paging
+    implementation(Dependencies.pagingCommon)
+    implementation(Dependencies.pagingRuntime)
+    implementation(Dependencies.pagingCompose)
 }

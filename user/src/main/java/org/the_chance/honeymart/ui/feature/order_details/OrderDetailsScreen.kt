@@ -30,9 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.OrderDetailsCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
@@ -61,7 +61,7 @@ private fun OrderDetailsContent(
     listener: OrderDetailsInteractionListener,
     state: OrderDetailsUiState,
 ) {
-    AppBarScaffold {
+    HoneyAppBarScaffold {
         ContentVisibility(state = !state.isProductsLoading) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Loading(state = state.isProductsLoading)

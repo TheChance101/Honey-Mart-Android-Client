@@ -21,7 +21,9 @@ data class Dimens(
     val space40: Dp = 40.dp,
     val space48: Dp = 48.dp,
     val space56: Dp = 56.dp,
-    val space64: Dp = 46.dp,
+    val space64: Dp = 64.dp,
+    val space86: Dp = 86.dp,
+    val space112: Dp = 112.dp,
     val space100: Dp = 100.dp,
     val space198: Dp = 198.dp,
 
@@ -35,6 +37,7 @@ data class Dimens(
     val strokeNormal: Dp = 1.dp,
 
     val lottieLoading: Dp = 100.dp,
+    val smallLottieLoading: Dp = 48.dp,
     val addToCartLottieLoading: Dp = 50.dp,
     val itemProductImage: Dp = 88.dp,
 
@@ -43,9 +46,11 @@ data class Dimens(
     val heightPrimaryButton: Dp = 48.dp,
     val heightOutlinedTextField: Dp = 64.dp,
 
+    val icon14: Dp = 14.dp,
     val icon16: Dp = 16.dp,
     val icon24: Dp = 24.dp,
     val icon32: Dp = 32.dp,
+    val icon36: Dp = 36.dp,
     val icon48: Dp = 48.dp,
     val heightItemMarketCard: Dp = 164.dp,
     val widthItemMarketCard: Dp = 132.dp,
@@ -54,4 +59,10 @@ data class Dimens(
     val heightItem: Dp = 192.dp,
     val sizeProfileImage: Dp = 164.dp,
     val card: Dp = 120.dp,
-    )
+    val sunImageSize: Dp = 120.dp,
+    val categoryIconItem: Dp = 82.dp,
+    val productButton: Dp = 96.dp,
+    val categoryItem: Dp = 140.dp,
+    val itemOrder: Dp = 124.dp,
+    val withOrderStatusButton: Dp = 165.dp
+)

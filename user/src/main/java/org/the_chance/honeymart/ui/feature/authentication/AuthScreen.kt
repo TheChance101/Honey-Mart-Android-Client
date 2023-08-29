@@ -28,11 +28,11 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
+import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun AuthScreen(
@@ -92,28 +92,12 @@ fun AuthContent(
             ),
             onClick = listener::onClickSignUp
         )
-        Row(
-            modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.already_have_account),
-                style = Typography.displaySmall.copy(black37),
-                textAlign = TextAlign.Center
-            )
-            TextButton(
-                contentPadding = PaddingValues(MaterialTheme.dimens.zero),
-                onClick = listener::onClickLogin,
-                colors = ButtonDefaults.textButtonColors(Color.Transparent)
-            ) {
-                Text(
-                    text = stringResource(R.string.log_in),
-                    style = Typography.displayLarge.copy(primary100),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
+        HoneyAuthFooter(
+            text = stringResource(R.string.already_have_account),
+            textButtonText = stringResource(R.string.log_in),
+            onTextButtonClicked = listener::onClickLogin,
+            modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+        )
     }
 }
 

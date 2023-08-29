@@ -141,13 +141,13 @@ object Dependencies {
 
     // Paging
     val pagingRuntime by lazy {
-        "androidx.paging:paging-runtime-ktx:${DependencyVersions.PagingRuntimeVersion}"
+        "androidx.paging:paging-runtime:${DependencyVersions.PagingRuntimeVersion}"
     }
     val pagingCompose by lazy {
-        "androidx.paging:paging-compose:${DependencyVersions.PagingRuntimeVersion}"
+        "androidx.paging:paging-compose:${DependencyVersions.PagingComposeVersion}"
     }
     val pagingCommon by lazy {
-        "androidx.paging:paging-common-ktx:${DependencyVersions.PagingRuntimeVersion}"
+        "androidx.paging:paging-common:${DependencyVersions.PagingRuntimeVersion}"
     }
 
     object Classpath {

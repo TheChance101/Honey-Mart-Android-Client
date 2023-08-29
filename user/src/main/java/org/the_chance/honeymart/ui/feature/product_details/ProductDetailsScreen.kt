@@ -63,19 +63,14 @@ fun ProductDetailsScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = { effect, navController ->
+        handleEffect = {effect, navController ->
             when (effect) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
-                is ProductDetailsUiEffect.AddToCartSuccess -> {
-                    viewModel.showSnackBar(effect.message)
-                }
-
+                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(effect.message)}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {
-                    viewModel.showDialog(effect.productId, effect.count)
-                }
-
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect ->
+                {viewModel.showDialog(effect.productId ,effect.count)}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
@@ -106,7 +101,7 @@ private fun ProductDetailsContent(
                             .shadow(elevation = 8.dp)
                             .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(
-                                bottom = MaterialTheme.dimens.space56,
+                                 bottom = MaterialTheme.dimens.space56,
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,
@@ -134,11 +129,9 @@ private fun ProductDetailsContent(
                             modifier = Modifier
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(bottom = 120.dp)
-                    ) {
+                    Box(modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(bottom = 120.dp)) {
                         AnimatedVisibility(
                             visible = state.snackBar.isShow,
                             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
@@ -177,6 +170,7 @@ private fun ProductDetailsContent(
         )
         { padding ->
             Column(Modifier.fillMaxSize()) {
+
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                     val (imageProduct, smallImageProduct, info) = createRefs()
                     Box(modifier = Modifier
@@ -263,7 +257,7 @@ private fun ProductDetailsContent(
 
                         HoneyOutlineText(
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
-                            state.totalPriceInCurrency,
+                             text = state.totalPriceInCurrency,
                         )
 
                         Text(

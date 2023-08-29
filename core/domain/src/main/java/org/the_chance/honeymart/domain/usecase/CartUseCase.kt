@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.domain.usecase
 
-import org.the_chance.honeymart.domain.model.CartEntity
+import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import javax.inject.Inject
 
@@ -13,6 +13,6 @@ class CartUseCase @Inject constructor(
     suspend fun deleteFromCart(productId: Long): String =
         honeyMartRepository.deleteFromCart(productId)
 
-    suspend fun getCart(): CartEntity =
+    suspend fun getCart(): Cart =
         honeyMartRepository.getCart()
 }

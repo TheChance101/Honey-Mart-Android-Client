@@ -15,7 +15,7 @@ data class OrderDetailsDto(
     @SerializedName("totalPrice")
     val totalPrice: Double? = null,
     @SerializedName("date")
-    val date: String? = null,
+    val date: Long? = null,
     @SerializedName("state")
     val state: Int? = null,
 )

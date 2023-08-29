@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
-import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.RecentProduct
 
-fun RecentProductDto.RecentProductEntity() = RecentProductEntity(
+fun RecentProductDto.toRecentProduct() = RecentProduct(
     productId = id ?: 0L,
     productName =  name ?: "",
     productDescription = description ?: "",

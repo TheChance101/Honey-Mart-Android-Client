@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.coupons
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -29,7 +29,7 @@ class CouponsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetClippedUserCouponsSuccess(coupons: List<CouponEntity>) {
+    private fun onGetClippedUserCouponsSuccess(coupons: List<Coupon>) {
         _state.update {
             it.copy(
                 isLoading = false,

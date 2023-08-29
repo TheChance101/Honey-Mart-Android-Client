@@ -10,17 +10,21 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.the_chance.honeymart.data.BuildConfig
-import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
+import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val dataStorePreferences: AuthDataStorePreferences,
+    private val dataStorePreferences: AuthorizationPreferences,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val accessToken = dataStorePreferences.getAccessToken()
-        val refreshToken = dataStorePreferences.getRefreshToken()
+
+        val accessToken = dataStorePreferences.storedAccessToken.takeUnless { it.isNullOrEmpty() }
+            ?: dataStorePreferences.getAccessToken()
+        val refreshToken = dataStorePreferences.storedRefreshToken.takeUnless { it.isNullOrEmpty() }
+            ?: dataStorePreferences.getRefreshToken()
+
         val (oldRequest, oldResponse) = makeRequest(chain, accessToken)
         if (oldResponse.code == 401 && refreshToken != "" && refreshToken != null) {
             val response = refreshToken(refreshToken)
