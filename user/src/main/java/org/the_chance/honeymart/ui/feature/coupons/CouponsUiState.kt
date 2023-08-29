@@ -1,9 +1,13 @@
 package org.the_chance.honeymart.ui.feature.coupons
 
+import android.annotation.SuppressLint
+import android.icu.text.DecimalFormat
+import org.the_chance.honeymart.domain.model.CouponEntity
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
-import java.time.LocalDate
+import org.the_chance.honeymart.ui.feature.product.toProductUiState
+import java.text.SimpleDateFormat
+import java.util.Date
 
 data class CouponsUiState(
     val updatedCoupons: List<CouponUiState> = emptyList(),
@@ -18,18 +22,25 @@ data class CouponUiState(
     val couponId: Long = 0L,
     val count: Int = 0,
     val discountPrice: Double = 0.0,
-    val expirationDate: String = "",
+    val expirationDate: Date = Date(),
     val product: ProductUiState = ProductUiState(),
     val isClipped: Boolean = false,
 ) {
-    val isExpired: Boolean =
-        expirationDate.formatDate() <= LocalDate.now().toString()
-
-    val couponProductPrice= product.productPrice.formatCurrencyWithNearestFraction()
-    val couponDiscountProductPrice= product.productPrice.discountedPrice(discountPercentage = discountPrice).formatCurrencyWithNearestFraction()
-    val imageUrl= product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
-
+    val expirationDateFormat = expirationDate.toCouponExpirationDateFormat()
+    val discountPriceInCurrency = discountPrice.formatCurrencyWithNearestFraction()
+    val isExpired = expirationDate.before(Date())
+   val imageUrl= product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
 }
+
+
+fun CouponEntity.toCouponUiState() = CouponUiState(
+    couponId = couponId,
+    count = count,
+    discountPrice = product.productPrice.discountedPrice(discountPercentage = discountPercentage),
+    expirationDate = expirationDate,
+    product = product.toProductUiState(),
+    isClipped = isClipped,
+)
 
 enum class CouponsState(val state: Int) {
     ALL(1),
@@ -37,14 +48,17 @@ enum class CouponsState(val state: Int) {
     EXPIRED(3),
 }
 
-fun String.formatDate(): String {
-    val date = this
-    val year = date.substring(0, 4)
-    val month = date.substring(5, 7)
-    val day = date.substring(8, 10)
-    return "$day.$month.$year"
+@SuppressLint("SimpleDateFormat")
+fun Date.toCouponExpirationDateFormat(): String {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
+    return dateFormat.format(this)
 }
 
+
+fun Double.formatCurrencyWithNearestFraction(): String {
+    val decimalFormat = DecimalFormat("'$'#,##0.0")
+    return decimalFormat.format(this)
+}
 fun CouponsUiState.all() = this.couponsState == CouponsState.ALL
 fun CouponsUiState.valid() = this.couponsState == CouponsState.VALID
 fun CouponsUiState.expired() = this.couponsState == CouponsState.EXPIRED

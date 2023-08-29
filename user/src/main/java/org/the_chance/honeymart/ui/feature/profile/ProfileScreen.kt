@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.profile
 import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
@@ -33,20 +34,25 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val navController = LocalNavigationProvider.current
-
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    val context = LocalContext.current
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { handleImageSelection(it, context, viewModel::onImageSelected) }
+    )
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
+                ProfileUiEffect.ClickCameraEffect -> photoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                  ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
                 is ProfileUiEffect.ClickCouponsEffect -> { navController.navigateToCouponsScreen()}
                 is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-    }
+        })
 
     LaunchedEffect(key1 = true) {
         viewModel.getData()
@@ -63,11 +69,7 @@ private fun ProfileContent(
     state: ProfileUiState,
     listener: ProfileInteractionsListener,
 ) {
-    val context = LocalContext.current
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { handleImageSelection(it, context, listener::onImageSelected) }
-    )
+
 
     AppBarScaffold {
 
@@ -99,7 +101,7 @@ private fun ProfileContent(
             onClickDiscoverMarkets = listener::onClickLogin
         )
         ContentVisibility(state = state.showProfile()) {
-            ProfileSuccessScreen(state, photoPickerLauncher, listener)
+            ProfileSuccessScreen(state, listener)
         }
 
 

@@ -24,6 +24,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
 import org.the_chance.honymart.ui.composables.AppBarScaffold
@@ -40,6 +41,7 @@ fun NotificationsScreen(
         viewModel.effect.collect {
             when (it) {
                 NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
+                NotificationsUiEffect.OnClickDiscoverMarket -> navController.navigateToHomeScreen()
             }
         }
     }
@@ -70,7 +72,7 @@ fun NotificationsContent(
                 image = R.drawable.placeholder_wish_list,
                 title = stringResource(R.string.your_notifications_is_empty),
                 subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = listener::onGetAllNotifications,
+                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
