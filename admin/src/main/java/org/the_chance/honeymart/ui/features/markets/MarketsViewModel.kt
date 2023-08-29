@@ -15,7 +15,6 @@ import javax.inject.Inject
 class MarketsViewModel @Inject constructor(
     private val getMarketsRequests: GetMarketsRequests,
     private val updateMarketRequest: UpdateMarketRequestUseCase,
-    private val logOutAdmin: LogOutAdminUseCase
 ) : BaseViewModel<MarketsRequestUiState, MarketsUiEffect>(MarketsRequestUiState()),
     MarketsInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -39,7 +38,7 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
-                isLoggedIn = true,
+//                isLoggedIn = true,
                 requests = requests.map { it.toMarketRequestUiState() },
             )
         }
@@ -53,7 +52,7 @@ class MarketsViewModel @Inject constructor(
                 _state.update { it.copy(isError = true) }
             }
             ErrorHandler.UnAuthorizedUser -> {
-                _state.update { it.copy(isLoggedIn = false) }
+//                _state.update { it.copy(isLoggedIn = false) }
                 effectActionExecutor(_effect, MarketsUiEffect.UnAuthorizedUserEffect)
             }
             else -> {}
@@ -117,19 +116,4 @@ class MarketsViewModel @Inject constructor(
         _state.update { it.copy(selectedMarket = null, requests = updatedMarkets ) }
     }
 
-    override fun onClickLogout() {
-        tryToExecute(
-            function = { logOutAdmin },
-            onSuccess = { onLogoutSuccess() },
-            onError = ::onLogoutError
-        )
-    }
-
-    private fun onLogoutSuccess() {
-        effectActionExecutor(_effect, MarketsUiEffect.OnClickLogoutEffect)
-    }
-
-    private fun onLogoutError(error: ErrorHandler) {
-
-    }
 }

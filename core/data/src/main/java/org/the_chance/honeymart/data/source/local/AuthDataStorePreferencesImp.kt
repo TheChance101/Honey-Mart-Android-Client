@@ -19,6 +19,7 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         private val KEY_TOKEN = stringPreferencesKey("token")
         private val OWNER_NAME = stringPreferencesKey("owner_name")
         private val OWNER_IMAGE = stringPreferencesKey("owner_image")
+        private val ADMIN_NAME = stringPreferencesKey("admin_name")
     }
 
     override var storedAccessToken: String? = null
@@ -68,8 +69,7 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
 
     override fun getOwnerName(): String? {
         return runBlocking {
-            prefDataStore.data.map { preferences
-                ->
+            prefDataStore.data.map { preferences ->
                 preferences[OWNER_NAME]
             }.first()
         }
@@ -83,9 +83,22 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
 
     override fun getOwnerImageUrl(): String? {
         return runBlocking {
-            prefDataStore.data.map { preferences
-                ->
+            prefDataStore.data.map { preferences ->
                 preferences[OWNER_IMAGE]
+            }.first()
+        }
+    }
+
+    override suspend fun saveAdminName(name: String) {
+        prefDataStore.edit { preferences ->
+            preferences[ADMIN_NAME] = name
+        }
+    }
+
+    override fun getAdminName(): String? {
+        return runBlocking {
+            prefDataStore.data.map { preferences ->
+                preferences[ADMIN_NAME]
             }.first()
         }
     }

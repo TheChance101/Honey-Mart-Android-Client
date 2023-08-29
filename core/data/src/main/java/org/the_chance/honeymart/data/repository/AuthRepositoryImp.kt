@@ -9,9 +9,10 @@ import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginFields
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMessageService
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.AdminLogin
-import org.the_chance.honeymart.domain.model.OwnerFields
+import org.the_chance.honeymart.domain.model.Owner
 import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.repository.AuthRepository
+import org.the_chance.honeymart.domain.usecase.Tokens
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 
@@ -45,11 +46,11 @@ class AuthRepositoryImp @Inject constructor(
         email: String,
         password: String,
         deviceToken: String
-    ): OwnerFields.TokensFields =
+    ): Tokens =
         wrap { honeyMartService.loginUser(email, password, deviceToken) }.value?.toUserLoginFields()
             ?: throw NotFoundException()
 
-    override suspend fun refreshToken(refreshToken: String): OwnerFields.TokensFields =
+    override suspend fun refreshToken(refreshToken: String): Tokens =
         wrap { honeyMartService.refreshToken(refreshToken) }.value?.toUserLoginFields()
             ?: throw NotFoundException()
 
@@ -71,7 +72,7 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
-    override suspend fun loginOwner(email: String, password: String): OwnerFields {
+    override suspend fun loginOwner(email: String, password: String): Owner {
         return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerFields()
             ?: throw NotFoundException()
     }
@@ -96,4 +97,12 @@ class AuthRepositoryImp @Inject constructor(
         return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLogin()
             ?: throw NotFoundException()
     }
+
+    override suspend fun saveAdminName(name: String) {
+        datastore.saveAdminName(name)
+    }
+
+    override fun getAdminName(): String? = datastore.getAdminName()
+
+
 }

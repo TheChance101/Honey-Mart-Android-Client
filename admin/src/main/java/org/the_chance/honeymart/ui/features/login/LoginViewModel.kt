@@ -38,13 +38,13 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onClickLogin() {
-        val validationState = state.value.emailState.isValid &&
-                state.value.passwordState.isValid
+        val validationState = state.value.email.isValid &&
+                state.value.password.isValid
 
         if (validationState) {
             loginAdmin(
-                email = state.value.emailState.value,
-                password = state.value.passwordState.value
+                email = state.value.email.value,
+                password = state.value.password.value,
             )
         } else {
             effectActionExecutor(_effect, LoginUiEffect.ShowValidationToastEffect)
@@ -55,7 +55,7 @@ class LoginViewModel @Inject constructor(
         val emailState = validationAdminLogin.validateEmail(email.trim().toString())
         _state.update {
             it.copy(
-                emailState = FieldState(
+                email = FieldState(
                     errorState = when (emailState) {
                         ValidationState.BLANK_EMAIL -> "email shouldn't be empty"
                         ValidationState.INVALID_EMAIL -> "Invalid email"
@@ -72,7 +72,7 @@ class LoginViewModel @Inject constructor(
         val passwordState = validationAdminLogin.validatePassword(password.toString())
         _state.update {
             it.copy(
-                passwordState = FieldState(
+                password = FieldState(
                     errorState = when (passwordState) {
                         ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
                         ValidationState.INVALID_PASSWORD_LENGTH ->

@@ -7,7 +7,8 @@ class LoginAdminUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(email: String, password: String) {
-        val token = authRepository.loginAdmin(email, password)
-        authRepository.saveTokens(token.accessToken, token.refreshToken)
+        val admin = authRepository.loginAdmin(email, password)
+        authRepository.saveTokens(admin.tokens.accessToken, admin.tokens.refreshToken)
+        authRepository.saveAdminName(admin.name)
     }
 }
