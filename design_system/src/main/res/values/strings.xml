@@ -147,4 +147,8 @@
     <string name="all">All</string>
     <string name="valid">Valid</string>
     <string name="expired">Expired</string>
+    <string name="sort_by_price">Sort by price</string>
+    <string name="random">Random</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 </resources>
