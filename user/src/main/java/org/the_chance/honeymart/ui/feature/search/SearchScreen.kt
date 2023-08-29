@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -36,8 +37,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
-import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -52,8 +51,6 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.honymart.ui.theme.white200
-import pagingStateVisibilityGridScope
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -63,7 +60,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is SearchUiEffect.OnClickProductCard ->
                     navController.navigateToProductDetailsScreen(effect.productId)
@@ -107,7 +104,7 @@ fun SearchContent(
                 HoneyTextField(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
                     text = state.searchQuery,
-                    hint = stringResource(org.the_chance.user.R.string.search),
+                    hint = stringResource(R.string.search),
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
                     color = black37,
@@ -139,7 +136,7 @@ fun SearchContent(
             ) {
                 Column {
                     Text(
-                        text = stringResource(org.the_chance.user.R.string.sort_by_price),
+                        text = stringResource(R.string.sort_by_price),
                         color = black37,
                         modifier = Modifier.padding(
                             start = MaterialTheme.dimens.space16,
@@ -156,17 +153,17 @@ fun SearchContent(
                     ) {
                         CustomChip(
                             state = state.random(),
-                            text = stringResource(org.the_chance.user.R.string.random),
+                            text = stringResource(R.string.random),
                             onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
-                            text = stringResource(org.the_chance.user.R.string.ascending),
+                            text = stringResource(R.string.ascending),
                             onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
-                            text = stringResource(org.the_chance.user.R.string.descending),
+                            text = stringResource(R.string.descending),
                             onClick = listener::onClickDescendingSearch
                         )
                     }

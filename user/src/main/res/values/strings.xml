@@ -1,11 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
-    <string name="expired">expired</string>
-    <string name="sort_by_price">Sort by price</string>
-    <string name="random">Random</string>
-    <string name="ascending">Ascending</string>
-    <string name="descending">Descending</string>
-    <string name="search">Search</string>
 </resources>
