@@ -27,7 +27,7 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun DateField(
-    label: String = "",
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -50,7 +50,7 @@ fun DateField(
 
             ) {
             Text(
-                text = "Date",
+                text = text,
                 style = Typography.displaySmall.copy(black37),
             )
             IconButton(onClick = onClick) {
@@ -72,7 +72,8 @@ fun DateField(
 fun SearchBarPreview() {
     HoneyMartTheme {
         DateField(
-            onClick = {}
+            onClick = {},
+            text = "Expiration Date"
         )
     }
 }

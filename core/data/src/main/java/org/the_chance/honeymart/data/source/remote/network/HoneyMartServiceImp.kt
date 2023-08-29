@@ -63,11 +63,6 @@ class HoneyMartServiceImp @Inject constructor(
             append("password", password)
         }))
 
-
-    override suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean> {
-        return wrap(client.put("/coupon/clip/$couponId"))
-    }
-
     override suspend fun getAllMarkets(): BaseResponse<List<MarketDto>> {
         return wrap(client.get("/markets"))
     }
@@ -348,14 +343,6 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
 
-    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
-        return wrap(client.get("/coupon/allUserCoupons"))
-    }
-
-    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
-        return wrap(client.get("/coupon/allValidCoupons"))
-    }
-
     override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> {
         return wrap(client.get("/product/recentProducts"))
     }
@@ -432,8 +419,44 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun deleteProductImage(productId: Long): BaseResponse<String> =
         wrap(client.delete("/product/$productId/image/$productId}"))
-
     //endregion
+
+    // region Coupon
+    override suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean> {
+        return wrap(client.put("/coupon/clip/$couponId"))
+    }
+
+    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allUserCoupons"))
+    }
+
+    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allValidCoupons"))
+    }
+
+    override suspend fun getNoCouponMarketProducts(): BaseResponse<List<ProductDto>> {
+        return wrap(client.get("/coupon/marketProducts"))
+    }
+
+    override suspend fun searchNoCouponMarketProducts(query: String): BaseResponse<List<ProductDto>> {
+        return wrap(client.get("/coupon/searchMarketProducts?query=$query"))
+    }
+
+    override suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String
+    ): BaseResponse<Boolean> {
+        return wrap(client.submitForm(url = "/coupon", formParameters = Parameters.build {
+            append("productId", productId.toString())
+            append("count", count.toString())
+            append("discountPercentage", discountPercentage.toString())
+            append("expirationDate", expirationDate)
+        }))
+    }
+    // endregion Coupon
+
     //region admin
     override suspend fun getMarketRequests(isApproved: Boolean): BaseResponse<List<RequestDto>> {
         return wrap(client.get("admin/markets") {

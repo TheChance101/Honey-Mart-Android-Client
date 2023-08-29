@@ -38,12 +38,11 @@ fun CouponItem(
         CouponDetails(
             modifier = Modifier
                 .fillMaxHeight(),
-            couponCode = coupon.couponId.toString(),
             productName = coupon.product.productName,
             expirationDate = coupon.expirationDate,
             count = coupon.count,
-            productPrice = coupon.product.productPrice,
-            discountPercentage = coupon.discountedPrice,
+            productPrice = coupon.product.productPriceCouponFormat,
+            discountPercentage = coupon.offerPrice,
         )
         CouponImage(
             modifier = Modifier
@@ -55,7 +54,6 @@ fun CouponItem(
 
 @Composable
 fun CouponDetails(
-    couponCode: String,
     productName: String,
     expirationDate: String,
     count: String,
@@ -77,17 +75,11 @@ fun CouponDetails(
             )
             .background(colors.onTertiary)
             .padding(dimens.space16),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceAround
     ) {
         Text(
             text = productName,
             style = typography.displayMedium.copy(color = colors.onSecondary),
-        )
-
-        CouponDataRow(
-            items = listOf(
-                Pair("Coupon Code", "#$couponCode"),
-            )
         )
 
         CouponDataRow(
@@ -147,7 +139,7 @@ fun CouponImage(
                 CouponImageShape(
                     middleNotchRadius = 16.dp,
                     sideNotchRadius = 8.dp,
-                    sideNotchGap = 18.dp
+                    sideNotchGap = 8.dp
                 )
             )
             .background(colors.primary)
@@ -156,8 +148,9 @@ fun CouponImage(
         verticalArrangement = Arrangement.Center
     ) {
         ImageNetwork(
-            modifier = Modifier.size(200.dp)
-                .clip(RoundedCornerShape(dimens.space12)),
+            modifier = Modifier
+                .size(156.dp)
+                .clip(RoundedCornerShape(dimens.space24)),
             imageUrl = productImageUrl,
             contentDescription = stringResource(R.string.product_image),
             contentScale = ContentScale.Crop
@@ -171,15 +164,14 @@ fun CouponsItemPreview() {
     HoneyMartTheme {
         CouponItem(
             coupon = CouponUiState(
-                couponId = 528882L,
                 count = "12",
-                discountedPrice = "$500",
+                offerPrice = "$500",
                 expirationDate = "10.8.2023",
                 product = ProductUiState(
                     productId = 1L,
                     productName = "Product Name",
                     productImageUrl = "1",
-                    productPrice = "$1500"
+                    productPrice = 1500.0
                 )
             )
         )

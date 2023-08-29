@@ -43,9 +43,9 @@ val Typography = Typography(
     ),
     labelLarge = TextStyle(
         fontFamily = plusJakartaSans,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
-        color = primary100,
+        color = black87,
     ),
 
 )
