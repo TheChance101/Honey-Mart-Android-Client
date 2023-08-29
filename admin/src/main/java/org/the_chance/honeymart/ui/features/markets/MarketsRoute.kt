@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import org.the_chance.honeymart.ui.navigation.Graph
 import org.the_chance.honeymart.ui.navigation.Screen
 
-private val ROUTE = Screen.Requests.route
+private val ROUTE = Screen.MARKETS.route
 
 fun NavController.navigateToRequestsScreen() {
     navigate(ROUTE) {
@@ -17,7 +17,7 @@ fun NavController.navigateToRequestsScreen() {
     }
 }
 
-fun NavGraphBuilder.requestsRoute() {
+fun NavGraphBuilder.marketsRoute() {
     composable(
         route = ROUTE,
     ) {

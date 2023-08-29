@@ -17,9 +17,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
+import org.the_chance.honeymart.ui.main.MainScreen
 import org.the_chance.honeymart.ui.navigation.RootNavigationGraph
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honeymart.ui.navigation.navigation_rail.NavigationRail
+import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
@@ -29,40 +30,29 @@ class MainActivity : AppCompatActivity() {
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
-                    val navigationRailState = checkNavigationRailState()
-                    Row {
-                        AnimatedVisibility(
-                            visible = navigationRailState.value,
-                            enter = slideInHorizontally { -it },
-                            exit = slideOutHorizontally { -it }
-                        ) {
-                            NavigationRail()
-                        }
-
-                        RootNavigationGraph()
-                    }
+                    MainScreen()
                 }
             }
         }
     }
-    @Composable
-    private fun checkNavigationRailState(): MutableState<Boolean> {
-        val navController = LocalNavigationProvider.current
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val navigationRailState = rememberSaveable { (mutableStateOf(false)) }
-
-        val navigationRailScreens = listOf(
-            Screen.Requests.route,
-        )
-        when (navBackStackEntry?.destination?.route) {
-            in navigationRailScreens -> {
-                navigationRailState.value = true
-            }
-
-            else -> {
-                navigationRailState.value = false
-            }
-        }
-        return navigationRailState
-    }
+//    @Composable
+//    private fun checkNavigationRailState(): MutableState<Boolean> {
+//        val navController = LocalNavigationProvider.current
+//        val navBackStackEntry by navController.currentBackStackEntryAsState()
+//        val navigationRailState = rememberSaveable { (mutableStateOf(false)) }
+//
+//        val navigationRailScreens = listOf(
+//            Screen.Requests.route,
+//        )
+//        when (navBackStackEntry?.destination?.route) {
+//            in navigationRailScreens -> {
+//                navigationRailState.value = true
+//            }
+//
+//            else -> {
+//                navigationRailState.value = false
+//            }
+//        }
+//        return navigationRailState
+//    }
 }

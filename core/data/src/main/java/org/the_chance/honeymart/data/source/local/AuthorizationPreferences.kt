@@ -11,4 +11,6 @@ interface AuthorizationPreferences {
     fun getOwnerImageUrl(): String?
     val storedAccessToken: String?
     val storedRefreshToken: String?
+    suspend fun saveAdminName(name: String)
+    fun getAdminName(): String?
 }

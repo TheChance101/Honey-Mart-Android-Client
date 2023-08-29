@@ -74,19 +74,19 @@ fun LoginContent(
             )
             Column {
                 HoneyTextField(
-                    text = state.emailState.value,
+                    text = state.email.value,
                     hint = stringResource(R.string.email),
                     iconPainter = painterResource(id = R.drawable.ic_email),
                     onValueChange = listener::onEmailInputChange,
-                    errorMessage = state.emailState.errorState
+                    errorMessage = state.email.errorState
                 )
 
                 HoneyTextFieldPassword(
-                    text = state.passwordState.value,
+                    text = state.password.value,
                     hint = stringResource(R.string.password),
                     iconPainter = painterResource(id = R.drawable.ic_password),
                     onValueChange = listener::onPasswordInputChanged,
-                    errorMessage = state.passwordState.errorState,
+                    errorMessage = state.password.errorState,
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 )
             }

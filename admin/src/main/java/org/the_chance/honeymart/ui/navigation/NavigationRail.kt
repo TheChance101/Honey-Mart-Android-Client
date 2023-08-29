@@ -1,5 +1,6 @@
-package org.the_chance.honeymart.ui.navigation.navigation_rail
+package org.the_chance.honeymart.ui.navigation
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +19,6 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,84 +37,72 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.markets.MarketsRequestUiState
 import org.the_chance.honeymart.ui.features.markets.MarketsUiEffect
 import org.the_chance.honeymart.ui.features.markets.MarketsViewModel
-import org.the_chance.honeymart.ui.navigation.NavigationScreen
+import org.the_chance.honeymart.ui.main.MainInteractionListener
+import org.the_chance.honeymart.ui.main.MainUiState
+import org.the_chance.honeymart.ui.main.MainViewModel
 import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
+import kotlin.math.log
 
 @Composable
 fun NavigationRail(
-    viewModel: MarketsViewModel = hiltViewModel(),
+    state: MainUiState,
+    listener: MainInteractionListener,
 ) {
-    val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                is MarketsUiEffect.OnClickLogoutEffect -> {
-                    navController.navigateToLogin()
-                }
-                else -> {}
-            }
-        }
-    }
-    val screens = listOf(
-        NavigationScreen.Requests,
-    )
+    val screens = listOf(NavigationRailScreen.Markets,)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
-    ContentVisibility(state = state.isLoggedIn) {
-        NavigationRail(
-            containerColor = MaterialTheme.colorScheme.onTertiary,
-            header = {
-                Box(
-                    modifier = Modifier
-                        .size(MaterialTheme.dimens.space56)
-                        .clip(CircleShape)
-                        .background(
-                            MaterialTheme.colorScheme.primary,
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = state.adminName.toString().uppercase(Locale.ROOT),
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            color = white
-                        )
-                    )
-                }
-            }
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-            screens.forEach { screen ->
-                NavRailItem(
-                    screen = screen,
-                    currentDestination = currentDestination,
-                    navController = navController
+    Log.i( "NavigationRail: ", state.adminInitials.toString())
+    NavigationRail(
+        containerColor = MaterialTheme.colorScheme.onTertiary,
+        header = {
+            Box(
+                modifier = Modifier
+                    .size(MaterialTheme.dimens.space56)
+                    .clip(CircleShape)
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = state.adminInitials.toString().uppercase(Locale.ROOT),
+                    style = MaterialTheme.typography.headlineMedium.copy(color = white)
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .clickable { viewModel.onClickLogout() }
-                    .padding(16.dp),
-                painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
-                contentDescription = "Logout Icon",
-                tint = black60
+        }
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        screens.forEach { screen ->
+            NavRailItem(
+                screen = screen,
+                currentDestination = currentDestination,
+                navController = navController
             )
         }
+        Spacer(modifier = Modifier.weight(1f))
+        Icon(
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable { listener.onClickLogout() }
+                .padding(16.dp),
+            painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
+            contentDescription = "Logout Icon",
+            tint = black60
+        )
     }
+
 }
 
 @Composable
 fun NavRailItem(
-    screen: NavigationScreen,
+    screen: NavigationRailScreen,
     currentDestination: NavDestination?,
     navController: NavHostController,
 ) {

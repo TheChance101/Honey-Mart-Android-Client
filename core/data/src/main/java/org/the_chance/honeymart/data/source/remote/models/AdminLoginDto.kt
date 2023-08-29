@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AdminLoginDto(
-    @SerializedName("accessToken")
-    val accessToken: String?,
+    @SerializedName("tokens")
+    val tokens: TokensDto?,
     @SerializedName("refreshToken")
-    val refreshToken: String?
+    val name: String?,
 )

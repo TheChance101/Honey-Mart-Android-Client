@@ -6,7 +6,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class MarketsRequestUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-    val isLoggedIn: Boolean = false,
+//    val isLoggedIn: Boolean = false,
     val error: ErrorHandler? = null,
     val requests: List<MarketRequestUiState> = emptyList(),
     val selectedMarket: MarketRequestUiState? = null,

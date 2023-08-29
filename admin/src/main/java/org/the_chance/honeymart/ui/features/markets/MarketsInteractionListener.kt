@@ -6,6 +6,4 @@ interface MarketsInteractionListener {
     fun onClickCancel(marketId: Int)
     fun onClickApprove(marketId: Int)
     fun updateMarket(marketId: Int, isApproved: Boolean)
-    fun onClickLogout()
-
 }

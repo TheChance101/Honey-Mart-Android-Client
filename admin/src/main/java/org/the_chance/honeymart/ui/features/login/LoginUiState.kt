@@ -6,9 +6,8 @@ data class LoginUiState(
     val isLoading: Boolean = false,
     val authLoading:Boolean = false,
     val error: ErrorHandler? = null,
-
-    val emailState: FieldState = FieldState(),
-    val passwordState: FieldState = FieldState(),
+    val email: FieldState = FieldState(),
+    val password: FieldState = FieldState(),
     val validationToast: ValidationToast = ValidationToast()
 )
 
