@@ -26,7 +26,7 @@ fun EmptyOrdersPlaceholder(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Image(
                 painter = painter,
                 contentDescription = ""
