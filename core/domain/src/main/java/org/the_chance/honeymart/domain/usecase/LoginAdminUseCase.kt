@@ -10,5 +10,6 @@ class LoginAdminUseCase @Inject constructor(
         val admin = authRepository.loginAdmin(email, password)
         authRepository.saveTokens(admin.tokens.accessToken, admin.tokens.refreshToken)
         authRepository.saveAdminName(admin.name)
+//        return admin.name
     }
 }

@@ -18,7 +18,6 @@ data class FieldState(
 )
 
 data class ValidationToast(
-    val isShown: Boolean = false,
     val messageEmptyFields: String = "Please fill all required fields",
     val messageInvalidDetails: String = "Invalid sign in ID or password"
 )

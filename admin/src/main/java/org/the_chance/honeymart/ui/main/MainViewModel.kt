@@ -19,15 +19,17 @@ class MainViewModel @Inject constructor(
         get() = this::class.simpleName.toString()
 
     init {
-        getOwnerInfo()
+        getAdminInfo()
     }
 
-    private fun getOwnerInfo() {
+    private fun getAdminInfo() {
+        log(_state.value.adminInitials.toString())
         _state.update {
             it.copy(
                 adminInitials = getAdminInitials(),
             )
         }
+        log(_state.value.adminInitials.toString())
     }
 
     override fun onClickLogout() {
@@ -43,6 +45,6 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onLogoutError(error: ErrorHandler) {
-
+        effectActionExecutor(_effect, MainEffect.ShowLogoutErrorToastEffect)
     }
 }

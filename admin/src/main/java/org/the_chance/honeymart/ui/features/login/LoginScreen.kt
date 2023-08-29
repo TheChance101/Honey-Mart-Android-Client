@@ -51,14 +51,12 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
                 LoginUiEffect.ClickLoginEffect -> {
                     navController.navigateToMarketsScreen()
                 }
             }
         }
     }
-
     LoginContent(viewModel, state)
 }
 

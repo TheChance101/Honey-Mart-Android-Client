@@ -1,7 +1,10 @@
 package org.the_chance.honeymart.ui.features.login
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
 import org.the_chance.honeymart.domain.usecase.LoginAdminUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationAdminLoginFieldsUseCase
@@ -43,6 +46,9 @@ class LoginViewModel @Inject constructor(
 
     private fun loginAdmin(email: String, password: String) {
         _state.update { it.copy(isAuthenticating = true) }
+        viewModelScope.launch {
+            Log.i("saveAdminName",loginAdminUseCase(email, password).toString() )
+        }
         tryToExecute(
             { loginAdminUseCase(email, password) },
             { onLoginSuccess() },
