@@ -54,7 +54,9 @@ fun RequestsContent(
 ) {
     ContentVisibility(state = state.isContentScreenVisible()) {
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         Row(
@@ -63,28 +65,32 @@ fun RequestsContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             CustomChip(
+                state = state.marketsState == MarketsState.ALL,
+                text = stringResource(R.string.all_capitalized),
+                onClick = { listener.onClickMarketsState(MarketsState.ALL) }
+            )
+            CustomChip(
                 state = state.marketsState == MarketsState.UNAPPROVED,
                 text = stringResource(R.string.pending),
-                onClick = { listener.onGetMarkets(false) }
+                onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
             )
             CustomChip(
                 state = state.marketsState == MarketsState.APPROVED,
                 text = stringResource(R.string.approved),
-                onClick = { listener.onGetMarkets(true) }
-            )
-            CustomChip(
-                state = state.marketsState == MarketsState.ALL,
-                text = stringResource(R.string.all_capitalized),
-                onClick = ( listener::onGetMarkets)
+                onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
             )
         }
             Row(
-                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = MaterialTheme.dimens.space40)
                     .padding(top = MaterialTheme.dimens.space24),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().weight(1f),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
                     LazyColumn(
@@ -92,7 +98,7 @@ fun RequestsContent(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        itemsIndexed(state.markets) { index, item ->
+                        itemsIndexed(state.marketsUpdated) { index, item ->
                             ItemMarketRequest(
                                 onClickCard = { listener.onClickMarket(index) },
                                 ownerName = item.ownerName,
@@ -108,7 +114,9 @@ fun RequestsContent(
                     }
                 }
                 Column(
-                    modifier = Modifier.fillMaxSize().weight(1f)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
                 ) {
                     state.selectedMarket?.let {
                         MarketRequestDetails(
@@ -122,6 +130,6 @@ fun RequestsContent(
         }
     }
     Loading(state = state.isLoading)
-    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = { listener.onGetMarkets(false) } )
+    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = { listener.onClickTryAgain() } )
     EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }

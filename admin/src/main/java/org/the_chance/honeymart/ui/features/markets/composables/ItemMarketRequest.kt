@@ -101,11 +101,7 @@ fun ItemMarketRequest(
                             style = MaterialTheme.typography.bodySmall
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        AnimatedVisibility(
-                            visible = marketsState == MarketsState.ALL && !isLoading,
-                            enter = EnterTransition.None,
-                            exit = slideOutHorizontally(targetOffsetX = { it },animationSpec = tween(500)),
-                        ){
+                        if(marketsState == MarketsState.ALL && !isLoading){
                             Text(
                                 text = marketStateText,
                                 color = if (state) MaterialTheme.colorScheme.primary
