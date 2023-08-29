@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.category
 
-import org.the_chance.honeymart.domain.model.CategoryEntity
+import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class MarketDetailsUiState(
@@ -25,7 +25,7 @@ data class CategoryUiState(
     val isCategorySelected: Boolean = false
 )
 
-fun CategoryEntity.toCategoryUiState(): CategoryUiState {
+fun Category.toCategoryUiState(): CategoryUiState {
     return CategoryUiState(
         categoryId = categoryId,
         categoryName = categoryName,

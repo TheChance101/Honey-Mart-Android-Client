@@ -39,7 +39,7 @@ fun CustomAlertDialog(
     onCancel: () -> Unit,
     onDismissRequest: () -> Unit,
     message: String,
-    ) {
+) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             shape = Shapes.extraLarge,

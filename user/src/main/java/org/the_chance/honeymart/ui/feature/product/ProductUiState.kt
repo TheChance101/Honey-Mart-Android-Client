@@ -4,7 +4,7 @@ import android.icu.text.DecimalFormat
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 
@@ -40,7 +40,7 @@ data class ProductUiState(
     val priceInCurrency=productPrice.formatCurrencyWithNearestFraction()
 }
 
-fun ProductEntity.toProductUiState(): ProductUiState {
+fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,

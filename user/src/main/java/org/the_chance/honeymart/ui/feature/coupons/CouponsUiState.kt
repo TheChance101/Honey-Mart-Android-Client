@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.coupons
 
 import android.annotation.SuppressLint
 import android.icu.text.DecimalFormat
-import org.the_chance.honeymart.domain.model.CouponEntity
+import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -28,12 +28,12 @@ data class CouponUiState(
 ) {
     val expirationDateFormat = expirationDate.toCouponExpirationDateFormat()
     val discountPriceInCurrency = discountPrice.formatCurrencyWithNearestFraction()
-    val isExpired = expirationDate.before(Date())
-   val imageUrl= product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val isExpired = expirationDate < Date()
+    val imageUrl = product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
 }
 
 
-fun CouponEntity.toCouponUiState() = CouponUiState(
+fun Coupon.toCouponUiState() = CouponUiState(
     couponId = couponId,
     count = count,
     discountPrice = product.productPrice.discountedPrice(discountPercentage = discountPercentage),
@@ -59,11 +59,14 @@ fun Double.formatCurrencyWithNearestFraction(): String {
     val decimalFormat = DecimalFormat("'$'#,##0.0")
     return decimalFormat.format(this)
 }
+
 fun CouponsUiState.all() = this.couponsState == CouponsState.ALL
 fun CouponsUiState.valid() = this.couponsState == CouponsState.VALID
 fun CouponsUiState.expired() = this.couponsState == CouponsState.EXPIRED
 
-fun CouponsUiState.showCouponsContent() = this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError
+fun CouponsUiState.showCouponsContent() =
+    this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError
+
 fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
 }

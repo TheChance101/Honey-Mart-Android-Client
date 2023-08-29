@@ -1,8 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import android.icu.text.DecimalFormat
-import org.the_chance.honeymart.domain.model.CartEntity
-import org.the_chance.honeymart.domain.model.CartProductsEntity
+import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class CartUiState(
@@ -27,14 +26,14 @@ data class CartListProductUiState(
     val productPriceFormatted = formatCurrencyWithNearestFraction(totalPrice)
 }
 
-fun CartEntity.toCartListProductUiState(): CartUiState {
+fun Cart.toCartListProductUiState(): CartUiState {
     return CartUiState(
         total = total,
         products = products.toCartProductUiState()
     )
 }
 
-fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState> {
+fun List<Cart.Product>.toCartProductUiState(): List<CartListProductUiState> {
     return this.map {
         CartListProductUiState(
             productId = it.id,

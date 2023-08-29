@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.SearchForProductUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -44,7 +44,7 @@ class SearchViewModel @Inject constructor(
         )
     }
 
-    private fun onSearchForProductsSuccess(products: PagingData<ProductEntity>) {
+    private fun onSearchForProductsSuccess(products: PagingData<Product>) {
         _state.update { searchUiState ->
             searchUiState.copy(
                 products = flowOf(products.map { it.toProductUiState() }),

@@ -36,6 +36,8 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
+import org.the_chance.honymart.ui.composables.HoneyAuthFooter
+import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.Loading
@@ -97,17 +99,18 @@ fun LoginContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
                 ) {
-                    Text(
-                        text = stringResource(R.string.welcome_back),
-                        style = Typography.headlineMedium.copy(color = white),
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = stringResource(
+
+                    HoneyAuthHeader(
+                        title = stringResource(R.string.welcome_back),
+                        subTitle = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
                         ),
-                        style = Typography.bodyMedium.copy(color = white),
-                        textAlign = TextAlign.Center
+                        subTitleColor = white,
+                        modifier = Modifier
+                            .padding(bottom = MaterialTheme.dimens.space24)
+                            .align(
+                                Alignment.CenterHorizontally
+                            )
                     )
                 }
             }
@@ -123,7 +126,6 @@ fun LoginContent(
                     ValidationState.INVALID_EMAIL -> "Invalid email"
                     else -> ""
                 },
-                color = white200
             )
             HoneyTextField(
                 isPassword = PasswordVisualTransformation(),
@@ -140,7 +142,6 @@ fun LoginContent(
                     ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
                     else -> ""
                 },
-                color = white200
             )
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),

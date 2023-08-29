@@ -34,13 +34,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
@@ -79,7 +79,7 @@ fun SearchContent(
     onSearchTextChange: (String) -> Unit,
     listener: SearchInteraction,
 ) {
-    AppBarScaffold {
+    HoneyAppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
         Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
         EmptyProductsPlaceholder(
@@ -105,7 +105,6 @@ fun SearchContent(
                     hint = stringResource(R.string.search),
                     iconPainter = painterResource(id = R.drawable.search),
                     onValueChange = onSearchTextChange,
-                    color = black37,
                     oneLineOnly = true
                 )
                 IconButton(

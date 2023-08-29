@@ -1,27 +1,48 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
+import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
+import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
-import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 
 interface HoneyMartService {
 
+
+    suspend fun addOwner(
+        fullName: String,
+        email: String,
+        password: String,
+    ): BaseResponse<Boolean>
+
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
     suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>>
-    suspend fun addMarket(marketName: String): BaseResponse<MarketDto>
+    suspend fun addMarket(
+        marketName: String,
+        marketAddress: String,
+        marketDescription: String,
+    ): BaseResponse<MarketIdDto>
+
+    suspend fun addMarketImage(
+        marketImage: ByteArray
+    ): BaseResponse<Boolean>
 
     suspend fun updateMarket(marketId: Long, name: String): BaseResponse<MarketDto>
 
@@ -34,20 +55,23 @@ interface HoneyMartService {
     //region Category
     suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>>
 
-    suspend fun addCategory(marketID: Long, name: String, imageId: Int): BaseResponse<CategoryDto>
+    suspend fun addCategory(name: String, imageId: Int): BaseResponse<String>
 
     suspend fun updateCategory(
         id: Long,
         marketID: Long,
         name: String,
         imageId: Int,
-    ): BaseResponse<CategoryDto>
+    ): BaseResponse<String>
 
     suspend fun deleteCategory(id: Long): BaseResponse<String>
     //endregion Category
 
     //region Products
-    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>>
+    suspend fun getAllProductsByCategory(
+        page: Int?,
+        categoryId: Long
+    ): BaseResponse<List<ProductDto>>
 
     suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 
@@ -60,16 +84,25 @@ interface HoneyMartService {
         name: String,
         price: Double,
         description: String,
-        categoriesId: List<Long>,
+        categoriesId: Long,
     ): BaseResponse<ProductDto>
 
+    suspend fun addImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String>
 
     suspend fun updateProduct(
-        productId: Long,
+        id: Long,
         name: String,
         price: Double,
         description: String,
-    ): BaseResponse<ProductDto>
+    ): BaseResponse<String>
+
+    suspend fun updateImageProduct(
+        productId: Long,
+        images: List<ByteArray>
+    ): BaseResponse<String>
 
     suspend fun updateCategoriesHasProduct(
         productId: Long,
@@ -79,7 +112,11 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
-    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>>
+    suspend fun searchForProducts(
+        query: String,
+        page: Int?,
+        sortOrder: String
+    ): BaseResponse<List<ProductDto>>
 
 
     //endregion Product
@@ -89,7 +126,8 @@ interface HoneyMartService {
         password: String,
         deviceToken: String
     ): BaseResponse<UserLoginDto>
-    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
+    suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto>
 
     //region WishList
 
@@ -129,6 +167,9 @@ interface HoneyMartService {
         orderState: Int,
     ): BaseResponse<List<OrderDto>>
 
+    suspend fun getAllMarketOrders(
+        orderState: Int,
+    ): BaseResponse<List<MarketOrderDto>>
 
     suspend fun updateOrderState(
         id: Long?,
@@ -169,9 +210,23 @@ interface HoneyMartService {
 
     suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>>
 
+
     suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
 
     suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean>
+
+    suspend fun getNoCouponMarketProducts(): BaseResponse<List<ProductDto>>
+
+    suspend fun searchNoCouponMarketProducts(
+        query: String,
+    ): BaseResponse<List<ProductDto>>
+
+    suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String,
+    ): BaseResponse<Boolean>
 
 
     // endregion Coupon
@@ -190,4 +245,27 @@ interface HoneyMartService {
     suspend fun addProfileImage(image: ByteArray): BaseResponse<String>
     //endregion
 
+
+    // region Owner
+
+
+    // region Auth
+    suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto>
+    //endregion
+
+    //endregion
+    suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
+    suspend fun deleteProductById(productId: Long): BaseResponse<String>
+    suspend fun deleteProductImage(productId: Long): BaseResponse<String>
+
+    //region admin
+    suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
+
+    suspend fun updateMarketRequest(
+        id: Long?,
+        isApproved: Boolean,
+    ): BaseResponse<Boolean>
+
+    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
+//endregion admin
 }

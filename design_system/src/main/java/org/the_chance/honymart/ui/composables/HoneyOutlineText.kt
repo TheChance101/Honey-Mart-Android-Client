@@ -18,12 +18,12 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun HoneyOutlineText(
+    text: String,
     modifier: Modifier = Modifier,
-    price: String,
     color: Color = MaterialTheme.colorScheme.primary,
 ) {
     Text(
-        text = price,
+        text = text,
         style = MaterialTheme.typography.displaySmall.copy(baselineShift = BaselineShift(0.5f)),
         color = color,
         modifier = modifier

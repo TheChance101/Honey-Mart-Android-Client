@@ -1,10 +1,10 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
-import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.Market
 
 
-fun MarketDto.toMarketEntity() = MarketEntity(
+fun MarketDto.toMarket() = Market(
     marketId = marketId ?: 0L,
     marketName = marketName ?: "",
     imageUrl = imageUrl ?: "",
