@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.signup
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
@@ -13,7 +12,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
-import org.the_chance.honeymart.ui.util.StringResource
+import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +23,7 @@ class SignUpViewModel @Inject constructor(
     private val addMarketImageUseCase: AddMarketImageUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
-    private val stringResourceImpl: StringResource
+    private val stringResourceImpl: StringDictionary
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
     MarketInfoInteractionsListener {
@@ -80,7 +79,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
         showValidationToast(
-            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+            message = stringResourceImpl.errorString.getOrDefault(
                 error,
                 ""
             )
@@ -103,7 +102,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun onLoginError(error: ErrorHandler) {
         showValidationToast(
-            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+            message = stringResourceImpl.errorString.getOrDefault(
                 error,
                 ""
             )
@@ -118,7 +117,7 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 fullNameState = FieldState(
-                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
                         fullNameState,
                         ""
                     ),
@@ -134,7 +133,7 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 emailState = FieldState(
-                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
                         emailState,
                         ""
                     ),
@@ -150,7 +149,7 @@ class SignUpViewModel @Inject constructor(
         _state.update {
             it.copy(
                 passwordState = FieldState(
-                    errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
                         passwordState,
                         ""
                     ),
@@ -170,7 +169,7 @@ class SignUpViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     confirmPasswordState = FieldState(
-                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        errorState = stringResourceImpl.validationString.getOrDefault(
                             passwordState,
                             ""
                         ),
@@ -236,7 +235,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCreateMarketError(errorHandler: ErrorHandler) {
         showValidationToast(
-            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+            message = stringResourceImpl.errorString.getOrDefault(
                 errorHandler,
                 ""
             )
@@ -271,7 +270,7 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketNameState =
                     FieldState(
-                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        errorState = stringResourceImpl.validationString.getOrDefault(
                             marketNameState,
                             ""
                         ),
@@ -292,7 +291,7 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketAddressState =
                     FieldState(
-                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        errorState = stringResourceImpl.validationString.getOrDefault(
                             marketAddressState,
                             ""
                         ),
@@ -313,7 +312,7 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     marketDescriptionState =
                     FieldState(
-                        errorState = stringResourceImpl.validationStringDictionary.getOrDefault(
+                        errorState = stringResourceImpl.validationString.getOrDefault(
                             marketDescriptionState,
                             ""
                         ),
@@ -338,7 +337,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun onAddMarketImageError(errorHandler: ErrorHandler) {
         showValidationToast(
-            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+            message = stringResourceImpl.errorString.getOrDefault(
                 errorHandler,
                 ""
             )

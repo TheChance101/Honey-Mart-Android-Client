@@ -8,14 +8,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class StringResourceImpl @Inject constructor(
+class StringResources @Inject constructor(
     val context: Context
-) : StringResource {
+) : StringDictionary {
     private fun getStringFromFile(fileId: Int): String {
         return context.resources.getString(fileId)
     }
 
-    override val validationStringDictionary: Map<ValidationState, String>
+    override val validationString: Map<ValidationState, String>
         get() = mapOf(
             ValidationState.BLANK_EMAIL to getStringFromFile(R.string.email_should_not_be_empty),
             ValidationState.INVALID_EMAIL to getStringFromFile(R.string.invalid_email),
@@ -34,7 +34,7 @@ class StringResourceImpl @Inject constructor(
             ValidationState.SHORT_MARKET_DESCRIPTION to getStringFromFile(R.string.market_description_should_be_20_letter_at_least),
             ValidationState.BLANK_MARKET_DESCRIPTION to getStringFromFile(R.string.market_description_should_not_be_empty)
         )
-    override val errorStringDictionary: Map<ErrorHandler, String>
+    override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
             ErrorHandler.AlreadyExist to getStringFromFile(R.string.account_already_exist),
             ErrorHandler.UnKnownError to getStringFromFile(R.string.something_went_wrong_please_try_again),

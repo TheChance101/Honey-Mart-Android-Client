@@ -6,8 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.the_chance.honeymart.ui.util.StringResource
-import org.the_chance.honeymart.ui.util.StringResourceImpl
+import org.the_chance.honeymart.ui.util.StringDictionary
+import org.the_chance.honeymart.ui.util.StringResources
 import javax.inject.Singleton
 
 @Module
@@ -15,8 +15,8 @@ import javax.inject.Singleton
 object StringResourceModule {
     @Singleton
     @Provides
-    fun provideStringResource(context: Context): StringResource {
-        return StringResourceImpl(context)
+    fun provideStringResource(context: Context): StringDictionary {
+        return StringResources(context)
     }
 }
 
