@@ -120,7 +120,7 @@ fun CategoryProductsContent(
                     }
                 }
                 item {
-                    PagingStateVisibility(products)
+                    PagingStateVisibility(products, listener)
                 }
             }
             EmptyPlaceholder(

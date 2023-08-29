@@ -5,24 +5,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.composables.HoneyFilledButton
+import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun <T : Any> PagingStateVisibility(
     items: LazyPagingItems<T>,
+    listener: CategoriesInteractionsListener
 ) {
     when {
         items.loadState.refresh is LoadState.Loading -> {
@@ -56,19 +52,21 @@ fun <T : Any> PagingStateVisibility(
             }
         }
 
-        items.loadState.refresh is LoadState.Error || items.loadState.append is LoadState.Error -> {
-            Text(
-                text = stringResource(id = R.string.error_loading_data),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.dimens.space16),
-                textAlign = TextAlign.Center
-            )
-            HoneyFilledButton(
-                label = stringResource(id = R.string.try_again_text),
-                onClick = { items.retry() },
-                modifier = Modifier.wrapContentWidth(),
-            )
+        items.loadState.append is LoadState.Error -> {
+//            Text(
+//                text = stringResource(id = R.string.error_loading_data),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(MaterialTheme.dimens.space16),
+//                textAlign = TextAlign.Center
+//            )
+//            HoneyFilledButton(
+//                label = stringResource(id = R.string.try_again_text),
+//                onClick = { items.retry() },
+//                modifier = Modifier.wrapContentWidth(),
+//            )
+
+            listener.onErrorProducts()
         }
     }
 }
