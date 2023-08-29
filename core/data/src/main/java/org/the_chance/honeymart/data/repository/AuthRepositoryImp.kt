@@ -16,9 +16,6 @@ import org.the_chance.honeymart.domain.usecase.Tokens
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 
-/**
- * Created by Aziza Helmy on 6/16/2023.
- */
 class AuthRepositoryImp @Inject constructor(
     private val datastore: AuthorizationPreferences,
     private val honeyMartService: HoneyMartService,
@@ -92,6 +89,11 @@ class AuthRepositoryImp @Inject constructor(
     override suspend fun getOwnerProfile(): OwnerProfile =
         wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfile()
             ?: throw NotFoundException()
+
+    override suspend fun saveOwnerMarketId(marketId: Long) =
+        datastore.saveOwnerMarketId(marketId)
+
+    override  fun getOwnerMarketId(): Long? = datastore.getOwnerMarketId()
 
     override suspend fun loginAdmin(email: String, password: String): AdminLogin {
         return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLogin()

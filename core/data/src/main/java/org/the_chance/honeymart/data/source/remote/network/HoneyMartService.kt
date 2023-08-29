@@ -207,9 +207,23 @@ interface HoneyMartService {
     suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
     suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
+
     suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
 
     suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean>
+
+    suspend fun getNoCouponMarketProducts(): BaseResponse<List<ProductDto>>
+
+    suspend fun searchNoCouponMarketProducts(
+        query: String,
+    ): BaseResponse<List<ProductDto>>
+
+    suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String,
+    ): BaseResponse<Boolean>
 
 
     // endregion Coupon

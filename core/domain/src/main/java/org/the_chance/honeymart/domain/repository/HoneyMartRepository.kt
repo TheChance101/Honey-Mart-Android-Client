@@ -101,6 +101,14 @@ interface HoneyMartRepository {
     suspend fun deleteProduct(productId: Long): String
     suspend fun deleteProductImage(productId: Long): String
 
+    suspend fun getNoCouponMarketProducts(): List<Product>
+    suspend fun searchNoCouponMarketProducts(query: String): List<Product>
+    suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String,
+    ): Boolean
 
     //region admin
     suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest>

@@ -14,6 +14,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteProductByIdUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateImageProductUseCase
@@ -37,11 +38,11 @@ class CategoriesViewModel @Inject constructor(
     private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
     private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
     private val updateProductImagesUseCase: UpdateImageProductUseCase,
+    private val getOwnerMarketId: GetOwnerInfoUseCase,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
-    private val marketID: Long = 5L
 
     init {
         getCategoryImages()
@@ -51,7 +52,7 @@ class CategoriesViewModel @Inject constructor(
     override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(marketID) },
+            { getAllCategories(getOwnerMarketId.getOwnerMarketId()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -59,12 +60,21 @@ class CategoriesViewModel @Inject constructor(
 
     private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
-        val updatedCategories =
+        val updatedCategories = if (categories.isEmpty()) {
+            categoriesUiState
+        } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
-
-        _state.update {
-            it.copy(isLoading = false, error = null, categories = updatedCategories, position = 0)
         }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = null,
+                categories = updatedCategories,
+                position = 0
+            )
+        }
+        getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
+
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
@@ -128,7 +138,10 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
                 error = null,
                 position = 0,
-                showScreenState = it.showScreenState.copy(showFab = true, showAddProduct = false)
+                showScreenState = it.showScreenState.copy(
+                    showFab = true,
+                    showAddProduct = false
+                )
             )
         }
         getAllCategory()
@@ -222,7 +235,7 @@ class CategoriesViewModel @Inject constructor(
                     imageId = category.newCategory.newIconId,
                     name = category.newCategory.newCategoryName,
                     id = category.newCategory.categoryId,
-                    marketId = marketID
+                    marketId = getOwnerMarketId.getOwnerMarketId()
                 )
             },
             { onUpdateCategorySuccess() },
@@ -274,8 +287,11 @@ class CategoriesViewModel @Inject constructor(
                     showFab = false,
                     showProductDetails = true,
                 ),
-                newProducts = it.newProducts.copy(id = productId)
+                newProducts = it.newProducts.copy(
+                    id = productId,
+                )
             )
+
         }
         val productID = _state.value.newProducts.id
         getProductDetails(productID)
@@ -304,10 +320,14 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 error = null,
                 newProducts = it.newProducts.copy(id = product.productId),
-                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true)
-            )
+                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true),
+
+                )
         }
-        addProductImage(productId = product.productId, images = _state.value.newProducts.images)
+        addProductImage(
+            productId = product.productId,
+            images = _state.value.newProducts.images
+        )
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
@@ -429,7 +449,8 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 showScreenState = it.showScreenState.copy(
                     showProductUpdate = false,
-                    showProductDetails = false
+                    showProductDetails = false,
+                    showFab = true
                 )
             )
         }
@@ -475,8 +496,14 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update { it.copy(isLoading = false, error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false, error = null,
+                newProducts = it.newProducts.copy(images = emptyList()),
+            )
+        }
         getProductsByCategoryId(state.value.newCategory.categoryId)
+
     }
 
     override fun onClickUpdateProductDetails() {
@@ -487,7 +514,10 @@ class CategoriesViewModel @Inject constructor(
                     showFab = false,
                     showProductDetails = false,
                     showProductUpdate = true
-                )
+                ),
+                productDetails = it.productDetails.copy(
+                    productPrice = it.productDetails.productPrice.removeDollarSign()
+                ),
             )
         }
     }
@@ -544,7 +574,7 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
-        getProductDetails(state.value.productDetails.productId)
+
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {

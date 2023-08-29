@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.orders.composables
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun EmptyOrdersPlaceholder(
+fun Placeholder(
     painter: Painter,
     text: String,
     visibilityState: Boolean
@@ -26,7 +26,7 @@ fun EmptyOrdersPlaceholder(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Image(
                 painter = painter,
                 contentDescription = ""

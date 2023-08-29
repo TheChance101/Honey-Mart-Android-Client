@@ -10,5 +10,6 @@ class LoginOwnerUseCase @Inject constructor(
         val response = authRepository.loginOwner(email, password)
         authRepository.saveTokens(response.tokens.accessToken,response.tokens.refreshToken)
         authRepository.saveOwnerName(response.fullName)
+        authRepository.saveOwnerMarketId(response.marketId)
     }
 }

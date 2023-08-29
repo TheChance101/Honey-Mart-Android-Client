@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -56,7 +57,7 @@ fun <T : Any> PagingStateVisibility(
             }
         }
 
-        items.loadState.refresh is LoadState.Error || items.loadState.append is LoadState.Error -> {
+        items.loadState.append is LoadState.Error -> {
             Text(
                 text = stringResource(id = R.string.error_loading_data),
                 modifier = Modifier
@@ -69,6 +70,10 @@ fun <T : Any> PagingStateVisibility(
                 onClick = { items.retry() },
                 modifier = Modifier.wrapContentWidth(),
             )
+        }
+
+        items.loadState.refresh is LoadState.Error -> {
+            ConnectionErrorPlaceholder(state = true, onClickTryAgain = { items.retry() })
         }
     }
 }

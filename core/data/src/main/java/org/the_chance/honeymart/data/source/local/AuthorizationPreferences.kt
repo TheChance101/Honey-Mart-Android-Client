@@ -9,6 +9,8 @@ interface AuthorizationPreferences {
     fun getOwnerName(): String?
     suspend fun saveOwnerImageUrl(image: String)
     fun getOwnerImageUrl(): String?
+    suspend fun saveOwnerMarketId(marketId : Long)
+     fun getOwnerMarketId():Long?
     val storedAccessToken: String?
     val storedRefreshToken: String?
     suspend fun saveAdminName(name: String)

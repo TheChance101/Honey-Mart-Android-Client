@@ -3,6 +3,7 @@ package org.the_chance.honeymart.data.source.local
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
@@ -20,6 +21,7 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         private val OWNER_NAME = stringPreferencesKey("owner_name")
         private val OWNER_IMAGE = stringPreferencesKey("owner_image")
         private val ADMIN_NAME = stringPreferencesKey("admin_name")
+        private val OWNER_MARKET_ID = longPreferencesKey("owner_marketId")
     }
 
     override var storedAccessToken: String? = null
@@ -85,6 +87,21 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         return runBlocking {
             prefDataStore.data.map { preferences ->
                 preferences[OWNER_IMAGE]
+            }.first()
+        }
+    }
+
+    override suspend fun saveOwnerMarketId(marketId: Long) {
+        prefDataStore.edit { preferences ->
+            preferences[OWNER_MARKET_ID] = marketId
+
+        }
+    }
+
+    override  fun getOwnerMarketId(): Long? {
+        return runBlocking {
+            prefDataStore.data.map { preferences ->
+                preferences[OWNER_MARKET_ID]
             }.first()
         }
     }

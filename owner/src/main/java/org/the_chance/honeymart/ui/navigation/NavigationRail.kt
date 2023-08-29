@@ -36,6 +36,7 @@ fun NavigationRail(
     val screens = listOf(
         NavigationRailScreen.Orders,
         NavigationRailScreen.Category,
+        NavigationRailScreen.Coupons,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

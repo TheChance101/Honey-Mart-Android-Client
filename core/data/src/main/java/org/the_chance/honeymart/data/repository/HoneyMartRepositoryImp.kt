@@ -303,6 +303,32 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value ?: throw NotFoundException()
     }
 
+    override suspend fun getNoCouponMarketProducts(): List<Product> {
+        return wrap { honeyMartService.getNoCouponMarketProducts() }.value?.map { it.toProduct() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun searchNoCouponMarketProducts(query: String): List<Product> {
+        return wrap { honeyMartService.searchNoCouponMarketProducts(query) }.value?.map { it.toProduct() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String
+    ): Boolean {
+        return wrap {
+            honeyMartService.addCoupon(
+                productId = productId,
+                count = count,
+                discountPercentage = discountPercentage,
+                expirationDate = expirationDate
+            )
+        }.value ?: throw NotFoundException()
+    }
+
     //region admin
     //region admin
     override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {

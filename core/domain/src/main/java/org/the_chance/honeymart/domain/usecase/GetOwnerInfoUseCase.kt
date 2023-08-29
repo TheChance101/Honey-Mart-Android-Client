@@ -13,4 +13,8 @@ class GetOwnerInfoUseCase @Inject constructor(
     fun getOwnerImageUrl(): String {
         return authRepository.getOwnerImageUrl() ?: ""
     }
+
+    fun getOwnerMarketId(): Long {
+        return authRepository.getOwnerMarketId() ?: 0L
+    }
 }
