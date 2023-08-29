@@ -318,12 +318,17 @@ private fun Categories(
                         onClick = { onChipClick(market.marketId) })
                 }
             }
-            LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            ) {
                 itemsIndexed(
                     categories,
                     key = { _, category -> category.categoryId }) { index, category ->
                     HomeCategoriesItem(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.dimens.space8)
+                            .animateItemPlacement(),
                         label = category.categoryName,
                         onClick = { oncClickCategory(category.categoryId, index) }
                     )
