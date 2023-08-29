@@ -19,11 +19,12 @@ data class CartListProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
     val productPrice: Double = 0.0,
+    val totalPrice: Double = 0.0,
     val productCount: Int = 0,
     val productImage: List<String> = emptyList()
 ) {
     val productImageUrl = productImage.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
-    val productPriceFormatted = formatCurrencyWithNearestFraction(productPrice)
+    val productPriceFormatted = formatCurrencyWithNearestFraction(totalPrice)
 }
 
 fun CartEntity.toCartListProductUiState(): CartUiState {
@@ -40,7 +41,8 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
             productName = it.name,
             productPrice = it.price,
             productCount = it.count,
-            productImage = it.images
+            productImage = it.images,
+            totalPrice = it.price * it.count
         )
     }
 }
