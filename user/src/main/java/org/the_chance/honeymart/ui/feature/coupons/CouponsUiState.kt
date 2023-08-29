@@ -28,8 +28,8 @@ data class CouponUiState(
 ) {
     val expirationDateFormat = expirationDate.toCouponExpirationDateFormat()
     val discountPriceInCurrency = discountPrice.formatCurrencyWithNearestFraction()
-    val isExpired = expirationDate.before(Date())
-   val imageUrl= product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val isExpired = expirationDate < Date()
+    val imageUrl = product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
 }
 
 
@@ -59,11 +59,14 @@ fun Double.formatCurrencyWithNearestFraction(): String {
     val decimalFormat = DecimalFormat("'$'#,##0.0")
     return decimalFormat.format(this)
 }
+
 fun CouponsUiState.all() = this.couponsState == CouponsState.ALL
 fun CouponsUiState.valid() = this.couponsState == CouponsState.VALID
 fun CouponsUiState.expired() = this.couponsState == CouponsState.EXPIRED
 
-fun CouponsUiState.showCouponsContent() = this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError
+fun CouponsUiState.showCouponsContent() =
+    this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError
+
 fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
 }
