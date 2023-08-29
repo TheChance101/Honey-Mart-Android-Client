@@ -92,13 +92,14 @@ private fun ProductDetailsContent(
 
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
             bottomBar = {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     HoneyFilledIconButton(
                         label = stringResource(id = R.string.add_to_cart),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .shadow(elevation = 8.dp)
+                            .shadow(elevation = 8.dp , ambientColor = Color.Black.copy(alpha = 0.25F))
                             .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(
                                  bottom = MaterialTheme.dimens.space56,

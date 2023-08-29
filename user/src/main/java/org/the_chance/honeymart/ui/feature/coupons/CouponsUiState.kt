@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 data class CouponsUiState(
@@ -28,7 +29,7 @@ data class CouponUiState(
 ) {
     val expirationDateFormat = expirationDate.toCouponExpirationDateFormat()
     val discountPriceInCurrency = discountPrice.formatCurrencyWithNearestFraction()
-    val isExpired = expirationDate < Date()
+    val isExpired = expirationDate < Calendar.getInstance().time
     val imageUrl = product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
 }
 

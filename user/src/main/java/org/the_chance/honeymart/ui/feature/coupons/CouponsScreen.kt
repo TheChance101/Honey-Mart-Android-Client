@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.feature.coupons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -117,10 +118,11 @@ fun CouponsContent(
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(items = state.coupons, key = { it.couponId }) { coupon ->
+                    items(items = state.updatedCoupons, key = { it.couponId }) { coupon ->
                         CouponsItem(
                             coupon = coupon,
                             onClickGetCoupon = { listener.onClickGetCoupon(coupon.couponId) })
