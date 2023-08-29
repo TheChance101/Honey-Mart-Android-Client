@@ -2,6 +2,7 @@ package org.the_chance.honeymart.ui.features.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
 import org.the_chance.honeymart.domain.usecase.LoginAdminUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationAdminLoginFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -12,15 +13,36 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginAdminUseCase: LoginAdminUseCase,
-    private val validationAdminLogin: ValidationAdminLoginFieldsUseCase
-
+    private val validationAdminLogin: ValidationAdminLoginFieldsUseCase,
+    private val getMarketsRequests: GetMarketsRequests,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
-    private fun loginAdmin(email: String, password: String) {
+    init {
+        checkAuthorization()
+    }
+
+    private fun checkAuthorization() {
         _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            { getMarketsRequests(true) },
+            { onAuthorizationSuccess() },
+            ::onAuthorizationError,
+        )
+    }
+
+    private fun onAuthorizationSuccess() {
+        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+    }
+
+    private fun onAuthorizationError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+    }
+
+    private fun loginAdmin(email: String, password: String) {
+        _state.update { it.copy(isAuthenticating = true) }
         tryToExecute(
             { loginAdminUseCase(email, password) },
             { onLoginSuccess() },
@@ -29,25 +51,21 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess() {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isAuthenticating = false) }
         effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isAuthenticating = false, error = error) }
+        effectActionExecutor(_effect, LoginUiEffect.ShowInvalidDetailsToastEffect)
     }
 
     override fun onClickLogin() {
-        val validationState = state.value.email.isValid &&
-                state.value.password.isValid
-
-        if (validationState) {
-            loginAdmin(
-                email = state.value.email.value,
-                password = state.value.password.value,
-            )
+        val isFieldsNotEmpty = state.value.email.isEmpty && state.value.password.isEmpty
+        if (isFieldsNotEmpty) {
+            loginAdmin(email = state.value.email.value, password = state.value.password.value,)
         } else {
-            effectActionExecutor(_effect, LoginUiEffect.ShowValidationToastEffect)
+            effectActionExecutor(_effect, LoginUiEffect.ShowEmptyFieldsToastEffect)
         }
     }
 
@@ -56,13 +74,13 @@ class LoginViewModel @Inject constructor(
         _state.update {
             it.copy(
                 email = FieldState(
-                    errorState = when (emailState) {
+                    error = when (emailState) {
                         ValidationState.BLANK_EMAIL -> "email shouldn't be empty"
                         ValidationState.INVALID_EMAIL -> "Invalid email"
                         else -> ""
                     },
                     value = email.toString(),
-                    isValid = emailState == ValidationState.VALID_EMAIL
+                    isEmpty = emailState == ValidationState.VALID_EMAIL
                 ),
             )
         }
@@ -73,14 +91,14 @@ class LoginViewModel @Inject constructor(
         _state.update {
             it.copy(
                 password = FieldState(
-                    errorState = when (passwordState) {
+                    error = when (passwordState) {
                         ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
                         ValidationState.INVALID_PASSWORD_LENGTH ->
                             "Password length must be at least 4"
                         else -> ""
                     },
                     value = password.toString(),
-                    isValid = passwordState == ValidationState.VALID_PASSWORD
+                    isEmpty = passwordState == ValidationState.VALID_PASSWORD
                 ),
             )
         }

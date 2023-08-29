@@ -40,7 +40,6 @@ fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
         viewModel.effect.collect {
             when (it) {
                 MarketsUiEffect.UnAuthorizedUserEffect ->  navController.navigateToLogin()
-                else -> {}
             }
         }
     }

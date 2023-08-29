@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
-import org.the_chance.honeymart.ui.features.markets.navigateToRequestsScreen
+import org.the_chance.honeymart.ui.features.markets.navigateToMarketsScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -37,16 +37,23 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                LoginUiEffect.ShowValidationToastEffect -> {
+                LoginUiEffect.ShowEmptyFieldsToastEffect -> {
                     Toast.makeText(
                         context,
-                        state.validationToast.message,
+                        state.validationToast.messageEmptyFields,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                LoginUiEffect.ShowInvalidDetailsToastEffect -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.messageInvalidDetails,
                         Toast.LENGTH_LONG
                     ).show()
                 }
 
                 LoginUiEffect.ClickLoginEffect -> {
-                    navController.navigateToRequestsScreen()
+                    navController.navigateToMarketsScreen()
                 }
             }
         }
@@ -60,8 +67,8 @@ fun LoginContent(
     listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-    Loading(state.authLoading)
-    AnimatedVisibility(!state.authLoading){
+    Loading(state.isLoading)
+    AnimatedVisibility(!state.isLoading){
         HoneyAuthScaffold(
             modifier = Modifier.imePadding()
         ) {
@@ -78,7 +85,7 @@ fun LoginContent(
                     hint = stringResource(R.string.email),
                     iconPainter = painterResource(id = R.drawable.ic_email),
                     onValueChange = listener::onEmailInputChange,
-                    errorMessage = state.email.errorState
+                    errorMessage = state.email.error
                 )
 
                 HoneyTextFieldPassword(
@@ -86,14 +93,14 @@ fun LoginContent(
                     hint = stringResource(R.string.password),
                     iconPainter = painterResource(id = R.drawable.ic_password),
                     onValueChange = listener::onPasswordInputChanged,
-                    errorMessage = state.password.errorState,
+                    errorMessage = state.password.error,
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 )
             }
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
                 onClick = listener::onClickLogin,
-                isLoading = state.isLoading,
+                isLoading = state.isAuthenticating,
             )
         }
     }

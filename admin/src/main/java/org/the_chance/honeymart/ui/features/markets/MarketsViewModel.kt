@@ -5,7 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
-import org.the_chance.honeymart.domain.usecase.LogOutAdminUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -38,7 +37,6 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
-//                isLoggedIn = true,
                 requests = requests.map { it.toMarketRequestUiState() },
             )
         }
@@ -52,7 +50,6 @@ class MarketsViewModel @Inject constructor(
                 _state.update { it.copy(isError = true) }
             }
             ErrorHandler.UnAuthorizedUser -> {
-//                _state.update { it.copy(isLoggedIn = false) }
                 effectActionExecutor(_effect, MarketsUiEffect.UnAuthorizedUserEffect)
             }
             else -> {}
@@ -99,7 +96,6 @@ class MarketsViewModel @Inject constructor(
             )
         }
         _state.update { it.copy(requests = updatedRequests, selectedMarket = updatedRequests[position]) }
-        effectActionExecutor(_effect, MarketsUiEffect.OnClickMarket)
     }
 
     override fun onClickCancel(marketId: Int) {
