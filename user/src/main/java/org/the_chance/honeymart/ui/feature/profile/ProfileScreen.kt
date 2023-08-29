@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
@@ -25,7 +24,7 @@ import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.profile.composable.ProfileSuccessScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 

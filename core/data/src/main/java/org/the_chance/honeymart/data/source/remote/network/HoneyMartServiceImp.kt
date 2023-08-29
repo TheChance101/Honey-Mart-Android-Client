@@ -43,7 +43,6 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
-import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.InternalServerException
@@ -126,7 +125,6 @@ class HoneyMartServiceImp @Inject constructor(
         name: String, imageId: Int,
     ): BaseResponse<String> =
         wrap(client.submitForm(url = "/category", formParameters = Parameters.build {
-            append("marketID", marketID.toString())
             append("imageId", imageId.toString())
             append("name", name)
         }))
@@ -201,7 +199,7 @@ class HoneyMartServiceImp @Inject constructor(
 
     @OptIn(InternalAPI::class)
     override suspend fun updateProduct(
-        productId: Long,
+        id: Long,
         name: String,
         price: Double,
         description: String,
@@ -211,7 +209,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("name", name)
             append("description", description)
         }
-        val response = wrap<BaseResponse<String>>(client.put("/product/$productId") {
+        val response = wrap<BaseResponse<String>>(client.put("/product/$id") {
             contentType(ContentType.Application.Json)
             body = FormDataContent(formData)
         })
@@ -350,14 +348,6 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
 
-    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
-        return wrap(client.get("/coupon/allUserCoupons"))
-    }
-
-    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
-        return wrap(client.get("/coupon/allValidCoupons"))
-    }
-
     override suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>> {
         return wrap(client.get("/coupon/allClippedUserCoupons"))
     }
@@ -376,7 +366,7 @@ class HoneyMartServiceImp @Inject constructor(
             formData = formData {
                 append("image", image, Headers.build {
                     append(HttpHeaders.ContentType, "image/jpeg")
-                    append(HttpHeaders.ContentDisposition, "filename=image${image.toString()}.jpeg")
+                    append(HttpHeaders.ContentDisposition, "filename=image${image}.jpeg")
                 })
             }
         )

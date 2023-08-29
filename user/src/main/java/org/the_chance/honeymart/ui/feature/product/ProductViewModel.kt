@@ -113,7 +113,7 @@ class ProductViewModel @Inject constructor(
         )
 
     }
-    private fun onGetProductSuccess(products: PagingData<ProductEntity>) {
+    private fun onGetProductSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update {
             it.copy(

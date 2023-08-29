@@ -17,7 +17,7 @@ class SearchProductsPagingSource @Inject constructor(
                 query = query,
                 sortOrder = sortOrder
             )
-        }.value?.map { it.toProductEntity() }
+        }.value?.map { it.toProduct() }
             ?: throw Throwable("paging error")
     }
 

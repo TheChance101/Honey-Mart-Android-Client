@@ -5,7 +5,7 @@ import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.MarketEntity
+import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsPagingUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -32,7 +32,7 @@ class MarketViewModel @Inject constructor(
         )
     }
 
-    private fun onGetMarketSuccess(markets: PagingData<MarketEntity>) {
+    private fun onGetMarketSuccess(markets: PagingData<Market>) {
         val mappedMarkets = markets.map { it.toMarketUiState() }
         _state.update {
             it.copy(

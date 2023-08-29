@@ -39,6 +39,10 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.BLANK_MARKET_DESCRIPTION -> TODO()
         ValidationState.SHORT_MARKET_DESCRIPTION -> TODO()
         ValidationState.VALID_MARKET_DESCRIPTION -> TODO()
+        ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH -> TODO()
+        ValidationState.CONFIRM_PASSWORD_MATCH -> TODO()
+        ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
+        ValidationState.INVALID_COUPON_COUNT -> TODO()
     }
 
 }

@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.home.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
-import org.the_chance.honymart.ui.composables.AppBarScaffold
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -58,7 +58,7 @@ fun NewProductsContent(
     onClickRecentProduct: (Long) -> Unit,
     onClickFavorite: (Long) -> Unit,
 ) {
-    AppBarScaffold {
+    HoneyAppBarScaffold {
 
         Loading(state = state.isLoading)
 
