@@ -38,7 +38,7 @@ fun CouponItem(
         CouponDetails(
             modifier = Modifier
                 .fillMaxHeight(),
-            productName = coupon.product.productName,
+            productName = coupon.product.name,
             expirationDate = coupon.expirationDate,
             count = coupon.count,
             productPrice = coupon.product.productPriceCouponFormat,
@@ -47,7 +47,7 @@ fun CouponItem(
         CouponImage(
             modifier = Modifier
                 .fillMaxHeight(),
-            productImageUrl = coupon.product.productImageUrl,
+            productImageUrl = coupon.product.imageUrl,
         )
     }
 }
@@ -168,10 +168,10 @@ fun CouponsItemPreview() {
                 offerPrice = "$500",
                 expirationDate = "10.8.2023",
                 product = ProductUiState(
-                    productId = 1L,
-                    productName = "Product Name",
-                    productImageUrl = "1",
-                    productPrice = 1500.0
+                    id = 1L,
+                    name = "Product Name",
+                    imageUrl = "1",
+                    price = 1500.0
                 )
             )
         )

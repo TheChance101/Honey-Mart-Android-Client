@@ -26,13 +26,15 @@ data class ProductSearchUiState(
 )
 
 data class ProductUiState(
-    val productId: Long = 0L,
-    val productName: String = "",
-    val productImageUrl: String = "",
-    val productPrice: Double = 0.0,
+    val id: Long = 0L,
+    val name: String = "",
+    val imageUrl: String = "",
+    val price: Double = 0.0,
+    val description: String = "",
+    val isSelected: Boolean = false,
 ) {
-    val productPriceFormatted: String = productPrice.toProductPriceFormat()
-    val productPriceCouponFormat: String = productPrice.toCouponPriceFormat()
+    val productPriceFormatted: String = price.toProductPriceFormat()
+    val productPriceCouponFormat: String = price.toCouponPriceFormat()
 }
 
 data class AddCouponUiState(
@@ -61,10 +63,11 @@ data class CouponUiState(
 fun List<Product>.toProductUiState(): List<ProductUiState> {
     return map { product ->
         ProductUiState(
-            productId = product.productId,
-            productName = product.productName,
-            productImageUrl = product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: "",
-            productPrice = product.productPrice,
+            id = product.productId,
+            name = product.productName,
+            imageUrl = product.productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: "",
+            price = product.productPrice,
+            description = product.productDescription,
         )
     }
 }
@@ -108,11 +111,11 @@ fun AddCouponUiState.showButton(): Boolean {
 }
 
 fun AddCouponUiState.showCoupon(): Boolean {
-    return coupon.product.productId != 0L && !isLoading
+    return coupon.product.id != 0L && !isLoading
 }
 
 fun AddCouponUiState.showEmptyPlaceHolder(): Boolean {
-    return coupon.product.productId == 0L && !isLoading
+    return coupon.product.id == 0L && !isLoading
 }
 
 fun ProductSearchUiState.showEmptyPlaceHolder(): Boolean {

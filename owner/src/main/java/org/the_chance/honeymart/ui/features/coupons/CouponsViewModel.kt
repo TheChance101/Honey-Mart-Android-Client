@@ -59,9 +59,12 @@ class CouponsViewModel @Inject constructor(
             state.copy(
                 productSearch = state.productSearch.copy(
                     isLoading = false,
-                    products = products.toProductUiState()
+                    products = products.toProductUiState().map {
+                        it.copy(isSelected = state.addCoupon.coupon.product.id == it.id)
+                    }
+                ),
+
                 )
-            )
         }
     }
 
@@ -90,7 +93,9 @@ class CouponsViewModel @Inject constructor(
             state.copy(
                 productSearch = state.productSearch.copy(
                     isLoading = false,
-                    products = products.toProductUiState()
+                    products = products.toProductUiState().map {
+                        it.copy(isSelected = state.addCoupon.coupon.product.id == it.id)
+                    }
                 )
             )
         }
@@ -111,9 +116,14 @@ class CouponsViewModel @Inject constructor(
     override fun onProductSearchItemClick(productId: Long) {
         _state.update { state ->
             state.copy(
+                productSearch = state.productSearch.copy(
+                    products = state.productSearch.products.map {
+                        it.copy(isSelected = it.id == productId)
+                    }
+                ),
                 addCoupon = AddCouponUiState(
                     coupon = CouponUiState(
-                        product = state.productSearch.products.first { it.productId == productId })
+                        product = state.productSearch.products.first { it.id == productId })
                 )
             )
         }
@@ -158,7 +168,7 @@ class CouponsViewModel @Inject constructor(
         tryToExecute(
             {
                 addCoupon(
-                    productId = _state.value.addCoupon.coupon.product.productId,
+                    productId = _state.value.addCoupon.coupon.product.id,
                     discountPercentage = _state.value.addCoupon.discountPercentage.toDouble(),
                     count = _state.value.addCoupon.coupon.count.toInt(),
                     expirationDate = _state.value.addCoupon.expirationDate!!
@@ -199,7 +209,7 @@ class CouponsViewModel @Inject constructor(
                     discountPercentageState = discountPercentageState,
                     coupon = state.addCoupon.coupon.copy(
                         offerPrice = if (discountPercentageState == ValidationState.VALID_TEXT_FIELD) {
-                            state.addCoupon.coupon.product.productPrice
+                            state.addCoupon.coupon.product.price
                                 .toOfferPrice(discountPercentage.toDouble())
                                 .toCouponPriceFormat()
                         } else {
