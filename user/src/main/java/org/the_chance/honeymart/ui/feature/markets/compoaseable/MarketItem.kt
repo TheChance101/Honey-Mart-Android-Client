@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.markets.compoaseable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
 
@@ -32,7 +31,8 @@ fun MarketItem(
     modifier: Modifier = Modifier
 ){
 Card(
-    modifier = modifier.clip(MaterialTheme.shapes.medium)
+    modifier = modifier
+        .clip(MaterialTheme.shapes.medium)
         .clickable { onClickItem(marketId) }
 ) {
     Column(
@@ -40,16 +40,16 @@ Card(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         horizontalAlignment = Alignment.Start
     ) {
-        Image(
-            painter = rememberAsyncImagePainter(marketImage),
+        ImageNetwork(
+            imageUrl = marketImage,
             contentDescription = stringResource(R.string.market_name),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(
+                .clip(
+                    RoundedCornerShape(
                     topStart = MaterialTheme.dimens.space16,
-                    topEnd = MaterialTheme.dimens.space16
-                ))
+                    topEnd = MaterialTheme.dimens.space16))
                 .height(MaterialTheme.dimens.heightItemMarketCard),
         )
         Text(
