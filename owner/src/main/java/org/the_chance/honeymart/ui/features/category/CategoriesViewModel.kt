@@ -640,8 +640,4 @@ class CategoriesViewModel @Inject constructor(
             )
         }
     }
-
-    override fun onErrorProducts() {
-        _state.update { it.copy(isError = true) }
-    }
 }
