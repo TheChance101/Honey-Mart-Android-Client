@@ -50,7 +50,7 @@ class SignUpViewModel @Inject constructor(
                 password = state.value.passwordState.value
             )
         } else {
-            effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
+            showValidationToast(stringResourceImpl.requiredFieldsMessageString)
         }
     }
 
@@ -79,18 +79,13 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
-        Log.d("Tarek", "create owner error : $error")
-        _state.update {
-            it.copy(
-                isLoading = false,
-                validationToast = ValidationToast(
-                    isShow = true,
-                    message = stringResourceImpl.errorStringDictionary.getOrDefault(error, "")
-                ),
-                error = error
+        showValidationToast(
+            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+                error,
+                ""
             )
-        }
-        effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
+        )
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     private fun loginOwner(email: String, password: String) {
@@ -107,15 +102,13 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        Log.d("Tarek","login error : $error")
-        _state.update {
-            it.copy(
-                isLoading = false, error = error, validationToast = ValidationToast(
-                    isShow = true,
-                    message = stringResourceImpl.errorStringDictionary.getOrDefault(error, "")
-                )
+        showValidationToast(
+            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+                error,
+                ""
             )
-        }
+        )
+        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     override fun onFullNameInputChange(fullName: CharSequence) {
@@ -242,14 +235,18 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateMarketError(errorHandler: ErrorHandler) {
-        Log.d("Tarek","market error : $errorHandler")
+        showValidationToast(
+            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+                errorHandler,
+                ""
+            )
+        )
         _state.update {
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
                     error = errorHandler
                 ),
-
             )
         }
     }
@@ -340,7 +337,12 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onAddMarketImageError(errorHandler: ErrorHandler) {
-        Log.d("Tarek","Image error : $errorHandler")
+        showValidationToast(
+            message = stringResourceImpl.errorStringDictionary.getOrDefault(
+                errorHandler,
+                ""
+            )
+        )
         _state.update {
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
@@ -349,7 +351,6 @@ class SignUpViewModel @Inject constructor(
                 ),
             )
         }
-
     }
 
     private fun onAddMarketImageSuccess(isMaretImageAdded: Boolean) {
@@ -386,4 +387,16 @@ class SignUpViewModel @Inject constructor(
     }
 
 //endregion
+
+    private fun showValidationToast(message: String) {
+        _state.update {
+            it.copy(
+                validationToast = state.value.validationToast.copy(
+                    isShow = true,
+                    message = message
+                )
+            )
+        }
+        effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
+    }
 }

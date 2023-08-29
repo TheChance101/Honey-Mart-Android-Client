@@ -38,7 +38,8 @@ class StringResourceImpl @Inject constructor(
         get() = mapOf(
             ErrorHandler.AlreadyExist to getStringFromFile(R.string.account_already_exist),
             ErrorHandler.UnKnownError to getStringFromFile(R.string.something_went_wrong_please_try_again),
-            ErrorHandler.UnAuthorizedUser to getStringFromFile(R.string.Invalid_username_or_password)
+            ErrorHandler.UnAuthorizedUser to getStringFromFile(R.string.Invalid_username_or_password),
+            ErrorHandler.NoConnection to getStringFromFile(R.string.something_went_wrong_please_try_again)
         )
     override val requiredFieldsMessageString: String
         get() = getStringFromFile(R.string.please_fill_required_fields)
