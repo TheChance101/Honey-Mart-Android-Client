@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
@@ -59,6 +63,7 @@ fun AddProductContent(
                 color = MaterialTheme.colorScheme.tertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = stringResource(R.string.add_new_product),
@@ -113,7 +118,7 @@ fun AddProductContent(
             textAlign = TextAlign.Center,
         )
         Row(
-            modifier = Modifier
+            modifier = Modifier.height(256.dp)
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {

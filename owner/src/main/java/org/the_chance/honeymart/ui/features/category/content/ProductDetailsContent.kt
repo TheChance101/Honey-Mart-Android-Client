@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +35,8 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
+import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
 import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
@@ -68,6 +73,7 @@ fun ProductDetailsContent(
                 color = MaterialTheme.colorScheme.tertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = titleScreen,
@@ -126,7 +132,7 @@ fun ProductDetailsContent(
         )
 
         Row(
-            modifier = Modifier
+            modifier = Modifier.height(256.dp)
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
@@ -141,21 +147,29 @@ fun ProductDetailsContent(
                     }
                 }
             } else if (state.showScreenState.showProductUpdate) {
-                SelectedImagesGrid(
-                    images = state.newProducts.images,
-                    onClickRemoveSelectedImage = listener::onClickRemoveSelectedImage,
-                    multiplePhotoPickerLauncher = multiplePhotoPickerLauncher,
-                    maxImages = MAX_IMAGES
-                )
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(MaterialTheme.dimens.card),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                ) {
+                    items(items = state.newProducts.images) { image ->
+                        ItemImageProduct(image, listener::onClickRemoveSelectedImage)
+                    }
+                    if (state.newProducts.images.size < MAX_IMAGES) {
+                        item {
+                            AddImageButton(multiplePhotoPickerLauncher)
+                        }
+                    }
+                }
             }
 
         }
         Spacer(modifier = Modifier.weight(1F))
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Spacer(modifier = Modifier.weight(1F))
+            Spacer(modifier = Modifier.weight(2F))
             HoneyFilledButton(
                 modifier = Modifier.width(146.dp),
                 label = confirmButton,
@@ -165,6 +179,5 @@ fun ProductDetailsContent(
             )
             HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
         }
-        Spacer(modifier = Modifier.weight(2F))
     }
 }
