@@ -43,7 +43,6 @@ abstract class BasePagingSource<Value : Any> (
         }
     }
 
-
     protected suspend fun <T> wrap(function: suspend () -> BaseResponse<T>): BaseResponse<T> {
         try {
             val response = function()

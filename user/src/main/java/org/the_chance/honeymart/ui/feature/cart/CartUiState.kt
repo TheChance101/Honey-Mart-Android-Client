@@ -11,7 +11,8 @@ data class CartUiState(
     val error: ErrorHandler? = null,
     val total: Double = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
-    val bottomSheetIsDisplayed: Boolean = false
+    val bottomSheetIsDisplayed: Boolean = false,
+    val showDialog :Boolean = false
 )
 
 data class CartListProductUiState(
@@ -21,7 +22,10 @@ data class CartListProductUiState(
     val totalPrice: Double = 0.0,
     val productCount: Int = 0,
     val productImage: List<String> = emptyList()
-)
+) {
+    val productImageUrl = productImage.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val productPriceFormatted = formatCurrencyWithNearestFraction(totalPrice)
+}
 
 fun CartEntity.toCartListProductUiState(): CartUiState {
     return CartUiState(
@@ -44,8 +48,7 @@ fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState
 }
 
 
-
-fun formatCurrencyWithNearestFraction(amount: Double):String {
+fun formatCurrencyWithNearestFraction(amount: Double): String {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     return decimalFormat.format(amount)
 }

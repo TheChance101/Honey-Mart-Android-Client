@@ -15,16 +15,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.black16
+import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -54,7 +54,7 @@ fun LastPurchasesItems(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.space16))
-                        .background(color = Color.Red)
+                        .background(black16)
                 )
                 ImageNetwork(
                     imageUrl = image,
@@ -63,7 +63,7 @@ fun LastPurchasesItems(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(topEnd = MaterialTheme.dimens.space16))
-                        .background(color = Color.Green)
+                        .background(black16)
                 )
             }
             Row(
@@ -76,7 +76,7 @@ fun LastPurchasesItems(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(bottomStart = MaterialTheme.dimens.space16))
-                        .background(color = Color.Blue)
+                        .background(black16)
                 )
                 ImageNetwork(
                     imageUrl = image,
@@ -85,7 +85,7 @@ fun LastPurchasesItems(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16))
-                        .background(color = Color.Yellow)
+                        .background(black16)
                 )
             }
 

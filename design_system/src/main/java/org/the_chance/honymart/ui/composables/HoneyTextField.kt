@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.error
@@ -66,11 +65,11 @@ fun HoneyTextField(
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedSupportingTextColor = if (isError) error else black37,
+                focusedSupportingTextColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
                 focusedContainerColor = Color.Transparent,
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
-                focusedBorderColor = if (isError) error else black16,
-                unfocusedBorderColor = if (isError) error else black16,
+                focusedBorderColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
+                unfocusedBorderColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
             ),
             trailingIcon = {
                 if (isError) {

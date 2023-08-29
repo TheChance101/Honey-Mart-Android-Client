@@ -10,11 +10,11 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(
+class MarketViewModel @Inject constructor(
     private val getMarketDetails: GetMarketDetailsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<MarketDetailsUiState, CategoryUiEffect>(MarketDetailsUiState()),
-    CategoryInteractionListener {
+) : BaseViewModel<MarketDetailsUiState, MarketUiEffect>(MarketDetailsUiState()),
+    MarketInteractionListener {
 
     private val categoryArgs: CategoryArgs = CategoryArgs(savedStateHandle)
 
@@ -31,7 +31,7 @@ class CategoryViewModel @Inject constructor(
     override fun onClickCategory(categoryId: Long, position: Int) {
         effectActionExecutor(
             _effect,
-            CategoryUiEffect.ClickCategoryEffect(
+            MarketUiEffect.ClickMarketEffect(
                 categoryId,
                 categoryArgs.marketId.toLong(),
                 position

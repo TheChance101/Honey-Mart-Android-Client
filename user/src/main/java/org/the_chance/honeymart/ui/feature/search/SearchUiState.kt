@@ -1,24 +1,20 @@
 package org.the_chance.honeymart.ui.feature.search
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.model.ProductEntity
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class SearchUiState(
-    val isLoading: Boolean = false,
+    val isSearching: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val updatedProducts: Flow<PagingData<ProductUiState>> = flow{},
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
-    val filtering: Boolean = false
+    val filtering: Boolean = false,
+    val searchQuery: String= "",
 )
 
 data class ProductUiState(
