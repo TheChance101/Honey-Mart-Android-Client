@@ -32,11 +32,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
-import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
@@ -46,7 +45,6 @@ import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
@@ -101,6 +99,7 @@ fun LoginContent(
                 ) {
 
                     HoneyAuthHeader(
+                        titleColor = MaterialTheme.colorScheme.onPrimary,
                         title = stringResource(R.string.welcome_back),
                         subTitle = stringResource(
                             R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
