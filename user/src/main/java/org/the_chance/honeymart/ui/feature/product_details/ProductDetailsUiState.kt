@@ -16,9 +16,10 @@ data class ProductDetailsUiState(
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
     val dialogState: DialogState = DialogState(),
-){
+) {
     val totalPriceInCurrency = totalPrice.formatCurrencyWithNearestFraction()
 }
+
 data class SnackBarState(
     val isShow: Boolean = false,
     val productId: Long = 0L,
@@ -32,9 +33,8 @@ data class DialogState(
 )
 
 fun Double.formatCurrencyWithNearestFraction(): String {
-    val decimalFormat = DecimalFormat("'$'#,##0.0")
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
     return decimalFormat.format(this)
 }
 
-
-fun ProductDetailsUiState.contentScreen()= !this.isLoading && !this.isConnectionError
+fun ProductDetailsUiState.contentScreen() = !this.isLoading && !this.isConnectionError

@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package org.the_chance.honeymart.ui.feature.product_details
 
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -60,14 +63,19 @@ fun ProductDetailsScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
-                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(effect.message)}
+                is ProductDetailsUiEffect.AddToCartSuccess -> {
+                    viewModel.showSnackBar(effect.message)
+                }
+
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect ->
-                {viewModel.showDialog(effect.productId ,effect.count)}
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {
+                    viewModel.showDialog(effect.productId, effect.count)
+                }
+
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
@@ -98,7 +106,7 @@ private fun ProductDetailsContent(
                             .shadow(elevation = 8.dp)
                             .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(
-                                 bottom = MaterialTheme.dimens.space56,
+                                bottom = MaterialTheme.dimens.space56,
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,
@@ -126,9 +134,11 @@ private fun ProductDetailsContent(
                             modifier = Modifier
                         )
                     }
-                    Box(modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(bottom = 120.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(bottom = 120.dp)
+                    ) {
                         AnimatedVisibility(
                             visible = state.snackBar.isShow,
                             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
@@ -255,6 +265,7 @@ private fun ProductDetailsContent(
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
                             state.totalPriceInCurrency,
                         )
+
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -23,7 +24,7 @@ fun HoneyOutlineText(
 ) {
     Text(
         text = price,
-        style = MaterialTheme.typography.displaySmall,
+        style = MaterialTheme.typography.displaySmall.copy(baselineShift = BaselineShift(0.5f)),
         color = color,
         modifier = modifier
             .wrapContentWidth()
