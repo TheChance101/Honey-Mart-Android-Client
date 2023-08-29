@@ -25,6 +25,7 @@ import org.the_chance.honeymart.ui.features.orders.done
 import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
 import org.the_chance.honeymart.ui.features.orders.processing
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -79,6 +80,7 @@ fun AllOrdersContent(
             text = stringResource(R.string.there_are_no_order_for_this_day),
             visibilityState = state.emptyOrdersPlaceHolder(),
         )
+        Loading(state = state.isLoading && !state.showState.showOrderDetails)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(MaterialTheme.dimens.space16)

@@ -92,9 +92,8 @@ fun OrdersContent(
                         titleScreen =
                         stringResource(id = R.string.product_details), state = state
                     )
-
                 }
-                Loading(state = state.isLoading)
+                Loading(state = state.isLoading && state.showState.showOrderDetails)
             }
         }
     }
