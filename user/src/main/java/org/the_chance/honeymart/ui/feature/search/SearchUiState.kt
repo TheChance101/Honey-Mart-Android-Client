@@ -8,13 +8,13 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class SearchUiState(
-    val isLoading: Boolean = false,
+    val isSearching: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val updatedProducts: Flow<PagingData<ProductUiState>> = flow{},
     val products: Flow<PagingData<ProductUiState>> = flow{},
     val searchStates: SearchStates = SearchStates.RANDOM,
-    val filtering: Boolean = false
+    val filtering: Boolean = false,
+    val searchQuery: String= "",
 )
 
 data class ProductUiState(

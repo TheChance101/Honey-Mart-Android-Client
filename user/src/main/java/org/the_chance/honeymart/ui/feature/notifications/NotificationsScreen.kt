@@ -40,7 +40,8 @@ fun NotificationsScreen(
     LaunchedEffect(true) {
         viewModel.effect.collect {
             when (it) {
-                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToHomeScreen()
+                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
+                NotificationsUiEffect.OnClickDiscoverMarket -> navController.navigateToHomeScreen()
             }
         }
     }
@@ -71,7 +72,7 @@ fun NotificationsContent(
                 image = R.drawable.placeholder_wish_list,
                 title = stringResource(R.string.your_notifications_is_empty),
                 subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = listener::onGetAllNotifications,
+                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,

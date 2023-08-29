@@ -37,13 +37,13 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
-import org.the_chance.honeymart.ui.feature.home.CouponUiState
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
-import org.the_chance.honeymart.ui.feature.home.MarketUiState
-import org.the_chance.honeymart.ui.feature.home.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.markets.MarketUiState
+import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -72,7 +72,7 @@ fun HomeContentSuccessScreen(
         item(span = { GridItemSpan(2) })
         {
             MarketsPager(
-                markets = state.markets,
+                markets = state.shuffledMarket,
                 pagerState = pagerState,
                 onClickPagerItem = listener::onClickPagerItem
             )
@@ -96,7 +96,7 @@ fun HomeContentSuccessScreen(
             Markets(
                 markets = state.markets,
                 onClickMarket = listener::onClickPagerItem,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickSeeAllMarkets
             )
         }
 
@@ -128,7 +128,8 @@ fun HomeContentSuccessScreen(
             RecentProducts(
                 recentProducts = state.recentProducts,
                 onClickRecentProduct = listener::onClickProductItem,
-                onClickFavorite = listener::onClickFavoriteNewProduct
+                onClickFavorite = listener::onClickFavoriteNewProduct,
+                onClickSeeAll = listener::onClickSeeAllNewProducts
             )
         }
 
@@ -137,7 +138,7 @@ fun HomeContentSuccessScreen(
         ) {
             LastPurchases(
                 lastPurchases = state.lastPurchases,
-                onClickProduct = listener::onClickProductItem,
+                onClickProduct = listener::onClickLastPurchases,
                 onClickSeeAll = {}
             )
         }
@@ -159,9 +160,8 @@ fun HomeContentSuccessScreen(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
                 productName = discoverProduct.productName,
-                productPrice = discoverProduct.productPrice.formatCurrencyWithNearestFraction(),
-                imageUrl = discoverProduct.productImages.takeIf { it.isNotEmpty() }
-                    ?.get(0) ?: "",
+                productPrice = discoverProduct.priceInCurrency,
+                imageUrl = discoverProduct.imageUrl,
                 onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
                 isFavoriteIconClicked = discoverProduct.isFavorite
@@ -225,15 +225,18 @@ private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
     onClickFavorite: (Long) -> Unit,
+    onClickSeeAll: () -> Unit
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
-            Text(
-                text = stringResource(R.string.new_products),
-                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
+            ItemLabel(
+                label = stringResource(R.string.new_products),
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.dimens.space16)
+                    .padding(top = MaterialTheme.dimens.space8),
+                onClick = onClickSeeAll
             )
 
             LazyRow(

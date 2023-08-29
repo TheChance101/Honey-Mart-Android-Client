@@ -20,6 +20,7 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.RequestDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 
@@ -34,6 +35,7 @@ interface HoneyMartService {
 
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
+    suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>>
     suspend fun addMarket(
         marketName: String,
         marketAddress: String,
@@ -207,6 +209,9 @@ interface HoneyMartService {
     suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
     suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
+
+    suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>>
+
 
     suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
 

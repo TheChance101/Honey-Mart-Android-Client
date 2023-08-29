@@ -20,6 +20,7 @@ import org.the_chance.honeymart.domain.model.WishList
 interface HoneyMartRepository {
 
     suspend fun getAllMarkets(): List<Market>?
+    suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
     suspend fun clipCoupon(couponId: Long): Boolean
     suspend fun getMarketDetails(marketId: Long): MarketDetails
     suspend fun addMarket(
@@ -61,6 +62,8 @@ interface HoneyMartRepository {
     suspend fun getUserCoupons(): List<Coupon>
 
     suspend fun getAllValidCoupons(): List<Coupon>
+    suspend fun getClippedUserCoupons(): List<Coupon>
+
 
     suspend fun getRecentProducts(): List<RecentProduct>
 

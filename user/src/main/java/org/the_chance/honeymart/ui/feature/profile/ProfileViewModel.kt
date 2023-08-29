@@ -19,7 +19,9 @@ class ProfileViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-    init { getData() }
+    init {
+        getData()
+    }
 
     override fun getData() {
         _state.update {
@@ -36,8 +38,20 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
+    override fun onClickCameraIcon() {
+        effectActionExecutor(_effect, ProfileUiEffect.ClickCameraEffect)
+    }
+
     private fun onGetProfileSuccess(user: UserProfile) {
-        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                accountInfo = user.toProfileUiState(),
+                error = null,
+                isError = false,
+                isConnectionError = false,
+            )
+        }
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
@@ -104,12 +118,14 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = {onLogoutError()}
+            onError = { onLogoutError() }
         )
     }
+
     private fun onLogoutSuccess() {
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
+
     private fun onLogoutError() {}
 }

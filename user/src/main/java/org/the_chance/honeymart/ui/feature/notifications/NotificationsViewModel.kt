@@ -74,4 +74,8 @@ class NotificationsViewModel @Inject constructor(
             _state.update { it.copy(isError = true) }
         }
     }
+
+    override fun onClickDiscoverMarket() {
+        effectActionExecutor(_effect, NotificationsUiEffect.OnClickDiscoverMarket)
+    }
 }

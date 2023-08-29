@@ -101,7 +101,9 @@
     <string name="icon">icon</string>
     <string name="warning_icon">warning Icon</string>
     <string name="empty_product">empty product</string>
+    <string name="empty_coupons">empty coupons</string>
     <string name="there_is_no_product_here">There is no product here !!</string>
+    <string name="there_is_no_coupons_here">There is no coupons here !!</string>
     <string name="there_is_no_categories_here">There is no categories here !!</string>
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
@@ -175,6 +177,7 @@
     <string name="you_ll_receive_a_notification_after_placing_your_order">You’ll receive a notification after placing your order</string>
     <string name="order_title">Order</string>
     <string name="delivery">Delivery</string>
+    <string name="shop_detail">Shop details</string>
     <string name="no_deal">No. Deal</string>
     <string name="offer_price">Offer Price</string>
     <string name="expiration_date">Expiration Date</string>
@@ -216,4 +219,11 @@
     <string name="dismiss">Dismiss</string>
     <string name="all_capitalized">All</string>
 
+    <string name="all">All</string>
+    <string name="valid">Valid</string>
+    <string name="expired">Expired</string>
+    <string name="sort_by_price">Sort by price</string>
+    <string name="random">Random</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 </resources>

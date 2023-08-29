@@ -10,5 +10,5 @@ class SearchForProductUseCase @Inject constructor(
     private val repository: HoneyMartRepository
 ) {
     suspend operator fun invoke(query: String,sortOrder:String): Flow<PagingData<Product>> =
-        repository.searchForProducts(query, page = null,sortOrder)
+        repository.searchForProducts(query, null,sortOrder)
 }

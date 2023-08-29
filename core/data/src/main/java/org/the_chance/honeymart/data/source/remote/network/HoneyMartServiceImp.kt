@@ -69,6 +69,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("/markets"))
     }
 
+    override suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>> {
+        return wrap(client.get("/markets?page= $page"))
+    }
+
     override suspend fun addMarket(
         marketName: String,
         marketAddress: String,
@@ -122,6 +126,7 @@ class HoneyMartServiceImp @Inject constructor(
         name: String, imageId: Int,
     ): BaseResponse<String> =
         wrap(client.submitForm(url = "/category", formParameters = Parameters.build {
+            append("marketID", marketID.toString())
             append("imageId", imageId.toString())
             append("name", name)
         }))
@@ -344,6 +349,18 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getProductDetails(productId: Long): BaseResponse<ProductDto> =
         wrap(client.get("/product/$productId"))
+
+    override suspend fun getUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allUserCoupons"))
+    }
+
+    override suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allValidCoupons"))
+    }
+
+    override suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>> {
+        return wrap(client.get("/coupon/allClippedUserCoupons"))
+    }
 
     override suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>> {
         return wrap(client.get("/product/recentProducts"))

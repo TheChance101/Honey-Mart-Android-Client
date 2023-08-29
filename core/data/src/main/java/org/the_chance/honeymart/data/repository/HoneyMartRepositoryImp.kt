@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
+import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
@@ -53,6 +54,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")
         return wrap { honeyMartService.getAllMarkets() }.value?.map { it.toMarket() }
             ?: throw NotFoundException()
+    }
+
+    override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>> {
+       return getAll(::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -145,7 +150,8 @@ class HoneyMartRepositoryImp @Inject constructor(
         search(
             query,
             sortOrder,
-            ::SearchProductsPagingSource
+            ::SearchProductsPagingSource,
+            page
         )
 
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
@@ -166,6 +172,11 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     override suspend fun getAllValidCoupons(): List<Coupon> {
         return wrap { honeyMartService.getAllValidCoupons() }.value?.map { it.toCoupon() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun getClippedUserCoupons(): List<Coupon> {
+        return wrap { honeyMartService.getClippedUserCoupons() }.value?.map { it.toCoupon() }
             ?: throw NotFoundException()
     }
 
@@ -211,10 +222,20 @@ class HoneyMartRepositoryImp @Inject constructor(
         parameter: P,
         sortOrder: S,
         sourceFactory: (HoneyMartService, P, S) -> PagingSource<Int, I>,
+        page: Int?
     ): Flow<PagingData<I>> {
         return Pager(
-            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            config = PagingConfig(pageSize = page ?: DEFAULT_PAGE_SIZE),
             pagingSourceFactory = { sourceFactory(honeyMartService, parameter, sortOrder) }
+        ).flow
+    }
+
+    private fun <I : Any> getAll(
+        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,)
+    : Flow<PagingData<I>>{
+        return Pager(
+            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
+            pagingSourceFactory = { sourceFactory(honeyMartService) }
         ).flow
     }
 

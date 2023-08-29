@@ -23,11 +23,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.the_chance.honeymart.ui.feature.home.CouponUiState
-import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
+import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.design_system.R
 
 @Composable
 fun CouponsItem(
@@ -41,15 +40,15 @@ fun CouponsItem(
         CouponDetails(
             modifier = Modifier.fillMaxHeight(),
             productName = coupon.product.productName,
-            expirationDate = coupon.expirationDate,
+            expirationDate = coupon.expirationDateFormat,
             count = coupon.count,
-            productPrice = coupon.product.productPrice.formatCurrencyWithNearestFraction(),
-            discountPercentage = coupon.discountPrice.formatCurrencyWithNearestFraction(),
+            productPrice = coupon.product.priceInCurrency,
+            discountPercentage =coupon.discountPriceInCurrency,
             onClick = onClickGetCoupon
         )
         CouponImage(
             modifier = Modifier.fillMaxHeight(),
-            productImageUrl = coupon.product.productImages.takeIf { it.isNotEmpty() }?.get(0) ?: "",
+            productImageUrl = coupon.imageUrl,
             couponCode = coupon.couponId.toString(),
         )
     }

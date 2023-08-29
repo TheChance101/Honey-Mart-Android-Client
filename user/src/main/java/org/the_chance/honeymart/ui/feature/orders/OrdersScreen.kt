@@ -31,8 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
@@ -49,16 +49,15 @@ fun OrdersScreen(
     viewModel: OrderViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToHomeScreen()
-                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(it.orderId)
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
+                is OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToHomeScreen()
+                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(effect.orderId)
             }
-        }
-    }
+        })
 
     LaunchedEffect(key1 = true) {
         viewModel.getAllPendingOrders()

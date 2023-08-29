@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
@@ -58,20 +57,20 @@ fun ProductDetailsScreen(
     viewModel: ProductDetailsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val navController = LocalNavigationProvider.current
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
-                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(it.message)}
+                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(effect.message)}
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
                 is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect ->
-                {viewModel.showDialog(it.productId ,it.count)}
+                {viewModel.showDialog(effect.productId ,effect.count)}
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-    }
+        })
     ProductDetailsContent(state = state, listener = viewModel)
 }
 
