@@ -94,8 +94,10 @@ fun CategoriesContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = state.showScreenState.showAddCategory
-                        && state.showScreenState.showFab) {
+                ContentVisibility(
+                    state = state.showScreenState.showAddCategory
+                            && state.showScreenState.showFab
+                ) {
                     AddCategoryContent(listener = listener, state = state)
                 }
 
@@ -142,7 +144,8 @@ fun CategoriesContent(
         SnackBarWithDuration(
             message = state.snackBar.message,
             onDismiss = listener::resetSnackBarState,
-            undoAction = {},
+            undoAction = listener::resetSnackBarState,
+            text = stringResource(R.string.dismiss)
         )
     }
     ConnectionErrorPlaceholder(

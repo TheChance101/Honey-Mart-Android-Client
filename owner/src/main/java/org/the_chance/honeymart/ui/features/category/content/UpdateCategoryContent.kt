@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +57,7 @@ fun UpdateCategoryContent(
                     color = MaterialTheme.colorScheme.tertiary,
                     shape = MaterialTheme.shapes.medium
                 )
+                .verticalScroll(rememberScrollState())
         ) {
             FormHeader(
                 title = stringResource(R.string.update_category),
@@ -79,26 +83,32 @@ fun UpdateCategoryContent(
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
             )
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                modifier = Modifier.padding(MaterialTheme.dimens.space16)
+            Row(
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
             ) {
-                if (state.categoryIcons.isNotEmpty())
-                    items(count = state.categoryIcons.size) { index ->
-                        CategoryIconItem(
-                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                            isSelected = state.categoryIcons[index].isSelected,
-                            categoryIconId = state.categoryIcons[index].categoryIconId,
-                            onClick = {
-                                listener.onClickNewCategoryIcon(
-                                    state.categoryIcons[index]
-                                        .categoryIconId
-                                )
-                            }
-                        )
-                    }
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
+                ) {
+                    if (state.categoryIcons.isNotEmpty())
+                        items(count = state.categoryIcons.size) { index ->
+                            CategoryIconItem(
+                                iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                                isSelected = state.categoryIcons[index].isSelected,
+                                categoryIconId = state.categoryIcons[index].categoryIconId,
+                                onClick = {
+                                    listener.onClickNewCategoryIcon(
+                                        state.categoryIcons[index]
+                                            .categoryIconId
+                                    )
+                                }
+                            )
+                        }
+                }
             }
             Spacer(modifier = Modifier.weight(1F))
             Row(

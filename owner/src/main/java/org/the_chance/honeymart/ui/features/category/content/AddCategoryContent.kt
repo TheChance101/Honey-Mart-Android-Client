@@ -1,24 +1,26 @@
 package org.the_chance.honeymart.ui.features.category.content
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
@@ -26,12 +28,10 @@ import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.CategoryIconItem
-import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun AddCategoryContent(
@@ -39,30 +39,28 @@ fun AddCategoryContent(
     state: CategoriesUiState,
 ) {
 
-    Box(
+    Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(white)
             .padding(
-                end = MaterialTheme.dimens.space16, bottom = MaterialTheme.dimens.space16
+                horizontal = MaterialTheme.dimens.space16,
             )
-            .clip(
-                RoundedCornerShape(
-                    topEnd = MaterialTheme.dimens.space16, topStart = MaterialTheme.dimens.space16
-                )
+            .fillMaxSize()
+            .background(
+                color = MaterialTheme.colorScheme.tertiary,
+                shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_honey_sun),
-            contentDescription = "",
-            modifier = Modifier.align(Alignment.TopEnd)
+        FormHeader(
+            title = stringResource(R.string.add_new_category),
+            iconPainter = painterResource(id = R.drawable.icon_add_product)
         )
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            FormHeader(
-                title = stringResource(R.string.add_new_category),
-                iconPainter = painterResource(id = R.drawable.icon_add_product)
-            )
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+        ) {
 
             FormTextField(
                 text = state.newCategory.newCategoryName,
@@ -78,55 +76,62 @@ fun AddCategoryContent(
             )
 
             Text(
-                modifier = Modifier.padding(
-                    start = MaterialTheme.dimens.space16,
-                    top = MaterialTheme.dimens.space32
-                ),
+                modifier = Modifier
+                    .padding(
+                        start = MaterialTheme.dimens.space16,
+                        top = MaterialTheme.dimens.space32
+                    )
+                    .align(Alignment.Start),
                 text = stringResource(R.string.select_category_image),
                 style = Typography.bodyMedium.copy(color = blackOn37)
             )
-
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                modifier = Modifier.padding(MaterialTheme.dimens.space16)
+            Row(
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
             ) {
-                items(count = state.categoryIcons.size) { index ->
-                    CategoryIconItem(
-                        iconPainter = painterResource(id = state.categoryIcons[index].icon),
-                        isSelected = state.categoryIcons[index].isSelected,
-                        categoryIconId = state.categoryIcons[index].categoryIconId,
-                        onClick = {
-                            listener.onClickNewCategoryIcon(
-                                state.categoryIcons[index].categoryIconId
-                            )
-                        }
-                    )
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
+                ) {
+                    items(count = state.categoryIcons.size) { index ->
+                        CategoryIconItem(
+                            iconPainter = painterResource(id = state.categoryIcons[index].icon),
+                            isSelected = state.categoryIcons[index].isSelected,
+                            categoryIconId = state.categoryIcons[index].categoryIconId,
+                            onClick = {
+                                listener.onClickNewCategoryIcon(
+                                    state.categoryIcons[index].categoryIconId
+                                )
+                            }
+                        )
+                    }
                 }
+
             }
 
-        }
+            HoneyFilledButton(
+                label = stringResource(R.string.add),
+                onClick = {
+                    listener.onClickAddCategory(
+                        name = state.newCategory.newCategoryName,
+                        categoryIconID = state.newCategory.newIconId
+                    )
+                },
+                isButtonEnabled = true,
+                isLoading = state.isLoading,
+                icon = R.drawable.icon_add_product,
+                modifier = Modifier
+                    .padding(
+                        bottom = MaterialTheme.dimens.space64,
+                        start = MaterialTheme.dimens.space24,
+                        end = MaterialTheme.dimens.space24
+                    )
+            )
 
-        HoneyFilledButton(
-            label = stringResource(R.string.add),
-            onClick = {
-                listener.onClickAddCategory(
-                    name = state.newCategory.newCategoryName,
-                    categoryIconID = state.newCategory.newIconId
-                )
-            },
-            isButtonEnabled = true,
-            isLoading = state.isLoading,
-            icon = R.drawable.icon_add_product,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(
-                    bottom = MaterialTheme.dimens.space64,
-                    start = MaterialTheme.dimens.space24,
-                    end = MaterialTheme.dimens.space24
-                )
-        )
+        }
 
     }
 }
