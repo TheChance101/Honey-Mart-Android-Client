@@ -30,9 +30,8 @@ fun ScrollToTopButton(onClick: () -> Unit) {
                 .size(40.dp)
                 .align(Alignment.BottomEnd),
             onClick = onClick,
-            backgroundColor = MaterialTheme.colorScheme.inverseOnSurface,
-            contentColor =MaterialTheme.colorScheme.onError
-
+            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondary
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.arrow_up),
