@@ -1,14 +1,9 @@
 package org.the_chance.honeymart.ui.features.login
 
-
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
-import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -17,10 +12,8 @@ import org.the_chance.honeymart.ui.features.signup.ValidationToast
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
     private val stringResourceImpl: StringDictionary,
     private val checkAdminApprove: CheckAdminApproveUseCase
@@ -30,38 +23,30 @@ class LoginViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     init {
-        //  checkOwnerAuthorization()
+        listenToCheckAdminApprove()
     }
 
     private fun listenToCheckAdminApprove() {
-        viewModelScope.launch {
-            checkAdminApprove().collect {
-                if (it) {
-                    effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
-                } else {
-                    effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)
-                }
-            }
-        }
-    }
-
-    // region check Authorization
-    private fun checkOwnerAuthorization() {
         _state.update { it.copy(authLoading = true) }
         tryToExecute(
-            { getOwnerProfileUseCase() },
-            ::onGetProfileSuccess,
-            ::onGetProfileError
+            { checkAdminApprove() },
+            ::onCheckApproveSuccess,
+            ::onCheckApproveError
         )
     }
 
-    private fun onGetProfileSuccess(profile: OwnerProfile) {
-        _state.update { it.copy(authLoading = false) }
-        effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
+    private fun onCheckApproveSuccess(isApproved: Boolean) {
+        log(isApproved.toString())
+        if (isApproved) {
+            effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
+        } else {
+            effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)
+        }
     }
 
-    private fun onGetProfileError(error: ErrorHandler) {
+    private fun onCheckApproveError(error: ErrorHandler) {
         _state.update { it.copy(authLoading = false, error = error) }
+        effectActionExecutor(_effect, LoginUiEffect.NavigateToLoginEffect)
     }
 
     // endregion
@@ -101,7 +86,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(marketId: Long) {
-        Log.d("Tarek","$marketId")
+        Log.d("Tarek", "$marketId")
         if (marketId == 0L) {
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
         } else {

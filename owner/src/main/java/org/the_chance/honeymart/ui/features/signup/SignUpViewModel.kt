@@ -1,10 +1,7 @@
 package org.the_chance.honeymart.ui.features.signup
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
 import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
@@ -36,16 +33,25 @@ class SignUpViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private fun listenToCheckAdminApprove() {
-        viewModelScope.launch {
-            checkAdminApprove().collect {
-                Log.d("Shehab", it.toString())
-                if (it) {
-                    effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
-                } else {
-                    effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
-                }
-            }
+        tryToExecute(
+            { checkAdminApprove() },
+            ::onCheckApproveSuccess,
+            ::onCheckApproveError
+        )
+    }
+
+    private fun onCheckApproveSuccess(isApproved: Boolean) {
+        _state.update { it.copy(isLoading = false) }
+        if (isApproved) {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
         }
+    }
+
+    private fun onCheckApproveError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        showValidationToast(stringResourceImpl.errorString.getOrDefault(error,""))
     }
 
     // region owner registration

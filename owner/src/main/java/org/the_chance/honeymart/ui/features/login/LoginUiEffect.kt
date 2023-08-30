@@ -9,4 +9,5 @@ sealed class LoginUiEffect : BaseUiEffect {
     object ShowLoginErrorToastEffect : LoginUiEffect()
     object NavigateToWaitingApproveEffect: LoginUiEffect()
     object NavigateToCreateMarketEffect : LoginUiEffect()
+    object NavigateToLoginEffect : LoginUiEffect()
 }

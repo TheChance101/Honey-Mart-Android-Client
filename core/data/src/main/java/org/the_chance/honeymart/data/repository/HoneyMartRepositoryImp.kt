@@ -49,8 +49,10 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
-    override suspend fun checkAdminApprove(): Flow<Boolean> {
-        return wrapWithFlow { honeyMartService.checkAdminApprove() }
+
+    override suspend fun checkAdminApprove(): Boolean {
+        return wrap { honeyMartService.checkAdminApprove() }.value
+            ?: throw NotFoundException()
     }
 
     override suspend fun getAllMarkets(): List<Market> {
@@ -60,7 +62,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>> {
-       return getAll(::MarketsPagingSource)
+        return getAll(::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -234,8 +236,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     private fun <I : Any> getAll(
-        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,)
-    : Flow<PagingData<I>>{
+        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,
+    )
+            : Flow<PagingData<I>> {
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
             pagingSourceFactory = { sourceFactory(honeyMartService) }

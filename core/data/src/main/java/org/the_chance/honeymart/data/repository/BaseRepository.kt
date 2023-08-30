@@ -2,8 +2,6 @@ package org.the_chance.honeymart.data.repository
 
 import android.util.Log
 import io.ktor.client.plugins.ClientRequestException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.domain.util.AlreadyExistException
 import org.the_chance.honeymart.domain.util.EmailIsExistException
@@ -20,13 +18,6 @@ abstract class BaseRepository {
     protected suspend fun <T> wrap(function: suspend () -> BaseResponse<T>): BaseResponse<T> {
         val response = function()
         return checkBaseResponse(response)
-    }
-
-    protected suspend fun <T> wrapWithFlow(function: suspend () -> Flow<BaseResponse<T>>): Flow<T> {
-        return function().map {
-            val response = checkBaseResponse(it)
-            response.value ?: throw Exception(response.status.message)
-        }
     }
 
     private fun <T> checkBaseResponse(response: BaseResponse<T>): BaseResponse<T> {

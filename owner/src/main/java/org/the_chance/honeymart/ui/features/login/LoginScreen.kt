@@ -54,22 +54,20 @@ fun LoginScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
                 LoginUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
-
                 LoginUiEffect.ClickSignUpEffect -> {
                     navController.navigateToSignupScreen()
-
                 }
-
                 LoginUiEffect.NavigateToCreateMarketEffect -> {
                     navController.navigateToMarketInfoScreen()
                 }
-
                 LoginUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
+                }
+                LoginUiEffect.NavigateToLoginEffect -> {
+                    navController.navigateToLogin()
                 }
             }
         }

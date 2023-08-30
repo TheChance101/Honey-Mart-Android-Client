@@ -56,8 +56,8 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
-    override suspend fun checkAdminApprove(): Flow<BaseResponse<Boolean>> {
-        return wrapWithFlow(client.get("/markets/marketValidation"))
+    override suspend fun checkAdminApprove(): BaseResponse<Boolean> {
+        return wrap(client.get("/markets/marketValidation"))
     }
 
     override suspend fun addOwner(
