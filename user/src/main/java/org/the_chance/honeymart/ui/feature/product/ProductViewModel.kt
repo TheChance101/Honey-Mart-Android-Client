@@ -113,6 +113,7 @@ class ProductViewModel @Inject constructor(
         )
 
     }
+
     private fun onGetProductSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update {
@@ -125,7 +126,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
+        _state.update { it.copy(error = error, isEmptyProducts = true) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -157,12 +158,12 @@ class ProductViewModel @Inject constructor(
     }
 
 
-
     private fun onGetWishListProductSuccess(
         wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,
     ) {
         _state.update { productsUiState ->
-            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts))) }
+            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts)))
+        }
     }
 
     private fun onGetWishListProductError(
@@ -170,7 +171,8 @@ class ProductViewModel @Inject constructor(
         products: PagingData<ProductUiState>
     ) {
         _state.update {
-            it.copy(error = error, products = flowOf(products)) }
+            it.copy(error = error, products = flowOf(products))
+        }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
