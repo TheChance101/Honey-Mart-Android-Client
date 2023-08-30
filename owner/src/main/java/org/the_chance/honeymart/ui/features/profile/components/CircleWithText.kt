@@ -25,7 +25,7 @@ import java.util.Locale
 
 @Composable
 fun CircleWithText(
-    text: String,
+    text: Char,
     modifier: Modifier = Modifier,
     circleColor: Color = primary100,
     textColor: Color = Color.White,
@@ -60,6 +60,6 @@ fun CircleWithText(
 @Composable
 fun PreviewCircleWithText() {
     HoneyMartTheme {
-        CircleWithText(text = "M")
+        CircleWithText(text = 'M')
     }
 }

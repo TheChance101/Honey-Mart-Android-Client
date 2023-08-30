@@ -67,10 +67,10 @@ fun PersonalInfoContent(
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        CircleWithText(text = state.name)
+        CircleWithText(text = state.icon)
         FormTextField(
             text = state.name,
-            hint = "Owner Name",
+            hint = "",
             keyboardType = KeyboardType.Text,
             onValueChange = { },
             isEnable = false,
@@ -78,7 +78,7 @@ fun PersonalInfoContent(
         )
         FormTextField(
             text = state.email,
-            hint = "Owner Email",
+            hint = "",
             keyboardType = KeyboardType.Text,
             onValueChange = { },
             isEnable = false,
