@@ -32,7 +32,7 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.nullColor
 
 @Composable
- fun ProfileSuccessScreen(
+fun ProfileSuccessScreen(
     state: ProfileUiState,
     listener: ProfileInteractionsListener
 ) {
