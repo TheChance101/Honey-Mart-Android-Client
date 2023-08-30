@@ -53,7 +53,7 @@ data class ShowScreenState(
     val showProductUpdate: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
-    val showDeleteDialog: Boolean = false,
+    val showDeleteDialog : Boolean = false,
     val showFab: Boolean = true,
 )
 
@@ -141,13 +141,14 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // endregion
 
 // region Extension
-fun CategoriesUiState.showButton(): Boolean {
-    return categories.any { category ->
-        newCategory.newCategoryName.isNotBlank() &&
-                category.categoryIconUIState.isSelected
-                && !isLoading &&
-                newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+
+fun CategoriesUiState.showAddUpdateCategoryButton(): Boolean {
+    return newCategory.newCategoryName.isNotBlank()
+            && categoryIcons.any { categoryIcons ->
+        categoryIcons.isSelected
     }
+            && !isLoading
+            && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
 }
 
 fun NewProductsUiState.showButton(): Boolean {
@@ -169,7 +170,6 @@ fun CategoriesUiState.showSaveUpdateButton(): Boolean {
 fun String.removeDollarSign(): String {
     return this.replace("$", "").trim()
 }
-
 
 fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts

@@ -32,6 +32,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.markets.MarketRequestUiState
 import org.the_chance.honeymart.ui.features.markets.MarketsInteractionListener
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
@@ -46,7 +47,8 @@ fun MarketRequestDetails(
 ) {
     ContentVisibility(state = request != null) {
         Box(
-            modifier = Modifier.fillMaxSize().clip(Shapes.medium).background(white)
+            modifier = Modifier.padding(bottom = 16.dp)
+                .fillMaxSize().clip(Shapes.medium).background(white)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
@@ -100,14 +102,14 @@ fun MarketRequestDetails(
                         )
                     }
                 }
-                Image(
+                ImageNetwork(
                     modifier = Modifier
                         .padding(vertical = MaterialTheme.dimens.space32)
                         .size(327.dp, 184.dp)
                         .clip(Shapes.small)
                         .align(CenterHorizontally),
-                    painter = painterResource(R.drawable.fruite_image),
-                    contentDescription = "",
+                    imageUrl = imageUrl,
+                    contentDescription = "market image",
                 )
                 Text(
                     text = request?.marketName ?: "",

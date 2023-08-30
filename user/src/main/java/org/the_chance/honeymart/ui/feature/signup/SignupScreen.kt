@@ -34,26 +34,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.login.compsoables.CustomDialog
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
+import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white
-import org.the_chance.honymart.ui.theme.white200
 
 @Composable
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
@@ -141,7 +140,6 @@ fun SignupContent(
                         ) {
                             HoneyTextField(
                                 oneLineOnly = true,
-                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.fullName,
                                 hint = stringResource(R.string.full_name),
                                 iconPainter = painterResource(id = R.drawable.ic_person),
@@ -154,7 +152,6 @@ fun SignupContent(
                             )
                             HoneyTextField(
                                 oneLineOnly = true,
-                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.email,
                                 hint = stringResource(R.string.email),
                                 iconPainter = painterResource(id = R.drawable.ic_email),
@@ -171,11 +168,9 @@ fun SignupContent(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                         ) {
-                            HoneyTextField(
-                                isPassword = PasswordVisualTransformation(),
+                            HoneyTextFieldPassword(
                                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                                 modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
-                                oneLineOnly = true,
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -187,11 +182,8 @@ fun SignupContent(
                                     else -> ""
                                 },
                             )
-                            HoneyTextField(
-                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
-                                oneLineOnly = true,
+                            HoneyTextFieldPassword(
                                 text = state.confirmPassword,
-                                isPassword = PasswordVisualTransformation(),
                                 hint = stringResource(R.string.confirm_password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
                                 onValueChange = listener::onConfirmPasswordChanged,

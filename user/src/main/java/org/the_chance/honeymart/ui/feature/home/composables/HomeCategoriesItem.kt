@@ -53,7 +53,6 @@ fun HomeCategoriesItem(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() }
             )
-            .padding(horizontal = MaterialTheme.dimens.space16)
             .size(MaterialTheme.dimens.widthItemMarketCard)
             .drawBehind {
                 drawIntoCanvas {

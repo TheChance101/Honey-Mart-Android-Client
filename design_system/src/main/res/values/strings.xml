@@ -229,4 +229,5 @@
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="icon_market_status">icon market status</string>
+    <string name="icon_map">icon map</string>
 </resources>

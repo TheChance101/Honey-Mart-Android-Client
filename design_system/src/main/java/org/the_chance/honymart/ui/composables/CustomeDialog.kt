@@ -39,9 +39,11 @@ fun CustomAlertDialog(
     onCancel: () -> Unit,
     onDismissRequest: () -> Unit,
     message: String,
+    modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
+            modifier = modifier,
             shape = Shapes.extraLarge,
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
         ) {

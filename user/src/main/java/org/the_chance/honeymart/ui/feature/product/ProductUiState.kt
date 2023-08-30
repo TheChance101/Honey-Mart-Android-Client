@@ -15,7 +15,7 @@ data class ProductsUiState(
     val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
     val position: Int = 0,
-    val products: Flow<PagingData<ProductUiState>> = flow{},
+    val products: Flow<PagingData<ProductUiState>> = flow {},
     val isEmptyProducts: Boolean = false,
     val categories: List<CategoryUiState> = emptyList(),
     val categoryId: Long = 0L,
@@ -35,9 +35,9 @@ data class ProductUiState(
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = false,
     val productImages: List<String> = emptyList()
-){
-    val imageUrl= productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
-    val priceInCurrency=productPrice.formatCurrencyWithNearestFraction()
+) {
+    val imageUrl = productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val priceInCurrency = productPrice.formatCurrencyWithNearestFraction()
 }
 
 fun Product.toProductUiState(): ProductUiState {
@@ -46,15 +46,15 @@ fun Product.toProductUiState(): ProductUiState {
         productName = productName,
         productDescription = productDescription,
         productPrice = productPrice,
-        productImages = productImages.ifEmpty { listOf("","") }
+        productImages = productImages.ifEmpty { listOf("", "") }
     )
 }
 
 
-
 fun ProductsUiState.contentScreen() = !this.isLoadingCategory && !this.isError
-fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
-        !this.isError && !this.isLoadingProduct
+fun ProductsUiState.emptyPlaceHolder() =
+    !this.isError && !this.isLoadingProduct && !this.isEmptyProducts && !this.isLoadingCategory
+
 fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
 
 fun Double.formatCurrencyWithNearestFraction(): String {
