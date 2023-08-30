@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
@@ -32,6 +33,7 @@ interface HoneyMartRepository {
     suspend fun addMarketImage(marketImage: ByteArray): Boolean
 
     suspend fun getCategoriesInMarket(marketId: Long): List<Category>?
+    suspend fun getMarketInfo(): MarketInfo
     suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): Flow<PagingData<Product>>
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category>?
     suspend fun addToWishList(productId: Long): String

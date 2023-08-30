@@ -33,6 +33,7 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketInfoDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
@@ -120,6 +121,10 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
         wrap(client.get("/markets/$marketId"))
+
+    override suspend fun getMarketInfo(): BaseResponse<MarketInfoDto> =
+        wrap(client.get("/markets/marketInfo"))
+
 
     override suspend fun addCategory(
         name: String, imageId: Int,

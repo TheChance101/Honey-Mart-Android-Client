@@ -14,6 +14,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCategory
 import org.the_chance.honeymart.data.source.remote.mapper.toCoupon
 import org.the_chance.honeymart.data.source.remote.mapper.toMarket
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetails
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketInfo
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketRequest
 import org.the_chance.honeymart.data.source.remote.mapper.toNotification
@@ -29,6 +30,7 @@ import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
@@ -57,7 +59,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>> {
-       return getAll(::MarketsPagingSource)
+        return getAll(::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -101,6 +103,11 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getCategoriesInMarket(marketId: Long): List<Category> =
         wrap { honeyMartService.getCategoriesInMarket(marketId) }.value?.map { it.toCategory() }
             ?: throw NotFoundException()
+
+    override suspend fun getMarketInfo(): MarketInfo {
+        return wrap { honeyMartService.getMarketInfo() }.value?.toMarketInfo()
+            ?: throw NotFoundException()
+    }
 
     override suspend fun getMarketDetails(marketId: Long): MarketDetails =
         wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetails()
@@ -231,8 +238,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     private fun <I : Any> getAll(
-        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,)
-    : Flow<PagingData<I>>{
+        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,
+    )
+            : Flow<PagingData<I>> {
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
             pagingSourceFactory = { sourceFactory(honeyMartService) }
