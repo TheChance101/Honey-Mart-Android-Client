@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.profile.MarketInfoUiState
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -87,8 +88,7 @@ fun MarketInfoContent(
             contentAlignment = Alignment.Center,
         ) {
             Image(
-//            painter = rememberAsyncImagePainter(state.image),
-                painter = painterResource(id = R.drawable.market),
+                painter = rememberAsyncImagePainter(state.image),
                 contentDescription = stringResource(R.string.markets),
                 modifier = Modifier.padding(top = 72.dp),
                 alignment = Alignment.Center,
@@ -97,8 +97,7 @@ fun MarketInfoContent(
         }
 
         Text(
-//            text = state.name,
-            text = "Rehab Market",
+            text = state.name,
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondary,
             textAlign = TextAlign.Center,
@@ -108,8 +107,7 @@ fun MarketInfoContent(
         )
 
         Text(
-//            text = state.address,
-            text = "blablablablablabla",
+            text = state.address,
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center,
@@ -117,8 +115,7 @@ fun MarketInfoContent(
         )
 
         Text(
-//            text = state.description,
-            text = "blablablablablabla",
+            text = state.description,
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.Center,

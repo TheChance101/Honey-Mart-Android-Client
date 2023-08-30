@@ -38,12 +38,12 @@ fun ProfileContent(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
+            HoneyMartTitle()
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                HoneyMartTitle()
                 MarketInfoContent(state = state.marketInfo)
             }
             Column(

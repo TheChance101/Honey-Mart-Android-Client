@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.profile.navigateToProfileScreen
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
@@ -30,7 +31,7 @@ fun MainScreen(
         viewModel.effect.collect {
             when (it) {
                 is MainEffect.OnClickProfileEffect -> {
-                    //TODO  Navigate to Profile
+                    navController.navigateToProfileScreen()
                 }
 
                 is MainEffect.OnClickLogoutEffect -> {
