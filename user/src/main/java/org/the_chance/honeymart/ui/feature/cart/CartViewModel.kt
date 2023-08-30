@@ -76,7 +76,7 @@ class CartViewModel @Inject constructor(
             }
         }
 
-        val updatedTotal = updatedProducts.sumByDouble { it.totalPrice }
+        val updatedTotal = updatedProducts.sumOf { it.totalPrice }
 
         val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal)
         _state.value = updatedState

@@ -29,8 +29,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
@@ -50,11 +50,12 @@ fun ProductsScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is ProductUiEffect.AddedToWishListEffect -> {
                     viewModel.showSnackBar(effect.message)
                 }
+
                 is ProductUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     effect.productId
                 )
@@ -78,11 +79,14 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        EmptyProductPlaceholder(state.emptyPlaceHolder())
+        EmptyProductPlaceholder(state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty())
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
-                    modifier = Modifier.fillMaxSize().weight(1f).padding(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .padding(
                             start = MaterialTheme.dimens.space16,
                             end = MaterialTheme.dimens.space16
                         ),
@@ -92,6 +96,7 @@ private fun ProductsContent(
                         state = listState,
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
+                            bottom = MaterialTheme.dimens.space24,
                             end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)

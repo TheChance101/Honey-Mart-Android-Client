@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.home.composables
+package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

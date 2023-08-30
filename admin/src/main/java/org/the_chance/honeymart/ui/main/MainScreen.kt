@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.main
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -22,6 +24,7 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
     val navController = LocalNavigationProvider.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -31,6 +34,14 @@ fun MainScreen(
             when (it) {
                 is MainEffect.OnClickLogoutEffect -> {
                     navController.navigateToLogin()
+                }
+
+                MainEffect.ShowLogoutErrorToastEffect -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.messageErrorLogout,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -44,11 +55,8 @@ fun MainContent(
     listener: MainInteractionListener,
     currentDestination: NavDestination?,
 ) {
-    val screenRouts = listOf(
-        NavigationRailScreen.Markets.route,
-    )
+    val screenRouts = listOf(NavigationRailScreen.Markets.route,)
     val showNavigationRail = currentDestination?.route in screenRouts
-
     Row {
         AnimatedVisibility(
             visible = showNavigationRail,
