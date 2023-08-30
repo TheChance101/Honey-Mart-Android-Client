@@ -67,7 +67,7 @@ class SignupViewModel @Inject constructor(
         if (isSignUp) {
             login(email = _state.value.email, password = _state.value.password)
         }
-        _state.update { it.copy(isLoading = false, isSignUp = isSignUp) }
+        _state.update { it.copy(isLoading = true, isSignUp = isSignUp) }
     }
 
     private fun onError(error: ErrorHandler) {

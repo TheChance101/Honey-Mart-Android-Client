@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package org.the_chance.honeymart.ui.feature.coupons
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -66,22 +70,22 @@ fun CouponsContent(
 ) {
 
     HoneyAppBarScaffold {
-
-        Loading(state.isLoading)
-
         ConnectionErrorPlaceholder(
-            state = state.isError && !state.showCouponsContent(),
+            state = state.isError  && !state.showCouponsContent(),
             onClickTryAgain = listener::getData
+        )
+
+        EmptyProductPlaceholder(
+            state = !state.showCouponsContent() && !state.isLoading,
+            title = stringResource(R.string.empty_coupons),
+            description = stringResource(R.string.there_is_no_coupons_here),
         )
 
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        start = MaterialTheme.dimens.space16,
-                        bottom = MaterialTheme.dimens.space16
-                    ),
+                    .padding(top = MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(
                     MaterialTheme.dimens.space8,
                     Alignment.CenterHorizontally
@@ -105,30 +109,30 @@ fun CouponsContent(
                 )
             }
 
-            EmptyProductPlaceholder(
-                state = !state.showCouponsContent() && !state.isLoading,
-                title = stringResource(R.string.empty_coupons),
-                description = stringResource(R.string.there_is_no_coupons_here),
-            )
-
-
             ContentVisibility(
                 state = state.showCouponsContent()
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(items = state.coupons, key = { it.couponId }) { coupon ->
+                    items(
+                        items = state.updatedCoupons, key = { it.couponId },
+                    ) { coupon ->
                         CouponsItem(
+                            modifier = Modifier.animateItemPlacement(),
                             coupon = coupon,
-                            onClickGetCoupon = { listener.onClickGetCoupon(coupon.couponId) })
+                            isExpired = coupon.isExpired,
+                            isClipped = coupon.isClipped,
+                        )
                     }
                 }
             }
         }
 
+        Loading(state.isLoading)
     }
 }
 

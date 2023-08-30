@@ -92,6 +92,7 @@ private fun ProductsContent(
                         state = listState,
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
+                            bottom = MaterialTheme.dimens.space24,
                             end = MaterialTheme.dimens.space12,
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)

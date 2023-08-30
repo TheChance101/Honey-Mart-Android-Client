@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package org.the_chance.honeymart.ui.feature.product_details
 
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,7 +19,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -94,43 +96,53 @@ private fun ProductDetailsContent(
 
     ContentVisibility(state = state.contentScreen()) {
         Scaffold(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
             bottomBar = {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HoneyFilledIconButton(
-                        label = stringResource(id = R.string.add_to_cart),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .shadow(elevation = 8.dp)
-                            .background(MaterialTheme.colorScheme.tertiaryContainer)
-                            .padding(
-                                bottom = MaterialTheme.dimens.space56,
-                                top = MaterialTheme.dimens.space16,
-                                start = MaterialTheme.dimens.space16,
-                                end = MaterialTheme.dimens.space16,
-                            )
-                            .align(Alignment.BottomCenter),
-                        iconPainter = painterResource(id = R.drawable.icon_cart),
-                        isEnable = !state.isAddToCartLoading,
-                        onClick = {
-                            state.product.productId.let {
-                                listener.addProductToCart(
-                                    it,
-                                    state.quantity
-                                )
-                            }
-                        }
-                    )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(elevation = 20.dp)
+                )
+                {
                     Box(
                         modifier = Modifier
-                            .height(100.dp)
-                            .padding(bottom = MaterialTheme.dimens.space16)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.onTertiary)
                     ) {
-                        Loading(
-                            state = state.isAddToCartLoading,
-                            size = 75.dp,
+                        HoneyFilledIconButton(
+                            label = stringResource(id = R.string.add_to_cart),
                             modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    bottom = MaterialTheme.dimens.space56,
+                                    top = MaterialTheme.dimens.space16,
+                                    start = MaterialTheme.dimens.space16,
+                                    end = MaterialTheme.dimens.space16,
+                                )
+                                .align(Alignment.BottomCenter),
+                            iconPainter = painterResource(id = R.drawable.icon_cart),
+                            isEnable = !state.isAddToCartLoading,
+                            onClick = {
+                                state.product.productId.let {
+                                    listener.addProductToCart(
+                                        it,
+                                        state.quantity
+                                    )
+                                }
+                            }
                         )
                     }
+//                    Box(
+//                        modifier = Modifier
+//                            .height(100.dp)
+//                            .padding(bottom = MaterialTheme.dimens.space16)
+//                    ) {
+//                        Loading(
+//                            state = state.isAddToCartLoading,
+//                            size = 75.dp,
+//                            modifier = Modifier
+//                        )
+//                    }
                     Box(
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -261,8 +273,9 @@ private fun ProductDetailsContent(
 
                         HoneyOutlineText(
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
-                            text = state.totalPrice.toString() + "$",
+                            text = state.totalPriceInCurrency,
                         )
+
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()

@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.profile.composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,15 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.profile.ProfileInteractionsListener
 import org.the_chance.honeymart.ui.feature.profile.ProfileUiState
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.nullColor
 
 @Composable
- fun ProfileSuccessScreen(
+fun ProfileSuccessScreen(
     state: ProfileUiState,
     listener: ProfileInteractionsListener
 ) {
@@ -47,8 +46,8 @@ import org.the_chance.honymart.ui.theme.nullColor
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            Image(
-                painter = rememberAsyncImagePainter(state.accountInfo.profileImage),
+            ImageNetwork(
+                imageUrl = state.accountInfo.profileImage,
                 contentDescription = "",
                 modifier = Modifier
                     .size(MaterialTheme.dimens.sizeProfileImage)

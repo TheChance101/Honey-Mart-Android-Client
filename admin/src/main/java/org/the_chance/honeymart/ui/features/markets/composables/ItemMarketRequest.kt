@@ -31,7 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.features.markets.RequestsState
+import org.the_chance.honeymart.ui.features.markets.MarketsState
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
@@ -43,7 +43,7 @@ fun ItemMarketRequest(
     marketName: String,
     state: Boolean,
     marketStateText: String,
-    requestsState: RequestsState,
+    marketsState: MarketsState,
     ownerNameFirstCharacter: Char,
     onCardSelected: Boolean,
     isLoading: Boolean,
@@ -101,11 +101,7 @@ fun ItemMarketRequest(
                             style = MaterialTheme.typography.bodySmall
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        AnimatedVisibility(
-                            visible = requestsState == RequestsState.ALL && !isLoading,
-                            enter = EnterTransition.None,
-                            exit = slideOutHorizontally(targetOffsetX = { it },animationSpec = tween(500)),
-                        ){
+                        if(marketsState == MarketsState.ALL && !isLoading){
                             Text(
                                 text = marketStateText,
                                 color = if (state) MaterialTheme.colorScheme.primary
@@ -132,7 +128,7 @@ fun ItemRequestPreview() {
         "market",
         true,
         "pending",
-        RequestsState.APPROVED,
+        MarketsState.APPROVED,
         'U',
         true,
         false

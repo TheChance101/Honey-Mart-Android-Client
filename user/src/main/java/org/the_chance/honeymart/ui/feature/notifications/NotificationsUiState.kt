@@ -1,18 +1,18 @@
 package org.the_chance.honeymart.ui.feature.notifications
 
-import okhttp3.internal.http.toHttpDateString
+import android.annotation.SuppressLint
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
 
 data class NotificationsUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.ALL,
-    val updatedNotifications: List<Notification> = emptyList(),
-    val notifications: List<Notification> = emptyList(),
+    val updatedNotifications: List<NotificationUiState> = emptyList(),
+    val notifications: List<NotificationUiState> = emptyList(),
 )
 
 enum class NotificationStates(val state: Int){
@@ -21,7 +21,7 @@ enum class NotificationStates(val state: Int){
     DELIVERY(3)
 }
 
-data class Notification(
+data class NotificationUiState(
     val notificationId: Long,
     val userId: Long,
     val orderId: Long,
@@ -30,14 +30,14 @@ data class Notification(
     val date: String
 )
 
-fun Notification.toNotificationUiState(): Notification{
-    return Notification(
+fun Notification.toNotificationUiState(): NotificationUiState{
+    return NotificationUiState(
         notificationId = notificationId,
         userId = userId,
         orderId = orderId,
         title = title,
         body = body,
-        date = date
+        date = date.toNotificationDateFormat()
     )
 }
 
@@ -48,9 +48,8 @@ fun NotificationsUiState.delivery() = this.notificationState == NotificationStat
 fun NotificationsUiState.emptyNotificationsPlaceHolder() =
     this.updatedNotifications.isEmpty() && !this.isError && !this.isLoading
 
-fun convertDate(notification: Notification): String {
-    val date = notification.date
-    val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy   HH:mm")
-    val localDateTime = date.toHttpDateString()
-    return localDateTime.format(outputFormatter)
+@SuppressLint("SimpleDateFormat")
+fun Date.toNotificationDateFormat(): String {
+    val dateFormat = SimpleDateFormat("dd MMMM yyyy   HH:mm")
+    return dateFormat.format(this)
 }
