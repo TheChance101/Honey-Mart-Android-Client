@@ -63,14 +63,19 @@ fun ProductDetailsScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is ProductDetailsUiEffect.AddProductToWishListEffectError -> {}
                 is ProductDetailsUiEffect.AddToCartError -> {}
-                is ProductDetailsUiEffect.AddToCartSuccess -> {viewModel.showSnackBar(effect.message)}
+                is ProductDetailsUiEffect.AddToCartSuccess -> {
+                    viewModel.showSnackBar(effect.message)
+                }
+
                 ProductDetailsUiEffect.OnBackClickEffect -> navController.navigateUp()
-                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect ->
-                {viewModel.showDialog(effect.productId ,effect.count)}
+                is ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect -> {
+                    viewModel.showDialog(effect.productId, effect.count)
+                }
+
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
@@ -94,31 +99,40 @@ private fun ProductDetailsContent(
         Scaffold(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
             bottomBar = {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HoneyFilledIconButton(
-                        label = stringResource(id = R.string.add_to_cart),
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(elevation = 20.dp)
+                )
+                {
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .shadow(elevation = 8.dp , ambientColor = Color.Black.copy(alpha = 0.25F))
-                            .background(MaterialTheme.colorScheme.tertiaryContainer)
-                            .padding(
-                                 bottom = MaterialTheme.dimens.space56,
-                                top = MaterialTheme.dimens.space16,
-                                start = MaterialTheme.dimens.space16,
-                                end = MaterialTheme.dimens.space16,
-                            )
-                            .align(Alignment.BottomCenter),
-                        iconPainter = painterResource(id = R.drawable.icon_cart),
-                        isEnable = !state.isAddToCartLoading,
-                        onClick = {
-                            state.product.productId.let {
-                                listener.addProductToCart(
-                                    it,
-                                    state.quantity
+                            .background(MaterialTheme.colorScheme.onTertiary)
+                    ) {
+                        HoneyFilledIconButton(
+                            label = stringResource(id = R.string.add_to_cart),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    bottom = MaterialTheme.dimens.space56,
+                                    top = MaterialTheme.dimens.space16,
+                                    start = MaterialTheme.dimens.space16,
+                                    end = MaterialTheme.dimens.space16,
                                 )
+                                .align(Alignment.BottomCenter),
+                            iconPainter = painterResource(id = R.drawable.icon_cart),
+                            isEnable = !state.isAddToCartLoading,
+                            onClick = {
+                                state.product.productId.let {
+                                    listener.addProductToCart(
+                                        it,
+                                        state.quantity
+                                    )
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                     Box(
                         modifier = Modifier
                             .height(100.dp)
@@ -130,9 +144,11 @@ private fun ProductDetailsContent(
                             modifier = Modifier
                         )
                     }
-                    Box(modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(bottom = 120.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(bottom = 120.dp)
+                    ) {
                         AnimatedVisibility(
                             visible = state.snackBar.isShow,
                             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
@@ -258,7 +274,7 @@ private fun ProductDetailsContent(
 
                         HoneyOutlineText(
                             modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
-                             text = state.totalPriceInCurrency,
+                            text = state.totalPriceInCurrency,
                         )
 
                         Text(

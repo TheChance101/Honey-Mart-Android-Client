@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CouponsViewModel @Inject constructor(
     private val getClippedUserCouponsUseCase: GetClippedUserCouponsUseCase,
-    private val clipCouponsUseCase: ClipCouponUseCase,
+    //private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<CouponsUiState, CouponsUiEffect>(CouponsUiState()),
     CouponsInteractionListener {
 
@@ -50,7 +50,7 @@ class CouponsViewModel @Inject constructor(
     }
 
 
-    override fun onClickGetCoupon(couponId: Long) {
+/*    override fun onClickGetCoupon(couponId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { clipCouponsUseCase(couponId) },
@@ -71,7 +71,7 @@ class CouponsViewModel @Inject constructor(
                 isError = errorHandler is ErrorHandler.NoConnection,
             )
         }
-    }
+    }*/
 
 
     override fun onClickAllCoupons() {
