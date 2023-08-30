@@ -1,8 +1,8 @@
 package org.the_chance.honeymart.ui.features.profile.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,7 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +27,11 @@ fun StatusChip(
     status: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val statusColor by animateColorAsState(
+        targetValue = if (status) success else error,
+        label = "Status color"
+    )
+
     Row(
         modifier = modifier
             .wrapContentSize()
@@ -41,13 +46,13 @@ fun StatusChip(
             painter = if (status) painterResource(id = R.drawable.icon_online_market)
             else painterResource(id = R.drawable.icon_offline_market),
             contentDescription = stringResource(R.string.icon_market_status),
-            tint = if (status) success else error
+            tint = statusColor
         )
         Text(
             text = if (status) stringResource(R.string.online)
             else stringResource(R.string.offline),
             style = MaterialTheme.typography.displayLarge,
-            color = if (status) success else error
+            color = statusColor
         )
     }
 }
