@@ -40,7 +40,6 @@ fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
         viewModel.effect.collect {
             when (it) {
                 MarketsUiEffect.UnAuthorizedUserEffect ->  navController.navigateToLogin()
-                else -> {}
             }
         }
     }
@@ -55,7 +54,9 @@ fun RequestsContent(
 ) {
     ContentVisibility(state = state.isContentScreenVisible()) {
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         Row(
@@ -64,28 +65,32 @@ fun RequestsContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
             CustomChip(
-                state = state.requestsState == RequestsState.UNAPPROVED,
-                text = stringResource(R.string.pending),
-                onClick = { listener.onGetMarkets(false) }
-            )
-            CustomChip(
-                state = state.requestsState == RequestsState.APPROVED,
-                text = stringResource(R.string.approved),
-                onClick = { listener.onGetMarkets(true) }
-            )
-            CustomChip(
-                state = state.requestsState == RequestsState.ALL,
+                state = state.marketsState == MarketsState.ALL,
                 text = stringResource(R.string.all_capitalized),
-                onClick = ( listener::onGetMarkets)
+                onClick = { listener.onClickMarketsState(MarketsState.ALL) }
+            )
+            CustomChip(
+                state = state.marketsState == MarketsState.UNAPPROVED,
+                text = stringResource(R.string.pending),
+                onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
+            )
+            CustomChip(
+                state = state.marketsState == MarketsState.APPROVED,
+                text = stringResource(R.string.approved),
+                onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
             )
         }
             Row(
-                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = MaterialTheme.dimens.space40)
                     .padding(top = MaterialTheme.dimens.space24),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize().weight(1f),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
                     LazyColumn(
@@ -93,7 +98,7 @@ fun RequestsContent(
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        itemsIndexed(state.requests) { index, item ->
+                        itemsIndexed(state.marketsUpdated) { index, item ->
                             ItemMarketRequest(
                                 onClickCard = { listener.onClickMarket(index) },
                                 ownerName = item.ownerName,
@@ -102,18 +107,20 @@ fun RequestsContent(
                                 onCardSelected = item.isSelected,
                                 marketStateText = item.marketStateText,
                                 state = item.isApproved,
-                                requestsState = state.requestsState,
+                                marketsState = state.marketsState,
                                 isLoading = state.isLoading
                             )
                         }
                     }
                 }
                 Column(
-                    modifier = Modifier.fillMaxSize().weight(1f)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
                 ) {
                     state.selectedMarket?.let {
                         MarketRequestDetails(
-                            state = state.selectedMarket.state == RequestsState.UNAPPROVED,
+                            state = state.selectedMarket.state == MarketsState.UNAPPROVED,
                             request = state.selectedMarket, listener = listener,
                             imageUrl = it.imageUrl
                         )
@@ -123,6 +130,6 @@ fun RequestsContent(
         }
     }
     Loading(state = state.isLoading)
-    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = { listener.onGetMarkets(false) } )
+    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = { listener.onClickTryAgain() } )
     EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }

@@ -8,7 +8,7 @@ import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.MARKETS.route
 
-fun NavController.navigateToRequestsScreen() {
+fun NavController.navigateToMarketsScreen() {
     navigate(ROUTE) {
         popUpTo(route = Graph.AUTH_GRAPH) {
             inclusive = true
