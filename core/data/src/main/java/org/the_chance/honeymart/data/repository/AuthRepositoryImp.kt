@@ -93,16 +93,14 @@ class AuthRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
 
     override suspend fun loginAdmin(email: String, password: String): AdminLogin {
-        Log.i("saveAdminName", "loginAdmin: ")
         return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLogin()
             ?: throw NotFoundException()
     }
 
     override suspend fun saveAdminName(name: String) {
         datastore.saveAdminName(name)
-        Log.i("saveAdminName: ", name)
     }
 
-    override fun getAdminName(): String? = datastore.getAdminName()
+    override suspend fun getAdminName(): String? = datastore.getAdminName()
 
 }

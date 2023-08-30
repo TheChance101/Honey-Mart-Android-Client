@@ -36,5 +36,5 @@ interface AuthRepository {
     suspend fun getOwnerProfile(): OwnerProfile
     suspend fun loginAdmin(email: String, password: String): AdminLogin
     suspend fun saveAdminName(name: String)
-    fun getAdminName(): String?
+    suspend fun getAdminName(): String?
 }

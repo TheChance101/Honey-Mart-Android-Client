@@ -1,7 +1,9 @@
 package org.the_chance.honeymart.ui.main
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAdminInitialsUseCase
 import org.the_chance.honeymart.domain.usecase.LogOutAdminUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -23,13 +25,13 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getAdminInfo() {
-        log(_state.value.adminInitials.toString())
-        _state.update {
-            it.copy(
-                adminInitials = getAdminInitials(),
-            )
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    adminInitials = getAdminInitials(),
+                )
+            }
         }
-        log(_state.value.adminInitials.toString())
     }
 
     override fun onClickLogout() {
