@@ -302,7 +302,7 @@ private fun Categories(
                 text = stringResource(R.string.categories),
                 style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
                 modifier = modifier
-                    .padding(horizontal = MaterialTheme.dimens.space8)
+                    .padding(horizontal = MaterialTheme.dimens.space16)
                     .padding(top = MaterialTheme.dimens.space8)
             )
             LazyRow(
