@@ -178,7 +178,7 @@ fun SignupContent(
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
                                     ValidationState.INVALID_PASSWORD -> "Invalid password"
-                                    ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
+                                    ValidationState.INVALID_PASSWORD_LENGTH_SHORT -> "Password must be at least 8 characters"
                                     else -> ""
                                 },
                             )

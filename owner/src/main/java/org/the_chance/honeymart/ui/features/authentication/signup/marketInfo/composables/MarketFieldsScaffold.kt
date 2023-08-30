@@ -1,5 +1,4 @@
-package org.the_chance.honeymart.ui.features.signup.market_info.composables
-
+package org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.composables
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,8 +15,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
-import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoUiState
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoUiState
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.theme.black37

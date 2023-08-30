@@ -1,43 +1,33 @@
-package org.the_chance.honeymart.ui.features.signup.market_info
-
+package org.the_chance.honeymart.ui.features.authentication.signup
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.authentication.signup.composables.OwnerFieldsScaffold
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoScreen
+import org.the_chance.honeymart.ui.features.authentication.waitingApprove.navigateToWaitingApproveScreen
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.features.login.navigateToLogin
-import org.the_chance.honeymart.ui.features.login.waiting_approved.navigateToWaitingApproveScreen
-import org.the_chance.honeymart.ui.features.signup.SignUpViewModel
-import org.the_chance.honeymart.ui.features.signup.SignupUiEffect
-import org.the_chance.honeymart.ui.features.signup.market_info.composables.MarketFieldsScaffold
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
-import org.the_chance.honymart.ui.composables.HoneyAuthHeader
-import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.owner.R
-
 
 @Composable
-fun MarketInfoScreen(viewModel: SignUpViewModel = hiltViewModel()) {
+fun SignupScreen(
+    viewModel: SignUpViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val navController = LocalNavigationProvider.current
-
-    MarketInfoContent(state = state.marketInfoUiState, listener = viewModel)
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
@@ -48,48 +38,45 @@ fun MarketInfoScreen(viewModel: SignUpViewModel = hiltViewModel()) {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
                 SignupUiEffect.ClickLoginEffect -> {
                     navController.navigateToLogin()
                 }
-
                 SignupUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
-
                 SignupUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
+                }
+                SignupUiEffect.ClickLogoutEffect -> {
+                    navController.navigateToLogin()
                 }
             }
         }
     }
+    SignupContent(listener = viewModel, state = state)
 }
 
 @Composable
-fun MarketInfoContent(
-    state: MarketInfoUiState,
-    listener: MarketInfoInteractionsListener,
+fun SignupContent(
+    state: SignupUiState,
+    listener: SignupInteractionListener,
 ) {
-    HoneyAuthScaffold(
-        modifier = Modifier.imePadding()
-    ) {
+    ContentVisibility(state = !state.isOwnerAccountCreated) {
         Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(end = MaterialTheme.dimens.space32),
+            modifier = Modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            HoneyAuthHeader(
-                title = stringResource(R.string.market_info),
-                subTitle = stringResource(R.string.create_an_account_name_your_market),
-            )
-            MarketFieldsScaffold(state = state, listener = listener)
+            OwnerFieldsScaffold(state = state, listener = listener)
         }
+    }
+    ContentVisibility(state = state.isOwnerAccountCreated) {
+        MarketInfoScreen()
     }
 }
 
-@Preview(device = Devices.TABLET, showSystemUi = true)
+
+@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
-fun MarketInfoScreenPreview() {
-    MarketInfoScreen()
+fun PreviewSignupScreen() {
+    SignupScreen()
 }

@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.signup
+package org.the_chance.honeymart.ui.features.authentication.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -6,13 +6,15 @@ import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
 import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
 import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
+import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.main.MainEffect
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
@@ -25,7 +27,8 @@ class SignUpViewModel @Inject constructor(
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
     private val checkAdminApprove: CheckAdminApproveUseCase,
-    private val stringResourceImpl: StringDictionary
+    private val stringResourceImpl: StringDictionary,
+    private val logOutOwnerUseCase: LogOutOwnerUseCase,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
     MarketInfoInteractionsListener {
@@ -51,7 +54,7 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCheckApproveError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
-        showValidationToast(stringResourceImpl.errorString.getOrDefault(error,""))
+        showValidationToast(stringResourceImpl.errorString.getOrDefault(error, ""))
     }
 
     // region owner registration
@@ -66,7 +69,7 @@ class SignUpViewModel @Inject constructor(
                 state.value.confirmPasswordState.isValid
 
         if (validationSignupFieldsState) {
-            addOwner(
+            createOwner(
                 fullName = state.value.fullNameState.value,
                 email = state.value.emailState.value,
                 password = state.value.passwordState.value
@@ -76,7 +79,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun addOwner(
+    private fun createOwner(
         fullName: String,
         email: String,
         password: String,
@@ -101,12 +104,21 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
+        if (error == ErrorHandler.AlreadyExist) {
+            showValidationToast(
+                message = stringResourceImpl.errorString.getOrDefault(
+                    error,
+                    ""
+                )
+            )
+        }
         showValidationToast(
             message = stringResourceImpl.errorString.getOrDefault(
                 error,
                 ""
             )
         )
+        log(error.toString())
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
@@ -185,7 +197,7 @@ class SignUpViewModel @Inject constructor(
 
     override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
         val passwordState = validateSignupFields.validateConfirmPassword(
-            state.value.passwordState.value,
+            _state.value.passwordState.value,
             confirmPassword.toString()
         )
         if (passwordState == ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH) {
@@ -233,6 +245,21 @@ class SignUpViewModel @Inject constructor(
         } else {
             effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
+    }
+    override fun onClickLogout() {
+        tryToExecute(
+            function = { logOutOwnerUseCase() },
+            onSuccess = { onLogoutSuccess() },
+            onError = ::onLogoutError
+        )
+    }
+
+    private fun onLogoutSuccess() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickLogoutEffect)
+    }
+
+    private fun onLogoutError(error: ErrorHandler) {
+
     }
 
     private fun createMarket(
