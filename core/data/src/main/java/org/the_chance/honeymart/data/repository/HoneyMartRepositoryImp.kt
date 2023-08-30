@@ -49,6 +49,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
+    override suspend fun checkAdminApprove(): Flow<Boolean> {
+        return wrapWithFlow { honeyMartService.checkAdminApprove() }
+    }
 
     override suspend fun getAllMarkets(): List<Market> {
         Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
@@ -24,6 +25,7 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 interface HoneyMartService {
 
+    suspend fun checkAdminApprove(): Flow<BaseResponse<Boolean>>
 
     suspend fun addOwner(
         fullName: String,

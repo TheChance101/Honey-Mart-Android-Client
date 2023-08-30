@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -21,6 +22,8 @@ import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
@@ -53,6 +56,10 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
+    override suspend fun checkAdminApprove(): Flow<BaseResponse<Boolean>> {
+        return wrapWithFlow(client.get("/markets/marketValidation"))
+    }
+
     override suspend fun addOwner(
         fullName: String,
         email: String,
@@ -380,8 +387,24 @@ class HoneyMartServiceImp @Inject constructor(
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
+            Log.d("Tag","service done correctly")
             return response.body()
         } else {
+            Log.d("Tag","service failed")
+            when (response.status.value) {
+                401 -> throw UnAuthorizedException()
+                500 -> throw InternalServerException()
+                else -> throw Exception(response.status.description)
+            }
+        }
+    }
+
+    private inline fun <reified T> wrapWithFlow(response: HttpResponse): Flow<T> = flow {
+        if (response.status.isSuccess()) {
+            Log.d("Tag","service flow done correctly")
+            emit(response.body())
+        } else {
+            Log.d("Tag","service flow failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
