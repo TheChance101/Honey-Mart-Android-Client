@@ -37,7 +37,7 @@ fun CouponsItem(
     isExpired: Boolean = false,
     isClipped: Boolean = false
 ) {
-    Row(
+        Row(
         modifier = modifier.height(IntrinsicSize.Min),
     ) {
         CouponDetails(

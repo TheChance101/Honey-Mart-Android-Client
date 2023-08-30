@@ -76,7 +76,7 @@ fun CouponsContent(
         )
 
         EmptyProductPlaceholder(
-            state =   !state.isLoading && !state.isError && state.updatedCoupons.isEmpty(),
+            state =   state.showCouponsPlaceholder(),
             title = stringResource(R.string.empty_coupons),
             description = stringResource(R.string.there_is_no_coupons_here),
         )
