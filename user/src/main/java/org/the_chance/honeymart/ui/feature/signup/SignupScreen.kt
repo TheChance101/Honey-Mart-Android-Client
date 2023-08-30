@@ -170,7 +170,6 @@ fun SignupContent(
                         ) {
                             HoneyTextFieldPassword(
                                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),

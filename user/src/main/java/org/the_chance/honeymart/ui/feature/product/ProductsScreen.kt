@@ -79,7 +79,8 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        EmptyProductPlaceholder(state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty())
+        EmptyProductPlaceholder(
+            state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty())
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(

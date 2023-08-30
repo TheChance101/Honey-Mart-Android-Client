@@ -25,7 +25,11 @@ class ProfileViewModel @Inject constructor(
 
     override fun getData() {
         _state.update {
-            it.copy(isLoading = true, isError = false)
+            it.copy(
+                isLoading = true,
+                isError = false,
+                accountInfo = it.accountInfo.copy(profileImage = "")
+            )
         }
         tryToExecute(
             { getProfileUseCase() },
@@ -84,6 +88,9 @@ class ProfileViewModel @Inject constructor(
 
     override fun onImageSelected(image: ByteArray) {
         _state.update { it.copy(image = image) }
+        state.value.image?.let {
+            updateImage(image = it)
+        }
     }
 
     override fun updateImage(image: ByteArray) {

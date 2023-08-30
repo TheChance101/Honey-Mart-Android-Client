@@ -84,7 +84,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onGetProductSuccess(product: Product) {
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product.toProductUiState(),
+                error = null, isConnectionError = false, product = product.toProductUiState(), isLoading = false
             )
         }
         _state.update {

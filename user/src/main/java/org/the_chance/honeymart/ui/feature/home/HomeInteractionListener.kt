@@ -25,4 +25,6 @@ interface HomeInteractionListener {
 
     fun onClickSeeAllNewProducts()
 
+    fun onClickLastPurchasesSeeAll()
+
 }

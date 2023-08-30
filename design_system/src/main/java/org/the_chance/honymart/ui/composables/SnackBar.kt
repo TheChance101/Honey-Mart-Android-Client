@@ -35,7 +35,7 @@ fun SnackBarWithDuration(
             val snackBarResult = snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = "Close",
-                duration = SnackbarDuration.Long,
+                duration = SnackbarDuration.Short,
             )
             when (snackBarResult) {
                 SnackbarResult.Dismissed -> onDismiss()
