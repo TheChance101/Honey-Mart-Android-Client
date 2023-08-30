@@ -31,14 +31,16 @@ fun ProfileScreen(
 fun ProfileContent(
     state: ProfileUiState,
 ) {
-    Loading(state = state.isLoading)
-    ContentVisibility(state = state.showContent()) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
-        ) {
-            HoneyMartTitle()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
+        HoneyMartTitle()
+        Loading(state = state.isLoading)
+        ContentVisibility(state = state.showContent()) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -56,6 +58,7 @@ fun ProfileContent(
         }
     }
 }
+
 
 @Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
 @Composable
