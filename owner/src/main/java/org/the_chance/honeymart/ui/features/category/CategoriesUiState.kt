@@ -175,7 +175,7 @@ fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts
             && !showScreenState.showAddCategory
 
-fun CategoriesUiState.errorPlaceHolderCondition() = isError
+fun CategoriesUiState.errorPlaceHolderCondition() = isError && !isLoading
 
 fun CategoriesUiState.placeHolderCondition() =
     categories.isEmpty() && !isError && !isLoading

@@ -65,6 +65,9 @@ fun CategoriesContent(
                 )
             }
         }
+        ContentVisibility(state = !state.isError) {
+
+
         Row(modifier = Modifier.fillMaxSize()) {
             Loading(
                 state = state.isLoading && state.categories.isNotEmpty()
@@ -137,6 +140,7 @@ fun CategoriesContent(
                 }
             }
         }
+    }
     }
     ContentVisibility(
         state = state.snackBar.isShow
