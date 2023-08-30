@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -48,13 +49,15 @@ fun CircleWithText(
                 text = text.uppercase(Locale.ROOT),
                 style = MaterialTheme.typography.headlineMedium.copy(
                     color = textColor,
-                    fontSize = textSize
+                    fontSize = textSize,
+                    baselineShift = BaselineShift(0.2f)
                 ),
                 textAlign = TextAlign.Center
             )
         }
     }
 }
+
 
 @Preview
 @Composable
