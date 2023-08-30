@@ -71,12 +71,12 @@ fun CouponsContent(
 
     HoneyAppBarScaffold {
         ConnectionErrorPlaceholder(
-            state = state.isError  && !state.showCouponsContent(),
+            state = state.isError && !state.showCouponsContent(),
             onClickTryAgain = listener::getData
         )
 
         EmptyProductPlaceholder(
-            state = !state.showCouponsContent() && !state.isLoading,
+            state = state.showCouponsPlaceholder(),
             title = stringResource(R.string.empty_coupons),
             description = stringResource(R.string.there_is_no_coupons_here),
         )
@@ -85,7 +85,7 @@ fun CouponsContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = MaterialTheme.dimens.space16),
+                    .padding(vertical = MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(
                     MaterialTheme.dimens.space8,
                     Alignment.CenterHorizontally
@@ -114,7 +114,7 @@ fun CouponsContent(
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16),
+                    contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

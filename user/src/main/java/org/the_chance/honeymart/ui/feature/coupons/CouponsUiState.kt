@@ -68,6 +68,9 @@ fun CouponsUiState.expired() = this.couponsState == CouponsState.EXPIRED
 fun CouponsUiState.showCouponsContent() =
     this.coupons.isNotEmpty() && this.updatedCoupons.isNotEmpty() && !this.isError
 
+fun CouponsUiState.showCouponsPlaceholder() =
+    !this.isLoading && !this.isError && this.updatedCoupons.isEmpty()
+
 fun Double.discountedPrice(discountPercentage: Double): Double {
     return this - (this * discountPercentage / 100)
 }

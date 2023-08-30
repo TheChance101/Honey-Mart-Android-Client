@@ -34,6 +34,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     private val prefDataStore = context.preferencesDataStore
 
     override suspend fun saveTokens(accessToken: String, refreshToken: String) {
+        storedAccessToken = null
+        storedRefreshToken = null
         prefDataStore.edit { preferences ->
             preferences[KEY_ACCESS_TOKEN] = accessToken
             preferences[KEY_REFRESH_TOKEN] = refreshToken
