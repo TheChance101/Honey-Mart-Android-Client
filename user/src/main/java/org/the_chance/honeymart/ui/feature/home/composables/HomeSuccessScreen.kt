@@ -133,7 +133,7 @@ fun HomeContentSuccessScreen(
             LastPurchases(
                 lastPurchases = state.lastPurchases,
                 onClickProduct = listener::onClickLastPurchases,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickLastPurchasesSeeAll
             )
         }
 
@@ -389,7 +389,7 @@ private fun MarketsPager(
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
                 contentDescription = stringResource(id = R.string.market_image),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)

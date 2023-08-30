@@ -16,5 +16,6 @@ sealed interface HomeUiEffect : BaseUiEffect {
         val position: Int
     ) : HomeUiEffect
 
+    object NavigateToOrderScreenEffect : HomeUiEffect
     data class NavigateToOrderDetailsScreenEffect(val productId: Long) : HomeUiEffect
 }
