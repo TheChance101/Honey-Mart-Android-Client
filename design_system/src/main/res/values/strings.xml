@@ -225,4 +225,8 @@
     <string name="random">Random</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="market_info">Market Info</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="icon_market_status">icon market status</string>
 </resources>

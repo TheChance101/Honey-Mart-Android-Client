@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.profile.content.MarketInfoContent
 import org.the_chance.honeymart.ui.features.profile.content.PersonalInfoContent
 import org.the_chance.honymart.ui.composables.Loading
@@ -42,6 +43,7 @@ fun ProfileContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
+                HoneyMartTitle()
                 MarketInfoContent(state = state.marketInfo)
             }
             Column(
