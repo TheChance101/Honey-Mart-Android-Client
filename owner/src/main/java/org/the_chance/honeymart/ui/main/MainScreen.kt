@@ -17,6 +17,7 @@ import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
 import org.the_chance.honeymart.ui.navigation.RootNavigationGraph
+import org.the_chance.honeymart.ui.navigation.Screen
 
 @Composable
 fun MainScreen(
@@ -54,6 +55,7 @@ fun MainContent(
         NavigationRailScreen.Orders.route,
         NavigationRailScreen.Category.route,
         NavigationRailScreen.Coupons.route,
+        Screen.Profile.route
     )
     val showNavigationRail = currentDestination?.route in screenRouts
 
