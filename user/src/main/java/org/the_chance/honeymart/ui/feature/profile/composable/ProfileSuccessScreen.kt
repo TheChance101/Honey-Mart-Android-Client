@@ -21,12 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.profile.ProfileInteractionsListener
 import org.the_chance.honeymart.ui.feature.profile.ProfileUiState
-import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.nullColor
 
@@ -46,9 +49,17 @@ fun ProfileSuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            ImageNetwork(
-                imageUrl = state.accountInfo.profileImage,
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(state.accountInfo.profileImage)
+                    .crossfade(true)
+                    .memoryCachePolicy(CachePolicy.DISABLED)
+                    .build(),
+                error = painterResource(R.drawable.placeholder),
+                placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = "",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(MaterialTheme.dimens.sizeProfileImage)
                     .fillMaxSize()
@@ -63,7 +74,6 @@ fun ProfileSuccessScreen(
                         color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.onTertiary else nullColor,
                         shape = CircleShape
                     ),
-                contentScale = ContentScale.Crop,
             )
 
             Box(
