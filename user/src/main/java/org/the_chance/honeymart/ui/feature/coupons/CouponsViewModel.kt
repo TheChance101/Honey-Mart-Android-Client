@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.coupons
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Coupon
-import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetClippedUserCouponsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -12,7 +11,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CouponsViewModel @Inject constructor(
     private val getClippedUserCouponsUseCase: GetClippedUserCouponsUseCase,
-    //private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<CouponsUiState, CouponsUiEffect>(CouponsUiState()),
     CouponsInteractionListener {
 
@@ -49,29 +47,6 @@ class CouponsViewModel @Inject constructor(
         }
     }
 
-
-/*    override fun onClickGetCoupon(couponId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { clipCouponsUseCase(couponId) },
-            { onClipCouponSuccess() },
-            ::onClipCouponError
-        )
-    }
-
-    private fun onClipCouponSuccess() {
-        _state.update { it.copy(isLoading = false) }
-    }
-
-    private fun onClipCouponError(errorHandler: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = errorHandler,
-                isError = errorHandler is ErrorHandler.NoConnection,
-            )
-        }
-    }*/
 
 
     override fun onClickAllCoupons() {

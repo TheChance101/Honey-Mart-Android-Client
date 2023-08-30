@@ -71,7 +71,7 @@ fun CouponsContent(
 
     HoneyAppBarScaffold {
         ConnectionErrorPlaceholder(
-            state = state.isError && !state.showCouponsContent(),
+            state = state.isError  && !state.showCouponsContent(),
             onClickTryAgain = listener::getData
         )
 
