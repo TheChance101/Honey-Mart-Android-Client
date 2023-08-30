@@ -3,6 +3,7 @@ package org.the_chance.honeymart.domain.usecase
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class AddCouponUseCase @Inject constructor(
@@ -15,7 +16,8 @@ class AddCouponUseCase @Inject constructor(
         discountPercentage: Double,
         expirationDate: Date,
     ) {
-        val expirationDateString = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expirationDate)
+        val expirationDateString =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(expirationDate)
 
         honeyMartRepository.addCoupon(
             productId,

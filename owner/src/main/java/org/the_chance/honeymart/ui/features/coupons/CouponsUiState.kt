@@ -7,7 +7,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 
 //region Ui State
@@ -91,7 +90,7 @@ fun Double.toOfferPrice(discountPercentage: Double): Double {
 
 @SuppressLint("SimpleDateFormat")
 fun Date.toCouponExpirationDateFormat(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     return dateFormat.format(this)
 }
 
