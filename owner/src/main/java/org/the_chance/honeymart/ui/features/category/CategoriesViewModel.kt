@@ -57,7 +57,6 @@ class CategoriesViewModel @Inject constructor(
             ::onGetCategoryError
         )
     }
-
     private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
         val updatedCategories = if (categories.isEmpty()) {
@@ -65,17 +64,22 @@ class CategoriesViewModel @Inject constructor(
         } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
         }
+        val newState = _state.value.copy(
+            isLoading = false,
+            error = null,
+            categories = updatedCategories,
+            position = 0
+        )
+        val newCategoryId = if (updatedCategories.isEmpty()) null
+        else updatedCategories[_state.value.position].categoryId
         _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                categories = updatedCategories,
-                position = 0
+            newState.copy(
+                newCategory = newState.newCategory.copy(categoryId = newCategoryId!!)
             )
         }
-        getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
-
+        getProductsByCategoryId(newCategoryId!!)
     }
+
 
     private fun onGetCategoryError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
@@ -307,7 +311,7 @@ class CategoriesViewModel @Inject constructor(
                     product.newProducts.name,
                     product.newProducts.price.toDouble(),
                     product.newProducts.description,
-                    product.newProducts.categoryId
+                    product.newCategory.categoryId
                 )
             },
             ::onAddProductSuccess,
