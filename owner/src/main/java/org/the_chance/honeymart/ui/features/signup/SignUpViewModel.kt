@@ -1,8 +1,12 @@
 package org.the_chance.honeymart.ui.features.signup
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
+import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
 import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
@@ -23,6 +27,7 @@ class SignUpViewModel @Inject constructor(
     private val addMarketImageUseCase: AddMarketImageUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
+    private val checkAdminApprove: CheckAdminApproveUseCase,
     private val stringResourceImpl: StringDictionary
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
@@ -30,6 +35,18 @@ class SignUpViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
+    private fun listenToCheckAdminApprove() {
+        viewModelScope.launch {
+            checkAdminApprove().collect {
+                Log.d("Shehab", it.toString())
+                if (it) {
+                    effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+                } else {
+                    effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
+                }
+            }
+        }
+    }
 
     // region owner registration
     override fun onClickLogin() {
@@ -360,7 +377,7 @@ class SignUpViewModel @Inject constructor(
                 )
             )
         }
-        effectActionExecutor(_effect, SignupUiEffect.NavigateToApproveScreenEffect)
+        listenToCheckAdminApprove()
     }
 
     override fun onImageSelected(uri: ByteArray) {

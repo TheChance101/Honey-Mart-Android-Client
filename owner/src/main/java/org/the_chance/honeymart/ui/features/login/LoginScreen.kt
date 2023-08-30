@@ -32,6 +32,8 @@ import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.login.waiting_approved.navigateToWaitingApproveScreen
+import org.the_chance.honeymart.ui.features.signup.market_info.navigateToMarketInfoScreen
 import org.the_chance.honymart.ui.composables.Loading
 
 @Composable
@@ -53,13 +55,21 @@ fun LoginScreen(
                     ).show()
                 }
 
-                LoginUiEffect.ClickLoginEffect -> {
+                LoginUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
 
                 LoginUiEffect.ClickSignUpEffect -> {
                     navController.navigateToSignupScreen()
 
+                }
+
+                LoginUiEffect.NavigateToCreateMarketEffect -> {
+                    navController.navigateToMarketInfoScreen()
+                }
+
+                LoginUiEffect.NavigateToWaitingApproveEffect -> {
+                    navController.navigateToWaitingApproveScreen()
                 }
             }
         }
@@ -73,7 +83,7 @@ fun LoginContent(
     state: LoginUiState,
 ) {
     Loading(state.authLoading)
-    AnimatedVisibility(!state.authLoading){
+    AnimatedVisibility(!state.authLoading) {
         HoneyAuthScaffold(
             modifier = Modifier.imePadding()
         ) {

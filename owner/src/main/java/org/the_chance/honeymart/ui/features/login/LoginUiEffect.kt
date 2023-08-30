@@ -5,6 +5,8 @@ import org.the_chance.honeymart.ui.base.BaseUiEffect
 
 sealed class LoginUiEffect : BaseUiEffect {
     object ClickSignUpEffect : LoginUiEffect()
-    object ClickLoginEffect : LoginUiEffect()
+    object NavigateToCategoriesEffect : LoginUiEffect()
     object ShowLoginErrorToastEffect : LoginUiEffect()
+    object NavigateToWaitingApproveEffect: LoginUiEffect()
+    object NavigateToCreateMarketEffect : LoginUiEffect()
 }

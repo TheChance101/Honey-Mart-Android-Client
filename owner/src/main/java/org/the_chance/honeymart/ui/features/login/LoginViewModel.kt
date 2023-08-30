@@ -1,10 +1,13 @@
 package org.the_chance.honeymart.ui.features.login
 
 
-
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.OwnerProfile
+import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -19,14 +22,27 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
-    private val stringResourceImpl: StringDictionary
+    private val stringResourceImpl: StringDictionary,
+    private val checkAdminApprove: CheckAdminApproveUseCase
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
     init {
-        checkOwnerAuthorization()
+        //  checkOwnerAuthorization()
+    }
+
+    private fun listenToCheckAdminApprove() {
+        viewModelScope.launch {
+            checkAdminApprove().collect {
+                if (it) {
+                    effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
+                } else {
+                    effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)
+                }
+            }
+        }
     }
 
     // region check Authorization
@@ -41,7 +57,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onGetProfileSuccess(profile: OwnerProfile) {
         _state.update { it.copy(authLoading = false) }
-        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+        effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
@@ -79,14 +95,19 @@ class LoginViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             { loginOwnerUseCase(email, password) },
-            { onLoginSuccess() },
+            ::onLoginSuccess,
             ::onLoginError,
         )
     }
 
-    private fun onLoginSuccess() {
-        _state.update { it.copy(isLoading = false, isError = false, error = null) }
-        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+    private fun onLoginSuccess(marketId: Long) {
+        Log.d("Tarek","$marketId")
+        if (marketId == 0L) {
+            effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
+        } else {
+            _state.update { it.copy(isLoading = false, isError = false, error = null) }
+            listenToCheckAdminApprove()
+        }
     }
 
     private fun onLoginError(error: ErrorHandler) {

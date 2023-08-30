@@ -22,6 +22,7 @@ import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.login.waiting_approved.navigateToWaitingApproveScreen
 import org.the_chance.honeymart.ui.features.signup.composables.OwnerFieldsScaffold
 import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
@@ -50,8 +51,12 @@ fun SignupScreen(
                     navController.navigateToLogin()
                 }
 
-                SignupUiEffect.NavigateToApproveScreenEffect -> {
+                SignupUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
+                }
+
+                SignupUiEffect.NavigateToWaitingApproveEffect -> {
+                    navController.navigateToWaitingApproveScreen()
                 }
             }
         }
@@ -64,15 +69,16 @@ fun SignupContent(
     state: SignupUiState,
     listener: SignupInteractionListener,
 ) {
-    HoneyAuthScaffold(
-        modifier = Modifier.imePadding()
-    ) {
-        ContentVisibility(state = !state.isOwnerAccountCreated) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(end = MaterialTheme.dimens.space32),
-                verticalArrangement = Arrangement.SpaceEvenly
+
+    ContentVisibility(state = !state.isOwnerAccountCreated) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(end = MaterialTheme.dimens.space32),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            HoneyAuthScaffold(
+                modifier = Modifier.imePadding()
             ) {
                 HoneyAuthHeader(
                     title = stringResource(R.string.sign_up),
@@ -81,10 +87,10 @@ fun SignupContent(
                 OwnerFieldsScaffold(state = state, listener = listener)
             }
         }
+    }
 
-        ContentVisibility(state = state.isOwnerAccountCreated) {
-            MarketInfoScreen()
-        }
+    ContentVisibility(state = state.isOwnerAccountCreated) {
+        MarketInfoScreen()
     }
 }
 
