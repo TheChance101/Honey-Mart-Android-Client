@@ -25,9 +25,9 @@ fun ImageNetwork(
             .data(imageUrl)
             .crossfade(true)
             .build(),
-        error = painterResource(R.drawable.no_images),
+        error = painterResource(R.drawable.placeholder),
         colorFilter = colorFilter,
-        placeholder = painterResource(R.drawable.no_images),
+        placeholder = painterResource(R.drawable.placeholder),
         contentDescription = contentDescription,
         contentScale = contentScale,
         modifier = modifier
