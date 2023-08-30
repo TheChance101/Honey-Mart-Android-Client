@@ -79,7 +79,7 @@ fun ProductCard(
                             Color.Transparent,
                             blackOn87,
                         ),
-                        startY = 300f,
+                        startY = 50f,
                     )
                 )
         )

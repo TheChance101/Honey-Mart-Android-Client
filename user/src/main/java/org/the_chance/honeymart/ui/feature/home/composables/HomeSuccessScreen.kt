@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
@@ -108,7 +109,6 @@ fun HomeContentSuccessScreen(
                 categories = state.categories,
                 selectedMarketId = state.selectedMarketId,
                 onChipClick = listener::onClickChipCategory,
-                onClickSeeAll = {},
                 oncClickCategory = listener::onClickCategory
             )
         }
@@ -291,20 +291,19 @@ private fun Categories(
     markets: List<MarketUiState>,
     selectedMarketId: Long,
     onChipClick: (Long) -> Unit,
-    onClickSeeAll: () -> Unit,
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(visible = markets.isNotEmpty()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
-            ItemLabel(
-                label = stringResource(R.string.categories),
+            Text(
+                text = stringResource(R.string.categories),
+                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
                 modifier = modifier
-                    .padding(horizontal = MaterialTheme.dimens.space16)
-                    .padding(top = MaterialTheme.dimens.space8),
-                onClick = onClickSeeAll
+                    .padding(horizontal = MaterialTheme.dimens.space8)
+                    .padding(top = MaterialTheme.dimens.space8)
             )
             LazyRow(
                 contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
@@ -317,12 +316,17 @@ private fun Categories(
                         onClick = { onChipClick(market.marketId) })
                 }
             }
-            LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            ) {
                 itemsIndexed(
                     categories,
                     key = { _, category -> category.categoryId }) { index, category ->
                     HomeCategoriesItem(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.dimens.space8)
+                            .animateItemPlacement(),
                         label = category.categoryName,
                         onClick = { oncClickCategory(category.categoryId, index) }
                     )

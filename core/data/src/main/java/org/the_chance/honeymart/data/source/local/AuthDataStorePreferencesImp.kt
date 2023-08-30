@@ -57,6 +57,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     }
 
     override suspend fun clearToken() {
+        storedAccessToken = null
+        storedRefreshToken = null
         prefDataStore.edit { preferences ->
             preferences.remove(KEY_ACCESS_TOKEN)
             preferences.remove(KEY_REFRESH_TOKEN)
@@ -98,7 +100,7 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         }
     }
 
-    override  fun getOwnerMarketId(): Long? {
+    override fun getOwnerMarketId(): Long? {
         return runBlocking {
             prefDataStore.data.map { preferences ->
                 preferences[OWNER_MARKET_ID]

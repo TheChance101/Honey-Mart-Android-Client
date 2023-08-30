@@ -32,7 +32,7 @@ fun NotificationCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.tertiary)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
