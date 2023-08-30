@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.login
+package org.the_chance.honeymart.ui.features.authentication.login
 
 import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,8 +7,8 @@ import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.signup.FieldState
-import org.the_chance.honeymart.ui.features.signup.ValidationToast
+import org.the_chance.honeymart.ui.features.authentication.signup.FieldState
+import org.the_chance.honeymart.ui.features.authentication.signup.ValidationToast
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val stringResourceImpl: StringDictionary,
     private val checkAdminApprove: CheckAdminApproveUseCase
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
-    LoginInteractionListener {
+    org.the_chance.honeymart.ui.features.authentication.login.LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 

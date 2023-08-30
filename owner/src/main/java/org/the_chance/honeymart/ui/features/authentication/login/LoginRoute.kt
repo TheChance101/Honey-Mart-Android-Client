@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.login
+package org.the_chance.honeymart.ui.features.authentication.login
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -18,5 +18,5 @@ fun NavController.navigateToLogin() {
 }
 
 fun NavGraphBuilder.loginRoute() {
-    composable(ROUTE) { LoginScreen() }
+    composable(org.the_chance.honeymart.ui.features.authentication.login.ROUTE) { org.the_chance.honeymart.ui.features.authentication.login.LoginScreen() }
 }

@@ -93,7 +93,7 @@ class LoginViewModel @Inject constructor(
                 password = FieldState(
                     error = when (passwordState) {
                         ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
-                        ValidationState.INVALID_PASSWORD_LENGTH ->
+                        ValidationState.INVALID_PASSWORD_LENGTH_SHORT ->
                             "Password length must be at least 4"
                         else -> ""
                     },
