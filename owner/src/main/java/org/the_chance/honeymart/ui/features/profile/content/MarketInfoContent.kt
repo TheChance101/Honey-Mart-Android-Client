@@ -107,9 +107,7 @@ fun MarketInfoContent(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_map),
-                    contentDescription = stringResource(
-                        R.string.icon_map
-                    )
+                    contentDescription = stringResource(R.string.icon_map)
                 )
 
                 Text(
