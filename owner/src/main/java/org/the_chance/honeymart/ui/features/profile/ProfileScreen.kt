@@ -40,20 +40,25 @@ fun ProfileContent(
         HoneyMartTitle()
         Loading(state = state.isLoading)
         ContentVisibility(state = state.showContent()) {
-
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer)
             ) {
-                MarketInfoContent(state = state.marketInfo)
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                PersonalInfoContent(state = state.personalInfo)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    MarketInfoContent(state = state.marketInfo)
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    PersonalInfoContent(state = state.personalInfo)
+                }
             }
         }
     }
