@@ -87,12 +87,7 @@ fun ProfileSuccessScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(MaterialTheme.dimens.space24)
-                        .clickable {
-                            listener.onClickCameraIcon()
-                            state.image?.let {
-                                listener.updateImage(image = it)
-                            }
-                        }
+                        .clickable { listener.onClickCameraIcon() }
                         .align(Alignment.Center),
                     tint = MaterialTheme.colorScheme.onTertiary,
                 )

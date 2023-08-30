@@ -76,16 +76,15 @@ val MaterialTheme.dimens: Dimens
 @Composable
 fun HoneyMartTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    useDarkIcons: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
     val systemUiController = rememberSystemUiController()
-
-    DisposableEffect(systemUiController, useDarkIcons) {
+    val darkIcons = !darkTheme
+    DisposableEffect(systemUiController, darkIcons) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = useDarkIcons,
+            darkIcons = darkIcons,
             isNavigationBarContrastEnforced = false
         )
 

@@ -33,7 +33,6 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 1)
-//    val navController = LocalNavigationProvider.current
 
     NavigationHandler(
         effects = viewModel.effect,
