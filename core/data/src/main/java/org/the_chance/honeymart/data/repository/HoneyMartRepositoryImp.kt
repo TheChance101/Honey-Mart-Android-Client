@@ -109,6 +109,11 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
+    override suspend fun updateMarketStatus(status: Int): Boolean {
+        return wrap { honeyMartService.updateMarketStatus(status) }.value
+            ?: throw NotFoundException()
+    }
+
     override suspend fun getMarketDetails(marketId: Long): MarketDetails =
         wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetails()
             ?: throw NotFoundException()

@@ -53,6 +53,8 @@ interface HoneyMartService {
 
     suspend fun getMarketInfo(): BaseResponse<MarketInfoDto>
 
+    suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean>
+
     //endregion Market
 
     //region Category

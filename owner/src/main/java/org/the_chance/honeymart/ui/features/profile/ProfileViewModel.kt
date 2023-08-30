@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.usecase.GetMarketInfoUseCase
 import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
+import org.the_chance.honeymart.domain.usecase.UpdateMarketStatusUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -13,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getMarketInfoUseCase: GetMarketInfoUseCase,
-    private val getOwnerProfileUseCase: GetOwnerProfileUseCase
+    private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
+    private val updateMarketStatusUseCase: UpdateMarketStatusUseCase
 ) :
     BaseViewModel<ProfileUiState, Unit>(ProfileUiState()), ProfileInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -64,6 +66,7 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+
     private fun onGetMarketInfoSuccess(marketInfo: MarketInfo) {
         _state.update {
             it.copy(
@@ -77,6 +80,30 @@ class ProfileViewModel @Inject constructor(
 
     private fun onGetMarketInfoError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = errorHandler) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
+    }
+
+    override fun updateMarketStatus(status: Int) {
+        tryToExecute(
+            function = { updateMarketStatusUseCase(status) },
+            onSuccess = ::onUpdateMarketInfoSuccess,
+            onError = ::onUpdateMarketInfoError
+        )
+    }
+
+    private fun onUpdateMarketInfoSuccess(status: Boolean) {
+        _state.update {
+            it.copy(
+                error = null,
+                isError = false,
+                marketInfo = it.marketInfo.copy(status = status)
+            )
+        }
+    }
+
+    private fun onUpdateMarketInfoError(errorHandler: ErrorHandler) {
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
