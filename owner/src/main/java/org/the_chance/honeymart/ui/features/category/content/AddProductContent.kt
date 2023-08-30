@@ -35,6 +35,8 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
+import org.the_chance.honeymart.ui.features.category.showButton
+import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.dimens
@@ -146,7 +148,8 @@ fun AddProductContent(
             label = stringResource(R.string.add),
             onClick = { listener.addProduct(state) },
             icon = R.drawable.icon_add_to_cart,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
+            isButtonEnabled = state.newProducts.showButton()
         )
     }
 }

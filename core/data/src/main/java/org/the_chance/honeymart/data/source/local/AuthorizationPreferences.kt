@@ -14,5 +14,5 @@ interface AuthorizationPreferences {
     val storedAccessToken: String?
     val storedRefreshToken: String?
     suspend fun saveAdminName(name: String)
-    fun getAdminName(): String?
+    suspend fun getAdminName(): String?
 }

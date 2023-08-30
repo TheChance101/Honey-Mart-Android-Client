@@ -10,7 +10,7 @@ fun RootNavigationGraph() {
 
     NavHost(
     navController = navController,
-    startDestination = Graph.MAIN_GRAPH
+    startDestination = Graph.AUTH_GRAPH
     )
     {
         authNavGraph()

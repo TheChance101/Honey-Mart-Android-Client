@@ -116,11 +116,9 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         }
     }
 
-    override fun getAdminName(): String? {
-        return runBlocking {
-            prefDataStore.data.map { preferences ->
-                preferences[ADMIN_NAME]
-            }.first()
-        }
+    override suspend fun getAdminName(): String? {
+        return prefDataStore.data.map { preferences ->
+            preferences[ADMIN_NAME]
+        }.first()
     }
 }

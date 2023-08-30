@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetMarketsRequests @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(isApproved:Boolean?): List<MarketRequest> {
+    suspend operator fun invoke(isApproved:Boolean? = null): List<MarketRequest> {
         return honeyMartRepository.getMarketsRequests(isApproved)
     }
 }

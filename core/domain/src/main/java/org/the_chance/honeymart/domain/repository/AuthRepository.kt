@@ -38,5 +38,5 @@ interface AuthRepository {
      fun getOwnerMarketId(): Long?
     suspend fun loginAdmin(email: String, password: String): AdminLogin
     suspend fun saveAdminName(name: String)
-    fun getAdminName(): String?
+    suspend fun getAdminName(): String?
 }
