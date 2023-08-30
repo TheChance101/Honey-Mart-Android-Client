@@ -6,12 +6,12 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 data class MarketsRequestUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
-//    val isLoggedIn: Boolean = false,
     val error: ErrorHandler? = null,
-    val requests: List<MarketRequestUiState> = emptyList(),
+    val marketsUpdated: List<MarketRequestUiState> = emptyList(),
+    val markets: List<MarketRequestUiState> = emptyList(),
     val selectedMarket: MarketRequestUiState? = null,
-    val requestsState: RequestsState = RequestsState.UNAPPROVED,
-    val adminName: Char = 'n',
+    val marketsState: MarketsState = MarketsState.ALL,
+    val adminName: Char = ' ',
     val adminImageUrl: String = "",
 )
 
@@ -23,7 +23,7 @@ data class MarketRequestUiState(
     val marketDescription: String = "",
     val isApproved: Boolean,
     val ownerEmail: String = "",
-    val state: RequestsState = RequestsState.UNAPPROVED,
+    val state: MarketsState = MarketsState.UNAPPROVED,
     val isSelected: Boolean = false,
     val imageUrl: String = ""
 ) {
@@ -43,9 +43,9 @@ fun MarketRequest.toMarketRequestUiState(): MarketRequestUiState {
         imageUrl = imageUrl
     )
 }
-enum class RequestsState { UNAPPROVED, APPROVED, ALL }
+enum class MarketsState { UNAPPROVED, APPROVED, ALL }
 
 fun MarketsRequestUiState.emptyRequestsPlaceHolder() =
-    this.requests.isEmpty() && !this.isError && !this.isLoading
+    this.marketsUpdated.isEmpty() && !this.isError && !this.isLoading
 
 fun MarketsRequestUiState.isContentScreenVisible() = !this.isLoading && !this.isError

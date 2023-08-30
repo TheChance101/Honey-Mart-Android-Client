@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class AdminLoginDto(
     @SerializedName("tokens")
     val tokens: TokensDto?,
-    @SerializedName("refreshToken")
+    @SerializedName("name")
     val name: String?,
 )

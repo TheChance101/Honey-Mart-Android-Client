@@ -54,7 +54,6 @@ class AuthRepositoryImp @Inject constructor(
 
     override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         datastore.saveTokens(accessToken, refreshToken)
-        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken")
     }
 
     override fun getAccessToken(): String? {
@@ -104,7 +103,6 @@ class AuthRepositoryImp @Inject constructor(
         datastore.saveAdminName(name)
     }
 
-    override fun getAdminName(): String? = datastore.getAdminName()
-
+    override suspend fun getAdminName(): String? = datastore.getAdminName()
 
 }
