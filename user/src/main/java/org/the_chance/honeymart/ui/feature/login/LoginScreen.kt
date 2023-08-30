@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -39,6 +38,7 @@ import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
+import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
@@ -114,7 +114,6 @@ fun LoginContent(
                 }
             }
             HoneyTextField(
-                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                 oneLineOnly = true,
                 text = state.email,
                 hint = stringResource(R.string.email),
@@ -126,10 +125,7 @@ fun LoginContent(
                     else -> ""
                 },
             )
-            HoneyTextField(
-                isPassword = PasswordVisualTransformation(),
-                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
-                oneLineOnly = true,
+            HoneyTextFieldPassword(
                 text = state.password,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                 hint = stringResource(R.string.password),
