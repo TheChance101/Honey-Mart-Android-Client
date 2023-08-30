@@ -31,6 +31,7 @@
     <string name="Invalid_username_or_password">Invalid username or password</string>
     <string name="password_should_not_be_empty">Password should not be empty</string>
     <string name="password_length_must_be_at_least_8">Password length must be at least 8</string>
+    <string name="password_length_must_be_at_least_14">Password length must be less than 14</string>
     <string name="please_write_at_least_1_special_character">Please write at least 1 special character</string>
     <string name="please_write_at_least_1_letter">Please write at least 1 letter</string>
     <string name="please_write_at_least_1_digit">Please write at least 1 digit</string>

@@ -23,10 +23,10 @@ abstract class BaseRepository {
     private fun <T> checkBaseResponse(response: BaseResponse<T>): BaseResponse<T> {
         try {
             return if (response.isSuccess) {
-                Log.d("Tag","repository done correctly")
+                Log.d("Tag", "repository done correctly")
                 response
             } else {
-                Log.d("Tag","repository failed")
+                Log.d("Tag", "repository failed")
                 when (response.status.code) {
                     400 -> throw InvalidDataException()
                     401 -> throw UnAuthorizedException()
@@ -35,6 +35,7 @@ abstract class BaseRepository {
                     409 -> throw AlreadyExistException()
                     500 -> throw InternalServerException()
                     1001 -> throw EmailIsExistException()
+                    1003 -> throw EmailIsExistException()
                     else -> throw Exception(response.status.message)
                 }
             }

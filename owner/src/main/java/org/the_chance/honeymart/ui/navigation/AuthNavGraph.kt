@@ -2,10 +2,10 @@ package org.the_chance.honeymart.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import org.the_chance.honeymart.ui.features.login.loginRoute
-import org.the_chance.honeymart.ui.features.login.waiting_approved.WaitingApproveRoute
-import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoRoute
-import org.the_chance.honeymart.ui.features.signup.signupRoute
+import org.the_chance.honeymart.ui.features.authentication.login.loginRoute
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoRoute
+import org.the_chance.honeymart.ui.features.authentication.signup.signupRoute
+import org.the_chance.honeymart.ui.features.authentication.waitingApprove.WaitingApproveRoute
 
 fun NavGraphBuilder.authNavGraph() {
     navigation(

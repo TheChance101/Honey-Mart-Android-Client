@@ -48,6 +48,7 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
+import org.the_chance.honeymart.domain.util.EmailIsExistException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -394,6 +395,7 @@ class HoneyMartServiceImp @Inject constructor(
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
+                1003 -> throw EmailIsExistException()
                 else -> throw Exception(response.status.description)
             }
         }
