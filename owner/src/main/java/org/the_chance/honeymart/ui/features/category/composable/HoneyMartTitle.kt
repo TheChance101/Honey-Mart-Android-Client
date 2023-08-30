@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.blackOn87
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
@@ -39,7 +38,7 @@ fun HoneyMartTitle(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(id = R.string.mart),
-            style = Typography.displayMedium.copy(color = blackOn87),
+            style = Typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondaryContainer),
         )
     }
 }
