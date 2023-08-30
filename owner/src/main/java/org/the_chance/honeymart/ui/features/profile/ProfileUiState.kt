@@ -51,3 +51,7 @@ fun MarketInfo.toMarketInfoUiState(): MarketInfoUiState {
     )
 }
 // endregion
+
+// region Extensions
+fun ProfileUiState.showContent() = !isError && error == null && !isLoading
+// endregion

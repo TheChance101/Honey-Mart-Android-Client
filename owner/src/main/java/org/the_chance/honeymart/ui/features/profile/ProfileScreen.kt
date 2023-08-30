@@ -12,43 +12,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.profile.content.MarketInfoContent
 import org.the_chance.honeymart.ui.features.profile.content.PersonalInfoContent
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black16
-import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProfileContent(state = state, listener = viewModel)
+    ProfileContent(state = state)
 }
 
 @Composable
 fun ProfileContent(
     state: ProfileUiState,
-    listener: ProfileInteractionListener
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-    ) {
-        Column(
+    Loading(state = state.isLoading)
+    ContentVisibility(state = state.showContent()) {
+        Row(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
-            MarketInfoContent(state = state.marketInfo)
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-        ) {
-            PersonalInfoContent(state = state.personalInfo)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                MarketInfoContent(state = state.marketInfo)
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                PersonalInfoContent(state = state.personalInfo)
+            }
         }
     }
 }
@@ -57,6 +59,6 @@ fun ProfileContent(
 @Composable
 private fun PreviewProfileScreen() {
     HoneyMartTheme {
-        ProfileScreen()
+        ProfileContent(state = ProfileUiState())
     }
 }
