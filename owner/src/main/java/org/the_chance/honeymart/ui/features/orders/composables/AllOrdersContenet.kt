@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,26 +26,23 @@ import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
 import org.the_chance.honeymart.ui.features.orders.processing
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun AllOrdersContent(
     state: OrdersUiState,
-    listener: OrdersInteractionsListener
+    listener: OrdersInteractionsListener,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = MaterialTheme.dimens.space24)
-            .background(background)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = MaterialTheme.dimens.space16,
-                    vertical = MaterialTheme.dimens.space8
+                    vertical = MaterialTheme.dimens.space16
                 ),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
@@ -83,18 +80,21 @@ fun AllOrdersContent(
         Loading(state = state.isLoading && !state.showState.showOrderDetails)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            contentPadding = PaddingValues(MaterialTheme.dimens.space16)
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
         ) {
-            items(state.orders.size) { index ->
+            items(
+                items = state.orders,
+                key = { it.orderId }
+            ) { order ->
                 ItemOrder(
                     onClickCard = {
                         listener.onClickOrder(
-                            orderDetails = state.orders[index],
-                            id = state.orders[index].orderId
+                            orderDetails = order,
+                            id = order.orderId
                         )
                     },
-                    state = state.orders[index],
-                    isSelected = state.orders[index].isOrderSelected,
+                    state = order,
+                    isSelected = order.isOrderSelected,
                 )
             }
         }

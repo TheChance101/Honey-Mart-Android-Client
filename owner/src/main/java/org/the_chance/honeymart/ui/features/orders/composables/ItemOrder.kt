@@ -29,11 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderUiState
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun ItemOrder(
@@ -43,7 +39,7 @@ fun ItemOrder(
     isSelected: Boolean = false
 ) {
     val selectedColor by animateColorAsState(
-        targetValue = if (isSelected) primary100 else Color.Transparent,
+        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
         label = "Selected color"
     )
 
@@ -53,7 +49,7 @@ fun ItemOrder(
             .fillMaxWidth()
             .height(MaterialTheme.dimens.itemOrder)
             .clickable { onClickCard(state.orderId) },
-        colors = CardDefaults.cardColors(containerColor = white)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
     ) {
         Row {
             Box(
@@ -76,7 +72,7 @@ fun ItemOrder(
                 ) {
                     Text(
                         text = stringResource(R.string.order, state.orderId),
-                        color = black60,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Box(
@@ -100,18 +96,18 @@ fun ItemOrder(
                         Icon(
                             painter = painterResource(R.drawable.ic_person),
                             contentDescription = "userName",
-                            tint = black37,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                         Text(
                             text = state.userName,
-                            color = black37,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                             style = MaterialTheme.typography.displayLarge
                         )
                     }
 
                     Text(
                         text = state.totalPrice,
-                        color = black60,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -123,11 +119,11 @@ fun ItemOrder(
                     Icon(
                         painter = painterResource(R.drawable.icon_clock),
                         contentDescription = "time",
-                        tint = black37,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                     Text(
                         text = state.time,
-                        color = black37,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.displayLarge
                     )
                 }

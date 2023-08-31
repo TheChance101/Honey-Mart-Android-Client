@@ -42,7 +42,7 @@ fun NavigationRail(
     val currentDestination = navBackStackEntry?.destination
 
     NavigationRail(
-        containerColor = MaterialTheme.colorScheme.secondary,
+        containerColor = MaterialTheme.colorScheme.onTertiary,
         header = {
             if (state.ownerImageUrl.isNotEmpty()) {
                 ImageNetwork(

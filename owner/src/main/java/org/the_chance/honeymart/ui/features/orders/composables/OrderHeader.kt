@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -23,13 +24,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
+import org.the_chance.honeymart.ui.features.orders.all
 import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun OrderHeader(
@@ -47,7 +48,7 @@ fun OrderHeader(
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .height(MaterialTheme.dimens.itemOrder),
-        colors = CardDefaults.cardColors(containerColor = white)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
     ) {
         Row {
             Box(
@@ -70,8 +71,8 @@ fun OrderHeader(
                 ) {
                     Text(
                         text = stringResource(R.string.order, state.orderId),
-                        color = black60,
-                        style = MaterialTheme.typography.bodyMedium
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 }
                 Row(
@@ -81,15 +82,16 @@ fun OrderHeader(
                 ) {
                     Text(
                         text = state.products.size.toCountProductFormat(),
-                        color = black60,
-                        style = MaterialTheme.typography.bodyMedium
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.displayLarge
                     )
-                    HoneyOutlineText(text = state.orderDetails.totalPrice)
+
+                    CustomChip(
+                        text = state.orderDetails.totalPrice,
+                        shape = RoundedCornerShape(MaterialTheme.dimens.space16)
+                    )
                 }
-
-
             }
-
         }
     }
 }

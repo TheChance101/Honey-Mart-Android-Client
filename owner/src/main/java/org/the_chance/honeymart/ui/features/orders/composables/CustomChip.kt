@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
@@ -21,10 +23,11 @@ import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun CustomChip(
-    state: Boolean,
     text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    state: Boolean = false,
+    onClick: () -> Unit = {},
+    shape: Shape = CircleShape,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
@@ -38,7 +41,7 @@ fun CustomChip(
         else CardDefaults.cardColors(Transparent),
         border = if (state) BorderStroke(width = 0.dp, color = Transparent)
         else BorderStroke(width = 1.dp, color = primary100),
-        shape = CircleShape
+        shape = shape
     ) {
         Text(
             modifier = Modifier.padding(
@@ -47,7 +50,7 @@ fun CustomChip(
             ),
             text = text,
             color = if (state) white else primary100,
-            style = Typography.displayLarge
+            style = MaterialTheme.typography.bodyMedium.copy(baselineShift = BaselineShift(0.2f))
         )
     }
 }

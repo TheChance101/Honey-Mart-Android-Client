@@ -1,9 +1,10 @@
 package org.the_chance.honeymart.ui.features.orders
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +22,7 @@ import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsConte
 import org.the_chance.honeymart.ui.features.orders.composables.ProductDetailsInOrderContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun OrdersScreen(
@@ -45,7 +47,6 @@ fun OrdersContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         ConnectionErrorPlaceholder(
@@ -53,7 +54,12 @@ fun OrdersContent(
             onClickTryAgain = { listener.getAllMarketOrder(OrderStates.ALL) }
         )
         Loading(state = state.isLoading && state.orders.isEmpty())
-        Row(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = MaterialTheme.dimens.space16),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -86,8 +92,10 @@ fun OrdersContent(
                         listener = listener
                     )
                 }
-                ContentVisibility(state = state.showState.showProductDetails &&
-                        !state.showState.showOrderDetails) {
+                ContentVisibility(
+                    state = state.showState.showProductDetails &&
+                            !state.showState.showOrderDetails
+                ) {
                     ProductDetailsInOrderContent(
                         titleScreen =
                         stringResource(id = R.string.product_details), state = state
