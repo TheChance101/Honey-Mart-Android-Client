@@ -16,7 +16,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,29 +26,31 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.components.WaitingApprovePlaceholder
-import org.the_chance.honeymart.ui.features.authentication.signup.SignUpViewModel
-import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.NavigationHandler
+import org.the_chance.honeymart.ui.components.WaitingApprovePlaceholder
 import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.authentication.signup.SignUpViewModel
 import org.the_chance.honeymart.ui.features.authentication.signup.SignupUiEffect
-import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
+import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honymart.ui.theme.white30
 
 @Composable
 fun WaitingApproveScreen(
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavigationProvider.current
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            if (it == SignupUiEffect.ClickLogoutEffect) {
-                navController.navigateToLogin()
-            }
-        }
-    }
-    WaitingApproveContent(viewModel)
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
+                SignupUiEffect.ClickLoginEffect -> {
+                    navController.navigateToLogin()
+                }
 
+                else -> {}
+            }
+        })
+    WaitingApproveContent(viewModel)
 }
 
 @Composable

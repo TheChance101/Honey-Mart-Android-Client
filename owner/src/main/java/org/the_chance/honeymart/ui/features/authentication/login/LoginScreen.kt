@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.components.NavigationHandler
 import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.navigateToMarketInfoScreen
 import org.the_chance.honeymart.ui.features.authentication.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.features.authentication.waitingApprove.navigateToWaitingApproveScreen
@@ -42,10 +43,10 @@ fun LoginScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 LoginUiEffect.ShowLoginErrorToastEffect -> {
                     Toast.makeText(
                         context,
@@ -69,10 +70,8 @@ fun LoginScreen(
                 LoginUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
                 }
-
             }
-        }
-    }
+        })
     LoginContent(listener = viewModel, state = state)
 }
 

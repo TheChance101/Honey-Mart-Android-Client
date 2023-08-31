@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.components.NavigationHandler
 import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.authentication.signup.composables.OwnerFieldsScaffold
 import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoScreen
@@ -27,10 +28,10 @@ fun SignupScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 SignupUiEffect.ShowValidationToast -> {
                     Toast.makeText(
                         context,
@@ -44,15 +45,16 @@ fun SignupScreen(
                 SignupUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
+
                 SignupUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
                 }
+
                 SignupUiEffect.ClickLogoutEffect -> {
                     navController.navigateToLogin()
                 }
             }
-        }
-    }
+        })
     SignupContent(listener = viewModel, state = state)
 }
 
