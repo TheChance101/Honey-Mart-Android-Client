@@ -44,15 +44,15 @@ fun OrdersContent(
     state: OrdersUiState,
     listener: OrdersInteractionsListener,
 ) {
+    ConnectionErrorPlaceholder(
+        state = state.errorPlaceHolderCondition(),
+        onClickTryAgain = { listener.getAllMarketOrder(OrderStates.ALL) }
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         HoneyMartTitle()
-        ConnectionErrorPlaceholder(
-            state = state.errorPlaceHolderCondition(),
-            onClickTryAgain = { listener.getAllMarketOrder(OrderStates.ALL) }
-        )
         Loading(state = state.isLoading && state.orders.isEmpty())
         Row(
             modifier = Modifier

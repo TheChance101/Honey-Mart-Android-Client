@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
@@ -19,9 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            val useDarkIcons = !isSystemInDarkTheme()
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
-                HoneyMartTheme(useDarkIcons = useDarkIcons) {
+                HoneyMartTheme {
                     MainScreen()
                 }
             }
