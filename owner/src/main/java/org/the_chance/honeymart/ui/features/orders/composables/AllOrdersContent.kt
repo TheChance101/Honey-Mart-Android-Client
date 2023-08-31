@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.CustomChip
 import org.the_chance.honeymart.ui.components.Placeholder
 import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener

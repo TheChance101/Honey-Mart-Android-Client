@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,28 +24,28 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CategoryItemsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = MaterialTheme.dimens.space12)
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(140.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            contentPadding = PaddingValues(bottom = MaterialTheme.dimens.space16),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
-            items(count = state.categories.size) { index ->
+            items(items = state.categories, key = { it.categoryId }) { category ->
                 CategoryItem(
-                    categoryName = state.categories[index].categoryName,
+                    categoryName = category.categoryName,
                     onClick = {
-                        listener.onClickCategory(state.categories[index].categoryId)
+                        listener.onClickCategory(category.categoryId)
                     },
-                    icon = categoryIcons[state.categories[index]
+                    icon = categoryIcons[category
                         .categoryIconUIState.categoryIconId]
                         ?: R.drawable.icon_category,
-                    isSelected = state.categories[index].isCategorySelected
+                    isSelected = category.isCategorySelected
                 )
             }
             item {

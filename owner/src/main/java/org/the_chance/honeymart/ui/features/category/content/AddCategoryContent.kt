@@ -3,15 +3,14 @@ package org.the_chance.honeymart.ui.features.category.content
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +28,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.CategoryIconItem
 import org.the_chance.honeymart.ui.features.category.showAddUpdateCategoryButton
-import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
-import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.blackOn37
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -46,23 +42,17 @@ fun AddCategoryContent(
             .padding(
                 horizontal = MaterialTheme.dimens.space16,
             )
-            .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
-            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = stringResource(R.string.add_new_category),
-            iconPainter = painterResource(id = R.drawable.icon_add_product)
+            iconPainter = painterResource(id = R.drawable.icon_add_new_category)
         )
 
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-        ) {
+        Column {
 
             FormTextField(
                 text = state.newCategory.newCategoryName,
@@ -81,11 +71,12 @@ fun AddCategoryContent(
                 modifier = Modifier
                     .padding(
                         start = MaterialTheme.dimens.space16,
-                        top = MaterialTheme.dimens.space32
+                        top = MaterialTheme.dimens.space32,
+                        bottom = MaterialTheme.dimens.space8
                     )
                     .align(Alignment.Start),
                 text = stringResource(R.string.select_category_image),
-                style = Typography.bodyMedium.copy(color = blackOn37)
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground)
             )
             Row(
                 modifier = Modifier
@@ -96,7 +87,7 @@ fun AddCategoryContent(
                     columns = GridCells.Adaptive(minSize = MaterialTheme.dimens.categoryIconItem),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                    modifier = Modifier.padding(MaterialTheme.dimens.space16)
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space16)
                 ) {
                     items(count = state.categoryIcons.size) { index ->
                         CategoryIconItem(
@@ -110,31 +101,31 @@ fun AddCategoryContent(
                             }
                         )
                     }
-                }
 
+                    item(
+                        span = { GridItemSpan(maxLineSpan) },
+                    ) {
+                        HoneyFilledButton(
+                            label = stringResource(R.string.add),
+                            onClick = {
+                                listener.onClickAddCategory(
+                                    name = state.newCategory.newCategoryName,
+                                    categoryIconID = state.newCategory.newIconId
+                                )
+                            },
+                            isButtonEnabled = state.showAddUpdateCategoryButton(),
+                            isLoading = state.isLoading,
+                            icon = R.drawable.icon_add_product,
+                            modifier = Modifier
+                                .padding(
+                                    top = MaterialTheme.dimens.space16,
+                                )
+                        )
+                    }
+                }
             }
 
-            HoneyFilledButton(
-                label = stringResource(R.string.add),
-                onClick = {
-                    listener.onClickAddCategory(
-                        name = state.newCategory.newCategoryName,
-                        categoryIconID = state.newCategory.newIconId
-                    )
-                },
-                isButtonEnabled = state.showAddUpdateCategoryButton(),
-                isLoading = state.isLoading,
-                icon = R.drawable.icon_add_product,
-                modifier = Modifier
-                    .padding(
-                        bottom = MaterialTheme.dimens.space64,
-                        start = MaterialTheme.dimens.space24,
-                        end = MaterialTheme.dimens.space24
-                    )
-            )
-
         }
-
     }
 }
 

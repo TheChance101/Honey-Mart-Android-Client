@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.orders.composables
+package org.the_chance.honeymart.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.dp
-import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import org.the_chance.honymart.ui.theme.white

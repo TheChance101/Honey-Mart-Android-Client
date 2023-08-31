@@ -24,11 +24,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.features.orders.OrderStates
+import org.the_chance.honeymart.ui.components.CustomChip
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
-import org.the_chance.honeymart.ui.features.orders.all
 import org.the_chance.honeymart.ui.util.toCountProductFormat
-import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 

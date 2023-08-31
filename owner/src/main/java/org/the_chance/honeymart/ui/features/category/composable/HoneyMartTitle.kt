@@ -38,7 +38,7 @@ fun HoneyMartTitle(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(id = R.string.mart),
-            style = Typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondaryContainer),
+            style = Typography.displayMedium.copy(color = MaterialTheme.colorScheme.onSecondary),
         )
     }
 }
