@@ -7,6 +7,7 @@ data class SignupUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isOwnerAccountCreated: Boolean = false,
+    val isButtonEnabled: Boolean = true,
 
     val marketInfoUiState: MarketInfoUiState = MarketInfoUiState(),
 

@@ -78,7 +78,7 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
-    listener: org.the_chance.honeymart.ui.features.authentication.login.LoginInteractionListener,
+    listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
     Loading(state.authLoading)
@@ -116,6 +116,7 @@ fun LoginContent(
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
                 onClick = listener::onClickLogin,
+                isButtonEnabled = state.isButtonEnabled,
                 isLoading = state.isLoading,
             )
             HoneyAuthFooter(
