@@ -27,6 +27,7 @@
             android:name="org.the_chance.honeymart.ui.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
+            android:theme="@style/Theme.HoneyMart.Splash"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
