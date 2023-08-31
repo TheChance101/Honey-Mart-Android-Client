@@ -39,7 +39,8 @@ fun DropDownMenuList(
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = stringResource(R.string.more)
+                contentDescription = stringResource(R.string.more),
+                tint = MaterialTheme.colorScheme.onBackground,
             )
         }
         DropdownMenu(
@@ -48,7 +49,6 @@ fun DropDownMenuList(
             modifier = modifier
                 .background(
                     color = MaterialTheme.colorScheme.tertiaryContainer,
-                    shape = MaterialTheme.shapes.medium
                 )
                 .align(Alignment.Center),
             offset = DpOffset(MaterialTheme.dimens.space32, MaterialTheme.dimens.zero)
@@ -69,7 +69,7 @@ fun DropDownMenuList(
             )
             Divider(
                 thickness = MaterialTheme.dimens.strokeNormal,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.08F),
             )
             DropdownMenuItem(
                 text = {

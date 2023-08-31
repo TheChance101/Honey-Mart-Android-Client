@@ -110,7 +110,7 @@
     <string name="copy_button">Copy button</string>
     <string name="icon_visible">icon visible</string>
     <string name="there_are_no_order_for_this_day">There are no order for this \n day!!</string>
-    <string name="new_order">new order</string>
+    <string name="new_order">New order</string>
     <string name="cancelled">Cancelled</string>
     <string name="new_products">New Products</string>
     <string name="last_purchases">Last Purchases</string>

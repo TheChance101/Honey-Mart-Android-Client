@@ -57,7 +57,7 @@ fun ProductCard(
             .height(116.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiary
+            containerColor = MaterialTheme.colorScheme.onTertiary
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp,
@@ -138,7 +138,7 @@ fun ProductCard(
 fun ProductCardPreview() {
     HoneyMartTheme {
         ProductCard(
-            onClick = {  },
+            onClick = { },
             imageUrl = "https://i.pinimg.com/originals/0a/0b/9a/0a0b9a4b5b5b3b0b5b5b5b5b5b5b5b5b.jpg",
             productName = "Product Name",
             productPrice = "100.000$",

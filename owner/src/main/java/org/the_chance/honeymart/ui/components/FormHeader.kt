@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
@@ -33,13 +34,14 @@ fun FormHeader(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,
-                vertical = MaterialTheme.dimens.space24
-            )
+                vertical = MaterialTheme.dimens.space24,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = iconPainter,
@@ -57,8 +59,8 @@ fun FormHeader(
             )
         }
         Box(
-             modifier = Modifier.clip(RoundedCornerShape(topEnd = 16.dp)),
-            ) {
+            modifier = Modifier.clip(RoundedCornerShape(topEnd = 16.dp)),
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
                 contentDescription = stringResource(R.string.honey_sun_image),

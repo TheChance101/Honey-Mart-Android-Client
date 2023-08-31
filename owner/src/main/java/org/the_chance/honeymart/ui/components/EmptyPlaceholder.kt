@@ -15,8 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -36,7 +34,7 @@ fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
                 text = "Your $emptyObjectName is empty!!",
                 style = MaterialTheme.typography.bodyMedium,
-                color = blackOn60,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -44,7 +42,7 @@ fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
                 text = "Adding a $emptyObjectName will increase your chances \n of attracting interested buyers. " +
                         "What $emptyObjectName \n fits your item? ",
                 style = MaterialTheme.typography.displayLarge,
-                color = black37,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center
             )
         }

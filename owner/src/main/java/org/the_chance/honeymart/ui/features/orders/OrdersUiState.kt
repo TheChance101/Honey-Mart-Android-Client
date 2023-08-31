@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.ui.features.orders
 
+import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.util.toPriceFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -25,7 +25,7 @@ data class OrdersUiState(
 
 data class ShowState(
     val showProductDetails: Boolean = false,
-    val showOrderDetails : Boolean = false ,
+    val showOrderDetails: Boolean = false,
 )
 
 data class OrderState(
@@ -50,7 +50,9 @@ data class OrderDetailsProductUiState(
     val count: Int = 0,
     val price: Double = 0.0,
     val images: List<String> = emptyList(),
-)
+) {
+    val productImageUrl = images.takeIf { it.isNotEmpty() }?.first() ?: ""
+}
 
 enum class OrderStates(val state: Int) {
     ALL(0),
@@ -75,21 +77,24 @@ fun Market.Order.toOrderUiState(): OrderUiState {
         orderId = orderId,
         totalPrice = totalPrice.toPriceFormat(),
         state = state,
-        time = date.toString(),
+        time = date.toDateFormat(),
         userName = user.fullName
     )
 }
 
-fun Long.toDateFormat(): String {
+fun Date.toDateFormat(): String {
     val dateFormat = SimpleDateFormat("d MMM hh:mm a", Locale.getDefault())
-    val date = Date(this)
+    return dateFormat.format(this)
+}
 
-    return dateFormat.format(date)
+fun Double.toPriceFormat(): String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(this)
 }
 
 fun OrderDetails.toOrderParentDetailsUiState(): OrderUiState {
     return OrderUiState(
-        totalPrice = totalPrice.toString(),
+        totalPrice = totalPrice.toPriceFormat(),
         state = state,
         time = date.toString(),
         orderId = orderId

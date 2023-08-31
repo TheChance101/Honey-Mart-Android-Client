@@ -36,7 +36,7 @@ fun CategoryIconItem(
     Card(
         modifier = modifier.size(MaterialTheme.dimens.categoryIconItem),
         colors = if (isSelected) CardDefaults.cardColors(primary100)
-        else CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
+        else CardDefaults.cardColors(MaterialTheme.colorScheme.background),
         onClick = { onClick(categoryIconId) },
         shape = MaterialTheme.shapes.medium
     ) {

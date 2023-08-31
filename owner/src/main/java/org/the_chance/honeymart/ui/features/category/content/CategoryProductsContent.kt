@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.features.category.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,8 +31,6 @@ import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisib
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -42,29 +40,15 @@ fun CategoryProductsContent(
 ) {
     val products = state.products.collectAsLazyPagingItems()
 
-    Box(
-        contentAlignment = Alignment.BottomEnd,
-        modifier = Modifier.padding(
-            start = MaterialTheme.dimens.space20,
-            end = MaterialTheme.dimens.space16
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = MaterialTheme.colorScheme.tertiary,
-                    shape = MaterialTheme.shapes.medium
-                )
-                .padding(
-                    top = MaterialTheme.dimens.space24,
-                    start = MaterialTheme.dimens.space16,
-                    end = MaterialTheme.dimens.space16,
-                    bottom = MaterialTheme.dimens.space16,
-                )
-        ) {
+    Scaffold(
+        topBar = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = MaterialTheme.dimens.space24,
+                        start = MaterialTheme.dimens.space16,
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
@@ -81,29 +65,45 @@ fun CategoryProductsContent(
                                     ?: R.drawable.icon_category
                             ),
                             contentDescription = "category icon",
-                            tint = black37
+                            tint = MaterialTheme.colorScheme.primary
                         )
 
                         Text(
                             text = state.categories[state.position].categoryName,
                             style = MaterialTheme.typography.bodySmall,
-                            color = blackOn60
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
-
                 }
+
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     HoneyOutlineText(text = "${products.itemCount} Products")
-
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
                         onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
                     )
                 }
             }
+        },
+        floatingActionButton = {
+            AddProductButton(
+                state = state,
+                onClick = listener::onClickAddProductButton
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = MaterialTheme.colorScheme.onTertiary,
+                    shape = MaterialTheme.shapes.medium
+                )
+                .padding(paddingValues)
+        ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
@@ -128,14 +128,5 @@ fun CategoryProductsContent(
                 emptyObjectName = "Product"
             )
         }
-
-        AddProductButton(
-            modifier = Modifier.padding(
-                bottom = MaterialTheme.dimens.space48,
-                end = MaterialTheme.dimens.space48
-            ),
-            state = state,
-            onClick = listener::onClickAddProductButton
-        )
     }
 }

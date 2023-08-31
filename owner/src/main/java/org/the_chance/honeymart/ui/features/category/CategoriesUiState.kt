@@ -122,8 +122,7 @@ fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productImage = if (productImages.isNotEmpty())
-            productImages else listOf("", ""),
+        productImage = productImages.ifEmpty { listOf("", "") },
         productPrice = productPrice.toPriceFormat(),
         productDescription = productDescription,
     )
@@ -164,7 +163,10 @@ fun CategoriesUiState.showSaveUpdateButton(): Boolean {
     return productDetails.productName.isNotBlank() &&
             productDetails. productPrice.isNotBlank() &&
             productDetails.productDescription.isNotBlank() &&
-            newProducts.images.isNotEmpty()
+           newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productPriceState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productDescriptionState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.images.isNotEmpty()
 
 }
 fun String.removeDollarSign(): String {
@@ -175,7 +177,7 @@ fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts
             && !showScreenState.showAddCategory
 
-fun CategoriesUiState.errorPlaceHolderCondition() = isError
+fun CategoriesUiState.errorPlaceHolderCondition() = isError && !isLoading
 
 fun CategoriesUiState.placeHolderCondition() =
     categories.isEmpty() && !isError && !isLoading

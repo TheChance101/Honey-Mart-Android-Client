@@ -25,9 +25,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun AppNavRailItem(
@@ -75,7 +73,7 @@ fun AppNavRailItem(
                         .align(Alignment.Center),
                     painter = painterResource(id = screen.selectedIcon),
                     contentDescription = screen.label,
-                    tint = if (selected) white else black60,
+                    tint = if (selected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onBackground,
                 )
             }
 

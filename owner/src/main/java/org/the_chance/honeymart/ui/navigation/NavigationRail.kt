@@ -17,12 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.ui.main.MainInteractionListener
 import org.the_chance.honeymart.ui.main.MainUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 import java.util.Locale
@@ -64,9 +64,10 @@ fun NavigationRail(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = state.ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                        text = state.ownerNameFirstCharacter,
                         style = MaterialTheme.typography.headlineMedium.copy(
-                            color = white
+                            color = white,
+                            baselineShift = BaselineShift(0.2f)
                         )
                     )
                 }
@@ -89,7 +90,7 @@ fun NavigationRail(
                 .padding(16.dp),
             painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
             contentDescription = "Logout Icon",
-            tint = black60
+            tint = MaterialTheme.colorScheme.onBackground
         )
     }
 }

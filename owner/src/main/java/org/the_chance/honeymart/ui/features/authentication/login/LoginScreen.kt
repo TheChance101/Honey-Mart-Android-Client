@@ -53,18 +53,23 @@ fun LoginScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 LoginUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
+
                 LoginUiEffect.ClickSignUpEffect -> {
                     navController.navigateToSignupScreen()
                 }
+
                 LoginUiEffect.NavigateToCreateMarketEffect -> {
                     navController.navigateToMarketInfoScreen()
                 }
+
                 LoginUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
                 }
+
                 LoginUiEffect.NavigateToLoginEffect -> {
                     navController.navigateToLogin()
                 }
@@ -85,6 +90,8 @@ fun LoginContent(
             modifier = Modifier.imePadding()
         ) {
             HoneyAuthHeader(
+                titleColor = MaterialTheme.colorScheme.onSecondary,
+                subTitleColor = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = MaterialTheme.dimens.space64),
