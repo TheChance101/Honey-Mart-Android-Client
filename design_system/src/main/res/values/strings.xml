@@ -231,4 +231,5 @@
     <string name="icon_market_status">icon market status</string>
     <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
+    <string name="market_has_been_deleted">" Market has been deleted !"</string>
 </resources>

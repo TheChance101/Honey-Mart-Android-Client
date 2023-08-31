@@ -89,12 +89,12 @@ private fun WaitingApproveContent(
                 .background(white30)
                 .size(64.dp)
                 .align(Alignment.BottomStart)
-                .padding(bottom = 64.dp, start = 16.dp)
+                .padding(16.dp)
         ) {
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(64.dp),
+                    .fillMaxSize(),
                 painter = painterResource(id = R.drawable.ic_logout),
                 contentDescription = "Logout Icon",
                 tint = MaterialTheme.colorScheme.onBackground

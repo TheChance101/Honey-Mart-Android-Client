@@ -70,9 +70,6 @@ fun LoginScreen(
                     navController.navigateToWaitingApproveScreen()
                 }
 
-                LoginUiEffect.NavigateToLoginEffect -> {
-                    navController.navigateToLogin()
-                }
             }
         }
     }
