@@ -53,77 +53,77 @@ fun RequestsContent(
     state: MarketsRequestUiState,
     listener: MarketsInteractionListener,
 ) {
-    ContentVisibility(state = state.isContentScreenVisible()) {
-        Column(
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+    Column(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
+        HoneyMartTitle()
+        Row(
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
         ) {
-            HoneyMartTitle()
-            Row(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-            ) {
-                CustomChip(
-                    state = state.marketsState == MarketsState.ALL,
-                    text = stringResource(R.string.all_capitalized),
-                    onClick = { listener.onClickMarketsState(MarketsState.ALL) }
-                )
-                CustomChip(
-                    state = state.marketsState == MarketsState.UNAPPROVED,
-                    text = stringResource(R.string.pending),
-                    onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
-                )
-                CustomChip(
-                    state = state.marketsState == MarketsState.APPROVED,
-                    text = stringResource(R.string.approved),
-                    onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
-                    .padding(top = MaterialTheme.dimens.space24),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            CustomChip(
+                state = state.marketsState == MarketsState.ALL,
+                text = stringResource(R.string.all_capitalized),
+                onClick = { listener.onClickMarketsState(MarketsState.ALL) }
             )
-            {
-                Column(
-                    modifier = Modifier.fillMaxSize().weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
+            CustomChip(
+                state = state.marketsState == MarketsState.UNAPPROVED,
+                text = stringResource(R.string.pending),
+                onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
+            )
+            CustomChip(
+                state = state.marketsState == MarketsState.APPROVED,
+                text = stringResource(R.string.approved),
+                onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
+            )
+        }
+        ContentVisibility(state = state.isContentScreenVisible()) {
+        Row(
+            modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
+                .padding(top = MaterialTheme.dimens.space24),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+        )
+        {
+            Column(
+                modifier = Modifier.fillMaxSize().weight(1f),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    contentPadding = PaddingValues(bottom = 16.dp)
                 ) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        contentPadding = PaddingValues(bottom = 16.dp)
-                    ) {
-                        itemsIndexed(state.marketsUpdated) { index, item ->
-                            ItemMarketRequest(
-                                onClickCard = { listener.onClickMarket(index) },
-                                ownerName = item.ownerName,
-                                marketName = item.marketName,
-                                ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
-                                onCardSelected = item.isSelected,
-                                marketStateText = item.marketStateText,
-                                state = item.isApproved,
-                                marketsState = state.marketsState,
-                                isLoading = state.isLoading
-                            )
-                        }
-                    }
-                }
-                Column(
-                    modifier = Modifier.fillMaxSize().weight(1f)
-                ) {
-                    state.selectedMarket?.let {
-                        MarketRequestDetails(
-                            state = state.selectedMarket.state == MarketsState.UNAPPROVED,
-                            request = state.selectedMarket, listener = listener,
-                            imageUrl = it.imageUrl
+                    itemsIndexed(state.marketsUpdated) { index, item ->
+                        ItemMarketRequest(
+                            onClickCard = { listener.onClickMarket(index) },
+                            ownerName = item.ownerName,
+                            marketName = item.marketName,
+                            ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
+                            onCardSelected = item.isSelected,
+                            marketStateText = item.marketStateText,
+                            state = item.isApproved,
+                            marketsState = state.marketsState,
+                            isLoading = state.isLoading
                         )
                     }
                 }
             }
+            Column(
+                modifier = Modifier.fillMaxSize().weight(1f)
+            ) {
+                state.selectedMarket?.let {
+                    MarketRequestDetails(
+                        state = state.selectedMarket.state == MarketsState.UNAPPROVED,
+                        request = state.selectedMarket, listener = listener,
+                        imageUrl = it.imageUrl
+                    )
+                }
+            }
         }
     }
+}
     Loading(state = state.isLoading)
     ConnectionErrorPlaceholder(
         state = state.isError,

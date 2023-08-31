@@ -47,8 +47,8 @@ fun MarketRequestDetails(
 ) {
     ContentVisibility(state = request != null) {
         Box(
-            modifier = Modifier.padding(bottom = 16.dp)
-                .fillMaxSize().clip(Shapes.medium).background(white)
+            modifier = Modifier.padding(bottom = 16.dp).fillMaxSize().clip(Shapes.medium)
+                .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),

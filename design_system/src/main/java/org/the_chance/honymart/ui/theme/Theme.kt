@@ -20,6 +20,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 private val localDimens = compositionLocalOf { Dimens() }
 
 private val DarkColorScheme = darkColorScheme(
+    primaryContainer = darkBackground400,
     primary = primary100,
     inverseSurface = primary16,
     surface = grey,
@@ -44,6 +45,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+    primaryContainer = white,
     primary = primary100,
     inverseSurface = primary16,
     surface = white,
