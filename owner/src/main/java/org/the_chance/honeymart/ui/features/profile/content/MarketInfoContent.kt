@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.profile.MarketInfoUiState
+import org.the_chance.honeymart.ui.features.profile.ProfileInteractionListener
 import org.the_chance.honeymart.ui.features.profile.components.StatusChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -38,6 +39,7 @@ import org.the_chance.honymart.ui.theme.primary100
 @Composable
 fun MarketInfoContent(
     state: MarketInfoUiState,
+    listener: ProfileInteractionListener,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -59,7 +61,10 @@ fun MarketInfoContent(
                     .padding(top = 24.dp, end = 24.dp),
                 contentAlignment = Alignment.TopEnd
             ) {
-                StatusChip(status = state.status)
+                StatusChip(
+                    status = state.status,
+                    onClickChangeStatus = listener::updateMarketStatus
+                )
             }
             Text(
                 text = stringResource(R.string.market_info),
@@ -127,13 +132,5 @@ fun MarketInfoContent(
                 modifier = Modifier.width(300.dp)
             )
         }
-    }
-}
-
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
-@Composable
-private fun PreviewMarketInfoContent() {
-    HoneyMartTheme {
-        MarketInfoContent(state = MarketInfoUiState())
     }
 }

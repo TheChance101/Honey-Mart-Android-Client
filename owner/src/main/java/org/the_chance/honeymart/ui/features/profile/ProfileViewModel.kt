@@ -94,18 +94,20 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onUpdateMarketInfoSuccess(status: Boolean) {
-        _state.update {
-            it.copy(
-                error = null,
-                isError = false,
-                marketInfo = it.marketInfo.copy(status = status)
-            )
-        }
+        toggleMarketStatus()
+        _state.update { it.copy(error = null, isError = false,) }
     }
 
     private fun onUpdateMarketInfoError(errorHandler: ErrorHandler) {
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
+        }
+    }
+
+    private fun toggleMarketStatus() {
+        _state.update {
+            val newStatus = if (it.marketInfo.status == MarketStatus.ONLINE) MarketStatus.OFFLINE else MarketStatus.ONLINE
+            it.copy(marketInfo = it.marketInfo.copy(status = newStatus))
         }
     }
     // endregion

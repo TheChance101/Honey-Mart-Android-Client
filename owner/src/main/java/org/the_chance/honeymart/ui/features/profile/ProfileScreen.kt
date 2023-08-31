@@ -24,12 +24,13 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProfileContent(state = state)
+    ProfileContent(state = state, listener = viewModel)
 }
 
 @Composable
 fun ProfileContent(
     state: ProfileUiState,
+    listener: ProfileInteractionListener
 ) {
 
     Column(
@@ -50,7 +51,7 @@ fun ProfileContent(
                         .fillMaxSize()
                         .weight(1f)
                 ) {
-                    MarketInfoContent(state = state.marketInfo)
+                    MarketInfoContent(state = state.marketInfo, listener = listener)
                 }
                 Column(
                     modifier = Modifier
@@ -69,6 +70,6 @@ fun ProfileContent(
 @Composable
 private fun PreviewProfileScreen() {
     HoneyMartTheme {
-        ProfileContent(state = ProfileUiState())
+        ProfileScreen()
     }
 }

@@ -22,12 +22,17 @@ data class PersonalInfoUiState(
 
 data class MarketInfoUiState(
     val id: Long = 0L,
-    val status: Boolean = false,
+    val status: MarketStatus = MarketStatus.OFFLINE,
     val image: String = "",
     val name: String = "",
     val address: String = "",
     val description: String = ""
 )
+
+enum class MarketStatus(val state: Int) {
+    ONLINE(1),
+    OFFLINE(2)
+}
 // endregion
 
 // region Mapper
@@ -41,9 +46,14 @@ fun OwnerProfile.toPersonalInfoUiState(): PersonalInfoUiState {
 }
 
 fun MarketInfo.toMarketInfoUiState(): MarketInfoUiState {
+    val status = when (marketStatus) {
+        true -> MarketStatus.ONLINE
+        false -> MarketStatus.OFFLINE
+    }
+
     return MarketInfoUiState(
         id = marketId,
-        status = marketStatus,
+        status = status,
         image = imageUrl,
         name = marketName,
         address = address,
