@@ -1,9 +1,5 @@
 package org.the_chance.honeymart.ui.features.markets.composables
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -54,7 +50,7 @@ fun ItemMarketRequest(
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .clickable { onClickCard() },
-        colors = CardDefaults.cardColors(containerColor = (white))
+        colors = CardDefaults.cardColors(containerColor = (MaterialTheme.colorScheme.primaryContainer))
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

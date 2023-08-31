@@ -36,6 +36,7 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketInfoDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
@@ -128,6 +129,21 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
         wrap(client.get("/markets/$marketId"))
+
+    override suspend fun getMarketInfo(): BaseResponse<MarketInfoDto> =
+        wrap(client.get("/markets/marketInfo"))
+
+    @OptIn(InternalAPI::class)
+    override suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean> {
+        val formData = Parameters.build {
+            append("status", "$status")
+        }
+        val response = wrap<BaseResponse<Boolean>>(client.put("markets/status") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
 
     override suspend fun addCategory(
         name: String, imageId: Int,

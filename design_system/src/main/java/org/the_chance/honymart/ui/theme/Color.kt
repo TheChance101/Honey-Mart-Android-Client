@@ -5,9 +5,11 @@ import androidx.compose.ui.graphics.Color
 val primary100 = Color(0xFFFEBC33)
 val primary16 = Color(0x29FFBB33)
 val error = Color(0xFFFF4E33)
+val success = Color(0xFF00E82D)
 
 val blackOn60 = Color(0x99000000)
 val blackOn87 = Color(0xDE000000)
+val blackOn8 = Color(0x14707070)
 val black8 = Color(0xFF717171)
 val black16 = Color(0x29121212)
 val black37 = Color(0xFFA0A0A0)
