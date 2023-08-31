@@ -64,7 +64,7 @@ fun NavigationRail(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = state.ownerNameFirstCharacter.toString().uppercase(Locale.ROOT),
+                        text = state.ownerNameFirstCharacter,
                         style = MaterialTheme.typography.headlineMedium.copy(
                             color = white,
                             baselineShift = BaselineShift(0.2f)
