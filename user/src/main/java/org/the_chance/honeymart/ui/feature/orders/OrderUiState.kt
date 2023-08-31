@@ -53,5 +53,5 @@ fun OrdersUiState.cancelledByOwner() = this.orderStates == OrderStates.CANCELLED
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
 
-fun OrdersUiState.screenContent() = this.orders.isNotEmpty() && !this.isError
+fun OrdersUiState.screenContent() =  !this.isError
 fun OrdersUiState.loading() = this.isLoading && this.orders.isNotEmpty()
