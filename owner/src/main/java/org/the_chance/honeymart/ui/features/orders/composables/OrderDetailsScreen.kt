@@ -50,6 +50,7 @@ fun OrderDetailsContent(
                         color = MaterialTheme.colorScheme.onTertiary,
                         shape = MaterialTheme.shapes.medium
                     )
+                    .padding(paddingValues)
                     .fillMaxHeight()
             ) {
                 ContentVisibility(state = state.products.isNotEmpty() && !state.isLoading) {
@@ -68,7 +69,6 @@ fun OrderDetailsContent(
                     }
                 }
             }
-
         }
     }
 }
