@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
+import org.the_chance.honymart.ui.theme.background
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -36,6 +38,7 @@ fun FormTextField(
     isError: Boolean = errorMessage.isNotEmpty(),
     isEnable: Boolean = true
 ) {
+
     Column {
         OutlinedTextField(
             modifier = modifier
@@ -56,7 +59,8 @@ fun FormTextField(
             maxLines = 1,
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
-                disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
+                unfocusedContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else primary100,
                 unfocusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black16,
             ),
