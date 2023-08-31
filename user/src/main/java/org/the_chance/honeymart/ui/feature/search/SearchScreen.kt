@@ -80,9 +80,11 @@ fun SearchContent(
 ) {
     HoneyAppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
-        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
+        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching && !state.isError)
         EmptyProductsPlaceholder(
-        (products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading )|| !state.isSearching,
+            (products.itemCount == 0 &&
+                    products.loadState.refresh != LoadState.Loading &&
+                    products.loadState.refresh !is LoadState.Error) && !state.isError || !state.isSearching && !state.isError,
             text = stringResource(R.string.searched_product_not_found)
         )
 
