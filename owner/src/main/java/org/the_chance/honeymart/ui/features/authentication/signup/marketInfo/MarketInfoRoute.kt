@@ -17,6 +17,6 @@ fun NavController.navigateToMarketInfoScreen() {
     }
 }
 
-fun NavGraphBuilder.MarketInfoRoute() {
+fun NavGraphBuilder.marketInfoRoute() {
     composable(ROUTE) { MarketInfoScreen() }
 }

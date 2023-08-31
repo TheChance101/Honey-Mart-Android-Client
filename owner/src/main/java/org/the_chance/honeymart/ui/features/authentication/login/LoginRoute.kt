@@ -18,5 +18,5 @@ fun NavController.navigateToLogin() {
 }
 
 fun NavGraphBuilder.loginRoute() {
-    composable(org.the_chance.honeymart.ui.features.authentication.login.ROUTE) { org.the_chance.honeymart.ui.features.authentication.login.LoginScreen() }
+    composable(ROUTE) { LoginScreen() }
 }

@@ -14,7 +14,6 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
-import org.the_chance.honeymart.ui.main.MainEffect
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
@@ -34,28 +33,6 @@ class SignUpViewModel @Inject constructor(
     MarketInfoInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
-
-    private fun listenToCheckAdminApprove() {
-        tryToExecute(
-            { checkAdminApprove() },
-            ::onCheckApproveSuccess,
-            ::onCheckApproveError
-        )
-    }
-
-    private fun onCheckApproveSuccess(isApproved: Boolean) {
-        _state.update { it.copy(isLoading = false) }
-        if (isApproved) {
-            effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
-        } else {
-            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
-        }
-    }
-
-    private fun onCheckApproveError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
-        showValidationToast(stringResourceImpl.errorString.getOrDefault(error, ""))
-    }
 
     // region owner registration
     override fun onClickLogin() {
@@ -246,21 +223,6 @@ class SignUpViewModel @Inject constructor(
             effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
     }
-    override fun onClickLogout() {
-        tryToExecute(
-            function = { logOutOwnerUseCase() },
-            onSuccess = { onLogoutSuccess() },
-            onError = ::onLogoutError
-        )
-    }
-
-    private fun onLogoutSuccess() {
-        effectActionExecutor(_effect, SignupUiEffect.ClickLogoutEffect)
-    }
-
-    private fun onLogoutError(error: ErrorHandler) {
-
-    }
 
     private fun createMarket(
         marketName: String,
@@ -436,6 +398,55 @@ class SignUpViewModel @Inject constructor(
     }
 
 //endregion
+
+    // region logout
+    override fun onClickLogout() {
+        tryToExecute(
+            function = { logOutOwnerUseCase() },
+            onSuccess = { onLogoutSuccess() },
+            onError = ::onLogoutError
+        )
+    }
+
+    private fun onLogoutSuccess() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickLogoutEffect)
+    }
+
+    private fun onLogoutError(error: ErrorHandler) {
+        showValidationToast(
+            message = stringResourceImpl.errorString.getOrDefault(
+                error,
+                ""
+            )
+        )
+        _state.update { it.copy(isLoading = false, error = error) }
+    }
+    // endregion
+
+    // region Admin approve
+    private fun listenToCheckAdminApprove() {
+        tryToExecute(
+            { checkAdminApprove() },
+            ::onCheckApproveSuccess,
+            ::onCheckApproveError
+        )
+    }
+
+    private fun onCheckApproveSuccess(isApproved: Boolean) {
+        _state.update { it.copy(isLoading = false) }
+        if (isApproved) {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
+        }
+    }
+
+    private fun onCheckApproveError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        showValidationToast(stringResourceImpl.errorString.getOrDefault(error, ""))
+    }
+
+    // endregion
 
     private fun showValidationToast(message: String) {
         _state.update {

@@ -17,6 +17,6 @@ fun NavController.navigateToWaitingApproveScreen() {
     }
 }
 
-fun NavGraphBuilder.WaitingApproveRoute() {
+fun NavGraphBuilder.waitingApproveRoute() {
     composable(ROUTE) { WaitingApproveScreen() }
 }
