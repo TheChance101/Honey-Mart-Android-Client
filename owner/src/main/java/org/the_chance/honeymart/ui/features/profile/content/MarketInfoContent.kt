@@ -24,16 +24,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.profile.MarketInfoUiState
 import org.the_chance.honeymart.ui.features.profile.ProfileInteractionListener
 import org.the_chance.honeymart.ui.features.profile.components.StatusChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.primary100
 
 
 @Composable
@@ -63,7 +59,7 @@ fun MarketInfoContent(
             ) {
                 StatusChip(
                     status = state.status,
-                    onClickChangeStatus = listener::updateMarketStatus
+                    onClickChangeStatus = listener::showStatusDialog
                 )
             }
             Text(
