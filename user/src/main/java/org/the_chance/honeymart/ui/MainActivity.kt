@@ -27,6 +27,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -116,6 +117,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Composable
     fun CheckNotificationPermission() {
+        val openDialog = remember { mutableStateOf(false) }
         val permission = Manifest.permission.POST_NOTIFICATIONS
         when {
             ContextCompat.checkSelfPermission(
@@ -125,20 +127,28 @@ class MainActivity : AppCompatActivity() {
             }
 
             shouldShowRequestPermissionRationale(permission) -> {
-                AlertDialog(
-                    onDismissRequest = { },
-                    text = {
-                        Text(
-                            style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
-                            text = stringResource(R.string.notification_permission_required)
-                        )
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            openAppSettings()
-                        }) { Text(text = stringResource(R.string.go_to_settings)) }
-                    },
-                )
+                openDialog.value = true
+                if (openDialog.value)
+                    AlertDialog(
+                        onDismissRequest = { openDialog.value = false },
+                        text = {
+                            Text(
+                                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
+                                text = stringResource(R.string.notification_permission_required)
+                            )
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                openDialog.value = false
+                            }) { Text(text = stringResource(R.string.dismiss)) }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                openAppSettings()
+                                openDialog.value = false
+                            }) { Text(text = stringResource(R.string.go_to_settings)) }
+                        },
+                    )
             }
 
             else -> {
