@@ -42,7 +42,7 @@ fun PersonalInfoContent(
             .padding(32.dp)
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
             .verticalScroll(rememberScrollState())
