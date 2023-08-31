@@ -82,7 +82,7 @@ fun RowScope.AddItem(
         selected = selected,
         label = {
             Text(
-                text = if (selected) screen.label else "",
+                text = if (selected) stringResource(id = screen.label) else "",
                 color = MaterialTheme.colorScheme.onErrorContainer
             )
         },
