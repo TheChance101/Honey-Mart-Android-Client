@@ -44,4 +44,5 @@
     <string name="market_description_should_not_be_empty">market description should not be empty</string>
     <string name="market_description_should_be_20_letter_at_least">market description should be 20 letter at least</string>
     <string name="something_went_wrong_please_try_again">Something went wrong,please check your network and try again.</string>
+    <string name="market_has_been_deleted">market has been deleted</string>
 </resources>

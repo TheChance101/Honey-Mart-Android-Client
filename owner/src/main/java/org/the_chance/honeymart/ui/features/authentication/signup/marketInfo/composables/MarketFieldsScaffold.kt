@@ -87,6 +87,7 @@ fun MarketFieldsScaffold(
         onClick = listener::onClickSendButton,
         background = primary100,
         contentColor = Color.White,
-        isLoading = state.isLoading
+        isLoading = state.isLoading,
+        isButtonEnabled = state.isButtonEnabled
     )
 }

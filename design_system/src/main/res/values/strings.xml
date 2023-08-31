@@ -234,4 +234,5 @@
     <string name="notification_permission_required">Notification permission required</string>
     <string name="go_to_settings">Go To Settings</string>
     <string name="searched_product_not_found">Searched product not found</string>
+    <string name="market_has_been_deleted">" Market has been deleted !"</string>
 </resources>
