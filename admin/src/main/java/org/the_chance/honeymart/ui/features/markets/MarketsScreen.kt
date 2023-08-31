@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyMartTitle
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.markets.composables.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.markets.composables.ItemMarketRequest
@@ -35,16 +34,15 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
-    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 MarketsUiEffect.UnAuthorizedUserEffect -> navController.navigateToLogin()
             }
-        }
-    }
+        })
     RequestsContent(state, viewModel)
 }
 
@@ -54,7 +52,9 @@ fun RequestsContent(
     listener: MarketsInteractionListener,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         Row(
@@ -79,51 +79,57 @@ fun RequestsContent(
             )
         }
         ContentVisibility(state = state.isContentScreenVisible()) {
-        Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
-                .padding(top = MaterialTheme.dimens.space24),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-        )
-        {
-            Column(
-                modifier = Modifier.fillMaxSize().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
-            ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight(),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    contentPadding = PaddingValues(bottom = 16.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = MaterialTheme.dimens.space40)
+                    .padding(top = MaterialTheme.dimens.space24),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            )
+            {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
-                    itemsIndexed(state.marketsUpdated) { index, item ->
-                        ItemMarketRequest(
-                            onClickCard = { listener.onClickMarket(index) },
-                            ownerName = item.ownerName,
-                            marketName = item.marketName,
-                            ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
-                            onCardSelected = item.isSelected,
-                            marketStateText = item.marketStateText,
-                            state = item.isApproved,
-                            marketsState = state.marketsState,
-                            isLoading = state.isLoading
+                    LazyColumn(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ) {
+                        itemsIndexed(state.marketsUpdated) { index, item ->
+                            ItemMarketRequest(
+                                onClickCard = { listener.onClickMarket(index) },
+                                ownerName = item.ownerName,
+                                marketName = item.marketName,
+                                ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
+                                onCardSelected = item.isSelected,
+                                marketStateText = item.marketStateText,
+                                state = item.isApproved,
+                                marketsState = state.marketsState,
+                                isLoading = state.isLoading
+                            )
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    state.selectedMarket?.let {
+                        MarketRequestDetails(
+                            state = state.selectedMarket.state == MarketsState.UNAPPROVED,
+                            request = state.selectedMarket, listener = listener,
+                            imageUrl = it.imageUrl
                         )
                     }
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxSize().weight(1f)
-            ) {
-                state.selectedMarket?.let {
-                    MarketRequestDetails(
-                        state = state.selectedMarket.state == MarketsState.UNAPPROVED,
-                        request = state.selectedMarket, listener = listener,
-                        imageUrl = it.imageUrl
-                    )
-                }
-            }
         }
     }
-}
     Loading(state = state.isLoading)
     ConnectionErrorPlaceholder(
         state = state.isError,

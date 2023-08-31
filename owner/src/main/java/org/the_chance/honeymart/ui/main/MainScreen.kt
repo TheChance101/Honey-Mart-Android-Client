@@ -7,7 +7,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import org.the_chance.honeymart.ui.components.NavigationHandler
 import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.profile.navigateToProfileScreen
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
@@ -32,10 +32,10 @@ fun MainScreen(
     val navController = LocalNavigationProvider.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 is MainEffect.OnClickProfileEffect -> {
                     navController.navigateToProfileScreen()
                 }
@@ -52,8 +52,7 @@ fun MainScreen(
                     ).show()
                 }
             }
-        }
-    }
+        })
     MainContent(state, viewModel, currentDestination)
 }
 

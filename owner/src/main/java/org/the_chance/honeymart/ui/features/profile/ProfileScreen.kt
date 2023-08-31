@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,8 +17,10 @@ import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.profile.content.MarketInfoContent
 import org.the_chance.honeymart.ui.features.profile.content.PersonalInfoContent
+import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
+import org.the_chance.design_system.R
 
 @Composable
 fun ProfileScreen(
@@ -62,6 +65,18 @@ fun ProfileContent(
                 }
             }
         }
+    }
+
+    ContentVisibility(state = state.showMarketStatusDialog) {
+        CustomAlertDialog(
+            message = stringResource(R.string.you_want_to_change_market_status) +
+                    stringResource(R.string.are_you_sure),
+            onConfirm = {
+                listener.updateMarketStatus(status = state.marketInfo.status.state)
+            },
+            onCancel = { listener.dismessStatusDialog() },
+            onDismissRequest = { listener.dismessStatusDialog() }
+        )
     }
 }
 

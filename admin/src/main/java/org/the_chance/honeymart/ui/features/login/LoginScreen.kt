@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.features.markets.navigateToMarketsScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -33,10 +32,10 @@ import org.the_chance.honymart.ui.theme.dimens
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 LoginUiEffect.ShowEmptyFieldsToastEffect -> {
                     Toast.makeText(
                         context,
@@ -44,6 +43,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 LoginUiEffect.ShowInvalidDetailsToastEffect -> {
                     Toast.makeText(
                         context,
@@ -51,12 +51,12 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 LoginUiEffect.ClickLoginEffect -> {
                     navController.navigateToMarketsScreen()
                 }
             }
-        }
-    }
+        })
     LoginContent(viewModel, state)
 }
 
@@ -66,7 +66,7 @@ fun LoginContent(
     state: LoginUiState,
 ) {
     Loading(state.isLoading)
-    AnimatedVisibility(!state.isLoading){
+    AnimatedVisibility(!state.isLoading) {
         HoneyAuthScaffold(
             modifier = Modifier.imePadding()
         ) {

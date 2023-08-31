@@ -5,15 +5,17 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.features.login.navigateToLogin
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
@@ -28,13 +30,14 @@ fun MainScreen(
     val navController = LocalNavigationProvider.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 MainEffect.OnClickLogoutEffect -> {
                     navController.navigateToLogin()
                 }
+
                 MainEffect.ShowLogoutErrorToastEffect -> {
                     Toast.makeText(
                         context,
@@ -43,8 +46,7 @@ fun MainScreen(
                     ).show()
                 }
             }
-        }
-    }
+        })
     MainContent(state, viewModel, currentDestination)
 }
 
@@ -59,7 +61,9 @@ fun MainContent(
     if (showNavigationRail) {
         listener.onGetAdminInitials()
     }
-    Row {
+    Row(
+        modifier = Modifier.navigationBarsPadding()
+    ) {
         AnimatedVisibility(
             visible = showNavigationRail,
             enter = slideInHorizontally { -it },
