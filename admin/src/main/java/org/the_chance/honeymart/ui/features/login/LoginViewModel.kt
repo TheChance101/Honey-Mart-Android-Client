@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     private fun checkAuthorization() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketsRequests(true) },
+            { getMarketsRequests(false) },
             { onAuthorizationSuccess() },
             ::onAuthorizationError,
         )

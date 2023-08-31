@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.features.markets
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.LocalNavigationProvider
@@ -39,11 +41,10 @@ fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                MarketsUiEffect.UnAuthorizedUserEffect ->  navController.navigateToLogin()
+                MarketsUiEffect.UnAuthorizedUserEffect -> navController.navigateToLogin()
             }
         }
     }
-
     RequestsContent(state, viewModel)
 }
 
@@ -53,50 +54,46 @@ fun RequestsContent(
     listener: MarketsInteractionListener,
 ) {
     ContentVisibility(state = state.isContentScreenVisible()) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-    ) {
-        HoneyMartTitle()
-        Row(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+        Column(
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
-            CustomChip(
-                state = state.marketsState == MarketsState.ALL,
-                text = stringResource(R.string.all_capitalized),
-                onClick = { listener.onClickMarketsState(MarketsState.ALL) }
-            )
-            CustomChip(
-                state = state.marketsState == MarketsState.UNAPPROVED,
-                text = stringResource(R.string.pending),
-                onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
-            )
-            CustomChip(
-                state = state.marketsState == MarketsState.APPROVED,
-                text = stringResource(R.string.approved),
-                onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
-            )
-        }
+            HoneyMartTitle()
             Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.dimens.space40)
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            ) {
+                CustomChip(
+                    state = state.marketsState == MarketsState.ALL,
+                    text = stringResource(R.string.all_capitalized),
+                    onClick = { listener.onClickMarketsState(MarketsState.ALL) }
+                )
+                CustomChip(
+                    state = state.marketsState == MarketsState.UNAPPROVED,
+                    text = stringResource(R.string.pending),
+                    onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
+                )
+                CustomChip(
+                    state = state.marketsState == MarketsState.APPROVED,
+                    text = stringResource(R.string.approved),
+                    onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimens.space40)
                     .padding(top = MaterialTheme.dimens.space24),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-            ) {
+            )
+            {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                    modifier = Modifier.fillMaxSize().weight(1f),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
                         itemsIndexed(state.marketsUpdated) { index, item ->
                             ItemMarketRequest(
@@ -114,9 +111,7 @@ fun RequestsContent(
                     }
                 }
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
+                    modifier = Modifier.fillMaxSize().weight(1f)
                 ) {
                     state.selectedMarket?.let {
                         MarketRequestDetails(
@@ -130,6 +125,8 @@ fun RequestsContent(
         }
     }
     Loading(state = state.isLoading)
-    ConnectionErrorPlaceholder(state = state.isError, onClickTryAgain = { listener.onClickTryAgain() } )
+    ConnectionErrorPlaceholder(
+        state = state.isError,
+        onClickTryAgain = { listener.onClickTryAgain() })
     EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }
