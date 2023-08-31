@@ -73,4 +73,7 @@ dependencies {
     implementation(Dependencies.pagingCommon)
     implementation(Dependencies.pagingRuntime)
     implementation(Dependencies.pagingCompose)
+    //splash
+    implementation(Dependencies.splashDependency)
+    debugImplementation(Dependencies.composeUiDependency)
 }
