@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,10 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
@@ -39,6 +40,7 @@ import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDeta
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.dimens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -47,10 +49,10 @@ fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val navController = LocalNavigationProvider.current
 
-    NavigationHandler(
-        effects = viewModel.effect,
-        handleEffect = { effect, navController ->
+    LaunchedEffect(true) {
+        viewModel.effect.collect { effect ->
             when (effect) {
                 is ProductUiEffect.AddedToWishListEffect -> {
                     viewModel.showSnackBar(effect.message)
@@ -63,7 +65,8 @@ fun ProductsScreen(
 
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        })
+        }
+    }
     ProductsContent(state = state, productInteractionListener = viewModel)
 }
 
@@ -104,7 +107,10 @@ private fun ProductsContent(
                             state.categories,
                             key = { _, category -> category.categoryId }) { _, category ->
                             CategoryItem(
-                                iconPainter = painterResource(id = R.drawable.ic_bed),
+                                iconPainter = painterResource(
+                                    id = categoryIcons[category.categoryImageId]
+                                        ?: R.drawable.ic_cup_paper
+                                ),
                                 categoryName = category.categoryName,
                                 isSelected = category.isCategorySelected,
                                 enable = !state.snackBar.isShow,
@@ -122,7 +128,8 @@ private fun ProductsContent(
                     ) {
                         EmptyProductPlaceholder(
                             state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty()
-                                    && products.loadState.refresh != LoadState.Loading)
+                                    && products.loadState.refresh != LoadState.Loading
+                        )
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
