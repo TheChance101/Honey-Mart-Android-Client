@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,7 +50,7 @@ fun CustomDialogUi(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = modifier
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.onTertiary)
                 .padding(MaterialTheme.dimens.space16)
                 .fillMaxWidth(),
         ) {
