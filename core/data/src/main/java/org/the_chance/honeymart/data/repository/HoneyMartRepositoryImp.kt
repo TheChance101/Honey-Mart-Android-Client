@@ -52,6 +52,11 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
 
+    override suspend fun checkAdminApprove(): Boolean {
+        return wrap { honeyMartService.checkAdminApprove() }.value
+            ?: throw NotFoundException()
+    }
+
     override suspend fun getAllMarkets(): List<Market> {
         Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")
         return wrap { honeyMartService.getAllMarkets() }.value?.map { it.toMarket() }

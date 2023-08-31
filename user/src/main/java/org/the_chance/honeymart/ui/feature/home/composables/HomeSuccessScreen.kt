@@ -1,8 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
@@ -27,14 +24,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
@@ -59,11 +54,10 @@ fun HomeContentSuccessScreen(
     listener: HomeInteractionListener
 ) {
 
-    val listState = rememberLazyGridState()
-    val scope = rememberCoroutineScope()
+//    val listState = rememberLazyGridState()
+//    val scope = rememberCoroutineScope()
 
     LazyVerticalGrid(
-        state = listState,
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -139,7 +133,7 @@ fun HomeContentSuccessScreen(
             LastPurchases(
                 lastPurchases = state.lastPurchases,
                 onClickProduct = listener::onClickLastPurchases,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickLastPurchasesSeeAll
             )
         }
 
@@ -168,14 +162,14 @@ fun HomeContentSuccessScreen(
             )
         }
     }
-
-    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
-        ScrollToTopButton {
-            scope.launch {
-                listState.animateScrollToItem(0)
-            }
-        }
-    }
+//
+//    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
+//        ScrollToTopButton {
+//            scope.launch {
+//                listState.animateScrollToItem(0)
+//            }
+//        }
+//    }
 
 }
 
@@ -395,7 +389,7 @@ private fun MarketsPager(
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
                 contentDescription = stringResource(id = R.string.market_image),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)

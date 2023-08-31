@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.signup
+package org.the_chance.honeymart.ui.features.authentication.signup
 
 interface SignupInteractionListener {
     fun onClickLogin()

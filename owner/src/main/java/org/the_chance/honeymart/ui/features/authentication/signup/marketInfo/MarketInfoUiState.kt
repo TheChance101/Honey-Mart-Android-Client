@@ -1,9 +1,8 @@
-package org.the_chance.honeymart.ui.features.signup.market_info
+package org.the_chance.honeymart.ui.features.authentication.signup.marketInfo
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.features.signup.FieldState
-import org.the_chance.honeymart.ui.features.signup.ValidationToast
-
+import org.the_chance.honeymart.ui.features.authentication.signup.FieldState
+import org.the_chance.honeymart.ui.features.authentication.signup.ValidationToast
 
 data class MarketInfoUiState(
     val isLoading: Boolean = false,

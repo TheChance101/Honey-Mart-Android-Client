@@ -50,7 +50,6 @@ fun MainContent(
     listener: MainInteractionListener,
     currentDestination: NavDestination?,
 ) {
-
     val screenRouts = listOf(
         NavigationRailScreen.Orders.route,
         NavigationRailScreen.Category.route,

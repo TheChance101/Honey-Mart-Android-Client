@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -21,6 +22,8 @@ import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
@@ -46,6 +49,7 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
+import org.the_chance.honeymart.domain.util.EmailIsExistException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -54,6 +58,10 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
+    override suspend fun checkAdminApprove(): BaseResponse<Boolean> {
+        return wrap(client.get("/markets/marketValidation"))
+    }
+
     override suspend fun addOwner(
         fullName: String,
         email: String,
@@ -338,7 +346,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("state", "$state")
         }
         val response = wrap<BaseResponse<Boolean>>(client.put(url) {
-            contentType(io.ktor.http.ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
             body = FormDataContent(formData)
         })
         return response
@@ -396,8 +404,25 @@ class HoneyMartServiceImp @Inject constructor(
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
+            Log.d("Tag","service done correctly")
             return response.body()
         } else {
+            Log.d("Tag","service failed")
+            when (response.status.value) {
+                401 -> throw UnAuthorizedException()
+                500 -> throw InternalServerException()
+                1003 -> throw EmailIsExistException()
+                else -> throw Exception(response.status.description)
+            }
+        }
+    }
+
+    private inline fun <reified T> wrapWithFlow(response: HttpResponse): Flow<T> = flow {
+        if (response.status.isSuccess()) {
+            Log.d("Tag","service flow done correctly")
+            emit(response.body())
+        } else {
+            Log.d("Tag","service flow failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
@@ -487,6 +512,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("admin/markets") {
             parameter("isApproved", "$isApproved")
         })
+    }
+
+    override suspend fun checkAdminAuthentication(): BaseResponse<String> {
+        return wrap(client.get("admin") {})
     }
 
     @OptIn(InternalAPI::class)

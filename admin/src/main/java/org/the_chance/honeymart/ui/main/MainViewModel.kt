@@ -1,13 +1,12 @@
 package org.the_chance.honeymart.ui.main
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.usecase.GetAdminInitialsUseCase
 import org.the_chance.honeymart.domain.usecase.LogOutAdminUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,20 +18,6 @@ class MainViewModel @Inject constructor(
 
     override val TAG: String
         get() = this::class.simpleName.toString()
-
-    init {
-        getAdminInfo()
-    }
-
-    private fun getAdminInfo() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    adminInitials = getAdminInitials(),
-                )
-            }
-        }
-    }
 
     override fun onClickLogout() {
         tryToExecute(
@@ -47,6 +32,23 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onLogoutError(error: ErrorHandler) {
+        log(error.toString())
         effectActionExecutor(_effect, MainEffect.ShowLogoutErrorToastEffect)
+    }
+
+    override fun onGetAdminInitials() {
+        tryToExecute(
+            { getAdminInitials() },
+            ::onGetAdminInitialsSuccess,
+            ::onGetAdminInitialsError
+        )
+    }
+
+    private fun onGetAdminInitialsSuccess(initials: Char) {
+        _state.update { it.copy(adminInitials = initials.toString().uppercase(Locale.ROOT)) }
+    }
+
+    private fun onGetAdminInitialsError(error: ErrorHandler) {
+        log(error.toString())
     }
 }

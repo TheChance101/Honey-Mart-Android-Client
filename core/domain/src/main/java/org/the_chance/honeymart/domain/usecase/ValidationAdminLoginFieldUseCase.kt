@@ -23,7 +23,7 @@ class ValidationAdminLoginFieldsUseCase @Inject constructor() {
                 ValidationState.BLANK_PASSWORD
             }
             password.length < 4 -> {
-                ValidationState.INVALID_PASSWORD_LENGTH
+                ValidationState.INVALID_PASSWORD_LENGTH_SHORT
             }
             else -> {
                 ValidationState.VALID_PASSWORD

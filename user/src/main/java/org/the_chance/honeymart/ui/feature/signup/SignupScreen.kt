@@ -170,7 +170,6 @@ fun SignupContent(
                         ) {
                             HoneyTextFieldPassword(
                                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-                                modifier = Modifier.padding(end = MaterialTheme.dimens.space16),
                                 text = state.password,
                                 hint = stringResource(R.string.password),
                                 iconPainter = painterResource(id = R.drawable.ic_password),
@@ -178,7 +177,7 @@ fun SignupContent(
                                 errorMessage = when (state.passwordState) {
                                     ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
                                     ValidationState.INVALID_PASSWORD -> "Invalid password"
-                                    ValidationState.INVALID_PASSWORD_LENGTH -> "Password must be at least 8 characters"
+                                    ValidationState.INVALID_PASSWORD_LENGTH_SHORT -> "Password must be at least 8 characters"
                                     else -> ""
                                 },
                             )

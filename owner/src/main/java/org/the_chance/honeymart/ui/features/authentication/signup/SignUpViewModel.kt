@@ -1,17 +1,19 @@
-package org.the_chance.honeymart.ui.features.signup
+package org.the_chance.honeymart.ui.features.authentication.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
+import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
 import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
 import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
+import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.signup.market_info.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
@@ -23,13 +25,14 @@ class SignUpViewModel @Inject constructor(
     private val addMarketImageUseCase: AddMarketImageUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val loginOwnerUseCase: LoginOwnerUseCase,
-    private val stringResourceImpl: StringDictionary
+    private val checkAdminApprove: CheckAdminApproveUseCase,
+    private val stringResourceImpl: StringDictionary,
+    private val logOutOwnerUseCase: LogOutOwnerUseCase,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
     MarketInfoInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
-
 
     // region owner registration
     override fun onClickLogin() {
@@ -43,7 +46,7 @@ class SignUpViewModel @Inject constructor(
                 state.value.confirmPasswordState.isValid
 
         if (validationSignupFieldsState) {
-            addOwner(
+            createOwner(
                 fullName = state.value.fullNameState.value,
                 email = state.value.emailState.value,
                 password = state.value.passwordState.value
@@ -53,7 +56,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun addOwner(
+    private fun createOwner(
         fullName: String,
         email: String,
         password: String,
@@ -78,12 +81,21 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
+        if (error == ErrorHandler.AlreadyExist) {
+            showValidationToast(
+                message = stringResourceImpl.errorString.getOrDefault(
+                    error,
+                    ""
+                )
+            )
+        }
         showValidationToast(
             message = stringResourceImpl.errorString.getOrDefault(
                 error,
                 ""
             )
         )
+        log(error.toString())
         _state.update { it.copy(isLoading = false, error = error) }
     }
 
@@ -162,7 +174,7 @@ class SignUpViewModel @Inject constructor(
 
     override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
         val passwordState = validateSignupFields.validateConfirmPassword(
-            state.value.passwordState.value,
+            _state.value.passwordState.value,
             confirmPassword.toString()
         )
         if (passwordState == ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH) {
@@ -360,7 +372,7 @@ class SignUpViewModel @Inject constructor(
                 )
             )
         }
-        effectActionExecutor(_effect, SignupUiEffect.NavigateToApproveScreenEffect)
+        listenToCheckAdminApprove()
     }
 
     override fun onImageSelected(uri: ByteArray) {
@@ -386,6 +398,55 @@ class SignUpViewModel @Inject constructor(
     }
 
 //endregion
+
+    // region logout
+    override fun onClickLogout() {
+        tryToExecute(
+            function = { logOutOwnerUseCase() },
+            onSuccess = { onLogoutSuccess() },
+            onError = ::onLogoutError
+        )
+    }
+
+    private fun onLogoutSuccess() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickLogoutEffect)
+    }
+
+    private fun onLogoutError(error: ErrorHandler) {
+        showValidationToast(
+            message = stringResourceImpl.errorString.getOrDefault(
+                error,
+                ""
+            )
+        )
+        _state.update { it.copy(isLoading = false, error = error) }
+    }
+    // endregion
+
+    // region Admin approve
+    private fun listenToCheckAdminApprove() {
+        tryToExecute(
+            { checkAdminApprove() },
+            ::onCheckApproveSuccess,
+            ::onCheckApproveError
+        )
+    }
+
+    private fun onCheckApproveSuccess(isApproved: Boolean) {
+        _state.update { it.copy(isLoading = false) }
+        if (isApproved) {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
+        }
+    }
+
+    private fun onCheckApproveError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error) }
+        showValidationToast(stringResourceImpl.errorString.getOrDefault(error, ""))
+    }
+
+    // endregion
 
     private fun showValidationToast(message: String) {
         _state.update {
