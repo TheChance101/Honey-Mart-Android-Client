@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">HoneyMart</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="table">table</string>
     <string name="product_description">Product Description</string>
     <string name="product_name">Product Name</string>
@@ -22,7 +24,7 @@
     <string name="create_your_account_and_enter_a_world_of_endless_shopping_possibilities">Create your account and enter a world of endless shopping possibilities !</string>
     <string name="Sign_up">Sign up</string>
     <string name="Continue">Continue</string>
-    <string name="full_name">Full Name</string>
+    <string name="full_name">Full name</string>
     <string name="success">Success</string>
     <string name="the_email_can_t_be_blank">The email can\'t be blank</string>
     <string name="that_s_not_a_valid_email">That\'s not a valid email</string>
@@ -154,6 +156,7 @@
     <string name="send">Send</string>
     <string name="market_images">Market Images</string>
     <string name="continue_word">Continue</string>
+
     <string name="declined">Declined</string>
     <string name="the_search_result_is_empty">The search result is empty!!</string>
     <string name="discover_markets_now">Discover Markets Now</string>
@@ -164,7 +167,7 @@
     <string name="category_image">category image</string>
     <string name="market_name">Market Name</string>
     <string name="markets">Markets</string>
-    <string name="categories">Categories</string>
+    <string name="categories">Categories By market</string>
     <string name="map_pointer">Map Pointer</string>
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
@@ -228,6 +231,12 @@
     <string name="icon_market_status">icon market status</string>
     <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
+
+
+    <string name="notification_permission_required">Notification permission required</string>
+    <string name="go_to_settings">Go To Settings</string>
+    <string name="searched_product_not_found">Searched product not found</string>
+    <string name="market_has_been_deleted">" Market has been deleted !"</string>
 
     <string name="honey_image">honey image</string>
     <string name="address">Address</string>

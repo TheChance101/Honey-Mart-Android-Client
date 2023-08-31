@@ -40,6 +40,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onClickContinue() {
+        _state.update { it.copy(isButtonEnabled = false) }
         val validationSignupFieldsState = state.value.emailState.isValid &&
                 state.value.passwordState.isValid &&
                 state.value.fullNameState.isValid &&
@@ -52,6 +53,7 @@ class SignUpViewModel @Inject constructor(
                 password = state.value.passwordState.value
             )
         } else {
+            _state.update { it.copy(isButtonEnabled = true) }
             showValidationToast(stringResourceImpl.requiredFieldsMessageString)
         }
     }
@@ -81,6 +83,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
         if (error == ErrorHandler.AlreadyExist) {
             showValidationToast(
                 message = stringResourceImpl.errorString.getOrDefault(
@@ -96,7 +99,6 @@ class SignUpViewModel @Inject constructor(
             )
         )
         log(error.toString())
-        _state.update { it.copy(isLoading = false, error = error) }
     }
 
     private fun loginOwner(email: String, password: String) {
@@ -109,10 +111,11 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(unit: Unit) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false, isButtonEnabled = true) }
     }
 
     private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isButtonEnabled = true) }
         showValidationToast(
             message = stringResourceImpl.errorString.getOrDefault(
                 error,
@@ -207,6 +210,13 @@ class SignUpViewModel @Inject constructor(
 
     // region market registration
     override fun onClickSendButton() {
+        _state.update {
+            it.copy(
+                marketInfoUiState = state.value.marketInfoUiState.copy(
+                    isButtonEnabled = false
+                )
+            )
+        }
         val market = state.value.marketInfoUiState
         val marketFieldsValidationState =
             market.marketNameState.isValid && market.marketAddressState.isValid
@@ -220,6 +230,13 @@ class SignUpViewModel @Inject constructor(
                 marketDescription = market.marketDescriptionState.value,
             )
         } else {
+            _state.update {
+                it.copy(
+                    marketInfoUiState = state.value.marketInfoUiState.copy(
+                        isButtonEnabled = true
+                    )
+                )
+            }
             effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
     }
@@ -256,7 +273,8 @@ class SignUpViewModel @Inject constructor(
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
-                    error = errorHandler
+                    error = errorHandler,
+                    isButtonEnabled = true
                 ),
             )
         }
@@ -359,6 +377,7 @@ class SignUpViewModel @Inject constructor(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
                     error = errorHandler,
+                    isButtonEnabled = true
                 ),
             )
         }
@@ -369,7 +388,8 @@ class SignUpViewModel @Inject constructor(
             it.copy(
                 marketInfoUiState = state.value.marketInfoUiState.copy(
                     isLoading = false,
-                )
+                    isButtonEnabled = true
+                ),
             )
         }
         listenToCheckAdminApprove()

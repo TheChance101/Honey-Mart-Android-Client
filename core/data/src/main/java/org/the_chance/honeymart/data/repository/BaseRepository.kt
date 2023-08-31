@@ -8,20 +8,16 @@ import org.the_chance.honeymart.domain.util.EmailIsExistException
 import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.InvalidDataException
+import org.the_chance.honeymart.domain.util.MarketDeletedException
 import org.the_chance.honeymart.domain.util.NotFoundException
 import org.the_chance.honeymart.domain.util.NotValidApiKeyException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 
 abstract class BaseRepository {
 
-
     protected suspend fun <T> wrap(function: suspend () -> BaseResponse<T>): BaseResponse<T> {
-        val response = function()
-        return checkBaseResponse(response)
-    }
-
-    private fun <T> checkBaseResponse(response: BaseResponse<T>): BaseResponse<T> {
         try {
+            val response = function()
             return if (response.isSuccess) {
                 Log.d("Tag", "repository done correctly")
                 response
@@ -36,6 +32,7 @@ abstract class BaseRepository {
                     500 -> throw InternalServerException()
                     1001 -> throw EmailIsExistException()
                     1003 -> throw EmailIsExistException()
+                    1045 -> throw MarketDeletedException()
                     else -> throw Exception(response.status.message)
                 }
             }

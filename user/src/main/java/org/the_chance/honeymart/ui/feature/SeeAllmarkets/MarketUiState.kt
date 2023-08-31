@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.markets
+package org.the_chance.honeymart.ui.feature.SeeAllmarkets
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow

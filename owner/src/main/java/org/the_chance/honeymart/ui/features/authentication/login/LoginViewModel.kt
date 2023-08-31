@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.authentication.login
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
@@ -17,8 +16,7 @@ class LoginViewModel @Inject constructor(
     private val loginOwnerUseCase: LoginOwnerUseCase,
     private val stringResourceImpl: StringDictionary,
     private val checkAdminApprove: CheckAdminApproveUseCase
-) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
-    org.the_chance.honeymart.ui.features.authentication.login.LoginInteractionListener {
+) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
@@ -36,6 +34,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onCheckApproveSuccess(isApproved: Boolean) {
+        _state.update { it.copy(authLoading = false) }
         log(isApproved.toString())
         if (isApproved) {
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
@@ -46,13 +45,17 @@ class LoginViewModel @Inject constructor(
 
     private fun onCheckApproveError(error: ErrorHandler) {
         _state.update { it.copy(authLoading = false, error = error) }
-        effectActionExecutor(_effect, LoginUiEffect.NavigateToLoginEffect)
+        if (error == ErrorHandler.MarketDeleted) {
+            showValidationToast(message = stringResourceImpl.errorString.getOrDefault(error, ""))
+            effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
+        }
     }
 
     // endregion
 
     // region Login
     override fun onClickLogin() {
+        _state.update { it.copy(isButtonEnabled = false) }
         val validState = state.value.emailState.value.isNotBlank() &&
                 state.value.passwordState.value.isNotBlank()
         if (validState) {
@@ -65,7 +68,8 @@ class LoginViewModel @Inject constructor(
                 it.copy(
                     validationToast = ValidationToast(
                         isShow = true, message = stringResourceImpl.requiredFieldsMessageString
-                    )
+                    ),
+                    isButtonEnabled = true
                 )
             }
             effectActionExecutor(_effect, LoginUiEffect.ShowLoginErrorToastEffect)
@@ -86,7 +90,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(marketId: Long) {
-        Log.d("Tarek", "$marketId")
+        _state.update { it.copy(isButtonEnabled = true) }
         if (marketId == 0L) {
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
         } else {
@@ -96,6 +100,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
+        _state.update { it.copy(isButtonEnabled = true) }
         val errorMessage = stringResourceImpl.errorString.getOrDefault(error, "")
         if (error is ErrorHandler.UnAuthorizedUser) {
             _state.update {
@@ -134,6 +139,18 @@ class LoginViewModel @Inject constructor(
         _state.update {
             it.copy(passwordState = FieldState(value = password.trim().toString(), errorState = ""))
         }
+    }
+
+    private fun showValidationToast(message: String) {
+        _state.update {
+            it.copy(
+                validationToast = state.value.validationToast.copy(
+                    isShow = true,
+                    message = message
+                )
+            )
+        }
+        effectActionExecutor(_effect, LoginUiEffect.ShowLoginErrorToastEffect)
     }
 
 // endregion

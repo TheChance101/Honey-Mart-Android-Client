@@ -9,6 +9,7 @@ data class LoginUiState(
     val isError: Boolean = false,
     val authLoading:Boolean = false,
     val error: ErrorHandler? = null,
+    val isButtonEnabled: Boolean = true,
 
     val emailState: FieldState = FieldState(),
     val passwordState: FieldState = FieldState(),

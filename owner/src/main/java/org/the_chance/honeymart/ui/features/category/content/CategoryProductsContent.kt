@@ -29,8 +29,8 @@ import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
 import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisibility
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
-import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable

@@ -1,5 +1,4 @@
-package org.the_chance.honeymart.ui.features.category.composable
-
+package org.the_chance.honymart.ui.composables
 import org.the_chance.design_system.R
 
 val categoryIcons = mapOf(
