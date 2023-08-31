@@ -106,7 +106,13 @@ class CategoriesViewModel @Inject constructor(
                 categories = updatedCategories,
                 position = position,
                 isLoading = false,
-                newCategory = it.newCategory.copy(categoryId = categoryId),
+                newCategory = it.newCategory.copy(
+                    categoryId = categoryId,
+                    newCategoryName = ""
+                ),
+                categoryIcons = it.categoryIcons.map { categoryIconState ->
+                    categoryIconState.copy(isSelected = false)
+                },
                 showScreenState = it.showScreenState.copy(
                     showAddCategory = false,
                     showUpdateCategory = false,
@@ -406,11 +412,17 @@ class CategoriesViewModel @Inject constructor(
     override fun onClickAddProductButton() {
         _state.update {
             it.copy(
-                showScreenState = it.showScreenState.copy(showFab = false, showAddProduct = true)
+                showScreenState = it.showScreenState.copy(showFab = false,
+                    showAddProduct = true),
+                newProducts = it.newProducts.copy(
+                    name = "",
+                    description = "",
+                    price = "",
+                    images = emptyList(),
+                ),
             )
         }
     }
-
     // endregion
 
     // region Get Products
