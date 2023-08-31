@@ -39,12 +39,15 @@ fun MarketInfoScreen(viewModel: SignUpViewModel = hiltViewModel()) {
                 SignupUiEffect.ClickLoginEffect -> {
                     navController.navigateToLogin()
                 }
+
                 SignupUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
+
                 SignupUiEffect.NavigateToWaitingApproveEffect -> {
                     navController.navigateToWaitingApproveScreen()
                 }
+
                 else -> {}
             }
         }
@@ -66,6 +69,8 @@ fun MarketInfoContent(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             HoneyAuthHeader(
+                titleColor = MaterialTheme.colorScheme.onSecondary,
+                subTitleColor = MaterialTheme.colorScheme.onBackground,
                 title = stringResource(R.string.market_info),
                 subTitle = stringResource(R.string.create_an_account_name_your_market),
             )

@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.features.authentication.signup.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +30,8 @@ fun OwnerFieldsScaffold(
         modifier = Modifier.imePadding()
     ) {
         HoneyAuthHeader(
+            titleColor = MaterialTheme.colorScheme.onSecondary,
+            subTitleColor = MaterialTheme.colorScheme.onBackground,
             title = stringResource(R.string.sign_up),
             subTitle = stringResource(R.string.create_an_account_name_your_market),
         )
