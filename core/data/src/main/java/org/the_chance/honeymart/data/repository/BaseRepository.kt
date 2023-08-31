@@ -14,14 +14,9 @@ import org.the_chance.honeymart.domain.util.UnAuthorizedException
 
 abstract class BaseRepository {
 
-
     protected suspend fun <T> wrap(function: suspend () -> BaseResponse<T>): BaseResponse<T> {
-        val response = function()
-        return checkBaseResponse(response)
-    }
-
-    private fun <T> checkBaseResponse(response: BaseResponse<T>): BaseResponse<T> {
         try {
+            val response = function()
             return if (response.isSuccess) {
                 Log.d("Tag", "repository done correctly")
                 response
