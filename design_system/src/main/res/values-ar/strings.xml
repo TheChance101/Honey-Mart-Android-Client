@@ -228,6 +228,11 @@
     <string name="icon_map">أيقونة الخريطة</string>
     <string name="need_approve_from_admin_to_complete_create_market">يجب الموافقة من قبل المسؤول لإكمال إنشاء المتجر</string>
 
+    <string name="notification_permission_required">الإذن المطلوب للإشعارات</string>
+    <string name="go_to_settings">الانتقال إلى الإعدادات</string>
+    <string name="searched_product_not_found">المنتج الذي تبحث عنه غير موجود</string>
+    <string name="market_has_been_deleted">تم حذف المتجر!</string>
+
     <string name="honey_image">صورة الهوني</string>
     <string name="address">العنوان</string>
     <string name="account_already_exist">هذا الحساب موجود بالفعل</string>
@@ -253,6 +258,7 @@
     <string name="market_description_should_be_20_letter_at_least">وصف المتجر يجب أن يحتوي على 20 حرف على الأقل</string>
     <string name="something_went_wrong_please_try_again">حدث خطأ ما، من فضلك تحقق من اتصالك بالإنترنت وحاول مرة أخرى.</string>
     <string name="you_want_to_change_market_status">هل تريد تغيير حالة المتجر …</string>
+
     <string name="orders_label">الطلبات</string>
     <string name="category_label">الفئات</string>
     <string name="coupons_label">الكوبونات</string>
