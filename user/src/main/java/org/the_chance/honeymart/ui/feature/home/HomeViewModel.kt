@@ -19,9 +19,9 @@ import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.toCouponUiState
-import org.the_chance.honeymart.ui.feature.markets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
@@ -45,6 +45,10 @@ class HomeViewModel @Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
 
+
+    init {
+        getData()
+    }
     override fun getData() {
         _state.update {
             it.copy(isLoading = true, error = null, isConnectionError = false)

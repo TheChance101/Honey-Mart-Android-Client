@@ -40,7 +40,6 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
@@ -83,11 +82,10 @@ fun SearchContent(
         val products = state.products.collectAsLazyPagingItems()
         Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
         EmptyProductsPlaceholder(
-            (products.itemCount == 0
-                    && products.loadState.refresh != LoadState.Loading)
-                    || !state.isSearching
+        (products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading )|| !state.isSearching,
+            text = stringResource(R.string.searched_product_not_found)
         )
-        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier

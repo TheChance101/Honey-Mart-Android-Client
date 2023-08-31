@@ -17,7 +17,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.CategoryItem
-import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable

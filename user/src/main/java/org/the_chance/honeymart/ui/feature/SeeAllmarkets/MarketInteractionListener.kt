@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.markets
+package org.the_chance.honeymart.ui.feature.SeeAllmarkets
 
 interface MarketInteractionListener {
     fun getAllMarkets()

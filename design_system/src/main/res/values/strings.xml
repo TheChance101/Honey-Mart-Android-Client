@@ -87,7 +87,7 @@
     <string name="no_market">There is no market here!!</string>
     <string name="no_categories">There is no category here!!</string>
     <string name="order">Order #%1$s </string>
-    <string name="items">%1$s items</string>
+    <string name="items">%1$s Products</string>
     <string name="placeholder_title">You Don\'t have any orders!!</string>
     <string name="placeholder_subtitle">It\'s a catastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="discover_market_now">Discover Market Now</string>
@@ -167,7 +167,7 @@
     <string name="category_image">category image</string>
     <string name="market_name">Market Name</string>
     <string name="markets">Markets</string>
-    <string name="categories">Categories</string>
+    <string name="categories">Categories By market</string>
     <string name="map_pointer">Map Pointer</string>
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
@@ -231,5 +231,8 @@
     <string name="icon_market_status">icon market status</string>
     <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
+    <string name="notification_permission_required">Notification permission required</string>
+    <string name="go_to_settings">Go To Settings</string>
+    <string name="searched_product_not_found">Searched product not found</string>
     <string name="market_has_been_deleted">" Market has been deleted !"</string>
 </resources>
