@@ -10,14 +10,6 @@
 }
 
 android {
-    signingConfigs {
-        create("release") {
-            storeFile = file("/home/mohamed/User App.jks")
-            storePassword = "123456789"
-            keyAlias = "key0"
-            keyPassword = "123456789"
-        }
-    }
     namespace = "org.the_chance.user"
     compileSdk = ConfigData.COMPILE_SDK_VERSION
 
@@ -29,7 +21,6 @@ android {
         versionName = ConfigData.VERSION_NAME
 
         testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
-        signingConfig = signingConfigs.getByName("release")
     }
 
     buildTypes {
