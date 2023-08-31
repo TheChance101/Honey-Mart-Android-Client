@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">HoneyMart</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="table">table</string>
     <string name="product_description">Product Description</string>
     <string name="product_name">Product Name</string>
@@ -87,7 +85,7 @@
     <string name="no_market">There is no market here!!</string>
     <string name="no_categories">There is no category here!!</string>
     <string name="order">Order #%1$s </string>
-    <string name="items">%1$s Products</string>
+    <string name="items">%1$s items</string>
     <string name="placeholder_title">You Don\'t have any orders!!</string>
     <string name="placeholder_subtitle">It\'s a catastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="discover_market_now">Discover Market Now</string>
@@ -231,8 +229,44 @@
     <string name="icon_market_status">icon market status</string>
     <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
+
     <string name="notification_permission_required">Notification permission required</string>
     <string name="go_to_settings">Go To Settings</string>
     <string name="searched_product_not_found">Searched product not found</string>
     <string name="market_has_been_deleted">" Market has been deleted !"</string>
+
+    <string name="honey_image">honey image</string>
+    <string name="address">Address</string>
+    <string name="account_already_exist">This account already exist</string>
+    <string name="something_went_wrong">Something went wrong,please try again</string>
+    <string name="name_should_not_be_empty">name should not be empty</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="email_should_not_be_empty">email should not be empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="Invalid_username_or_password">Invalid username or password</string>
+    <string name="password_should_not_be_empty">Password should not be empty</string>
+    <string name="password_length_must_be_at_least_8">Password length must be at least 8</string>
+    <string name="password_length_must_be_at_least_14">Password length must be less than 14</string>
+    <string name="please_write_at_least_1_special_character">Please write at least 1 special character</string>
+    <string name="please_write_at_least_1_letter">Please write at least 1 letter</string>
+    <string name="please_write_at_least_1_digit">Please write at least 1 digit</string>
+    <string name="please_fill_required_fields">Please fill required fields</string>
+    <string name="password_does_not_match">password does not match</string>
+    <string name="market_name_should_not_be_empty">market name should not be empty</string>
+    <string name="invalid_market_name">Invalid market name</string>
+    <string name="market_address_should_not_be_empty">Market address should not be empty</string>
+    <string name="invalid_market_address">Invalid market address</string>
+    <string name="market_description_should_not_be_empty">market description should not be empty</string>
+    <string name="market_description_should_be_20_letter_at_least">market description should be 20 letter at least</string>
+    <string name="something_went_wrong_please_try_again">Something went wrong,please check your network and try again.</string>
+    <string name="you_want_to_change_market_status">You want to change market status ....</string>
+
+    <string name="orders_label">Orders</string>
+    <string name="category_label">Category</string>
+    <string name="coupons_label">Coupons</string>
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="profile">Profile</string>
+
 </resources>

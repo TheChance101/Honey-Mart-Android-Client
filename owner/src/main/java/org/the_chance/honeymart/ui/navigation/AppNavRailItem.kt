@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -72,8 +73,9 @@ fun AppNavRailItem(
                         .size(MaterialTheme.dimens.icon32)
                         .align(Alignment.Center),
                     painter = painterResource(id = screen.selectedIcon),
-                    contentDescription = screen.label,
-                    tint = if (selected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onBackground,
+                    contentDescription = stringResource(id = screen.label),
+                    tint = if (selected) MaterialTheme.colorScheme.tertiary else
+                        MaterialTheme.colorScheme.onBackground,
                 )
             }
 
@@ -82,7 +84,7 @@ fun AppNavRailItem(
             ) {
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    text = screen.label,
+                    text = stringResource(id = screen.label),
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.displayLarge

@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.util
 import android.content.Context
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.owner.R
+import org.the_chance.design_system.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
