@@ -22,7 +22,7 @@ import org.the_chance.honeymart.domain.usecase.UpdateProductDetailsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.category.composable.categoryIcons
+import org.the_chance.honymart.ui.composables.categoryIcons
 import javax.inject.Inject
 
 @HiltViewModel

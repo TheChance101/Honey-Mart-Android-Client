@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
 import org.the_chance.honeymart.ui.composables.NavigationHandler
@@ -49,8 +48,10 @@ import org.the_chance.honeymart.ui.feature.category.composables.CardChip
 import org.the_chance.honeymart.ui.feature.category.composables.CategoriesAppBarScaffold
 import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 import kotlin.math.cos
@@ -180,6 +181,7 @@ fun CategoryContent(
                     } else {
                         primary100.copy(alpha = 0.16f)
                     },
+                    painter = painterResource(id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper)
                 )
             }
             item(span = { GridItemSpan(3) }) {
