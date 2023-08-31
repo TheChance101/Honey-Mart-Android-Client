@@ -16,7 +16,7 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
-import org.the_chance.honeymart.ui.feature.markets.navigateToMarketsScreen
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen

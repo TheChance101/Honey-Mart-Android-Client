@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,7 +43,7 @@ fun HomeCategoriesItem(
     onClick: () -> Unit,
     label: String,
     modifier: Modifier = Modifier,
-    imageUrl: String = "",
+    painter: Painter? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.onTertiary,
 ) {
     val colors = MaterialTheme.colorScheme
@@ -69,14 +70,9 @@ fun HomeCategoriesItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        /*ImageNetwork(
-            imageUrl = "https://cdn.discordapp.com/attachments/830145301553348632/1141971035483275354/coffee_cup-cuate.png",
-            contentDescription = "image",
-            modifier = Modifier.size(32.dp)
-        )*/
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_cup_paper),
+            painter = painter ?: painterResource(id = R.drawable.ic_cup_paper),
             contentDescription = null,
             tint = colors.primary
         )

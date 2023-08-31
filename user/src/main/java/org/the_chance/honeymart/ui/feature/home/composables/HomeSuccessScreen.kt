@@ -38,11 +38,12 @@ import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.markets.MarketUiState
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -322,7 +323,8 @@ private fun Categories(
                             .padding(horizontal = MaterialTheme.dimens.space8)
                             .animateItemPlacement(),
                         label = category.categoryName,
-                        onClick = { oncClickCategory(category.categoryId, index) }
+                        onClick = { oncClickCategory(category.categoryId, index) },
+                        painter = painterResource(id = categoryIcons[category.categoryImageId]?: R.drawable.ic_cup_paper),
                     )
                 }
             }

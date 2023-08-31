@@ -79,8 +79,6 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
 
-        EmptyProductPlaceholder(
-            state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty())
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
@@ -122,6 +120,9 @@ private fun ProductsContent(
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
+                        EmptyProductPlaceholder(
+                            state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty()
+                                    && products.loadState.refresh != LoadState.Loading)
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
