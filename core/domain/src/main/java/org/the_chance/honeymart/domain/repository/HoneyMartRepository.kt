@@ -19,6 +19,7 @@ import org.the_chance.honeymart.domain.model.WishList
 
 interface HoneyMartRepository {
 
+    suspend fun checkAdminApprove(): Boolean
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
     suspend fun clipCoupon(couponId: Long): Boolean

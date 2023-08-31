@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.signup.market_info.composables
+package org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

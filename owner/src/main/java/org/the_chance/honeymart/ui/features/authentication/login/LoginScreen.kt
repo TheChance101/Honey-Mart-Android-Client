@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.features.login
+package org.the_chance.honeymart.ui.features.authentication.login
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -21,24 +21,25 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.navigateToMarketInfoScreen
+import org.the_chance.honeymart.ui.features.authentication.signup.navigateToSignupScreen
+import org.the_chance.honeymart.ui.features.authentication.waitingApprove.navigateToWaitingApproveScreen
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
-import org.the_chance.honeymart.ui.features.signup.navigateToSignupScreen
+import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
-import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val navController = LocalNavigationProvider.current
@@ -52,14 +53,20 @@ fun LoginScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
-                LoginUiEffect.ClickLoginEffect -> {
+                LoginUiEffect.NavigateToCategoriesEffect -> {
                     navController.navigateToCategoryScreen()
                 }
-
                 LoginUiEffect.ClickSignUpEffect -> {
                     navController.navigateToSignupScreen()
-
+                }
+                LoginUiEffect.NavigateToCreateMarketEffect -> {
+                    navController.navigateToMarketInfoScreen()
+                }
+                LoginUiEffect.NavigateToWaitingApproveEffect -> {
+                    navController.navigateToWaitingApproveScreen()
+                }
+                LoginUiEffect.NavigateToLoginEffect -> {
+                    navController.navigateToLogin()
                 }
             }
         }
@@ -69,11 +76,11 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
-    listener: LoginInteractionListener,
+    listener: org.the_chance.honeymart.ui.features.authentication.login.LoginInteractionListener,
     state: LoginUiState,
 ) {
     Loading(state.authLoading)
-    AnimatedVisibility(!state.authLoading){
+    AnimatedVisibility(!state.authLoading) {
         HoneyAuthScaffold(
             modifier = Modifier.imePadding()
         ) {
@@ -102,13 +109,11 @@ fun LoginContent(
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 )
             }
-
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
                 onClick = listener::onClickLogin,
                 isLoading = state.isLoading,
             )
-
             HoneyAuthFooter(
                 text = stringResource(R.string.don_t_have_an_account),
                 textButtonText = stringResource(R.string.Sign_up),

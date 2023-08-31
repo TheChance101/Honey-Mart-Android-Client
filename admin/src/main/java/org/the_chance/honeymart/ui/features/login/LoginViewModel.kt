@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.features.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
+import org.the_chance.honeymart.domain.usecase.CheckAdminAuthenticationUseCase
 import org.the_chance.honeymart.domain.usecase.LoginAdminUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationAdminLoginFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginAdminUseCase: LoginAdminUseCase,
     private val validationAdminLogin: ValidationAdminLoginFieldsUseCase,
-    private val getMarketsRequests: GetMarketsRequests,
+    private val checkAuthentication: CheckAdminAuthenticationUseCase,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
     LoginInteractionListener {
 
@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     private fun checkAuthorization() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getMarketsRequests(true) },
+            { checkAuthentication() },
             { onAuthorizationSuccess() },
             ::onAuthorizationError,
         )
@@ -93,7 +93,7 @@ class LoginViewModel @Inject constructor(
                 password = FieldState(
                     error = when (passwordState) {
                         ValidationState.BLANK_PASSWORD -> "Password shouldn't be empty"
-                        ValidationState.INVALID_PASSWORD_LENGTH ->
+                        ValidationState.INVALID_PASSWORD_LENGTH_SHORT ->
                             "Password length must be at least 4"
                         else -> ""
                     },
