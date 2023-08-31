@@ -9,6 +9,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
+        _state.update { it.copy(error = error, ) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -64,8 +65,9 @@ class SearchViewModel @Inject constructor(
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStream.debounce(700).distinctUntilChanged().collect {
-                    log(it)
+            actionStream.debounce(700).distinctUntilChanged().filter {
+                it.isNotEmpty()
+            }.collect {
                 searchForProducts()
             }
         }
