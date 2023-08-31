@@ -5,9 +5,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
@@ -59,7 +61,9 @@ fun MainContent(
     if (showNavigationRail) {
         listener.onGetAdminInitials()
     }
-    Row {
+    Row(
+        modifier = Modifier.navigationBarsPadding()
+    ) {
         AnimatedVisibility(
             visible = showNavigationRail,
             enter = slideInHorizontally { -it },
