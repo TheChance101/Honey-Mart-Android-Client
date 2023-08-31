@@ -47,9 +47,11 @@ class MarketsViewModel @Inject constructor(
             is ErrorHandler.NoConnection -> {
                 _state.update { it.copy(isError = true) }
             }
+
             ErrorHandler.UnAuthorizedUser -> {
                 effectActionExecutor(_effect, MarketsUiEffect.UnAuthorizedUserEffect)
             }
+
             else -> {}
         }
     }
@@ -92,8 +94,15 @@ class MarketsViewModel @Inject constructor(
             MarketsState.ALL -> _state.value.markets
         }
     }
+
     override fun onClickMarketsState(state: MarketsState) {
-        _state.update { it.copy(marketsState = state, marketsUpdated = getMarketsOnState(state)) }
+        _state.update {
+            it.copy(
+                marketsState = state,
+                marketsUpdated = getMarketsOnState(state),
+                selectedMarket = null
+            )
+        }
     }
 
     override fun onClickTryAgain() {
