@@ -23,7 +23,6 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun <T : Any> PagingStateVisibility(
     items: LazyPagingItems<T>,
-    state: Boolean = false,
 ) {
     when {
         items.loadState.append is LoadState.Loading -> {
