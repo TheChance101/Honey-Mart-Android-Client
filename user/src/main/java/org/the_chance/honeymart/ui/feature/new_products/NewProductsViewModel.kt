@@ -78,7 +78,6 @@ class NewProductsViewModel @Inject constructor(
 
 
     private fun onAddToWishListSuccess() {
-        _state.update { it.copy(isLoading = false) }
         getWishListProducts()
     }
 

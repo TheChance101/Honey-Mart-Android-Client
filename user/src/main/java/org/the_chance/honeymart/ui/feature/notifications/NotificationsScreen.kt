@@ -67,13 +67,7 @@ fun NotificationsContent(
                 state = state.isError,
                 onClickTryAgain = listener::onClickTryAgain,
             )
-            EmptyOrdersPlaceholder(
-                state = state.emptyNotificationsPlaceHolder(),
-                image = R.drawable.placeholder_wish_list,
-                title = stringResource(R.string.your_notifications_is_empty),
-                subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
-            )
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
@@ -111,6 +105,13 @@ fun NotificationsContent(
                     onClickState = listener::onGetDeliveryNotifications
                 )
             }
+            EmptyOrdersPlaceholder(
+                state = state.emptyNotificationsPlaceHolder(),
+                image = R.drawable.placeholder_wish_list,
+                title = stringResource(R.string.your_notifications_is_empty),
+                subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
+                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
+            )
             LazyColumn(
                 modifier = Modifier
                     .padding(vertical = MaterialTheme.dimens.space16)
@@ -140,7 +141,9 @@ fun NotificationsContent(
                         index = it
                     )
                 }
+
             }
+
         }
     }
 }

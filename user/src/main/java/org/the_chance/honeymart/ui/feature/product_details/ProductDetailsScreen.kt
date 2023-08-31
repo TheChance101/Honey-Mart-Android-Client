@@ -306,7 +306,8 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         text = state.product.productDescription,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
+                        ),
+                        maxLines = 3,
                     )
 
                 }
