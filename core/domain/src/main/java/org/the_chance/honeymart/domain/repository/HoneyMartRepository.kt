@@ -7,6 +7,7 @@ import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
@@ -15,6 +16,7 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
+import java.io.ObjectInputFilter.Status
 
 
 interface HoneyMartRepository {
@@ -33,6 +35,8 @@ interface HoneyMartRepository {
     suspend fun addMarketImage(marketImage: ByteArray): Boolean
 
     suspend fun getCategoriesInMarket(marketId: Long): List<Category>?
+    suspend fun getMarketInfo(): MarketInfo
+    suspend fun updateMarketStatus(status: Int): Boolean
     suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): Flow<PagingData<Product>>
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category>?
     suspend fun addToWishList(productId: Long): String

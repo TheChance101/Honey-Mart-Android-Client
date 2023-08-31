@@ -11,11 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.login.navigateToLogin
+import org.the_chance.honeymart.ui.features.profile.navigateToProfileScreen
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
 import org.the_chance.honeymart.ui.navigation.RootNavigationGraph
+import org.the_chance.honeymart.ui.navigation.Screen
 
 @Composable
 fun MainScreen(
@@ -29,7 +31,9 @@ fun MainScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is MainEffect.OnClickProfileEffect -> {}
+                is MainEffect.OnClickProfileEffect -> {
+                    navController.navigateToProfileScreen()
+                }
 
                 is MainEffect.OnClickLogoutEffect -> {
                     navController.navigateToLogin()
@@ -50,6 +54,7 @@ fun MainContent(
         NavigationRailScreen.Orders.route,
         NavigationRailScreen.Category.route,
         NavigationRailScreen.Coupons.route,
+        Screen.Profile.route
     )
     val showNavigationRail = currentDestination?.route in screenRouts
 

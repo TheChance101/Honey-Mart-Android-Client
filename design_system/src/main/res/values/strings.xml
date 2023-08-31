@@ -225,5 +225,10 @@
     <string name="random">Random</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="market_info">Market Info</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="icon_market_status">icon market status</string>
+    <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
 </resources>
