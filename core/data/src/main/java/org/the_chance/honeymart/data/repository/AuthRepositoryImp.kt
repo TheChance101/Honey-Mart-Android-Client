@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toAdminLogin
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerFields
@@ -104,5 +103,9 @@ class AuthRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAdminName(): String? = datastore.getAdminName()
+
+    override suspend fun checkAdminAuthentication() {
+        wrap { honeyMartService.checkAdminAuthentication()}
+    }
 
 }

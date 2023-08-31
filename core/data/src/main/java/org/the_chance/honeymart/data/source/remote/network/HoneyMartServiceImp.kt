@@ -330,7 +330,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("state", "$state")
         }
         val response = wrap<BaseResponse<Boolean>>(client.put(url) {
-            contentType(io.ktor.http.ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
             body = FormDataContent(formData)
         })
         return response
@@ -496,6 +496,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("admin/markets") {
             parameter("isApproved", "$isApproved")
         })
+    }
+
+    override suspend fun checkAdminAuthentication(): BaseResponse<String> {
+        return wrap(client.get("admin") {})
     }
 
     @OptIn(InternalAPI::class)

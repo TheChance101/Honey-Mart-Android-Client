@@ -262,6 +262,8 @@ interface HoneyMartService {
     //region admin
     suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
 
+    suspend fun checkAdminAuthentication(): BaseResponse<String>
+
     suspend fun updateMarketRequest(
         id: Long?,
         isApproved: Boolean,
