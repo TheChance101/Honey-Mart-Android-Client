@@ -231,4 +231,6 @@
     <string name="icon_market_status">icon market status</string>
     <string name="icon_map">icon map</string>
     <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
+    <string name="notification_permission_required">Notification permission required</string>
+    <string name="go_to_settings">Go To Settings</string>
 </resources>
