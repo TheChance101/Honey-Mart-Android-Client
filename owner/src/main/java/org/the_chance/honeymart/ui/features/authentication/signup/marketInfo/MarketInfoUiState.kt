@@ -8,7 +8,7 @@ data class MarketInfoUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isMarketCreated: Boolean = false,
-
+    val isButtonEnabled: Boolean = true,
     val marketNameState: FieldState = FieldState(),
     val marketAddressState: FieldState = FieldState(),
     val marketDescriptionState: FieldState = FieldState(),
