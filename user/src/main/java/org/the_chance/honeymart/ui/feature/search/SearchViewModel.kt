@@ -9,9 +9,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
@@ -33,7 +31,7 @@ class SearchViewModel @Inject constructor(
         observeKeyword()
     }
 
-    private fun searchForProducts() {
+    fun searchForProducts() {
         _state.update { it.copy(isSearching = true, isError = false) }
         val query = _state.value.searchQuery
         val sortOrder = _state.value.searchStates.state

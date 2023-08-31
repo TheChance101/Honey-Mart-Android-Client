@@ -49,7 +49,8 @@ fun HomeMarketItem(
         Text(
             text = name,
             modifier = Modifier.align(Alignment.Center),
-            style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onPrimary)
+            style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onPrimary),
+            maxLines = 1
         )
     }
 }
