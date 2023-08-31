@@ -86,8 +86,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun updateMarketStatus(status: Int) {
+        val newStatus = if (status == MarketStatus.ONLINE.state)
+            MarketStatus.OFFLINE.state else MarketStatus.ONLINE.state
         tryToExecute(
-            function = { updateMarketStatusUseCase(status) },
+            function = { updateMarketStatusUseCase(newStatus) },
             onSuccess = ::onUpdateMarketInfoSuccess,
             onError = ::onUpdateMarketInfoError
         )
