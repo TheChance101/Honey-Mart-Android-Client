@@ -42,7 +42,7 @@ fun AddCouponContent(
             )
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
