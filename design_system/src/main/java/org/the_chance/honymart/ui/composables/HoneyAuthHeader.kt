@@ -25,8 +25,8 @@ fun HoneyAuthHeader(
     title: String,
     subTitle: String,
     modifier: Modifier = Modifier,
-    titleColor: Color = black87,
-    subTitleColor: Color = black60,
+    titleColor: Color = MaterialTheme.colorScheme.onSecondary,
+    subTitleColor: Color = MaterialTheme.colorScheme.onBackground,
 ) {
     Column(
         modifier = modifier,
