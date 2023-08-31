@@ -22,7 +22,8 @@ import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
-import org.the_chance.owner.R
+import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.theme.error
 
 @Composable
 fun MarketFieldsScaffold(
@@ -70,7 +71,7 @@ fun MarketFieldsScaffold(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.space8),
                 text = stringResource(R.string.market_image),
                 style = MaterialTheme.typography.displaySmall,
-                color = if (state.isMarketImageEmpty) org.the_chance.honymart.ui.theme.error else black37,
+                color = if (state.isMarketImageEmpty) error else black37,
                 textAlign = TextAlign.Center,
             )
             Row(modifier = Modifier.fillMaxWidth()) {

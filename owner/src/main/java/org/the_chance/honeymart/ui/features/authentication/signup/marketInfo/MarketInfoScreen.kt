@@ -25,7 +25,7 @@ import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.owner.R
+import org.the_chance.design_system.R
 
 @Composable
 fun MarketInfoScreen(viewModel: SignUpViewModel = hiltViewModel()) {
