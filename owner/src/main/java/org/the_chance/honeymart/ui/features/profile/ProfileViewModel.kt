@@ -66,7 +66,6 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-
     private fun onGetMarketInfoSuccess(marketInfo: MarketInfo) {
         _state.update {
             it.copy(
@@ -86,8 +85,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun updateMarketStatus(status: Int) {
+        _state.update { it.copy(showMarketStatusDialog = false) }
         val newStatus = if (status == MarketStatus.ONLINE.state)
             MarketStatus.OFFLINE.state else MarketStatus.ONLINE.state
+        //        toggleMarketStatus()
         tryToExecute(
             function = { updateMarketStatusUseCase(newStatus) },
             onSuccess = ::onUpdateMarketInfoSuccess,
@@ -96,7 +97,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onUpdateMarketInfoSuccess(status: Boolean) {
-        toggleMarketStatus()
+//        toggleMarketStatus()
         _state.update { it.copy(error = null, isError = false,) }
     }
 

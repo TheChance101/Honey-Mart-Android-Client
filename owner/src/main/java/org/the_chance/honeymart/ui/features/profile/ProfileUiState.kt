@@ -10,7 +10,8 @@ data class ProfileUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val personalInfo: PersonalInfoUiState = PersonalInfoUiState(),
-    val marketInfo: MarketInfoUiState = MarketInfoUiState()
+    val marketInfo: MarketInfoUiState = MarketInfoUiState(),
+    val showMarketStatusDialog: Boolean = false,
 )
 
 data class PersonalInfoUiState(
