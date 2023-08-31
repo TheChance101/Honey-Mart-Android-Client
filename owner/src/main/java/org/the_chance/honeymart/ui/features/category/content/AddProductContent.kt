@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.category.content
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -36,7 +37,6 @@ import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.showButton
-import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.dimens
@@ -86,12 +86,13 @@ fun AddProductContent(
                     else -> ""
                 }
             )
+            Log.e("sara",state.newProducts.toString())
             FormTextField(
                 text = state.newProducts.price,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = listener::onProductPriceChanged,
-                errorMessage = when (state.newProducts.productNameState) {
+                errorMessage = when (state.newProducts.productPriceState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""

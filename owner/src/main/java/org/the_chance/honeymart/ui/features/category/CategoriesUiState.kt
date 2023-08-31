@@ -122,8 +122,7 @@ fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productImage = if (productImages.isNotEmpty())
-            productImages else listOf("", ""),
+        productImage = productImages.ifEmpty { listOf("", "") },
         productPrice = productPrice.toPriceFormat(),
         productDescription = productDescription,
     )
