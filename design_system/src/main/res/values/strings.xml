@@ -225,4 +225,5 @@
     <string name="random">Random</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="need_approve_from_admin_to_complete_create_market">Need approve from admin to complete create market</string>
 </resources>

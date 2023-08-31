@@ -421,6 +421,10 @@ class HomeViewModel @Inject constructor(
         effectActionExecutor(_effect, HomeUiEffect.NavigateToNewProductsScreenEffect)
     }
 
+    override fun onClickLastPurchasesSeeAll() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderScreenEffect)
+    }
+
     /// endregion
 }
 

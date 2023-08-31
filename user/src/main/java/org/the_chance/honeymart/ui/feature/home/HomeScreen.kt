@@ -19,6 +19,7 @@ import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessSc
 import org.the_chance.honeymart.ui.feature.markets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
+import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
@@ -32,7 +33,6 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 1)
-//    val navController = LocalNavigationProvider.current
 
     NavigationHandler(
         effects = viewModel.effect,
@@ -59,6 +59,8 @@ fun HomeScreen(
                 is HomeUiEffect.NavigateToOrderDetailsScreenEffect -> navController.navigateToOrderDetailsScreen(
                     effect.productId
                 )
+
+                HomeUiEffect.NavigateToOrderScreenEffect -> navController.navigateToOrderScreen()
             }
         })
 

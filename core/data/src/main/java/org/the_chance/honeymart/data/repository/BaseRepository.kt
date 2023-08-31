@@ -16,13 +16,17 @@ abstract class BaseRepository {
 
 
     protected suspend fun <T> wrap(function: suspend () -> BaseResponse<T>): BaseResponse<T> {
+        val response = function()
+        return checkBaseResponse(response)
+    }
+
+    private fun <T> checkBaseResponse(response: BaseResponse<T>): BaseResponse<T> {
         try {
-            val response = function()
             return if (response.isSuccess) {
-                Log.e("Tag", "response success:${response.value}")
+                Log.d("Tag", "repository done correctly")
                 response
             } else {
-                Log.e("Tag", "response fail:${response.status.code}")
+                Log.d("Tag", "repository failed")
                 when (response.status.code) {
                     400 -> throw InvalidDataException()
                     401 -> throw UnAuthorizedException()
@@ -31,6 +35,7 @@ abstract class BaseRepository {
                     409 -> throw AlreadyExistException()
                     500 -> throw InternalServerException()
                     1001 -> throw EmailIsExistException()
+                    1003 -> throw EmailIsExistException()
                     else -> throw Exception(response.status.message)
                 }
             }

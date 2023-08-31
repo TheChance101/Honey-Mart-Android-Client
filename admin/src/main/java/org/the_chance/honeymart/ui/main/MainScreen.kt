@@ -32,10 +32,9 @@ fun MainScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                is MainEffect.OnClickLogoutEffect -> {
+                MainEffect.OnClickLogoutEffect -> {
                     navController.navigateToLogin()
                 }
-
                 MainEffect.ShowLogoutErrorToastEffect -> {
                     Toast.makeText(
                         context,
@@ -55,8 +54,11 @@ fun MainContent(
     listener: MainInteractionListener,
     currentDestination: NavDestination?,
 ) {
-    val screenRouts = listOf(NavigationRailScreen.Markets.route,)
+    val screenRouts = listOf(NavigationRailScreen.Markets.route)
     val showNavigationRail = currentDestination?.route in screenRouts
+    if (showNavigationRail) {
+        listener.onGetAdminInitials()
+    }
     Row {
         AnimatedVisibility(
             visible = showNavigationRail,

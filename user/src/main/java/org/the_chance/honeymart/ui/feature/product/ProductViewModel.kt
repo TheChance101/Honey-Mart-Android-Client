@@ -191,7 +191,7 @@ class ProductViewModel @Inject constructor(
                 }
             }
         }
-        _state.update { it.copy(products = updatedProducts) }
+        _state.update { it.copy(products = updatedProducts, isLoadingProduct = true) }
         if (isFavorite) {
             deleteProductFromWishList(productId)
         } else {
@@ -208,6 +208,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListSuccess() {
+        _state.update { it.copy(isLoadingProduct = false) }
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
@@ -224,12 +225,15 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
+        _state.update { it.copy(isLoadingProduct = false) }
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect(successMessage))
     }
 
     override fun showSnackBar(message: String) {
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = message)) }
+
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = "Success")) }
     }
+
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }

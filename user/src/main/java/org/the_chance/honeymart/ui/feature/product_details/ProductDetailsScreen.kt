@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,7 +45,6 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyIconButton
@@ -80,7 +78,12 @@ fun ProductDetailsScreen(
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
-    ProductDetailsContent(state = state, listener = viewModel)
+    Loading(state = state.isLoading )
+    ContentVisibility(state = !state.isLoading && !state.isConnectionError ) {
+        ProductDetailsContent(state = state, listener = viewModel)
+    }
+
+
 }
 
 
@@ -89,6 +92,7 @@ private fun ProductDetailsContent(
     state: ProductDetailsUiState,
     listener: ProductDetailsInteraction
 ) {
+
     Box(modifier = Modifier.fillMaxSize()) {
         ProductDetailsMainContent(state, listener)
         if (state.dialogState.showDialog) {
@@ -102,7 +106,9 @@ private fun ProductDetailsContent(
                 },
                 onCancel = { listener.resetDialogState() },
                 onDismissRequest = { listener.resetDialogState() },
-                modifier = Modifier.align(Alignment.Center).zIndex(2f)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .zIndex(2f)
             )
         }
     }
@@ -110,6 +116,7 @@ private fun ProductDetailsContent(
 
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
+
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {

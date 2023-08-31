@@ -39,4 +39,5 @@ interface AuthRepository {
     suspend fun loginAdmin(email: String, password: String): AdminLogin
     suspend fun saveAdminName(name: String)
     suspend fun getAdminName(): String?
+    suspend fun checkAdminAuthentication()
 }

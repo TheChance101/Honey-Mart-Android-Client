@@ -38,7 +38,9 @@ fun ProfileScreen(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { handleImageSelection(it, context, viewModel::onImageSelected) }
+        onResult = {
+            handleImageSelection(it, context, viewModel::onImageSelected)
+        }
     )
     NavigationHandler(
         effects = viewModel.effect,
@@ -50,9 +52,13 @@ fun ProfileScreen(
 
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
                 ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> { navController.navigateToCouponsScreen() }
+                is ProfileUiEffect.ClickCouponsEffect -> {
+                    navController.navigateToCouponsScreen()
+                }
 
-                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
+                is ProfileUiEffect.ClickLogoutEffect -> {
+                    navController.navigateToHomeScreen()
+                }
 
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }

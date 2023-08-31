@@ -10,7 +10,7 @@ private val ROUTE = Screen.Category.route
 
 fun NavController.navigateToCategoryScreen() {
     navigate(ROUTE){
-        popUpTo(route = Graph.AUTH_GRAPH){
+        popUpTo(route = Graph.MAIN_GRAPH){
             inclusive = true
         }
         launchSingleTop = true
