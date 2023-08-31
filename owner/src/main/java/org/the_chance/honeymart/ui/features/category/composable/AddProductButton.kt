@@ -38,7 +38,7 @@ fun AddProductButton(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add_category),
+                    painter = painterResource(id = R.drawable.icon_add_new_category),
                     contentDescription = stringResource(R.string.icon),
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.size(MaterialTheme.dimens.icon36)
