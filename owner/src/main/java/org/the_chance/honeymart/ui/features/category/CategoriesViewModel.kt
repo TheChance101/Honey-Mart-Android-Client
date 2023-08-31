@@ -627,7 +627,7 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun getPriceState(priceState: String): ValidationState {
-        val priceRegex = Regex("^[0-9]+(\\.[0-9]+)?$")
+        val priceRegex = Regex("^[0-9]{1,6}(\\.[0-9]{1,2})?$")
         val state: ValidationState = when {
             priceState.isBlank() -> ValidationState.BLANK_TEXT_FIELD
             !priceState.matches(priceRegex) -> ValidationState.INVALID_PRICE

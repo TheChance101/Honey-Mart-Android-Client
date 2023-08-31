@@ -163,7 +163,10 @@ fun CategoriesUiState.showSaveUpdateButton(): Boolean {
     return productDetails.productName.isNotBlank() &&
             productDetails. productPrice.isNotBlank() &&
             productDetails.productDescription.isNotBlank() &&
-            newProducts.images.isNotEmpty()
+           newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productPriceState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productDescriptionState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.images.isNotEmpty()
 
 }
 fun String.removeDollarSign(): String {
