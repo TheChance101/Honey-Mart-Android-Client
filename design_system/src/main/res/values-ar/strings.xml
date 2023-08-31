@@ -7,14 +7,14 @@
     <string name="product_name">اسم المنتج</string>
     <string name="product_price">3000 دولار</string>
     <string name="empty_wishlist">قائمة الرغبات الخاصة بك فارغة!!</string>
-    <string name="placeholder_description">استمتع بقوة المفضلات وانغمس في عالم التسوق الشخصي.</string>
+    <string name="placeholder_description">استمتع بالمفضلات وانغمس في عالم التسوق الشخصي.</string>
     <string name="discover_new_markets">اكتشف المتاجر جديدة</string>
     <string name="welcome_to_honey_mart">مرحبًا بك في هوني مارت</string>
     <string name="get_ready_to_a_shopping_experience_like_no_other">استعد لتجربة تسوق لا مثيل لها!!</string>
     <string name="sign_up">سجل الدخول</string>
     <string name="already_have_account">هل لديك حساب بالفعل؟</string>
     <string name="log_in">تسجيل الدخول</string>
-    <string name="reconnect_with_your_favorite_brands_and_saved_items_log_in_today">اتصل مرة أخرى بالعلامات التجارية المفضلة لديك والعناصر المحفوظة. قم بتسجيل الدخول اليوم!</string>
+    <string name="reconnect_with_your_favorite_brands_and_saved_items_log_in_today">اعد الاتصال بالعلامات التجارية المفضلة لديك والعناصر المحفوظة. قم بتسجيل الدخول اليوم!</string>
     <string name="login_to_discover_a_curated_selection_of_products_just_for_you">قم بتسجيل الدخول لاكتشاف مجموعة مختارة من المنتجات خصيصًا لك</string>
     <string name="welcome_back">مرحبًا مرة أخرى!!</string>
     <string name="don_t_have_an_account">ليس لديك حساب؟</string>
@@ -185,7 +185,7 @@
     <string name="product_item">عنصر المنتج</string>
     <string name="search">بحث</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="login_and_get_access_to_your_orders_wishlist_and_more">سجل الدخول واحصل على الوصول إلى طلباتك، قائمة الرغبات والمزيد.</string>
+    <string name="login_and_get_access_to_your_orders_wishlist_and_more">سجل الدخول لكي تصل إلى طلباتك، قائمة الرغبات والمزيد.</string>
     <string name="you_are_not_logged_in">أنت غير مسجل دخول</string>
     <string name="product_details">تفاصيل المنتج</string>
     <string name="update_product">تحديث المنتج</string>
