@@ -6,4 +6,6 @@ sealed interface SignupUiEffect: BaseUiEffect {
     object ClickSignupEffect : SignupUiEffect
     object ShowToastEffect : SignupUiEffect
     object ClickLoginEffect : SignupUiEffect
+    object ClickOnBoardingSignUp : SignupUiEffect
+    object ClickOnBoardingLogin : SignupUiEffect
 }

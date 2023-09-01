@@ -4,20 +4,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.login.navigateToLogin
+import org.the_chance.honeymart.ui.feature.signup.SignupUiEffect
+import org.the_chance.honeymart.ui.feature.signup.SignupViewModel
 import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -36,16 +33,17 @@ import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun AuthScreen(
-    viewModel: AuthViewModel = hiltViewModel(),
+    viewModel: SignupViewModel = hiltViewModel(),
 ) {
     NavigationHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
-                is AuthenticationUiEffect.ClickLoginEffect -> navController.navigateToLogin()
-                is AuthenticationUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
+                SignupUiEffect.ClickOnBoardingLogin -> navController.navigateToLogin()
+                SignupUiEffect.ClickOnBoardingSignUp -> navController.navigateToSignupScreen()
+                else -> {}
             }
-    })
+        })
 
     AuthContent(listener = viewModel)
 }
@@ -90,12 +88,12 @@ fun AuthContent(
                 horizontal = MaterialTheme.dimens.space16,
                 vertical = MaterialTheme.dimens.space40
             ),
-            onClick = listener::onClickSignUp
+            onClick = listener::onClickOnBoardingSignUp
         )
         HoneyAuthFooter(
             text = stringResource(R.string.already_have_account),
             textButtonText = stringResource(R.string.log_in),
-            onTextButtonClicked = listener::onClickLogin,
+            onTextButtonClicked = listener::onClickOnBoardingLogin,
             modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
         )
     }
@@ -106,22 +104,23 @@ fun AuthContent(
 @Composable
 fun AuthScreenPreview() {
     AuthContent(listener = object : AuthenticationInteractionListener {
-        override fun onClickLogin() {
+        override fun onClickOnBoardingLogin() {
         }
 
-        override fun onClickSignUp() {
+        override fun onClickOnBoardingSignUp() {
         }
 
     })
 }
+
 @Preview
 @Composable
 fun AuthScreenPreview2() {
     AuthContent(listener = object : AuthenticationInteractionListener {
-        override fun onClickLogin() {
+        override fun onClickOnBoardingLogin() {
         }
 
-        override fun onClickSignUp() {
+        override fun onClickOnBoardingSignUp() {
         }
 
     })

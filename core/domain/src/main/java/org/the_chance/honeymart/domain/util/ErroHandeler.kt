@@ -17,8 +17,8 @@ class NotValidApiKeyException : AuthenticationException()
 class EmailIsExistException : AuthenticationException()
 class ForbiddenException : AuthenticationException()
 class UnAuthorizedCredential : AuthenticationException()
-
 class MarketDeletedException : AuthenticationException()
+class InvalidEmailOrPassword : AuthenticationException()
 
 sealed interface ErrorHandler {
     object EmailIsExist : ErrorHandler

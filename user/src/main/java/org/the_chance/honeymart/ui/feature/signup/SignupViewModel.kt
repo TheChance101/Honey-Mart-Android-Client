@@ -2,21 +2,22 @@ package org.the_chance.honeymart.ui.feature.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddUserUseCase
+import org.the_chance.honeymart.domain.usecase.RegisterUserUseCase
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidationUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.authentication.AuthenticationInteractionListener
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val createAccount: AddUserUseCase,
+    private val createAccount: RegisterUserUseCase,
     private val loginUser: LoginUserUseCase,
     private val validation: ValidationUseCase,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
-    SignupInteractionListener {
+    SignupInteractionListener, AuthenticationInteractionListener {
 
     override val TAG: String = this::class.simpleName.toString()
     override fun onFullNameInputChange(fullName: CharSequence) {
@@ -120,6 +121,14 @@ class SignupViewModel @Inject constructor(
                 it.copy(showToast = true)
             }
         }
+    }
+
+    override fun onClickOnBoardingSignUp() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickOnBoardingSignUp)
+    }
+
+    override fun onClickOnBoardingLogin() {
+        effectActionExecutor(_effect, SignupUiEffect.ClickOnBoardingLogin)
     }
 
 }
