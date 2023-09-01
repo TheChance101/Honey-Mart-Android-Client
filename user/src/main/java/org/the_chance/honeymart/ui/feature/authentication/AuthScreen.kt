@@ -39,8 +39,8 @@ fun AuthScreen(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
-                SignupUiEffect.ClickOnBoardingLogin -> navController.navigateToLogin()
-                SignupUiEffect.ClickOnBoardingSignUp -> navController.navigateToSignupScreen()
+                SignupUiEffect.ClickOnBoardingLoginEffect -> navController.navigateToLogin()
+                SignupUiEffect.ClickOnBoardingSignUpEffect -> navController.navigateToSignupScreen()
                 else -> {}
             }
         })

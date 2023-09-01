@@ -1,27 +1,37 @@
 package org.the_chance.honeymart.ui.feature.signup
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.domain.util.ValidationState
 
 data class SignupUiState(
     val isLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isSignUp: Boolean = false,
-    val isLogin: ValidationState = ValidationState.INVALID_CONFIRM_PASSWORD,
-    val fullName: String = "",
-    val email: String = "",
-    val password: String = "",
-    val confirmPassword: String = "",
-    val emailState: ValidationState = ValidationState.VALID_EMAIL,
-    val passwordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val confirmPasswordState: ValidationState = ValidationState.VALID_PASSWORD,
-    val fullNameState: ValidationState = ValidationState.VALID_FULL_NAME,
-    val showToast:Boolean = false
+    val isLogin: Boolean = false,
+    val isButtonEnabled: Boolean = false,
+
+    val emailState: FieldState = FieldState(),
+    val passwordState: FieldState = FieldState(),
+    val confirmPasswordState: FieldState = FieldState(),
+    val fullNameState: FieldState = FieldState(),
+
+    val validationToast: ValidationToast = ValidationToast(),
 )
 
+data class FieldState(
+    val value: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isNotEmpty()
+)
 
-fun SignupUiState.continueValidation(): Boolean {
-    return this.fullNameState == ValidationState.VALID_FULL_NAME
-            && this.emailState == ValidationState.VALID_EMAIL &&
-            this.email.isNotEmpty() && this.fullName.isNotEmpty()
+data class ValidationToast(
+    val isShow: Boolean = false,
+    val message: String = "Please fill all required fields"
+)
+
+fun SignupUiState.correctValidationFullNameAndEmail(): Boolean {
+    return this.fullNameState.isValid && this.emailState.isValid
+}
+
+fun SignupUiState.correctValidationPasswordAndConfirmPassword(): Boolean {
+    return this.passwordState.isValid && this.confirmPasswordState.isValid
 }

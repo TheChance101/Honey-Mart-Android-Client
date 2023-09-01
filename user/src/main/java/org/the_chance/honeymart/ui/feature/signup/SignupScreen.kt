@@ -203,7 +203,7 @@ fun SignupContent(
                             vertical = MaterialTheme.dimens.space40
                         ),
                         onClick = {
-                            if (state.continueValidation()) {
+                            if (state.correctValidationFullNameAndEmail()) {
                                 coroutineScope.launch {
                                     pagerState.animateScrollToPage(1)
                                 }
