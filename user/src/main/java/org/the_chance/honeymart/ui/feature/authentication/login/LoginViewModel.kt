@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login
+package org.the_chance.honeymart.ui.feature.authentication.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -14,7 +14,7 @@ class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
     private val validation: ValidationUseCase,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
-    LoginInteractionListener {
+    org.the_chance.honeymart.ui.feature.authentication.login.LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
     private fun login(email: String, password: String) {
@@ -26,15 +26,15 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun onLoginSuccess(validationState: ValidationState) {
-        if (validationState == ValidationState.SUCCESS)
-            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
-        _state.update {
-            it.copy(
-                isLoading = false, error = null,
-                validationState = validationState
-            )
-        }
+    private fun onLoginSuccess(unit: Unit) {
+//        if (validationState == ValidationState.SUCCESS)
+//            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
+//        _state.update {
+//            it.copy(
+//                isLoading = false, error = null,
+//                validationState = validationState
+//            )
+//        }
     }
 
     private fun onLoginError(error: ErrorHandler) {

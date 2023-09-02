@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login
+package org.the_chance.honeymart.ui.feature.authentication.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -33,7 +33,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
+import org.the_chance.honeymart.ui.feature.authentication.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -74,7 +74,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    listener: LoginInteractionListener,
+    listener: org.the_chance.honeymart.ui.feature.authentication.login.LoginInteractionListener,
     state: LoginUiState,
 ) {
     Loading(state.isLoading)

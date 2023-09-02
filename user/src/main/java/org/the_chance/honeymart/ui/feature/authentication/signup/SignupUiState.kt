@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.signup
+package org.the_chance.honeymart.ui.feature.authentication.signup
 
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -8,6 +8,8 @@ data class SignupUiState(
     val isSignUp: Boolean = false,
     val isLogin: Boolean = false,
     val isButtonEnabled: Boolean = false,
+    val isSignupFirstStepDone: Boolean = false,
+    val isAuthScreenVisible: Boolean = true,
 
     val emailState: FieldState = FieldState(),
     val passwordState: FieldState = FieldState(),

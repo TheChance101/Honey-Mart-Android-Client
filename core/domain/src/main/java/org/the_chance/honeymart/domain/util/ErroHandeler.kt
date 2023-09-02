@@ -21,8 +21,6 @@ class MarketDeletedException : AuthenticationException()
 class InvalidEmailOrPassword : AuthenticationException()
 
 sealed interface ErrorHandler {
-    object EmailIsExist : ErrorHandler
-
     object NoConnection : ErrorHandler
     object ServerError : ErrorHandler
 
@@ -51,7 +49,7 @@ fun handelAuthenticationException(
     onError: (t: ErrorHandler) -> Unit,
 ) {
     when (exception) {
-        is EmailIsExistException -> onError(ErrorHandler.EmailIsExist)
+        is EmailIsExistException -> onError(ErrorHandler.AlreadyExist)
 
         is ForbiddenException -> onError(ErrorHandler.UnAuthorizedUser)
 

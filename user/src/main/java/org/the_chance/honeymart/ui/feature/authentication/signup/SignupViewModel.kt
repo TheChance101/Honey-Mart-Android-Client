@@ -1,5 +1,6 @@
-package org.the_chance.honeymart.ui.feature.signup
+package org.the_chance.honeymart.ui.feature.authentication.signup
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.RegisterUserUseCase
@@ -8,7 +9,7 @@ import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.authentication.AuthenticationInteractionListener
+import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.AuthenticationInteractionListener
 import org.the_chance.honeymart.util.StringDictionary
 import javax.inject.Inject
 
@@ -24,11 +25,11 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     override fun onClickOnBoardingSignUp() {
-        effectActionExecutor(_effect, SignupUiEffect.ClickOnBoardingSignUpEffect)
+        _state.update { it.copy(isAuthScreenVisible = false,) }
     }
 
     override fun onClickOnBoardingLogin() {
-        effectActionExecutor(_effect, SignupUiEffect.ClickOnBoardingLoginEffect)
+        effectActionExecutor(_effect, SignupUiEffect.ClickLoginEffect)
     }
 
     override fun onClickLogin() {
@@ -36,8 +37,8 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onClickContinue() {
-        if (state.value.correctValidationFullNameAndEmail()) {
-            effectActionExecutor(_effect, SignupUiEffect.ClickContinueEffect)
+        if (_state.value.correctValidationFullNameAndEmail()) {
+            _state.update { it.copy(isSignupFirstStepDone = true) }
         } else {
             showValidationToast(stringResourceImpl.requiredFieldsMessageString)
         }
@@ -78,6 +79,7 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateUserError(error: ErrorHandler) {
+        Log.d("Tarek","error = $error")
         _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
         if (error == ErrorHandler.AlreadyExist) {
             showValidationToast(

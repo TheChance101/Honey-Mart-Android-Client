@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.authentication
+package org.the_chance.honeymart.ui.feature.authentication.signup.authentication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,11 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.login.navigateToLogin
-import org.the_chance.honeymart.ui.feature.signup.SignupUiEffect
-import org.the_chance.honeymart.ui.feature.signup.SignupViewModel
-import org.the_chance.honeymart.ui.feature.signup.navigateToSignupScreen
+import org.the_chance.honeymart.ui.feature.authentication.signup.SignupViewModel
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
@@ -35,16 +31,6 @@ import org.the_chance.honymart.ui.theme.dimens
 fun AuthScreen(
     viewModel: SignupViewModel = hiltViewModel(),
 ) {
-    NavigationHandler(
-        effects = viewModel.effect,
-        handleEffect = { effect, navController ->
-            when (effect) {
-                SignupUiEffect.ClickOnBoardingLoginEffect -> navController.navigateToLogin()
-                SignupUiEffect.ClickOnBoardingSignUpEffect -> navController.navigateToSignupScreen()
-                else -> {}
-            }
-        })
-
     AuthContent(listener = viewModel)
 }
 
@@ -104,10 +90,12 @@ fun AuthContent(
 @Composable
 fun AuthScreenPreview() {
     AuthContent(listener = object : AuthenticationInteractionListener {
-        override fun onClickOnBoardingLogin() {
+        override fun onClickOnBoardingSignUp() {
+
         }
 
-        override fun onClickOnBoardingSignUp() {
+        override fun onClickOnBoardingLogin() {
+
         }
 
     })
@@ -117,11 +105,12 @@ fun AuthScreenPreview() {
 @Composable
 fun AuthScreenPreview2() {
     AuthContent(listener = object : AuthenticationInteractionListener {
-        override fun onClickOnBoardingLogin() {
-        }
-
         override fun onClickOnBoardingSignUp() {
+
         }
 
+        override fun onClickOnBoardingLogin() {
+
+        }
     })
 }
