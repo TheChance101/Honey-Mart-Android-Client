@@ -46,6 +46,7 @@ fun SecondSignupFieldContent(state: SignupUiState, listener: SignupInteractionLi
                 vertical = MaterialTheme.dimens.space40
             ),
             onClick = listener::onClickSignup,
+            isLoading = state.isLoading
         )
     }
 }

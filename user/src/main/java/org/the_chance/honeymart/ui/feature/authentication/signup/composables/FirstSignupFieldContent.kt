@@ -64,6 +64,7 @@ fun FirstSignupFiledContent(
                      listener.onClickContinue()
                 }
             },
+            isLoading = state.isLoading
         )
     }
 }
