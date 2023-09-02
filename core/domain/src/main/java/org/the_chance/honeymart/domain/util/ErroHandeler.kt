@@ -18,19 +18,16 @@ class EmailIsExistException : AuthenticationException()
 class ForbiddenException : AuthenticationException()
 class UnAuthorizedCredential : AuthenticationException()
 class MarketDeletedException : AuthenticationException()
-class InvalidEmailOrPassword : AuthenticationException()
 
 sealed interface ErrorHandler {
     object NoConnection : ErrorHandler
     object ServerError : ErrorHandler
-
     object InvalidData : ErrorHandler
     object NotFound : ErrorHandler
     object UnAuthorizedUser : ErrorHandler
     object AlreadyExist : ErrorHandler
     object UnKnownError : ErrorHandler
     object MarketDeleted : ErrorHandler
-
 }
 
 

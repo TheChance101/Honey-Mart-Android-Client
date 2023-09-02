@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.authentication.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -53,18 +54,24 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
-                LoginUiEffect.ClickLoginEffect -> navController.popBackStack(
-                    Screen.AuthenticationScreen.route,
-                    true
-                )
-                LoginUiEffect.ClickSignUpEffect -> navController.navigateToSignupScreen()
-                LoginUiEffect.ShowToastEffect -> Toast.makeText(
-                    context,
-                    "Email or password not valid",
-                    Toast.LENGTH_SHORT
-                ).show()
+                LoginUiEffect.ClickLoginEffect -> {
+                    navController.popBackStack(
+                        Screen.AuthenticationScreen.route, true
+                    )
+                }
+                LoginUiEffect.ClickSignUpEffect -> {
+                    navController.navigateToSignupScreen()
+                }
+
+                LoginUiEffect.ShowToastEffect -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
 
@@ -77,9 +84,6 @@ fun LoginContent(
     listener: org.the_chance.honeymart.ui.feature.authentication.login.LoginInteractionListener,
     state: LoginUiState,
 ) {
-    Loading(state.isLoading)
-
-    ContentVisibility(state = !state.isLoading) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,28 +119,19 @@ fun LoginContent(
             }
             HoneyTextField(
                 oneLineOnly = true,
-                text = state.email,
+                text = state.emailState.value,
                 hint = stringResource(R.string.email),
                 iconPainter = painterResource(id = R.drawable.ic_email),
                 onValueChange = listener::onEmailInputChange,
-                errorMessage = when (state.emailState) {
-                    ValidationState.BLANK_EMAIL -> "email cannot be blank"
-                    ValidationState.INVALID_EMAIL -> "Invalid email"
-                    else -> ""
-                },
+                errorMessage = state.emailState.errorState,
             )
             HoneyTextFieldPassword(
-                text = state.password,
+                text = state.passwordState.value,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
-                errorMessage = when (state.passwordState) {
-                    ValidationState.BLANK_PASSWORD -> "Password cannot be blank"
-                    ValidationState.INVALID_PASSWORD -> "Invalid password"
-                    ValidationState.INVALID_PASSWORD_LENGTH_SHORT -> "Password must be at least 6 characters"
-                    else -> ""
-                },
+                errorMessage = state.passwordState.errorState,
             )
             HoneyFilledButton(
                 label = stringResource(id = R.string.log_in),
@@ -145,6 +140,7 @@ fun LoginContent(
                     vertical = MaterialTheme.dimens.space40
                 ),
                 onClick = listener::onClickLogin,
+                isLoading = state.isLoading
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -169,7 +165,6 @@ fun LoginContent(
                 }
             }
         }
-    }
 }
 
 

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.authentication.login
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
@@ -7,14 +8,17 @@ import org.the_chance.honeymart.domain.usecase.ValidationUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.authentication.signup.FieldState
+import org.the_chance.honeymart.ui.feature.authentication.signup.ValidationToast
+import org.the_chance.honeymart.util.StringDictionary
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUser: LoginUserUseCase,
     private val validation: ValidationUseCase,
-) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()),
-    org.the_chance.honeymart.ui.feature.authentication.login.LoginInteractionListener {
+    private val stringResource: StringDictionary,
+) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
     private fun login(email: String, password: String) {
@@ -27,38 +31,49 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginSuccess(unit: Unit) {
-//        if (validationState == ValidationState.SUCCESS)
-//            effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
-//        _state.update {
-//            it.copy(
-//                isLoading = false, error = null,
-//                validationState = validationState
-//            )
-//        }
+        _state.update { it.copy(isLoading = false, isError = false, error = null) }
+        effectActionExecutor(_effect, LoginUiEffect.ClickLoginEffect)
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                emailState = ValidationState.INVALID_EMAIL,
-                passwordState = ValidationState.INVALID_PASSWORD
+        Log.i("onLoginError: ", error.toString())
+        _state.update { it.copy(isLoading = false,isError = true, error = error, isButtonEnabled = true) }
+        if (error == ErrorHandler.AlreadyExist) {
+            showValidationToast(
+                message = stringResource.errorString.getOrDefault(
+                    error,
+                    ""
+                )
+            )
+        } else {
+            showValidationToast(
+                message = stringResource.errorString.getOrDefault(
+                    error,
+                    ""
+                )
             )
         }
     }
 
-
     override fun onClickLogin() {
-        if (_state.value.emailState == ValidationState.VALID_EMAIL &&
-            _state.value.passwordState == ValidationState.VALID_PASSWORD
-        ) {
-            login(_state.value.email.trim(), _state.value.password.trim())
+        _state.update { it.copy(isButtonEnabled = false) }
+        val validState =
+            state.value.emailState.value.isNotBlank() && state.value.passwordState.value.isNotBlank()
+        if (validState) {
+            login(
+                email = state.value.emailState.value, password = state.value.passwordState.value
+            )
         } else {
-            effectActionExecutor(_effect, LoginUiEffect.ShowToastEffect)
+            _state.update {
+                it.copy(
+                    validationToast = ValidationToast(
+                        isShow = true, message = stringResource.requiredFieldsMessageString
+                    ), isButtonEnabled = true
+                )
+            }
+            showValidationToast(stringResource.requiredFieldsMessageString)
         }
     }
-
 
     override fun onClickSignup() {
         effectActionExecutor(_effect, LoginUiEffect.ClickSignUpEffect)
@@ -66,12 +81,40 @@ class LoginViewModel @Inject constructor(
 
     override fun onEmailInputChange(email: CharSequence) {
         val emailState = validation.validateEmail(email.trim().toString())
-        _state.update { it.copy(emailState = emailState, email = email.toString()) }
+        _state.update {
+            it.copy(
+                emailState = FieldState(
+                    value = email.toString(),
+                    errorState = stringResource.validationString.getOrDefault(emailState, ""),
+                    isValid = emailState == ValidationState.VALID_EMAIL
+                ),
+            )
+        }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validation.validationPassword(password.trim().toString())
-        _state.update { it.copy(passwordState = passwordState, password = password.toString()) }
+        _state.update {
+            it.copy(
+                passwordState = FieldState(
+                    value = password.toString(),
+                    errorState = stringResource.validationString.getOrDefault(passwordState,""),
+                    isValid = passwordState == ValidationState.VALID_PASSWORD
+                ),
+            )
+        }
     }
 
+    private fun showValidationToast(message: String) {
+        Log.i("onLoginError: ", message.toString())
+        _state.update {
+            it.copy(
+                validationToast = state.value.validationToast.copy(
+                    isShow = true,
+                    message = message
+                )
+            )
+        }
+        effectActionExecutor(_effect, LoginUiEffect.ShowToastEffect)
+    }
 }

@@ -32,6 +32,7 @@ abstract class BaseRepository {
                     500 -> throw InternalServerException()
                     1001 -> throw EmailIsExistException()
                     1003 -> throw EmailIsExistException()
+                    1005 -> throw ForbiddenException()
                     1008 -> throw EmailIsExistException()
                     1045 -> throw MarketDeletedException()
                     else -> throw Exception(response.status.message)

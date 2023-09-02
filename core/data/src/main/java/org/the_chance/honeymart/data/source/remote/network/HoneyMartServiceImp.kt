@@ -50,8 +50,8 @@ import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.EmailIsExistException
+import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
-import org.the_chance.honeymart.domain.util.InvalidEmailOrPassword
 import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
@@ -414,7 +414,7 @@ class HoneyMartServiceImp @Inject constructor(
                 500 -> throw InternalServerException()
                 1003 -> throw EmailIsExistException()
                 1008 -> throw EmailIsExistException()
-                1005 -> throw InvalidEmailOrPassword()
+                1005 -> throw ForbiddenException()
                 else -> throw Exception(response.status.description)
             }
         }

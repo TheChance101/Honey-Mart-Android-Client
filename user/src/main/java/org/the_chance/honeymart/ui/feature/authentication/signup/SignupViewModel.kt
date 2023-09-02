@@ -1,10 +1,9 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.RegisterUserUseCase
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
+import org.the_chance.honeymart.domain.usecase.RegisterUserUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
@@ -18,7 +17,7 @@ class SignupViewModel @Inject constructor(
     private val registerUser: RegisterUserUseCase,
     private val loginUser: LoginUserUseCase,
     private val validation: ValidateSignupFieldsUseCase,
-    private val stringResourceImpl: StringDictionary,
+    private val stringResource: StringDictionary,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener, AuthenticationInteractionListener {
 
@@ -40,7 +39,7 @@ class SignupViewModel @Inject constructor(
         if (_state.value.correctValidationFullNameAndEmail()) {
             _state.update { it.copy(isSignupFirstStepDone = true) }
         } else {
-            showValidationToast(stringResourceImpl.requiredFieldsMessageString)
+            showValidationToast(stringResource.requiredFieldsMessageString)
         }
     }
 
@@ -54,7 +53,7 @@ class SignupViewModel @Inject constructor(
             )
         } else {
             _state.update { it.copy(isButtonEnabled = true) }
-            showValidationToast(stringResourceImpl.requiredFieldsMessageString)
+            showValidationToast(stringResource.requiredFieldsMessageString)
         }
     }
 
@@ -79,18 +78,17 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateUserError(error: ErrorHandler) {
-        Log.d("Tarek","error = $error")
         _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
         if (error == ErrorHandler.AlreadyExist) {
             showValidationToast(
-                message = stringResourceImpl.errorString.getOrDefault(
+                message = stringResource.errorString.getOrDefault(
                     error,
                     ""
                 )
             )
         } else {
             showValidationToast(
-                message = stringResourceImpl.errorString.getOrDefault(
+                message = stringResource.errorString.getOrDefault(
                     error,
                     ""
                 )
@@ -115,7 +113,7 @@ class SignupViewModel @Inject constructor(
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
         showValidationToast(
-            message = stringResourceImpl.errorString.getOrDefault(
+            message = stringResource.errorString.getOrDefault(
                 error,
                 ""
             )
@@ -127,7 +125,7 @@ class SignupViewModel @Inject constructor(
         _state.update {
             it.copy(
                 fullNameState = FieldState(
-                    errorState = stringResourceImpl.validationString.getOrDefault(
+                    errorState = stringResource.validationString.getOrDefault(
                         fullNameState,
                         ""
                     ),
@@ -143,7 +141,7 @@ class SignupViewModel @Inject constructor(
         _state.update {
             it.copy(
                 emailState = FieldState(
-                    errorState = stringResourceImpl.validationString.getOrDefault(
+                    errorState = stringResource.validationString.getOrDefault(
                         emailState,
                         ""
                     ),
@@ -159,7 +157,7 @@ class SignupViewModel @Inject constructor(
         _state.update {
             it.copy(
                 passwordState = FieldState(
-                    errorState = stringResourceImpl.validationString.getOrDefault(
+                    errorState = stringResource.validationString.getOrDefault(
                         passwordState,
                         ""
                     ),
@@ -179,7 +177,7 @@ class SignupViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     confirmPasswordState = FieldState(
-                        errorState = stringResourceImpl.validationString.getOrDefault(
+                        errorState = stringResource.validationString.getOrDefault(
                             passwordState,
                             ""
                         ),
