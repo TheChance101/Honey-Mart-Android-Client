@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.composable.EmptyCategory
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.category.content.AddCategoryContent
@@ -84,10 +85,10 @@ fun CategoriesContent(
                         .fillMaxSize()
                         .weight(1f)
                 ) {
-                    EmptyCategory(
-                        state = state.placeHolderCondition(),
-                        onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
+                    EmptyPlaceholder(
+                        state = state.placeHolderCondition(), emptyObjectName = "Category"
                     )
+
                     ContentVisibility(
                         state = state.categories.isNotEmpty() && state.showScreenState.showFab
                     ) {
@@ -152,7 +153,7 @@ fun CategoriesContent(
         state = state.snackBar.isShow
     ) {
         SnackBarWithDuration(
-            message = state.snackBar.message,
+            message = stringResource(R.string.add_new_category_success),
             onDismiss = listener::resetSnackBarState,
             undoAction = listener::resetSnackBarState,
             text = stringResource(R.string.dismiss)
