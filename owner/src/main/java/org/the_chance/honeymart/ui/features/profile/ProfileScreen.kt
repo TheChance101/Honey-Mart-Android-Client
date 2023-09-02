@@ -1,10 +1,8 @@
 package org.the_chance.honeymart.ui.features.profile
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +37,6 @@ fun ProfileContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         Loading(state = state.isLoading)
@@ -47,7 +44,6 @@ fun ProfileContent(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
             ) {
                 Column(
                     modifier = Modifier

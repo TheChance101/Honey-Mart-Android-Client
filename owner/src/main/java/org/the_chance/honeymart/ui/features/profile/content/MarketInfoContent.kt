@@ -43,7 +43,7 @@ fun MarketInfoContent(
             .padding(32.dp)
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
             .verticalScroll(rememberScrollState())
@@ -110,7 +110,8 @@ fun MarketInfoContent(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_map),
-                    contentDescription = stringResource(R.string.icon_map)
+                    contentDescription = stringResource(R.string.icon_map),
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
 
                 Text(
