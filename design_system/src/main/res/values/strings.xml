@@ -269,5 +269,6 @@
     <string name="cart">Cart</string>
     <string name="wishlist">Wishlist</string>
     <string name="profile">Profile</string>
+    <string name="all_markets">All Markets</string>
 
 </resources>

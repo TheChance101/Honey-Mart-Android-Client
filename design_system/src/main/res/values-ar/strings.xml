@@ -268,5 +268,6 @@
     <string name="cart">عربة التسوق</string>
     <string name="wishlist"> المفضلة </string>
     <string name="profile">حسابي </string>
+    <string name="all_markets">جميع المتاجر</string>
 
 </resources>

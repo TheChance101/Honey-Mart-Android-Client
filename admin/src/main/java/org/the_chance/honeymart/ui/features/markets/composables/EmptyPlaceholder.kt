@@ -24,12 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
-import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun EmptyPlaceholder(state: Boolean, ) {
+fun EmptyPlaceholder(state: Boolean) {
     AnimatedVisibility(
         visible = state,
         enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
@@ -48,8 +47,8 @@ fun EmptyPlaceholder(state: Boolean, ) {
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
                 text = "There are no Market requests!!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = blackOn60,
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
+
                 textAlign = TextAlign.Center
             )
         }
