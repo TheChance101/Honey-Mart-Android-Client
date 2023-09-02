@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.markets
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -54,45 +53,41 @@ fun RequestsContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
-        Row(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space40),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-        ) {
-            CustomChip(
-                state = state.marketsState == MarketsState.ALL,
-                text = stringResource(R.string.all_capitalized),
-                onClick = { listener.onClickMarketsState(MarketsState.ALL) }
-            )
-            CustomChip(
-                state = state.marketsState == MarketsState.UNAPPROVED,
-                text = stringResource(R.string.pending),
-                onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
-            )
-            CustomChip(
-                state = state.marketsState == MarketsState.APPROVED,
-                text = stringResource(R.string.approved),
-                onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
-            )
-        }
         ContentVisibility(state = state.isContentScreenVisible()) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.dimens.space40)
-                    .padding(top = MaterialTheme.dimens.space24),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-            )
+                    .padding(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16))
             {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20)
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20),
                 ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+                    ) {
+                        CustomChip(
+                            state = state.marketsState == MarketsState.ALL,
+                            text = stringResource(R.string.all_markets),
+                            onClick = { listener.onClickMarketsState(MarketsState.ALL) }
+                        )
+                        CustomChip(
+                            state = state.marketsState == MarketsState.UNAPPROVED,
+                            text = stringResource(R.string.pending),
+                            onClick = { listener.onClickMarketsState(MarketsState.UNAPPROVED) }
+                        )
+                        CustomChip(
+                            state = state.marketsState == MarketsState.APPROVED,
+                            text = stringResource(R.string.approved),
+                            onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
+                        )
+                    }
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
