@@ -1,14 +1,8 @@
 package org.the_chance.honeymart.ui.features.markets.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,13 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EmptyPlaceholder(state: Boolean) {
     AnimatedVisibility(
         visible = state,
-        enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
-        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
+        enter = fadeIn(),
+        exit = fadeOut()
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -46,7 +39,7 @@ fun EmptyPlaceholder(state: Boolean) {
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
-                text = "There are no Market requests!!",
+                text = stringResource(R.string.there_are_no_market_requests),
                 style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
 
                 textAlign = TextAlign.Center

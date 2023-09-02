@@ -269,5 +269,6 @@
     <string name="wishlist"> المفضلة </string>
     <string name="profile">حسابي </string>
     <string name="all_markets">جميع المتاجر</string>
+    <string name="there_are_no_market_requests">ليس هنالك اي طلب فتح متجر</string>
 
 </resources>
