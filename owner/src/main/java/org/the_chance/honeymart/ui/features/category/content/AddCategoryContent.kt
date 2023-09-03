@@ -39,9 +39,11 @@ fun AddCategoryContent(
 ) {
 
     Column(
-        modifier = Modifier
-            .padding(
-                horizontal = MaterialTheme.dimens.space16,
+        modifier = Modifier.
+            padding(
+                start = MaterialTheme.dimens.space16,
+                end =MaterialTheme.dimens.space16,
+                bottom = MaterialTheme.dimens.space16,
             )
             .background(
                 color = MaterialTheme.colorScheme.onTertiary,
