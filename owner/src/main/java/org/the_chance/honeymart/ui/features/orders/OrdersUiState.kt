@@ -118,6 +118,21 @@ fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
 fun OrdersUiState.showOrdersState() =
     !showState.showProductDetails && !isError
 
+fun OrdersUiState.showClickOrderPlaceHolder() =
+    showOrdersState() && orders.isNotEmpty() && !isLoading
+
+fun OrdersUiState.loadingScreen() =
+    isLoading && !cancel() && !pending()
+            && !processing() && orders.isNotEmpty()
+
+fun OrdersUiState.emptyPlaceHolder() =
+    orders.isEmpty() && all() && !isLoading
+
+fun OrdersUiState.showOrderDetailsInRight() = orders.isNotEmpty()
+        && products.isNotEmpty()
+        && !showState.showProductDetails
+        && showState.showOrderDetails
+
 
 // endregion
 
