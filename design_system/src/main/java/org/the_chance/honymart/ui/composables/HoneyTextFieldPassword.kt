@@ -40,8 +40,8 @@ fun HoneyTextFieldPassword(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
-    keyboardOptions:KeyboardOptions =  KeyboardOptions.Default.copy(
-        imeAction = ImeAction.Next
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search
     )
 ) {
 
@@ -61,6 +61,7 @@ fun HoneyTextFieldPassword(
                     bottom = MaterialTheme.dimens.space8
                 )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
+            singleLine = true,
             value = text,
             onValueChange = onValueChange,
             visualTransformation = if (passwordVisible) VisualTransformation.None
@@ -72,7 +73,7 @@ fun HoneyTextFieldPassword(
                     style = Typography.displaySmall,
                 )
             },
-            keyboardOptions = keyboardOptions,
+            keyboardOptions = keyboardOptions.copy(),
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
