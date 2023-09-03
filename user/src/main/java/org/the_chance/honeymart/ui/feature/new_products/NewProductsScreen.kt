@@ -46,7 +46,6 @@ fun NewProductsScreen(
         recentProductInteractionListener = viewModel,
         state = state,
         onClickRecentProduct = viewModel::onClickProductItem,
-        onClickFavorite = viewModel::onClickFavoriteNewProduct
     )
 }
 
@@ -57,7 +56,6 @@ fun NewProductsContent(
     recentProductInteractionListener: RecentProductListener,
     state: RecentProductsUiState,
     onClickRecentProduct: (Long) -> Unit,
-    onClickFavorite: (Long) -> Unit,
 ) {
     HoneyAppBarScaffold {
 
