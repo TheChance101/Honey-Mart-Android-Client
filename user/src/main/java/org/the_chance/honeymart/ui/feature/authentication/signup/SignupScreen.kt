@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +29,7 @@ import org.the_chance.honeymart.ui.feature.authentication.signup.composables.Aut
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SecondSignupFieldContent
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.FirstSignupFiledContent
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SignupFooter
+import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -41,7 +43,10 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
             when (effect) {
                 SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
 
-                SignupUiEffect.ClickSignupEffect -> { /* go back to past position */
+                SignupUiEffect.ClickSignupEffect -> {
+                    navController.popBackStack(
+                        Screen.SignupScreen.route, true
+                    )
                 }
 
                 SignupUiEffect.ShowToastEffect ->
@@ -70,15 +75,14 @@ fun SignupContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.background)
+            modifier = modifier.background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState()),
         ) {
             AuthScaffold(
                 title = stringResource(id = R.string.sign_up),
                 description = stringResource(
                     id = R.string.create_your_account_and_enter_a_world_of_endless_shopping_possibilities
-                )
+                ),
             )
             val pagerState = rememberPagerState()
             Column(

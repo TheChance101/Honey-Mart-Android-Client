@@ -37,22 +37,20 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginError(error: ErrorHandler) {
         Log.i("onLoginError: ", error.toString())
-        _state.update { it.copy(isLoading = false,isError = true, error = error, isButtonEnabled = true) }
-        if (error == ErrorHandler.AlreadyExist) {
-            showValidationToast(
-                message = stringResource.errorString.getOrDefault(
-                    error,
-                    ""
-                )
-            )
-        } else {
-            showValidationToast(
-                message = stringResource.errorString.getOrDefault(
-                    error,
-                    ""
-                )
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = true,
+                error = error,
+                isButtonEnabled = true
             )
         }
+        showValidationToast(
+            message = stringResource.errorString.getOrDefault(
+                error,
+                ""
+            )
+        )
     }
 
     override fun onClickLogin() {
@@ -80,33 +78,28 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onEmailInputChange(email: CharSequence) {
-        val emailState = validation.validateEmail(email.trim().toString())
         _state.update {
             it.copy(
                 emailState = FieldState(
                     value = email.toString(),
-                    errorState = stringResource.validationString.getOrDefault(emailState, ""),
-                    isValid = emailState == ValidationState.VALID_EMAIL
+                    errorState = ""
                 ),
             )
         }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validation.validationPassword(password.trim().toString())
         _state.update {
             it.copy(
                 passwordState = FieldState(
                     value = password.toString(),
-                    errorState = stringResource.validationString.getOrDefault(passwordState,""),
-                    isValid = passwordState == ValidationState.VALID_PASSWORD
+                    errorState = ""
                 ),
             )
         }
     }
 
     private fun showValidationToast(message: String) {
-        Log.i("onLoginError: ", message.toString())
         _state.update {
             it.copy(
                 validationToast = state.value.validationToast.copy(

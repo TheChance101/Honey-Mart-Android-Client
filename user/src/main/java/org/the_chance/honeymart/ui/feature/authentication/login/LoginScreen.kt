@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.authentication.login
 
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,8 +31,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
@@ -40,7 +38,6 @@ import org.the_chance.honymart.ui.composables.HoneyAuthHeader
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
-import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
@@ -58,9 +55,10 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
             when (effect) {
                 LoginUiEffect.ClickLoginEffect -> {
                     navController.popBackStack(
-                        Screen.AuthenticationScreen.route, true
+                        Screen.SignupScreen.route, true
                     )
                 }
+
                 LoginUiEffect.ClickSignUpEffect -> {
                     navController.navigateToSignupScreen()
                 }
@@ -78,93 +76,94 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     LoginContent(listener = viewModel, state = state)
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    listener: org.the_chance.honeymart.ui.feature.authentication.login.LoginInteractionListener,
+    listener: LoginInteractionListener,
     state: LoginUiState,
 ) {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Image(
-                    painter = painterResource(R.drawable.background_frame),
-                    contentDescription = null,
-                    modifier = modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Crop
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
-                ) {
-
-                    HoneyAuthHeader(
-                        titleColor = MaterialTheme.colorScheme.onPrimary,
-                        title = stringResource(R.string.welcome_back),
-                        subTitle = stringResource(
-                            R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
-                        ),
-                        subTitleColor = white,
-                        modifier = Modifier
-                            .padding(bottom = MaterialTheme.dimens.space24)
-                            .align(
-                                Alignment.CenterHorizontally
-                            )
-                    )
-                }
-            }
-            HoneyTextField(
-                oneLineOnly = true,
-                text = state.emailState.value,
-                hint = stringResource(R.string.email),
-                iconPainter = painterResource(id = R.drawable.ic_email),
-                onValueChange = listener::onEmailInputChange,
-                errorMessage = state.emailState.errorState,
+        Box(contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(R.drawable.background_frame),
+                contentDescription = null,
+                modifier = modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop
             )
-            HoneyTextFieldPassword(
-                text = state.passwordState.value,
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-                hint = stringResource(R.string.password),
-                iconPainter = painterResource(id = R.drawable.ic_password),
-                onValueChange = listener::onPasswordInputChanged,
-                errorMessage = state.passwordState.errorState,
-            )
-            HoneyFilledButton(
-                label = stringResource(id = R.string.log_in),
-                modifier = Modifier.padding(
-                    horizontal = MaterialTheme.dimens.space16,
-                    vertical = MaterialTheme.dimens.space40
-                ),
-                onClick = listener::onClickLogin,
-                isLoading = state.isLoading
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16)
             ) {
-                Text(
-                    text = stringResource(R.string.don_t_have_an_account),
-                    style = Typography.displaySmall.copy(color = black37),
-                    textAlign = TextAlign.Center
+
+                HoneyAuthHeader(
+                    titleColor = MaterialTheme.colorScheme.onPrimary,
+                    title = stringResource(R.string.welcome_back),
+                    subTitle = stringResource(
+                        R.string.reconnect_with_your_favorite_brands_and_saved_items_log_in_today
+                    ),
+                    subTitleColor = white,
+                    modifier = Modifier
+                        .padding(bottom = MaterialTheme.dimens.space24)
+                        .align(
+                            Alignment.CenterHorizontally
+                        )
                 )
-                TextButton(
-                    onClick = listener::onClickSignup,
-                    colors = ButtonDefaults.textButtonColors(Color.Transparent)
-                ) {
-                    Text(
-                        text = stringResource(R.string.Sign_up),
-                        style = Typography.displayLarge.copy(color = primary100),
-                        textAlign = TextAlign.Center,
-                    )
-                }
             }
         }
+        HoneyTextField(
+            oneLineOnly = true,
+            text = state.emailState.value,
+            hint = stringResource(R.string.email),
+            iconPainter = painterResource(id = R.drawable.ic_email),
+            onValueChange = listener::onEmailInputChange,
+            errorMessage = state.emailState.errorState,
+        )
+        HoneyTextFieldPassword(
+            text = state.passwordState.value,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+            hint = stringResource(R.string.password),
+            iconPainter = painterResource(id = R.drawable.ic_password),
+            onValueChange = listener::onPasswordInputChanged,
+            errorMessage = state.passwordState.errorState,
+        )
+        HoneyFilledButton(
+            label = stringResource(id = R.string.log_in),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space40
+            ),
+            onClick = listener::onClickLogin,
+            isLoading = state.isLoading
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
+        ) {
+            Text(
+                text = stringResource(R.string.don_t_have_an_account),
+                style = Typography.displaySmall.copy(color = black37),
+                textAlign = TextAlign.Center
+            )
+            TextButton(
+                onClick = listener::onClickSignup,
+                colors = ButtonDefaults.textButtonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = stringResource(R.string.Sign_up),
+                    style = Typography.displayLarge.copy(color = primary100),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
 }
 
 
