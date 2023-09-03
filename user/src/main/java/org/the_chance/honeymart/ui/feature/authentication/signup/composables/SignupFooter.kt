@@ -21,11 +21,14 @@ import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
 @Composable
-fun SignupFooter(listener: SignupInteractionListener){
+fun SignupFooter(
+    modifier: Modifier = Modifier,
+    listener: SignupInteractionListener
+){
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = MaterialTheme.dimens.space32)
+        modifier = modifier.padding(bottom = MaterialTheme.dimens.space32)
     ) {
         Text(
             text = stringResource(R.string.already_have_account),

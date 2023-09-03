@@ -4,8 +4,10 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -72,42 +74,50 @@ fun SignupContent(
         AuthScreen()
     }
     ContentVisibility(state = !state.isAuthScreenVisible) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            modifier = modifier.background(MaterialTheme.colorScheme.background)
-                .verticalScroll(rememberScrollState()),
+        Box(
+            modifier = Modifier
+                .imePadding()
+                .fillMaxSize()
         ) {
-            AuthScaffold(
-                title = stringResource(id = R.string.sign_up),
-                description = stringResource(
-                    id = R.string.create_your_account_and_enter_a_world_of_endless_shopping_possibilities
-                ),
-            )
-            val pagerState = rememberPagerState()
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                HorizontalPager(
-                    state = pagerState,
-                    pageCount = 2,
-                    userScrollEnabled = false
-                ) { page ->
-                    when (page) {
-                        0 -> FirstSignupFiledContent(
-                            state = state,
-                            listener = listener,
-                            pagerState = pagerState
-                        )
+                AuthScaffold(
+                    title = stringResource(id = R.string.sign_up),
+                    description = stringResource(
+                        id = R.string.create_your_account_and_enter_a_world_of_endless_shopping_possibilities
+                    ),
+                )
+                val pagerState = rememberPagerState()
+                Box(modifier = Modifier.imePadding()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                    ) {
+                        HorizontalPager(
+                            state = pagerState,
+                            pageCount = 2,
+                            userScrollEnabled = false
+                        ) { page ->
+                            when (page) {
+                                0 -> FirstSignupFiledContent(
+                                    state = state,
+                                    listener = listener,
+                                    pagerState = pagerState
+                                )
 
-                        1 -> SecondSignupFieldContent(state = state, listener = listener)
+                                1 -> SecondSignupFieldContent(state = state, listener = listener)
+                            }
+                        }
                     }
                 }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            if (pagerState.currentPage == 0) {
-                SignupFooter(listener = listener)
+                if (pagerState.currentPage == 0) {
+                    SignupFooter(listener = listener)
+                }
             }
         }
     }
