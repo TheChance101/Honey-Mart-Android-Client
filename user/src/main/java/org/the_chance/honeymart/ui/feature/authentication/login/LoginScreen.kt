@@ -85,7 +85,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 }
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class,
+    ExperimentalComposeUiApi::class,
     ExperimentalComposeUiApi::class
 )
 @Composable

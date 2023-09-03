@@ -24,7 +24,7 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     override fun onClickOnBoardingSignUp() {
-        _state.update { it.copy(isAuthScreenVisible = false,) }
+        _state.update { it.copy(isAuthScreenVisible = false) }
     }
 
     override fun onClickOnBoardingLogin() {
@@ -78,14 +78,17 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateUserError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
+        val errorMessage = stringResource.errorString.getOrDefault(error, "")
         if (error == ErrorHandler.AlreadyExist) {
-            showValidationToast(
-                message = stringResource.errorString.getOrDefault(
-                    error,
-                    ""
+            showValidationToast(message = errorMessage)
+            _state.update {
+                it.copy(
+                    error = error,
+                    emailState = state.value.emailState.copy(errorState = errorMessage),
+                    passwordState = state.value.passwordState.copy(errorState = errorMessage),
+                    validationToast = ValidationToast(isShow = true, message = errorMessage),
                 )
-            )
+            }
         } else {
             showValidationToast(
                 message = stringResource.errorString.getOrDefault(
@@ -205,7 +208,8 @@ class SignupViewModel @Inject constructor(
                 validationToast = state.value.validationToast.copy(
                     isShow = true,
                     message = message
-                )
+                ),
+                isLoading = false
             )
         }
         effectActionExecutor(_effect, SignupUiEffect.ShowToastEffect)

@@ -36,20 +36,19 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        Log.i("onLoginError: ", error.toString())
+        val errorMessage = stringResource.errorString.getOrDefault(error, "")
         _state.update {
             it.copy(
                 isLoading = false,
                 isError = true,
                 error = error,
-                isButtonEnabled = true
+                isButtonEnabled = true,
+                emailState = _state.value.emailState.copy(errorState = " "),
+                passwordState = _state.value.passwordState.copy(errorState = " ")
             )
         }
         showValidationToast(
-            message = stringResource.errorString.getOrDefault(
-                error,
-                ""
-            )
+            message = errorMessage
         )
     }
 
@@ -105,7 +104,8 @@ class LoginViewModel @Inject constructor(
                 validationToast = state.value.validationToast.copy(
                     isShow = true,
                     message = message
-                )
+                ),
+                isLoading = false
             )
         }
         effectActionExecutor(_effect, LoginUiEffect.ShowToastEffect)

@@ -75,9 +75,7 @@ fun SignupContent(
     }
     ContentVisibility(state = !state.isAuthScreenVisible) {
         Box(
-            modifier = Modifier
-                .imePadding()
-                .fillMaxSize()
+            modifier = Modifier.imePadding().fillMaxSize()
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -110,7 +108,7 @@ fun SignupContent(
                                     pagerState = pagerState
                                 )
 
-                                1 -> SecondSignupFieldContent(state = state, listener = listener)
+                                1 -> SecondSignupFieldContent(state = state, listener = listener,pagerState)
                             }
                         }
                     }

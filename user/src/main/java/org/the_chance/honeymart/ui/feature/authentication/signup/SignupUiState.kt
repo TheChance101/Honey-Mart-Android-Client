@@ -34,6 +34,11 @@ fun SignupUiState.correctValidationFullNameAndEmail(): Boolean {
     return this.fullNameState.isValid && this.emailState.isValid
 }
 
+fun SignupUiState.invalidUserAlreadyExists(): Boolean {
+    return this.error == ErrorHandler.AlreadyExist
+
+}
+
 fun SignupUiState.correctValidationPasswordAndConfirmPassword(): Boolean {
     return this.passwordState.isValid && this.confirmPasswordState.isValid
 }

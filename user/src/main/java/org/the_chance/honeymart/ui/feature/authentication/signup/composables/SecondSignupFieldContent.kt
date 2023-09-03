@@ -1,12 +1,17 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup.composables
 
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -17,18 +22,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupInteractionListener
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupUiState
+import org.the_chance.honeymart.ui.feature.authentication.signup.correctValidationFullNameAndEmail
+import org.the_chance.honeymart.ui.feature.authentication.signup.invalidUserAlreadyExists
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun SecondSignupFieldContent(state: SignupUiState, listener: SignupInteractionListener) {
+fun SecondSignupFieldContent(
+    state: SignupUiState,
+    listener: SignupInteractionListener,
+    pagerState: PagerState
+) {
+    val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    if (state.invalidUserAlreadyExists()) {
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(0)
+        }
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
