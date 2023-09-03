@@ -45,6 +45,7 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.HoneyIconButton
@@ -78,6 +79,8 @@ fun ProductDetailsScreen(
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
         })
+
+    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = viewModel::getData)
     Loading(state = state.isLoading )
     ContentVisibility(state = !state.isLoading && !state.isConnectionError ) {
         ProductDetailsContent(state = state, listener = viewModel)
@@ -303,7 +306,8 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         text = state.product.productDescription,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
+                        ),
+                        maxLines = 3,
                     )
 
                 }

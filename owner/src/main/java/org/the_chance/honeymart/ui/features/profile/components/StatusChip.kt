@@ -27,7 +27,7 @@ import org.the_chance.honymart.ui.theme.error
 @Composable
 fun StatusChip(
     status: MarketStatus,
-    onClickChangeStatus: (Int) -> Unit,
+    onClickChangeStatus: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val statusColor by animateColorAsState(
@@ -42,7 +42,7 @@ fun StatusChip(
                 color = MaterialTheme.colorScheme.background,
                 shape = MaterialTheme.shapes.small
             )
-            .clickable { onClickChangeStatus(status.state) }
+            .clickable { onClickChangeStatus() }
             .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {

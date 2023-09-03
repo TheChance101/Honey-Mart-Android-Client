@@ -2,9 +2,9 @@ package org.the_chance.honeymart.ui.feature.home
 
 import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
@@ -25,7 +25,7 @@ data class HomeUiState(
 }
 
 
-fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError
+fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError && discoverProducts.isNotEmpty()
 
 
 fun Double.formatCurrencyWithNearestFraction(): String {

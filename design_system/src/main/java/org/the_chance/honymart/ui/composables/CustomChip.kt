@@ -50,7 +50,7 @@ fun CustomChip(
             ),
             text = text,
             color = if (state) white else black37,
-            style = MaterialTheme.typography.displaySmall.copy(baselineShift = BaselineShift(0.3f))
+            style = MaterialTheme.typography.bodyMedium.copy(baselineShift = BaselineShift(0.3f))
         )
     }
 }

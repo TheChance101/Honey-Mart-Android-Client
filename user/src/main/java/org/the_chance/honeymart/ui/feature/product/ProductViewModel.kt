@@ -212,7 +212,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isError = true) }
+        _state.update { it.copy(error = error, isError = true, isLoadingProduct = false) }
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -240,6 +240,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListError(error: ErrorHandler) {
+        _state.update { it.copy( isLoadingProduct = false) }
         if (error is ErrorHandler.UnAuthorizedUser)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
     }

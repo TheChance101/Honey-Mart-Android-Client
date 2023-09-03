@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -34,7 +35,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.LocalNavigationProvider
 import org.the_chance.honeymart.ui.main.MainInteractionListener
 import org.the_chance.honeymart.ui.main.MainUiState
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -44,20 +44,25 @@ fun NavigationRail(
     listener: MainInteractionListener,
 ) {
     val navController = LocalNavigationProvider.current
-    val screens = listOf(NavigationRailScreen.Markets,)
+    val screens = listOf(NavigationRailScreen.Markets)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.onTertiary,
         header = {
             Box(
-                modifier = Modifier.size(MaterialTheme.dimens.space56).clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary,),
+                modifier = Modifier
+                    .size(MaterialTheme.dimens.space56)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = state.adminInitials,
-                    style = MaterialTheme.typography.headlineMedium.copy(color = white),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = white,
+                        baselineShift = BaselineShift(0.2f)
+                    ),
                     textAlign = TextAlign.Center
                 )
             }
@@ -73,10 +78,13 @@ fun NavigationRail(
         }
         Spacer(modifier = Modifier.weight(1f))
         Icon(
-            modifier = Modifier.clip(CircleShape).clickable { listener.onClickLogout() }.padding(16.dp),
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable { listener.onClickLogout() }
+                .padding(16.dp),
             painter = painterResource(id = org.the_chance.design_system.R.drawable.ic_logout),
             contentDescription = "Logout Icon",
-            tint = black60
+            tint = MaterialTheme.colorScheme.onBackground
         )
     }
 
@@ -128,7 +136,9 @@ fun NavRailItem(
                         .align(Alignment.Center),
                     painter = painterResource(id = screen.selectedIcon),
                     contentDescription = "",
-                    tint = if (selected) white else black60,
+                    tint =
+                    if (selected) MaterialTheme.colorScheme.onPrimary else
+                        MaterialTheme.colorScheme.onBackground
                 )
             }
 
