@@ -21,7 +21,7 @@ import java.io.ObjectInputFilter.Status
 
 interface HoneyMartRepository {
 
-    suspend fun checkAdminApprove(): Boolean
+    suspend fun checkAdminApprove(): Long
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
     suspend fun clipCoupon(couponId: Long): Boolean

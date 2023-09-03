@@ -9,6 +9,7 @@ import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.InvalidDataException
 import org.the_chance.honeymart.domain.util.MarketDeletedException
+import org.the_chance.honeymart.domain.util.MarketNotApprovedException
 import org.the_chance.honeymart.domain.util.NotFoundException
 import org.the_chance.honeymart.domain.util.NotValidApiKeyException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -33,6 +34,7 @@ abstract class BaseRepository {
                     1001 -> throw EmailIsExistException()
                     1003 -> throw EmailIsExistException()
                     1045 -> throw MarketDeletedException()
+                    1047 -> throw MarketNotApprovedException()
                     else -> throw Exception(response.status.message)
                 }
             }

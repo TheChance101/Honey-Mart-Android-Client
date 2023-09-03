@@ -33,14 +33,10 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun onCheckApproveSuccess(isApproved: Boolean) {
+    private fun onCheckApproveSuccess(marketId: Long) {
         _state.update { it.copy(authLoading = false) }
-        log(isApproved.toString())
-        if (isApproved) {
-            effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
-        } else {
-            effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)
-        }
+        log(marketId.toString())
+        effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
     }
 
     private fun onCheckApproveError(error: ErrorHandler) {
@@ -48,6 +44,8 @@ class LoginViewModel @Inject constructor(
         if (error == ErrorHandler.MarketDeleted) {
             showValidationToast(message = stringResourceImpl.errorString.getOrDefault(error, ""))
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
+        } else if (error == ErrorHandler.MarketNotApproved) {
+            effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)
         }
     }
 

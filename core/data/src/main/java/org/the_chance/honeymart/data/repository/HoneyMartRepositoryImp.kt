@@ -52,7 +52,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
 
-    override suspend fun checkAdminApprove(): Boolean {
+    override suspend fun checkAdminApprove(): Long {
         return wrap { honeyMartService.checkAdminApprove() }.value
             ?: throw NotFoundException()
     }
