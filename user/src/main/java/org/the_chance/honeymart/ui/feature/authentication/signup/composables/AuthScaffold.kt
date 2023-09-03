@@ -25,11 +25,11 @@ fun AuthScaffold(
     description: String,
     modifier: Modifier = Modifier
 ){
-    Box(contentAlignment = Alignment.Center) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
         Image(
             painter = painterResource(R.drawable.background_frame),
             contentDescription = "",
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.Crop
         )
         Column(

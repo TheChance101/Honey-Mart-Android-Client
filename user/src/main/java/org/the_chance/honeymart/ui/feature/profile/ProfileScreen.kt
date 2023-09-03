@@ -19,7 +19,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuth
 import org.the_chance.honeymart.ui.feature.authentication.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
