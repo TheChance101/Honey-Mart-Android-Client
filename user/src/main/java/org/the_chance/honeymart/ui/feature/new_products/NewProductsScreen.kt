@@ -81,8 +81,6 @@ fun NewProductsContent(
                             productName = recentProduct.productName,
                             productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
                             imageUrl = recentProduct.productImage,
-                            onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                            isFavoriteIconClicked = recentProduct.isFavorite,
                             onClick = { onClickRecentProduct(recentProduct.productId) }
                         )
                     }
