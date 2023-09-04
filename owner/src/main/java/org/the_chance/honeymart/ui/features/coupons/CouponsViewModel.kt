@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.usecase.AddCouponUseCase
-import org.the_chance.honeymart.domain.usecase.GetNoCouponMarketProductsUseCase
-import org.the_chance.honeymart.domain.usecase.SearchNoCouponMarketProductsUseCase
+import org.the_chance.honeymart.domain.usecase.OwnerCouponsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -22,9 +20,7 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class CouponsViewModel @Inject constructor(
-    private val getNoCouponMarketProducts: GetNoCouponMarketProductsUseCase,
-    private val searchNoCouponMarketProducts: SearchNoCouponMarketProductsUseCase,
-    private val addCoupon: AddCouponUseCase
+    private val ownerCoupons: OwnerCouponsManagerUseCase,
 ) : BaseViewModel<CouponsUiState, CouponsUiEffect>(CouponsUiState()), CouponsInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -48,7 +44,7 @@ class CouponsViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getNoCouponMarketProducts() },
+            { ownerCoupons.getNoCouponMarketProducts() },
             ::onGetMarketProductsSuccess,
             ::onGetMarketProductsError
         )
@@ -82,7 +78,7 @@ class CouponsViewModel @Inject constructor(
 
     private fun searchMarketProducts(keyword: String) {
         tryToExecute(
-            { searchNoCouponMarketProducts(keyword) },
+            { ownerCoupons.searchNoCouponMarketProducts(keyword) },
             ::onSearchMarketProductsSuccess,
             ::onSearchMarketProductsError
         )
@@ -167,7 +163,7 @@ class CouponsViewModel @Inject constructor(
         }
         tryToExecute(
             {
-                addCoupon(
+                ownerCoupons.addCoupon(
                     productId = _state.value.addCoupon.coupon.product.id,
                     discountPercentage = _state.value.addCoupon.discountPercentage.toDouble(),
                     count = _state.value.addCoupon.coupon.count.toInt(),

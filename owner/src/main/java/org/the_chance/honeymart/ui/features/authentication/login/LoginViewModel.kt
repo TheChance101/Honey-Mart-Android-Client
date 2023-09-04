@@ -2,8 +2,7 @@ package org.the_chance.honeymart.ui.features.authentication.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
-import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
+import org.the_chance.honeymart.domain.usecase.OwnerAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.authentication.signup.FieldState
@@ -13,9 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginOwnerUseCase: LoginOwnerUseCase,
+    private val ownerAuthentication: OwnerAuthenticationManagerUseCase,
     private val stringResource: StringDictionary,
-    private val checkAdminApprove: CheckAdminApproveUseCase
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -27,7 +25,7 @@ class LoginViewModel @Inject constructor(
     private fun listenToCheckAdminApprove() {
         _state.update { it.copy(authLoading = true) }
         tryToExecute(
-            { checkAdminApprove() },
+            { ownerAuthentication.checkAdminApprove() },
             ::onCheckApproveSuccess,
             ::onCheckApproveError
         )
@@ -83,7 +81,7 @@ class LoginViewModel @Inject constructor(
     private fun loginOwner(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginOwnerUseCase(email, password) },
+            { ownerAuthentication.loginOwnerUseCase(email, password) },
             ::onLoginSuccess,
             ::onLoginError,
         )
