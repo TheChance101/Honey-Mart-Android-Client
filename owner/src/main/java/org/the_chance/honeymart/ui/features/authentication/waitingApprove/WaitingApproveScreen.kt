@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.authentication.waitingApprove
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,7 +44,7 @@ fun WaitingApproveScreen(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
-                SignupUiEffect.ClickLoginEffect -> {
+                SignupUiEffect.ClickLogoutEffect -> {
                     navController.navigateToLogin()
                 }
 

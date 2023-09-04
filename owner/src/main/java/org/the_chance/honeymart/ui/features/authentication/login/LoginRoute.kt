@@ -10,7 +10,7 @@ private val ROUTE = Screen.Login.route
 
 fun NavController.navigateToLogin() {
     navigate(ROUTE) {
-        popUpTo(route = Graph.MAIN_GRAPH) {
+        popUpTo(route = Graph.AUTH_GRAPH) {
             inclusive = true
         }
         launchSingleTop = true
