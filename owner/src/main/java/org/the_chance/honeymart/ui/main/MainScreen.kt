@@ -17,7 +17,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.the_chance.honeymart.ui.components.NavigationHandler
 import org.the_chance.honeymart.ui.features.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.features.profile.navigateToProfileScreen
-import org.the_chance.honeymart.ui.navigation.Graph
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honeymart.ui.navigation.NavigationRail
 import org.the_chance.honeymart.ui.navigation.NavigationRailScreen
@@ -41,10 +40,9 @@ fun MainScreen(
                     navController.navigateToProfileScreen()
                 }
 
-                is MainEffect.OnClickLogoutEffect -> navController.popBackStack(
-                    Graph.AUTH_GRAPH,
-                    false
-                )
+                is MainEffect.OnClickLogoutEffect -> {
+                    navController.navigateToLogin()
+                }
 
                 is MainEffect.ShowLogoutErrorToastEffect -> {
                     Toast.makeText(

@@ -13,6 +13,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
 import org.the_chance.honeymart.data.source.remote.mapper.toCoupon
 import org.the_chance.honeymart.data.source.remote.mapper.toMarket
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketApproval
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketInfo
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketOrder
@@ -24,11 +25,13 @@ import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
+import org.the_chance.honeymart.data.source.remote.models.MarketApprovalDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.MarketApproval
 import org.the_chance.honeymart.domain.model.MarketDetails
 import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
@@ -52,9 +55,8 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
 
-    override suspend fun checkAdminApprove(): Boolean {
-        return wrap { honeyMartService.checkAdminApprove() }.value
-            ?: throw NotFoundException()
+    override suspend fun checkAdminApprove(): MarketApproval {
+        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval() ?: throw NotFoundException()
     }
 
     override suspend fun getAllMarkets(): List<Market> {

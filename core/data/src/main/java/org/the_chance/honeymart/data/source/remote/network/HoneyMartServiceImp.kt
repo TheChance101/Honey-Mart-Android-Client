@@ -33,6 +33,7 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.MarketApprovalDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
@@ -58,7 +59,7 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
-    override suspend fun checkAdminApprove(): BaseResponse<Boolean> {
+    override suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto?> {
         return wrap(client.get("/markets/marketValidation"))
     }
 
@@ -404,10 +405,10 @@ class HoneyMartServiceImp @Inject constructor(
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
-            Log.d("Tag","service done correctly")
+            Log.d("Tag", "service done correctly")
             return response.body()
         } else {
-            Log.d("Tag","service failed")
+            Log.d("Tag", "service failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
@@ -419,10 +420,10 @@ class HoneyMartServiceImp @Inject constructor(
 
     private inline fun <reified T> wrapWithFlow(response: HttpResponse): Flow<T> = flow {
         if (response.status.isSuccess()) {
-            Log.d("Tag","service flow done correctly")
+            Log.d("Tag", "service flow done correctly")
             emit(response.body())
         } else {
-            Log.d("Tag","service flow failed")
+            Log.d("Tag", "service flow failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
@@ -436,6 +437,7 @@ class HoneyMartServiceImp @Inject constructor(
             val responseBody = response.body<String>()
             val responseObject = Json.decodeFromString<JsonObject>(responseBody)
             val isLoginSuccess = responseObject["isSuccess"]?.jsonPrimitive?.booleanOrNull
+            Log.e("wrapLogin: ", "wrapLogin: $isLoginSuccess")
             if (isLoginSuccess == true)
                 return response.body()
             else
