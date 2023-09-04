@@ -452,12 +452,12 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    private fun onCheckApproveSuccess(marketId: Long) {
+    private fun onCheckApproveSuccess(isApproved: Boolean) {
         _state.update { it.copy(isLoading = false) }
-        if (marketId == 0L) {
-            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
-        } else {
+        if (isApproved) {
             effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
         }
     }
 

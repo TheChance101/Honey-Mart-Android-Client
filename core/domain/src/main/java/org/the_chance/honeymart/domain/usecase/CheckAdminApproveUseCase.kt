@@ -8,9 +8,9 @@ class CheckAdminApproveUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
     private val authenticationUseCase: AuthRepository
 ) {
-    suspend operator fun invoke(): Long {
-        val marketId = honeyMartRepository.checkAdminApprove()
-        authenticationUseCase.saveOwnerMarketId(marketId)
-        return marketId
+    suspend operator fun invoke(): Boolean {
+        val marketApproval = honeyMartRepository.checkAdminApprove()
+        authenticationUseCase.saveOwnerMarketId(marketApproval.marketId)
+        return marketApproval.isMarketApproved
     }
 }
