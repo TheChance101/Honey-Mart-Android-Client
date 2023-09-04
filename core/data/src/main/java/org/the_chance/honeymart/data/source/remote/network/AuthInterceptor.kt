@@ -16,14 +16,14 @@ import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val dataStorePreferences: AuthorizationPreferences,
+    private val authorizationPreferences: AuthorizationPreferences,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        val accessToken = dataStorePreferences.storedAccessToken.takeUnless { it.isNullOrEmpty() }
-            ?: dataStorePreferences.getAccessToken()
-        val refreshToken = dataStorePreferences.storedRefreshToken.takeUnless { it.isNullOrEmpty() }
-            ?: dataStorePreferences.getRefreshToken()
+        val accessToken = authorizationPreferences.storedAccessToken.takeUnless { it.isNullOrEmpty() }
+            ?: authorizationPreferences.getAccessToken()
+        val refreshToken = authorizationPreferences.storedRefreshToken.takeUnless { it.isNullOrEmpty() }
+            ?: authorizationPreferences.getRefreshToken()
 
         val (oldRequest, oldResponse) = makeRequest(chain, accessToken)
         if (oldResponse.code == 401 && refreshToken != "" && refreshToken != null) {
@@ -77,7 +77,7 @@ class AuthInterceptor @Inject constructor(
             val tokensResponse: BaseResponse<UserLoginDto> = gson.fromJson(jsonData, type)
             runBlocking {
                 val tokens = tokensResponse.value!!
-                dataStorePreferences.saveTokens(tokens.accessToken!!, tokens.refreshToken!!)
+                authorizationPreferences.saveTokens(tokens.accessToken!!, tokens.refreshToken!!)
                 val newAccessToken = tokens.accessToken
                 val newRequestWithAccessToken = oldRequest.newBuilder()
                     .removeHeader(AUTHORIZATION)

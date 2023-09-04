@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,6 +67,7 @@ fun ProductDetailsContent(
                 color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = titleScreen,
@@ -138,26 +140,6 @@ fun ProductDetailsContent(
                     items(items = state.productDetails.productImage) { image ->
                         ItemImageProductDetails(image = image)
                     }
-
-                    item(
-                        span = { GridItemSpan(maxLineSpan) }
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
-                        ) {
-                            HoneyFilledButton(
-                                modifier = Modifier.width(146.dp),
-                                label = confirmButton,
-                                onClick = onClickConfirm,
-                                isButtonEnabled = if (state.showProductUpdateContent())
-                                    state.showSaveUpdateButton() else true
-                            )
-                            HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
-                        }
-                    }
                 }
             } else if (state.showScreenState.showProductUpdate) {
                 LazyVerticalGrid(
@@ -173,30 +155,24 @@ fun ProductDetailsContent(
                             AddImageButton(multiplePhotoPickerLauncher)
                         }
                     }
-
-                    item(
-                        span = { GridItemSpan(maxLineSpan) }
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
-                        ) {
-                            HoneyFilledButton(
-                                modifier = Modifier.width(146.dp),
-                                label = confirmButton,
-                                onClick = onClickConfirm,
-                                isButtonEnabled = if (state.showProductUpdateContent())
-                                    state.showSaveUpdateButton() else true
-                            )
-                            HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
-                        }
-                    }
                 }
             }
-
         }
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
+        ) {
+            HoneyFilledButton(
+                modifier = Modifier.width(146.dp),
+                label = confirmButton,
+                onClick = onClickConfirm,
+                isButtonEnabled = if (state.showProductUpdateContent())
+                    state.showSaveUpdateButton() else true
+            )
+            HoneyOutlineButton(onClick = onClickCancel, label = cancelButton)
+        }
     }
 }

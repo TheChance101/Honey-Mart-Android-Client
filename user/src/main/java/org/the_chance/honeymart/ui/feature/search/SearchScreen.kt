@@ -84,7 +84,8 @@ fun SearchContent(
         EmptyProductsPlaceholder(
             (products.itemCount == 0 &&
                     products.loadState.refresh != LoadState.Loading &&
-                    products.loadState.refresh !is LoadState.Error) && !state.isError || !state.isSearching && !state.isError,
+                    products.loadState.refresh !is LoadState.Error) && !state.isError
+                    || !state.isSearching && !state.isError,
             text = stringResource(R.string.searched_product_not_found)
         )
 

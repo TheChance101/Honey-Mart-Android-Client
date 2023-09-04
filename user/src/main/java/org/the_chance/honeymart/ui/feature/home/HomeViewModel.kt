@@ -16,6 +16,8 @@ import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.user.UserCouponsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.user.UserWishListManagerUseCase
+import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
+import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
@@ -34,9 +36,9 @@ class HomeViewModel @Inject constructor(
     private val getRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUseCase,
     private val getAllOrders: GetAllOrdersUseCase,
-
     private val userGetAllWishList :UserWishListManagerUseCase,
     private val userCoupons: UserCouponsManagerUseCase,
+    private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -54,7 +56,6 @@ class HomeViewModel @Inject constructor(
         getRecentProducts()
         getDoneOrders()
         getDiscoverProducts()
-        getWishListProducts()
     }
 
     /// region Markets
@@ -252,43 +253,8 @@ class HomeViewModel @Inject constructor(
     }
     /// endregion
 
-    /// region WishList Products
 
-    private fun getWishListProducts() {
-        tryToExecute(
-            { userGetAllWishList.getAllWishListUseCase() },
-            { onGetWishListProductSuccess(it) },
-            { onGetWishListProductError(it) }
-        )
-
-    }
-
-    private fun onGetWishListProductSuccess(wishListProducts: List<WishList>) {
-        _state.update { productsUiState ->
-            productsUiState.copy(
-                isLoading = false,
-                discoverProducts =
-                _state.value.discoverProducts.map { product ->
-                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-                },
-                recentProducts = _state.value.recentProducts.map { product ->
-                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-                },
-            )
-        }
-    }
-
-    private fun onGetWishListProductError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection,
-            )
-        }
-    }
-    /// endregion
-
+  
     /// region Interactions
 
     override fun onClickCategory(categoryId: Long, position: Int) {
@@ -343,16 +309,6 @@ class HomeViewModel @Inject constructor(
     override fun onClickLastPurchases(orderId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderDetailsScreenEffect(orderId))
     }
-
-
-    override fun onClickFavoriteDiscoverProduct(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        if (_state.value.discoverProducts.find { it.productId == productId }?.isFavorite == false)
-            addProductToWishList(productId)
-        else
-            deleteProductFromWishList(productId)
-    }
-
     override fun onClickSearchBar() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
     }
@@ -360,61 +316,6 @@ class HomeViewModel @Inject constructor(
     override fun onClickChipCategory(marketId: Long) {
         _state.update { it.copy(selectedMarketId = marketId, isLoading = true) }
         getMarketCategories(marketId)
-    }
-
-    override fun onClickFavoriteNewProduct(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        if (_state.value.recentProducts.find { it.productId == productId }?.isFavorite == false)
-            addProductToWishList(productId)
-        else
-            deleteProductFromWishList(productId)
-    }
-
-    private fun addProductToWishList(productId: Long) {
-        tryToExecute(
-            { userGetAllWishList.operationWishListUseCase.addToWishList(productId) },
-            { onAddToWishListSuccess() },
-            ::onAddToWishListError
-        )
-    }
-
-    private fun onAddToWishListSuccess() {
-        getWishListProducts()
-    }
-
-    private fun onAddToWishListError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection
-            )
-        }
-
-        if (error is ErrorHandler.UnAuthorizedUser)
-            effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
-    }
-
-    private fun deleteProductFromWishList(productId: Long) {
-        tryToExecute(
-            { userGetAllWishList.operationWishListUseCase.deleteFromWishList(productId) },
-            { onDeleteWishListSuccess() },
-            ::onDeleteWishListError
-        )
-    }
-
-    private fun onDeleteWishListSuccess() {
-        getWishListProducts()
-    }
-
-    private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection
-            )
-        }
     }
 
     override fun onClickSeeAllNewProducts() {

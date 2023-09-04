@@ -25,7 +25,7 @@ data class HomeUiState(
 }
 
 
-fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError && discoverProducts.isNotEmpty()
+fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError && discoverProducts.isNotEmpty() && recentProducts.isNotEmpty() && categories.isNotEmpty()
 
 
 fun Double.formatCurrencyWithNearestFraction(): String {

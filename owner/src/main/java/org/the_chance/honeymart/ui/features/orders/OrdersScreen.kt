@@ -12,13 +12,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.components.Placeholder
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.orders.composables.AllOrdersContent
 import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsContent
+import org.the_chance.honeymart.ui.features.orders.composables.OrderPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.composables.ProductDetailsInOrderContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
@@ -53,7 +56,21 @@ fun OrdersContent(
             .fillMaxSize()
     ) {
         HoneyMartTitle()
-        Loading(state = state.isLoading && state.orders.isEmpty())
+        Loading(
+            state = state.loadingScreen())
+        ContentVisibility(state = state.emptyPlaceHolder()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                OrderPlaceHolder(painter = painterResource(id = R.drawable.owner_empty_order),
+                    text = stringResource(R.string.there_are_no_orders_in_your_market),
+                    onClick = { listener.getAllMarketOrder(OrderStates.ALL) }
+                )
+            }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -82,11 +99,7 @@ fun OrdersContent(
                     .weight(1f)
             ) {
                 ContentVisibility(
-                    state = state.orders.isNotEmpty()
-                            && state.products.isNotEmpty()
-                            && !state.showState.showProductDetails
-                            && state.showState.showOrderDetails
-                ) {
+                    state = state.showOrderDetailsInRight()) {
                     OrderDetailsContent(
                         state = state,
                         listener = listener
@@ -101,8 +114,16 @@ fun OrdersContent(
                         stringResource(id = R.string.product_details), state = state
                     )
                 }
+                ContentVisibility(state = state.showClickOrderPlaceHolder()) {
+                    Placeholder(
+                        painter = painterResource(id = R.drawable.owner_empty_order),
+                        text = stringResource(R.string.click_on_order_to_show_it_s_details),
+                    )
+                }
                 Loading(state = state.isLoading && state.showState.showOrderDetails)
+
             }
         }
     }
+
 }

@@ -89,7 +89,6 @@ data class ProductUiState(
     val productImage: List<String> = emptyList(),
     val productPrice: String = "",
     val productDescription: String = "",
-    val productsQuantity: String = "",
 )
 
 enum class Visibility {

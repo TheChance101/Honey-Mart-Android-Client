@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,14 +39,17 @@ fun AddCategoryContent(
 ) {
 
     Column(
-        modifier = Modifier
-            .padding(
-                horizontal = MaterialTheme.dimens.space16,
+        modifier = Modifier.
+            padding(
+                start = MaterialTheme.dimens.space16,
+                end =MaterialTheme.dimens.space16,
+                bottom = MaterialTheme.dimens.space16,
             )
             .background(
                 color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = stringResource(R.string.add_new_category),
@@ -101,29 +105,25 @@ fun AddCategoryContent(
                             }
                         )
                     }
-
-                    item(
-                        span = { GridItemSpan(maxLineSpan) },
-                    ) {
-                        HoneyFilledButton(
-                            label = stringResource(R.string.add),
-                            onClick = {
-                                listener.onClickAddCategory(
-                                    name = state.newCategory.newCategoryName,
-                                    categoryIconID = state.newCategory.newIconId
-                                )
-                            },
-                            isButtonEnabled = state.showAddUpdateCategoryButton(),
-                            isLoading = state.isLoading,
-                            icon = R.drawable.icon_add_product,
-                            modifier = Modifier
-                                .padding(
-                                    top = MaterialTheme.dimens.space16,
-                                )
-                        )
-                    }
                 }
             }
+
+            HoneyFilledButton(
+                label = stringResource(R.string.add),
+                onClick = {
+                    listener.onClickAddCategory(
+                        name = state.newCategory.newCategoryName,
+                        categoryIconID = state.newCategory.newIconId
+                    )
+                },
+                isButtonEnabled = state.showAddUpdateCategoryButton(),
+                isLoading = state.isLoading,
+                icon = R.drawable.icon_add_product,
+                modifier = Modifier
+                    .padding(
+                        top = MaterialTheme.dimens.space16,
+                    )
+            )
 
         }
     }

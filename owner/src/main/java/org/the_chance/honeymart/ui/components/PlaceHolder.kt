@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,9 +18,7 @@ import org.the_chance.honymart.ui.theme.dimens
 fun Placeholder(
     painter: Painter,
     text: String,
-    visibilityState: Boolean
 ) {
-    AnimatedVisibility(visible = visibilityState) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -41,4 +38,3 @@ fun Placeholder(
             )
         }
     }
-}

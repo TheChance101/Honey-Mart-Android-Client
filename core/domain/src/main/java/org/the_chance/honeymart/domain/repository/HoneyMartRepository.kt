@@ -6,6 +6,7 @@ import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.MarketApproval
 import org.the_chance.honeymart.domain.model.MarketDetails
 import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
@@ -21,7 +22,7 @@ import java.io.ObjectInputFilter.Status
 
 interface HoneyMartRepository {
 
-    suspend fun checkAdminApprove(): Boolean
+    suspend fun checkAdminApprove(): MarketApproval
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
     suspend fun clipCoupon(couponId: Long): Boolean

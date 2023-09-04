@@ -46,7 +46,6 @@ fun NewProductsScreen(
         recentProductInteractionListener = viewModel,
         state = state,
         onClickRecentProduct = viewModel::onClickProductItem,
-        onClickFavorite = viewModel::onClickFavoriteNewProduct
     )
 }
 
@@ -57,7 +56,6 @@ fun NewProductsContent(
     recentProductInteractionListener: RecentProductListener,
     state: RecentProductsUiState,
     onClickRecentProduct: (Long) -> Unit,
-    onClickFavorite: (Long) -> Unit,
 ) {
     HoneyAppBarScaffold {
 
@@ -81,8 +79,6 @@ fun NewProductsContent(
                             productName = recentProduct.productName,
                             productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
                             imageUrl = recentProduct.productImage,
-                            onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                            isFavoriteIconClicked = recentProduct.isFavorite,
                             onClick = { onClickRecentProduct(recentProduct.productId) }
                         )
                     }
