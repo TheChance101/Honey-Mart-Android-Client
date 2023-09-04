@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,6 +61,7 @@ fun AddProductContent(
                 color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
         FormHeader(
             title = stringResource(R.string.add_new_product),
@@ -133,24 +135,20 @@ fun AddProductContent(
                         AddImageButton(multiplePhotoPickerLauncher)
                     }
                 }
-
-                item(
-                    span = { GridItemSpan(maxLineSpan) }
-                ) {
-                    HoneyFilledButton(
-                        modifier = Modifier.padding(
-                            horizontal = MaterialTheme.dimens.space16,
-                            vertical = MaterialTheme.dimens.space24
-                        ),
-                        label = stringResource(R.string.add),
-                        onClick = { listener.addProduct(state) },
-                        icon = R.drawable.icon_add_to_cart,
-                        isLoading = state.isLoading,
-                        isButtonEnabled = state.newProducts.showButton()
-                    )
-                }
             }
         }
+
+        HoneyFilledButton(
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space24
+            ),
+            label = stringResource(R.string.add),
+            onClick = { listener.addProduct(state) },
+            icon = R.drawable.icon_add_to_cart,
+            isLoading = state.isLoading,
+            isButtonEnabled = state.newProducts.showButton()
+        )
     }
 }
 

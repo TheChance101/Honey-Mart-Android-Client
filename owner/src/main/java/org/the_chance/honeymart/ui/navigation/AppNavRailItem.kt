@@ -55,6 +55,19 @@ fun AppNavRailItem(
                         }
                         launchSingleTop = true
                         restoreState = true
+                        when (screen) {
+                            NavigationRailScreen.Category -> {
+                                navController.popBackStack(Screen.Category.route, false)
+                            }
+
+                            NavigationRailScreen.Coupons -> {
+                                navController.popBackStack(Screen.Coupons.route, false)
+                            }
+
+                            NavigationRailScreen.Orders -> {
+                                navController.popBackStack(Screen.Orders.route, false)
+                            }
+                        }
                     }
                 },
             verticalArrangement = Arrangement.Center,

@@ -54,7 +54,8 @@ fun NavigationRail(
                 )
             } else {
                 Box(
-                    modifier = Modifier
+                    modifier = Modifier.
+                        padding(top = MaterialTheme.dimens.space8)
                         .size(MaterialTheme.dimens.icon48)
                         .clip(CircleShape)
                         .background(

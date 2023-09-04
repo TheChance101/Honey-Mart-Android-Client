@@ -264,6 +264,11 @@
     <string name="category_label">الفئات</string>
     <string name="coupons_label">الكوبونات</string>
 
+    <string name="add_new_category_success">تم اضافة فئة جديدة بنجاح </string>
+    <string name="click_on_order_to_show_it_s_details">اضغط ع الطلب لعرض تفاصيه </string>
+    <string name="to_refresh_orders">لتحديث الطلبات </string>
+    <string name="there_are_no_orders_in_your_market">   لا يوجد اي طلبات  \n !! في متجرك</string>
+
     <string name="home">الرئيسية</string>
     <string name="cart">عربة التسوق</string>
     <string name="wishlist"> المفضلة </string>

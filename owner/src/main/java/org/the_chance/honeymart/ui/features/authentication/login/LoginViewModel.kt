@@ -33,10 +33,10 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun onCheckApproveSuccess(isApproved: Boolean) {
+    private fun onCheckApproveSuccess(isMarketApproved: Boolean) {
         _state.update { it.copy(authLoading = false) }
-        log(isApproved.toString())
-        if (isApproved) {
+        log(isMarketApproved.toString())
+        if (isMarketApproved) {
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCategoriesEffect)
         } else {
             effectActionExecutor(_effect, LoginUiEffect.NavigateToWaitingApproveEffect)

@@ -18,6 +18,7 @@ class EmailIsExistException : AuthenticationException()
 class ForbiddenException : AuthenticationException()
 class UnAuthorizedCredential : AuthenticationException()
 class MarketDeletedException : AuthenticationException()
+class MarketNotApprovedException : AuthenticationException()
 
 sealed interface ErrorHandler {
     object NoConnection : ErrorHandler
@@ -28,6 +29,8 @@ sealed interface ErrorHandler {
     object AlreadyExist : ErrorHandler
     object UnKnownError : ErrorHandler
     object MarketDeleted : ErrorHandler
+    object MarketNotApproved : ErrorHandler
+
 }
 
 
@@ -57,6 +60,8 @@ fun handelAuthenticationException(
         is NotValidApiKeyException -> onError(ErrorHandler.UnKnownError)
 
         is MarketDeletedException -> onError(ErrorHandler.MarketDeleted)
+
+        is MarketNotApprovedException -> onError(ErrorHandler.MarketNotApproved)
     }
 }
 

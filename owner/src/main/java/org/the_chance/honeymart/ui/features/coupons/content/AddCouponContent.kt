@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ValidationState
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.components.Placeholder
@@ -86,12 +87,12 @@ fun AddCouponContent(
             onClick = listener::onClickShowDatePicker
         )
 
-        Placeholder(
-            painter = painterResource(id = R.drawable.owner_empty_order),
-            text = stringResource(R.string.select_product_to_start_adding_your_coupon),
-            visibilityState = state.showEmptyPlaceHolder(),
-        )
-
+        ContentVisibility(state = state.showEmptyPlaceHolder()) {
+            Placeholder(
+                painter = painterResource(id = R.drawable.owner_empty_order),
+                text = stringResource(R.string.select_product_to_start_adding_your_coupon),
+            )
+        }
         AnimatedVisibility(
             visible = state.showCoupon(),
             modifier = Modifier.weight(1f)
