@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.features.orders
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
-import org.the_chance.honeymart.domain.usecase.owner.OwnerOrdersManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerOrdersManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
