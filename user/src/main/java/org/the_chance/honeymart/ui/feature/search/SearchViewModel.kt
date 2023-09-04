@@ -96,7 +96,9 @@ class SearchViewModel @Inject constructor(
                 _state.update { it.copy(searchStates = SearchStates.RANDOM) }
             }
         }
-        searchForProducts()
+        if (_state.value.searchQuery.isNotBlank()) {
+            searchForProducts()
+        }
     }
 
     override fun onClickProduct(productId: Long) {
