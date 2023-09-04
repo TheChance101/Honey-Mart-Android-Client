@@ -32,7 +32,7 @@ class SearchViewModel @Inject constructor(
         observeKeyword()
     }
 
-    fun searchForProducts() {
+    private fun searchForProducts() {
         _state.update { it.copy(isSearching = true, isError = false) }
         val query = _state.value.searchQuery
         val sortOrder = _state.value.searchStates.state
@@ -52,7 +52,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun onSearchForProductsError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, ) }
+        _state.update { it.copy(error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -65,13 +65,11 @@ class SearchViewModel @Inject constructor(
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStream.debounce(700).distinctUntilChanged().filter {
-                it.isNotEmpty()
-            }.collect {
-                searchForProducts()
-            }
+            actionStream.debounce(700).distinctUntilChanged().filter { keyword ->
+                keyword.isNotBlank() }.collect { searchForProducts() }
         }
     }
+
 
     override fun onClickFilter() {
         val newState = !state.value.filtering
