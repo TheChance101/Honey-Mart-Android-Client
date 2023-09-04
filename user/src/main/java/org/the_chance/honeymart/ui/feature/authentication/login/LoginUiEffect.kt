@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login
+package org.the_chance.honeymart.ui.feature.authentication.login
 
 import org.the_chance.honeymart.ui.base.BaseUiEffect
 

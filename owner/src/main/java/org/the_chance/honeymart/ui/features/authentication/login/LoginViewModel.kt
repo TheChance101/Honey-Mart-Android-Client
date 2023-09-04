@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginOwnerUseCase: LoginOwnerUseCase,
-    private val stringResourceImpl: StringDictionary,
+    private val stringResource: StringDictionary,
     private val checkAdminApprove: CheckAdminApproveUseCase
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
     private fun onCheckApproveError(error: ErrorHandler) {
         _state.update { it.copy(authLoading = false, error = error) }
         if (error == ErrorHandler.MarketDeleted) {
-            showValidationToast(message = stringResourceImpl.errorString.getOrDefault(error, ""))
+            showValidationToast(message = stringResource.errorString.getOrDefault(error, ""))
             effectActionExecutor(_effect, LoginUiEffect.NavigateToCreateMarketEffect)
         }
     }
@@ -67,7 +67,7 @@ class LoginViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     validationToast = ValidationToast(
-                        isShow = true, message = stringResourceImpl.requiredFieldsMessageString
+                        isShow = true, message = stringResource.requiredFieldsMessageString
                     ),
                     isButtonEnabled = true
                 )
@@ -101,7 +101,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isButtonEnabled = true) }
-        val errorMessage = stringResourceImpl.errorString.getOrDefault(error, "")
+        val errorMessage = stringResource.errorString.getOrDefault(error, "")
         if (error is ErrorHandler.UnAuthorizedUser) {
             _state.update {
                 it.copy(

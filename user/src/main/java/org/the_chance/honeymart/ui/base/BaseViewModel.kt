@@ -52,18 +52,18 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
                 onSuccess(result)
             } catch (exception: GeneralException) {
                 handelGeneralException(exception, onError)
-                log("tryToExecute error GeneralException: ${exception}")
+                log("tryToExecute error GeneralException: $exception")
             } catch (exception: NetworkException) {
                 handelNetworkException(exception, onError)
-                log("tryToExecute error NetworkException: ${exception}")
+                log("tryToExecute error NetworkException: $exception")
             } catch (exception: AuthenticationException) {
                 handelAuthenticationException(exception, onError)
-                log("tryToExecute error AuthenticationException: ${exception}")
+                log("tryToExecute error AuthenticationException: $exception")
             } catch (exception: IOException) {
-                log("tryToExecute error IOException: ${exception}")
+                log("tryToExecute error IOException: $exception")
                 onError(ErrorHandler.NoConnection)
             } catch (exception: Exception) {
-                log("tryToExecute error Exception: ${exception}")
+                log("tryToExecute error Exception: $exception")
                 onError(ErrorHandler.UnKnownError)
             }
         }
@@ -124,18 +124,18 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
 
             } catch (exception: GeneralException) {
                 handelGeneralException(exception, onError)
-                log("tryToExecute error GeneralException: ${exception}")
+                log("tryToExecute error GeneralException: $exception")
             } catch (exception: NetworkException) {
                 handelNetworkException(exception, onError)
-                log("tryToExecute error NetworkException: ${exception}")
+                log("tryToExecute error NetworkException: $exception")
             } catch (exception: AuthenticationException) {
                 handelAuthenticationException(exception, onError)
-                log("tryToExecute error AuthenticationException: ${exception}")
+                log("tryToExecute error AuthenticationException: $exception")
             } catch (exception: IOException) {
-                log("tryToExecute error IOException: ${exception}")
+                log("tryToExecute error IOException: $exception")
                 onError(ErrorHandler.NoConnection)
             } catch (exception: Exception) {
-                log("tryToExecute error Exception: ${exception}")
+                log("tryToExecute error Exception: $exception")
                 onError(ErrorHandler.UnKnownError)
             }
         }
