@@ -32,13 +32,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -55,8 +55,6 @@ fun HomeContentSuccessScreen(
     listener: HomeInteractionListener
 ) {
 
-//    val listState = rememberLazyGridState()
-//    val scope = rememberCoroutineScope()
 
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -123,7 +121,6 @@ fun HomeContentSuccessScreen(
             RecentProducts(
                 recentProducts = state.recentProducts,
                 onClickRecentProduct = listener::onClickProductItem,
-                onClickFavorite = listener::onClickFavoriteNewProduct,
                 onClickSeeAll = listener::onClickSeeAllNewProducts
             )
         }
@@ -157,9 +154,7 @@ fun HomeContentSuccessScreen(
                 productName = discoverProduct.productName,
                 productPrice = discoverProduct.priceInCurrency,
                 imageUrl = discoverProduct.imageUrl,
-                onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
-                isFavoriteIconClicked = discoverProduct.isFavorite
             )
         }
     }
@@ -219,7 +214,6 @@ private fun LastPurchases(
 private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
-    onClickFavorite: (Long) -> Unit,
     onClickSeeAll: () -> Unit
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
@@ -244,8 +238,6 @@ private fun RecentProducts(
                         productName = recentProduct.productName,
                         productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
                         imageUrl = recentProduct.productImage,
-                        onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                        isFavoriteIconClicked = recentProduct.isFavorite,
                         onClick = { onClickRecentProduct(recentProduct.productId) }
                     )
                 }
