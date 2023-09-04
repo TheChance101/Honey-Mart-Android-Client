@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.domain.usecase.owner
+package org.the_chance.honeymart.domain.usecase.usecaseManager.owner
 
 import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase

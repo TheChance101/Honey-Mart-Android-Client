@@ -3,16 +3,14 @@ package org.the_chance.honeymart.ui.features.markets
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketRequest
-import org.the_chance.honeymart.domain.usecase.GetMarketsRequests
-import org.the_chance.honeymart.domain.usecase.UpdateMarketRequestUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.admin.AdminMarketsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MarketsViewModel @Inject constructor(
-    private val getMarketsRequests: GetMarketsRequests,
-    private val updateMarketRequest: UpdateMarketRequestUseCase,
+    private val adminMarketsManager: AdminMarketsManagerUseCase
 ) : BaseViewModel<MarketsRequestUiState, MarketsUiEffect>(MarketsRequestUiState()),
     MarketsInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -24,7 +22,7 @@ class MarketsViewModel @Inject constructor(
     private fun getMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getMarketsRequests() },
+            { adminMarketsManager.getMarkets() },
             ::onMarketRequestSuccess,
             ::onMarketRequestError
         )
@@ -59,7 +57,7 @@ class MarketsViewModel @Inject constructor(
     override fun updateMarket(marketId: Int, isApproved: Boolean) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { updateMarketRequest(marketId.toLong(), isApproved) },
+            { adminMarketsManager.updateMarket(marketId.toLong(), isApproved) },
             ::onUpdateMarketSuccess,
             ::onUpdateMarketError
         )
