@@ -3,20 +3,14 @@ package org.the_chance.honeymart.ui.features.orders
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
-import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
-import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerOrdersManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
-    private val getAllMarketOrders: GetAllMarketOrdersUseCase,
-    private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
-    private val getOrderProductDetailsUseCase: GetOrderProductsDetailsUseCase,
-    private val updateOrderStateUseCase: UpdateOrderStateUseCase,
+    private val ownerOrders: OwnerOrdersManagerUseCase
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
@@ -31,7 +25,7 @@ class OrdersViewModel @Inject constructor(
             showState = it.showState.copy(showOrderDetails = false))
         }
         tryToExecute(
-            { getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
+            { ownerOrders.getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
             ::onSuccess,
             ::onError
         )
@@ -51,7 +45,7 @@ class OrdersViewModel @Inject constructor(
     private fun getOrderDetails(orderId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getOrderDetailsUseCase(orderId) },
+            { ownerOrders.getOrderDetailsUseCase(orderId) },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )
@@ -78,7 +72,7 @@ class OrdersViewModel @Inject constructor(
 
     private fun getOrderProductDetails(orderId: Long) {
         tryToExecute(
-            { getOrderProductDetailsUseCase(orderId) },
+            { ownerOrders.getOrderProductDetailsUseCase(orderId) },
             ::onGetOrderProductDetailsSuccess,
             ::onGetOrderProductDetailsError
         )
@@ -135,7 +129,7 @@ class OrdersViewModel @Inject constructor(
     override fun updateStateOrder(id: Long?, updateState: OrderStates) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { updateOrderStateUseCase(id = id, state = updateState.state) },
+            { ownerOrders.updateOrderStateUseCase(id = id, state = updateState.state) },
             ::onUpdateStateOrderSuccess,
             ::onUpdateStateOrderError
         )
