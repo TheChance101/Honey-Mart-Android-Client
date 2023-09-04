@@ -13,7 +13,6 @@ import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.features.authentication.login.LoginUiEffect
 import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
@@ -455,14 +454,15 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCheckApproveSuccess(marketId: Long) {
         _state.update { it.copy(isLoading = false) }
-        effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        if (marketId == 0L) {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
+        } else {
+            effectActionExecutor(_effect, SignupUiEffect.NavigateToCategoriesEffect)
+        }
     }
 
     private fun onCheckApproveError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
-        if (error == ErrorHandler.MarketNotApproved) {
-            effectActionExecutor(_effect, SignupUiEffect.NavigateToWaitingApproveEffect)
-        }
         showValidationToast(stringResourceImpl.errorString.getOrDefault(error, ""))
     }
 
