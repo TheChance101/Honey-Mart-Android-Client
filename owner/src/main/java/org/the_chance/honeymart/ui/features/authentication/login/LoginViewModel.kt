@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.features.authentication.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.OwnerAuthenticationManagerUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.authentication.signup.FieldState

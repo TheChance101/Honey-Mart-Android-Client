@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.OwnerProfile
-import org.the_chance.honeymart.domain.usecase.OwnerProfileManagerUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerProfileManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject

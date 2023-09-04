@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.usecase.OwnerCategoriesManagerUseCase
-import org.the_chance.honeymart.domain.usecase.OwnerMarketsManagerUseCase
-import org.the_chance.honeymart.domain.usecase.OwnerProductsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerCategoriesManagerUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerMarketsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.owner.OwnerProductsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
