@@ -21,7 +21,7 @@ interface AuthRepository {
 
     suspend fun clearToken()
 
-    suspend fun createUserAccount(fullName: String, password: String, email: String): Boolean
+    suspend fun registerUser(fullName: String, password: String, email: String): Boolean
 
     suspend fun getDeviceToken(): String
 

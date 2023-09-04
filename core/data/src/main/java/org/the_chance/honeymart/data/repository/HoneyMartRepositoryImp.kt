@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -60,7 +59,6 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun getAllMarkets(): List<Market> {
-        Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")
         return wrap { honeyMartService.getAllMarkets() }.value?.map { it.toMarket() }
             ?: throw NotFoundException()
     }

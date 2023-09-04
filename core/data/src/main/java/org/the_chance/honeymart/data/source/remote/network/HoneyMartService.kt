@@ -162,7 +162,7 @@ interface HoneyMartService {
 
     suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto>
 
-    suspend fun addUser(
+    suspend fun registerUser(
         fullName: String,
         password: String,
         email: String,

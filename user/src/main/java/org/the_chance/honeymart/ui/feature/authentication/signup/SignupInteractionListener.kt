@@ -1,8 +1,9 @@
-package org.the_chance.honeymart.ui.feature.signup
+package org.the_chance.honeymart.ui.feature.authentication.signup
 
 interface SignupInteractionListener {
     fun onClickLogin()
     fun onClickSignup()
+    fun onClickContinue()
     fun onFullNameInputChange(fullName: CharSequence)
     fun onEmailInputChange(email: CharSequence)
     fun onPasswordInputChanged(password: CharSequence)

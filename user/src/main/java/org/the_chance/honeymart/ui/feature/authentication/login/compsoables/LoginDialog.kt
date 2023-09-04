@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.login.compsoables
+package org.the_chance.honeymart.ui.feature.authentication.login.compsoables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

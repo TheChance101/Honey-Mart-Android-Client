@@ -42,9 +42,11 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.StatusResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.EmailIsExistException
+import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
@@ -311,7 +313,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto> =
         wrap(client.get("/order/$orderId"))
 
-    override suspend fun addUser(
+    override suspend fun registerUser(
         fullName: String, password: String, email: String,
     ): BaseResponse<String> =
         wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
@@ -406,6 +408,8 @@ class HoneyMartServiceImp @Inject constructor(
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
                 1003 -> throw EmailIsExistException()
+                1008 -> throw EmailIsExistException()
+                1005 -> throw ForbiddenException()
                 else -> throw Exception(response.status.description)
             }
         }

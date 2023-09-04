@@ -35,6 +35,7 @@ abstract class BaseRepository {
                     1001 -> throw EmailIsExistException()
                     1003 -> throw EmailIsExistException()
                     1005 -> throw UnAuthorizedCredential()
+                    1008 -> throw EmailIsExistException()
                     1045 -> throw MarketDeletedException()
                     1047 -> throw MarketNotApprovedException()
                     else -> throw Exception(response.status.message)
