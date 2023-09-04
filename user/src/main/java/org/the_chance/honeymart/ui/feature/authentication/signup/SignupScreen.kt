@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -25,11 +24,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.AuthScreen
 import org.the_chance.honeymart.ui.feature.authentication.login.navigateToLogin
+import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.AuthScreen
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.AuthScaffold
-import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SecondSignupFieldContent
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.FirstSignupFiledContent
+import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SecondSignupFieldContent
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SignupFooter
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.theme.dimens
@@ -38,7 +37,6 @@ import org.the_chance.honymart.ui.theme.dimens
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-
     NavigationHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
@@ -46,6 +44,7 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
                 SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
 
                 SignupUiEffect.ClickSignupEffect -> {
+
                     navController.popBackStack(
                         Screen.SignupScreen.route, true
                     )

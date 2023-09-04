@@ -8,7 +8,6 @@ data class SignupUiState(
     val isSignUp: Boolean = false,
     val isLogin: Boolean = false,
     val isButtonEnabled: Boolean = false,
-    val isSignupFirstStepDone: Boolean = false,
     val isAuthScreenVisible: Boolean = true,
 
     val emailState: FieldState = FieldState(),
@@ -36,7 +35,6 @@ fun SignupUiState.correctValidationFullNameAndEmail(): Boolean {
 
 fun SignupUiState.invalidUserAlreadyExists(): Boolean {
     return this.error == ErrorHandler.AlreadyExist
-
 }
 
 fun SignupUiState.correctValidationPasswordAndConfirmPassword(): Boolean {

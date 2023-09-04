@@ -36,9 +36,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onClickContinue() {
-        if (_state.value.correctValidationFullNameAndEmail()) {
-            _state.update { it.copy(isSignupFirstStepDone = true) }
-        } else {
+        if (!_state.value.correctValidationFullNameAndEmail()) {
             showValidationToast(stringResource.requiredFieldsMessageString)
         }
     }
@@ -85,7 +83,7 @@ class SignupViewModel @Inject constructor(
                 it.copy(
                     error = error,
                     emailState = state.value.emailState.copy(errorState = errorMessage),
-                    passwordState = state.value.passwordState.copy(errorState = errorMessage),
+                    passwordState = state.value.passwordState.copy(errorState = errorMessage,),
                     validationToast = ValidationToast(isShow = true, message = errorMessage),
                 )
             }
@@ -151,6 +149,7 @@ class SignupViewModel @Inject constructor(
                     value = email.toString(),
                     isValid = emailState == ValidationState.VALID_EMAIL
                 ),
+                error = null
             )
         }
     }

@@ -26,6 +26,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupInteractionListener
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupUiState
 import org.the_chance.honeymart.ui.feature.authentication.signup.correctValidationFullNameAndEmail
+import org.the_chance.honeymart.ui.feature.authentication.signup.invalidUserAlreadyExists
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.theme.dimens
@@ -81,7 +82,8 @@ fun FirstSignupFiledContent(
                 vertical = MaterialTheme.dimens.space40
             ),
             onClick = {
-                if (state.correctValidationFullNameAndEmail()) {
+                if (state.correctValidationFullNameAndEmail() && !state.invalidUserAlreadyExists()) {
+                    listener.onClickContinue()
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(1)
                     }
