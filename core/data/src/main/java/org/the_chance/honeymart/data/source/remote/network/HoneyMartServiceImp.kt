@@ -47,9 +47,11 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.StatusResponse
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.EmailIsExistException
+import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
@@ -283,12 +285,14 @@ class HoneyMartServiceImp @Inject constructor(
         email: String,
         password: String,
         deviceToken: String
-    ): BaseResponse<UserLoginDto> =
-        wrap(client.submitForm(url = "/user/login", formParameters = Parameters.build {
+    ): BaseResponse<UserLoginDto> {
+        return wrapLogin((client.submitForm(url = "/user/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
             append("deviceToken", deviceToken)
-        }))
+        })))
+    }
+
 
     override suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto> =
         wrap(client.submitForm(url = "/token/refresh", formParameters = Parameters.build {
@@ -317,7 +321,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto> =
         wrap(client.get("/order/$orderId"))
 
-    override suspend fun addUser(
+    override suspend fun registerUser(
         fullName: String, password: String, email: String,
     ): BaseResponse<String> =
         wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
@@ -404,14 +408,16 @@ class HoneyMartServiceImp @Inject constructor(
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
-            Log.d("Tag","service done correctly")
+            Log.d("Tag", "service done correctly")
             return response.body()
         } else {
-            Log.d("Tag","service failed")
+            Log.d("Tag", "service failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()
                 1003 -> throw EmailIsExistException()
+                1008 -> throw EmailIsExistException()
+                1005 -> throw ForbiddenException()
                 else -> throw Exception(response.status.description)
             }
         }
@@ -419,10 +425,10 @@ class HoneyMartServiceImp @Inject constructor(
 
     private inline fun <reified T> wrapWithFlow(response: HttpResponse): Flow<T> = flow {
         if (response.status.isSuccess()) {
-            Log.d("Tag","service flow done correctly")
+            Log.d("Tag", "service flow done correctly")
             emit(response.body())
         } else {
-            Log.d("Tag","service flow failed")
+            Log.d("Tag", "service flow failed")
             when (response.status.value) {
                 401 -> throw UnAuthorizedException()
                 500 -> throw InternalServerException()

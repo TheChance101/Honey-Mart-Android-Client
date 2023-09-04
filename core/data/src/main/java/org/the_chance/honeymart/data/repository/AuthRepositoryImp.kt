@@ -26,12 +26,12 @@ class AuthRepositoryImp @Inject constructor(
     ): Boolean =
         wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
 
-    override suspend fun createUserAccount(
+    override suspend fun registerUser(
         fullName: String,
         password: String,
         email: String,
     ): Boolean =
-        wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
+        wrap { honeyMartService.registerUser(fullName, password, email) }.isSuccess
 
     override suspend fun getDeviceToken(): String {
         return fireBaseMsgService.getDeviceToken()

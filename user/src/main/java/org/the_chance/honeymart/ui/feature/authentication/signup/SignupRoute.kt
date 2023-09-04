@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.signup
+package org.the_chance.honeymart.ui.feature.authentication.signup
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
