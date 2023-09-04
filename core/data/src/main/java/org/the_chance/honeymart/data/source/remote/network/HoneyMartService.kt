@@ -26,7 +26,7 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 interface HoneyMartService {
 
-    suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto?>
+    suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto>
 
     suspend fun addOwner(
         fullName: String,

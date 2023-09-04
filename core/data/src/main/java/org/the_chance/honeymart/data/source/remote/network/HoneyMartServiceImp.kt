@@ -59,7 +59,7 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
-    override suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto?> {
+    override suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto> {
         return wrap(client.get("/markets/marketValidation"))
     }
 
@@ -418,43 +418,10 @@ class HoneyMartServiceImp @Inject constructor(
         }
     }
 
-    private inline fun <reified T> wrapWithFlow(response: HttpResponse): Flow<T> = flow {
-        if (response.status.isSuccess()) {
-            Log.d("Tag", "service flow done correctly")
-            emit(response.body())
-        } else {
-            Log.d("Tag", "service flow failed")
-            when (response.status.value) {
-                401 -> throw UnAuthorizedException()
-                500 -> throw InternalServerException()
-                else -> throw Exception(response.status.description)
-            }
-        }
-    }
-
-    private suspend inline fun <reified T> wrapLogin(response: HttpResponse): T {
-        if (response.status.isSuccess()) {
-            val responseBody = response.body<String>()
-            val responseObject = Json.decodeFromString<JsonObject>(responseBody)
-            val isLoginSuccess = responseObject["isSuccess"]?.jsonPrimitive?.booleanOrNull
-            Log.e("wrapLogin: ", "wrapLogin: $isLoginSuccess")
-            if (isLoginSuccess == true)
-                return response.body()
-            else
-                throw UnAuthorizedCredential()
-        } else {
-            if (response.status.value == 500) {
-                throw InternalServerException()
-            } else {
-                throw Exception(response.status.description)
-            }
-        }
-    }
-
     // region Owner
     //region Auth
     override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> {
-        return wrapLogin(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+        return wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
         }))
