@@ -145,7 +145,8 @@ fun LoginContent(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
+                     onDone = { keyboardController?.hide() }
                 )
             )
             HoneyTextFieldPassword(
@@ -154,6 +155,7 @@ fun LoginContent(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
+
                 hint = stringResource(R.string.password),
                 iconPainter = painterResource(id = R.drawable.ic_password),
                 onValueChange = listener::onPasswordInputChanged,
