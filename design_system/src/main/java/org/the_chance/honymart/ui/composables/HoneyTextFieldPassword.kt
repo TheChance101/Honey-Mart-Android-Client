@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ fun HoneyTextFieldPassword(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
+    keyboardActions: KeyboardActions = KeyboardActions(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
         imeAction = ImeAction.Search
     )
@@ -53,6 +55,7 @@ fun HoneyTextFieldPassword(
             painterResource(id = R.drawable.eye_closed)
     Column {
         OutlinedTextField(
+
             modifier = modifier
                 .fillMaxWidth()
                 .padding(
@@ -61,6 +64,7 @@ fun HoneyTextFieldPassword(
                     bottom = MaterialTheme.dimens.space8
                 )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
+            keyboardActions = KeyboardActions(),
             singleLine = true,
             value = text,
             onValueChange = onValueChange,
@@ -73,7 +77,7 @@ fun HoneyTextFieldPassword(
                     style = Typography.displaySmall,
                 )
             },
-            keyboardOptions = keyboardOptions.copy(),
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(

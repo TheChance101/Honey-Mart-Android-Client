@@ -8,16 +8,12 @@ import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
-import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.user.UserCouponsManagerUseCase
-import org.the_chance.honeymart.domain.usecase.user.UserWishListManagerUseCase
-import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
-import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
@@ -36,9 +32,7 @@ class HomeViewModel @Inject constructor(
     private val getRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUseCase,
     private val getAllOrders: GetAllOrdersUseCase,
-    private val userGetAllWishList :UserWishListManagerUseCase,
     private val userCoupons: UserCouponsManagerUseCase,
-    private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
     override val TAG: String = this::class.java.simpleName

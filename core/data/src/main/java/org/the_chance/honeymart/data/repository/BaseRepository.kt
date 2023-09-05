@@ -38,6 +38,7 @@ abstract class BaseRepository {
                     1008 -> throw EmailIsExistException()
                     1045 -> throw MarketDeletedException()
                     1047 -> throw MarketNotApprovedException()
+                    1068 -> throw InvalidDataException()
                     else -> throw Exception(response.status.message)
                 }
             }

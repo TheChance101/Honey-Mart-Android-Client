@@ -118,7 +118,5 @@ fun SignupContent(
             }
         }
     }
-//    if (state.isLogin) {
-//        CustomDialog(openDialogCustom = remember { mutableStateOf(true) })
-//    }
+
 }

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +46,7 @@ import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAp
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
-import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
+import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -80,9 +79,12 @@ fun ProductDetailsScreen(
             }
         })
 
-    ConnectionErrorPlaceholder(state = state.isConnectionError, onClickTryAgain = viewModel::getData)
-    Loading(state = state.isLoading )
-    ContentVisibility(state = !state.isLoading && !state.isConnectionError ) {
+    ConnectionErrorPlaceholder(
+        state = state.isConnectionError,
+        onClickTryAgain = viewModel::getData
+    )
+    Loading(state = state.isLoading)
+    ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
         ProductDetailsContent(state = state, listener = viewModel)
     }
 
@@ -134,7 +136,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         .background(MaterialTheme.colorScheme.onTertiary)
                         .align(Alignment.BottomCenter)
                 ) {
-                    HoneyFilledIconButton(
+                    HoneyFilledButton(
                         label = stringResource(id = R.string.add_to_cart),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -143,10 +145,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,
-                            )
-                            .align(Alignment.BottomCenter),
-                        iconPainter = painterResource(id = R.drawable.icon_cart),
-                        isEnable = !state.isAddToCartLoading,
+                            ).align(Alignment.BottomCenter),
                         onClick = {
                             state.product.productId.let {
                                 listener.addProductToCart(
@@ -154,19 +153,11 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                     state.quantity
                                 )
                             }
-                        }
+                        },
+                        icon = R.drawable.icon_cart,
+                        isLoading = state.isAddToCartLoading
                     )
-                }
-                Box(
-                    modifier = Modifier
-                        .height(100.dp)
-                        .padding(bottom = MaterialTheme.dimens.space16)
-                ) {
-                    Loading(
-                        state = state.isAddToCartLoading,
-                        size = 75.dp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+
                 }
                 Box(
                     modifier = Modifier

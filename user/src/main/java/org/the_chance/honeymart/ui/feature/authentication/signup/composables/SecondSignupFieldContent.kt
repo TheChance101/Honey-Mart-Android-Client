@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup.composables
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupInteractionListener
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupUiState
-import org.the_chance.honeymart.ui.feature.authentication.signup.correctValidationFullNameAndEmail
 import org.the_chance.honeymart.ui.feature.authentication.signup.invalidUserAlreadyExists
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.composables.HoneyTextFieldPassword
