@@ -155,7 +155,7 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun updateOrdersSuccess(state: Boolean) {
-        _state.update { it.copy(isLoading = false, state = state) }
+        _state.update { it.copy( state = state) }
         when (_state.value.orderStates) {
             OrderStates.PENDING -> getAllPendingOrders()
             OrderStates.PROCESSING -> getAllProcessingOrders()
@@ -164,6 +164,11 @@ class OrderViewModel @Inject constructor(
             OrderStates.CANCELLED_BY_OWNER -> getAllCancelledOrdersByOwner()
             else -> Unit
         }
+        tryToExecute(
+            { getAllOrders(_state.value.orderStates.state) },
+            ::onGetPendingOrdersSuccess,
+            ::onGetPendingOrdersError
+        )
     }
 
     private fun updateOrdersError(error: ErrorHandler) {
