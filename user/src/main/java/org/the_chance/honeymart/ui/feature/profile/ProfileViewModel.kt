@@ -3,18 +3,16 @@ package org.the_chance.honeymart.ui.feature.profile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.UserProfile
-import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
-import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
+import org.the_chance.honeymart.domain.usecase.user.UserProfileManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getProfileUseCase: GetProfileUserUseCase,
+    private val getProfileUseCase: UserProfileManagerUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
-    private val addProfileImageUseCase: AddProfileImageUseCase,
 ) : BaseViewModel<ProfileUiState, ProfileUiEffect>(ProfileUiState()), ProfileInteractionsListener {
 
     override val TAG: String = this::class.simpleName.toString()
@@ -32,7 +30,7 @@ class ProfileViewModel @Inject constructor(
             )
         }
         tryToExecute(
-            { getProfileUseCase() },
+            { getProfileUseCase.getProfileUserUseCase() },
             ::onGetProfileSuccess,
             ::onGetProfileError
         )
@@ -96,7 +94,7 @@ class ProfileViewModel @Inject constructor(
     override fun updateImage(image: ByteArray) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addProfileImageUseCase(image) },
+            { getProfileUseCase.addProfileImageUseCase(image) },
             onSuccess = { onAddProfileImagesSuccess() },
             onError = ::onAddProfileImagesError
         )

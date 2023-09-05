@@ -1,12 +1,9 @@
 package org.the_chance.honeymart.ui.feature.authentication.login
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
-import org.the_chance.honeymart.domain.usecase.ValidationUseCase
+import org.the_chance.honeymart.domain.usecase.user.UserAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.authentication.signup.FieldState
 import org.the_chance.honeymart.ui.feature.authentication.signup.ValidationToast
@@ -15,8 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUser: LoginUserUseCase,
-    private val validation: ValidationUseCase,
+    private val loginUser: UserAuthenticationManagerUseCase,
     private val stringResource: StringDictionary,
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
@@ -24,7 +20,7 @@ class LoginViewModel @Inject constructor(
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginUser(password = password, email = email) },
+            { loginUser.loginUseCase(password = password, email = email) },
             ::onLoginSuccess,
             ::onLoginError,
         )

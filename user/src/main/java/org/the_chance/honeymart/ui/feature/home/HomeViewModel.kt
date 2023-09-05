@@ -8,11 +8,14 @@ import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
-import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
+import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
+import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
+import org.the_chance.honeymart.domain.usecase.user.UserCouponsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.user.UserWishListManagerUseCase
 import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -30,10 +33,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getAllMarkets: GetAllMarketsUseCase,
     private val getAllCategoriesInMarket: GetAllCategoriesInMarketUseCase,
-    private val getCoupons: GetCouponsUseCase,
     private val getRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUseCase,
     private val getAllOrders: GetAllOrdersUseCase,
+    private val userGetAllWishList :UserWishListManagerUseCase,
+    private val userCoupons: UserCouponsManagerUseCase,
     private val clipCouponsUseCase: ClipCouponUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
@@ -117,7 +121,7 @@ class HomeViewModel @Inject constructor(
     /// region Coupons
     private fun getUserCoupons() {
         tryToExecute(
-            { getCoupons.getUserCoupons() },
+            { userCoupons.getAllCouponsUseCase.getUserCoupons() },
             ::onGetCouponsSuccess,
             ::onGetUserCouponsError
         )
@@ -138,7 +142,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getAllValidCoupons() {
         tryToExecute(
-            { getCoupons.getAllValidCoupons() },
+            { userCoupons.getAllCouponsUseCase.getAllValidCoupons() },
             ::onGetCouponsSuccess,
             ::onGetAllValidCouponsError
         )
@@ -248,6 +252,9 @@ class HomeViewModel @Inject constructor(
         }
     }
     /// endregion
+
+
+  
     /// region Interactions
 
     override fun onClickCategory(categoryId: Long, position: Int) {
@@ -272,7 +279,7 @@ class HomeViewModel @Inject constructor(
     override fun onClickGetCoupon(couponId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { clipCouponsUseCase(couponId) },
+            { userCoupons.clipCouponUseCase(couponId) },
             { onClipCouponSuccess() },
             ::onClipCouponError
         )

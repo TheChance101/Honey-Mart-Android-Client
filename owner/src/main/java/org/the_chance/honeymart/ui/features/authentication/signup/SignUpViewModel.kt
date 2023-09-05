@@ -2,12 +2,8 @@ package org.the_chance.honeymart.ui.features.authentication.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.AddMarketImageUseCase
-import org.the_chance.honeymart.domain.usecase.CheckAdminApproveUseCase
-import org.the_chance.honeymart.domain.usecase.CreateMarketUseCase
-import org.the_chance.honeymart.domain.usecase.CreateOwnerAccountUseCase
-import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
-import org.the_chance.honeymart.domain.usecase.LoginOwnerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -19,15 +15,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val createOwnerAccount: CreateOwnerAccountUseCase,
+    private val ownerAuthentication: OwnerAuthenticationManagerUseCase,
+    private val ownerMarkets: OwnerMarketsManagerUseCase,
     private val validateSignupFields: ValidateSignupFieldsUseCase,
-    private val createMarketUseCase: CreateMarketUseCase,
-    private val addMarketImageUseCase: AddMarketImageUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
-    private val loginOwnerUseCase: LoginOwnerUseCase,
-    private val checkAdminApprove: CheckAdminApproveUseCase,
     private val stringResourceImpl: StringDictionary,
-    private val logOutOwnerUseCase: LogOutOwnerUseCase,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener,
     MarketInfoInteractionsListener {
@@ -66,7 +58,7 @@ class SignUpViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                createOwnerAccount(
+                ownerAuthentication.createOwnerAccount(
                     fullName = fullName,
                     password = password,
                     email = email,
@@ -104,7 +96,7 @@ class SignUpViewModel @Inject constructor(
     private fun loginOwner(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginOwnerUseCase(email, password) },
+            { ownerAuthentication.loginOwnerUseCase(email, password) },
             ::onLoginSuccess,
             ::onLoginError,
         )
@@ -251,7 +243,7 @@ class SignUpViewModel @Inject constructor(
         }
         tryToExecute(
             {
-                createMarketUseCase(
+                ownerMarkets.createMarketUseCase(
                     marketName = marketName,
                     marketAddress = marketAddress,
                     marketDescription = marketDescription,
@@ -359,7 +351,7 @@ class SignUpViewModel @Inject constructor(
     // region market image
     override fun addMarketImage(image: ByteArray) {
         tryToExecute(
-            { addMarketImageUseCase(marketImage = image) },
+            { ownerMarkets.addMarketImageUseCase(marketImage = image) },
             ::onAddMarketImageSuccess,
             ::onAddMarketImageError
         )
@@ -422,7 +414,7 @@ class SignUpViewModel @Inject constructor(
     // region logout
     override fun onClickLogout() {
         tryToExecute(
-            function = { logOutOwnerUseCase() },
+            function = { ownerAuthentication.logOutOwnerUseCase() },
             onSuccess = { onLogoutSuccess() },
             onError = ::onLogoutError
         )
@@ -446,7 +438,7 @@ class SignUpViewModel @Inject constructor(
     // region Admin approve
     private fun listenToCheckAdminApprove() {
         tryToExecute(
-            { checkAdminApprove() },
+            { ownerAuthentication.checkAdminApprove() },
             ::onCheckApproveSuccess,
             ::onCheckApproveError
         )

@@ -7,18 +7,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
-import org.the_chance.honeymart.domain.usecase.AddProductUseCase
-import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteProductByIdUseCase
-import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
-import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
-import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
-import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateImageProductUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateProductDetailsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerCategoriesManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerProductsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -27,18 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val getAllCategories: GetAllCategoriesInMarketUseCase,
-    private val addCategoryUseCase: AddToCategoryUseCase,
-    private val getAllProducts: GetAllProductsByCategoryUseCase,
-    private val updateCategoryUseCase: UpdateCategoryUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase,
-    private val addProductUseCase: AddProductUseCase,
-    private val addProductImagesUseCase: AddProductImagesUseCase,
-    private val productDetailsUseCase: GetProductDetailsUseCase,
-    private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
-    private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
-    private val updateProductImagesUseCase: UpdateImageProductUseCase,
-    private val getOwnerMarketId: GetOwnerInfoUseCase,
+    private val ownerCategories: OwnerCategoriesManagerUseCase,
+    private val ownerProducts: OwnerProductsManagerUseCase,
+    private val ownerMarkets: OwnerMarketsManagerUseCase,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
@@ -52,7 +34,7 @@ class CategoriesViewModel @Inject constructor(
     override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(getOwnerMarketId.getOwnerMarketId()) },
+            { ownerCategories.getAllCategories(ownerMarkets.getOwnerMarketId.getOwnerMarketId()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
@@ -142,7 +124,7 @@ class CategoriesViewModel @Inject constructor(
     override fun deleteCategory(id: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { deleteCategoryUseCase(id) },
+            { ownerCategories.deleteCategoryUseCase(id) },
             { onDeleteCategorySuccess() },
             ::onDeleteCategoryError
         )
@@ -175,7 +157,7 @@ class CategoriesViewModel @Inject constructor(
     override fun onClickAddCategory(name: String, categoryIconID: Int) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addCategoryUseCase(name, categoryIconID) },
+            { ownerCategories.addCategoryUseCase(name, categoryIconID) },
             ::addCategorySuccess,
             ::onError
         )
@@ -247,11 +229,11 @@ class CategoriesViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                updateCategoryUseCase(
+                ownerCategories.updateCategoryUseCase(
                     imageId = category.newCategory.newIconId,
                     name = category.newCategory.newCategoryName,
                     id = category.newCategory.categoryId,
-                    marketId = getOwnerMarketId.getOwnerMarketId()
+                    marketId = ownerMarkets.getOwnerMarketId.getOwnerMarketId()
                 )
             },
             { onUpdateCategorySuccess() },
@@ -281,7 +263,7 @@ class CategoriesViewModel @Inject constructor(
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecutePaging(
-            { getAllProducts(categoryId) },
+            { ownerProducts.getAllProducts(categoryId) },
             ::onGetProductsSuccess,
             ::onError
         )
@@ -319,7 +301,7 @@ class CategoriesViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                addProductUseCase(
+                ownerProducts.addProductUseCase(
                     product.newProducts.name,
                     product.newProducts.price.toDouble(),
                     product.newProducts.description,
@@ -349,7 +331,7 @@ class CategoriesViewModel @Inject constructor(
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { addProductImagesUseCase(productId, images) },
+            { ownerProducts.addProductImagesUseCase(productId, images) },
             onSuccess = { onAddProductImagesSuccess() },
             onError = ::onError
         )
@@ -432,7 +414,7 @@ class CategoriesViewModel @Inject constructor(
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { productDetailsUseCase(productId) },
+            { ownerProducts.getProductDetailsUseCase(productId) },
             ::onGetProductDetailsSuccess,
             ::onGetProductDetailsError
         )
@@ -454,7 +436,7 @@ class CategoriesViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                updateProductDetailsUseCase(
+                ownerProducts.updateProductDetailsUseCase(
                     id = product.productDetails.productId,
                     name = product.productDetails.productName,
                     price = product.productDetails.productPrice.toDouble(),
@@ -511,7 +493,7 @@ class CategoriesViewModel @Inject constructor(
 
     override fun onUpdateProductImage(productId: Long, images: List<ByteArray>) {
         tryToExecute(
-            { updateProductImagesUseCase(productId, images) },
+            { ownerProducts.updateProductImagesUseCase(productId, images) },
             { onUpdateProductImageSuccess() },
             ::onError
         )
@@ -562,7 +544,7 @@ class CategoriesViewModel @Inject constructor(
     override fun deleteProductById(productId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { deleteProductByIdUseCase(productId) },
+            { ownerProducts.deleteProductByIdUseCase(productId) },
             { onSuccessDeleteProduct() },
             ::onError,
         )

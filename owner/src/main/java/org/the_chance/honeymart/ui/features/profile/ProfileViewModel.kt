@@ -4,18 +4,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.OwnerProfile
-import org.the_chance.honeymart.domain.usecase.GetMarketInfoUseCase
-import org.the_chance.honeymart.domain.usecase.GetOwnerProfileUseCase
-import org.the_chance.honeymart.domain.usecase.UpdateMarketStatusUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerProfileManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getMarketInfoUseCase: GetMarketInfoUseCase,
-    private val getOwnerProfileUseCase: GetOwnerProfileUseCase,
-    private val updateMarketStatusUseCase: UpdateMarketStatusUseCase
+    private val ownerProfile: OwnerProfileManagerUseCase
 ) :
     BaseViewModel<ProfileUiState, Unit>(ProfileUiState()), ProfileInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -29,7 +25,7 @@ class ProfileViewModel @Inject constructor(
     override fun getPersonalInfo() {
         _state.update { it.copy(isLoading = true, isError = false, error = null) }
         tryToExecute(
-            function = { getOwnerProfileUseCase() },
+            function = { ownerProfile.getOwnerProfileUseCase() },
             onSuccess = ::onGetPersonalInfoSuccess,
             onError = ::onGetPersonalInfoError
         )
@@ -60,7 +56,7 @@ class ProfileViewModel @Inject constructor(
     override fun getMarketInfo() {
         _state.update { it.copy(isLoading = true, isError = false, error = null) }
         tryToExecute(
-            function = { getMarketInfoUseCase() },
+            function = { ownerProfile.getMarketInfoUseCase() },
             onSuccess = ::onGetMarketInfoSuccess,
             onError = ::onGetMarketInfoError
         )
@@ -89,7 +85,7 @@ class ProfileViewModel @Inject constructor(
         val newStatus = if (status == MarketStatus.ONLINE.state)
             MarketStatus.OFFLINE.state else MarketStatus.ONLINE.state
         tryToExecute(
-            function = { updateMarketStatusUseCase(newStatus) },
+            function = { ownerProfile.updateMarketStatusUseCase(newStatus) },
             onSuccess = ::onUpdateMarketInfoSuccess,
             onError = ::onUpdateMarketInfoError
         )
