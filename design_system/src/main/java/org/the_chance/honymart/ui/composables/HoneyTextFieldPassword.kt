@@ -73,7 +73,7 @@ fun HoneyTextFieldPassword(
                     style = Typography.displaySmall,
                 )
             },
-            keyboardOptions = keyboardOptions.copy(),
+            keyboardOptions = keyboardOptions,
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
