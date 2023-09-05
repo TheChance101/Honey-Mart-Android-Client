@@ -2,7 +2,6 @@ package org.the_chance.honeymart.ui.feature.profile
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,9 +64,6 @@ fun ProfileScreen(
         })
 
 
-    LaunchedEffect(key1 = state) {
-        Log.i("ProfileScreen", "ProfileScreen: $state")
-    }
 
     LaunchedEffect(key1 = true) {
         viewModel.getData()
