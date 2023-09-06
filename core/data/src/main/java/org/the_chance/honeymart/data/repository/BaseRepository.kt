@@ -25,6 +25,7 @@ abstract class BaseRepository {
                 response
             } else {
                 Log.d("Tag", "repository failed")
+                Log.d("Tarek", response.status.code.toString())
                 when (response.status.code) {
                     400 -> throw InvalidDataException()
                     401 -> throw UnAuthorizedException()

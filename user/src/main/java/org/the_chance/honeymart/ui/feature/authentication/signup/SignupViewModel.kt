@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
@@ -76,24 +77,14 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateUserError(error: ErrorHandler) {
+        Log.d("Tarek", error.toString())
+        _state.update { it.copy(error = error) }
         val errorMessage = stringResource.errorString.getOrDefault(error, "")
+        showValidationToast(message = errorMessage)
         if (error == ErrorHandler.AlreadyExist) {
-            showValidationToast(message = errorMessage)
             _state.update {
-                it.copy(
-                    error = error,
-                    emailState = state.value.emailState.copy(errorState = errorMessage),
-                    passwordState = state.value.passwordState.copy(errorState = errorMessage,),
-                    validationToast = ValidationToast(isShow = true, message = errorMessage),
-                )
+                it.copy(emailState = state.value.emailState.copy(errorState = errorMessage))
             }
-        } else {
-            showValidationToast(
-                message = stringResource.errorString.getOrDefault(
-                    error,
-                    ""
-                )
-            )
         }
     }
 
@@ -112,7 +103,7 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
+        _state.update { it.copy(error = error, isButtonEnabled = true) }
         showValidationToast(
             message = stringResource.errorString.getOrDefault(
                 error,
