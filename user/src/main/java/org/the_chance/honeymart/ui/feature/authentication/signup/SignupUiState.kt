@@ -8,7 +8,6 @@ data class SignupUiState(
     val isSignUp: Boolean = false,
     val isLogin: Boolean = false,
     val isButtonEnabled: Boolean = false,
-    val isAuthScreenVisible: Boolean = true,
 
     val emailState: FieldState = FieldState(),
     val passwordState: FieldState = FieldState(),

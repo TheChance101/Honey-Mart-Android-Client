@@ -4,6 +4,7 @@ import org.the_chance.honeymart.ui.base.BaseUiEffect
 
 sealed interface SignupUiEffect: BaseUiEffect {
     object ClickSignupEffect : SignupUiEffect
+    object ClickOnboardingSignupEffect: SignupUiEffect
     object ShowToastEffect : SignupUiEffect
     object ClickLoginEffect : SignupUiEffect
 

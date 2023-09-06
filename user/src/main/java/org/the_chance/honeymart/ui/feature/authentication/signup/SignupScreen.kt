@@ -22,10 +22,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.login.navigateToLogin
-import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.AuthScreen
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.AuthScaffold
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.FirstSignupFiledContent
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.SecondSignupFieldContent
@@ -46,7 +44,7 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
                 SignupUiEffect.ClickSignupEffect -> {
 
                     navController.popBackStack(
-                        Screen.SignupScreen.route, true
+                        Screen.AuthScreen.route, true
                     )
                 }
 
@@ -56,6 +54,8 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
                         state.validationToast.message,
                         Toast.LENGTH_LONG
                     ).show()
+
+                else -> {}
             }
         })
 
@@ -69,54 +69,54 @@ fun SignupContent(
     listener: SignupInteractionListener,
     state: SignupUiState,
 ) {
-    ContentVisibility(state = state.isAuthScreenVisible) {
-        AuthScreen()
-    }
-    ContentVisibility(state = !state.isAuthScreenVisible) {
-        Box(
-            modifier = Modifier.imePadding().fillMaxSize()
+    Box(
+        modifier = Modifier
+            .imePadding()
+            .fillMaxSize()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                AuthScaffold(
-                    title = stringResource(id = R.string.sign_up),
-                    description = stringResource(
-                        id = R.string.create_your_account_and_enter_a_world_of_endless_shopping_possibilities
-                    ),
-                )
-                val pagerState = rememberPagerState()
-                Box(modifier = Modifier.imePadding()) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-                    ) {
-                        HorizontalPager(
-                            state = pagerState,
-                            pageCount = 2,
-                            userScrollEnabled = false
-                        ) { page ->
-                            when (page) {
-                                0 -> FirstSignupFiledContent(
-                                    state = state,
-                                    listener = listener,
-                                    pagerState = pagerState
-                                )
+            AuthScaffold(
+                title = stringResource(id = R.string.sign_up),
+                description = stringResource(
+                    id = R.string.create_your_account_and_enter_a_world_of_endless_shopping_possibilities
+                ),
+            )
+            val pagerState = rememberPagerState()
+            Box(modifier = Modifier.imePadding()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        pageCount = 2,
+                        userScrollEnabled = false
+                    ) { page ->
+                        when (page) {
+                            0 -> FirstSignupFiledContent(
+                                state = state,
+                                listener = listener,
+                                pagerState = pagerState
+                            )
 
-                                1 -> SecondSignupFieldContent(state = state, listener = listener,pagerState)
-                            }
+                            1 -> SecondSignupFieldContent(
+                                state = state,
+                                listener = listener,
+                                pagerState
+                            )
                         }
                     }
                 }
-                if (pagerState.currentPage == 0) {
-                    SignupFooter(listener = listener)
-                }
+            }
+            if (pagerState.currentPage == 0) {
+                SignupFooter(listener = listener)
             }
         }
     }
-
 }

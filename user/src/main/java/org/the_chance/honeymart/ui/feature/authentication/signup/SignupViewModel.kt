@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
@@ -25,7 +24,7 @@ class SignupViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     override fun onClickOnBoardingSignUp() {
-        _state.update { it.copy(isAuthScreenVisible = false) }
+        effectActionExecutor(_effect, SignupUiEffect.ClickOnboardingSignupEffect)
     }
 
     override fun onClickOnBoardingLogin() {
@@ -77,7 +76,6 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateUserError(error: ErrorHandler) {
-        Log.d("Tarek", error.toString())
         _state.update { it.copy(error = error) }
         val errorMessage = stringResource.errorString.getOrDefault(error, "")
         showValidationToast(message = errorMessage)

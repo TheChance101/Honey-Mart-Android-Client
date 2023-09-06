@@ -24,6 +24,7 @@ import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupUiEffect
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupViewModel
+import org.the_chance.honeymart.ui.feature.authentication.signup.navigateToSignupScreen
 import org.the_chance.honymart.ui.composables.HoneyAuthFooter
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.Typography
@@ -37,10 +38,13 @@ fun AuthScreen(
     NavigationHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
-            if (effect == SignupUiEffect.ClickLoginEffect) {
-                navController.navigateToLogin()
+            when(effect) {
+                SignupUiEffect.ClickLoginEffect -> navController.navigateToLogin()
+                SignupUiEffect.ClickOnboardingSignupEffect ->  navController.navigateToSignupScreen()
+                else -> {}
             }
         })
+
     AuthContent(listener = viewModel)
 }
 
