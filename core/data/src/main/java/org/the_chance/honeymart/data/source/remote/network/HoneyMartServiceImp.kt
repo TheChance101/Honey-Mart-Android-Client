@@ -18,6 +18,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -44,9 +45,12 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
-import org.the_chance.honeymart.domain.util.EmailIsExistException
+import org.the_chance.honeymart.domain.util.AlreadyExistException
 import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
+import org.the_chance.honeymart.domain.util.InvalidDataException
+import org.the_chance.honeymart.domain.util.NoConnectionException
+import org.the_chance.honeymart.domain.util.NotFoundException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
@@ -272,7 +276,9 @@ class HoneyMartServiceImp @Inject constructor(
         page: Int?,
         sortOrder: String
     ): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"))
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"){
+
+        })
 
     override suspend fun loginUser(
         email: String,
@@ -404,11 +410,13 @@ class HoneyMartServiceImp @Inject constructor(
         } else {
             Log.d("Tag", "service failed")
             when (response.status.value) {
-                401 -> throw UnAuthorizedException()
-                500 -> throw InternalServerException()
-                1003 -> throw EmailIsExistException()
-                1008 -> throw EmailIsExistException()
-                1005 -> throw ForbiddenException()
+                HttpStatusCode.BadGateway.value -> throw NoConnectionException()
+                HttpStatusCode.BadRequest.value -> throw InvalidDataException()
+                HttpStatusCode.Unauthorized.value -> throw UnAuthorizedException()
+                HttpStatusCode.Forbidden.value ->throw ForbiddenException()
+                HttpStatusCode.NotFound.value ->throw NotFoundException()
+                HttpStatusCode.Conflict.value -> throw AlreadyExistException()
+                HttpStatusCode.InternalServerError.value ->throw  InternalServerException()
                 else -> throw Exception(response.status.description)
             }
         }
