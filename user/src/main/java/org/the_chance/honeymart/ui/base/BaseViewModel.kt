@@ -103,27 +103,6 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         }
     }
 
-    protected fun <T> tryToExecuteDebounced(
-        function: suspend () -> T,
-        onSuccess: (T) -> Unit,
-        onError: (t: ErrorHandler) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) {
-        job?.cancel()
-        job = viewModelScope.launch(dispatcher) {
-            handleException(
-                onError
-            ) {
-                delay(2000)
-                val result = function()
-                log("tryToExecute: $result ")
-                onSuccess(result)
-            }
-        }
-        log("job isCompleted: ${job?.isCompleted} ")
-        log("job isCancelled: ${job?.isCancelled} ")
-        log("tryToExecute: job: $job")
-    }
 
     private suspend fun <T> handleException(
         onError: (t: ErrorHandler) -> Unit,
