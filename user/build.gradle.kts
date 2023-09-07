@@ -94,4 +94,7 @@ dependencies {
     implementation(Dependencies.pagingCommon)
     implementation(Dependencies.pagingRuntime)
     implementation(Dependencies.pagingCompose)
+
+    //Permission
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 }
