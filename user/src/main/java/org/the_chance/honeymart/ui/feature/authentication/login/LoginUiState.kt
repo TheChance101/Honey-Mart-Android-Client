@@ -13,3 +13,6 @@ data class LoginUiState(
     val isButtonEnabled: Boolean = true,
     val validationToast: ValidationToast = ValidationToast(),
 )
+
+fun LoginUiState.validLoginFields() =
+    this.emailState.value.isNotBlank() && this.passwordState.value.isNotBlank()

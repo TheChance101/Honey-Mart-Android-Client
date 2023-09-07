@@ -6,7 +6,6 @@ import org.the_chance.honeymart.domain.usecase.user.UserAuthenticationManagerUse
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.authentication.signup.FieldState
-import org.the_chance.honeymart.ui.feature.authentication.signup.ValidationToast
 import org.the_chance.honeymart.util.StringDictionary
 import javax.inject.Inject
 
@@ -17,6 +16,26 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginUiState, LoginUiEffect>(LoginUiState()), LoginInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
+    override fun onClickSignup() {
+        effectActionExecutor(_effect, LoginUiEffect.ClickSignUpEffect)
+    }
+
+    override fun onClickLogin() {
+        _state.update { it.copy(isButtonEnabled = false) }
+        if (state.value.validLoginFields()) {
+            _state.update {
+                it.copy(
+                    emailState = state.value.emailState.copy(errorState = ""),
+                    passwordState = state.value.passwordState.copy(errorState = "")
+                )
+            }
+            login(email = state.value.emailState.value, password = state.value.passwordState.value)
+        } else {
+            _state.update { it.copy(isButtonEnabled = true) }
+            showValidationToast(stringResource.requiredFieldsMessageString)
+        }
+    }
+
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -43,54 +62,19 @@ class LoginViewModel @Inject constructor(
                 passwordState = _state.value.passwordState.copy(errorState = " ")
             )
         }
-        showValidationToast(
-            message = errorMessage
-        )
+        showValidationToast(message = errorMessage)
     }
 
-    override fun onClickLogin() {
-        _state.update { it.copy(isButtonEnabled = false) }
-        val validState =
-            state.value.emailState.value.isNotBlank() && state.value.passwordState.value.isNotBlank()
-        if (validState) {
-            login(
-                email = state.value.emailState.value, password = state.value.passwordState.value
-            )
-        } else {
-            _state.update {
-                it.copy(
-                    validationToast = ValidationToast(
-                        isShow = true, message = stringResource.requiredFieldsMessageString
-                    ), isButtonEnabled = true
-                )
-            }
-            showValidationToast(stringResource.requiredFieldsMessageString)
-        }
-    }
-
-    override fun onClickSignup() {
-        effectActionExecutor(_effect, LoginUiEffect.ClickSignUpEffect)
-    }
 
     override fun onEmailInputChange(email: CharSequence) {
         _state.update {
-            it.copy(
-                emailState = FieldState(
-                    value = email.toString(),
-                    errorState = ""
-                ),
-            )
+            it.copy(emailState = FieldState(value = email.toString(), errorState = ""))
         }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
         _state.update {
-            it.copy(
-                passwordState = FieldState(
-                    value = password.toString(),
-                    errorState = ""
-                ),
-            )
+            it.copy(passwordState = FieldState(value = password.toString(), errorState = ""))
         }
     }
 

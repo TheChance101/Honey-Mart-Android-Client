@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.feature.authentication.signup.composables
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ fun SecondSignupFieldContent(
     val focusManager = LocalFocusManager.current
     if (state.invalidUserAlreadyExists()) {
         coroutineScope.launch {
+            Log.d("Eyad","done")
             pagerState.animateScrollToPage(0)
         }
     }

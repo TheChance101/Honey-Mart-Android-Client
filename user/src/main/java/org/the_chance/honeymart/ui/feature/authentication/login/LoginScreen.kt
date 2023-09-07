@@ -62,7 +62,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
             when (effect) {
                 LoginUiEffect.ClickLoginEffect -> {
                     navController.popBackStack(
-                        Screen.SignupScreen.route, true
+                        Screen.AuthScreen.route, true
                     )
                 }
 
