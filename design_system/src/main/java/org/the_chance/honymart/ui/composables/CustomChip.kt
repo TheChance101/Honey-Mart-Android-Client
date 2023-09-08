@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ fun CustomChip(
     modifier: Modifier = Modifier,
     state: Boolean,
     text: String,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -50,7 +52,7 @@ fun CustomChip(
             ),
             text = text,
             color = if (state) white else black37,
-            style = MaterialTheme.typography.bodyMedium.copy(baselineShift = BaselineShift(0.3f))
+            style = style.copy(baselineShift = BaselineShift(0.3f))
         )
     }
 }

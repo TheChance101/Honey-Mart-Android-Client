@@ -300,6 +300,7 @@ private fun Categories(
                     CustomChip(
                         state = selectedMarketId == market.marketId,
                         text = market.marketName,
+                        style = MaterialTheme.typography.displayLarge,
                         onClick = { onChipClick(market.marketId) })
                 }
             }
@@ -316,7 +317,9 @@ private fun Categories(
                             .animateItemPlacement(),
                         label = category.categoryName,
                         onClick = { oncClickCategory(category.categoryId, index) },
-                        painter = painterResource(id = categoryIcons[category.categoryImageId]?: R.drawable.ic_cup_paper),
+                        painter = painterResource(
+                            id = categoryIcons[category.categoryImageId] ?: R.drawable.ic_cup_paper
+                        ),
                     )
                 }
             }

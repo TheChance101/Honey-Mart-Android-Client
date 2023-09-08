@@ -153,16 +153,19 @@ fun SearchContent(
                         CustomChip(
                             state = state.random(),
                             text = stringResource(R.string.random),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
                             text = stringResource(R.string.ascending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
                             text = stringResource(R.string.descending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickDescendingSearch
                         )
                     }

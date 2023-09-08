@@ -16,7 +16,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.components.CustomChip
 import org.the_chance.honeymart.ui.components.Placeholder
 import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
@@ -27,6 +26,7 @@ import org.the_chance.honeymart.ui.features.orders.done
 import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
 import org.the_chance.honeymart.ui.features.orders.processing
+import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
