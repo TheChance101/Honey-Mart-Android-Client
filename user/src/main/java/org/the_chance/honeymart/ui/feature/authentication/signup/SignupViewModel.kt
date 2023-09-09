@@ -79,7 +79,7 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(error = error) }
         val errorMessage = stringResource.errorString.getOrDefault(error, "")
         showValidationToast(message = errorMessage)
-        if (error == ErrorHandler.AlreadyExist) {
+        if (error == ErrorHandler.EmailAlreadyExist) {
             _state.update {
                 it.copy(emailState = state.value.emailState.copy(errorState = errorMessage))
             }

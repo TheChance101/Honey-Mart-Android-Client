@@ -130,7 +130,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-        if (error is ErrorHandler.UnAuthorizedUser)
+        if (error is ErrorHandler.UnAuthorized)
             getAllValidCoupons()
     }
 
@@ -292,7 +292,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-        if (errorHandler is ErrorHandler.UnAuthorizedUser)
+        if (errorHandler is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
 

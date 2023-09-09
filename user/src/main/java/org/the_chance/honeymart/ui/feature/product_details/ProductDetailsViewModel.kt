@@ -144,7 +144,7 @@ class ProductDetailsViewModel @Inject constructor(
                 isConnectionError = false,
             )
         }
-        tryToExecuteDebounced(
+       tryToExecute(
             { cartOperations.cartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -165,7 +165,7 @@ class ProductDetailsViewModel @Inject constructor(
                 _state.update { it.copy(isConnectionError = true) }
             }
 
-            is ErrorHandler.UnAuthorizedUser -> {
+            is ErrorHandler.UnAuthorized -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
@@ -215,7 +215,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
-        tryToExecuteDebounced(
+        tryToExecute(
             { wishListOperations.operationWishListUseCase.addToWishList(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
@@ -235,7 +235,7 @@ class ProductDetailsViewModel @Inject constructor(
                 _state.update { it.copy(isLoading = false, isConnectionError = true) }
             }
 
-            is ErrorHandler.UnAuthorizedUser -> {
+            is ErrorHandler.UnAuthorized -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
@@ -286,7 +286,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun deleteProductFromWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
-        tryToExecuteDebounced(
+        tryToExecute(
             { wishListOperations.operationWishListUseCase.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError

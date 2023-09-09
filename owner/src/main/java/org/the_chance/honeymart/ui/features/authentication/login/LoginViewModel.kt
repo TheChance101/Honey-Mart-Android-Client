@@ -100,7 +100,7 @@ class LoginViewModel @Inject constructor(
     private fun onLoginError(error: ErrorHandler) {
         _state.update { it.copy(isButtonEnabled = true) }
         val errorMessage = stringResource.errorString.getOrDefault(error, "")
-        if (error is ErrorHandler.UnAuthorizedUser) {
+        if (error is ErrorHandler.UnAuthorized) {
             _state.update {
                 it.copy(
                     isLoading = false,

@@ -6,7 +6,6 @@ import io.ktor.http.HttpStatusCode
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.domain.util.AddImageFailedException
 import org.the_chance.honeymart.domain.util.AdminAccessDeniedException
-import org.the_chance.honeymart.domain.util.AlreadyExistException
 import org.the_chance.honeymart.domain.util.CantUpdateOrderStateException
 import org.the_chance.honeymart.domain.util.CategoryDeletedException
 import org.the_chance.honeymart.domain.util.CategoryNameNotUniqueException
@@ -96,7 +95,6 @@ abstract class BaseRepository {
             HttpStatusCode.Unauthorized.value -> UnAuthorizedException()
             HttpStatusCode.Forbidden.value -> ForbiddenException()
             HttpStatusCode.NotFound.value -> NotFoundException()
-            HttpStatusCode.Conflict.value -> AlreadyExistException()
             HttpStatusCode.InternalServerError.value -> InternalServerException()
             else -> Exception("Unhandled HTTP status code: $httpStatusCode")
         }

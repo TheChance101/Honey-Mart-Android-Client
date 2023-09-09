@@ -37,9 +37,9 @@ class StringResources @Inject constructor(
         )
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
-            ErrorHandler.AlreadyExist to getStringFromFile(R.string.account_already_exist),
-            ErrorHandler.UnKnownError to getStringFromFile(R.string.something_went_wrong_please_try_again),
-            ErrorHandler.UnAuthorizedUser to getStringFromFile(R.string.Invalid_username_or_password),
+            ErrorHandler.EmailAlreadyExist to getStringFromFile(R.string.account_already_exist),
+            ErrorHandler.UnKnownUser to getStringFromFile(R.string.something_went_wrong_please_try_again),
+            ErrorHandler.UnAuthorized to getStringFromFile(R.string.Invalid_username_or_password),
             ErrorHandler.NoConnection to getStringFromFile(R.string.something_went_wrong_please_try_again),
             ErrorHandler.MarketDeleted to getStringFromFile(R.string.market_has_been_deleted)
         )

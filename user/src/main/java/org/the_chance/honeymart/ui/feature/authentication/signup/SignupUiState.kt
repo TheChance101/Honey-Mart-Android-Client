@@ -33,7 +33,7 @@ fun SignupUiState.correctValidationFullNameAndEmail(): Boolean {
 }
 
 fun SignupUiState.invalidUserAlreadyExists(): Boolean {
-    return this.error == ErrorHandler.AlreadyExist
+    return this.error == ErrorHandler.EmailAlreadyExist
 }
 
 fun SignupUiState.correctValidationPasswordAndConfirmPassword(): Boolean {
