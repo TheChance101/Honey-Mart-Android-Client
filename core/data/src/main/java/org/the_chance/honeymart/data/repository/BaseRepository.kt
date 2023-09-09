@@ -146,7 +146,7 @@ abstract class BaseRepository {
             1104 to CouponAlreadyClippedException(),
             1105 to InvalidExpirationDateException(),
             1106 to InvalidCountException(),
-           // 1112 to UnauthorizedException(),
+            1112 to UnauthorizedException(),
             1113 to InvalidApiKeyException(),
             1114 to InvalidTokenException(),
             1115 to InvalidRuleException(),
