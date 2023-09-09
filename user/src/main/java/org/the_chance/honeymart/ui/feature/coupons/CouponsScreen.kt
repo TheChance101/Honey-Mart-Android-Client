@@ -63,6 +63,7 @@ fun CouponsScreen(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CouponsContent(
     state: CouponsUiState,
@@ -95,16 +96,19 @@ fun CouponsContent(
                 CustomChip(
                     state = state.all(),
                     text = stringResource(R.string.all),
+                    style = MaterialTheme.typography.displayLarge,
                     onClick = listener::onClickAllCoupons
                 )
                 CustomChip(
                     state = state.valid(),
                     text = stringResource(R.string.valid),
+                    style = MaterialTheme.typography.displayLarge,
                     onClick = listener::onClickValidCoupons
                 )
                 CustomChip(
                     state = state.expired(),
                     text = stringResource(R.string.expired),
+                    style = MaterialTheme.typography.displayLarge,
                     onClick = listener::onClickExpiredCoupons
                 )
             }

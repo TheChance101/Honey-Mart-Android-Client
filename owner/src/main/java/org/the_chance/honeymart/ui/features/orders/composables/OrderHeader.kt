@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.orders.composables
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,8 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.components.CustomChip
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.theme.dimens
@@ -84,10 +86,28 @@ fun OrderHeader(
                         style = MaterialTheme.typography.displayLarge
                     )
 
-                    CustomChip(
-                        text = state.orderDetails.totalPrice,
+                    Card(
+                        colors = CardDefaults.cardColors(Color.Transparent),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
                         shape = RoundedCornerShape(MaterialTheme.dimens.space16)
-                    )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(
+                                horizontal = MaterialTheme.dimens.space16,
+                                vertical = MaterialTheme.dimens.space6
+                            ),
+                            text = state.orderDetails.totalPrice,
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                baselineShift = BaselineShift(
+                                    0.3f
+                                )
+                            )
+                        )
+                    }
                 }
             }
         }

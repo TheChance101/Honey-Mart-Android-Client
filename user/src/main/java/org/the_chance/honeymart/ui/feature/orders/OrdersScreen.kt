@@ -52,10 +52,12 @@ fun OrdersScreen(
 
     NavigationHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToHomeScreen()
-                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(effect.orderId)
+                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(
+                    effect.orderId
+                )
             }
         })
 
@@ -98,6 +100,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.pending(),
                             text = stringResource(id = R.string.Pending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllPendingOrders
                         )
                     }
@@ -105,6 +108,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.processing(),
                             text = stringResource(id = R.string.processing),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllProcessingOrders
                         )
                     }
@@ -112,6 +116,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.done(),
                             text = stringResource(id = R.string.done),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllDoneOrders
                         )
                     }
@@ -119,6 +124,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.cancelledByUser(),
                             text = stringResource(id = R.string.cancelled),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllCancelledOrdersByUser
                         )
                     }
@@ -126,6 +132,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.cancelledByOwner(),
                             text = stringResource(id = R.string.declined),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllCancelledOrdersByOwner
                         )
                     }
