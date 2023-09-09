@@ -108,7 +108,6 @@ class NoConnectionException : NetworkException()
 class InvalidDataException : NetworkException()
 class NotFoundException : NetworkException()
 class InternalServerException : NetworkException()
-class AlreadyExistException : NetworkException()
 class ForbiddenException : NetworkException()
 class UnAuthorizedException : NetworkException()
 //endregion
@@ -213,7 +212,6 @@ sealed interface ErrorHandler {
     object InvalidData : ErrorHandler
     object NotFound : ErrorHandler
     object InternalServer : ErrorHandler
-    object AlreadyExist : ErrorHandler
     object Forbidden : ErrorHandler
     //endregion
 }
@@ -377,7 +375,6 @@ fun handelNetworkException(
         is InvalidDataException -> onError(ErrorHandler.InvalidData)
         is NotFoundException -> onError(ErrorHandler.NotFound)
         is InternalServerException -> onError(ErrorHandler.InternalServer)
-        is AlreadyExistException -> onError(ErrorHandler.AlreadyExist)
         is ForbiddenException -> onError(ErrorHandler.Forbidden)
         is UnAuthorizedException -> onError(ErrorHandler.UnAuthorized)
     }

@@ -90,7 +90,7 @@ class NewProductsViewModel @Inject constructor(
             )
         }
 
-        if (error is ErrorHandler.UnAuthorizedUser)
+        if (error is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, RecentProductUiEffect.UnAuthorizedUserEffect)
     }
 

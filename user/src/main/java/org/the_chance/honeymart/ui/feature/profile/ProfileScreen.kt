@@ -105,7 +105,7 @@ private fun ProfileContent(
 
 
         EmptyOrdersPlaceholder(
-            state = state.error is ErrorHandler.UnAuthorizedUser && state.isLoading.not(),
+            state = state.error is ErrorHandler.UnAuthorized && state.isLoading.not(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.you_are_not_logged_in),
             subtitle = stringResource(R.string.login_and_get_access_to_your_orders_wishlist_and_more),

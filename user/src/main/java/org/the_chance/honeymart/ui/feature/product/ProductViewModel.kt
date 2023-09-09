@@ -241,7 +241,7 @@ class ProductViewModel @Inject constructor(
 
     private fun onAddToWishListError(error: ErrorHandler) {
         _state.update { it.copy( isLoadingProduct = false) }
-        if (error is ErrorHandler.UnAuthorizedUser)
+        if (error is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
     }
 

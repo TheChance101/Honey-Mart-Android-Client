@@ -46,7 +46,7 @@ class MarketsViewModel @Inject constructor(
                 _state.update { it.copy(isError = true) }
             }
 
-            ErrorHandler.UnAuthorizedUser -> {
+            ErrorHandler.UnAuthorized -> {
                 effectActionExecutor(_effect, MarketsUiEffect.UnAuthorizedUserEffect)
             }
 

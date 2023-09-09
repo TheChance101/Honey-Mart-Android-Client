@@ -73,7 +73,7 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     }
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-        if (error is ErrorHandler.UnAuthorizedUser) {
+        if (error is ErrorHandler.UnAuthorized) {
             updateFavoriteState(productId)
         }
     }

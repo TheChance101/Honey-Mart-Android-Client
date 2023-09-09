@@ -45,7 +45,6 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
-import org.the_chance.honeymart.domain.util.AlreadyExistException
 import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
 import org.the_chance.honeymart.domain.util.InvalidDataException
@@ -415,7 +414,6 @@ class HoneyMartServiceImp @Inject constructor(
                 HttpStatusCode.Unauthorized.value -> throw UnAuthorizedException()
                 HttpStatusCode.Forbidden.value ->throw ForbiddenException()
                 HttpStatusCode.NotFound.value ->throw NotFoundException()
-                HttpStatusCode.Conflict.value -> throw AlreadyExistException()
                 HttpStatusCode.InternalServerError.value ->throw  InternalServerException()
                 else -> throw Exception(response.status.description)
             }
