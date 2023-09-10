@@ -14,13 +14,13 @@ data class OrdersUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val orders: List<OrderUiState> = emptyList(),
-    val orderStates: OrderStates = OrderStates.ALL,
+    val orderStates: Int = OrderStates.ALL.state,
+    val states: OrderStates = OrderStates.ALL,
     val orderDetails: OrderUiState = OrderUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
     val product: OrderDetailsProductUiState = OrderDetailsProductUiState(),
     val showState: ShowState = ShowState(),
     val orderId: Long = 0,
-    val order: OrderState = OrderState(),
 )
 
 data class ShowState(
@@ -28,10 +28,7 @@ data class ShowState(
     val showOrderDetails: Boolean = false,
 )
 
-data class OrderState(
-    val orderId: Long = 0,
-    val states: OrderStates = OrderStates.ALL,
-)
+
 
 data class OrderUiState(
     val orderId: Long = 1,
@@ -137,17 +134,20 @@ fun OrdersUiState.showOrderDetailsInRight() = orders.isNotEmpty()
 // endregion
 
 // region Extensions
-fun OrdersUiState.all() = orderStates == OrderStates.ALL
+fun OrdersUiState.all() = states == OrderStates.ALL
 
-fun OrdersUiState.pending() = orderStates == OrderStates.PENDING
+fun OrdersUiState.pending() = states == OrderStates.PENDING
 
-fun OrdersUiState.processing() = orderStates == OrderStates.PROCESSING
+fun OrdersUiState.processing() = states == OrderStates.PROCESSING
 
-fun OrdersUiState.done() = orderStates == OrderStates.DONE
+fun OrdersUiState.done() = states == OrderStates.DONE
 
-fun OrdersUiState.cancel() = orderStates == OrderStates.CANCELED
+fun OrdersUiState.cancel() = states == OrderStates.CANCELED
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoading
 
 fun OrdersUiState.showOrderDetails() = products.isNotEmpty() && showState.showProductDetails
+fun OrdersUiState.showButtonState() = products.isNotEmpty() && !showState.showProductDetails
+        && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELED.state
+        &&!isLoading
 // endregion

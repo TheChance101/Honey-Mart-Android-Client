@@ -8,6 +8,11 @@ class GetAllMarketOrdersUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
     suspend operator fun invoke(orderState: Int): List<Market.Order> {
-        return honeyMartRepository.getAllMarketOrders(orderState)
+        val allOrders = honeyMartRepository.getAllMarketOrders(orderState)
+        return if (orderState == 0) {
+            allOrders.filterNot { it.state == 4 }
+        } else {
+            allOrders
+        }
     }
 }
