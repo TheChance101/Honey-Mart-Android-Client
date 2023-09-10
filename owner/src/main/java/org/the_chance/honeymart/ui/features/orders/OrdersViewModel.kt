@@ -140,7 +140,7 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        getAllMarketOrder(OrderStates.ALL)
+        getAllMarketOrder(_state.value.states)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
