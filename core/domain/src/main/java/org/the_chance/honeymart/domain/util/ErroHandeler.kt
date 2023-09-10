@@ -93,7 +93,6 @@ class MissingQueryParameterException : GeneralException()
 
 //region Token
 open class TokenException : Exception()
-class UnauthorizedException : TokenException()
 class InvalidRuleException : TokenException()
 class TokenExpiredException : TokenException()
 class InvalidTokenException : TokenException()
@@ -198,7 +197,6 @@ sealed interface ErrorHandler {
     //endregion
 
     //region Token
-    object UnAuthorized : ErrorHandler
     object InvalidRule : ErrorHandler
     object TokenExpired : ErrorHandler
     object InvalidToken : ErrorHandler
@@ -213,6 +211,7 @@ sealed interface ErrorHandler {
     object NotFound : ErrorHandler
     object InternalServer : ErrorHandler
     object Forbidden : ErrorHandler
+    object UnAuthorized : ErrorHandler
     //endregion
 }
 
@@ -356,7 +355,6 @@ fun handelTokenException(
     onError: (t: ErrorHandler) -> Unit,
 ) {
     when (exception) {
-        is UnauthorizedException -> onError(ErrorHandler.UnAuthorized)
         is InvalidRuleException -> onError(ErrorHandler.InvalidRule)
         is TokenExpiredException -> onError(ErrorHandler.TokenExpired)
         is InvalidTokenException -> onError(ErrorHandler.InvalidToken)

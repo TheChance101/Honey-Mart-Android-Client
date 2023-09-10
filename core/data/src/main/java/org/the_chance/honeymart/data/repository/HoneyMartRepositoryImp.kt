@@ -24,7 +24,6 @@ import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
-import org.the_chance.honeymart.data.source.remote.models.MarketApprovalDto
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
 import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.model.Category
