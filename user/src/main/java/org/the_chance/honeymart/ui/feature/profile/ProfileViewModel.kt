@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
-import org.the_chance.honeymart.domain.usecase.user.UserProfileManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProfileManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject

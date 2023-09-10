@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
-import org.the_chance.honeymart.domain.usecase.user.UserOrderDetailsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserOrderDetailsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject

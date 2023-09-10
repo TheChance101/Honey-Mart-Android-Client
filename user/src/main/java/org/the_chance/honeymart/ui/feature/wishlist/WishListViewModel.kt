@@ -2,13 +2,13 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.user.UserWishListManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
-    private val wishListOperationsUseCase: UserWishListManagerUseCase   ,
+    private val wishListOperationsUseCase: UserWishListManagerUseCase,
     ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 

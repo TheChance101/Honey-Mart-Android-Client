@@ -422,10 +422,11 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> {
+    override suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto> {
         return wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
+            append("deviceToken", deviceToken)
         }))
     }
 
