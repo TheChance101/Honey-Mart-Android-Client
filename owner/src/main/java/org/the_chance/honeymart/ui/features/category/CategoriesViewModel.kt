@@ -2,6 +2,9 @@ package org.the_chance.honeymart.ui.features.category
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import arrow.optics.Every
+import arrow.optics.copy
+import arrow.optics.dsl.every
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
@@ -84,21 +87,20 @@ class CategoriesViewModel @Inject constructor(
         val updatedCategories = updateSelectedCategory(_state.value.categories, categoryId)
         val position = updatedCategories.indexOfFirst { it.categoryId == categoryId }
 
-        _state.update {
-            it.copy(
-                categories = updatedCategories,
-                position = position,
-                isLoading = false,
-                newCategory = it.newCategory.copy(categoryId = categoryId),
-                showScreenState = it.showScreenState.copy(
-                    showAddCategory = false,
-                    showUpdateCategory = false,
-                    showFab = true,
-                ),
-                newProducts = it.newProducts.copy(categoryId = categoryId)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.categories set updatedCategories
+                CategoriesUiState.position set position
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.newCategory.categoryId set categoryId
+                CategoriesUiState.newProducts.categoryId set categoryId
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddCategory set false
+                    ShowScreenState.showUpdateCategory set false
+                    ShowScreenState.showFab set true
+                }
+            }
         }
-
         getProductsByCategoryId(categoryId = categoryId)
     }
 
@@ -123,13 +125,15 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onDeleteCategorySuccess() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                position = 0,
-                showScreenState = it.showScreenState.copy(showFab = true, showAddProduct = false)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.position set 0
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showFab set true
+                    ShowScreenState.showAddProduct set false
+                }
+            }
         }
         getAllCategory()
     }
@@ -153,17 +157,19 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun addCategorySuccess(success: String) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                newCategory = it.newCategory.copy(newCategoryName = ""),
-                categoryIcons = it.categoryIcons.map { categoryIconState ->
-                    categoryIconState.copy(isSelected = false)
-                },
-                snackBar = it.snackBar.copy(isShow = true, message = success),
-                showScreenState = it.showScreenState.copy(showFab = true)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.newCategory.newCategoryName set ""
+                CategoriesUiState.categoryIcons.every(Every.list()).isSelected set false
+                inside(CategoriesUiState.snackBar) {
+                    SnackBarState.isShow set true
+                    SnackBarState.message set success
+                }
+                CategoriesUiState.showScreenState.showFab set true
+            }
         }
+
         getAllCategory()
         resetShowState(Visibility.ADD_CATEGORY)
     }
@@ -171,42 +177,26 @@ class CategoriesViewModel @Inject constructor(
     override fun resetShowState(visibility: Visibility) {
         when (visibility) {
             Visibility.ADD_CATEGORY -> {
-                _state.update {
-                    it.copy(
-                        showScreenState = it.showScreenState.copy(
-                            showAddCategory = !it.showScreenState.showAddCategory
-                        ),
-                    )
+                _state.update { state ->
+                    state.copy { CategoriesUiState.showScreenState.showAddCategory set !state.showScreenState.showAddCategory }
                 }
             }
 
             Visibility.UPDATE_CATEGORY -> {
-                _state.update {
-                    it.copy(
-                        showScreenState = it.showScreenState.copy(
-                            showUpdateCategory = !it.showScreenState.showUpdateCategory
-                        ),
-                    )
+                _state.update { state ->
+                    state.copy { CategoriesUiState.showScreenState.showUpdateCategory set !state.showScreenState.showUpdateCategory }
                 }
             }
 
             Visibility.DELETE_CATEGORY -> {
-                _state.update {
-                    it.copy(
-                        showScreenState = it.showScreenState.copy(
-                            showDialog = !it.showScreenState.showDialog
-                        ),
-                    )
+                _state.update { state ->
+                    state.copy { CategoriesUiState.showScreenState.showDialog set !state.showScreenState.showDialog }
                 }
             }
 
             Visibility.DELETE_PRODUCT -> {
-                _state.update {
-                    it.copy(
-                        showScreenState = it.showScreenState.copy(
-                            showDeleteDialog = !it.showScreenState.showDeleteDialog
-                        ),
-                    )
+                _state.update { state ->
+                    state.copy { CategoriesUiState.showScreenState.showDeleteDialog set !state.showScreenState.showDeleteDialog }
                 }
             }
         }
@@ -231,21 +221,17 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateCategorySuccess() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                newCategory = it.newCategory.copy(newCategoryName = ""),
-                categoryIcons = it.categoryIcons.map { categoryIconState ->
-                    categoryIconState.copy(isSelected = false)
-                },
-                showScreenState = it.showScreenState.copy(showFab = true)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.newCategory.newCategoryName set ""
+                CategoriesUiState.categoryIcons.every(Every.list()).isSelected set false
+                CategoriesUiState.showScreenState.showFab set true
+            }
         }
         resetShowState(Visibility.UPDATE_CATEGORY)
         getAllCategory()
     }
-
     // endregion
 
     // region Category Products
@@ -267,17 +253,15 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onClickProduct(productId: Long) {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showAddProduct = false,
-                    showFab = false,
-                    showProductDetails = true,
-                ),
-                newProducts = it.newProducts.copy(id = productId,
-                )
-            )
-
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set false
+                    ShowScreenState.showFab set false
+                    ShowScreenState.showProductDetails set true
+                }
+                CategoriesUiState.newProducts.id set productId
+            }
         }
         val productID = _state.value.newProducts.id
         getProductDetails(productID)
@@ -302,16 +286,19 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onAddProductSuccess(product: ProductEntity) {
-        _state.update {
-            it.copy(
-                error = null,
-                newProducts = it.newProducts.copy(id = product.productId),
-                showScreenState = it.showScreenState.copy(showAddProduct = false, showFab = true),
-
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.id set product.productId
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set false
+                    ShowScreenState.showFab set true
+                }
+            }
         }
-        addProductImage(productId = product.productId,
-            images = _state.value.newProducts.images)
+        addProductImage(
+            productId = product.productId,
+            images = _state.value.newProducts.images
+        )
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
@@ -324,17 +311,16 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onAddProductImagesSuccess() {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                newProducts = it.newProducts.copy(
-                    name = "",
-                    description = "",
-                    price = " ",
-                    images = emptyList(),
-                ),
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                inside(CategoriesUiState.newProducts) {
+                    NewProductsUiState.name set ""
+                    NewProductsUiState.description set ""
+                    NewProductsUiState.price set ""
+                    NewProductsUiState.images set emptyList()
+                }
+            }
         }
         val categoryId = _state.value.newCategory.categoryId
         getProductsByCategoryId(categoryId = categoryId)
@@ -342,49 +328,58 @@ class CategoriesViewModel @Inject constructor(
 
     override fun onProductNameChanged(name: String) {
         val productNameState = getNameState(name)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productNameState = productNameState, name = name)
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.newProducts) {
+                    NewProductsUiState.name set name
+                    NewProductsUiState.productNameState set productNameState
+                }
+            }
         }
     }
 
     override fun onProductPriceChanged(price: String) {
         val priceState = getPriceState(price)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productPriceState = priceState, price = price)
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.newProducts) {
+                    NewProductsUiState.productPriceState set priceState
+                    NewProductsUiState.price set price
+                }
+            }
         }
     }
 
     override fun onProductDescriptionChanged(description: String) {
         val productDescriptionState = getDescriptionState(description)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(
-                    productDescriptionState = productDescriptionState,
-                    description = description
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.newProducts) {
+                    NewProductsUiState.productDescriptionState set productDescriptionState
+                    NewProductsUiState.description set description
+                }
+            }
         }
     }
 
     override fun onImagesSelected(uris: List<ByteArray>) {
-        _state.update { it.copy(newProducts = it.newProducts.copy(images = uris)) }
+        _state.update { it.copy { CategoriesUiState.newProducts.images set uris } }
     }
 
     override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
         val updatedImages = _state.value.newProducts.images.toMutableList()
         updatedImages.remove(imageUri)
-        _state.update { it.copy(newProducts = it.newProducts.copy(images = updatedImages)) }
+        _state.update { it.copy { CategoriesUiState.newProducts.images set updatedImages } }
     }
 
     override fun onClickAddProductButton() {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(showFab = false, showAddProduct = true)
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set true
+                    ShowScreenState.showFab set false
+                }
+            }
         }
     }
 
@@ -429,45 +424,45 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductDetailsSuccess() {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showProductUpdate = false,
-                    showProductDetails = false,
-                    showFab = true
-                )
-                )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showProductUpdate set false
+                    ShowScreenState.showProductDetails set false
+                    ShowScreenState.showFab set true
+                }
+            }
         }
         onUpdateProductImage(state.value.newProducts.id, state.value.newProducts.images)
     }
 
     override fun onUpdateProductName(productName: String) {
         val productNameState = getNameState(productName)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productNameState = productNameState),
-                productDetails = it.productDetails.copy(productName = productName)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productNameState set productNameState
+                CategoriesUiState.productDetails.productName set productName
+            }
         }
     }
 
     override fun onUpdateProductPrice(productPrice: String) {
         val productPriceState = getPriceState(productPrice)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productPriceState = productPriceState),
-                productDetails = it.productDetails.copy(productPrice = productPrice)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productPriceState set productPriceState
+                CategoriesUiState.productDetails.productPrice set productPrice
+            }
         }
     }
 
     override fun onUpdateProductDescription(productDescription: String) {
         val descriptionState = getDescriptionState(productDescription)
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productDescriptionState = descriptionState),
-                productDetails = it.productDetails.copy(productDescription = productDescription)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productDescriptionState set descriptionState
+                CategoriesUiState.productDetails.productDescription set productDescription
+            }
         }
     }
 
@@ -480,39 +475,40 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onUpdateProductImageSuccess() {
-        _state.update { it.copy(isLoading = false, error = null,
-            newProducts = it.newProducts.copy(images = emptyList()),
-        ) }
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.newProducts.images set emptyList()
+            }
+        }
         getProductsByCategoryId(state.value.newCategory.categoryId)
 
     }
 
     override fun onClickUpdateProductDetails() {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showAddProduct = false,
-                    showFab = false,
-                    showProductDetails = false,
-                    showProductUpdate = true
-                ),
-                productDetails = it.productDetails.copy(
-                    productPrice = it.productDetails.productPrice.removeDollarSign()
-                ),
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set false
+                    ShowScreenState.showFab set false
+                    ShowScreenState.showProductDetails set false
+                    ShowScreenState.showProductUpdate set true
+                }
+                CategoriesUiState.productDetails.productPrice set state.productDetails.productPrice.removeDollarSign()
+            }
         }
     }
 
     override fun onClickCancel() {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showAddProduct = false,
-                    showFab = false,
-                    showProductDetails = true,
-                    showProductUpdate = false
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set false
+                    ShowScreenState.showFab set false
+                    ShowScreenState.showProductDetails set true
+                    ShowScreenState.showProductUpdate set false
+                }
+            }
         }
     }
     //endregion
@@ -528,12 +524,16 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun onSuccessDeleteProduct() {
-        _state.update {
-            it.copy(
-                isLoading = false, isError = false, showScreenState = it.showScreenState.copy(
-                    showProductDetails = false, showProductUpdate = false, showAddProduct = true
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.isError set false
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showAddProduct set true
+                    ShowScreenState.showProductDetails set false
+                    ShowScreenState.showProductUpdate set false
+                }
+            }
         }
         getProductsByCategoryId(_state.value.newCategory.categoryId)
     }
@@ -542,18 +542,17 @@ class CategoriesViewModel @Inject constructor(
 
     // region Helper
     override fun resetSnackBarState() {
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+        _state.update { it.copy { CategoriesUiState.snackBar.isShow set false } }
     }
 
     override fun onNewCategoryNameChanged(categoryName: String) {
         val categoryNameState: ValidationState = getNameState(categoryName)
 
-        _state.update {
-            it.copy(
-                newCategory = it.newCategory.copy(
-                    newCategoryName = categoryName, categoryNameState = categoryNameState
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newCategory.newCategoryName set categoryName
+                CategoriesUiState.newCategory.categoryNameState set categoryNameState
+            }
         }
     }
 
@@ -561,11 +560,11 @@ class CategoriesViewModel @Inject constructor(
         val updateIcons = _state.value.categoryIcons.map { iconState ->
             iconState.copy(isSelected = iconState.categoryIconId == categoryIconId)
         }
-        _state.update {
-            it.copy(
-                categoryIcons = updateIcons,
-                newCategory = it.newCategory.copy(newIconId = categoryIconId)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newCategory.newIconId set categoryIconId
+                CategoriesUiState.categoryIcons set updateIcons
+            }
         }
     }
 
@@ -606,18 +605,18 @@ class CategoriesViewModel @Inject constructor(
     }
 
     fun resetStateScreen() {
-        _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showProductDetails = false,
-                    showAddCategory = false,
-                    showUpdateCategory = false,
-                    showAddProduct = false,
-                    showProductUpdate = false,
-                    showCategoryProducts = false,
-                    showFab = true,
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                inside(CategoriesUiState.showScreenState) {
+                    ShowScreenState.showProductDetails set false
+                    ShowScreenState.showAddCategory set false
+                    ShowScreenState.showUpdateCategory set false
+                    ShowScreenState.showAddProduct set false
+                    ShowScreenState.showProductUpdate set false
+                    ShowScreenState.showCategoryProducts set false
+                    ShowScreenState.showFab set true
+                }
+            }
         }
     }
 }
