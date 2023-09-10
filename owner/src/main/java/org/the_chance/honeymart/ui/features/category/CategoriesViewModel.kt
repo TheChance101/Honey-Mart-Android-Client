@@ -68,13 +68,12 @@ class CategoriesViewModel @Inject constructor(
         } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
         }
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                categories = updatedCategories,
-                position = 0
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.isLoading set false
+                CategoriesUiState.categories set updatedCategories
+                CategoriesUiState.position set 0
+            }
         }
         getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
 
@@ -305,8 +304,10 @@ class CategoriesViewModel @Inject constructor(
                 }
             }
         }
-        addProductImage(productId = product.productId,
-            images = _state.value.newProducts.images)
+        addProductImage(
+            productId = product.productId,
+            images = _state.value.newProducts.images
+        )
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
