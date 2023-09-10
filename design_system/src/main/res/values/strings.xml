@@ -101,14 +101,15 @@
     <string name="icon">icon</string>
     <string name="warning_icon">warning Icon</string>
     <string name="empty_product">empty product</string>
+    <string name="empty_coupons">empty coupons</string>
     <string name="there_is_no_product_here">There is no product here !!</string>
+    <string name="there_is_no_coupons_here">There is no coupons here !!</string>
     <string name="there_is_no_categories_here">There is no categories here !!</string>
     <string name="cart_check_icon">cart check icon</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="copy_button">Copy button</string>
     <string name="icon_visible">icon visible</string>
     <string name="there_are_no_order_for_this_day">There are no order for this \n day!!</string>
-    <string name="all">all</string>
     <string name="new_order">new order</string>
     <string name="cancelled">Cancelled</string>
     <string name="new_products">New Products</string>
@@ -175,6 +176,7 @@
     <string name="you_ll_receive_a_notification_after_placing_your_order">You’ll receive a notification after placing your order</string>
     <string name="order_title">Order</string>
     <string name="delivery">Delivery</string>
+    <string name="shop_detail">Shop details</string>
     <string name="no_deal">No. Deal</string>
     <string name="offer_price">Offer Price</string>
     <string name="expiration_date">Expiration Date</string>
@@ -199,4 +201,28 @@
     <string name="authorization_background_image">authorization background image</string>
     <string name="more">More</string>
 
+
+    <string name="pending">Pending</string>
+    <string name="approved">Approved</string>
+    <string name="new_requests">2 new requests</string>
+    <string name="approve">Approve</string>
+    <string name="product">Product</string>
+    <string name="add_new_coupon">Add New Coupon</string>
+    <string name="discount_percentage_can_t_be_blank">Discount Percentage can\'t be blank</string>
+    <string name="invalid_coupon_discount_percentage">Invalid  Coupon Discount Percentage</string>
+    <string name="coupon_count">Coupon Count</string>
+    <string name="coupon_count_can_t_be_blank">Coupon Count can\'t be blank</string>
+    <string name="invalid_coupon_count">Invalid Coupon Count</string>
+    <string name="select_product_to_start_adding_your_coupon">Select Product to start adding your coupon</string>
+    <string name="offer_percentage">Offer Percentage</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="all_capitalized">All</string>
+
+    <string name="all">All</string>
+    <string name="valid">Valid</string>
+    <string name="expired">Expired</string>
+    <string name="sort_by_price">Sort by price</string>
+    <string name="random">Random</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 </resources>

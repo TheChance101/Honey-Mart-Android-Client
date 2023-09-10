@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.the_chance.honeymart.LocalNavigationProvider
+import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.components.HoneyAuthScaffold
 import org.the_chance.honeymart.ui.features.category.navigateToCategoryScreen
@@ -33,18 +33,37 @@ fun SignupScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    SignupContent(viewModel = viewModel, listener = viewModel, state = state)
+    val context = LocalContext.current
+    val navController = LocalNavigationProvider.current
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                SignupUiEffect.ShowValidationToast -> {
+                    Toast.makeText(
+                        context,
+                        state.validationToast.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                SignupUiEffect.ClickLoginEffect -> {
+                    navController.navigateToLogin()
+                }
+
+                SignupUiEffect.NavigateToApproveScreenEffect -> {
+                    navController.navigateToCategoryScreen()
+                }
+            }
+        }
+    }
+    SignupContent(listener = viewModel, state = state)
 }
 
 @Composable
 fun SignupContent(
-    viewModel: SignUpViewModel,
     state: SignupUiState,
     listener: SignupInteractionListener,
 ) {
-    val context = LocalContext.current
-    val navController = LocalNavigationProvider.current
-
     HoneyAuthScaffold(
         modifier = Modifier.imePadding()
     ) {
@@ -65,28 +84,6 @@ fun SignupContent(
 
         ContentVisibility(state = state.isOwnerAccountCreated) {
             MarketInfoScreen()
-        }
-    }
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
-                SignupUiEffect.ShowValidationToast -> {
-                    Toast.makeText(
-                        context,
-                        state.validationToast.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                SignupUiEffect.ClickLoginEffect -> {
-                    navController.navigateToLogin()
-                }
-
-                SignupUiEffect.NavigateToApproveScreenEffect -> {
-                    navController.navigateToCategoryScreen()
-                }
-            }
         }
     }
 }

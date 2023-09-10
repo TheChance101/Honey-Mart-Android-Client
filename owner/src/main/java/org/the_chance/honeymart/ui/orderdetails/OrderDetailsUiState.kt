@@ -1,7 +1,6 @@
 package org.the_chance.honeymart.ui.orderdetails
 
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class OrderDetailsUiState(
@@ -31,7 +30,7 @@ data class OrderDetailsProductUiState(
     val images: List<String> = emptyList(),
 )
 
-fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
+fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
     return map {
         OrderDetailsProductUiState(
             id = it.id,
@@ -43,11 +42,11 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
     }
 }
 
-fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
+fun OrderDetails.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
     return OrderParentDetailsUiState(
         totalPrice = totalPrice,
         state = state,
-        date = date,
+        date = date.toString(),
         orderId = orderId,
         product = products.toOrderDetailsProductUiState()
     )

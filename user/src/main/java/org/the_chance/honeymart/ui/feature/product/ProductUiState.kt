@@ -1,9 +1,10 @@
 package org.the_chance.honeymart.ui.feature.product
 
+import android.icu.text.DecimalFormat
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.category.CategoryUiState
 
@@ -34,9 +35,12 @@ data class ProductUiState(
     val productPrice: Double = 0.0,
     val isFavorite: Boolean = false,
     val productImages: List<String> = emptyList()
-)
+){
+    val imageUrl= productImages.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val priceInCurrency=productPrice.formatCurrencyWithNearestFraction()
+}
 
-fun ProductEntity.toProductUiState(): ProductUiState {
+fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
@@ -53,3 +57,7 @@ fun ProductsUiState.emptyPlaceHolder() = this.isEmptyProducts &&
         !this.isError && !this.isLoadingProduct
 fun ProductsUiState.loading() = this.isLoadingProduct && !this.isEmptyProducts
 
+fun Double.formatCurrencyWithNearestFraction(): String {
+    val decimalFormat = DecimalFormat("'$'#,##0.0")
+    return decimalFormat.format(this)
+}

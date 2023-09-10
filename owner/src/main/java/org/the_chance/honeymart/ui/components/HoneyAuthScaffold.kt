@@ -44,7 +44,7 @@ fun HoneyAuthScaffold(
 
         Row {
             Image(
-                painter = painterResource(id = org.the_chance.owner.R.drawable.auth_image),
+                painter = painterResource(id = R.drawable.auth_image),
                 contentDescription = stringResource(R.string.authorization_background_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxHeight()

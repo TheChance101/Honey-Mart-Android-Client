@@ -2,8 +2,7 @@ package org.the_chance.honeymart.ui.features.orders
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
@@ -23,13 +22,13 @@ class OrdersViewModel @Inject constructor(
 
     init {
         getAllMarketOrder(OrderStates.ALL)
-        updateStateOrder(_state.value.orderId, OrderStates.PROCESSING)
         resetStateScreen()
     }
 
     override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = orderState)
+            it.copy(isLoading = true, isError = false, orderStates = orderState,
+            showState = it.showState.copy(showOrderDetails = false))
         }
         tryToExecute(
             { getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
@@ -60,7 +59,7 @@ class OrdersViewModel @Inject constructor(
         getOrderProductDetails(orderId)
     }
 
-    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetailsEntity) {
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetails) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -85,7 +84,7 @@ class OrdersViewModel @Inject constructor(
         )
     }
 
-    private fun onGetOrderProductDetailsSuccess(products: List<OrderProductDetailsEntity>) {
+    private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -105,21 +104,23 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(
                 product = product,
-                showState = it.showState.copy(showProductDetails = true)
+                showState = it.showState.copy(showProductDetails = true,
+                showOrderDetails = false)
             )
         }
     }
 
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
-        getOrderDetails(id)
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
         _state.update {
             it.copy(
                 orders = updatedOrders,
-                orderId = id
+                orderId = id,
+                showState = it.showState.copy(showOrderDetails = true)
             )
         }
+        getOrderDetails(id)
     }
 
     private fun updateSelectedOrder(
@@ -206,6 +207,7 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 showState = it.showState.copy(
                     showProductDetails = false,
+                    showOrderDetails = false
                 )
             )
         }

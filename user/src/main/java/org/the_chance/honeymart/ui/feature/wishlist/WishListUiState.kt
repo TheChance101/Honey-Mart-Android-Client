@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.wishlist
 
 import android.icu.text.DecimalFormat
-import org.the_chance.honeymart.domain.model.WishListEntity
+import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class WishListUiState(
@@ -26,7 +26,7 @@ data class WishListProductUiState(
     val productImages: List<String> = emptyList()
 )
 
-fun WishListEntity.toWishListProductUiState(): WishListProductUiState {
+fun WishList.toWishListProductUiState(): WishListProductUiState {
     return WishListProductUiState(
         productId = productId,
         productName = name,

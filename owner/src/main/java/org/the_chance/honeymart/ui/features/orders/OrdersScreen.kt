@@ -75,19 +75,25 @@ fun OrdersContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                ContentVisibility(state = state.orders.isNotEmpty()
-                        &&state.products.isNotEmpty()
-                        && !state.showState.showProductDetails) {
+                ContentVisibility(
+                    state = state.orders.isNotEmpty()
+                            && state.products.isNotEmpty()
+                            && !state.showState.showProductDetails
+                            && state.showState.showOrderDetails
+                ) {
                     OrderDetailsContent(
                         state = state,
                         listener = listener
                     )
                 }
-                ContentVisibility(state = state.showState.showProductDetails) {
-                    ProductDetailsInOrderContent(titleScreen =
-                    stringResource(id = R.string.product_details), state =state )
-
+                ContentVisibility(state = state.showState.showProductDetails &&
+                        !state.showState.showOrderDetails) {
+                    ProductDetailsInOrderContent(
+                        titleScreen =
+                        stringResource(id = R.string.product_details), state = state
+                    )
                 }
+                Loading(state = state.isLoading && state.showState.showOrderDetails)
             }
         }
     }

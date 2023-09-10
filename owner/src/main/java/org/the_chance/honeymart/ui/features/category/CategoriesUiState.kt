@@ -4,8 +4,8 @@ import androidx.paging.PagingData
 import arrow.optics.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.util.toPriceFormat
@@ -123,7 +123,7 @@ enum class Visibility {
 // endregion
 
 // region Mapper
-fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
+fun List<Category>.toCategoryUiState(): List<CategoryUiState> {
     return map {
         CategoryUiState(
             categoryId = it.categoryId,
@@ -133,7 +133,7 @@ fun List<CategoryEntity>.toCategoryUiState(): List<CategoryUiState> {
     }
 }
 
-fun ProductEntity.toProductUiState(): ProductUiState {
+fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
@@ -143,7 +143,7 @@ fun ProductEntity.toProductUiState(): ProductUiState {
     )
 }
 
-fun ProductEntity.toProductDetailsUiState(): ProductUiState {
+fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
@@ -169,7 +169,7 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 fun CategoriesUiState.showButton(): Boolean {
     return categories.any { category ->
         newCategory.newCategoryName.isNotBlank() &&
-                !category.categoryIconUIState.isSelected
+                category.categoryIconUIState.isSelected
                 && !isLoading &&
                 newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
     }
@@ -199,6 +199,7 @@ fun String.removeDollarSign(): String {
 
 fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts
+            && !showScreenState.showAddCategory
 
 fun CategoriesUiState.errorPlaceHolderCondition() = isError
 
@@ -225,9 +226,12 @@ fun CategoriesUiState.showCategoryProductsInProduct() =
     !isLoading && !showScreenState.showUpdateCategory
             && !showScreenState.showAddCategory &&
             !showScreenState.showAddProduct &&
-            showScreenState.showFab
+            showScreenState.showFab &&
+            categories.isNotEmpty()
 
-fun CategoriesUiState.showCategoryProductsInCategory() = !isLoading && !showScreenState.showFab
+fun CategoriesUiState.showCategoryProductsInCategory() =
+    !isLoading && !showScreenState.showFab
+
 
 fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categories.isEmpty()
 

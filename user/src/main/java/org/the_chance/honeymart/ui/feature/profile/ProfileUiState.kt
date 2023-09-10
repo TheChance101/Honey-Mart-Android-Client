@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.ui.feature.profile
 
-import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class ProfileUiState(
@@ -20,7 +20,7 @@ data class ProfileUiState(
     )
 }
 
-fun ProfileUserEntity.toProfileUiState(): ProfileUiState.AccountState {
+fun UserProfile.toProfileUiState(): ProfileUiState.AccountState {
     return ProfileUiState.AccountState(
         userId = userId,
         fullName = fullName,
@@ -28,3 +28,6 @@ fun ProfileUserEntity.toProfileUiState(): ProfileUiState.AccountState {
         profileImage = profileImage,
     )
 }
+
+
+fun ProfileUiState.showProfile() = !isConnectionError && !isError && !isLoading

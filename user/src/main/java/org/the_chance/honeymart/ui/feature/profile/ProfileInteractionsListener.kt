@@ -11,4 +11,5 @@ interface ProfileInteractionsListener {
     fun onImageSelected(image: ByteArray)
     fun getData()
     fun onClickLogin()
+    fun onClickCameraIcon()
 }

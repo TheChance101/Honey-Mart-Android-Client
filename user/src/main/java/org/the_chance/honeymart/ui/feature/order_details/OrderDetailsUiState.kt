@@ -1,8 +1,11 @@
 package org.the_chance.honeymart.ui.feature.order_details
 
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import android.annotation.SuppressLint
+import android.icu.text.DecimalFormat
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import java.text.SimpleDateFormat
+import java.util.Date
 
 data class OrderDetailsUiState(
     val isProductsLoading: Boolean = false,
@@ -17,9 +20,15 @@ data class OrderParentDetailsUiState(
     val totalPrice: Double = 0.0,
     val date: String = "",
     val state: Int = 1,
-)
- {
-    val  stateText = if(state == 1 ) "Processing" else  if(state == 2 ) "Done" else "Cancelled"
+) {
+    val stateText = when (state) {
+        1 -> "Pending"
+        2 -> "Processing"
+        3 -> "Done"
+        4 -> "Cancelled"
+        else -> "Declined"
+    }
+    val totalPriceCurrency = formatCurrencyWithNearestFraction(totalPrice)
 }
 
 data class OrderDetailsProductUiState(
@@ -28,9 +37,12 @@ data class OrderDetailsProductUiState(
     val count: Int = 0,
     val price: Double = 0.0,
     val images: List<String> = emptyList(),
-)
+) {
+    val imageUrl = images.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val priceCurrency = formatCurrencyWithNearestFraction(price)
+}
 
-fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
+fun OrderDetails.ProductDetails.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
     return OrderDetailsProductUiState(
         id = id,
         name = name,
@@ -40,10 +52,21 @@ fun OrderProductDetailsEntity.toOrderDetailsProductUiState(): OrderDetailsProduc
     )
 }
 
-fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
+fun OrderDetails.toOrderParentDetailsUiState(): OrderParentDetailsUiState {
     return OrderParentDetailsUiState(
         totalPrice = totalPrice,
         state = state,
-        date = date,
+        date = date.toDateFormat(),
     )
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Date.toDateFormat(): String {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
+    return dateFormat.format(this)
+}
+
+fun formatCurrencyWithNearestFraction(amount: Double): String {
+    val decimalFormat = DecimalFormat("#,##0.0'$'")
+    return decimalFormat.format(amount)
 }

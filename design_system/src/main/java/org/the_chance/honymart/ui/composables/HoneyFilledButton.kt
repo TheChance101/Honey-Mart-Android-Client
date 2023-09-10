@@ -4,16 +4,20 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
@@ -30,6 +34,7 @@ fun HoneyFilledButton(
     isLoading: Boolean = false,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     background: Color = MaterialTheme.colorScheme.primary,
+    icon: Int = 0
 ) {
     Button(
         onClick = onClick,
@@ -53,11 +58,23 @@ fun HoneyFilledButton(
             enter = fadeIn(animationSpec = tween(durationMillis = 500)),
             exit = fadeOut(animationSpec = tween(durationMillis = 500))
         ) {
-            Text(
-                text = label,
-                style = Typography.bodyMedium,
-                color = contentColor
-            )
+
+            Row {
+                if (icon > 0) {
+                    Icon(
+                        painter = painterResource(id = icon),
+                        contentDescription = label,
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.dimens.space8)
+                            .size(MaterialTheme.dimens.icon24)
+                    )
+                }
+                Text(
+                    text = label,
+                    style = Typography.bodyMedium,
+                    color = contentColor
+                )
+            }
         }
     }
 }
@@ -69,7 +86,8 @@ private fun HoneyMartButtonPreview() {
     HoneyMartTheme {
         HoneyFilledButton(
             label = stringResource(id = R.string.Sign_up),
-            onClick = {}
+            onClick = {},
+            icon = R.drawable.icon_cart
         )
     }
 }

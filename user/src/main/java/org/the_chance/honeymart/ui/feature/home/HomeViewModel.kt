@@ -2,12 +2,12 @@ package org.the_chance.honeymart.ui.feature.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.CouponEntity
-import org.the_chance.honeymart.domain.model.MarketEntity
-import org.the_chance.honeymart.domain.model.OrderEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
-import org.the_chance.honeymart.domain.model.RecentProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Coupon
+import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.Order
+import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
@@ -20,6 +20,9 @@ import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.coupons.toCouponUiState
+import org.the_chance.honeymart.ui.feature.markets.toMarketUiState
+import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -63,7 +66,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun onGetMarketSuccess(markets: List<MarketEntity>) {
+    private fun onGetMarketSuccess(markets: List<Market>) {
         _state.update {
             it.copy(markets = markets.map { market -> market.toMarketUiState() })
         }
@@ -94,7 +97,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun onGetAllCategoriesInMarketSuccess(categories: List<CategoryEntity>) {
+    private fun onGetAllCategoriesInMarketSuccess(categories: List<Category>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -154,7 +157,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onGetCouponsSuccess(coupons: List<CouponEntity>) {
+    private fun onGetCouponsSuccess(coupons: List<Coupon>) {
         _state.update {
             it.copy(
                 isLoading = false,
@@ -173,7 +176,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun onGetRecentProductsSuccess(products: List<RecentProductEntity>) {
+    private fun onGetRecentProductsSuccess(products: List<RecentProduct>) {
         _state.update {
             it.copy(
                 recentProducts = products.map { product -> product.toRecentProductUiState() }
@@ -202,7 +205,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun onGetDoneOrdersSuccess(orders: List<OrderEntity>) {
+    private fun onGetDoneOrdersSuccess(orders: List<Order>) {
         _state.update {
             it.copy(
                 lastPurchases = orders.map { order -> order.toOrderUiState() })
@@ -230,7 +233,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun onGetDiscoverProductsSuccess(products: List<ProductEntity>) {
+    private fun onGetDiscoverProductsSuccess(products: List<Product>) {
         _state.update {
             it.copy(
                 discoverProducts = products.map { product -> product.toProductUiState() }
@@ -303,6 +306,10 @@ class HomeViewModel @Inject constructor(
         effectActionExecutor(_effect, HomeUiEffect.NavigateToMarketScreenEffect(marketId))
     }
 
+    override fun onClickSeeAllMarkets() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToSeeAllMarketEffect)
+    }
+
     override fun onClickGetCoupon(couponId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
@@ -332,6 +339,11 @@ class HomeViewModel @Inject constructor(
     override fun onClickProductItem(productId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToProductsDetailsScreenEffect(productId))
     }
+
+    override fun onClickLastPurchases(orderId: Long) {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderDetailsScreenEffect(orderId))
+    }
+
 
     override fun onClickFavoriteDiscoverProduct(productId: Long) {
         _state.update { it.copy(isLoading = true) }
@@ -367,7 +379,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess() {
-        _state.update { it.copy(isLoading = false) }
         getWishListProducts()
     }
 
@@ -393,7 +404,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListSuccess() {
-        _state.update { it.copy(isLoading = false) }
         getWishListProducts()
     }
 
@@ -406,6 +416,11 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    override fun onClickSeeAllNewProducts() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToNewProductsScreenEffect)
+    }
+
     /// endregion
 }
 

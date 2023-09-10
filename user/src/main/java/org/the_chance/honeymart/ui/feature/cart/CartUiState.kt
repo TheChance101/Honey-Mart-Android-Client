@@ -1,8 +1,7 @@
 package org.the_chance.honeymart.ui.feature.cart
 
 import android.icu.text.DecimalFormat
-import org.the_chance.honeymart.domain.model.CartEntity
-import org.the_chance.honeymart.domain.model.CartProductsEntity
+import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class CartUiState(
@@ -11,39 +10,44 @@ data class CartUiState(
     val error: ErrorHandler? = null,
     val total: Double = 0.0,
     val products: List<CartListProductUiState> = emptyList(),
-    val bottomSheetIsDisplayed: Boolean = false
+    val bottomSheetIsDisplayed: Boolean = false,
+    val showDialog :Boolean = false
 )
 
 data class CartListProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
-    val productPrice: Double = formatCurrencyWithNearestFraction(0.0).toDouble(),
+    val productPrice: Double = 0.0,
+    val totalPrice: Double = 0.0,
     val productCount: Int = 0,
     val productImage: List<String> = emptyList()
-)
+) {
+    val productImageUrl = productImage.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
+    val productPriceFormatted = formatCurrencyWithNearestFraction(totalPrice)
+}
 
-fun CartEntity.toCartListProductUiState(): CartUiState {
+fun Cart.toCartListProductUiState(): CartUiState {
     return CartUiState(
         total = total,
         products = products.toCartProductUiState()
     )
 }
 
-fun List<CartProductsEntity>.toCartProductUiState(): List<CartListProductUiState> {
+fun List<Cart.Product>.toCartProductUiState(): List<CartListProductUiState> {
     return this.map {
         CartListProductUiState(
             productId = it.id,
             productName = it.name,
             productPrice = it.price,
             productCount = it.count,
-            productImage = it.images
+            productImage = it.images,
+            totalPrice = it.price * it.count
         )
     }
 }
 
 
-
-fun formatCurrencyWithNearestFraction(amount: Double):String {
+fun formatCurrencyWithNearestFraction(amount: Double): String {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     return decimalFormat.format(amount)
 }

@@ -8,8 +8,8 @@ import arrow.optics.dsl.every
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.CategoryEntity
-import org.the_chance.honeymart.domain.model.ProductEntity
+import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.AddProductImagesUseCase
 import org.the_chance.honeymart.domain.usecase.AddProductUseCase
 import org.the_chance.honeymart.domain.usecase.AddToCategoryUseCase
@@ -17,6 +17,7 @@ import org.the_chance.honeymart.domain.usecase.DeleteCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.DeleteProductByIdUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
+import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateImageProductUseCase
@@ -40,11 +41,11 @@ class CategoriesViewModel @Inject constructor(
     private val deleteProductByIdUseCase: DeleteProductByIdUseCase,
     private val updateProductDetailsUseCase: UpdateProductDetailsUseCase,
     private val updateProductImagesUseCase: UpdateImageProductUseCase,
+    private val getOwnerMarketId: GetOwnerInfoUseCase,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
-    private val marketID: Long = 5L
 
     init {
         getCategoryImages()
@@ -54,20 +55,29 @@ class CategoriesViewModel @Inject constructor(
     override fun getAllCategory() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllCategories(marketID) },
+            { getAllCategories(getOwnerMarketId.getOwnerMarketId()) },
             ::onGetCategorySuccess,
             ::onGetCategoryError
         )
     }
 
-    private fun onGetCategorySuccess(categories: List<CategoryEntity>) {
+    private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
-        val updatedCategories =
+        val updatedCategories = if (categories.isEmpty()) {
+            categoriesUiState
+        } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
-
-        _state.update {
-            it.copy(isLoading = false, error = null, categories = updatedCategories, position = 0)
         }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = null,
+                categories = updatedCategories,
+                position = 0
+            )
+        }
+        getProductsByCategoryId(_state.value.categories[_state.value.position].categoryId)
+
     }
 
     private fun onGetCategoryError(error: ErrorHandler) {
@@ -212,7 +222,7 @@ class CategoriesViewModel @Inject constructor(
                     imageId = category.newCategory.newIconId,
                     name = category.newCategory.newCategoryName,
                     id = category.newCategory.categoryId,
-                    marketId = marketID
+                    marketId = getOwnerMarketId.getOwnerMarketId()
                 )
             },
             { onUpdateCategorySuccess() },
@@ -244,7 +254,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProductsSuccess(products: PagingData<ProductEntity>) {
+    private fun onGetProductsSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
 
         _state.update {
@@ -285,7 +295,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onAddProductSuccess(product: ProductEntity) {
+    private fun onAddProductSuccess(product: Product) {
         _state.update { state ->
             state.copy {
                 CategoriesUiState.newProducts.id set product.productId
@@ -295,10 +305,8 @@ class CategoriesViewModel @Inject constructor(
                 }
             }
         }
-        addProductImage(
-            productId = product.productId,
-            images = _state.value.newProducts.images
-        )
+        addProductImage(productId = product.productId,
+            images = _state.value.newProducts.images)
     }
 
     override fun addProductImage(productId: Long, images: List<ByteArray>) {
@@ -395,7 +403,7 @@ class CategoriesViewModel @Inject constructor(
         )
     }
 
-    private fun onGetProductDetailsSuccess(productDetails: ProductEntity) {
+    private fun onGetProductDetailsSuccess(productDetails: Product) {
         _state.update {
             it.copy(isLoading = false, productDetails = productDetails.toProductDetailsUiState())
         }
@@ -554,6 +562,7 @@ class CategoriesViewModel @Inject constructor(
                 CategoriesUiState.newCategory.categoryNameState set categoryNameState
             }
         }
+
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {

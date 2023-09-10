@@ -7,10 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
@@ -22,18 +22,17 @@ import org.the_chance.honymart.ui.composables.Loading
 fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
 ) {
-    val navController = LocalNavigationProvider.current
     val state by viewModel.state.collectAsState()
 
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
                 CartUiEffect.ClickDiscoverEffect -> navController.navigateToHomeScreen()
                 CartUiEffect.ClickViewOrdersEffect -> navController.navigateToOrderScreen()
             }
-        }
-    }
+        })
+
 
     LaunchedEffect(key1 = true) {
         viewModel.getChosenCartProducts()

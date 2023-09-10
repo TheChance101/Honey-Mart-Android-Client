@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.profile
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.ProfileUserEntity
+import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.usecase.AddProfileImageUseCase
 import org.the_chance.honeymart.domain.usecase.GetProfileUserUseCase
 import org.the_chance.honeymart.domain.usecase.LogoutUserUseCase
@@ -19,7 +19,9 @@ class ProfileViewModel @Inject constructor(
 
     override val TAG: String = this::class.simpleName.toString()
 
-    init { getData() }
+    init {
+        getData()
+    }
 
     override fun getData() {
         _state.update {
@@ -36,8 +38,20 @@ class ProfileViewModel @Inject constructor(
         effectActionExecutor(_effect, ProfileUiEffect.UnAuthorizedUserEffect)
     }
 
-    private fun onGetProfileSuccess(user: ProfileUserEntity) {
-        _state.update { it.copy(isLoading = false, accountInfo = user.toProfileUiState(), error = null) }
+    override fun onClickCameraIcon() {
+        effectActionExecutor(_effect, ProfileUiEffect.ClickCameraEffect)
+    }
+
+    private fun onGetProfileSuccess(user: UserProfile) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                accountInfo = user.toProfileUiState(),
+                error = null,
+                isError = false,
+                isConnectionError = false,
+            )
+        }
     }
 
     private fun onGetProfileError(error: ErrorHandler) {
@@ -104,12 +118,14 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = {onLogoutError()}
+            onError = { onLogoutError() }
         )
     }
+
     private fun onLogoutSuccess() {
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
+
     private fun onLogoutError() {}
 }

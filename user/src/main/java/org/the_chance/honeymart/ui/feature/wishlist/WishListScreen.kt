@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.wishlist.composable.ItemFavorite
@@ -41,23 +41,21 @@ fun WishListScreen(
     viewModel: WishListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 WishListUiEffect.ClickDiscoverEffect -> navController.navigateToHomeScreen()
                 is WishListUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
-
                 is WishListUiEffect.DeleteProductFromWishListEffect -> {
-                    viewModel.onShowSnackBar(it.message)
+                    viewModel.onShowSnackBar(effect.message)
                 }
 
             }
-        }
-    }
+        })
 
     LaunchedEffect(key1 = true) {
         viewModel.getWishListProducts()

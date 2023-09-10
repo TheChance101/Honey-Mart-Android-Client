@@ -66,7 +66,7 @@ fun OrderDetailsCard(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = "$orderPrice$",
+                text = orderPrice,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onPrimary,
                 maxLines = 1,

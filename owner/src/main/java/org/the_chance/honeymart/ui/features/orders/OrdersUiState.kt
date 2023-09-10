@@ -1,8 +1,7 @@
 package org.the_chance.honeymart.ui.features.orders
 
-import org.the_chance.honeymart.domain.model.MarketOrderEntity
-import org.the_chance.honeymart.domain.model.OrderDetailsEntity
-import org.the_chance.honeymart.domain.model.OrderProductDetailsEntity
+import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.util.toPriceFormat
 import java.text.SimpleDateFormat
@@ -24,7 +23,10 @@ data class OrdersUiState(
     val order: OrderState = OrderState(),
 )
 
-data class ShowState(val showProductDetails: Boolean = false)
+data class ShowState(
+    val showProductDetails: Boolean = false,
+    val showOrderDetails : Boolean = false ,
+)
 
 data class OrderState(
     val orderId: Long = 0,
@@ -68,12 +70,12 @@ data class ButtonsState(
 // endregion
 
 // region Mappers
-fun MarketOrderEntity.toOrderUiState(): OrderUiState {
+fun Market.Order.toOrderUiState(): OrderUiState {
     return OrderUiState(
         orderId = orderId,
         totalPrice = totalPrice.toPriceFormat(),
         state = state,
-        time = date.toDateFormat(),
+        time = date.toString(),
         userName = user.fullName
     )
 }
@@ -85,16 +87,16 @@ fun Long.toDateFormat(): String {
     return dateFormat.format(date)
 }
 
-fun OrderDetailsEntity.toOrderParentDetailsUiState(): OrderUiState {
+fun OrderDetails.toOrderParentDetailsUiState(): OrderUiState {
     return OrderUiState(
         totalPrice = totalPrice.toString(),
         state = state,
-        time = date,
+        time = date.toString(),
         orderId = orderId
     )
 }
 
-fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
+fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<OrderDetailsProductUiState> {
     return map {
         OrderDetailsProductUiState(
             id = it.id,
@@ -108,7 +110,8 @@ fun List<OrderProductDetailsEntity>.toOrderDetailsProductUiState(): List<OrderDe
 
 fun OrdersUiState.errorPlaceHolderCondition() = isError
 fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
-fun OrdersUiState.showOrdersState() = !showState.showProductDetails && !isError
+fun OrdersUiState.showOrdersState() =
+    !showState.showProductDetails && !isError
 
 
 // endregion

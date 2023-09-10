@@ -5,53 +5,28 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
-import org.the_chance.honeymart.ui.feature.profile.composable.NavCard
+import org.the_chance.honeymart.ui.feature.profile.composable.ProfileSuccessScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.nullColor
 
 
 @Composable
@@ -59,23 +34,25 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val navController = LocalNavigationProvider.current
-
-
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    val context = LocalContext.current
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { handleImageSelection(it, context, viewModel::onImageSelected) }
+    )
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = { effect, navController ->
+            when (effect) {
+                ProfileUiEffect.ClickCameraEffect -> photoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                is ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> {}
-                is ProfileUiEffect.ClickLogoutEffect -> {
-                    navController.navigateToHomeScreen()
-                }
-
+                 ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
+                is ProfileUiEffect.ClickCouponsEffect -> { navController.navigateToCouponsScreen()}
+                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
                 ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
             }
-        }
-    }
+        })
 
     LaunchedEffect(key1 = true) {
         viewModel.getData()
@@ -92,11 +69,7 @@ private fun ProfileContent(
     state: ProfileUiState,
     listener: ProfileInteractionsListener,
 ) {
-    val context = LocalContext.current
-    val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { handleImageSelection(it, context, listener::onImageSelected) }
-    )
+
 
     HoneyAppBarScaffold {
 
@@ -118,6 +91,7 @@ private fun ProfileContent(
             )
         }
 
+
         EmptyOrdersPlaceholder(
             state = state.error is ErrorHandler.UnAuthorizedUser,
             image = R.drawable.placeholder_order,
@@ -126,129 +100,14 @@ private fun ProfileContent(
             buttonLabel = stringResource(R.string.login),
             onClickDiscoverMarkets = listener::onClickLogin
         )
-        ContentVisibility(!state.isError && !state.isLoading) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(
-                        enabled = true,
-                        state = rememberScrollState()
-                    )
-                    .padding(all = MaterialTheme.dimens.space16),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box {
-                    Image(
-                        painter = rememberAsyncImagePainter(state.accountInfo.profileImage),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.sizeProfileImage)
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .border(
-                                width = MaterialTheme.dimens.space6,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                shape = CircleShape
-                            )
-                            .align(Alignment.Center)
-                            .background(
-                                color = if (state.accountInfo.profileImage == "") MaterialTheme.colorScheme.onTertiary else nullColor,
-                                shape = CircleShape
-                            ),
-                        contentScale = ContentScale.FillBounds,
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .size(MaterialTheme.dimens.space48)
-                            .align(Alignment.BottomEnd)
-                            .padding(MaterialTheme.dimens.space4)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .border(
-                                width = MaterialTheme.dimens.space2,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                shape = CircleShape
-                            )
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_camera),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(MaterialTheme.dimens.space24)
-                                .clickable {
-                                    photoPickerLauncher.launch(
-                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                    )
-                                    state.image?.let {
-                                        listener.updateImage(image = it)
-                                    }
-                                }
-                                .align(Alignment.Center),
-                            tint = MaterialTheme.colorScheme.onTertiary,
-                        )
-                    }
-
-                }
-
-                Text(
-                    text = state.accountInfo.fullName,
-                    modifier = Modifier
-                        .padding(top = MaterialTheme.dimens.space16),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = state.accountInfo.email,
-                    modifier = Modifier
-                        .padding(
-                            top = MaterialTheme.dimens.space4,
-                            bottom = MaterialTheme.dimens.space32
-                        ),
-                    style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
-                )
-
-                NavCard(
-                    iconId = R.drawable.ic_bill_list,
-                    title = "My Order",
-                    onClick = listener::onClickMyOrder
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_coupons,
-                    title = "Coupons",
-                    onClick = listener::onClickCoupons
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_notification,
-                    title = "Notification",
-                    onClick = listener::onClickNotification
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-
-                NavCard(
-                    iconId = R.drawable.ic_logout,
-                    title = "Logout",
-                    onClick = listener::showDialog,
-                    color = MaterialTheme.colorScheme.error
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
-            }
+        ContentVisibility(state = state.showProfile()) {
+            ProfileSuccessScreen(state, listener)
         }
+
+
     }
 }
+
 
 private fun handleImageSelection(
     uri: Uri?,

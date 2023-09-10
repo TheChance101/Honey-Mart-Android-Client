@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -30,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.OrderDetailsCard
@@ -45,17 +43,16 @@ fun OrderDetailsScreen(
     viewModel: OrderDetailsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val navController = LocalNavigationProvider.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.effect.collect {
-            when (it) {
+    NavigationHandler(
+        effects = viewModel.effect,
+        handleEffect = {effect, navController ->
+            when (effect) {
                 is OrderDetailsUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
-                    it.productId
+                    effect.productId
                 )
             }
-        }
-    }
+    })
     OrderDetailsContent(state = state, listener = viewModel)
 }
 
@@ -76,13 +73,12 @@ private fun OrderDetailsContent(
                     contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                    state = rememberLazyGridState(),
                     content = {
                         items(state.products) { itemOrderDetails ->
                             OrderDetailsCard(
-                                imageUrl = itemOrderDetails.images[0],
+                                imageUrl = itemOrderDetails.imageUrl,
                                 orderName = itemOrderDetails.name,
-                                orderPrice = "${itemOrderDetails.price}",
+                                orderPrice = itemOrderDetails.priceCurrency,
                                 orderCount = "${itemOrderDetails.count}",
                                 orderId = itemOrderDetails.id,
                                 onClickCard = listener::onClickOrder,
@@ -108,7 +104,7 @@ private fun OrderDetailsContent(
                                 )
                         ) {
                             Text(
-                                text = "${state.orderDetails.totalPrice}$",
+                                text = state.orderDetails.totalPriceCurrency,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 style = Typography.bodyMedium,
                             )

@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
@@ -7,16 +8,17 @@ import org.the_chance.honeymart.data.source.remote.models.CouponDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
-import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
+import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
+import org.the_chance.honeymart.data.source.remote.models.NotificationDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.OrderDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
+import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
-import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 
@@ -31,6 +33,7 @@ interface HoneyMartService {
 
     //region Market
     suspend fun getAllMarkets(): BaseResponse<List<MarketDto>>
+    suspend fun getAllMarketsPaging(page: Int?): BaseResponse<List<MarketDto>>
     suspend fun addMarket(
         marketName: String,
         marketAddress: String,
@@ -65,7 +68,10 @@ interface HoneyMartService {
     //endregion Category
 
     //region Products
-    suspend fun getAllProductsByCategory(page: Int?,categoryId: Long): BaseResponse<List<ProductDto>>
+    suspend fun getAllProductsByCategory(
+        page: Int?,
+        categoryId: Long
+    ): BaseResponse<List<ProductDto>>
 
     suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
 
@@ -106,7 +112,11 @@ interface HoneyMartService {
 
     suspend fun deleteProduct(productId: Long): BaseResponse<String>
 
-    suspend fun searchForProducts(query: String,page: Int?,sortOrder:String): BaseResponse<List<ProductDto>>
+    suspend fun searchForProducts(
+        query: String,
+        page: Int?,
+        sortOrder: String
+    ): BaseResponse<List<ProductDto>>
 
 
     //endregion Product
@@ -116,7 +126,8 @@ interface HoneyMartService {
         password: String,
         deviceToken: String
     ): BaseResponse<UserLoginDto>
-    suspend fun refreshToken(refreshToken: String) :BaseResponse<UserLoginDto>
+
+    suspend fun refreshToken(refreshToken: String): BaseResponse<UserLoginDto>
 
     //region WishList
 
@@ -158,7 +169,7 @@ interface HoneyMartService {
 
     suspend fun getAllMarketOrders(
         orderState: Int,
-    ):BaseResponse<List<MarketOrderDto>>
+    ): BaseResponse<List<MarketOrderDto>>
 
     suspend fun updateOrderState(
         id: Long?,
@@ -196,9 +207,26 @@ interface HoneyMartService {
     suspend fun getUserCoupons(): BaseResponse<List<CouponDto>>
 
     suspend fun getAllValidCoupons(): BaseResponse<List<CouponDto>>
+
+    suspend fun getClippedUserCoupons(): BaseResponse<List<CouponDto>>
+
+
     suspend fun getRecentProducts(): BaseResponse<List<RecentProductDto>>
 
     suspend fun clipCoupon(couponId: Long): BaseResponse<Boolean>
+
+    suspend fun getNoCouponMarketProducts(): BaseResponse<List<ProductDto>>
+
+    suspend fun searchNoCouponMarketProducts(
+        query: String,
+    ): BaseResponse<List<ProductDto>>
+
+    suspend fun addCoupon(
+        productId: Long,
+        count: Int,
+        discountPercentage: Double,
+        expirationDate: String,
+    ): BaseResponse<Boolean>
 
 
     // endregion Coupon
@@ -218,7 +246,6 @@ interface HoneyMartService {
     //endregion
 
 
-
     // region Owner
 
 
@@ -230,4 +257,15 @@ interface HoneyMartService {
     suspend fun getOwnerProfile(): BaseResponse<OwnerProfileDto>
     suspend fun deleteProductById(productId: Long): BaseResponse<String>
     suspend fun deleteProductImage(productId: Long): BaseResponse<String>
+
+    //region admin
+    suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
+
+    suspend fun updateMarketRequest(
+        id: Long?,
+        isApproved: Boolean,
+    ): BaseResponse<Boolean>
+
+    suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
+//endregion admin
 }

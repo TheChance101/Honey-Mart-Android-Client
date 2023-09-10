@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.feature.notifications
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.NotificationEntity
+import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.usecase.GetAllNotificationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -58,7 +58,7 @@ class NotificationsViewModel @Inject constructor(
         effectActionExecutor(_effect, NotificationsUiEffect.OnClickTryAgain)
     }
 
-    private fun onGetAllNotificationsSuccess(notifications: List<NotificationEntity>) {
+    private fun onGetAllNotificationsSuccess(notifications: List<Notification>) {
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
@@ -73,5 +73,9 @@ class NotificationsViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+    }
+
+    override fun onClickDiscoverMarket() {
+        effectActionExecutor(_effect, NotificationsUiEffect.OnClickDiscoverMarket)
     }
 }

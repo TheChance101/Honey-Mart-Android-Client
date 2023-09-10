@@ -1,26 +1,25 @@
 package org.the_chance.honeymart.data.repository
 
 import android.util.Log
-import org.the_chance.honeymart.data.source.local.AuthDataStorePreferences
-import org.the_chance.honeymart.data.source.remote.mapper.toOwnerLoginEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfileEntity
-import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginEntity
-import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgService
+import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
+import org.the_chance.honeymart.data.source.remote.mapper.toAdminLogin
+import org.the_chance.honeymart.data.source.remote.mapper.toOwnerFields
+import org.the_chance.honeymart.data.source.remote.mapper.toOwnerProfile
+import org.the_chance.honeymart.data.source.remote.mapper.toUserLoginFields
+import org.the_chance.honeymart.data.source.remote.network.FireBaseMessageService
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
-import org.the_chance.honeymart.domain.model.OwnerLoginEntity
-import org.the_chance.honeymart.domain.model.OwnerProfileEntity
-import org.the_chance.honeymart.domain.model.UserLoginEntity
+import org.the_chance.honeymart.domain.model.AdminLogin
+import org.the_chance.honeymart.domain.model.Owner
+import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.repository.AuthRepository
+import org.the_chance.honeymart.domain.usecase.Tokens
 import org.the_chance.honeymart.domain.util.NotFoundException
 import javax.inject.Inject
 
-/**
- * Created by Aziza Helmy on 6/16/2023.
- */
 class AuthRepositoryImp @Inject constructor(
-    private val datastore: AuthDataStorePreferences,
+    private val datastore: AuthorizationPreferences,
     private val honeyMartService: HoneyMartService,
-    private val fireBaseMsgService: FireBaseMsgService
+    private val fireBaseMsgService: FireBaseMessageService
 ) : BaseRepository(), AuthRepository {
 
     override suspend fun createOwnerAccount(
@@ -40,18 +39,22 @@ class AuthRepositoryImp @Inject constructor(
     }
 
 
-    override suspend fun loginUser(email: String, password: String,deviceToken:String): UserLoginEntity =
-        wrap { honeyMartService.loginUser(email, password,deviceToken) }.value?.toUserLoginEntity()
+    override suspend fun loginUser(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): Tokens =
+        wrap { honeyMartService.loginUser(email, password, deviceToken) }.value?.toUserLoginFields()
             ?: throw NotFoundException()
 
-    override suspend fun refreshToken(refreshToken: String): UserLoginEntity =
-        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toUserLoginEntity()
+    override suspend fun refreshToken(refreshToken: String): Tokens =
+        wrap { honeyMartService.refreshToken(refreshToken) }.value?.toUserLoginFields()
             ?: throw NotFoundException()
 
 
-    override suspend fun saveTokens(accessToken: String,refreshToken: String) {
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         datastore.saveTokens(accessToken, refreshToken)
-        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken",)
+        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken")
     }
 
     override fun getAccessToken(): String? {
@@ -66,8 +69,8 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
-    override suspend fun loginOwner(email: String, password: String): OwnerLoginEntity {
-        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerLoginEntity()
+    override suspend fun loginOwner(email: String, password: String): Owner {
+        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerFields()
             ?: throw NotFoundException()
     }
 
@@ -83,8 +86,25 @@ class AuthRepositoryImp @Inject constructor(
 
     override fun getOwnerImageUrl(): String? = datastore.getOwnerImageUrl()
 
-    override suspend fun getOwnerProfile(): OwnerProfileEntity =
-        wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfileEntity()
+    override suspend fun getOwnerProfile(): OwnerProfile =
+        wrap { honeyMartService.getOwnerProfile() }.value?.toOwnerProfile()
             ?: throw NotFoundException()
+
+    override suspend fun saveOwnerMarketId(marketId: Long) =
+        datastore.saveOwnerMarketId(marketId)
+
+    override  fun getOwnerMarketId(): Long? = datastore.getOwnerMarketId()
+
+    override suspend fun loginAdmin(email: String, password: String): AdminLogin {
+        return wrap { honeyMartService.loginAdmin(email, password) }.value?.toAdminLogin()
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun saveAdminName(name: String) {
+        datastore.saveAdminName(name)
+    }
+
+    override fun getAdminName(): String? = datastore.getAdminName()
+
 
 }
