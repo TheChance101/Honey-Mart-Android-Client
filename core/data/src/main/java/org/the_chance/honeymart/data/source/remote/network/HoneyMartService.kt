@@ -257,7 +257,7 @@ interface HoneyMartService {
 
 
     // region Auth
-    suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto>
+    suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto>
     //endregion
 
     //endregion

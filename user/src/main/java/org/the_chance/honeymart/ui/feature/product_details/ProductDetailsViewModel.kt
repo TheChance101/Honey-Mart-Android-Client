@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.usecase.user.CartProductsManagerUseCase
-import org.the_chance.honeymart.domain.usecase.user.UserProductManagerUseCase
-import org.the_chance.honeymart.domain.usecase.user.UserWishListManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val cartOperations: CartProductsManagerUseCase,
-    private val productsOperations:UserProductManagerUseCase,
+    private val productsOperations: UserProductManagerUseCase,
     private val wishListOperations: UserWishListManagerUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),

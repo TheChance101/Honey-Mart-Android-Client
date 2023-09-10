@@ -13,7 +13,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
-import org.the_chance.honeymart.domain.usecase.user.UserCouponsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserCouponsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState

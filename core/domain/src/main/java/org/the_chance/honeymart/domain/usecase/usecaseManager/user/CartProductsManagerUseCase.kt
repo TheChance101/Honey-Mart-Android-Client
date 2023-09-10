@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.domain.usecase.user
+package org.the_chance.honeymart.domain.usecase.usecaseManager.user
 
 import org.the_chance.honeymart.domain.usecase.CartUseCase
 import org.the_chance.honeymart.domain.usecase.CheckoutUseCase

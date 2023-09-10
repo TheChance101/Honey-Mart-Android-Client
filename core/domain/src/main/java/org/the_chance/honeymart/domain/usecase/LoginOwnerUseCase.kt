@@ -7,7 +7,8 @@ class LoginOwnerUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(email: String, password: String): Long {
-        val response = authRepository.loginOwner(email, password)
+        val deviceToken = authRepository.getDeviceToken()
+        val response = authRepository.loginOwner(email, password, deviceToken)
         authRepository.saveTokens(response.tokens.accessToken,response.tokens.refreshToken)
         authRepository.saveOwnerName(response.fullName)
         authRepository.saveOwnerMarketId(response.marketId)
