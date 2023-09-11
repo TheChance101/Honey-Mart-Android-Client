@@ -97,4 +97,5 @@ dependencies {
 
     //Permission
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+    androidTestImplementation ("com.google.truth:truth:1.1.4")
 }

@@ -18,6 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
@@ -28,12 +30,16 @@ import org.the_chance.honymart.ui.theme.dimens
 fun SearchBar(
     icon: Painter,
     onClick: () -> Unit,
+    text : String = stringResource(R.string.search),
     modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier
             .clip(shape = MaterialTheme.shapes.medium)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .semantics {
+                       contentDescription = "SearchWidget"
+            },
         color = MaterialTheme.colorScheme.tertiaryContainer,
         shape = MaterialTheme.shapes.medium,
         border = BorderStroke(
@@ -55,12 +61,18 @@ fun SearchBar(
                 painter = icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(MaterialTheme.dimens.icon24),
+                    .size(MaterialTheme.dimens.icon24)
+                    .semantics {
+                        contentDescription = "SearchIcon"
+                    },
                 tint = MaterialTheme.colorScheme.onBackground
 
             )
             Text(
-                text = stringResource(R.string.search),
+                modifier = Modifier.semantics {
+                contentDescription = "TextFiled"
+                },
+                text = text,
                 style = Typography.displaySmall.copy(MaterialTheme.colorScheme.onSecondaryContainer),
             )
         }
