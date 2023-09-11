@@ -13,7 +13,7 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun <T> NavigationHandler(
+fun <T> EventHandler(
     effects: SharedFlow<T>,
     handleEffect: (T, NavController) -> Unit
 ) {

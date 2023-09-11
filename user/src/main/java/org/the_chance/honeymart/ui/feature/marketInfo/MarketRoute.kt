@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.marketInfo
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
@@ -23,7 +23,7 @@ fun NavGraphBuilder.categoryRoute() {
             }
         )
     ) {
-        CategoriesScreen()
+        MarketInfoScreen()
     }
 }
 

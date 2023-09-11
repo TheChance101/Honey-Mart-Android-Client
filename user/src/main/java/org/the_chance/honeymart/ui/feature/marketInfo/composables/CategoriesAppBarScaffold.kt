@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category.composables
+package org.the_chance.honeymart.ui.feature.marketInfo.composables
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
