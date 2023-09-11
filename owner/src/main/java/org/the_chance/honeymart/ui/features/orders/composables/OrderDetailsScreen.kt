@@ -16,10 +16,8 @@ import androidx.compose.ui.Modifier
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
-import org.the_chance.honeymart.ui.features.orders.all
-import org.the_chance.honeymart.ui.features.orders.cancel
 import org.the_chance.honeymart.ui.features.orders.contentScreen
-import org.the_chance.honeymart.ui.features.orders.done
+import org.the_chance.honeymart.ui.features.orders.showButtonState
 import org.the_chance.honymart.ui.theme.dimens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,8 +36,7 @@ fun OrderDetailsContent(
             },
             bottomBar = {
                 OrderStatusButtons(
-                    visibility = state.products.isNotEmpty() && !state.showState.showProductDetails
-                            && !state.done() && !state.cancel() && !state.all(),
+                    visibility = state.showButtonState(),
                     buttonState = state.orderDetails.buttonsState
                 )
             },

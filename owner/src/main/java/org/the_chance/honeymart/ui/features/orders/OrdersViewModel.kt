@@ -21,7 +21,7 @@ class OrdersViewModel @Inject constructor(
 
     override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = orderState,
+            it.copy(isLoading = true, isError = false, states = orderState ,
             showState = it.showState.copy(showOrderDetails = false))
         }
         tryToExecute(
@@ -58,6 +58,7 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
+                orderStates = orderDetails.state
             )
         }
         updateButtonsState()
@@ -133,14 +134,13 @@ class OrdersViewModel @Inject constructor(
             ::onUpdateStateOrderSuccess,
             ::onUpdateStateOrderError
         )
-        _state.update { it.copy(order = it.order.copy(orderId = id!!, states = updateState)) }
     }
 
     private fun onUpdateStateOrderSuccess(success: Boolean) {
         _state.update {
             it.copy(isLoading = false)
         }
-        getAllMarketOrder(_state.value.orderStates)
+        getAllMarketOrder(_state.value.states)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
