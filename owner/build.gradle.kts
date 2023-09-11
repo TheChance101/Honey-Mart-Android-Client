@@ -79,4 +79,6 @@ dependencies {
     //splash
     implementation(Dependencies.splashDependency)
     debugImplementation(Dependencies.composeUiDependency)
+    //Permission
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 }

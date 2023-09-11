@@ -109,23 +109,23 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
     @Composable
     fun CheckNotificationPermission() {
-        val openDialog = remember { mutableStateOf(true) }
+        val isDialogOpen = remember { mutableStateOf(true) }
         val permissionState = rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
         when {
-            permissionState.status.isGranted.not() && permissionState.status.shouldShowRationale.not() -> {
+            !permissionState.status.isGranted && !permissionState.status.shouldShowRationale -> {
                 LaunchedEffect(Unit) {
                     permissionState.launchPermissionRequest()
                 }
             }
 
-            permissionState.status.shouldShowRationale && openDialog.value -> {
+            permissionState.status.shouldShowRationale && isDialogOpen.value -> {
                 PermissionDialog(
-                    onDismissRequest = { openDialog.value = false },
+                    onDismissRequest = { isDialogOpen.value = false },
                     message = stringResource(R.string.notification_permission_required),
-                    onClickDismiss = { openDialog.value = false },
+                    onClickDismiss = { isDialogOpen.value = false },
                     onClickGoToSettings = {
-                        openDialog.value = false
+                        isDialogOpen.value = false
                         openAppSettings()
                     }
                 )
