@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.features.category
 
 import androidx.paging.PagingData
-import arrow.optics.*
+import arrow.optics.optics
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.Category
@@ -236,7 +236,3 @@ fun CategoriesUiState.showCategoryProductsInCategory() =
 fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categories.isEmpty()
 
 // endregion
-
-fun CategoriesUiState.toTest() = copy {
-    CategoriesUiState.category.categoryIconUIState.isSelected
-}
