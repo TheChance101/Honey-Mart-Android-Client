@@ -10,7 +10,7 @@ fun NavGraphBuilder.authNavGraph() {
 
     navigation(
         route = Graph.AUTH_GRAPH,
-        startDestination = Screen.SignupScreen.route
+        startDestination = Screen.AuthScreen.route
     ) {
         authRoute()
         loginRoute()
