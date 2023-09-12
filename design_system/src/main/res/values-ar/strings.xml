@@ -263,6 +263,9 @@
     <string name="orders_label">الطلبات</string>
     <string name="category_label">الفئات</string>
     <string name="coupons_label">الكوبونات</string>
+    <string name="notifications_label">الاشعارات</string>
+
+
 
     <string name="add_new_category_success">تم اضافة فئة جديدة بنجاح </string>
     <string name="click_on_order_to_show_it_s_details">اضغط ع الطلب لعرض تفاصيه </string>

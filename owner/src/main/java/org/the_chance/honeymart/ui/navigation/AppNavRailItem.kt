@@ -67,6 +67,9 @@ fun AppNavRailItem(
                             NavigationRailScreen.Orders -> {
                                 navController.popBackStack(Screen.Orders.route, false)
                             }
+                            NavigationRailScreen.Notifications ->{
+                                navController.popBackStack(Screen.Notifications.route , false)
+                            }
                         }
                     }
                 },

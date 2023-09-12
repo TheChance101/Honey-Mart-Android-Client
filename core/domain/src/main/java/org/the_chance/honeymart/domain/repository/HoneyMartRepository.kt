@@ -17,7 +17,6 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
-import java.io.ObjectInputFilter.Status
 
 
 interface HoneyMartRepository {
@@ -118,6 +117,7 @@ interface HoneyMartRepository {
         discountPercentage: Double,
         expirationDate: String,
     ): Boolean
+    suspend fun getAllOwnerNotifications(): List<Notification>
 
     //region admin
     suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest>

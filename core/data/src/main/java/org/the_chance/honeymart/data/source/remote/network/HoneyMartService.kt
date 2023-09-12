@@ -277,4 +277,6 @@ interface HoneyMartService {
 
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
+    suspend fun getAllOwnerNotifications():
+        BaseResponse<List<NotificationDto>>
 }

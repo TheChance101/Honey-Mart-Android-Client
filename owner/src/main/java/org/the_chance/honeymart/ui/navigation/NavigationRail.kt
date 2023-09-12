@@ -25,7 +25,6 @@ import org.the_chance.honeymart.ui.main.MainUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
-import java.util.Locale
 
 @Composable
 fun NavigationRail(
@@ -37,6 +36,7 @@ fun NavigationRail(
         NavigationRailScreen.Orders,
         NavigationRailScreen.Category,
         NavigationRailScreen.Coupons,
+        NavigationRailScreen.Notifications,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
