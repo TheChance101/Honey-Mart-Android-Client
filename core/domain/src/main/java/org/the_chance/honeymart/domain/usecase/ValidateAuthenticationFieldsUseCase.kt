@@ -40,6 +40,7 @@ class ValidateAuthenticationFieldsUseCase @Inject constructor() {
             password.length < 8 -> {
                 ValidationState.INVALID_PASSWORD_LENGTH_SHORT
             }
+
             password.length > 14 -> {
                 ValidationState.INVALID_PASSWORD_LENGTH_LONG
             }
@@ -67,5 +68,12 @@ class ValidateAuthenticationFieldsUseCase @Inject constructor() {
         } else {
             ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH
         }
+    }
+
+    fun isFieldBlank(text: String): ValidationState {
+        return if (text.isBlank())
+            ValidationState.BLANK_TEXT_FIELD
+        else
+            ValidationState.VALID_TEXT_FIELD
     }
 }
