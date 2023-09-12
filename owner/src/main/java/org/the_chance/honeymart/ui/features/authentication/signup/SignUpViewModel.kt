@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateAuthenticationFieldsUseCase
+
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val ownerAuthentication: OwnerAuthenticationManagerUseCase,
     private val ownerMarkets: OwnerMarketsManagerUseCase,
-    private val validateSignupFields: ValidateSignupFieldsUseCase,
+    private val validateSignupFields: ValidateAuthenticationFieldsUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val stringResourceImpl: StringDictionary,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
