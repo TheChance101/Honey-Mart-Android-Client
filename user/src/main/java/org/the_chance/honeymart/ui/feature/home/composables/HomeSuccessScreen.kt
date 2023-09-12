@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
-import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState

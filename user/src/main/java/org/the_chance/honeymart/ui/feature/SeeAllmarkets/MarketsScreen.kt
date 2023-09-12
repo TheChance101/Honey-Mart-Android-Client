@@ -11,11 +11,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
-import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.compoaseable.MarketItem
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
@@ -27,7 +27,7 @@ fun MarketsScreen(
 ) {
     val state = viewModel.state.collectAsState().value
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {

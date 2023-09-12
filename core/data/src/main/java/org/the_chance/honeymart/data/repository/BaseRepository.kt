@@ -74,7 +74,7 @@ abstract class BaseRepository {
                 Log.d("Tag", "repository done correctly")
                 response
             } else {
-                Log.d("Tag", "repository failed :$response.status.message")
+                Log.d("Tag", "repository failed :${response.status.message}")
                 throw getExceptionForStatusCode(response.status.code)
             }
         } catch (e: ClientRequestException) {

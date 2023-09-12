@@ -38,7 +38,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.navigateToSignupScreen
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.HoneyAuthHeader
@@ -56,7 +56,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {

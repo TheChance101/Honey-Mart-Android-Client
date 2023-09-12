@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category.composables
+package org.the_chance.honeymart.ui.feature.marketInfo.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black60

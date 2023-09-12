@@ -169,7 +169,7 @@ class ProductDetailsViewModel @Inject constructor(
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
-            is ErrorHandler.InvalidData -> {
+            is ErrorHandler.ProductNotInSameCartMarket -> {
                 effectActionExecutor(
                     _effect,
                     ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(

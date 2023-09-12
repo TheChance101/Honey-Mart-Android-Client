@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupUiEffect
 import org.the_chance.honeymart.ui.feature.authentication.signup.SignupViewModel
@@ -35,7 +35,7 @@ import org.the_chance.honymart.ui.theme.dimens
 fun AuthScreen(
     viewModel: SignupViewModel = hiltViewModel(),
 ) {
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when(effect) {

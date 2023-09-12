@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.marketInfo
 
 interface MarketInteractionListener {
     fun onGetData()

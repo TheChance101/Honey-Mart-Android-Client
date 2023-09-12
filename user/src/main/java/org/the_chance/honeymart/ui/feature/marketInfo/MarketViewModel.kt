@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.marketInfo
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel

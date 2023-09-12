@@ -10,7 +10,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.cart.composables.BottomSheetCompleteOrderContent
 import org.the_chance.honeymart.ui.feature.cart.composables.CartSuccessScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
@@ -24,7 +24,7 @@ fun CartScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
