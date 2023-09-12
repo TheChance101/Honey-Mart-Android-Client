@@ -59,6 +59,7 @@ dependencies {
     testImplementation(Dependencies.junitDependency)
     Dependencies.androidTestDependencies.forEach { androidTestImplementation(it) }
     implementation(platform(Dependencies.composePlatformBom))
+    Dependencies.debugmplementation.forEach { debugImplementation(it) }
     androidTestImplementation(platform(Dependencies.composePlatformBomAndroidTest))
     //Navigation
     Dependencies.navigationDependencies.forEach { implementation(it) }
