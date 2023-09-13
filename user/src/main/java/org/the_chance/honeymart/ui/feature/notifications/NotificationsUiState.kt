@@ -3,6 +3,7 @@ package org.the_chance.honeymart.ui.feature.notifications
 import android.annotation.SuppressLint
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -12,6 +13,7 @@ data class NotificationsUiState(
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.ALL,
     val updatedNotifications: List<NotificationUiState> = emptyList(),
+    val orderDetails: OrderUiState = OrderUiState(),
     val notifications: List<NotificationUiState> = emptyList(),
 )
 

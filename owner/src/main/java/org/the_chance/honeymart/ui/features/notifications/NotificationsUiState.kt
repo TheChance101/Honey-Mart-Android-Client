@@ -10,14 +10,15 @@ data class NotificationsUiState(
     val isLoading : Boolean = false ,
     val isError: Boolean = false ,
     val error  : ErrorHandler? = null ,
+    val notificationState: NotificationStates = NotificationStates.ALL,
     val updatedNotifications: List<NotificationUiState> = emptyList(),
     val notifications: List<NotificationUiState> = emptyList(),
 )
 
 enum class NotificationStates(val state: Int){
     ALL(1),
-    ORDER(2),
-    DELIVERY(3)
+    NEW(2),
+    CANCELLED(3)
 }
 
 data class NotificationUiState(
@@ -39,6 +40,9 @@ fun Notification.toNotificationUiState(): NotificationUiState{
         date = date.toNotificationDateFormat()
     )
 }
+fun NotificationsUiState.all() = this.notificationState == NotificationStates.ALL
+fun NotificationsUiState.new() = this.notificationState == NotificationStates.NEW
+fun NotificationsUiState.cancelled() = this.notificationState == NotificationStates.CANCELLED
 @SuppressLint("SimpleDateFormat")
 fun Date.toNotificationDateFormat(): String {
     val dateFormat = SimpleDateFormat("dd MMMM yyyy   HH:mm")
