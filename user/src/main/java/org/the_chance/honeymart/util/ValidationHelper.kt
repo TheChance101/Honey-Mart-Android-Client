@@ -44,6 +44,7 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
         ValidationState.INVALID_COUPON_COUNT -> TODO()
         ValidationState.INVALID_PASSWORD_LENGTH_LONG -> TODO()
+        else -> {TODO()}
     }
 
 }

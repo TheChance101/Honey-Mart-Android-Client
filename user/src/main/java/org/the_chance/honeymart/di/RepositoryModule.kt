@@ -25,12 +25,3 @@ internal abstract class RepositoryModule {
     @Binds
     abstract fun bindAuthRepository(repository: AuthRepositoryImp): AuthRepository
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class UseCaseModule {
-
-    @Singleton
-    @Provides
-    abstract fun ProvidesValidationUseCase(useCase: ValidationUseCase): IValidationUseCase
-}
