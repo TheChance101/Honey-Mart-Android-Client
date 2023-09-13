@@ -122,13 +122,19 @@
     <!--Add New Product Region-->
     <string name="add_new_product">Add New Product</string>
     <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
-    <string name="product_name_is_too_short">Product name is too short</string>
+    <string name="product_name_is_too_short">Product name is too short, at least 4 letters</string>
+    <string name="product_name_is_too_long">Product name is too long, at most 20 letters</string>
+    <string name="invalid_product_name">Invalid product name</string>
+
     <string name="price">Price</string>
     <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
     <string name="invalid_product_price">Invalid product price</string>
+
     <string name="description">Description</string>
     <string name="product_description_can_t_be_blank">Product description can\'t be blank</string>
-    <string name="product_description_is_too_short">Product description is too short</string>
+    <string name="product_description_is_too_short">Product description is too short, at least 6 letters</string>
+    <string name="product_description_is_too_long">Product description is too long, at most 500 letters</string>
+
     <string name="add_product_image">Add product image</string>
     <string name="add">Add</string>
     <string name="icon_cart">Icon Cart</string>

@@ -43,7 +43,19 @@ class StringResources @Inject constructor(
             ValidationState.BLANK_CATEGORY_NAME to getStringFromFile(R.string.blank_field),
             ValidationState.SHORT_CATEGORY_NAME to getStringFromFile(R.string.category_name_is_too_short),
             ValidationState.LONG_CATEGORY_NAME to getStringFromFile(R.string.category_name_is_too_long),
-            ValidationState.INVALID_CATEGORY_NAME to getStringFromFile(R.string.invalid_category_name)
+            ValidationState.INVALID_CATEGORY_NAME to getStringFromFile(R.string.invalid_category_name),
+
+            ValidationState.BLANK_PRODUCT_NAME to getStringFromFile(R.string.product_name_can_t_be_blank),
+            ValidationState.SHORT_PRODUCT_NAME to getStringFromFile(R.string.product_name_is_too_short),
+            ValidationState.LONG_PRODUCT_NAME to getStringFromFile(R.string.product_name_is_too_long),
+            ValidationState.INVALID_PRODUCT_NAME to getStringFromFile(R.string.invalid_product_name),
+
+            ValidationState.BLANK_PRODUCT_PRICE to getStringFromFile(R.string.product_price_can_t_be_blank),
+            ValidationState.INVALID_PRODUCT_PRICE to getStringFromFile(R.string.invalid_product_price),
+
+            ValidationState.BLANK_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_can_t_be_blank),
+            ValidationState.SHORT_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_is_too_short),
+            ValidationState.LONG_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_is_too_long)
         )
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
