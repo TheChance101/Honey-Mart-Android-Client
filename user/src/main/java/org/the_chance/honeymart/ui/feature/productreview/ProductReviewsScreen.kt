@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.reviewproduct
+package org.the_chance.honeymart.ui.feature.productreview
 
 import androidx.compose.runtime.Composable
 

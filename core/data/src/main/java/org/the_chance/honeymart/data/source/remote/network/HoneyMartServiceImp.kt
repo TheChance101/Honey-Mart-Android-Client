@@ -57,11 +57,11 @@ import javax.inject.Inject
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
-    override suspend fun getAllReviews(productId: Long): BaseResponse<List<ReviewsDto>> {
-        return wrap(client.get("/reviews/$productId"))
-    }
+//    override suspend fun getAllProductReviews(productId: Long): BaseResponse<List<ReviewsDto>> {
+//        return wrap(client.get("/reviews/$productId"))
+//    }
 
-    override suspend fun getAllReviewsPaging(
+    override suspend fun getAllProductReviewsPaging(
         page: Int?,
         productId: Long
     ): BaseResponse<List<ReviewsDto>> {

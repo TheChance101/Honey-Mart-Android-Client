@@ -22,8 +22,8 @@ import org.the_chance.honeymart.domain.model.WishList
 
 interface HoneyMartRepository {
 
-    suspend fun getAllReviews(productId: Long): List<Review>?
-    suspend fun getAllReviewsPaging(page: Int?, productId: Long): Flow<PagingData<Review>>
+//    suspend fun getAllProductReviews(productId: Long): List<Review>?
+suspend fun getAllProductReviewsPaging(page: Int?, productId: Long): Flow<PagingData<Review>>
     suspend fun checkAdminApprove(): MarketApproval
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>

@@ -51,17 +51,20 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), HoneyMartRepository {
-    override suspend fun getAllReviews(productId: Long): List<Review> {
-        return wrap { honeyMartService.getAllReviews(productId) }.value?.map { it.toReview() }
-            ?: throw NotFoundException()
-    }
+//    override suspend fun getAllProductReviews(productId: Long): List<Review> {
+//        return wrap { honeyMartService.getAllProductReviews(productId) }.value?.map { it.toReview() }
+//            ?: throw NotFoundException()
+//    }
 
-    override suspend fun getAllReviewsPaging(
+    override suspend fun getAllProductReviewsPaging(
         page: Int?,
         productId: Long
-    ): Flow<PagingData<Review>> {
-        return getAll(::ReviewsPagingSource)
-    }
+    ): Flow<PagingData<Review>> =
+        getAllWithParameter(
+            productId,
+            ::ReviewsPagingSource
+        )
+
 
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()

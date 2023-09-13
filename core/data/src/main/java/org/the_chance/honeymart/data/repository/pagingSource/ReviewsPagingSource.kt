@@ -11,7 +11,7 @@ class ReviewsPagingSource @Inject constructor(
 ) : BasePagingSource<Review>(honeyMartService) {
     override suspend fun fetchData(page: Int): List<Review> {
         return wrap {
-            honeyMartService.getAllReviewsPaging(page = page, productId = productId)
+            honeyMartService.getAllProductReviewsPaging(page = page, productId = productId)
         }.value?.map { it.toReview() }
             ?: throw Throwable("paging error")
     }

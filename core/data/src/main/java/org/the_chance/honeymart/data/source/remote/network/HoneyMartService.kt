@@ -27,8 +27,8 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 interface HoneyMartService {
 
-    suspend fun getAllReviews(productId: Long): BaseResponse<List<ReviewsDto>>
-    suspend fun getAllReviewsPaging(page: Int?, productId: Long): BaseResponse<List<ReviewsDto>>
+//    suspend fun getAllProductReviews(productId: Long): BaseResponse<List<ReviewsDto>>
+suspend fun getAllProductReviewsPaging(page: Int?, productId: Long): BaseResponse<List<ReviewsDto>>
 
     suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto>
 
