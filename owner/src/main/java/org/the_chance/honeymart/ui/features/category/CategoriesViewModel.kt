@@ -13,6 +13,7 @@ import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerProduct
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.util.StringDictionary
 import org.the_chance.honymart.ui.composables.categoryIcons
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class CategoriesViewModel @Inject constructor(
     private val ownerCategories: OwnerCategoriesManagerUseCase,
     private val ownerProducts: OwnerProductsManagerUseCase,
     private val ownerMarkets: OwnerMarketsManagerUseCase,
+    private val stringResource: StringDictionary,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
@@ -39,6 +41,7 @@ class CategoriesViewModel @Inject constructor(
             ::onGetCategoryError
         )
     }
+
     private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
         val updatedCategories = if (categories.isEmpty()) {
@@ -46,9 +49,9 @@ class CategoriesViewModel @Inject constructor(
         } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
         }
-    _state.update {
-        it.copy(categories = updatedCategories)
-    }
+        _state.update {
+            it.copy(categories = updatedCategories)
+        }
         val newState = _state.value.copy(
             isLoading = false,
             error = null,
@@ -63,7 +66,7 @@ class CategoriesViewModel @Inject constructor(
                 newCategory = newState.newCategory.copy(categoryId = newCategoryId!!)
             )
         }
-    log(_state.value.categories.toString())
+        log(_state.value.categories.toString())
 
         getProductsByCategoryId(newCategoryId!!)
     }
@@ -93,7 +96,7 @@ class CategoriesViewModel @Inject constructor(
                 isLoading = false,
                 newCategory = it.newCategory.copy(
                     categoryId = categoryId,
-                    newCategoryName = ""
+                    categoryState = FieldState()
                 ),
                 categoryIcons = it.categoryIcons.map { categoryIconState ->
                     categoryIconState.copy(isSelected = false)
@@ -156,18 +159,22 @@ class CategoriesViewModel @Inject constructor(
     // region Add Category
     override fun onClickAddCategory(name: String, categoryIconID: Int) {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { ownerCategories.addCategoryUseCase(name, categoryIconID) },
-            ::addCategorySuccess,
-            ::onError
-        )
+        val categoryNameValidationState =
+            ownerCategories.validationUseCase.validateCategoryNameField(name)
+        if (categoryNameValidationState == ValidationState.VALID_CATEGORY_NAME) {
+            tryToExecute(
+                { ownerCategories.addCategoryUseCase(name, categoryIconID) },
+                ::addCategorySuccess,
+                ::onError
+            )
+        }
     }
 
     private fun addCategorySuccess(success: String) {
         _state.update {
             it.copy(
                 isLoading = false,
-                newCategory = it.newCategory.copy(newCategoryName = ""),
+                newCategory = it.newCategory.copy(categoryState = FieldState()),
                 categoryIcons = it.categoryIcons.map { categoryIconState ->
                     categoryIconState.copy(isSelected = false)
                 },
@@ -231,7 +238,7 @@ class CategoriesViewModel @Inject constructor(
             {
                 ownerCategories.updateCategoryUseCase(
                     imageId = category.newCategory.newIconId,
-                    name = category.newCategory.newCategoryName,
+                    name = category.newCategory.categoryState.name,
                     id = category.newCategory.categoryId,
                     marketId = ownerMarkets.getOwnerMarketId.getOwnerMarketId()
                 )
@@ -246,7 +253,7 @@ class CategoriesViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 error = null,
-                newCategory = it.newCategory.copy(newCategoryName = ""),
+                newCategory = it.newCategory.copy(categoryState = FieldState()),
                 categoryIcons = it.categoryIcons.map { categoryIconState ->
                     categoryIconState.copy(isSelected = false)
                 },
@@ -397,8 +404,10 @@ class CategoriesViewModel @Inject constructor(
     override fun onClickAddProductButton() {
         _state.update {
             it.copy(
-                showScreenState = it.showScreenState.copy(showFab = false,
-                    showAddProduct = true),
+                showScreenState = it.showScreenState.copy(
+                    showFab = false,
+                    showAddProduct = true
+                ),
                 newProducts = it.newProducts.copy(
                     name = "",
                     description = "",
@@ -569,12 +578,20 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onNewCategoryNameChanged(categoryName: String) {
-        val categoryNameState: ValidationState = getNameState(categoryName)
+        val categoryNameState =
+            ownerCategories.validationUseCase.validateCategoryNameField(categoryName)
 
         _state.update {
             it.copy(
                 newCategory = it.newCategory.copy(
-                    newCategoryName = categoryName, categoryNameState = categoryNameState
+                    categoryState = FieldState(
+                        errorState = stringResource.validationString.getOrDefault(
+                            categoryNameState,
+                            ""
+                        ),
+                        name = categoryName,
+                        isValid = categoryNameState == ValidationState.VALID_CATEGORY_NAME
+                    ),
                 )
             )
         }

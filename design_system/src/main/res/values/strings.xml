@@ -137,7 +137,9 @@
 
     <!--Update Category Region-->
     <string name="category_name_can_t_be_blank">Category name can\'t be blank</string>
-    <string name="category_name_is_too_short">Category name is too short</string>
+    <string name="category_name_is_too_short">Category name is too short, at least 4 letters</string>
+    <string name="category_name_is_too_long">Category name is too long, at most 16 letters</string>
+    <string name="invalid_category_name">Category name should contain only characters</string>
     <string name="update_category">Update category</string>
     <string name="new_category_name">New category name</string>
     <string name="category_icon">Category Icon</string>
@@ -276,4 +278,5 @@
     <string name="there_are_no_orders_in_your_market">There are no orders in your \n market!!</string>
     <string name="click_on_order_to_show_it_s_details">Click on order to show it’s details</string>
 
+    <string name="blank_field">"This filed should not be empty</string>
 </resources>

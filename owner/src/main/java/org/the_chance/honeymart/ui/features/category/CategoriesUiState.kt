@@ -30,7 +30,8 @@ data class CategoriesUiState(
     val categoryIcons: List<CategoryIconUIState> = emptyList(),
     val showScreenState: ShowScreenState = ShowScreenState(),
     val newCategory: NewCategoryUiState = NewCategoryUiState(),
-    val newProducts: NewProductsUiState = NewProductsUiState()
+    val newProducts: NewProductsUiState = NewProductsUiState(),
+    val validationToast: ValidationToast = ValidationToast()
 )
 
 data class NewProductsUiState(
@@ -53,7 +54,7 @@ data class ShowScreenState(
     val showProductUpdate: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
-    val showDeleteDialog : Boolean = false,
+    val showDeleteDialog: Boolean = false,
     val showFab: Boolean = true,
 )
 
@@ -61,6 +62,18 @@ data class SnackBarState(
     val isShow: Boolean = false,
     val message: String = "",
 )
+
+data class ValidationToast(
+    val isShow: Boolean = false,
+    val message: String = "Please fill all required fields"
+)
+
+data class FieldState(
+    val name: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isEmpty()
+)
+
 
 data class CategoryUiState(
     val categoryId: Long = 0L,
@@ -71,8 +84,7 @@ data class CategoryUiState(
 
 data class NewCategoryUiState(
     val categoryId: Long = 0L,
-    val newCategoryName: String = "",
-    val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val categoryState: FieldState = FieldState(),
     val newIconId: Int = 0,
     val newIcon: Int = 0,
 )
@@ -141,12 +153,10 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // region Extension
 
 fun CategoriesUiState.showAddUpdateCategoryButton(): Boolean {
-    return newCategory.newCategoryName.isNotBlank()
-            && categoryIcons.any { categoryIcons ->
-        categoryIcons.isSelected
-    }
+    return newCategory.categoryState.name.isNotBlank()
+            && categoryIcons.any { categoryIcons -> categoryIcons.isSelected }
             && !isLoading
-            && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+            && newCategory.categoryState.isValid
 }
 
 fun NewProductsUiState.showButton(): Boolean {
@@ -160,14 +170,15 @@ fun NewProductsUiState.showButton(): Boolean {
 
 fun CategoriesUiState.showSaveUpdateButton(): Boolean {
     return productDetails.productName.isNotBlank() &&
-            productDetails. productPrice.isNotBlank() &&
+            productDetails.productPrice.isNotBlank() &&
             productDetails.productDescription.isNotBlank() &&
-           newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
+            newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
             && newProducts.productPriceState == ValidationState.VALID_TEXT_FIELD
             && newProducts.productDescriptionState == ValidationState.VALID_TEXT_FIELD
             && newProducts.images.isNotEmpty()
 
 }
+
 fun String.removeDollarSign(): String {
     return this.replace("$", "").trim()
 }
