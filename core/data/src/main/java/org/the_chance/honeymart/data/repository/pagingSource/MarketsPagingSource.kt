@@ -12,5 +12,4 @@ class MarketsPagingSource @Inject constructor(
         return wrap { honeyMartService.getAllMarketsPaging(page = page) }.value?.map { it.toMarket() }
             ?: throw Throwable("paging error")
     }
-
 }
