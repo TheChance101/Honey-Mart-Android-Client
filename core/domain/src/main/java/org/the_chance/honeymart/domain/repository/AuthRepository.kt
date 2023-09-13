@@ -4,8 +4,12 @@ import org.the_chance.honeymart.domain.model.AdminLogin
 import org.the_chance.honeymart.domain.model.Owner
 import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.usecase.Tokens
+import org.the_chance.honeymart.domain.util.InvalidPasswordInputException
+import org.the_chance.honeymart.domain.util.InvalidUserNameOrPasswordException
+import org.the_chance.honeymart.domain.util.UnKnownUserException
 
 interface AuthRepository {
+    @Throws(InvalidUserNameOrPasswordException::class)
     suspend fun loginUser(
         email: String,
         password: String,
@@ -13,7 +17,7 @@ interface AuthRepository {
     ): Tokens
 
     suspend fun refreshToken(refreshToken: String): Tokens
-
+    @Throws(InvalidPasswordInputException::class)
     suspend fun saveTokens(accessToken: String, refreshToken: String)
 
     fun getAccessToken(): String?
@@ -22,7 +26,7 @@ interface AuthRepository {
     suspend fun clearToken()
 
     suspend fun registerUser(fullName: String, password: String, email: String): Boolean
-
+    @Throws(UnKnownUserException::class)
     suspend fun getDeviceToken(): String
 
     suspend fun createOwnerAccount(fullName: String, email: String, password: String): Boolean

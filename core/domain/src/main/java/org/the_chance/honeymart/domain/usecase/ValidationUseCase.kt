@@ -4,9 +4,9 @@ import org.the_chance.honeymart.domain.util.ValidationState
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-class ValidationUseCase @Inject constructor() {
+class ValidationUseCase @Inject constructor() : IValidationUseCase {
 
-    fun validateEmail(email: String): ValidationState {
+    override fun validateEmail(email: String): ValidationState {
         if (email.isBlank()) {
             return ValidationState.BLANK_EMAIL
         }
@@ -16,10 +16,10 @@ class ValidationUseCase @Inject constructor() {
         return ValidationState.VALID_EMAIL
     }
 
-    fun validateConfirmPassword(password: String, repeatedPassword: String) =
+    override fun validateConfirmPassword(password: String, repeatedPassword: String) =
         password == repeatedPassword
 
-    fun validationFullName(fullName: String): ValidationState {
+    override fun validationFullName(fullName: String): ValidationState {
         if (fullName.isBlank()) {
             return ValidationState.BLANK_FULL_NAME
         }
@@ -31,7 +31,7 @@ class ValidationUseCase @Inject constructor() {
     }
 
 
-    fun validationPassword(password: String): ValidationState {
+    override fun validationPassword(password: String): ValidationState {
         return when {
             password.isBlank() -> {
                 ValidationState.BLANK_PASSWORD
