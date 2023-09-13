@@ -7,10 +7,12 @@ import javax.inject.Inject
 
 class ReviewsPagingSource @Inject constructor(
     honeyMartService: HoneyMartService,
+    val productId: Long,
 ) : BasePagingSource<Review>(honeyMartService) {
     override suspend fun fetchData(page: Int): List<Review> {
-        return wrap { honeyMartService.getAllReviewsPaging(page = page) }.value?.map { it.toReview() }
+        return wrap {
+            honeyMartService.getAllReviewsPaging(page = page, productId = productId)
+        }.value?.map { it.toReview() }
             ?: throw Throwable("paging error")
     }
-
 }
