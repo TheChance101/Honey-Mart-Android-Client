@@ -86,7 +86,6 @@ fun SearchContent(
             state.products.isEmpty(),
             text = stringResource(R.string.searched_product_not_found)
         )
-
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier

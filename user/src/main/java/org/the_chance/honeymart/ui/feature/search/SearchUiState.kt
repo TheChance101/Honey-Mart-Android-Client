@@ -9,13 +9,13 @@ data class SearchUiState(
     val error: ErrorHandler? = null,
     val loading: Boolean = true,
     val page: Int = 1,
-    val products: List<ProductUiState> = ArrayList(),
+    val products: List<SearchProductUiState> = ArrayList(),
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false,
     val searchQuery: String = "",
 )
 
-data class ProductUiState(
+data class SearchProductUiState(
     val productId: Long = 0L,
     val productName: String = "",
     val productPrice: Double = 0.0,
@@ -33,8 +33,8 @@ fun SearchUiState.random() = this.searchStates == SearchStates.RANDOM
 fun SearchUiState.ascending() = this.searchStates == SearchStates.ASCENDING
 fun SearchUiState.descending() = this.searchStates == SearchStates.DESCENDING
 
-fun Product.toProductUiState(): ProductUiState {
-    return ProductUiState(
+fun Product.toSearchProductUiState(): SearchProductUiState {
+    return SearchProductUiState(
         productId = productId,
         productName = productName,
         productPrice = productPrice,

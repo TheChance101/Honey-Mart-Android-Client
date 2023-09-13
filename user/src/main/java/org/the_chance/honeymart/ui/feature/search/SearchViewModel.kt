@@ -36,12 +36,12 @@ class SearchViewModel @Inject constructor(
         _state.update { it.copy(loading = true) }
         viewModelScope.launch {
             val products = searchForProductUseCase(_state.value.searchQuery, page, sortOrder)
-            val mappedProducts = products!!.map { it.toProductUiState() }
+            val mappedProducts = products!!.map { it.toSearchProductUiState() }
             _state.update { it.copy(products = mappedProducts, loading = false) }
         }
     }
 
-    private fun appendProducts(products: List<ProductUiState>) {
+    private fun appendProducts(products: List<SearchProductUiState>) {
         val current = ArrayList(state.value.products)
         current.addAll(products)
         _state.update { it.copy(products = current) }
@@ -138,7 +138,7 @@ class SearchViewModel @Inject constructor(
                         _state.value.searchQuery,
                         page,
                         sortOrder
-                    )!!.map { it.toProductUiState() }
+                    )!!.map { it.toSearchProductUiState() }
                     appendProducts(result)
                 }
                 _state.update { it.copy(loading = false) }

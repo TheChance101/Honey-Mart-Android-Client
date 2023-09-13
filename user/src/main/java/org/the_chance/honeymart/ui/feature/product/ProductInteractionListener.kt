@@ -8,4 +8,5 @@ interface ProductInteractionListener  {
     fun onclickTryAgainProducts()
     fun resetSnackBarState()
     fun showSnackBar(message: String)
+    fun onScrollDown()
 }

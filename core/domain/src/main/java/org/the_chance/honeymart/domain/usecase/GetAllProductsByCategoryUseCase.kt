@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetAllProductsByCategoryUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(categoryId: Long): List<Product>? =
-        honeyMartRepository.getAllProductsByCategory(page = null,categoryId)
+    suspend operator fun invoke(categoryId: Long, page: Int): List<Product>? =
+        honeyMartRepository.getAllProductsByCategory(page = page, categoryId)
 }

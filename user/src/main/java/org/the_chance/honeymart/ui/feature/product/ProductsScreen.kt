@@ -47,7 +47,8 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-) {
+
+    ) {
     val state by viewModel.state.collectAsState()
     val navController = LocalNavigationProvider.current
 
@@ -62,26 +63,28 @@ fun ProductsScreen(
                     effect.productId
                 )
 
-
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
             }
         }
     }
-    ProductsContent(state = state, productInteractionListener = viewModel)
+    ProductsContent(
+        state = state, productInteractionListener = viewModel,
+        viewModel::onChangeProductScrollPosition,
+    )
 }
 
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
     productInteractionListener: ProductInteractionListener,
+    onChangeProductScrollPosition: (Int) -> Unit,
 ) {
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = state.position)
 
     HoneyAppBarScaffold {
-        val products = state.products.collectAsLazyPagingItems()
-        Loading(state.isLoadingCategory || products.loadState.refresh == LoadState.Loading)
+        val products = state.products
+        Loading(state.isLoadingCategory)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
-
         ContentVisibility(state = state.contentScreen()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Row(
@@ -126,10 +129,7 @@ private fun ProductsContent(
                         enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                         exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                     ) {
-                        EmptyProductPlaceholder(
-                            state.emptyPlaceHolder() && products.itemSnapshotList.isEmpty()
-                                    && products.loadState.refresh != LoadState.Loading
-                        )
+                        EmptyProductPlaceholder(state.emptyPlaceHolder() && products.isEmpty())
                         LazyColumn(
                             contentPadding = PaddingValues(
                                 top = MaterialTheme.dimens.space24,
@@ -137,34 +137,30 @@ private fun ProductsContent(
                             ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                         ) {
-
                             items(
-                                products.itemCount,
-                                key = { products.itemSnapshotList.items[it].productId })
+                                products.size // key = { products.items[it].productId })
+                            )
                             { index ->
-                                val product = products[index]
-                                if (product != null) {
-                                    ProductCard(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        imageUrl = product.productImages.firstOrNull() ?: "",
-                                        productName = product.productName,
-                                        productPrice = product.productPrice.toString(),
-                                        secondaryText = product.productDescription,
-                                        isFavoriteIconClicked = product.isFavorite,
-                                        onClickCard = {
-                                            productInteractionListener.onClickProduct(product.productId)
-                                        },
-                                        onClickFavorite = {
-                                            productInteractionListener.onClickFavIcon(product.productId)
-                                        }
-                                    )
+                                onChangeProductScrollPosition(index)
+                                if ((index + 1) >= (state.page * 10)) {
+                                    productInteractionListener.onScrollDown()
                                 }
+                                val product = products[index]
+                                ProductCard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    imageUrl = product.productImages.firstOrNull() ?: "",
+                                    productName = product.productName,
+                                    productPrice = product.productPrice.toString(),
+                                    secondaryText = product.productDescription,
+                                    isFavoriteIconClicked = product.isFavorite,
+                                    onClickCard = {
+                                        productInteractionListener.onClickProduct(product.productId)
+                                    },
+                                    onClickFavorite = {
+                                        productInteractionListener.onClickFavIcon(product.productId)
+                                    }
+                                )
                             }
-
-                            item {
-                                PagingStateVisibility(products)
-                            }
-
                         }
                     }
                 }
