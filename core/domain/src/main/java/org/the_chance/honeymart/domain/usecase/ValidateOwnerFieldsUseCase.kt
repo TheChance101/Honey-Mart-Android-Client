@@ -49,5 +49,28 @@ class ValidateOwnerFieldsUseCase @Inject constructor() {
             else -> ValidationState.VALID_PRODUCT_DESCRIPTION
         }
     }
+
+    fun validateCouponsDiscountPercentage(discountPercentage: String): ValidationState {
+        return when {
+            discountPercentage.isBlank() -> ValidationState.BLANK_COUPON_DISCOUNT_PERCENTAGE
+            !discountPercentage.matches(Regex("^(100(\\.0{1,2})?|\\d{1,2}(\\.\\d{1,2})?)$")) -> {
+                ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE
+            }
+
+            else -> ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE
+        }
+    }
+
+    fun validateCouponCount(couponCount: String): ValidationState {
+        return when {
+            couponCount.isBlank() -> ValidationState.BLANK_COUPON_COUNT
+            couponCount.length > 9 -> ValidationState.LONG_COUPON_COUNT
+            !couponCount.matches(Regex("^[1-9]\\d*$")) -> {
+                ValidationState.INVALID_COUPON_COUNT
+            }
+
+            else -> ValidationState.VALID_COUPON_COUNT
+        }
+    }
 }
 

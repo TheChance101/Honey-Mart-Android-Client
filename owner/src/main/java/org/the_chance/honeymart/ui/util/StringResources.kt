@@ -55,7 +55,16 @@ class StringResources @Inject constructor(
 
             ValidationState.BLANK_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_can_t_be_blank),
             ValidationState.SHORT_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_is_too_short),
-            ValidationState.LONG_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_is_too_long)
+            ValidationState.LONG_PRODUCT_DESCRIPTION to getStringFromFile(R.string.product_description_is_too_long),
+
+            ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE to getStringFromFile(R.string.invalid_coupon_discount_percentage),
+            ValidationState.BLANK_COUPON_DISCOUNT_PERCENTAGE to getStringFromFile(R.string.discount_percentage_can_t_be_blank),
+
+            ValidationState.INVALID_COUPON_COUNT to getStringFromFile(R.string.invalid_coupon_count),
+            ValidationState.LONG_COUPON_COUNT to getStringFromFile(R.string.coupon_count_is_too_long),
+            ValidationState.BLANK_COUPON_COUNT to getStringFromFile(R.string.coupon_count_can_t_be_blank)
+
+
         )
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(

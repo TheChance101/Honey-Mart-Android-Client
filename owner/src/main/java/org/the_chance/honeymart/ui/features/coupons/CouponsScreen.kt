@@ -133,7 +133,7 @@ fun CouponsContent(
     }
 }
 
-@Preview(device = "id:pixel_tablet")
+@Preview(device = "")
 @Composable
 fun CouponsScreenPreview() {
     HoneyMartTheme {
