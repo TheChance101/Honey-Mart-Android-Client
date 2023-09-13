@@ -19,6 +19,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
+import org.the_chance.honeymart.data.source.remote.models.RatingDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
@@ -257,7 +258,11 @@ interface HoneyMartService {
 
 
     // region Auth
-    suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto>
+    suspend fun loginOwner(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<OwnerLoginDto>
     //endregion
 
     //endregion
@@ -277,4 +282,12 @@ interface HoneyMartService {
 
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
+
+    //region rating
+    suspend fun getAllRatingsForProduct(
+        page: Int?,
+        productId: Long
+    ): BaseResponse<List<RatingDto>>
+
+    //end region rating
 }

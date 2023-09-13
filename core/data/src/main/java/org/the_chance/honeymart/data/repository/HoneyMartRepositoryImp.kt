@@ -7,6 +7,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
+import org.the_chance.honeymart.data.repository.pagingSource.RatingPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
@@ -37,6 +38,7 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.Rating
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
@@ -368,7 +370,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    //region admin
+
     override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {
         return wrap { honeyMartService.getMarketsRequests(isApproved) }.value?.map { it.toMarketRequest() }
             ?: throw NotFoundException()
@@ -379,5 +381,16 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 //endregion admin
-//endregion admin
+
+    //region rating
+    override suspend fun getAllRatingForProduct(
+        page: Int?,
+        productId: Long
+    ): Flow<PagingData<Rating>> =
+        getAllWithParameter(
+            productId,
+            ::RatingPagingSource
+        )
+
+    //end region rating
 }

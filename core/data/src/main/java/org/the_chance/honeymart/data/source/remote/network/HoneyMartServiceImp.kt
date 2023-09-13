@@ -42,6 +42,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
+import org.the_chance.honeymart.data.source.remote.models.RatingDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
@@ -275,7 +276,7 @@ class HoneyMartServiceImp @Inject constructor(
         page: Int?,
         sortOrder: String
     ): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"){
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder") {
 
         })
 
@@ -412,9 +413,9 @@ class HoneyMartServiceImp @Inject constructor(
                 HttpStatusCode.BadGateway.value -> throw NoConnectionException()
                 HttpStatusCode.BadRequest.value -> throw InvalidDataException()
                 HttpStatusCode.Unauthorized.value -> throw UnAuthorizedException()
-                HttpStatusCode.Forbidden.value ->throw ForbiddenException()
-                HttpStatusCode.NotFound.value ->throw NotFoundException()
-                HttpStatusCode.InternalServerError.value ->throw  InternalServerException()
+                HttpStatusCode.Forbidden.value -> throw ForbiddenException()
+                HttpStatusCode.NotFound.value -> throw NotFoundException()
+                HttpStatusCode.InternalServerError.value -> throw InternalServerException()
                 else -> throw Exception(response.status.description)
             }
         }
@@ -422,7 +423,11 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto> {
+    override suspend fun loginOwner(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<OwnerLoginDto> {
         return wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
@@ -512,4 +517,13 @@ class HoneyMartServiceImp @Inject constructor(
             append("password", password)
         }))
 //end region admin
+
+    //region rating
+    override suspend fun getAllRatingsForProduct(
+        page: Int?,
+        productId: Long
+    ): BaseResponse<List<RatingDto>> =
+        wrap(client.get("/reviews/$productId?page=$page"))
+
+    //end region rating
 }
