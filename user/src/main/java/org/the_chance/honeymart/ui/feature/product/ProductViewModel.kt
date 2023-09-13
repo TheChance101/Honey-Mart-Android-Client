@@ -106,11 +106,12 @@ class ProductViewModel @Inject constructor(
 
     private fun getProductsByCategoryId() {
         _state.update { it.copy(isError = false) }
-        tryToExecutePaging(
+
+    /*    tryToExecutePaging(
             { getAllProducts(state.value.categoryId) },
             ::onGetProductSuccess,
             ::onGetProductError
-        )
+        )*/
 
     }
 

@@ -24,7 +24,7 @@ interface HoneyMartRepository {
 
     suspend fun checkAdminApprove(): MarketApproval
     suspend fun getAllMarkets(): List<Market>?
-    suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
+    suspend fun getAllMarketsPaging(page: Int?): List<Market>?
     suspend fun clipCoupon(couponId: Long): Boolean
     suspend fun getMarketDetails(marketId: Long): MarketDetails
     suspend fun addMarket(
@@ -38,7 +38,7 @@ interface HoneyMartRepository {
     suspend fun getCategoriesInMarket(marketId: Long): List<Category>?
     suspend fun getMarketInfo(): MarketInfo
     suspend fun updateMarketStatus(status: Int): Boolean
-    suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): Flow<PagingData<Product>>
+    suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): List<Product>?
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category>?
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String
@@ -53,7 +53,7 @@ interface HoneyMartRepository {
         query: String,
         page: Int?,
         sortOrder: String
-    ): Flow<PagingData<Product>>
+    ): List<Product>?
 
     suspend fun getAllOrders(orderState: Int): List<Order>
 

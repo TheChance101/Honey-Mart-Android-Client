@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.SeeAllmarkets
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,8 @@ class MarketViewModel @Inject constructor(
     MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
+    val page = mutableStateOf(1)
+    val marketListScrollPosition = 0
 
     init {
         getAllMarkets()
@@ -25,11 +28,12 @@ class MarketViewModel @Inject constructor(
 
     override fun getAllMarkets() {
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecutePaging(
-            { getAllMarket() },
-            ::onGetMarketSuccess,
-            ::onGetMarketError
-        )
+
+        /*    tryToExecutePaging(
+                { getAllMarket() },
+                ::onGetMarketSuccess,
+                ::onGetMarketError
+            )*/
     }
 
     private fun onGetMarketSuccess(markets: PagingData<Market>) {

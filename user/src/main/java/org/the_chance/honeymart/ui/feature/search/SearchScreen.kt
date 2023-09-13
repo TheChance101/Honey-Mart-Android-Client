@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
@@ -67,6 +67,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     SearchContent(
         state = state,
         onSearchTextChange = viewModel::onSearchTextChange,
+        viewModel::onChangeProductScrollPosition,
         listener = viewModel
     )
 }
@@ -76,16 +77,13 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 fun SearchContent(
     state: SearchUiState,
     onSearchTextChange: (String) -> Unit,
-    listener: SearchInteraction,
+    onChangeProductScrollPosition: (Int) -> Unit,
+    listener: SearchInteraction
 ) {
     HoneyAppBarScaffold {
-        val products = state.products.collectAsLazyPagingItems()
-        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching && !state.isError)
+        Loading(state.products.isNotEmpty() && state.loading && !state.isError)
         EmptyProductsPlaceholder(
-            (products.itemCount == 0 &&
-                    products.loadState.refresh != LoadState.Loading &&
-                    products.loadState.refresh !is LoadState.Error) && !state.isError
-                    || !state.isSearching && !state.isError,
+            state.products.isEmpty(),
             text = stringResource(R.string.searched_product_not_found)
         )
 
@@ -180,21 +178,18 @@ fun SearchContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             ) {
-                items(products.itemCount) { index ->
-                    val product = products[index]
-                    if (product != null) {
-                        CardSearch(
-                            imageUrl = product.productImages.firstOrNull() ?: "",
-                            productName = product.productName,
-                            productPrice = product.productPrice.toString(),
-                            onClickCard = { listener.onClickProduct(product.productId) }
-                        )
+                items(state.products.size) { index ->
+                    onChangeProductScrollPosition(index)
+                    if ((index + 1) >= (state.page * 10)) {
+                        listener.onScrollDown()
                     }
-                }
-                if (state.isSearching) {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        PagingStateVisibility(products)
-                    }
+                    val product = state.products[index]
+                    CardSearch(
+                        imageUrl = product.productImages.firstOrNull() ?: "",
+                        productName = product.productName,
+                        productPrice = product.productPrice.toString(),
+                        onClickCard = { listener.onClickProduct(product.productId) }
+                    )
                 }
             }
         }
