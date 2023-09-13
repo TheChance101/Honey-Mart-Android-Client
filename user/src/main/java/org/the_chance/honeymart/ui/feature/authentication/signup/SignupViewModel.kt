@@ -2,9 +2,7 @@ package org.the_chance.honeymart.ui.feature.authentication.signup
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.LoginUserUseCase
-import org.the_chance.honeymart.domain.usecase.RegisterUserUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -14,9 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val registerUser: RegisterUserUseCase,
-    private val loginUser: LoginUserUseCase,
-    private val validation: ValidateSignupFieldsUseCase,
+    private val signupUser: UserAuthenticationManagerUseCase,
     private val stringResource: StringDictionary,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
     SignupInteractionListener, AuthenticationInteractionListener {
@@ -59,7 +55,7 @@ class SignupViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {
-                registerUser(
+                signupUser.registerUseCase(
                     fullName = fullName,
                     password = password,
                     email = email
@@ -89,7 +85,7 @@ class SignupViewModel @Inject constructor(
     private fun login(email: String, password: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { loginUser(password = password, email = email) },
+            { signupUser.loginUseCase(password = password, email = email) },
             ::onLoginSuccess,
             ::onLoginError,
         )
@@ -111,7 +107,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onFullNameInputChange(fullName: CharSequence) {
-        val fullNameState = validation.validationFullName(fullName.trim().toString())
+        val fullNameState = signupUser.validationUseCase.validationFullName(fullName.trim().toString())
         _state.update {
             it.copy(
                 fullNameState = FieldState(
@@ -127,7 +123,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onEmailInputChange(email: CharSequence) {
-        val emailState = validation.validateEmail(email.trim().toString())
+        val emailState = signupUser.validationUseCase.validateEmail(email.trim().toString())
         _state.update {
             it.copy(
                 emailState = FieldState(
@@ -144,7 +140,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
-        val passwordState = validation.validationPassword(password.toString())
+        val passwordState = signupUser.validationUseCase.validationPassword(password.toString())
         _state.update {
             it.copy(
                 passwordState = FieldState(
@@ -160,7 +156,7 @@ class SignupViewModel @Inject constructor(
     }
 
     override fun onConfirmPasswordChanged(confirmPassword: CharSequence) {
-        val passwordState = validation.validateConfirmPassword(
+        val passwordState = signupUser.validationUseCase.validateConfirmPassword(
             _state.value.passwordState.value,
             confirmPassword.toString()
         )
