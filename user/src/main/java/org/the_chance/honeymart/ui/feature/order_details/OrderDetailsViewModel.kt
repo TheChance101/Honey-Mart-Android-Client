@@ -4,16 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
-import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserOrderDetailsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
-    private val getOrderDetailsUseCase: GetOrderDetailsUseCase,
-    private val getOrderProductsDetailsUseCase: GetOrderProductsDetailsUseCase,
+    private val orderDetails: UserOrderDetailsManagerUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
     OrderDetailsInteractionListener {
@@ -34,15 +32,15 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderProducts() {
         _state.update { it.copy(isProductsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderProductsDetailsUseCase(orderArgs.orderId.toLong()) },
+            { orderDetails.getOrderProductDetailsUseCase(orderArgs.orderId.toLong()) },
             ::onGetOrderProductsSuccess,
             ::onGetOrderProductsError
         )
     }
 
     private fun onGetOrderProductsSuccess(products: List<OrderDetails.ProductDetails>) {
-        _state.update {
-            it.copy(
+        _state.update { orderDetailsUiState ->
+            orderDetailsUiState.copy(
                 isProductsLoading = false,
                 products = products.map { it.toOrderDetailsProductUiState() })
         }
@@ -58,7 +56,7 @@ class OrderDetailsViewModel @Inject constructor(
     private fun getOrderDetails() {
         _state.update { it.copy(isDetailsLoading = true, isError = false) }
         tryToExecute(
-            { getOrderDetailsUseCase(orderArgs.orderId.toLong()) },
+            { orderDetails.getOrderDetailsUseCase(orderArgs.orderId.toLong()) },
             ::onGetOrderDetailsSuccess,
             ::onGetOrderDetailsError
         )

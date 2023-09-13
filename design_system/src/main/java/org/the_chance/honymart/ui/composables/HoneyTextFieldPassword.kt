@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.error
@@ -41,8 +41,9 @@ fun HoneyTextFieldPassword(
     text: String = "",
     errorMessage: String = "",
     isError: Boolean = errorMessage.isNotEmpty(),
-    keyboardOptions:KeyboardOptions =  KeyboardOptions.Default.copy(
-        imeAction = ImeAction.Next
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        imeAction = ImeAction.Search
     )
 ) {
 
@@ -54,6 +55,7 @@ fun HoneyTextFieldPassword(
             painterResource(id = R.drawable.eye_closed)
     Column {
         OutlinedTextField(
+
             modifier = modifier
                 .fillMaxWidth()
                 .padding(
@@ -62,6 +64,8 @@ fun HoneyTextFieldPassword(
                     bottom = MaterialTheme.dimens.space8
                 )
                 .height(MaterialTheme.dimens.heightOutlinedTextField),
+            keyboardActions = KeyboardActions(),
+            singleLine = true,
             value = text,
             onValueChange = onValueChange,
             visualTransformation = if (passwordVisible) VisualTransformation.None
@@ -77,11 +81,11 @@ fun HoneyTextFieldPassword(
             shape = Shapes.medium,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedSupportingTextColor = if (isError) error else black37,
+                focusedSupportingTextColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
                 focusedContainerColor = (Color.Transparent),
                 disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
-                focusedBorderColor = if (isError) error else black16,
-                unfocusedBorderColor = if (isError) error else black16,
+                focusedBorderColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
+                unfocusedBorderColor = if (isError) error else MaterialTheme.colorScheme.onTertiaryContainer,
             ),
             trailingIcon = {
                 IconButton(

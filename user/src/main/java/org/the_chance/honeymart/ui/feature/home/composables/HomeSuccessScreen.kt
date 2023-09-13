@@ -1,8 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
@@ -27,26 +24,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.launch
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.feature.category.CategoryUiState
+import org.the_chance.honeymart.ui.composables.ProductItem
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
-import org.the_chance.honeymart.ui.feature.markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -58,11 +55,8 @@ fun HomeContentSuccessScreen(
     listener: HomeInteractionListener
 ) {
 
-    val listState = rememberLazyGridState()
-    val scope = rememberCoroutineScope()
 
     LazyVerticalGrid(
-        state = listState,
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -108,7 +102,6 @@ fun HomeContentSuccessScreen(
                 categories = state.categories,
                 selectedMarketId = state.selectedMarketId,
                 onChipClick = listener::onClickChipCategory,
-                onClickSeeAll = {},
                 oncClickCategory = listener::onClickCategory
             )
         }
@@ -128,7 +121,6 @@ fun HomeContentSuccessScreen(
             RecentProducts(
                 recentProducts = state.recentProducts,
                 onClickRecentProduct = listener::onClickProductItem,
-                onClickFavorite = listener::onClickFavoriteNewProduct,
                 onClickSeeAll = listener::onClickSeeAllNewProducts
             )
         }
@@ -139,7 +131,7 @@ fun HomeContentSuccessScreen(
             LastPurchases(
                 lastPurchases = state.lastPurchases,
                 onClickProduct = listener::onClickLastPurchases,
-                onClickSeeAll = {}
+                onClickSeeAll = listener::onClickLastPurchasesSeeAll
             )
         }
 
@@ -162,20 +154,18 @@ fun HomeContentSuccessScreen(
                 productName = discoverProduct.productName,
                 productPrice = discoverProduct.priceInCurrency,
                 imageUrl = discoverProduct.imageUrl,
-                onClickFavorite = { listener.onClickFavoriteDiscoverProduct(discoverProduct.productId) },
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
-                isFavoriteIconClicked = discoverProduct.isFavorite
             )
         }
     }
-
-    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
-        ScrollToTopButton {
-            scope.launch {
-                listState.animateScrollToItem(0)
-            }
-        }
-    }
+//
+//    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
+//        ScrollToTopButton {
+//            scope.launch {
+//                listState.animateScrollToItem(0)
+//            }
+//        }
+//    }
 
 }
 
@@ -224,7 +214,6 @@ private fun LastPurchases(
 private fun RecentProducts(
     recentProducts: List<RecentProductUiState>,
     onClickRecentProduct: (Long) -> Unit,
-    onClickFavorite: (Long) -> Unit,
     onClickSeeAll: () -> Unit
 ) {
     AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
@@ -249,8 +238,6 @@ private fun RecentProducts(
                         productName = recentProduct.productName,
                         productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
                         imageUrl = recentProduct.productImage,
-                        onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                        isFavoriteIconClicked = recentProduct.isFavorite,
                         onClick = { onClickRecentProduct(recentProduct.productId) }
                     )
                 }
@@ -291,20 +278,19 @@ private fun Categories(
     markets: List<MarketUiState>,
     selectedMarketId: Long,
     onChipClick: (Long) -> Unit,
-    onClickSeeAll: () -> Unit,
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(visible = markets.isNotEmpty()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
-            ItemLabel(
-                label = stringResource(R.string.categories),
+            Text(
+                text = stringResource(R.string.categories),
+                style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
                 modifier = modifier
                     .padding(horizontal = MaterialTheme.dimens.space16)
-                    .padding(top = MaterialTheme.dimens.space8),
-                onClick = onClickSeeAll
+                    .padding(top = MaterialTheme.dimens.space8)
             )
             LazyRow(
                 contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
@@ -314,17 +300,26 @@ private fun Categories(
                     CustomChip(
                         state = selectedMarketId == market.marketId,
                         text = market.marketName,
+                        style = MaterialTheme.typography.displayLarge,
                         onClick = { onChipClick(market.marketId) })
                 }
             }
-            LazyRow(contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            ) {
                 itemsIndexed(
                     categories,
                     key = { _, category -> category.categoryId }) { index, category ->
                     HomeCategoriesItem(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.dimens.space8)
+                            .animateItemPlacement(),
                         label = category.categoryName,
-                        onClick = { oncClickCategory(category.categoryId, index) }
+                        onClick = { oncClickCategory(category.categoryId, index) },
+                        painter = painterResource(
+                            id = categoryIcons[category.categoryImageId] ?: R.drawable.ic_cup_paper
+                        ),
                     )
                 }
             }
@@ -391,7 +386,7 @@ private fun MarketsPager(
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
                 contentDescription = stringResource(id = R.string.market_image),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)

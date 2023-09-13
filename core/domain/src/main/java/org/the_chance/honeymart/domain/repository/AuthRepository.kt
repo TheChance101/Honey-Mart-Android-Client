@@ -21,13 +21,13 @@ interface AuthRepository {
 
     suspend fun clearToken()
 
-    suspend fun createUserAccount(fullName: String, password: String, email: String): Boolean
+    suspend fun registerUser(fullName: String, password: String, email: String): Boolean
 
     suspend fun getDeviceToken(): String
 
     suspend fun createOwnerAccount(fullName: String, email: String, password: String): Boolean
 
-    suspend fun loginOwner(email: String, password: String): Owner
+    suspend fun loginOwner(email: String, password: String,deviceToken: String): Owner
 
     suspend fun saveOwnerName(name: String)
     fun getOwnerName(): String?
@@ -38,5 +38,6 @@ interface AuthRepository {
      fun getOwnerMarketId(): Long?
     suspend fun loginAdmin(email: String, password: String): AdminLogin
     suspend fun saveAdminName(name: String)
-    fun getAdminName(): String?
+    suspend fun getAdminName(): String?
+    suspend fun checkAdminAuthentication()
 }

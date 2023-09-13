@@ -4,16 +4,14 @@ package org.the_chance.honeymart.ui.feature.cart
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Cart
-import org.the_chance.honeymart.domain.usecase.CartUseCase
-import org.the_chance.honeymart.domain.usecase.CheckoutUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val cartUseCase: CartUseCase,
-    private val checkout: CheckoutUseCase
+    private val cartProductsManagerUseCase: CartProductsManagerUseCase
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
@@ -21,7 +19,7 @@ class CartViewModel @Inject constructor(
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
-            cartUseCase::getCart,
+            {cartProductsManagerUseCase.cartUseCase.getCart()},
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
@@ -40,7 +38,7 @@ class CartViewModel @Inject constructor(
             _state.update { it.copy(isLoading = true) }
             isOrdering = false
             tryToExecute(
-                { checkout() },
+                { cartProductsManagerUseCase.checkout() },
                 ::onCheckOutSuccess,
                 ::onCheckOutError
             )
@@ -53,8 +51,7 @@ class CartViewModel @Inject constructor(
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
-        if (error is ErrorHandler.UnAuthorizedUser){
-        }
+
     }
 
 
@@ -76,7 +73,7 @@ class CartViewModel @Inject constructor(
             }
         }
 
-        val updatedTotal = updatedProducts.sumByDouble { it.totalPrice }
+        val updatedTotal = updatedProducts.sumOf { it.totalPrice }
 
         val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal)
         _state.value = updatedState
@@ -85,7 +82,7 @@ class CartViewModel @Inject constructor(
 
     private fun onUpdateProductInCart(productId: Long, count: Int) {
         tryToExecute(
-            { cartUseCase.addToCart(productId, count) },
+            { cartProductsManagerUseCase.cartUseCase.addToCart(productId, count) },
             ::onUpdateProductInCartSuccess,
             ::onUpdateProductInCartError
         )
@@ -149,7 +146,7 @@ class CartViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         val productId = state.value.products[position.toInt()].productId
         tryToExecute(
-            { cartUseCase.deleteFromCart(productId) },
+            { cartProductsManagerUseCase.cartUseCase.deleteFromCart(productId) },
             ::onDeleteFromCartSuccess,
             ::onDeleteFromCartError
         )

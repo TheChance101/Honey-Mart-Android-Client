@@ -16,7 +16,12 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
+    private var initialLoad = true
     override fun getAllPendingOrders() {
+        if (!initialLoad && state.value.orderStates == OrderStates.PENDING) {
+            return
+        }
+        initialLoad = false
         _state.update {
             it.copy(isLoading = true, isError = false, orderStates = OrderStates.PENDING)
         }
@@ -39,6 +44,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllProcessingOrders() {
+        if (state.value.orderStates == OrderStates.PROCESSING) {
+            return
+        }
         _state.update {
             it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
         }
@@ -62,6 +70,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllDoneOrders() {
+        if (state.value.orderStates == OrderStates.DONE) {
+            return
+        }
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
         }
@@ -84,6 +95,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllCancelledOrdersByUser() {
+        if (state.value.orderStates == OrderStates.CANCELLED_BY_USER) {
+            return
+        }
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_USER, isError = false)
         }
@@ -106,6 +120,9 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllCancelledOrdersByOwner() {
+        if (state.value.orderStates == OrderStates.CANCELLED_BY_OWNER) {
+            return
+        }
         _state.update {
             it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_OWNER, isError = false)
         }
@@ -138,7 +155,7 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun updateOrdersSuccess(state: Boolean) {
-        _state.update { it.copy(isLoading = false, state = state) }
+        _state.update { it.copy( state = state) }
         when (_state.value.orderStates) {
             OrderStates.PENDING -> getAllPendingOrders()
             OrderStates.PROCESSING -> getAllProcessingOrders()
@@ -147,6 +164,11 @@ class OrderViewModel @Inject constructor(
             OrderStates.CANCELLED_BY_OWNER -> getAllCancelledOrdersByOwner()
             else -> Unit
         }
+        tryToExecute(
+            { getAllOrders(_state.value.orderStates.state) },
+            ::onGetPendingOrdersSuccess,
+            ::onGetPendingOrdersError
+        )
     }
 
     private fun updateOrdersError(error: ErrorHandler) {

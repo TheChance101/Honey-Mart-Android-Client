@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.features.coupons
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.coupons.content.AddCouponContent
@@ -29,7 +29,6 @@ import org.the_chance.honeymart.ui.features.coupons.content.ProductSearchContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.design_system.R
 import java.util.Calendar
 
 @Composable
@@ -54,7 +53,6 @@ fun CouponsContent(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             Column(
                 modifier = Modifier.weight(1f),
@@ -118,7 +116,7 @@ fun CouponsContent(
                         modifier = Modifier
                             .padding(top = MaterialTheme.dimens.space16),
                         colors = DatePickerDefaults.colors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            containerColor = MaterialTheme.colorScheme.onTertiary,
                             headlineContentColor = MaterialTheme.colorScheme.onSecondary,
                             yearContentColor = MaterialTheme.colorScheme.onSecondary,
                             weekdayContentColor = MaterialTheme.colorScheme.onTertiaryContainer,

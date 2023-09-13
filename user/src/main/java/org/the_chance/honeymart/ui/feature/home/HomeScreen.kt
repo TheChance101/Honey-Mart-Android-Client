@@ -12,13 +12,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
-import org.the_chance.honeymart.ui.feature.category.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.navigateToMarketsScreen
+import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
+import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
-import org.the_chance.honeymart.ui.feature.markets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
+import org.the_chance.honeymart.ui.feature.orders.navigateToOrderScreen
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.navigateToSearchScreen
@@ -32,13 +33,12 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = 1)
-//    val navController = LocalNavigationProvider.current
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
-                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+                HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
                 HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
                 HomeUiEffect.NavigateToNewProductsScreenEffect -> navController.navigateToNewProductsScreen()
                 is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
@@ -59,12 +59,11 @@ fun HomeScreen(
                 is HomeUiEffect.NavigateToOrderDetailsScreenEffect -> navController.navigateToOrderDetailsScreen(
                     effect.productId
                 )
+
+                HomeUiEffect.NavigateToOrderScreenEffect -> navController.navigateToOrderScreen()
             }
         })
 
-    LaunchedEffect(key1 = true) {
-        viewModel.getData()
-    }
     HomeContent(
         state = state,
         pagerState = pagerState,

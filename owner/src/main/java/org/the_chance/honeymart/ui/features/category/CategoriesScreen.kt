@@ -1,9 +1,10 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
+import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.composable.EmptyCategory
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.category.content.AddCategoryContent
@@ -27,6 +29,7 @@ import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
+import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel()) {
@@ -45,11 +48,9 @@ fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         HoneyMartTitle()
         Loading(state = state.showLoadingWhenCategoriesIsEmpty())
@@ -65,75 +66,85 @@ fun CategoriesContent(
                 )
             }
         }
-        Row(modifier = Modifier.fillMaxSize()) {
-            Loading(
-                state = state.isLoading && state.categories.isNotEmpty()
-                        && !state.showScreenState.showAddCategory
-            )
-            Column(
+        ContentVisibility(state = !state.isError) {
+
+
+            Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f)
+                    .padding(horizontal = MaterialTheme.dimens.space16),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
-                EmptyCategory(
-                    state = state.placeHolderCondition(),
-                    onClick = { listener.resetShowState(Visibility.ADD_CATEGORY) }
+                Loading(
+                    state = state.isLoading && state.categories.isNotEmpty()
+                            && !state.showScreenState.showAddCategory
                 )
-                ContentVisibility(
-                    state = state.categories.isNotEmpty() && state.showScreenState.showFab
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
                 ) {
-                    CategoryItemsContent(state = state, listener = listener)
-                }
+                    EmptyPlaceholder(
+                        state = state.placeHolderCondition(), emptyObjectName = "Category"
+                    )
 
-                ContentVisibility(state = state.showCategoryProductsInCategory()) {
-                    CategoryProductsContent(state = state, listener = listener)
+                    ContentVisibility(
+                        state = state.categories.isNotEmpty() && state.showScreenState.showFab
+                    ) {
+                        CategoryItemsContent(state = state, listener = listener)
+                    }
+
+                    ContentVisibility(state = state.showCategoryProductsInCategory()) {
+                        CategoryProductsContent(state = state, listener = listener)
+                    }
                 }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                ContentVisibility(
-                    state = state.showScreenState.showAddCategory
-                            && state.showScreenState.showFab
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
                 ) {
-                    AddCategoryContent(listener = listener, state = state)
-                }
+                    ContentVisibility(
+                        state = state.showScreenState.showAddCategory
+                                && state.showScreenState.showFab
+                    ) {
+                        AddCategoryContent(listener = listener, state = state)
+                    }
 
-                ContentVisibility(state = state.showCategoryProductsInProduct()) {
-                    CategoryProductsContent(state = state, listener = listener)
-                }
+                    ContentVisibility(state = state.showCategoryProductsInProduct()) {
+                        CategoryProductsContent(state = state, listener = listener)
+                    }
 
-                ContentVisibility(state = state.showScreenState.showUpdateCategory) {
-                    UpdateCategoryContent(state = state, listener = listener)
-                }
+                    ContentVisibility(state = state.showScreenState.showUpdateCategory) {
+                        UpdateCategoryContent(state = state, listener = listener)
+                    }
 
-                ContentVisibility(state = state.showAddProductContent()) {
-                    AddProductContent(state = state, listener = listener)
-                }
+                    ContentVisibility(state = state.showAddProductContent()) {
+                        AddProductContent(state = state, listener = listener)
+                    }
 
-                ContentVisibility(state = state.showProductDetailsContent()) {
-                    ProductDetailsContent(
-                        titleScreen = stringResource(id = R.string.product_details),
-                        confirmButton = stringResource(id = R.string.update),
-                        cancelButton = stringResource(id = R.string.delete),
-                        state = state,
-                        listener = listener,
-                        onClickConfirm = { listener.onClickUpdateProductDetails() },
-                        onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
-                    )
-                }
-                ContentVisibility(state = state.showProductUpdateContent()) {
-                    ProductDetailsContent(
-                        titleScreen = stringResource(id = R.string.update_product),
-                        confirmButton = stringResource(id = R.string.save),
-                        cancelButton = stringResource(id = R.string.cancel),
-                        state = state,
-                        listener = listener,
-                        onClickConfirm = { listener.updateProductDetails(state) },
-                        onClickCancel = { listener.onClickCancel() }
-                    )
+                    ContentVisibility(state = state.showProductDetailsContent()) {
+                        ProductDetailsContent(
+                            titleScreen = stringResource(id = R.string.product_details),
+                            confirmButton = stringResource(id = R.string.update),
+                            cancelButton = stringResource(id = R.string.delete),
+                            state = state,
+                            listener = listener,
+                            onClickConfirm = { listener.onClickUpdateProductDetails() },
+                            onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
+                        )
+                    }
+                    ContentVisibility(state = state.showProductUpdateContent()) {
+                        ProductDetailsContent(
+                            titleScreen = stringResource(id = R.string.update_product),
+                            confirmButton = stringResource(id = R.string.save),
+                            cancelButton = stringResource(id = R.string.cancel),
+                            state = state,
+                            listener = listener,
+                            onClickConfirm = { listener.updateProductDetails(state) },
+                            onClickCancel = { listener.onClickCancel() }
+                        )
+                    }
                 }
             }
         }
@@ -142,7 +153,7 @@ fun CategoriesContent(
         state = state.snackBar.isShow
     ) {
         SnackBarWithDuration(
-            message = state.snackBar.message,
+            message = stringResource(R.string.add_new_category_success),
             onDismiss = listener::resetSnackBarState,
             undoAction = listener::resetSnackBarState,
             text = stringResource(R.string.dismiss)

@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.util
 import android.content.Context
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.owner.R
+import org.the_chance.design_system.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +20,8 @@ class StringResources @Inject constructor(
             ValidationState.BLANK_EMAIL to getStringFromFile(R.string.email_should_not_be_empty),
             ValidationState.INVALID_EMAIL to getStringFromFile(R.string.invalid_email),
             ValidationState.BLANK_PASSWORD to getStringFromFile(R.string.password_should_not_be_empty),
-            ValidationState.INVALID_PASSWORD_LENGTH to getStringFromFile(R.string.password_length_must_be_at_least_8),
+            ValidationState.INVALID_PASSWORD_LENGTH_SHORT to getStringFromFile(R.string.password_length_must_be_at_least_8),
+            ValidationState.INVALID_PASSWORD_LENGTH_LONG to getStringFromFile(R.string.password_length_must_be_at_least_14),
             ValidationState.PASSWORD_REGEX_ERROR_SPECIAL_CHARACTER to getStringFromFile(R.string.please_write_at_least_1_special_character),
             ValidationState.PASSWORD_REGEX_ERROR_DIGIT to getStringFromFile(R.string.please_write_at_least_1_digit),
             ValidationState.PASSWORD_REGEX_ERROR_LETTER to getStringFromFile(R.string.please_write_at_least_1_letter),
@@ -36,10 +37,11 @@ class StringResources @Inject constructor(
         )
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
-            ErrorHandler.AlreadyExist to getStringFromFile(R.string.account_already_exist),
-            ErrorHandler.UnKnownError to getStringFromFile(R.string.something_went_wrong_please_try_again),
-            ErrorHandler.UnAuthorizedUser to getStringFromFile(R.string.Invalid_username_or_password),
-            ErrorHandler.NoConnection to getStringFromFile(R.string.something_went_wrong_please_try_again)
+            ErrorHandler.EmailAlreadyExist to getStringFromFile(R.string.account_already_exist),
+            ErrorHandler.UnKnownUser to getStringFromFile(R.string.something_went_wrong_please_try_again),
+            ErrorHandler.UnAuthorized to getStringFromFile(R.string.Invalid_username_or_password),
+            ErrorHandler.NoConnection to getStringFromFile(R.string.something_went_wrong_please_try_again),
+            ErrorHandler.MarketDeleted to getStringFromFile(R.string.market_has_been_deleted)
         )
     override val requiredFieldsMessageString: String
         get() = getStringFromFile(R.string.please_fill_required_fields)

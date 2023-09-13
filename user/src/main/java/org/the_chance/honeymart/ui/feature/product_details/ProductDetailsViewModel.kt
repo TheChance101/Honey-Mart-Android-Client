@@ -4,11 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.usecase.CartUseCase
-import org.the_chance.honeymart.domain.usecase.DeleteAllCartUseCase
-import org.the_chance.honeymart.domain.usecase.GetIfProductInWishListUseCase
-import org.the_chance.honeymart.domain.usecase.GetProductDetailsUseCase
-import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
@@ -16,11 +14,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val getProductDetailsUseCase: GetProductDetailsUseCase,
-    private val addProductToCartUseCase: CartUseCase,
-    private val deleteCartUseCase: DeleteAllCartUseCase,
-    private val getIfProductInWishListUseCase: GetIfProductInWishListUseCase,
-    private val wishListOperations: WishListOperationsUseCase,
+    private val cartOperations: CartProductsManagerUseCase,
+    private val productsOperations: UserProductManagerUseCase,
+    private val wishListOperations: UserWishListManagerUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductDetailsUiState, ProductDetailsUiEffect>(ProductDetailsUiState()),
     ProductDetailsInteraction {
@@ -33,14 +29,14 @@ class ProductDetailsViewModel @Inject constructor(
         getData()
     }
 
-    private fun getData() {
+     fun getData() {
         getProductDetails(args.productId.toLong())
     }
 
     override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
-            { deleteCartUseCase() },
+            { cartOperations.deleteAllCartUseCase() },
             { onDeleteCartSuccess(it, productId, count) },
             ::onDeleteCartError,
         )
@@ -75,7 +71,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun getProductDetails(productId: Long) {
         _state.update { it.copy(isLoading = true, error = null, isConnectionError = false) }
         tryToExecute(
-            { getProductDetailsUseCase(productId) },
+            { productsOperations.getProductDetailsUseCase(productId) },
             ::onGetProductSuccess,
             ::onGetProductError,
         )
@@ -84,7 +80,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onGetProductSuccess(product: Product) {
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product.toProductUiState(),
+                error = null, isConnectionError = false, product = product.toProductUiState(), isLoading = false
             )
         }
         _state.update {
@@ -148,8 +144,8 @@ class ProductDetailsViewModel @Inject constructor(
                 isConnectionError = false,
             )
         }
-        tryToExecuteDebounced(
-            { addProductToCartUseCase.addToCart(productId, count) },
+       tryToExecute(
+            { cartOperations.cartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
         )
@@ -169,11 +165,11 @@ class ProductDetailsViewModel @Inject constructor(
                 _state.update { it.copy(isConnectionError = true) }
             }
 
-            is ErrorHandler.UnAuthorizedUser -> {
+            is ErrorHandler.UnAuthorized -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
-            is ErrorHandler.InvalidData -> {
+            is ErrorHandler.ProductNotInSameCartMarket -> {
                 effectActionExecutor(
                     _effect,
                     ProductDetailsUiEffect.ProductNotInSameCartMarketExceptionEffect(
@@ -194,7 +190,7 @@ class ProductDetailsViewModel @Inject constructor(
     private fun checkIfProductInWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
         tryToExecute(
-            { getIfProductInWishListUseCase(productId) },
+            { wishListOperations.getIfProductInWishListUseCase(productId) },
             ::onGetIfProductInWishListSuccess,
             ::onGetIfProductInWishListError
         )
@@ -219,8 +215,8 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun addProductToWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
-        tryToExecuteDebounced(
-            { wishListOperations.addToWishList(productId) },
+        tryToExecute(
+            { wishListOperations.operationWishListUseCase.addToWishList(productId) },
             ::onAddProductToWishListSuccess,
             { error -> onAddProductToWishListError(error, productId) }
         )
@@ -239,7 +235,7 @@ class ProductDetailsViewModel @Inject constructor(
                 _state.update { it.copy(isLoading = false, isConnectionError = true) }
             }
 
-            is ErrorHandler.UnAuthorizedUser -> {
+            is ErrorHandler.UnAuthorized -> {
                 effectActionExecutor(_effect, ProductDetailsUiEffect.UnAuthorizedUserEffect)
             }
 
@@ -290,8 +286,8 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun deleteProductFromWishList(productId: Long) {
         _state.update { it.copy(error = null, isConnectionError = false) }
-        tryToExecuteDebounced(
-            { wishListOperations.deleteFromWishList(productId) },
+        tryToExecute(
+            { wishListOperations.operationWishListUseCase.deleteFromWishList(productId) },
             ::onDeleteWishListSuccess,
             ::onDeleteWishListError
         )

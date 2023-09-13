@@ -19,15 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
-import org.the_chance.honymart.ui.theme.white
 
 @Composable
 fun AppNavRailItem(
@@ -56,6 +55,19 @@ fun AppNavRailItem(
                         }
                         launchSingleTop = true
                         restoreState = true
+                        when (screen) {
+                            NavigationRailScreen.Category -> {
+                                navController.popBackStack(Screen.Category.route, false)
+                            }
+
+                            NavigationRailScreen.Coupons -> {
+                                navController.popBackStack(Screen.Coupons.route, false)
+                            }
+
+                            NavigationRailScreen.Orders -> {
+                                navController.popBackStack(Screen.Orders.route, false)
+                            }
+                        }
                     }
                 },
             verticalArrangement = Arrangement.Center,
@@ -74,8 +86,9 @@ fun AppNavRailItem(
                         .size(MaterialTheme.dimens.icon32)
                         .align(Alignment.Center),
                     painter = painterResource(id = screen.selectedIcon),
-                    contentDescription = screen.label,
-                    tint = if (selected) white else black60,
+                    contentDescription = stringResource(id = screen.label),
+                    tint = if (selected) MaterialTheme.colorScheme.tertiary else
+                        MaterialTheme.colorScheme.onBackground,
                 )
             }
 
@@ -84,7 +97,7 @@ fun AppNavRailItem(
             ) {
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    text = screen.label,
+                    text = stringResource(id = screen.label),
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.displayLarge

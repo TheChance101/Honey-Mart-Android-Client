@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -49,7 +50,8 @@ fun HomeMarketItem(
         Text(
             text = name,
             modifier = Modifier.align(Alignment.Center),
-            style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onPrimary)
+            style = MaterialTheme.typography.displaySmall.copy(color = MaterialTheme.colorScheme.onPrimary),
+            textAlign = TextAlign.Center
         )
     }
 }

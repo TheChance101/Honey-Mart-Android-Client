@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import org.the_chance.honeymart.data.source.local.AuthorizationPreferences
 import org.the_chance.honeymart.data.source.remote.mapper.toAdminLogin
 import org.the_chance.honeymart.data.source.remote.mapper.toOwnerFields
@@ -27,12 +26,12 @@ class AuthRepositoryImp @Inject constructor(
     ): Boolean =
         wrap { honeyMartService.addOwner(fullName, email, password) }.isSuccess
 
-    override suspend fun createUserAccount(
+    override suspend fun registerUser(
         fullName: String,
         password: String,
         email: String,
     ): Boolean =
-        wrap { honeyMartService.addUser(fullName, password, email) }.isSuccess
+        wrap { honeyMartService.registerUser(fullName, password, email) }.isSuccess
 
     override suspend fun getDeviceToken(): String {
         return fireBaseMsgService.getDeviceToken()
@@ -54,7 +53,6 @@ class AuthRepositoryImp @Inject constructor(
 
     override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         datastore.saveTokens(accessToken, refreshToken)
-        Log.e("Saved  Tokens Successfully : ", "$accessToken $refreshToken")
     }
 
     override fun getAccessToken(): String? {
@@ -69,8 +67,8 @@ class AuthRepositoryImp @Inject constructor(
         datastore.clearToken()
     }
 
-    override suspend fun loginOwner(email: String, password: String): Owner {
-        return wrap { honeyMartService.loginOwner(email, password) }.value?.toOwnerFields()
+    override suspend fun loginOwner(email: String, password: String, deviceToken: String): Owner {
+        return wrap { honeyMartService.loginOwner(email, password,deviceToken) }.value?.toOwnerFields()
             ?: throw NotFoundException()
     }
 
@@ -104,7 +102,10 @@ class AuthRepositoryImp @Inject constructor(
         datastore.saveAdminName(name)
     }
 
-    override fun getAdminName(): String? = datastore.getAdminName()
+    override suspend fun getAdminName(): String? = datastore.getAdminName()
 
+    override suspend fun checkAdminAuthentication() {
+        wrap { honeyMartService.checkAdminAuthentication()}
+    }
 
 }

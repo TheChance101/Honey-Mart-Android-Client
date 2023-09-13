@@ -5,9 +5,11 @@ import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.MarketApprovalDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketInfoDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
@@ -24,6 +26,7 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 interface HoneyMartService {
 
+    suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto>
 
     suspend fun addOwner(
         fullName: String,
@@ -49,6 +52,10 @@ interface HoneyMartService {
     suspend fun deleteMarket(marketId: Long): BaseResponse<String>
 
     suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto>
+
+    suspend fun getMarketInfo(): BaseResponse<MarketInfoDto>
+
+    suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean>
 
     //endregion Market
 
@@ -155,7 +162,7 @@ interface HoneyMartService {
 
     suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto>
 
-    suspend fun addUser(
+    suspend fun registerUser(
         fullName: String,
         password: String,
         email: String,
@@ -250,7 +257,7 @@ interface HoneyMartService {
 
 
     // region Auth
-    suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto>
+    suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto>
     //endregion
 
     //endregion
@@ -260,6 +267,8 @@ interface HoneyMartService {
 
     //region admin
     suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>>
+
+    suspend fun checkAdminAuthentication(): BaseResponse<String>
 
     suspend fun updateMarketRequest(
         id: Long?,

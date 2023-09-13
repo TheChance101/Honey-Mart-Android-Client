@@ -4,11 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,11 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.blackOn60
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -38,7 +35,11 @@ fun ProductCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space8,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
     ) {
@@ -63,32 +64,46 @@ fun ProductCard(
                 Text(
                     text = productName,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = blackOn60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Row(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+
                 ) {
                     Icon(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
                         painter = painterResource(id = R.drawable.icon_cart),
                         contentDescription = stringResource(id = R.string.icon_cart),
-                        tint = black37
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-
                     Text(
                         text = description,
-                        style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
+                        style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.onSecondaryContainer)
                     )
                 }
             }
             Text(
                 text = productPrice,
                 style = MaterialTheme.typography.bodyMedium,
-                color = blackOn60
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductCardPreview() {
+    HoneyMartTheme {
+        ProductCard(
+            onClick = {},
+            imageUrl = "https://images.unsplash.com/photo-1629789877829-4b3b8b5b5b9f?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDQwfHh6eWJ4Z0J0Z0lBfHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+            productName = "Product Name",
+            productPrice = "Rp 100.000",
+            description = "Description"
+        )
     }
 }

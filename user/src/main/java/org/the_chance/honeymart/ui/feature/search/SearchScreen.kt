@@ -36,11 +36,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
@@ -56,7 +55,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
@@ -81,13 +80,15 @@ fun SearchContent(
 ) {
     HoneyAppBarScaffold {
         val products = state.products.collectAsLazyPagingItems()
-        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching)
+        Loading(state = (products.loadState.refresh == LoadState.Loading) && state.isSearching && !state.isError)
         EmptyProductsPlaceholder(
-            (products.itemCount == 0
-                    && products.loadState.refresh != LoadState.Loading)
-                    || !state.isSearching
+            (products.itemCount == 0 &&
+                    products.loadState.refresh != LoadState.Loading &&
+                    products.loadState.refresh !is LoadState.Error) && !state.isError
+                    || !state.isSearching && !state.isError,
+            text = stringResource(R.string.searched_product_not_found)
         )
-        ConnectionErrorPlaceholder(state.isError, listener::onclickTryAgain)
+
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
@@ -152,16 +153,19 @@ fun SearchContent(
                         CustomChip(
                             state = state.random(),
                             text = stringResource(R.string.random),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickRandomSearch
                         )
                         CustomChip(
                             state = state.ascending(),
                             text = stringResource(R.string.ascending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickAscendingSearch
                         )
                         CustomChip(
                             state = state.descending(),
                             text = stringResource(R.string.descending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::onClickDescendingSearch
                         )
                     }

@@ -112,7 +112,6 @@ data class ProductUiState(
     val productImage: List<String> = emptyList(),
     val productPrice: String = "",
     val productDescription: String = "",
-    val productsQuantity: String = "",
 ) {
     companion object
 }
@@ -147,8 +146,7 @@ fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
         productName = productName,
-        productImage = if (productImages.isNotEmpty())
-            productImages else listOf("", ""),
+        productImage = productImages.ifEmpty { listOf("", "") },
         productPrice = productPrice.toPriceFormat(),
         productDescription = productDescription,
     )
@@ -166,13 +164,14 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // endregion
 
 // region Extension
-fun CategoriesUiState.showButton(): Boolean {
-    return categories.any { category ->
-        newCategory.newCategoryName.isNotBlank() &&
-                category.categoryIconUIState.isSelected
-                && !isLoading &&
-                newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+
+fun CategoriesUiState.showAddUpdateCategoryButton(): Boolean {
+    return newCategory.newCategoryName.isNotBlank()
+            && categoryIcons.any { categoryIcons ->
+        categoryIcons.isSelected
     }
+            && !isLoading
+            && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
 }
 
 fun NewProductsUiState.showButton(): Boolean {
@@ -188,20 +187,23 @@ fun CategoriesUiState.showSaveUpdateButton(): Boolean {
     return productDetails.productName.isNotBlank() &&
             productDetails.productPrice.isNotBlank() &&
             productDetails.productDescription.isNotBlank() &&
-            newProducts.images.isNotEmpty()
+            newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productPriceState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.productDescriptionState == ValidationState.VALID_TEXT_FIELD
+            && newProducts.images.isNotEmpty()
 
 }
+
 
 fun String.removeDollarSign(): String {
     return this.replace("$", "").trim()
 }
 
-
 fun CategoriesUiState.emptyCategoryPlaceHolder() =
     placeHolderCondition() && !showScreenState.showCategoryProducts
             && !showScreenState.showAddCategory
 
-fun CategoriesUiState.errorPlaceHolderCondition() = isError
+fun CategoriesUiState.errorPlaceHolderCondition() = isError && !isLoading
 
 fun CategoriesUiState.placeHolderCondition() =
     categories.isEmpty() && !isError && !isLoading

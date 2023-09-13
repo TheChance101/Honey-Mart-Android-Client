@@ -28,9 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.OrderDetailsCard
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.Loading
@@ -44,15 +44,15 @@ fun OrderDetailsScreen(
 ) {
     val state = viewModel.state.collectAsState().value
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is OrderDetailsUiEffect.ClickProductEffect -> navController.navigateToProductDetailsScreen(
                     effect.productId
                 )
             }
-    })
+        })
     OrderDetailsContent(state = state, listener = viewModel)
 }
 
@@ -62,9 +62,9 @@ private fun OrderDetailsContent(
     state: OrderDetailsUiState,
 ) {
     HoneyAppBarScaffold {
+        Loading(state = state.isProductsLoading)
         ContentVisibility(state = !state.isProductsLoading) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Loading(state = state.isProductsLoading)
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 160.dp),
                     modifier = Modifier

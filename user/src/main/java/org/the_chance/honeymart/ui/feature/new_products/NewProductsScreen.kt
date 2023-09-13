@@ -16,9 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
-import org.the_chance.honeymart.ui.feature.home.composables.ProductItem
+import org.the_chance.honeymart.ui.composables.ProductItem
+import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -35,7 +36,7 @@ fun NewProductsScreen(
     LaunchedEffect(key1 = true) {
         viewModel.effect.collect {
             when (it) {
-                RecentProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+                RecentProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
                 is RecentProductUiEffect.ClickProductEffect ->
                     navController.navigateToProductDetailsScreen(it.productId)
             }
@@ -45,7 +46,6 @@ fun NewProductsScreen(
         recentProductInteractionListener = viewModel,
         state = state,
         onClickRecentProduct = viewModel::onClickProductItem,
-        onClickFavorite = viewModel::onClickFavoriteNewProduct
     )
 }
 
@@ -56,39 +56,37 @@ fun NewProductsContent(
     recentProductInteractionListener: RecentProductListener,
     state: RecentProductsUiState,
     onClickRecentProduct: (Long) -> Unit,
-    onClickFavorite: (Long) -> Unit,
 ) {
     HoneyAppBarScaffold {
 
-        Loading(state = state.isLoading)
-
+        Loading(state = state.recentProducts.isEmpty() && state.isLoading)
         ConnectionErrorPlaceholder(
             state = state.isError,
             onClickTryAgain = recentProductInteractionListener::getRecentProducts,
         )
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 160.dp),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
-            ) {
-                items(state.recentProducts) { recentProduct ->
-                    ProductItem(
-                        modifier = Modifier.animateItemPlacement(),
-                        productName = recentProduct.productName,
-                        productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
-                        imageUrl = recentProduct.productImage,
-                        onClickFavorite = { onClickFavorite(recentProduct.productId) },
-                        isFavoriteIconClicked = recentProduct.isFavorite,
-                        onClick = { onClickRecentProduct(recentProduct.productId) }
-                    )
+        ContentVisibility(state = state.recentProducts.isNotEmpty() && !state.isError) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(MaterialTheme.dimens.space16),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                ) {
+                    items(state.recentProducts) { recentProduct ->
+                        ProductItem(
+                            modifier = Modifier.animateItemPlacement(),
+                            productName = recentProduct.productName,
+                            productPrice = recentProduct.price.formatCurrencyWithNearestFraction(),
+                            imageUrl = recentProduct.productImage,
+                            onClick = { onClickRecentProduct(recentProduct.productId) }
+                        )
+                    }
                 }
+
             }
+            Loading(state = state.recentProducts.isNotEmpty() && state.isLoading)
         }
     }
-
 }
 

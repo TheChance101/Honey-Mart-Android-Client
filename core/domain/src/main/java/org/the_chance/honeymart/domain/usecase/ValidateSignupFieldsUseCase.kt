@@ -37,8 +37,11 @@ class ValidateSignupFieldsUseCase @Inject constructor() {
                 ValidationState.BLANK_PASSWORD
             }
 
-            password.length < 6 -> {
-                ValidationState.INVALID_PASSWORD_LENGTH
+            password.length < 8 -> {
+                ValidationState.INVALID_PASSWORD_LENGTH_SHORT
+            }
+            password.length > 14 -> {
+                ValidationState.INVALID_PASSWORD_LENGTH_LONG
             }
 
             !password.any { it.isDigit() } -> {

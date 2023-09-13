@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,7 +12,9 @@ import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
 import org.the_chance.honeymart.data.source.remote.mapper.toCoupon
 import org.the_chance.honeymart.data.source.remote.mapper.toMarket
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketApproval
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketDetails
+import org.the_chance.honeymart.data.source.remote.mapper.toMarketInfo
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toMarketRequest
 import org.the_chance.honeymart.data.source.remote.mapper.toNotification
@@ -28,7 +29,9 @@ import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
 import org.the_chance.honeymart.domain.model.Market
+import org.the_chance.honeymart.domain.model.MarketApproval
 import org.the_chance.honeymart.domain.model.MarketDetails
+import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
@@ -50,14 +53,17 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
 
+    override suspend fun checkAdminApprove(): MarketApproval {
+        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval() ?: throw NotFoundException()
+    }
+
     override suspend fun getAllMarkets(): List<Market> {
-        Log.e("Service", "getAllMarkets${honeyMartService.getAllMarkets()}")
         return wrap { honeyMartService.getAllMarkets() }.value?.map { it.toMarket() }
             ?: throw NotFoundException()
     }
 
     override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>> {
-       return getAll(::MarketsPagingSource)
+        return getAll(::MarketsPagingSource)
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -101,6 +107,16 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getCategoriesInMarket(marketId: Long): List<Category> =
         wrap { honeyMartService.getCategoriesInMarket(marketId) }.value?.map { it.toCategory() }
             ?: throw NotFoundException()
+
+    override suspend fun getMarketInfo(): MarketInfo {
+        return wrap { honeyMartService.getMarketInfo() }.value?.toMarketInfo()
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun updateMarketStatus(status: Int): Boolean {
+        return wrap { honeyMartService.updateMarketStatus(status) }.value
+            ?: throw NotFoundException()
+    }
 
     override suspend fun getMarketDetails(marketId: Long): MarketDetails =
         wrap { honeyMartService.getMarketDetails(marketId) }.value?.toMarketDetails()
@@ -231,8 +247,9 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     private fun <I : Any> getAll(
-        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,)
-    : Flow<PagingData<I>>{
+        sourceFactory: (HoneyMartService) -> PagingSource<Int, I>,
+    )
+            : Flow<PagingData<I>> {
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE),
             pagingSourceFactory = { sourceFactory(honeyMartService) }

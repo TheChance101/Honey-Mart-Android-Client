@@ -34,6 +34,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     private val prefDataStore = context.preferencesDataStore
 
     override suspend fun saveTokens(accessToken: String, refreshToken: String) {
+        storedAccessToken = null
+        storedRefreshToken = null
         prefDataStore.edit { preferences ->
             preferences[KEY_ACCESS_TOKEN] = accessToken
             preferences[KEY_REFRESH_TOKEN] = refreshToken
@@ -57,6 +59,8 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
     }
 
     override suspend fun clearToken() {
+        storedAccessToken = null
+        storedRefreshToken = null
         prefDataStore.edit { preferences ->
             preferences.remove(KEY_ACCESS_TOKEN)
             preferences.remove(KEY_REFRESH_TOKEN)
@@ -98,7 +102,7 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         }
     }
 
-    override  fun getOwnerMarketId(): Long? {
+    override fun getOwnerMarketId(): Long? {
         return runBlocking {
             prefDataStore.data.map { preferences ->
                 preferences[OWNER_MARKET_ID]
@@ -112,11 +116,9 @@ class AuthDataStorePreferencesImp @Inject constructor(context: Context) : Author
         }
     }
 
-    override fun getAdminName(): String? {
-        return runBlocking {
-            prefDataStore.data.map { preferences ->
-                preferences[ADMIN_NAME]
-            }.first()
-        }
+    override suspend fun getAdminName(): String? {
+        return prefDataStore.data.map { preferences ->
+            preferences[ADMIN_NAME]
+        }.first()
     }
 }

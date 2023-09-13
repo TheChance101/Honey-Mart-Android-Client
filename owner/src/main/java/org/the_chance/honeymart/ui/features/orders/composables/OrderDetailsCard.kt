@@ -4,11 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,14 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderDetailsProductUiState
 import org.the_chance.honeymart.ui.util.toCountFormat
 import org.the_chance.honeymart.ui.util.toPriceFormat
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.blackOn60
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
@@ -38,7 +33,11 @@ fun OrderDetailsCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(
+                horizontal = MaterialTheme.dimens.space16,
+                vertical = MaterialTheme.dimens.space8,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
     ) {
@@ -46,9 +45,9 @@ fun OrderDetailsCard(
             modifier = Modifier
                 .size(MaterialTheme.dimens.itemProductImage)
                 .clip(CircleShape),
-            imageUrl = state.images.first()
-
+            imageUrl = state.productImageUrl
         )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -64,29 +63,30 @@ fun OrderDetailsCard(
                 Text(
                     text = state.name,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = blackOn60
+                    color = MaterialTheme.colorScheme.onBackground
                 )
+
                 Row(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                 ) {
                     Icon(
-                        modifier = Modifier.size(20.dp),
-                        painter = painterResource(id = R.drawable.icon_cart),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
+                        painter = painterResource(id = R.drawable.ic_cart_check),
                         contentDescription = stringResource(id = R.string.icon_cart),
-                        tint = black37
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = state.count.toCountFormat(),
-                        style = MaterialTheme.typography.bodyMedium.copy(color = blackOn60)
+                        style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.onSecondaryContainer)
                     )
                 }
             }
             Text(
                 text = state.price.toPriceFormat(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = blackOn60
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }

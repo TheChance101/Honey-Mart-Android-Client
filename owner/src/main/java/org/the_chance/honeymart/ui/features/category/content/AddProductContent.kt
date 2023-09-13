@@ -1,12 +1,12 @@
 package org.the_chance.honeymart.ui.features.category.content
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,6 +35,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListe
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
+import org.the_chance.honeymart.ui.features.category.showButton
 import org.the_chance.honeymart.ui.util.handleImageSelection
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.dimens
@@ -55,12 +56,9 @@ fun AddProductContent(
 
     Column(
         modifier = modifier
-            .padding(
-                horizontal = MaterialTheme.dimens.space16,
-            )
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
             .verticalScroll(rememberScrollState())
@@ -84,12 +82,13 @@ fun AddProductContent(
                     else -> ""
                 }
             )
+            Log.e("sara", state.newProducts.toString())
             FormTextField(
                 text = state.newProducts.price,
                 hint = stringResource(R.string.price),
                 keyboardType = KeyboardType.Number,
                 onValueChange = listener::onProductPriceChanged,
-                errorMessage = when (state.newProducts.productNameState) {
+                errorMessage = when (state.newProducts.productPriceState) {
                     ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.product_price_can_t_be_blank)
                     ValidationState.INVALID_PRICE -> stringResource(R.string.invalid_product_price)
                     else -> ""
@@ -118,7 +117,8 @@ fun AddProductContent(
             textAlign = TextAlign.Center,
         )
         Row(
-            modifier = Modifier.height(256.dp)
+            modifier = Modifier
+                .height(256.dp)
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
@@ -137,7 +137,7 @@ fun AddProductContent(
                 }
             }
         }
-        Spacer(modifier = Modifier.weight(1F))
+
         HoneyFilledButton(
             modifier = Modifier.padding(
                 horizontal = MaterialTheme.dimens.space16,
@@ -146,7 +146,8 @@ fun AddProductContent(
             label = stringResource(R.string.add),
             onClick = { listener.addProduct(state) },
             icon = R.drawable.icon_add_to_cart,
-            isLoading = state.isLoading
+            isLoading = state.isLoading,
+            isButtonEnabled = state.newProducts.showButton()
         )
     }
 }

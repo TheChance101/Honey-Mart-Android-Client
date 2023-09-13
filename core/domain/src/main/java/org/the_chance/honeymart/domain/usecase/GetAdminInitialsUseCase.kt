@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetAdminInitialsUseCase @Inject constructor(
     private val authRepository: AuthRepository,
 ) {
-    operator fun invoke(): Char {
+    suspend operator fun invoke(): Char {
         return authRepository.getAdminName()?.firstOrNull() ?: ' '
     }
 }

@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.orders
 
-import okhttp3.internal.http.toHttpDateString
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -54,5 +53,5 @@ fun OrdersUiState.cancelledByOwner() = this.orderStates == OrderStates.CANCELLED
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = this.orders.isEmpty() && !this.isError && !this.isLoading
 
-fun OrdersUiState.screenContent() = !this.isLoading && !this.isError
+fun OrdersUiState.screenContent() =  !this.isError
 fun OrdersUiState.loading() = this.isLoading && this.orders.isNotEmpty()

@@ -16,8 +16,8 @@ import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.CategoryUiState
-import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
@@ -113,6 +113,7 @@ class ProductViewModel @Inject constructor(
         )
 
     }
+
     private fun onGetProductSuccess(products: PagingData<Product>) {
         val mappedProducts = products.map { it.toProductUiState() }
         _state.update {
@@ -125,7 +126,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
+        _state.update { it.copy(error = error, isEmptyProducts = true) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -157,12 +158,12 @@ class ProductViewModel @Inject constructor(
     }
 
 
-
     private fun onGetWishListProductSuccess(
         wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,
     ) {
         _state.update { productsUiState ->
-            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts))) }
+            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts)))
+        }
     }
 
     private fun onGetWishListProductError(
@@ -170,7 +171,8 @@ class ProductViewModel @Inject constructor(
         products: PagingData<ProductUiState>
     ) {
         _state.update {
-            it.copy(error = error, products = flowOf(products)) }
+            it.copy(error = error, products = flowOf(products))
+        }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -189,7 +191,7 @@ class ProductViewModel @Inject constructor(
                 }
             }
         }
-        _state.update { it.copy(products = updatedProducts) }
+        _state.update { it.copy(products = updatedProducts, isLoadingProduct = true) }
         if (isFavorite) {
             deleteProductFromWishList(productId)
         } else {
@@ -206,10 +208,11 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListSuccess() {
+        _state.update { it.copy(isLoadingProduct = false) }
     }
 
     private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isError = true) }
+        _state.update { it.copy(error = error, isError = true, isLoadingProduct = false) }
     }
 
     private fun addProductToWishList(productId: Long) {
@@ -222,19 +225,23 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onAddToWishListSuccess(successMessage: String) {
+        _state.update { it.copy(isLoadingProduct = false) }
         effectActionExecutor(_effect, ProductUiEffect.AddedToWishListEffect(successMessage))
     }
 
     override fun showSnackBar(message: String) {
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = message)) }
+
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = "Success")) }
     }
+
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
     private fun onAddToWishListError(error: ErrorHandler) {
-        if (error is ErrorHandler.UnAuthorizedUser)
+        _state.update { it.copy( isLoadingProduct = false) }
+        if (error is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
     }
 

@@ -8,43 +8,39 @@ import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
-import org.the_chance.honeymart.domain.usecase.ClipCouponUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsUseCase
-import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
-import org.the_chance.honeymart.domain.usecase.GetCouponsUseCase
 import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
-import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserCouponsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.category.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.toCouponUiState
-import org.the_chance.honeymart.ui.feature.markets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
-import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
-import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllMarkets: GetAllMarketsUseCase,
     private val getAllCategoriesInMarket: GetAllCategoriesInMarketUseCase,
-    private val getCoupons: GetCouponsUseCase,
     private val getRecentProducts: GetRecentProductsUseCase,
     private val getAllDiscoverProducts: GetAllProductsUseCase,
     private val getAllOrders: GetAllOrdersUseCase,
-    private val wishListOperationsUseCase: WishListOperationsUseCase,
-    private val getAllWishList: GetAllWishListUseCase,
-    private val clipCouponsUseCase: ClipCouponUseCase,
+    private val userCoupons: UserCouponsManagerUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEffect>(HomeUiState()), HomeInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
+
+    init {
+        getData()
+    }
     override fun getData() {
         _state.update {
             it.copy(isLoading = true, error = null, isConnectionError = false)
@@ -54,7 +50,6 @@ class HomeViewModel @Inject constructor(
         getRecentProducts()
         getDoneOrders()
         getDiscoverProducts()
-        getWishListProducts()
     }
 
     /// region Markets
@@ -120,7 +115,7 @@ class HomeViewModel @Inject constructor(
     /// region Coupons
     private fun getUserCoupons() {
         tryToExecute(
-            { getCoupons.getUserCoupons() },
+            { userCoupons.getAllCouponsUseCase.getUserCoupons() },
             ::onGetCouponsSuccess,
             ::onGetUserCouponsError
         )
@@ -135,13 +130,13 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-        if (error is ErrorHandler.UnAuthorizedUser)
+        if (error is ErrorHandler.UnAuthorized)
             getAllValidCoupons()
     }
 
     private fun getAllValidCoupons() {
         tryToExecute(
-            { getCoupons.getAllValidCoupons() },
+            { userCoupons.getAllCouponsUseCase.getAllValidCoupons() },
             ::onGetCouponsSuccess,
             ::onGetAllValidCouponsError
         )
@@ -252,43 +247,8 @@ class HomeViewModel @Inject constructor(
     }
     /// endregion
 
-    /// region WishList Products
 
-    private fun getWishListProducts() {
-        tryToExecute(
-            { getAllWishList().map { it.toWishListProductUiState() } },
-            { onGetWishListProductSuccess(it) },
-            { onGetWishListProductError(it) }
-        )
-
-    }
-
-    private fun onGetWishListProductSuccess(wishListProducts: List<WishListProductUiState>) {
-        _state.update { productsUiState ->
-            productsUiState.copy(
-                isLoading = false,
-                discoverProducts =
-                _state.value.discoverProducts.map { product ->
-                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-                },
-                recentProducts = _state.value.recentProducts.map { product ->
-                    product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
-                },
-            )
-        }
-    }
-
-    private fun onGetWishListProductError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection,
-            )
-        }
-    }
-    /// endregion
-
+  
     /// region Interactions
 
     override fun onClickCategory(categoryId: Long, position: Int) {
@@ -313,7 +273,7 @@ class HomeViewModel @Inject constructor(
     override fun onClickGetCoupon(couponId: Long) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { clipCouponsUseCase(couponId) },
+            { userCoupons.clipCouponUseCase(couponId) },
             { onClipCouponSuccess() },
             ::onClipCouponError
         )
@@ -332,7 +292,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-        if (errorHandler is ErrorHandler.UnAuthorizedUser)
+        if (errorHandler is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
     }
 
@@ -343,16 +303,6 @@ class HomeViewModel @Inject constructor(
     override fun onClickLastPurchases(orderId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderDetailsScreenEffect(orderId))
     }
-
-
-    override fun onClickFavoriteDiscoverProduct(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        if (_state.value.discoverProducts.find { it.productId == productId }?.isFavorite == false)
-            addProductToWishList(productId)
-        else
-            deleteProductFromWishList(productId)
-    }
-
     override fun onClickSearchBar() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
     }
@@ -362,63 +312,12 @@ class HomeViewModel @Inject constructor(
         getMarketCategories(marketId)
     }
 
-    override fun onClickFavoriteNewProduct(productId: Long) {
-        _state.update { it.copy(isLoading = true) }
-        if (_state.value.recentProducts.find { it.productId == productId }?.isFavorite == false)
-            addProductToWishList(productId)
-        else
-            deleteProductFromWishList(productId)
-    }
-
-    private fun addProductToWishList(productId: Long) {
-        tryToExecute(
-            { wishListOperationsUseCase.addToWishList(productId) },
-            { onAddToWishListSuccess() },
-            ::onAddToWishListError
-        )
-    }
-
-    private fun onAddToWishListSuccess() {
-        getWishListProducts()
-    }
-
-    private fun onAddToWishListError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection
-            )
-        }
-
-        if (error is ErrorHandler.UnAuthorizedUser)
-            effectActionExecutor(_effect, HomeUiEffect.UnAuthorizedUserEffect)
-    }
-
-    private fun deleteProductFromWishList(productId: Long) {
-        tryToExecute(
-            { wishListOperationsUseCase.deleteFromWishList(productId) },
-            { onDeleteWishListSuccess() },
-            ::onDeleteWishListError
-        )
-    }
-
-    private fun onDeleteWishListSuccess() {
-        getWishListProducts()
-    }
-
-    private fun onDeleteWishListError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = error,
-                isConnectionError = error is ErrorHandler.NoConnection
-            )
-        }
-    }
-
     override fun onClickSeeAllNewProducts() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToNewProductsScreenEffect)
+    }
+
+    override fun onClickLastPurchasesSeeAll() {
+        effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderScreenEffect)
     }
 
     /// endregion

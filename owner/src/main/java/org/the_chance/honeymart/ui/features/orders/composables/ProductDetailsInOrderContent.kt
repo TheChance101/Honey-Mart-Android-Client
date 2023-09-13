@@ -41,12 +41,9 @@ fun ProductDetailsInOrderContent(
 ) {
     Column(
         modifier = modifier
-            .padding(
-                horizontal = MaterialTheme.dimens.space16,
-            )
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
             .verticalScroll(rememberScrollState())
@@ -93,7 +90,8 @@ fun ProductDetailsInOrderContent(
         )
 
         Row(
-            modifier = Modifier.height(256.dp)
+            modifier = Modifier
+                .height(256.dp)
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {

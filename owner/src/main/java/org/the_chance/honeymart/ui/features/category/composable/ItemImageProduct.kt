@@ -36,7 +36,7 @@ fun ItemImageProduct(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(MaterialTheme.shapes.medium)
-                .background(color = MaterialTheme.colorScheme.tertiaryContainer),
+                .background(color = MaterialTheme.colorScheme.background),
             painter = rememberAsyncImagePainter(image),
             contentScale = ContentScale.Crop,
             contentDescription = stringResource(R.string.image_of_product),

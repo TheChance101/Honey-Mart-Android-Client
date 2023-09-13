@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.home.composables.coupon
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,10 +32,12 @@ import org.the_chance.honymart.ui.theme.dimens
 @Composable
 fun CouponsItem(
     coupon: CouponUiState,
-    onClickGetCoupon: () -> Unit,
     modifier: Modifier = Modifier,
+    onClickGetCoupon: () -> Unit = {},
+    isExpired: Boolean = false,
+    isClipped: Boolean = false
 ) {
-    Row(
+        Row(
         modifier = modifier.height(IntrinsicSize.Min),
     ) {
         CouponDetails(
@@ -43,8 +46,10 @@ fun CouponsItem(
             expirationDate = coupon.expirationDateFormat,
             count = coupon.count,
             productPrice = coupon.product.priceInCurrency,
-            discountPercentage =coupon.discountPriceInCurrency,
-            onClick = onClickGetCoupon
+            discountPercentage = coupon.discountPriceInCurrency,
+            onClick = onClickGetCoupon,
+            isExpired = isExpired,
+            isClipped = isClipped
         )
         CouponImage(
             modifier = Modifier.fillMaxHeight(),
@@ -61,6 +66,8 @@ fun CouponDetails(
     count: Int,
     productPrice: String,
     discountPercentage: String,
+    isExpired: Boolean,
+    isClipped: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -102,29 +109,42 @@ fun CouponDetails(
             )
         )
 
-        Button(
-            onClick = { onClick() },
-            shape = RoundedCornerShape(4.dp),
-            modifier = Modifier
-                .height(21.dp)
-                .width(74.dp),
-            contentPadding = PaddingValues(
-                bottom = 2.dp,
-                top = 0.dp,
-                end = 0.dp,
-                start = 0.dp
-            ),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colors.primary,
-                contentColor = colors.onPrimary,
-                disabledContentColor = colors.onPrimary,
-                disabledContainerColor = colors.primary.copy(.5F),
-            )
-        ) {
+        AnimatedVisibility(visible = !isClipped) {
+            Button(
+                onClick = { onClick() },
+                shape = RoundedCornerShape(4.dp),
+                modifier = Modifier
+                    .height(21.dp)
+                    .width(74.dp),
+                contentPadding = PaddingValues(
+                    bottom = 2.dp,
+                    top = 0.dp,
+                    end = 0.dp,
+                    start = 0.dp
+                ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colors.primary,
+                    contentColor = colors.onPrimary,
+                    disabledContentColor = colors.onPrimary,
+                    disabledContainerColor = colors.primary.copy(.5F),
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.get_coupon),
+                    style = typography.titleMedium,
+                    color = colors.onPrimary
+                )
+            }
+        }
+
+        AnimatedVisibility(visible = isClipped) {
             Text(
-                text = stringResource(R.string.get_coupon),
+                modifier = Modifier.padding(vertical = dimens.space4),
+                text = if (isExpired) stringResource(id = R.string.expired) else stringResource(
+                    id = R.string.valid
+                ),
                 style = typography.titleMedium,
-                color = colors.onPrimary
+                color = if (isExpired) colors.error else colors.primary
             )
         }
     }

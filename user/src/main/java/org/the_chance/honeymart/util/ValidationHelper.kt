@@ -18,7 +18,7 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.INVALID_CONFIRM_PASSWORD -> R.string.the_passwords_don_t_match
         ValidationState.BLANK_FULL_NAME -> R.string.the_username_can_t_be_blank
         ValidationState.INVALID_FULL_NAME -> R.string.that_s_not_a_valid_username
-        ValidationState.INVALID_PASSWORD_LENGTH -> R.string.the_password_needs_to_consist_of_at_least_6_characters
+        ValidationState.INVALID_PASSWORD_LENGTH_SHORT -> R.string.the_password_needs_to_consist_of_at_least_6_characters
         ValidationState.VALID_EMAIL -> R.string.valid_email
         ValidationState.VALID_PASSWORD -> R.string.valid_password
         ValidationState.VALID_FULL_NAME -> R.string.valid_full_name
@@ -43,6 +43,7 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.CONFIRM_PASSWORD_MATCH -> TODO()
         ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
         ValidationState.INVALID_COUPON_COUNT -> TODO()
+        ValidationState.INVALID_PASSWORD_LENGTH_LONG -> TODO()
     }
 
 }

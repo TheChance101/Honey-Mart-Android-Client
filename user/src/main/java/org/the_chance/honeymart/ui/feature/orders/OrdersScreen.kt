@@ -31,11 +31,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.ItemOrder
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -50,12 +50,14 @@ fun OrdersScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
-        handleEffect = {effect, navController ->
+        handleEffect = { effect, navController ->
             when (effect) {
                 is OrderUiEffect.ClickDiscoverMarketsEffect -> navController.navigateToHomeScreen()
-                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(effect.orderId)
+                is OrderUiEffect.ClickOrderEffect -> navController.navigateToOrderDetailsScreen(
+                    effect.orderId
+                )
             }
         })
 
@@ -98,6 +100,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.pending(),
                             text = stringResource(id = R.string.Pending),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllPendingOrders
                         )
                     }
@@ -105,6 +108,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.processing(),
                             text = stringResource(id = R.string.processing),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllProcessingOrders
                         )
                     }
@@ -112,6 +116,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.done(),
                             text = stringResource(id = R.string.done),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllDoneOrders
                         )
                     }
@@ -119,6 +124,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.cancelledByUser(),
                             text = stringResource(id = R.string.cancelled),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllCancelledOrdersByUser
                         )
                     }
@@ -126,6 +132,7 @@ fun OrdersContent(
                         CustomChip(
                             state = state.cancelledByOwner(),
                             text = stringResource(id = R.string.declined),
+                            style = MaterialTheme.typography.displayLarge,
                             onClick = listener::getAllCancelledOrdersByOwner
                         )
                     }
@@ -195,10 +202,7 @@ fun OrdersContent(
                                 CustomAlertDialog(
                                     message = textOrderStates,
                                     onConfirm = {
-                                        listener.updateOrders(
-                                            index.toLong(),
-                                            buttonOrderStates
-                                        )
+                                        listener.updateOrders(index.toLong(), buttonOrderStates)
                                         showDialog = false
                                     },
                                     onCancel = { showDialog = false },

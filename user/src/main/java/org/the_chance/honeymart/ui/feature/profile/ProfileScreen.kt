@@ -16,9 +16,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
-import org.the_chance.honeymart.ui.composables.NavigationHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.feature.authentication.navigateToAuth
+import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.coupons.navigateToCouponsScreen
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
@@ -37,25 +37,37 @@ fun ProfileScreen(
     val context = LocalContext.current
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { handleImageSelection(it, context, viewModel::onImageSelected) }
+        onResult = {
+            handleImageSelection(it, context, viewModel::onImageSelected)
+        }
     )
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
                 ProfileUiEffect.ClickCameraEffect -> photoPickerLauncher.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
+
                 is ProfileUiEffect.ClickMyOrderEffect -> navController.navigateToOrderScreen()
-                 ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
-                is ProfileUiEffect.ClickCouponsEffect -> { navController.navigateToCouponsScreen()}
-                is ProfileUiEffect.ClickLogoutEffect -> { navController.navigateToHomeScreen() }
-                ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuth()
+                ProfileUiEffect.ClickNotificationEffect -> navController.navigateToNotificationsScreen()
+                is ProfileUiEffect.ClickCouponsEffect -> {
+                    navController.navigateToCouponsScreen()
+                }
+
+                is ProfileUiEffect.ClickLogoutEffect -> {
+                    navController.navigateToHomeScreen()
+                }
+
+                ProfileUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
             }
         })
 
+
+
     LaunchedEffect(key1 = true) {
         viewModel.getData()
+
     }
 
     ProfileContent(
@@ -93,7 +105,7 @@ private fun ProfileContent(
 
 
         EmptyOrdersPlaceholder(
-            state = state.error is ErrorHandler.UnAuthorizedUser,
+            state = state.error is ErrorHandler.UnAuthorized && state.isLoading.not(),
             image = R.drawable.placeholder_order,
             title = stringResource(R.string.you_are_not_logged_in),
             subtitle = stringResource(R.string.login_and_get_access_to_your_orders_wishlist_and_more),

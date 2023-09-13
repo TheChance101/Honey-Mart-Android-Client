@@ -22,12 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
-import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honeymart.ui.composables.EmptyOrdersPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.feature.home.navigateToHomeScreen
 import org.the_chance.honeymart.ui.feature.notifications.composable.NotificationCard
 import org.the_chance.honeymart.ui.feature.notifications.composable.StateItem
+import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -67,13 +67,7 @@ fun NotificationsContent(
                 state = state.isError,
                 onClickTryAgain = listener::onClickTryAgain,
             )
-            EmptyOrdersPlaceholder(
-                state = state.emptyNotificationsPlaceHolder(),
-                image = R.drawable.placeholder_wish_list,
-                title = stringResource(R.string.your_notifications_is_empty),
-                subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
-            )
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
@@ -111,6 +105,13 @@ fun NotificationsContent(
                     onClickState = listener::onGetDeliveryNotifications
                 )
             }
+            EmptyOrdersPlaceholder(
+                state = state.emptyNotificationsPlaceHolder(),
+                image = R.drawable.placeholder_wish_list,
+                title = stringResource(R.string.your_notifications_is_empty),
+                subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
+                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
+            )
             LazyColumn(
                 modifier = Modifier
                     .padding(vertical = MaterialTheme.dimens.space16)
@@ -120,27 +121,20 @@ fun NotificationsContent(
                 items(state.updatedNotifications.size) {
                     val notification = state.updatedNotifications[it]
                     NotificationCard(
-                        painter =
-                        when {
-                            state.order() -> {
-                                painterResource(R.drawable.icon_order_nav)
-                            }
-
-                            state.delivery() -> {
-                                painterResource(R.drawable.ic_delivery)
-                            }
-
-                            else -> {
-                                painterResource(id = R.drawable.ic_notification)
-                            }
+                        painter = if (notification.columnIcon()) {
+                            painterResource(R.drawable.icon_order_nav)
+                        } else {
+                            painterResource(R.drawable.ic_delivery)
                         },
                         title = notification.title,
-                        date = convertDate(notification),
+                        date = notification.date,
                         message = notification.body,
                         index = it
                     )
                 }
+
             }
+
         }
     }
 }

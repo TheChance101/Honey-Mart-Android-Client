@@ -81,7 +81,10 @@ fun ItemOrder(
                         colorFilter = ColorFilter.tint(black60)
                     )
                     Text(
-                        text = stringResource(id = R.string.items, quantity),
+                        text = if (quantity == 1) stringResource(
+                            id = R.string.item,
+                            quantity
+                        ) else stringResource(id = R.string.items, quantity),
                         style = MaterialTheme.typography.displaySmall,
                         color = black60,
                         modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space4)

@@ -20,6 +20,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 private val localDimens = compositionLocalOf { Dimens() }
 
 private val DarkColorScheme = darkColorScheme(
+    primaryContainer = darkBackground400,
     primary = primary100,
     inverseSurface = primary16,
     surface = grey,
@@ -44,6 +45,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+    primaryContainer = white,
     primary = primary100,
     inverseSurface = primary16,
     surface = white,
@@ -76,16 +78,15 @@ val MaterialTheme.dimens: Dimens
 @Composable
 fun HoneyMartTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    useDarkIcons: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
     val systemUiController = rememberSystemUiController()
-
-    DisposableEffect(systemUiController, useDarkIcons) {
+    val darkIcons = !darkTheme
+    DisposableEffect(systemUiController, darkIcons) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = useDarkIcons,
+            darkIcons = darkIcons,
             isNavigationBarContrastEnforced = false
         )
 

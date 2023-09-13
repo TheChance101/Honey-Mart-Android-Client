@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.source.remote.network
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -17,22 +18,21 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.util.InternalAPI
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.jsonPrimitive
 import org.the_chance.honeymart.data.source.remote.models.AdminLoginDto
 import org.the_chance.honeymart.data.source.remote.models.BaseResponse
 import org.the_chance.honeymart.data.source.remote.models.CartDto
 import org.the_chance.honeymart.data.source.remote.models.CategoryDto
 import org.the_chance.honeymart.data.source.remote.models.CouponDto
+import org.the_chance.honeymart.data.source.remote.models.MarketApprovalDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDetailsDto
 import org.the_chance.honeymart.data.source.remote.models.MarketDto
 import org.the_chance.honeymart.data.source.remote.models.MarketIdDto
+import org.the_chance.honeymart.data.source.remote.models.MarketInfoDto
 import org.the_chance.honeymart.data.source.remote.models.MarketOrderDto
 import org.the_chance.honeymart.data.source.remote.models.MarketRequestDto
 import org.the_chance.honeymart.data.source.remote.models.NotificationDto
@@ -45,14 +45,21 @@ import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
+import org.the_chance.honeymart.domain.util.ForbiddenException
 import org.the_chance.honeymart.domain.util.InternalServerException
-import org.the_chance.honeymart.domain.util.UnAuthorizedCredential
+import org.the_chance.honeymart.domain.util.InvalidDataException
+import org.the_chance.honeymart.domain.util.NoConnectionException
+import org.the_chance.honeymart.domain.util.NotFoundException
 import org.the_chance.honeymart.domain.util.UnAuthorizedException
 import javax.inject.Inject
 
 class HoneyMartServiceImp @Inject constructor(
     private val client: HttpClient,
 ) : HoneyMartService {
+    override suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto> {
+        return wrap(client.get("/markets/marketValidation"))
+    }
+
     override suspend fun addOwner(
         fullName: String,
         email: String,
@@ -120,6 +127,21 @@ class HoneyMartServiceImp @Inject constructor(
 
     override suspend fun getMarketDetails(marketId: Long): BaseResponse<MarketDetailsDto> =
         wrap(client.get("/markets/$marketId"))
+
+    override suspend fun getMarketInfo(): BaseResponse<MarketInfoDto> =
+        wrap(client.get("/markets/marketInfo"))
+
+    @OptIn(InternalAPI::class)
+    override suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean> {
+        val formData = Parameters.build {
+            append("status", "$status")
+        }
+        val response = wrap<BaseResponse<Boolean>>(client.put("markets/status") {
+            contentType(ContentType.Application.Json)
+            body = FormDataContent(formData)
+        })
+        return response
+    }
 
     override suspend fun addCategory(
         name: String, imageId: Int,
@@ -253,7 +275,9 @@ class HoneyMartServiceImp @Inject constructor(
         page: Int?,
         sortOrder: String
     ): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"))
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"){
+
+        })
 
     override suspend fun loginUser(
         email: String,
@@ -293,7 +317,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getOrderDetails(orderId: Long): BaseResponse<OrderDetailsDto> =
         wrap(client.get("/order/$orderId"))
 
-    override suspend fun addUser(
+    override suspend fun registerUser(
         fullName: String, password: String, email: String,
     ): BaseResponse<String> =
         wrap(client.submitForm(url = "/user/signup", formParameters = Parameters.build {
@@ -322,7 +346,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("state", "$state")
         }
         val response = wrap<BaseResponse<Boolean>>(client.put(url) {
-            contentType(io.ktor.http.ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
             body = FormDataContent(formData)
         })
         return response
@@ -380,40 +404,29 @@ class HoneyMartServiceImp @Inject constructor(
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {
+            Log.d("Tag", "service done correctly")
             return response.body()
         } else {
+            Log.d("Tag", "service failed")
             when (response.status.value) {
-                401 -> throw UnAuthorizedException()
-                500 -> throw InternalServerException()
+                HttpStatusCode.BadGateway.value -> throw NoConnectionException()
+                HttpStatusCode.BadRequest.value -> throw InvalidDataException()
+                HttpStatusCode.Unauthorized.value -> throw UnAuthorizedException()
+                HttpStatusCode.Forbidden.value ->throw ForbiddenException()
+                HttpStatusCode.NotFound.value ->throw NotFoundException()
+                HttpStatusCode.InternalServerError.value ->throw  InternalServerException()
                 else -> throw Exception(response.status.description)
-            }
-        }
-    }
-
-    private suspend inline fun <reified T> wrapLogin(response: HttpResponse): T {
-        if (response.status.isSuccess()) {
-            val responseBody = response.body<String>()
-            val responseObject = Json.decodeFromString<JsonObject>(responseBody)
-            val isLoginSuccess = responseObject["isSuccess"]?.jsonPrimitive?.booleanOrNull
-            if (isLoginSuccess == true)
-                return response.body()
-            else
-                throw UnAuthorizedCredential()
-        } else {
-            if (response.status.value == 500) {
-                throw InternalServerException()
-            } else {
-                throw Exception(response.status.description)
             }
         }
     }
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String): BaseResponse<OwnerLoginDto> {
-        return wrapLogin(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
+    override suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto> {
+        return wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
+            append("deviceToken", deviceToken)
         }))
     }
 
@@ -471,6 +484,10 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(client.get("admin/markets") {
             parameter("isApproved", "$isApproved")
         })
+    }
+
+    override suspend fun checkAdminAuthentication(): BaseResponse<String> {
+        return wrap(client.get("admin") {})
     }
 
     @OptIn(InternalAPI::class)

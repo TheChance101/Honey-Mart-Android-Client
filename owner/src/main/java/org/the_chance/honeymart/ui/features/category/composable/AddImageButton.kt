@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
-import org.the_chance.honymart.ui.theme.black60
 import org.the_chance.honymart.ui.theme.dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +30,7 @@ fun AddImageButton(
 ) {
     Card(
         modifier = modifier.size(MaterialTheme.dimens.card),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
         onClick = {
             multiplePhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -49,7 +48,7 @@ fun AddImageButton(
                 painter = painterResource(R.drawable.icon_add_to_cart),
                 contentDescription = stringResource(R.string.icon_add),
                 modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                tint = black60
+                tint = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
     }

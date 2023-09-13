@@ -30,6 +30,9 @@ android {
     }
 
     buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
         getByName(BuildType.RELEASE) {
             isMinifyEnabled = BuildTypeRelease.isMinifyEnabled
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
@@ -79,6 +82,11 @@ dependencies {
     implementation(Dependencies.pagingCommon)
     implementation(Dependencies.pagingRuntime)
     implementation(Dependencies.pagingCompose)
+    //splash
+    implementation(Dependencies.splashDependency)
+    debugImplementation(Dependencies.composeUiDependency)
+    //Permission
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
     //Arrow
     implementation(Dependencies.arrowCore)
     implementation(Dependencies.arrowFxCoroutines)

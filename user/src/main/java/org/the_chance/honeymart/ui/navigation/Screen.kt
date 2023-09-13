@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.navigation
 
 sealed class Screen(val route: String) {
-    object AuthenticationScreen : Screen("authenticationScreen")
+    object AuthScreen : Screen("authScreen")
     object LoginScreen : Screen("loginScreen")
     object SignupScreen : Screen("signupScreen")
 

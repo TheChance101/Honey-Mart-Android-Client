@@ -1,13 +1,11 @@
 package org.the_chance.honeymart.ui.features.category.content
 
-
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,7 +36,6 @@ import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
-import org.the_chance.honeymart.ui.features.category.composable.SelectedImagesGrid
 import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
 import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.handleImageSelection
@@ -65,12 +62,9 @@ fun ProductDetailsContent(
 
     Column(
         modifier = modifier
-            .padding(
-                horizontal = MaterialTheme.dimens.space16,
-            )
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
             .verticalScroll(rememberScrollState())
@@ -132,7 +126,8 @@ fun ProductDetailsContent(
         )
 
         Row(
-            modifier = Modifier.height(256.dp)
+            modifier = Modifier
+                .height(256.dp)
                 .fillMaxWidth()
                 .padding(MaterialTheme.dimens.space16)
         ) {
@@ -162,14 +157,14 @@ fun ProductDetailsContent(
                     }
                 }
             }
-
         }
-        Spacer(modifier = Modifier.weight(1F))
+
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
         ) {
-            Spacer(modifier = Modifier.weight(2F))
             HoneyFilledButton(
                 modifier = Modifier.width(146.dp),
                 label = confirmButton,

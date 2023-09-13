@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,13 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.black16
-import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
 
@@ -36,6 +36,7 @@ fun FormTextField(
     isError: Boolean = errorMessage.isNotEmpty(),
     isEnable: Boolean = true
 ) {
+
     Column {
         OutlinedTextField(
             modifier = modifier
@@ -47,8 +48,8 @@ fun FormTextField(
             label = {
                 Text(
                     text = hint,
-                    color = if (isError) org.the_chance.honymart.ui.theme.error else black37,
-                    style = Typography.displaySmall,
+                    color = if (isError) org.the_chance.honymart.ui.theme.error else MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.displaySmall,
                 )
             },
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
@@ -56,7 +57,8 @@ fun FormTextField(
             maxLines = 1,
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
-                disabledContainerColor = (MaterialTheme.colorScheme.onTertiary),
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondary,
                 focusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else primary100,
                 unfocusedBorderColor = if (isError) org.the_chance.honymart.ui.theme.error else black16,
             ),
@@ -86,13 +88,16 @@ fun FormTextField(
     }
 }
 
-@Preview(name = "Tablet", device = Devices.TABLET, showSystemUi = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun FormTextFieldPreview() {
-    FormTextField(
-        hint = "Email",
-        isError = false,
-        keyboardType = KeyboardType.Number,
-        onValueChange = {}
-    )
+    HoneyMartTheme {
+        FormTextField(
+            hint = "Email",
+            isError = false,
+            keyboardType = KeyboardType.Number,
+            onValueChange = {}
+        )
+    }
 }

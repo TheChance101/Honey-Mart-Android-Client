@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
@@ -66,12 +65,11 @@ class SearchViewModel @Inject constructor(
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            actionStream.debounce(700).distinctUntilChanged().collect {
-                    log(it)
-                searchForProducts()
-            }
+            actionStream.debounce(700).distinctUntilChanged().filter { keyword ->
+                keyword.isNotBlank() }.collect { searchForProducts() }
         }
     }
+
 
     override fun onClickFilter() {
         val newState = !state.value.filtering
@@ -98,7 +96,9 @@ class SearchViewModel @Inject constructor(
                 _state.update { it.copy(searchStates = SearchStates.RANDOM) }
             }
         }
-        searchForProducts()
+        if (_state.value.searchQuery.isNotBlank()) {
+            searchForProducts()
+        }
     }
 
     override fun onClickProduct(productId: Long) {

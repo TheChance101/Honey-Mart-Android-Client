@@ -6,30 +6,18 @@ import org.the_chance.honeymart.domain.usecase.GetOwnerInfoUseCase
 import org.the_chance.honeymart.domain.usecase.LogOutOwnerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val ownerProfileInfo: GetOwnerInfoUseCase,
+    private val getOwnerProfileInfo: GetOwnerInfoUseCase,
     private val logOutOwnerUseCase: LogOutOwnerUseCase,
 ) : BaseViewModel<MainUiState, MainEffect>(MainUiState()),
     MainInteractionListener {
 
     override val TAG: String
         get() = this::class.simpleName.toString()
-
-    init {
-        getOwnerInfo()
-    }
-
-    private fun getOwnerInfo() {
-        _state.update {
-            it.copy(
-                ownerNameFirstCharacter = ownerProfileInfo.getOwnerNameFirstCharacter(),
-                ownerImageUrl = ownerProfileInfo.getOwnerImageUrl()
-            )
-        }
-    }
 
     override fun onClickProfile() {
         effectActionExecutor(_effect, MainEffect.OnClickProfileEffect)
@@ -48,6 +36,28 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onLogoutError(error: ErrorHandler) {
+        log(error.toString())
+        effectActionExecutor(_effect, MainEffect.ShowLogoutErrorToastEffect)
+    }
 
+    override fun onGetOwnerInitials() {
+        tryToExecute(
+            { getOwnerProfileInfo.getOwnerNameFirstCharacter() },
+            ::onGetOwnerInitialsSuccess,
+            ::onGetOwnerInitialsError
+        )
+    }
+
+    private fun onGetOwnerInitialsSuccess(initials: Char) {
+        _state.update {
+            it.copy(
+                ownerNameFirstCharacter = initials.toString().uppercase(Locale.ROOT),
+                ownerImageUrl = getOwnerProfileInfo.getOwnerImageUrl()
+            )
+        }
+    }
+
+    private fun onGetOwnerInitialsError(error: ErrorHandler) {
+        log(error.toString())
     }
 }

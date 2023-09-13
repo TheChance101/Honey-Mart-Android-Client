@@ -37,8 +37,8 @@ class ValidationUseCase @Inject constructor() {
                 ValidationState.BLANK_PASSWORD
             }
 
-            password.length < 6 -> {
-                ValidationState.INVALID_PASSWORD_LENGTH
+            password.length < 8 -> {
+                ValidationState.INVALID_PASSWORD_LENGTH_SHORT
             }
 
             !isPassword(password) -> {

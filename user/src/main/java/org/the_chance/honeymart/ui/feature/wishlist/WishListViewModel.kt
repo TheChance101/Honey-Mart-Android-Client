@@ -2,15 +2,13 @@ package org.the_chance.honeymart.ui.feature.wishlist
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
-import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
-    private val getAllWishListUseCase: GetAllWishListUseCase,
-    private val wishListOperationsUseCase: WishListOperationsUseCase,
+    private val wishListOperationsUseCase: UserWishListManagerUseCase,
     ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
@@ -29,7 +27,7 @@ class WishListViewModel @javax.inject.Inject constructor(
             )
         }
         tryToExecute(
-            { wishListOperationsUseCase.deleteFromWishList(productId) },
+            { wishListOperationsUseCase.operationWishListUseCase.deleteFromWishList(productId) },
             ::onDeleteProductSuccess,
             { onDeleteProductError(it, productId) }
         )
@@ -65,7 +63,7 @@ class WishListViewModel @javax.inject.Inject constructor(
              )
          }
         tryToExecute(
-            { wishListOperationsUseCase.addToWishList(productId) },
+            { wishListOperationsUseCase.operationWishListUseCase.addToWishList(productId) },
             {onAddToWishListSuccess()},
             { onAddToWishListError(it, productId) }
         )
@@ -75,7 +73,7 @@ class WishListViewModel @javax.inject.Inject constructor(
 
     }
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
-        if (error is ErrorHandler.UnAuthorizedUser) {
+        if (error is ErrorHandler.UnAuthorized) {
             updateFavoriteState(productId)
         }
     }
@@ -106,7 +104,7 @@ class WishListViewModel @javax.inject.Inject constructor(
     override fun getWishListProducts() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { getAllWishListUseCase().map { it.toWishListProductUiState() } },
+            {wishListOperationsUseCase.getAllWishListUseCase().map { it.toWishListProductUiState() }},
             ::onGetProductSuccess,
             ::onGetProductError
         )

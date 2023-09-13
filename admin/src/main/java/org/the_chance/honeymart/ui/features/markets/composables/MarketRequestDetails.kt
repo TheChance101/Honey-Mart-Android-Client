@@ -23,8 +23,10 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
@@ -32,6 +34,7 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.features.markets.MarketRequestUiState
 import org.the_chance.honeymart.ui.features.markets.MarketsInteractionListener
 import org.the_chance.honymart.ui.composables.HoneyOutlineButton
+import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.Shapes
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
@@ -46,12 +49,18 @@ fun MarketRequestDetails(
 ) {
     ContentVisibility(state = request != null) {
         Box(
-            modifier = Modifier.fillMaxSize().clip(Shapes.medium).background(white)
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(Shapes.medium)
+                .background(MaterialTheme.colorScheme.onTertiary)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_honey_sun),
                 contentDescription = "corner decoration image",
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(MaterialTheme.dimens.card),
+                contentScale = ContentScale.FillBounds
             )
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -64,20 +73,26 @@ fun MarketRequestDetails(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Divider(
-                        modifier = Modifier.size(MaterialTheme.dimens.space12, 100.dp)
+                        modifier = Modifier
+                            .size(MaterialTheme.dimens.space12, 100.dp)
                             .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16)),
                         thickness = 100.dp,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Box(
-                        modifier = Modifier.size(56.dp).clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary,),
+                        modifier = Modifier
+                            .size(56.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = (request?.ownerNameFirstCharacter() ?: "").toString()
                                 .uppercase(Locale.ROOT),
-                            style = MaterialTheme.typography.headlineMedium.copy(color = white)
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                color = white,
+                                baselineShift = BaselineShift(0.2f)
+                            )
                         )
                     }
                     Column(
@@ -100,14 +115,14 @@ fun MarketRequestDetails(
                         )
                     }
                 }
-                Image(
+                ImageNetwork(
                     modifier = Modifier
                         .padding(vertical = MaterialTheme.dimens.space32)
                         .size(327.dp, 184.dp)
-                        .clip(Shapes.small)
+                        .clip(Shapes.medium)
                         .align(CenterHorizontally),
-                    painter = painterResource(R.drawable.fruite_image),
-                    contentDescription = "",
+                    imageUrl = imageUrl,
+                    contentDescription = "market image",
                 )
                 Text(
                     text = request?.marketName ?: "",
@@ -147,7 +162,10 @@ fun MarketRequestDetails(
                     )
                     AnimatedVisibility(visible = state) {
                         HoneyOutlineButton(
-                            modifier = Modifier.background(MaterialTheme.colorScheme.primary, Shapes.medium),
+                            modifier = Modifier.background(
+                                MaterialTheme.colorScheme.primary,
+                                Shapes.medium
+                            ),
                             onClick = { request?.marketId?.let { listener.onClickApprove(it) } },
                             label = stringResource(R.string.approve),
                             contentColor = MaterialTheme.colorScheme.onPrimary,
