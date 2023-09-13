@@ -7,6 +7,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
+import org.the_chance.honeymart.data.repository.pagingSource.ReviewsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
@@ -22,6 +23,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
+import org.the_chance.honeymart.data.source.remote.mapper.toReview
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -38,6 +40,7 @@ import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -48,13 +51,22 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), HoneyMartRepository {
+    override suspend fun getAllReviews(): List<Review>? {
+        return wrap { honeyMartService.getAllReviews() }.value?.map { it.toReview() }
+            ?: throw NotFoundException()
+    }
+
+    override suspend fun getAllReviewsPaging(page: Int?): Flow<PagingData<Review>> {
+        return getAll(::ReviewsPagingSource)
+    }
 
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
 
     override suspend fun checkAdminApprove(): MarketApproval {
-        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval() ?: throw NotFoundException()
+        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval()
+            ?: throw NotFoundException()
     }
 
     override suspend fun getAllMarkets(): List<Market> {
