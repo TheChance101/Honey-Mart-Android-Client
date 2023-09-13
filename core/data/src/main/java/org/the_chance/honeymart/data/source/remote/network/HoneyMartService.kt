@@ -20,11 +20,15 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 
 interface HoneyMartService {
+
+    suspend fun getAllReviews(): BaseResponse<List<ReviewsDto>>
+    suspend fun getAllReviewsPaging(page: Int?): BaseResponse<List<ReviewsDto>>
 
     suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto>
 
@@ -58,6 +62,7 @@ interface HoneyMartService {
     suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean>
 
     //endregion Market
+
 
     //region Category
     suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>>
@@ -207,6 +212,8 @@ interface HoneyMartService {
     suspend fun getProductDetails(
         productId: Long,
     ): BaseResponse<ProductDto>
+
+
     // endregion
 
 

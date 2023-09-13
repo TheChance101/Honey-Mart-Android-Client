@@ -15,13 +15,15 @@ import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
-import java.io.ObjectInputFilter.Status
 
 
 interface HoneyMartRepository {
 
+    suspend fun getAllReviews(): List<Review>?
+    suspend fun getAllReviewsPaging(page: Int?): Flow<PagingData<Review>>
     suspend fun checkAdminApprove(): MarketApproval
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
