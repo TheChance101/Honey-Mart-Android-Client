@@ -1,15 +1,18 @@
 package org.the_chance.honeymart.ui.feature.SeeAllmarkets
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsPagingUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.product.toProductUiState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,29 +22,49 @@ class MarketViewModel @Inject constructor(
     MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
-    val page = mutableStateOf(1)
-    val marketListScrollPosition = 0
+    private var page = _state.value.page
+    private var productListScrollPosition = 0
 
     init {
         getAllMarkets()
     }
 
     override fun getAllMarkets() {
+        resetSearchState()
         _state.update { it.copy(isLoading = true, isError = false) }
-
-        /*    tryToExecutePaging(
-                { getAllMarket() },
-                ::onGetMarketSuccess,
-                ::onGetMarketError
-            )*/
+        viewModelScope.launch {
+            val markets = getAllMarket(page)
+            val mappedMarkets = markets!!.map { it.toMarketUiState() }
+            _state.update { it.copy(markets = mappedMarkets, isLoading = false) }
+        }
     }
 
-    private fun onGetMarketSuccess(markets: PagingData<Market>) {
+    private fun appendProducts(markets: List<MarketUiState>) {
+        val current = ArrayList(state.value.markets)
+        current.addAll(markets)
+        _state.update { it.copy(markets = current) }
+    }
+
+    private fun incrementPage() {
+        page += 1
+    }
+
+    fun onChangeProductScrollPosition(position: Int) {
+        productListScrollPosition = position
+    }
+
+    private fun resetSearchState() {
+        _state.update { it.copy(markets = listOf()) }
+        page = 1
+        onChangeProductScrollPosition(0)
+    }
+
+    private fun onGetMarketSuccess(markets: List<Market>) {
         val mappedMarkets = markets.map { it.toMarketUiState() }
         _state.update {
             it.copy(
                 isLoading = false,
-                markets = flowOf(mappedMarkets)
+                markets = mappedMarkets
             )
         }
     }
@@ -59,5 +82,19 @@ class MarketViewModel @Inject constructor(
 
     override fun onclickTryAgainMarkets() {
         getAllMarkets()
+    }
+
+    override fun onScrollDown() {
+        viewModelScope.launch {
+            if ((productListScrollPosition + 1) >= (page * 10)) {
+                _state.update { it.copy(isLoading = true) }
+                incrementPage()
+                if (page > 1) {
+                    val result = getAllMarket(page)!!.map { it.toMarketUiState() }
+                    appendProducts(result)
+                }
+                _state.update { it.copy(isLoading = false) }
+            }
+        }
     }
 }
