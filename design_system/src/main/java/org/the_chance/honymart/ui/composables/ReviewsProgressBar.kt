@@ -17,14 +17,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
@@ -35,9 +36,10 @@ import org.the_chance.honymart.ui.theme.primary100
 fun ReviewsProgressBar(
     starNumber: String,
     countReview: String,
+    rating: Float,
 ) {
 
-    val progress by remember { mutableStateOf(0f) }
+    var progress by remember { mutableStateOf(0f) }
     val size by animateFloatAsState(
         targetValue = progress,
         tween(
@@ -64,7 +66,7 @@ fun ReviewsProgressBar(
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.9f)
                 .height(8.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(
@@ -80,13 +82,16 @@ fun ReviewsProgressBar(
                     .animateContentSize()
             )
         }
-        Text(text = countReview, style = Typography.displaySmall)
+        Text(
+            text = countReview,
+            style = Typography.displaySmall,
+        )
+    }
+
+    LaunchedEffect(key1 = true) {
+        progress = rating
     }
 
 }
 
-@Preview
-@Composable
-fun mk() {
-    ReviewsProgressBar(starNumber = "5", countReview = "13")
-}
+
