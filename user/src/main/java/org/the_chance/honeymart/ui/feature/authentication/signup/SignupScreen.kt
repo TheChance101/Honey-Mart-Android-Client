@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.ui.composables.NavigationHandler
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.login.navigateToLogin
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.AuthScaffold
 import org.the_chance.honeymart.ui.feature.authentication.signup.composables.FirstSignupFiledContent
@@ -35,7 +35,7 @@ import org.the_chance.honymart.ui.theme.dimens
 fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {

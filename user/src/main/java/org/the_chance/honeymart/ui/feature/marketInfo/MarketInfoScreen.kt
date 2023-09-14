@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.category
+package org.the_chance.honeymart.ui.feature.marketInfo
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -43,9 +43,9 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
-import org.the_chance.honeymart.ui.composables.NavigationHandler
-import org.the_chance.honeymart.ui.feature.category.composables.CardChip
-import org.the_chance.honeymart.ui.feature.category.composables.CategoriesAppBarScaffold
+import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.feature.marketInfo.composables.CardChip
+import org.the_chance.honeymart.ui.feature.marketInfo.composables.CategoriesAppBarScaffold
 import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -58,7 +58,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun CategoriesScreen(
+fun MarketInfoScreen(
     viewModel: MarketViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
@@ -67,7 +67,7 @@ fun CategoriesScreen(
     CategoriesAppBarScaffold(navController) {
         CategoryContent(state, listener = viewModel)
     }
-    NavigationHandler(
+    EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navControllers ->
             when (effect) {
@@ -197,7 +197,7 @@ fun CategoryContent(
 @Composable
 @Preview
 fun PreviewCategoryScreen() {
-    CategoriesScreen()
+    MarketInfoScreen()
 }
 
 @Composable

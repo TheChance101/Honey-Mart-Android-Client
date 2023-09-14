@@ -4,6 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.authentication.signup.FieldState
 import org.the_chance.honeymart.util.StringDictionary
@@ -22,7 +23,12 @@ class LoginViewModel @Inject constructor(
 
     override fun onClickLogin() {
         _state.update { it.copy(isButtonEnabled = false) }
-        if (state.value.validLoginFields()) {
+        val emailFieldValidation =
+            loginUser.validationUseCase.isFieldBlank(_state.value.emailState.value)
+        val passwordFieldValidation =
+            loginUser.validationUseCase.isFieldBlank(_state.value.passwordState.value)
+        if (emailFieldValidation == ValidationState.VALID_TEXT_FIELD
+            && passwordFieldValidation == ValidationState.VALID_TEXT_FIELD) {
             _state.update {
                 it.copy(
                     emailState = state.value.emailState.copy(errorState = ""),

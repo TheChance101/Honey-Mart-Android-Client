@@ -14,5 +14,4 @@ data class LoginUiState(
     val validationToast: ValidationToast = ValidationToast(),
 )
 
-fun LoginUiState.validLoginFields() =
-    this.emailState.value.isNotBlank() && this.passwordState.value.isNotBlank()
+

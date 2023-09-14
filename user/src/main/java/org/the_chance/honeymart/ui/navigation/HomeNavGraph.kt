@@ -2,7 +2,7 @@ package org.the_chance.honeymart.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
-import org.the_chance.honeymart.ui.feature.category.categoryRoute
+import org.the_chance.honeymart.ui.feature.marketInfo.categoryRoute
 import org.the_chance.honeymart.ui.feature.home.homeRoute
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.marketsRoute
 import org.the_chance.honeymart.ui.feature.new_products.newProductsRoute
