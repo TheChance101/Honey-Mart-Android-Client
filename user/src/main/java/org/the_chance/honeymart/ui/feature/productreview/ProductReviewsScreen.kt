@@ -1,5 +1,11 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -29,13 +34,15 @@ fun ProductReviewsScreen(
     viewModel: ProductReviewsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProductReviewsContent()
+//    ProductReviewsContent()
 }
 
 
-@Preview(showSystemUi = true)
 @Composable
-fun ProductReviewsContent() {
+fun ProductReviewsContent(
+    state: ProductReviewsUiState,
+    listener: ProductReviewsInteractionsListener
+) {
 
     Column(
         modifier = Modifier
@@ -57,10 +64,22 @@ fun ProductReviewsContent() {
             Text(text = stringResource(R.string.customers_reviews), style = Typography.bodyMedium)
         }
 
-        ReviewsProgressBar(starNumber = "5", countReview = "13", rating = 0.6f)
-        ReviewsProgressBar(starNumber = "4", countReview = "4", rating = 0f)
-        ReviewsProgressBar(starNumber = "3", countReview = "6", rating = 0.1f)
-        ReviewsProgressBar(starNumber = "2", countReview = "1", rating = 0.4f)
-        ReviewsProgressBar(starNumber = "1", countReview = "1", rating = 0.2f)
+        AnimatedVisibility(
+            visible = !state.isLoading,
+            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+        ) {
+            ReviewsProgressBar(
+                starNumber = "5",
+                countReview = "13",
+                rating = 0.6f
+            )
+            ReviewsProgressBar(starNumber = "4", countReview = "4", rating = 0f)
+            ReviewsProgressBar(starNumber = "3", countReview = "6", rating = 0.1f)
+            ReviewsProgressBar(starNumber = "2", countReview = "1", rating = 0.4f)
+            ReviewsProgressBar(starNumber = "1", countReview = "1", rating = 0.2f)
+        }
+
+
     }
 }
