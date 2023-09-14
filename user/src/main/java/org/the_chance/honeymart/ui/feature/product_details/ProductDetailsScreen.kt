@@ -305,7 +305,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
-                    if (reviews.reviews.isNotEmpty()) {
+                    if (reviews.isNotEmpty()) {
                         Column {
                             Text(
                                 text = stringResource(R.string.user_reviews),
@@ -314,23 +314,23 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                             )
                             Row {
                                 Text(
-                                    text = reviews.reviewStatisticUiState.averageRating.toString(),
+                                    text = state.reviewStatisticUiState.averageRating.toString(),
                                     style = MaterialTheme.typography.headlineMedium,
                                     color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
                         }
                         Column {
-                            RatingBar(rating = reviews.reviewStatisticUiState.averageRating.toFloat())
+                            RatingBar(rating = state.reviewStatisticUiState.averageRating.toFloat())
                             Text(
                                 text = stringResource(
                                     R.string.ratings,
-                                    reviews.reviewStatisticUiState.reviewsCount
+                                   state.reviewStatisticUiState.reviewsCount
                                 ),
                                 style = MaterialTheme.typography.displaySmall,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
-                            ReviewsList(reviews = state.reviews.reviews)
+                            ReviewsList(reviews = state.reviews)
                         }
 
                     }

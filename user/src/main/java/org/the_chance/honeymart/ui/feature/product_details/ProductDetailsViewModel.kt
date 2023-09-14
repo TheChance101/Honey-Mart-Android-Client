@@ -1,16 +1,11 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
@@ -31,7 +26,6 @@ class ProductDetailsViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private val args = ProductDetailsArgs(savedStateHandle)
-    private val page = state.value.page
 
 
     init {
@@ -116,15 +110,14 @@ class ProductDetailsViewModel @Inject constructor(
     private fun getAllRatingForProduct() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val reviews = productsOperations.getAllRatingForProduct(
+            val product = productsOperations.getProductDetailsUseCase(
                 productId = state.value.product.productId,
-                page = page,
             )
-            _state.update { it.copy(reviews = reviews.toReviews()) }
+            val reviewStatistic = product.reviewStatistic.toReviewStatisticUiState()
+            val reviewsList = product.reviews.map { it.toReviewUiState() }
+            _state.update { it.copy(reviews = reviewsList, reviewStatisticUiState = reviewStatistic) }
         }
     }
-
-
     override fun onClickSmallImage(url: String) {
         val newList = mutableListOf<String>()
         newList.addAll(_state.value.smallImages.filter { it != url })

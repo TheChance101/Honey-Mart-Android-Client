@@ -20,7 +20,6 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
-import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
@@ -283,11 +282,5 @@ interface HoneyMartService {
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
 
-    //region rating
-    suspend fun getReviewsForProduct(
-        page: Int?,
-        productId: Long
-    ): BaseResponse<ReviewsDto>
 
-    //end region rating
 }
