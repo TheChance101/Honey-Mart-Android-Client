@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honymart.ui.composables.AverageRating
+import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ReviewsProgressBar
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.blackOn87
@@ -35,7 +37,7 @@ fun ProductReviewsScreen(
     viewModel: ProductReviewsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProductReviewsContent(state, viewModel)
+    ProductReviewsContent(state = state, listener = viewModel)
 }
 
 @Composable
@@ -49,6 +51,7 @@ fun ProductReviewsContent(
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,53 +59,53 @@ fun ProductReviewsContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.icon_arrow_back),
-                contentDescription = "icon back",
-                tint = blackOn87
-            )
+            IconButton(onClick = listener::onClickBack) {
+                Icon(
+                    painter = painterResource(R.drawable.icon_arrow_back),
+                    contentDescription = "icon back",
+                    tint = blackOn87
+                )
+            }
             Text(text = stringResource(R.string.customers_reviews), style = Typography.bodyMedium)
         }
-
-
-
 
         AnimatedVisibility(
             visible = !state.isLoading,
             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
         ) {
+            AverageRating(
+                averageRating = state.reviews.averageRating.toString(),
+                reviewCount = state.reviews.reviewCount.toString(),
+                rating = state.reviews.averageRating.toFloat()
+            )
 
-            ReviewsProgressBar(
-                starNumber = "5", countReview = state.reviews.fiveStarsCount.toString(),
-                rating = (state.reviews.fiveStarsCount / state.reviews.reviewCount).toFloat()
-            )
-            ReviewsProgressBar(
-                starNumber = "4",
-                countReview = state.reviews.fourStarsCount.toString(),
-                rating = (state.reviews.fourStarsCount / state.reviews.reviewCount).toFloat()
-            )
-            ReviewsProgressBar(
-                starNumber = "3",
-                countReview = state.reviews.threeStarsCount.toString(),
-                rating = (state.reviews.threeStarsCount / state.reviews.reviewCount).toFloat()
-            )
-            ReviewsProgressBar(
-                starNumber = "2",
-                countReview = state.reviews.twoStarsCount.toString(),
-                rating = (state.reviews.twoStarsCount / state.reviews.reviewCount).toFloat()
-            )
-            ReviewsProgressBar(
-                starNumber = "1",
-                countReview = state.reviews.oneStarCount.toString(),
-                rating = (state.reviews.oneStarCount / state.reviews.reviewCount).toFloat()
-            )
+            Box(contentAlignment = Alignment.Center) {
+                ReviewsProgressBar(
+                    starNumber = "5", countReview = state.reviews.fiveStarsCount.toString(),
+                    rating = (state.reviews.fiveStarsCount / state.reviews.reviewCount).toFloat()
+                )
+                ReviewsProgressBar(
+                    starNumber = "4",
+                    countReview = state.reviews.fourStarsCount.toString(),
+                    rating = (state.reviews.fourStarsCount / state.reviews.reviewCount).toFloat()
+                )
+                ReviewsProgressBar(
+                    starNumber = "3",
+                    countReview = state.reviews.threeStarsCount.toString(),
+                    rating = (state.reviews.threeStarsCount / state.reviews.reviewCount).toFloat()
+                )
+                ReviewsProgressBar(
+                    starNumber = "2",
+                    countReview = state.reviews.twoStarsCount.toString(),
+                    rating = (state.reviews.twoStarsCount / state.reviews.reviewCount).toFloat()
+                )
+                ReviewsProgressBar(
+                    starNumber = "1",
+                    countReview = state.reviews.oneStarCount.toString(),
+                    rating = (state.reviews.oneStarCount / state.reviews.reviewCount).toFloat()
+                )
+            }
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewProductReviews() {
-    ProductReviewsScreen()
 }
