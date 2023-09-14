@@ -92,7 +92,6 @@ fun ReviewsProgressBar(
     LaunchedEffect(key1 = true) {
         progress = rating
     }
-
 }
 
 @Preview

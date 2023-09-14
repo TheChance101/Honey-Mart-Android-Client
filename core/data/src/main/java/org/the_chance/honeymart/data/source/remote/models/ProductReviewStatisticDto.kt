@@ -3,7 +3,7 @@ package org.the_chance.honeymart.data.source.remote.models
 
 import com.google.gson.annotations.SerializedName
 
-data class ReviewsDto(
+data class ProductReviewStatisticDto(
     @SerializedName("averageRating")
     val averageRating: Double?,
     @SerializedName("reviewsCount")

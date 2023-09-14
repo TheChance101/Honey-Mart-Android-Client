@@ -7,7 +7,6 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
-import org.the_chance.honeymart.data.repository.pagingSource.ReviewsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
@@ -22,8 +21,8 @@ import org.the_chance.honeymart.data.source.remote.mapper.toNotification
 import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
+import org.the_chance.honeymart.data.source.remote.mapper.toProductReview
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
-import org.the_chance.honeymart.data.source.remote.mapper.toReview
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -39,8 +38,8 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.ProductReviewStatistic
 import org.the_chance.honeymart.domain.model.RecentProduct
-import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -51,20 +50,21 @@ import javax.inject.Inject
 class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), HoneyMartRepository {
-//    override suspend fun getAllProductReviews(productId: Long): List<Review> {
-//        return wrap { honeyMartService.getAllProductReviews(productId) }.value?.map { it.toReview() }
-//            ?: throw NotFoundException()
-//    }
 
-    override suspend fun getAllProductReviewsPaging(
-        page: Int?,
-        productId: Long
-    ): Flow<PagingData<Review>> =
-        getAllWithParameter(
-            productId,
-            ::ReviewsPagingSource
-        )
+    override suspend fun getAllProductReviews(productId: Long): ProductReviewStatistic {
+        return wrap { honeyMartService.getAllProductReviews(productId) }.value?.toProductReview()
+            ?: throw NotFoundException()
+    }
 
+//    override suspend fun getAllProductReviewsPaging(
+//        page: Int?,
+//        productId: Long
+//    ): Flow<PagingData<Review>> =
+//        getAllWithParameter(
+//            productId,
+//            ::ReviewsPagingSource
+//        )
+//
 
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()

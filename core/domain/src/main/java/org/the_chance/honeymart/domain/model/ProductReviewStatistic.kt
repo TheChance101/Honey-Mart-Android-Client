@@ -1,6 +1,6 @@
 package org.the_chance.honeymart.domain.model
 
-data class Review(
+data class ProductReviewStatistic(
     val averageRating: Double,
     val reviewsCount: Int,
     val oneStarCount: Int,

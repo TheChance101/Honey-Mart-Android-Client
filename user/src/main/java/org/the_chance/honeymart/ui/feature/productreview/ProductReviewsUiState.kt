@@ -1,16 +1,13 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import org.the_chance.honeymart.domain.model.Review
+import org.the_chance.honeymart.domain.model.ProductReviewStatistic
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class ProductReviewsUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val reviews: Flow<PagingData<ProductReviewUiState>> = flow {},
+    val reviews: ProductReviewUiState = ProductReviewUiState(),
 )
 
 data class ProductReviewUiState(
@@ -24,7 +21,7 @@ data class ProductReviewUiState(
 )
 
 
-fun Review.toProductReviewsUiState(): ProductReviewUiState {
+fun ProductReviewStatistic.toProductReviewsUiState(): ProductReviewUiState {
     return ProductReviewUiState(
         averageRating = averageRating,
         reviewCount = reviewsCount,

@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -34,9 +35,8 @@ fun ProductReviewsScreen(
     viewModel: ProductReviewsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-//    ProductReviewsContent()
+    ProductReviewsContent(state, viewModel)
 }
-
 
 @Composable
 fun ProductReviewsContent(
@@ -64,22 +64,45 @@ fun ProductReviewsContent(
             Text(text = stringResource(R.string.customers_reviews), style = Typography.bodyMedium)
         }
 
+
+
+
         AnimatedVisibility(
             visible = !state.isLoading,
             enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
         ) {
+
             ReviewsProgressBar(
-                starNumber = "5",
-                countReview = "13",
-                rating = 0.6f
+                starNumber = "5", countReview = state.reviews.fiveStarsCount.toString(),
+                rating = (state.reviews.fiveStarsCount / state.reviews.reviewCount).toFloat()
             )
-            ReviewsProgressBar(starNumber = "4", countReview = "4", rating = 0f)
-            ReviewsProgressBar(starNumber = "3", countReview = "6", rating = 0.1f)
-            ReviewsProgressBar(starNumber = "2", countReview = "1", rating = 0.4f)
-            ReviewsProgressBar(starNumber = "1", countReview = "1", rating = 0.2f)
+            ReviewsProgressBar(
+                starNumber = "4",
+                countReview = state.reviews.fourStarsCount.toString(),
+                rating = (state.reviews.fourStarsCount / state.reviews.reviewCount).toFloat()
+            )
+            ReviewsProgressBar(
+                starNumber = "3",
+                countReview = state.reviews.threeStarsCount.toString(),
+                rating = (state.reviews.threeStarsCount / state.reviews.reviewCount).toFloat()
+            )
+            ReviewsProgressBar(
+                starNumber = "2",
+                countReview = state.reviews.twoStarsCount.toString(),
+                rating = (state.reviews.twoStarsCount / state.reviews.reviewCount).toFloat()
+            )
+            ReviewsProgressBar(
+                starNumber = "1",
+                countReview = state.reviews.oneStarCount.toString(),
+                rating = (state.reviews.oneStarCount / state.reviews.reviewCount).toFloat()
+            )
         }
-
-
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewProductReviews() {
+    ProductReviewsScreen()
 }

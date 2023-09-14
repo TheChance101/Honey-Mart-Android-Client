@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
-import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
-import org.the_chance.honeymart.domain.model.Review
+import org.the_chance.honeymart.data.source.remote.models.ProductReviewStatisticDto
+import org.the_chance.honeymart.domain.model.ProductReviewStatistic
 
-fun ReviewsDto.toReview() = Review(
+fun ProductReviewStatisticDto.toProductReview() = ProductReviewStatistic(
     averageRating = averageRating ?: 0.0,
     reviewsCount = reviewsCount ?: 0,
     oneStarCount = oneStarCount ?: 0,
