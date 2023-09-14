@@ -523,8 +523,7 @@ class HoneyMartServiceImp @Inject constructor(
     override suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): BaseResponse<List<ReviewsDto>> =
+    ): BaseResponse<ReviewsDto> =
         wrap(client.get("/reviews/$productId?page=$page"))
-
     //end region rating
 }

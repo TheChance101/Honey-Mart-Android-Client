@@ -29,5 +29,3 @@ data class Review(
         val profileImage: String?
     )
 }
-
-

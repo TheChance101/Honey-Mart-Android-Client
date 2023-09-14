@@ -116,14 +116,12 @@ class ProductDetailsViewModel @Inject constructor(
     private fun getAllRatingForProduct() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-          val reviews =   productsOperations.getAllRatingForProduct(
+            val reviews = productsOperations.getAllRatingForProduct(
                 productId = state.value.product.productId,
                 page = page,
             )
-           val mappedReviews = reviews.map { it }
-            _state.update { it.copy(reviews= reviews). }
+            _state.update { it.copy(reviews = reviews.toReviews()) }
         }
-
     }
 
 

@@ -56,7 +56,8 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     override suspend fun checkAdminApprove(): MarketApproval {
-        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval() ?: throw NotFoundException()
+        return wrap { honeyMartService.checkAdminApprove() }.value?.toMarketApproval()
+            ?: throw NotFoundException()
     }
 
     override suspend fun getAllMarkets(): List<Market> {
@@ -386,7 +387,8 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): List<Reviews> = wrap { honeyMartService.getReviewsForProduct(page, productId) }.value?.map { it.toReviews() }
+    ): Reviews = wrap {
+        honeyMartService.getReviewsForProduct(page, productId) }.value?.toReviews()
         ?: throw NotFoundException()
 
     //end region rating

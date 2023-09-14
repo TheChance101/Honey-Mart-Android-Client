@@ -4,8 +4,12 @@ import android.icu.text.DecimalFormat
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.the_chance.honeymart.data.source.remote.mapper.toReview
+import org.the_chance.honeymart.data.source.remote.mapper.toReviewStatistic
+import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.ReviewStatistic
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
@@ -21,12 +25,11 @@ data class ProductDetailsUiState(
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
     val dialogState: DialogState = DialogState(),
-    val reviews: List<ReviewUiState> = listOf(),
+    val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
     val page: Int = 1
 ) {
     val totalPriceInCurrency = totalPrice.formatCurrencyWithNearestFraction()
 }
-
 
 data class SnackBarState(
     val isShow: Boolean = false,
@@ -47,8 +50,18 @@ fun Double.formatCurrencyWithNearestFraction(): String {
 
 fun ProductDetailsUiState.contentScreen() = !this.isLoading && !this.isConnectionError
 
+data class ReviewDetailsUiState(
+    val reviewStatisticUiState: ReviewStatisticUiState = ReviewStatisticUiState(),
+    val reviews: List<ReviewUiState> = listOf()
+)
 
-data class RatingUiState(
+fun Reviews.toReviews(): ReviewDetailsUiState {
+    return ReviewDetailsUiState(
+        reviewStatisticUiState = reviewStatistic.toReviewStatisticUiState(),
+        reviews = reviews.map { it.toReviewUiState() })
+}
+
+data class ReviewStatisticUiState(
     val averageRating: Double = 0.0,
     val fiveStarsCount: Int = 0,
     val fourStarsCount: Int = 0,
@@ -58,8 +71,8 @@ data class RatingUiState(
     val twoStarsCount: Int = 0
 )
 
-fun ReviewStatistic.toRatingUiState(): RatingUiState {
-    return RatingUiState(
+fun ReviewStatistic.toReviewStatisticUiState(): ReviewStatisticUiState {
+    return ReviewStatisticUiState(
         averageRating = averageRating,
         reviewsCount = reviewsCount,
         oneStarCount = oneStarCount,
@@ -71,7 +84,6 @@ fun ReviewStatistic.toRatingUiState(): RatingUiState {
 }
 
 data class ReviewUiState(
-
     val reviewId: Long,
     val content: String,
     val rating: Int,
@@ -79,14 +91,12 @@ data class ReviewUiState(
     val fullName: String?,
 )
 
-
-fun Review.toReviewUiState():ReviewUiState {
+fun Review.toReviewUiState(): ReviewUiState {
     return ReviewUiState(
         reviewId = reviewId,
         content = content,
         rating = rating,
         reviewDate = reviewDate,
         fullName = user.fullName
-
     )
 }

@@ -287,7 +287,7 @@ interface HoneyMartService {
     suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): BaseResponse<List<ReviewsDto>>
+    ): BaseResponse<ReviewsDto>
 
     //end region rating
 }
