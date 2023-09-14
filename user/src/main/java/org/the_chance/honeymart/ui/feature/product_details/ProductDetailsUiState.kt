@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.ReviewStatistic
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
@@ -20,8 +21,8 @@ data class ProductDetailsUiState(
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
     val dialogState: DialogState = DialogState(),
-    val reviews : List<RatingUiState> = listOf(),
-    val page : Int = 1
+    val reviews: List<ReviewUiState> = listOf(),
+    val page: Int = 1
 ) {
     val totalPriceInCurrency = totalPrice.formatCurrencyWithNearestFraction()
 }
@@ -69,6 +70,23 @@ fun ReviewStatistic.toRatingUiState(): RatingUiState {
     )
 }
 
-data class Review (
+data class ReviewUiState(
 
+    val reviewId: Long,
+    val content: String,
+    val rating: Int,
+    val reviewDate: Long,
+    val fullName: String?,
 )
+
+
+fun Review.toReviewUiState():ReviewUiState {
+    return ReviewUiState(
+        reviewId = reviewId,
+        content = content,
+        rating = rating,
+        reviewDate = reviewDate,
+        fullName = user.fullName
+
+    )
+}

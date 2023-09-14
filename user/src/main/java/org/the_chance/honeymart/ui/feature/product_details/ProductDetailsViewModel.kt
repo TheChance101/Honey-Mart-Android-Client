@@ -120,7 +120,7 @@ class ProductDetailsViewModel @Inject constructor(
                 productId = state.value.product.productId,
                 page = page,
             )
-           val mappedReviews = reviews.map { it.to }
+           val mappedReviews = reviews.map { it }
             _state.update { it.copy(reviews= reviews). }
         }
 
