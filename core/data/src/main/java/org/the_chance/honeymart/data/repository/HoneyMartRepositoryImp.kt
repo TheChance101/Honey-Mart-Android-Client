@@ -7,7 +7,6 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
-import org.the_chance.honeymart.data.repository.pagingSource.RatingPagingSource
 import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
@@ -23,6 +22,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
+import org.the_chance.honeymart.data.source.remote.mapper.toReviews
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -38,8 +38,8 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.model.Rating
 import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -383,14 +383,11 @@ class HoneyMartRepositoryImp @Inject constructor(
 //endregion admin
 
     //region rating
-    override suspend fun getAllRatingForProduct(
+    override suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): Flow<PagingData<Rating>> =
-        getAllWithParameter(
-            productId,
-            ::RatingPagingSource
-        )
+    ): List<Reviews> = wrap { honeyMartService.getReviewsForProduct(page, productId) }.value?.map { it.toReviews() }
+        ?: throw NotFoundException()
 
     //end region rating
 }

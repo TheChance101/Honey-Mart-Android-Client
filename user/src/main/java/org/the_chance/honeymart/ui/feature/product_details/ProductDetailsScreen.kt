@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
@@ -51,6 +53,7 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.RatingBar
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -122,6 +125,7 @@ private fun ProductDetailsContent(
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
 
+    val reviews = state.reviews.collectAsLazyPagingItems()
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
@@ -145,7 +149,8 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,
-                            ).align(Alignment.BottomCenter),
+                            )
+                            .align(Alignment.BottomCenter),
                         onClick = {
                             state.product.productId.let {
                                 listener.addProductToCart(
@@ -300,9 +305,47 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
-
+                    if (reviews.itemCount != 0) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.secondary)
+                                .padding(
+                                    top = MaterialTheme.dimens.space24,
+                                    start = MaterialTheme.dimens.space16,
+                                    end = MaterialTheme.dimens.space16
+                                )
+                        ) {
+                            item {
+                                val review = reviews[0]
+                                if (review != null) {
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.user_reviews),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onBackground
+                                        )
+                                        Row {
+                                            Text(
+                                                text = review.averageRating.toString(),
+                                                style = MaterialTheme.typography.headlineMedium,
+                                                color = MaterialTheme.colorScheme.onBackground
+                                            )
+                                        }
+                                    }
+                                    Column {
+                                        RatingBar(rating = review.averageRating.toFloat())
+                                        Text(
+                                            text = stringResource(R.string.ratings,review.reviewsCount),
+                                            style = MaterialTheme.typography.displaySmall,
+                                            color = MaterialTheme.colorScheme.onBackground
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-
                 SmallProductImages(
                     state = state.smallImages,
                     modifier = Modifier.constrainAs(smallImageProduct) {

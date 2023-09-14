@@ -14,11 +14,10 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.model.Rating
 import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
-import java.io.ObjectInputFilter.Status
 
 
 interface HoneyMartRepository {
@@ -126,10 +125,10 @@ interface HoneyMartRepository {
 //endregion admin
 
     //region rating
-    suspend fun getAllRatingForProduct(
+    suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): Flow<PagingData<Rating>>
+    ): List<Reviews>
 
     //end region rating
 }

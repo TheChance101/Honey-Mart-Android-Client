@@ -1,5 +1,6 @@
 package org.the_chance.honymart.ui.composables
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -37,14 +38,16 @@ fun RatingBar(
         horizontalArrangement = Arrangement.Center
     ) {
         for (i in 1..totalStars) {
-            Box(modifier = modifier.width(size).height(size)) {
-                 Icon(
+            Box(modifier = modifier
+                .width(size)
+                .height(size)) {
+                Icon(
                     painter = painterResource(id = R.drawable.ic_round_star_24),
                     contentDescription = "star",
                     modifier = Modifier.matchParentSize(),
                     tint = inactiveColor
                 )
-                 val clipFraction = when {
+                val clipFraction = when {
                     i <= rating -> 1f
                     i - 1 < rating && i > rating -> rating - i + 1
                     else -> 0f
@@ -53,7 +56,9 @@ fun RatingBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_round_star_24),
                         contentDescription = "star",
-                        modifier = Modifier.matchParentSize().clipFraction(clipFraction),
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clipFraction(clipFraction),
                         tint = activeColor
                     )
                 }
@@ -61,6 +66,7 @@ fun RatingBar(
         }
     }
 }
+
 fun Modifier.clipFraction(fraction: Float): Modifier = composed {
     this.then(
         object : DrawModifier {
@@ -78,8 +84,9 @@ fun Modifier.clipFraction(fraction: Float): Modifier = composed {
         }
     )
 }
+
 @Preview()
 @Composable
 fun RatingBarPreview() {
-    RatingBar(rating = 4.4f, totalStars = 5)
+    RatingBar(rating = 3.3f, totalStars = 5)
 }

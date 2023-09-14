@@ -1,7 +1,11 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
@@ -31,6 +35,7 @@ class ProductDetailsViewModel @Inject constructor(
 
      fun getData() {
         getProductDetails(args.productId.toLong())
+         getAllRatingForProduct()
     }
 
     override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
@@ -99,6 +104,35 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
+
+    private fun getAllRatingForProduct() {
+
+        tryToExecutePaging(
+            { productsOperations.getAllRatingForProduct(state.value.product.productId) },
+            ::onGetAllRatingForProductSuccess,
+            ::onGetAllRatingForProductError
+        )
+
+    }
+
+    private fun onGetAllRatingForProductSuccess(reviewStatistic: PagingData<ReviewStatistic>) {
+        Log.d("TagAlgohry","$reviewStatistic")
+        val mappedRating = reviewStatistic.map { it.toRatingUiState() }
+        _state.update {
+            it.copy(
+                reviews = flowOf(mappedRating),
+            )
+        }
+     }
+
+    private fun onGetAllRatingForProductError(error: ErrorHandler) {
+        Log.d("TagAlgohry","$error")
+        _state.update { it.copy(error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isConnectionError  = true) }
+        }
+    }
+
 
     override fun onClickSmallImage(url: String) {
         val newList = mutableListOf<String>()
