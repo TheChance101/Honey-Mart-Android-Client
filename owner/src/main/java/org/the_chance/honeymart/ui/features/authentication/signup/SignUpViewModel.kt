@@ -1,15 +1,25 @@
 package org.the_chance.honeymart.ui.features.authentication.signup
 
+import arrow.optics.copy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
-import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
+import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.MarketInfoInteractionsListener
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.error
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.image
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.isButtonEnabled
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.isLoading
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.isMarketCreated
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.isMarketImageEmpty
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.marketAddressState
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.marketDescriptionState
+import org.the_chance.honeymart.ui.features.authentication.signup.marketInfo.marketNameState
 import org.the_chance.honeymart.ui.util.StringDictionary
 import javax.inject.Inject
 
@@ -32,7 +42,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     override fun onClickContinue() {
-        _state.update { it.copy(isButtonEnabled = false) }
+        _state.update { it.copy { SignupUiState.isButtonEnabled set false } }
         val validationSignupFieldsState = state.value.emailState.isValid &&
                 state.value.passwordState.isValid &&
                 state.value.fullNameState.isValid &&
@@ -45,7 +55,7 @@ class SignUpViewModel @Inject constructor(
                 password = state.value.passwordState.value
             )
         } else {
-            _state.update { it.copy(isButtonEnabled = true) }
+            _state.update { it.copy { SignupUiState.isButtonEnabled set true } }
             showValidationToast(stringResourceImpl.requiredFieldsMessageString)
         }
     }
@@ -72,6 +82,7 @@ class SignUpViewModel @Inject constructor(
     private fun onCreateOwnerAccountSuccess(isSignUp: Boolean) {
         loginOwner(email = state.value.emailState.value, password = state.value.passwordState.value)
         _state.update { it.copy(isOwnerAccountCreated = isSignUp) }
+        _state.update { it.copy { SignupUiState.isOwnerAccountCreated set isSignUp } }
     }
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
@@ -107,7 +118,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onLoginError(error: ErrorHandler) {
-        _state.update { it.copy(isButtonEnabled = true) }
+        _state.update { it.copy { SignupUiState.isButtonEnabled set true } }
         showValidationToast(
             message = stringResourceImpl.errorString.getOrDefault(
                 error,
@@ -122,48 +133,48 @@ class SignUpViewModel @Inject constructor(
             fullName.trim().toString()
         )
         _state.update {
-            it.copy(
-                fullNameState = FieldState(
+            it.copy {
+                SignupUiState.fullNameState set FieldState(
                     errorState = stringResourceImpl.validationString.getOrDefault(
                         fullNameState,
                         ""
                     ),
                     value = fullName.toString(),
                     isValid = fullNameState == ValidationState.VALID_FULL_NAME
-                ),
-            )
+                )
+            }
         }
     }
 
     override fun onEmailInputChange(email: CharSequence) {
         val emailState = validateSignupFields.validateEmail(email.trim().toString())
         _state.update {
-            it.copy(
-                emailState = FieldState(
+            it.copy {
+                SignupUiState.emailState set FieldState(
                     errorState = stringResourceImpl.validationString.getOrDefault(
                         emailState,
                         ""
                     ),
                     value = email.toString(),
                     isValid = emailState == ValidationState.VALID_EMAIL
-                ),
-            )
+                )
+            }
         }
     }
 
     override fun onPasswordInputChanged(password: CharSequence) {
         val passwordState = validateSignupFields.validationPassword(password.toString())
         _state.update {
-            it.copy(
-                passwordState = FieldState(
+            it.copy {
+                SignupUiState.passwordState set FieldState(
                     errorState = stringResourceImpl.validationString.getOrDefault(
                         passwordState,
                         ""
                     ),
                     value = password.toString(),
                     isValid = passwordState == ValidationState.VALID_PASSWORD
-                ),
-            )
+                )
+            }
         }
     }
 
@@ -174,8 +185,8 @@ class SignUpViewModel @Inject constructor(
         )
         if (passwordState == ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH) {
             _state.update {
-                it.copy(
-                    confirmPasswordState = FieldState(
+                it.copy {
+                    SignupUiState.confirmPasswordState set FieldState(
                         errorState = stringResourceImpl.validationString.getOrDefault(
                             passwordState,
                             ""
@@ -183,17 +194,17 @@ class SignUpViewModel @Inject constructor(
                         value = confirmPassword.toString(),
                         isValid = false
                     )
-                )
+                }
             }
         } else {
             _state.update {
-                it.copy(
-                    confirmPasswordState = FieldState(
+                it.copy {
+                    SignupUiState.confirmPasswordState set FieldState(
                         errorState = "",
                         value = confirmPassword.toString(),
                         isValid = true
                     )
-                )
+                }
             }
         }
     }
@@ -203,11 +214,7 @@ class SignUpViewModel @Inject constructor(
     // region market registration
     override fun onClickSendButton() {
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isButtonEnabled = false
-                )
-            )
+            it.copy { SignupUiState.marketInfoUiState.isButtonEnabled set false }
         }
         val market = state.value.marketInfoUiState
         val marketFieldsValidationState =
@@ -223,11 +230,7 @@ class SignUpViewModel @Inject constructor(
             )
         } else {
             _state.update {
-                it.copy(
-                    marketInfoUiState = state.value.marketInfoUiState.copy(
-                        isButtonEnabled = true
-                    )
-                )
+                it.copy { SignupUiState.marketInfoUiState.isButtonEnabled set true }
             }
             effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
         }
@@ -239,7 +242,7 @@ class SignUpViewModel @Inject constructor(
         marketDescription: String,
     ) {
         _state.update {
-            it.copy(marketInfoUiState = state.value.marketInfoUiState.copy(isLoading = true))
+            it.copy { SignupUiState.marketInfoUiState.isLoading set true }
         }
         tryToExecute(
             {
@@ -262,23 +265,17 @@ class SignUpViewModel @Inject constructor(
             )
         )
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isLoading = false,
-                    error = errorHandler,
-                    isButtonEnabled = true
-                ),
-            )
+            it.copy {
+                SignupUiState.marketInfoUiState.isLoading set false
+                SignupUiState.marketInfoUiState.error set errorHandler
+                SignupUiState.marketInfoUiState.isButtonEnabled set true
+            }
         }
     }
 
     private fun onCreateMarketSuccess(isMarketCreated: Boolean) {
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isMarketCreated = isMarketCreated
-                )
-            )
+            it.copy { SignupUiState.marketInfoUiState.isMarketCreated set isMarketCreated }
         }
         addMarketImage(state.value.marketInfoUiState.image)
     }
@@ -288,19 +285,16 @@ class SignUpViewModel @Inject constructor(
             marketName.trim().toString()
         )
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    marketNameState =
-                    FieldState(
-                        errorState = stringResourceImpl.validationString.getOrDefault(
-                            marketNameState,
-                            ""
-                        ),
-                        value = marketName.toString(),
-                        isValid = marketNameState == ValidationState.VALID_MARKET_NAME
+            it.copy {
+                SignupUiState.marketInfoUiState.marketNameState set FieldState(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
+                        marketNameState,
+                        ""
                     ),
+                    value = marketName.toString(),
+                    isValid = marketNameState == ValidationState.VALID_MARKET_NAME
                 )
-            )
+            }
         }
     }
 
@@ -309,19 +303,16 @@ class SignUpViewModel @Inject constructor(
             address.trim().toString()
         )
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    marketAddressState =
-                    FieldState(
-                        errorState = stringResourceImpl.validationString.getOrDefault(
-                            marketAddressState,
-                            ""
-                        ),
-                        value = address.toString(),
-                        isValid = marketAddressState == ValidationState.VALID_MARKET_ADDRESS
+            it.copy {
+                SignupUiState.marketInfoUiState.marketAddressState set FieldState(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
+                        marketAddressState,
+                        ""
                     ),
+                    value = address.toString(),
+                    isValid = marketAddressState == ValidationState.VALID_MARKET_ADDRESS
                 )
-            )
+            }
         }
     }
 
@@ -330,19 +321,16 @@ class SignUpViewModel @Inject constructor(
             description.trim().toString()
         )
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    marketDescriptionState =
-                    FieldState(
-                        errorState = stringResourceImpl.validationString.getOrDefault(
-                            marketDescriptionState,
-                            ""
-                        ),
-                        value = description.toString(),
-                        isValid = marketDescriptionState == ValidationState.VALID_MARKET_DESCRIPTION
+            it.copy {
+                SignupUiState.marketInfoUiState.marketDescriptionState set FieldState(
+                    errorState = stringResourceImpl.validationString.getOrDefault(
+                        marketDescriptionState,
+                        ""
                     ),
+                    value = description.toString(),
+                    isValid = marketDescriptionState == ValidationState.VALID_MARKET_DESCRIPTION
                 )
-            )
+            }
         }
     }
 
@@ -365,47 +353,39 @@ class SignUpViewModel @Inject constructor(
             )
         )
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isLoading = false,
-                    error = errorHandler,
-                    isButtonEnabled = true
-                ),
-            )
+            it.copy {
+                SignupUiState.marketInfoUiState.isLoading set false
+                SignupUiState.marketInfoUiState.error set errorHandler
+                SignupUiState.marketInfoUiState.isButtonEnabled set true
+            }
         }
     }
 
     private fun onAddMarketImageSuccess(isMaretImageAdded: Boolean) {
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    isLoading = false,
-                    isButtonEnabled = true
-                ),
-            )
+            it.copy {
+                SignupUiState.marketInfoUiState.isLoading set false
+                SignupUiState.marketInfoUiState.isButtonEnabled set true
+            }
         }
         listenToCheckAdminApprove()
     }
 
     override fun onImageSelected(uri: ByteArray) {
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    image = uri,
-                    isMarketImageEmpty = uri.isEmpty()
-                )
-            )
+            it.copy {
+                SignupUiState.marketInfoUiState.image set uri
+                SignupUiState.marketInfoUiState.isMarketImageEmpty set uri.isEmpty()
+            }
         }
     }
 
     override fun onClickRemoveSelectedImage(imageUri: ByteArray) {
         _state.update {
-            it.copy(
-                marketInfoUiState = state.value.marketInfoUiState.copy(
-                    image = byteArrayOf(),
-                    isMarketImageEmpty = true
-                )
-            )
+            it.copy {
+                SignupUiState.marketInfoUiState.image set byteArrayOf()
+                SignupUiState.marketInfoUiState.isMarketImageEmpty set true
+            }
         }
     }
 
@@ -462,12 +442,12 @@ class SignUpViewModel @Inject constructor(
 
     private fun showValidationToast(message: String) {
         _state.update {
-            it.copy(
-                validationToast = state.value.validationToast.copy(
+            it.copy {
+                SignupUiState.validationToast set ValidationToast(
                     isShow = true,
                     message = message
                 )
-            )
+            }
         }
         effectActionExecutor(_effect, SignupUiEffect.ShowValidationToast)
     }
