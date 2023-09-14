@@ -14,33 +14,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
-import org.the_chance.honeymart.ui.features.orders.OrdersUiState
+import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
 import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsCard
-import org.the_chance.honeymart.ui.features.orders.composables.OrderHeader
-import org.the_chance.honeymart.ui.features.orders.composables.OrderStatusButtons
-import org.the_chance.honeymart.ui.features.orders.contentScreen
-import org.the_chance.honeymart.ui.features.orders.showButtonState
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun OrderDetails(
-    state: OrdersUiState,
+    state: NotificationsUiState,
 ) {
-    ContentVisibility(state = state.contentScreen()) {
         Scaffold(
             topBar = {
-                OrderHeader(
+                OrdersHeader(
                     state = state,
-                    isSelected = !state.orderDetails.isSelected,
+                    isSelected = !state.notification.isNotificationSelected,
                 )
             },
-            bottomBar = {
-                OrderStatusButtons(
-                    visibility = state.showButtonState(),
-                    buttonState = state.orderDetails.buttonsState
-                )
-            },
+
         ) { paddingValues ->
             Column(
                 modifier = Modifier
@@ -69,11 +58,11 @@ fun OrderDetails(
             }
         }
     }
-}
+
 
 @Preview
 @Composable
 fun PreviewOrderDetails() {
-    OrderDetails(state = OrdersUiState())
+    OrderDetails(state = NotificationsUiState())
     
 }

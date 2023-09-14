@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.orders.OrderUiState
 import org.the_chance.honymart.ui.theme.dimens
@@ -131,5 +132,12 @@ fun ItemOrder(
         }
 
     }
+}
+
+@Preview
+@Composable
+fun PreviewItemOrder() {
+    ItemOrder(state = OrderUiState())
+    
 }
 

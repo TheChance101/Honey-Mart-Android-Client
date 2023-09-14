@@ -1,8 +1,10 @@
 package org.the_chance.honeymart.ui.features.notifications.composables
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -23,21 +25,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun NotificationCard(
-    state: NotificationsUiState,
     modifier: Modifier = Modifier,
-    imageUrl: String,
-    userName  : String ,
+    notificationTitle  : String ,
+    notificationBody : String,
     date :String ,
+    orderId : String,
     orderState : String,
-    onClickCard: (orderId: Long) -> Unit = {},
+    onClickCard: ()-> Unit = {},
     isSelected: Boolean = false
 ) {
     val selectedColor by animateColorAsState(
@@ -49,7 +53,7 @@ fun NotificationCard(
             .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .height(MaterialTheme.dimens.itemOrder)
-            .clickable { onClickCard(state.updatedNotifications[0].orderId) },
+            .clickable { onClickCard() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onTertiary
         ),
@@ -61,7 +65,7 @@ fun NotificationCard(
             modifier = modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             Divider(
                 modifier = Modifier
@@ -70,44 +74,48 @@ fun NotificationCard(
                 thickness = 100.dp,
                 color = selectedColor
             )
-            ImageNetwork(
-                modifier = Modifier
-                    .size(MaterialTheme.dimens.itemProductImage)
-                    .clip(CircleShape),
-                imageUrl = imageUrl
-            )
             Column(
                 modifier = Modifier
                     .padding(
-                        top = MaterialTheme.dimens.space12,
-                        bottom = MaterialTheme.dimens.space12
+                        horizontal = MaterialTheme.dimens.space24,
+                        vertical = MaterialTheme.dimens.space8
                     ),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "# $orderId",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text =orderState ,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
                 Text(
-                    text = userName,
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
-                )
+                    text = notificationTitle,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium)
+
                 Text(
-                    text = orderState,
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
-                )
+                    text = notificationBody,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium)
+
             }
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = MaterialTheme.dimens.space12,
-                        bottom = MaterialTheme.dimens.space12,
-                    ),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                horizontalAlignment = Alignment.End
-            ) {
+
                 Text(
                     text = date ,
                     style = MaterialTheme.typography.bodyMedium
                         .copy(color = MaterialTheme.colorScheme.onBackground),
                 )
-            }
+
         }
     }
 }
@@ -115,8 +123,8 @@ fun NotificationCard(
 @Preview
 @Composable
 fun PreviewNotificationCard() {
-    NotificationCard(state = NotificationsUiState(),
-        imageUrl = "https://i.pinimg.com/originals/0a/0b/9a/0a0b9a4b5b5b3b0b5b5b5b5b5b5b5b5b.jpg",
-        userName ="Sara Salah ", date ="12:00", orderState = "Cancel the order",)
+//    NotificationCard(state = NotificationsUiState(),
+//        imageUrl = "https://i.pinimg.com/originals/0a/0b/9a/0a0b9a4b5b5b3b0b5b5b5b5b5b5b5b5b.jpg",
+//        userName ="Sara Salah ", date ="12:00", orderState = "Cancel the order",)
 
 }

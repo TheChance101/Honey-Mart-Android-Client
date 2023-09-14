@@ -1,16 +1,14 @@
 package org.the_chance.honeymart.ui.features.notifications
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.OrderDetails
-import org.the_chance.honeymart.domain.usecase.GetAllOwnerNotificationsUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerNotificationsManagerUseCase
-import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerOrdersManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.features.orders.OrderUiState
+import org.the_chance.honeymart.ui.features.orders.toOrderDetailsProductUiState
 import org.the_chance.honeymart.ui.features.orders.toOrderParentDetailsUiState
 import javax.inject.Inject
 
@@ -23,11 +21,8 @@ class NotificationsViewModel @Inject constructor(
     override val TAG: String = this ::class.simpleName.toString()
     init {
         getAllNotifications()
-
     }
     override fun getAllNotifications(){
-        val hh= runBlocking { ownerNotifications.getNotifications().toString() }
-        Log.e("sara",hh)
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             {ownerNotifications.getNotifications()},
@@ -35,23 +30,98 @@ class NotificationsViewModel @Inject constructor(
             ::onGetNotificationsError
         )
     }
-    private fun onGetNotificationSuccess(notifications : List<Notification>){
-        log("$notifications")
+    private fun onGetNotificationSuccess(notifications : List<Notification>) {
+        val notificationUiState = notifications.toNotificationUiState()
+        val updateNotification = if(notifications.isEmpty())notificationUiState
+        else updateSelectedOrder(notificationUiState,
+            notificationUiState.first().notificationId)
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
-                notifications = notifications.map { it.toNotificationUiState() },
-                updatedNotifications = notifications.map { it.toNotificationUiState() },
-            )
+                notifications = updateNotification,)
         }
+        log(_state.value.notifications.toString())
+        getOrderDetails(_state.value.notifications.first().orderId)
     }
-    private fun onGetNotificationsError(error : ErrorHandler){
+
+    private fun onGetNotificationsError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
-        log("error $error")
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
+    }
 
+    private fun getOrderDetails(orderId: Long) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { ownerNotifications.getOrderDetailsUseCase(orderId) },
+            ::onGetOrderDetailsSuccess,
+            ::onGetOrderDetailsError
+        )
+        getOrderProductDetails(orderId)
+    }
+
+    private fun onGetOrderDetailsSuccess(orderDetails: OrderDetails) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                orderDetails = orderDetails.toOrderParentDetailsUiState(),
+            )
+        }
+
+    }
+
+    private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = errorHandler) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    private fun getOrderProductDetails(orderId: Long) {
+        tryToExecute(
+            { ownerNotifications.getOrderProductDetailsUseCase(orderId) },
+            ::onGetOrderProductDetailsSuccess,
+            ::onGetOrderProductDetailsError
+        )
+    }
+
+    private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                products = products.toOrderDetailsProductUiState()
+            )
+        }
+    }
+
+    private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+    private fun updateSelectedOrder(notifications: List<NotificationUiState>,
+        selectedNotificationId: Long,
+    ): List<NotificationUiState> {
+        return notifications.map { notification ->
+            notification.copy(
+                isNotificationSelected = notification.notificationId == selectedNotificationId)
+        }
+    }
+
+    override fun onCLickNotificationCard(orderDetails: OrderUiState, notification :NotificationUiState) {
+        val updateNotification = updateSelectedOrder(_state.value.notifications,
+            notification.notificationId)
+        _state.update {
+            val newOrderDetails = it.orderDetails.copy(orderId = notification.orderId)
+            it.copy(
+                notifications = updateNotification,
+                orderDetails = newOrderDetails,
+            )
+        }
+        getOrderDetails(notification.orderId)
     }
 
 

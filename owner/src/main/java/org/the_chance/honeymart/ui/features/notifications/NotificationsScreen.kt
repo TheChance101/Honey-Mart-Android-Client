@@ -17,6 +17,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.notifications.composables.AllNotificationsContent
+import org.the_chance.honeymart.ui.features.notifications.composables.OrderDetails
 import org.the_chance.honeymart.ui.features.orders.composables.OrderPlaceHolder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -73,6 +74,7 @@ fun NotificationsContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
+                OrderDetails(state)
 
             }
         }
