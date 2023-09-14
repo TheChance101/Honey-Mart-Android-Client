@@ -401,7 +401,7 @@ private fun MarketsPager(
             ImageNetwork(
                 imageUrl = markets[it].marketImage,
                 contentDescription = stringResource(id = R.string.market_image),
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.dimens.space4)
