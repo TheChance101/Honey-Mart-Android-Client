@@ -45,7 +45,7 @@ fun ProductReviewsContent(
     state: ProductReviewsUiState,
     listener: ProductReviewsInteractionsListener
 ) {
-
+//    val reviews = state.reviews.collectAsLazyPagingItems()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,20 +94,43 @@ fun ProductReviewsContent(
                 )
                 ReviewsProgressBar(
                     starNumber = "3",
-                    countReview = state.reviews.threeStarsCount.toString(),
-                    rating = (state.reviews.threeStarsCount / state.reviews.reviewCount).toFloat()
+                    countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
+                    rating = (state.reviews.reviewStatisticUiState.threeStarsCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
                 ReviewsProgressBar(
                     starNumber = "2",
-                    countReview = state.reviews.twoStarsCount.toString(),
-                    rating = (state.reviews.twoStarsCount / state.reviews.reviewCount).toFloat()
+                    countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
+                    rating = (state.reviews.reviewStatisticUiState.twoStarsCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
                 ReviewsProgressBar(
                     starNumber = "1",
-                    countReview = state.reviews.oneStarCount.toString(),
-                    rating = (state.reviews.oneStarCount / state.reviews.reviewCount).toFloat()
+                    countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
+                    rating = (state.reviews.reviewStatisticUiState.oneStarCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
             }
+//
+//            LazyColumn(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .background(color = MaterialTheme.colorScheme.background)
+//                    .padding(
+//                        top = MaterialTheme.dimens.space8,
+//                        start = MaterialTheme.dimens.space8,
+//                        end = MaterialTheme.dimens.space16
+//                    )
+//            ) {
+//                items(reviews.itemCount) { position ->
+//                    val review = reviews[position]
+//                    if (review != null) {
+//                        CardReviews(
+//                            userName = review.fullName ?: "",
+//                            rating = review.rating.toFloat(),
+//                            reviews = "",
+//                            data = review.reviewDate.toString()
+//                        )
+//                    }
+//                }
+//            }
         }
     }
 }
