@@ -1,10 +1,13 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,16 +36,17 @@ import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
-import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
 import org.the_chance.honeymart.ui.feature.home.composables.coupon.CouponsItem
 import org.the_chance.honeymart.ui.feature.home.formatCurrencyWithNearestFraction
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.dimens
@@ -98,6 +102,7 @@ fun HomeContentSuccessScreen(
             span = { GridItemSpan(2) },
         ) {
             Categories(
+                isCategoryLoading = state.isCategoryLoading,
                 markets = state.markets,
                 categories = state.categories,
                 selectedMarketId = state.selectedMarketId,
@@ -274,6 +279,7 @@ private fun Coupons(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Categories(
+    isCategoryLoading: Boolean,
     categories: List<CategoryUiState>,
     markets: List<MarketUiState>,
     selectedMarketId: Long,
@@ -304,23 +310,32 @@ private fun Categories(
                         onClick = { onChipClick(market.marketId) })
                 }
             }
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            ) {
-                itemsIndexed(
-                    categories,
-                    key = { _, category -> category.categoryId }) { index, category ->
-                    HomeCategoriesItem(
-                        modifier = Modifier
-                            .padding(horizontal = MaterialTheme.dimens.space8)
-                            .animateItemPlacement(),
-                        label = category.categoryName,
-                        onClick = { oncClickCategory(category.categoryId, index) },
-                        painter = painterResource(
-                            id = categoryIcons[category.categoryImageId] ?: R.drawable.ic_cup_paper
-                        ),
-                    )
+            Box {
+
+                Loading(state = isCategoryLoading)
+                this@Column.AnimatedVisibility(visible = !isCategoryLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut()) {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+                    ) {
+                        itemsIndexed(
+                            categories,
+                            key = { _, category -> category.categoryId }) { index, category ->
+                            HomeCategoriesItem(
+                                modifier = Modifier
+                                    .padding(horizontal = MaterialTheme.dimens.space8)
+                                    .animateItemPlacement(),
+                                label = category.categoryName,
+                                onClick = { oncClickCategory(category.categoryId, index) },
+                                painter = painterResource(
+                                    id = categoryIcons[category.categoryImageId]
+                                        ?: R.drawable.ic_cup_paper
+                                ),
+                            )
+                        }
+                    }
                 }
             }
         }
