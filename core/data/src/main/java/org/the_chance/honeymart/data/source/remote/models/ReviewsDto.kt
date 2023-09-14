@@ -8,6 +8,24 @@ data class ReviewsDto(
     @SerializedName("reviews")
     val reviews: List<ReviewDto>?
 )
+
+data class ReviewStatisticDto(
+    @SerializedName("averageRating")
+    val averageRating: Double?,
+    @SerializedName("reviewsCount")
+    val reviewsCount: Int?,
+    @SerializedName("oneStarCount")
+    val oneStarCount: Int?,
+    @SerializedName("twoStarsCount")
+    val twoStarsCount: Int?,
+    @SerializedName("threeStarsCount")
+    val threeStarsCount: Int?,
+    @SerializedName("fourStarsCount")
+    val fourStarsCount: Int?,
+    @SerializedName("fiveStarsCount")
+    val fiveStarsCount: Int?,
+)
+
 data class ReviewDto(
     @SerializedName("reviewId")
     val reviewId: Long?,
@@ -31,5 +49,3 @@ data class ReviewDto(
         val profileImage: String?
     )
 }
-
-

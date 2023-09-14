@@ -14,7 +14,6 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.model.ProductReviewStatistic
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.model.UserProfile
@@ -23,9 +22,6 @@ import org.the_chance.honeymart.domain.model.WishList
 
 interface HoneyMartRepository {
 
-    suspend fun getAllProductReviews(productId: Long): ProductReviewStatistic
-
-    //suspend fun getAllProductReviewsPaging(page: Int?, productId: Long): Flow<PagingData<Review>>
     suspend fun checkAdminApprove(): MarketApproval
     suspend fun getAllMarkets(): List<Market>?
     suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>>
@@ -129,6 +125,9 @@ interface HoneyMartRepository {
 //endregion admin
 
     //region rating
+
+    suspend fun getAllProductReviews(productId: Long): Reviews
+
     suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long

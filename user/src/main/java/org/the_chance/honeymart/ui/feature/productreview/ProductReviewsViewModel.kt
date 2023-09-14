@@ -3,8 +3,9 @@ package org.the_chance.honeymart.ui.feature.productreview
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import org.the_chance.honeymart.domain.model.ProductReviewStatistic
-import org.the_chance.honeymart.domain.usecase.GetProductReviewsStatistics
+import org.the_chance.honeymart.domain.model.Reviews
+import org.the_chance.honeymart.domain.usecase.GetAllProductReviewsUseCase
+import org.the_chance.honeymart.domain.usecase.GetProductRatingUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsArgs
@@ -12,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductReviewsViewModel @Inject constructor(
-    private val productReviewsStatistics: GetProductReviewsStatistics,
-//    private val productReviewsPagingUseCase: GetAllProductReviewsPagingUseCase,
+    private val productRatingUseCase: GetProductRatingUseCase,
+    private val productReviewsUseCase: GetAllProductReviewsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductReviewsUiState, ProductReviewsUiEffect>(ProductReviewsUiState()),
     ProductReviewsInteractionsListener {
@@ -21,6 +22,7 @@ class ProductReviewsViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private val args = ProductDetailsArgs(savedStateHandle)
+//    private val page = state.value.page
 
 
     init {
@@ -34,20 +36,21 @@ class ProductReviewsViewModel @Inject constructor(
     private fun getProductReviews(productId: Long) {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            { productReviewsStatistics(productId) },
+            { productRatingUseCase(productId) },
             ::onGetProductReviewsSuccess,
             ::onGetProductReviewsError
         )
     }
 
-    private fun onGetProductReviewsSuccess(productReviewStatistic: ProductReviewStatistic) {
+    private fun onGetProductReviewsSuccess(reviews: Reviews) {
         _state.update {
             it.copy(
                 isLoading = false,
-                reviews = productReviewStatistic.toProductReviewsUiState()
+                reviews = reviews.toReviews()
             )
         }
     }
+
 
     private fun onGetProductReviewsError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
@@ -62,3 +65,15 @@ class ProductReviewsViewModel @Inject constructor(
     }
 
 }
+
+//    private fun getAllRatingForProduct() {
+//        _state.update { it.copy(isLoading = true) }
+//        viewModelScope.launch {
+//            val reviews = productsOperations.getAllRatingForProduct(
+//                productId = state.value.product.productId,
+//                page = page,
+//            )
+//            _state.update { it.copy(reviews = reviews.toReviews()) }
+//        }
+//    }
+//

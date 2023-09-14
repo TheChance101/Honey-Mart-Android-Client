@@ -21,7 +21,6 @@ import org.the_chance.honeymart.data.source.remote.mapper.toNotification
 import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
-import org.the_chance.honeymart.data.source.remote.mapper.toProductReview
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toReviews
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
@@ -39,7 +38,6 @@ import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
-import org.the_chance.honeymart.domain.model.ProductReviewStatistic
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.model.UserProfile
@@ -53,20 +51,6 @@ class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), HoneyMartRepository {
 
-    override suspend fun getAllProductReviews(productId: Long): ProductReviewStatistic {
-        return wrap { honeyMartService.getAllProductReviews(productId) }.value?.toProductReview()
-            ?: throw NotFoundException()
-    }
-
-//    override suspend fun getAllProductReviewsPaging(
-//        page: Int?,
-//        productId: Long
-//    ): Flow<PagingData<Review>> =
-//        getAllWithParameter(
-//            productId,
-//            ::ReviewsPagingSource
-//        )
-//
 
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
@@ -388,7 +372,6 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    //region admin
 
     override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {
         return wrap { honeyMartService.getMarketsRequests(isApproved) }.value?.map { it.toMarketRequest() }
@@ -400,15 +383,22 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 //endregion admin
-//endregion admin
 
     //region rating
+
+    override suspend fun getAllProductReviews(productId: Long): Reviews {
+        return wrap { honeyMartService.getProductRating(productId) }.value?.toReviews()
+            ?: throw NotFoundException()
+    }
+
     override suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
-    ): Reviews = wrap {
-        honeyMartService.getReviewsForProduct(page, productId) }.value?.toReviews()
-        ?: throw NotFoundException()
-
+    ): Reviews {
+        return wrap {
+            honeyMartService.getReviewsForProduct(page, productId)
+        }.value?.toReviews()
+            ?: throw NotFoundException()
+    }
     //end region rating
 }

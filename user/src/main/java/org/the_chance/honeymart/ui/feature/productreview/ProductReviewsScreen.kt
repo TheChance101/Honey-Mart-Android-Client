@@ -75,20 +75,22 @@ fun ProductReviewsContent(
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
         ) {
             AverageRating(
-                averageRating = state.reviews.averageRating.toString(),
-                reviewCount = state.reviews.reviewCount.toString(),
-                rating = state.reviews.averageRating.toFloat()
+                averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
+                reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
+                rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
             )
 
             Box(contentAlignment = Alignment.Center) {
                 ReviewsProgressBar(
-                    starNumber = "5", countReview = state.reviews.fiveStarsCount.toString(),
-                    rating = (state.reviews.fiveStarsCount / state.reviews.reviewCount).toFloat()
+                    starNumber = "5",
+                    countReview = state.reviews.reviewStatisticUiState.fiveStarsCount.toString(),
+                    rating =
+                    (state.reviews.reviewStatisticUiState.fiveStarsCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
                 ReviewsProgressBar(
                     starNumber = "4",
-                    countReview = state.reviews.fourStarsCount.toString(),
-                    rating = (state.reviews.fourStarsCount / state.reviews.reviewCount).toFloat()
+                    countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
+                    rating = (state.reviews.reviewStatisticUiState.fiveStarsCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
                 ReviewsProgressBar(
                     starNumber = "3",

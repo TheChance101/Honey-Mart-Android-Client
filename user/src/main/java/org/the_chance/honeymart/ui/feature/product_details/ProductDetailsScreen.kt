@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,7 +43,6 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
-import org.the_chance.honeymart.ui.feature.product_details.composeable.ReviewsList
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -53,7 +51,6 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.RatingBar
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -125,7 +122,7 @@ private fun ProductDetailsContent(
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
 
-    val reviews = state.reviews
+//    val reviews = state.reviews
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
@@ -305,35 +302,35 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
-                    if (reviews.reviews.isNotEmpty()) {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.user_reviews),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            Row {
-                                Text(
-                                    text = reviews.reviewStatisticUiState.averageRating.toString(),
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        }
-                        Column {
-                            RatingBar(rating = reviews.reviewStatisticUiState.averageRating.toFloat())
-                            Text(
-                                text = stringResource(
-                                    R.string.ratings,
-                                    reviews.reviewStatisticUiState.reviewsCount
-                                ),
-                                style = MaterialTheme.typography.displaySmall,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            ReviewsList(reviews = state.reviews.reviews)
-                        }
-
-                    }
+//                    if (reviews.reviews.isNotEmpty()) {
+//                        Column {
+//                            Text(
+//                                text = stringResource(R.string.user_reviews),
+//                                style = MaterialTheme.typography.bodySmall,
+//                                color = MaterialTheme.colorScheme.onBackground
+//                            )
+//                            Row {
+//                                Text(
+//                                    text = reviews.reviewStatisticUiState.averageRating.toString(),
+//                                    style = MaterialTheme.typography.headlineMedium,
+//                                    color = MaterialTheme.colorScheme.onBackground
+//                                )
+//                            }
+//                        }
+//                        Column {
+//                            RatingBar(rating = reviews.reviewStatisticUiState.averageRating.toFloat())
+//                            Text(
+//                                text = stringResource(
+//                                    R.string.ratings,
+//                                    reviews.reviewStatisticUiState.reviewsCount
+//                                ),
+//                                style = MaterialTheme.typography.displaySmall,
+//                                color = MaterialTheme.colorScheme.onBackground
+//                            )
+////                            ReviewsList(reviews = state.reviews.reviews)
+//                        }
+//
+//                    }
                 }
                 SmallProductImages(
                     state = state.smallImages,
