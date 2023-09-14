@@ -1,10 +1,12 @@
 package org.the_chance.honeymart.ui.features.category
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerCategoriesManagerUseCase
@@ -25,6 +27,8 @@ class CategoriesViewModel @Inject constructor(
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
+    private var page = _state.value.page
+    private var productListScrollPosition = 0
 
     init {
         getCategoryImages()
@@ -39,6 +43,7 @@ class CategoriesViewModel @Inject constructor(
             ::onGetCategoryError
         )
     }
+
     private fun onGetCategorySuccess(categories: List<Category>) {
         val categoriesUiState = categories.toCategoryUiState()
         val updatedCategories = if (categories.isEmpty()) {
@@ -46,9 +51,9 @@ class CategoriesViewModel @Inject constructor(
         } else {
             updateSelectedCategory(categoriesUiState, categoriesUiState.first().categoryId)
         }
-    _state.update {
-        it.copy(categories = updatedCategories)
-    }
+        _state.update {
+            it.copy(categories = updatedCategories)
+        }
         val newState = _state.value.copy(
             isLoading = false,
             error = null,
@@ -63,7 +68,7 @@ class CategoriesViewModel @Inject constructor(
                 newCategory = newState.newCategory.copy(categoryId = newCategoryId!!)
             )
         }
-    log(_state.value.categories.toString())
+        log(_state.value.categories.toString())
 
         getProductsByCategoryId(newCategoryId!!)
     }
@@ -261,20 +266,33 @@ class CategoriesViewModel @Inject constructor(
 
     // region Category Products
     private fun getProductsByCategoryId(categoryId: Long) {
+        resetSearchState()
         _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecutePaging(
-            { ownerProducts.getAllProducts(categoryId) },
-            ::onGetProductsSuccess,
-            ::onError
-        )
+        viewModelScope.launch {
+            val products = ownerProducts.getAllProducts(categoryId, page)
+            val mappedProducts = products!!.map { it.toProductUiState() }
+            _state.update { it.copy(products = mappedProducts, isLoading = false) }
+        }
     }
 
-    private fun onGetProductsSuccess(products: PagingData<Product>) {
-        val mappedProducts = products.map { it.toProductUiState() }
+    private fun appendProducts(products: List<ProductUiState>) {
+        val current = ArrayList(state.value.products)
+        current.addAll(products)
+        _state.update { it.copy(products = current) }
+    }
 
-        _state.update {
-            it.copy(isLoading = false, error = null, products = flowOf(mappedProducts))
-        }
+    private fun incrementPage() {
+        page += 1
+    }
+
+    fun onChangeProductScrollPosition(position: Int) {
+        productListScrollPosition = position
+    }
+
+    private fun resetSearchState() {
+        _state.update { it.copy(products = listOf()) }
+        page = 1
+        onChangeProductScrollPosition(0)
     }
 
     override fun onClickProduct(productId: Long) {
@@ -397,8 +415,10 @@ class CategoriesViewModel @Inject constructor(
     override fun onClickAddProductButton() {
         _state.update {
             it.copy(
-                showScreenState = it.showScreenState.copy(showFab = false,
-                    showAddProduct = true),
+                showScreenState = it.showScreenState.copy(
+                    showFab = false,
+                    showAddProduct = true
+                ),
                 newProducts = it.newProducts.copy(
                     name = "",
                     description = "",
@@ -593,6 +613,22 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
+    override fun onScrollDown() {
+        viewModelScope.launch {
+            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
+                _state.update { it.copy(isLoading = true) }
+                incrementPage()
+                if (page > 1) {
+                    val result = ownerProducts.getAllProducts(
+                        state.value.newCategory.categoryId, page
+                    )!!.map { it.toProductUiState() }
+                    appendProducts(result)
+                }
+                _state.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
     private fun getNameState(name: String): ValidationState {
         val productNameState: ValidationState = when {
             name.isBlank() -> ValidationState.BLANK_TEXT_FIELD
@@ -643,5 +679,9 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    companion object {
+        const val MAX_PAGE_SIZE = 10
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">owner</string>
+    <string name="category_icon">category icon</string>
 </resources>

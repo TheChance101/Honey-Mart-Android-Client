@@ -18,12 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
@@ -37,8 +39,9 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CategoryProductsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
+    onChangeProductScrollPosition: (Int) -> Unit,
 ) {
-    val products = state.products.collectAsLazyPagingItems()
+    val products = state.products
 
     Scaffold(
         topBar = {
@@ -64,7 +67,7 @@ fun CategoryProductsContent(
                                     .categoryIconUIState.categoryIconId]
                                     ?: R.drawable.icon_category
                             ),
-                            contentDescription = "category icon",
+                            contentDescription = stringResource(org.the_chance.owner.R.string.category_icon),
                             tint = MaterialTheme.colorScheme.primary
                         )
 
@@ -80,7 +83,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HoneyOutlineText(text = "${products.itemCount} Products")
+                    HoneyOutlineText(text = "${products.size} Products")
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
                         onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
@@ -108,8 +111,12 @@ fun CategoryProductsContent(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
-                items(products.itemCount) { index ->
-                    products[index]?.let {
+                items(products.size) { index ->
+                    onChangeProductScrollPosition(index)
+                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
+                    products[index].let {
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
                             imageUrl = it.productImage.firstOrNull() ?: "",
@@ -119,12 +126,9 @@ fun CategoryProductsContent(
                         )
                     }
                 }
-                item {
-                    PagingStateVisibility(products)
-                }
             }
             EmptyPlaceholder(
-                state = products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading,
+                state = products.isEmpty(),
                 emptyObjectName = "Product"
             )
         }

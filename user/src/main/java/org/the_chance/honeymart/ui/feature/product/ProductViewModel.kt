@@ -139,24 +139,6 @@ class ProductViewModel @Inject constructor(
         onChangeProductScrollPosition(0)
     }
 
-    private fun onGetProductSuccess(products: List<Product>) {
-        val mappedProducts = products.map { it.toProductUiState() }
-        _state.update {
-            it.copy(
-                isEmptyProducts = false,
-                products = mappedProducts,
-            )
-        }
-        getWishListProducts(mappedProducts)
-    }
-
-    private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isEmptyProducts = true) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
-
     private fun updateProducts(
         products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,

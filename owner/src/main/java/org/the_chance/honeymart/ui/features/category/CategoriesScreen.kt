@@ -36,7 +36,11 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by categoriesViewModel.state.collectAsState()
 
-    CategoriesContent(state, categoriesViewModel)
+    CategoriesContent(
+        state,
+        categoriesViewModel,
+        categoriesViewModel::onChangeProductScrollPosition
+    )
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
         categoriesViewModel.resetStateScreen()
@@ -47,6 +51,7 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
 fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
+    onChangeProductScrollPosition: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -67,8 +72,6 @@ fun CategoriesContent(
             }
         }
         ContentVisibility(state = !state.isError) {
-
-
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -96,7 +99,11 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showCategoryProductsInCategory()) {
-                        CategoryProductsContent(state = state, listener = listener)
+                        CategoryProductsContent(
+                            state = state,
+                            listener = listener,
+                            onChangeProductScrollPosition
+                        )
                     }
                 }
                 Column(
@@ -112,7 +119,11 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showCategoryProductsInProduct()) {
-                        CategoryProductsContent(state = state, listener = listener)
+                        CategoryProductsContent(
+                            state = state,
+                            listener = listener,
+                            onChangeProductScrollPosition
+                        )
                     }
 
                     ContentVisibility(state = state.showScreenState.showUpdateCategory) {

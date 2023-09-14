@@ -285,6 +285,4 @@ class CouponsViewModel @Inject constructor(
         }
         return state
     }
-
-
 }
