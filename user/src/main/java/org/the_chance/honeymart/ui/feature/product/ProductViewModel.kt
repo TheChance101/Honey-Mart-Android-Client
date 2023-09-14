@@ -17,6 +17,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
@@ -257,7 +258,7 @@ class ProductViewModel @Inject constructor(
 
     override fun onScrollDown() {
         viewModelScope.launch {
-            if ((productListScrollPosition + 1) >= (page * 10)) {
+            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
                 _state.update { it.copy(isLoadingProduct = true) }
                 incrementPage()
                 if (page > 1) {

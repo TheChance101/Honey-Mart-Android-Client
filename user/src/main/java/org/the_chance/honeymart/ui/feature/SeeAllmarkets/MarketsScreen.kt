@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.compoaseable.MarketItem
 import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -33,7 +34,7 @@ fun MarketsScreen(
             }
         })
 
-    MarketContent(state = state, listener = viewModel, viewModel::onChangeProductScrollPosition)
+    MarketContent(state = state, listener = viewModel, viewModel::onChangeMarketsScrollPosition)
 }
 
 @Composable
@@ -56,7 +57,7 @@ fun MarketContent(
             ) {
                 items(markets.size) { index ->
                     onChangeProductScrollPosition(index)
-                    if ((index + 1) >= (state.page * 10)) {
+                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
                         listener.onScrollDown()
                     }
                     val market = markets[index]

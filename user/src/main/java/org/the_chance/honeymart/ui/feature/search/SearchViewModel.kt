@@ -10,10 +10,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.SearchForProductUseCase
-import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -61,21 +60,6 @@ class SearchViewModel @Inject constructor(
         onChangeProductScrollPosition(0)
     }
 
-    private fun onSearchForProductsSuccess(products: List<Product>) {
-        _state.update { searchUiState ->
-            searchUiState.copy(
-                // products = products.map { it.toProductUiState() },
-            )
-        }
-    }
-
-    private fun onSearchForProductsError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
-    }
-
     fun onSearchTextChange(text: String) {
         _state.update { it.copy(loading = true, searchQuery = text) }
         viewModelScope.launch { actionStream.emit(text) }
@@ -88,7 +72,6 @@ class SearchViewModel @Inject constructor(
             }.collect { searchForProducts() }
         }
     }
-
 
     override fun onClickFilter() {
         val newState = !state.value.filtering
@@ -130,7 +113,7 @@ class SearchViewModel @Inject constructor(
 
     override fun onScrollDown() {
         viewModelScope.launch {
-            if ((productListScrollPosition + 1) >= (page * 10)) {
+            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
                 _state.update { it.copy(loading = true) }
                 incrementPage()
                 if (page > 1) {

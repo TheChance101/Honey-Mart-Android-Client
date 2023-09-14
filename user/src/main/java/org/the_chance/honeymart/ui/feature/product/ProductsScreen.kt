@@ -34,6 +34,7 @@ import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -142,7 +143,7 @@ private fun ProductsContent(
                             )
                             { index ->
                                 onChangeProductScrollPosition(index)
-                                if ((index + 1) >= (state.page * 10)) {
+                                if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
                                     productInteractionListener.onScrollDown()
                                 }
                                 val product = products[index]

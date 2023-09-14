@@ -38,6 +38,7 @@ import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
 import org.the_chance.honymart.ui.composables.CustomChip
@@ -179,7 +180,7 @@ fun SearchContent(
             ) {
                 items(state.products.size) { index ->
                     onChangeProductScrollPosition(index)
-                    if ((index + 1) >= (state.page * 10)) {
+                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
                         listener.onScrollDown()
                     }
                     val product = state.products[index]
