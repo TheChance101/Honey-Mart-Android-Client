@@ -275,6 +275,4 @@
     <string name="to_refresh_orders">to refresh orders</string>
     <string name="there_are_no_orders_in_your_market">There are no orders in your \n market!!</string>
     <string name="click_on_order_to_show_it_s_details">Click on order to show it’s details</string>
-    <string name="customers_reviews">Customers Reviews</string>
-
 </resources>

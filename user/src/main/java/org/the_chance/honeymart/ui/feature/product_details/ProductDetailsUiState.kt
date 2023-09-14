@@ -1,6 +1,15 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
 import android.icu.text.DecimalFormat
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import org.the_chance.honeymart.data.source.remote.mapper.toReview
+import org.the_chance.honeymart.data.source.remote.mapper.toReviewStatistic
+import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
+import org.the_chance.honeymart.domain.model.Review
+import org.the_chance.honeymart.domain.model.ReviewStatistic
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
@@ -16,6 +25,8 @@ data class ProductDetailsUiState(
     val smallImages: List<String> = emptyList(),
     val quantity: Int = 1,
     val dialogState: DialogState = DialogState(),
+    val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
+    val page: Int = 1
 ) {
     val totalPriceInCurrency = totalPrice.formatCurrencyWithNearestFraction()
 }
@@ -38,3 +49,54 @@ fun Double.formatCurrencyWithNearestFraction(): String {
 }
 
 fun ProductDetailsUiState.contentScreen() = !this.isLoading && !this.isConnectionError
+
+data class ReviewDetailsUiState(
+    val reviewStatisticUiState: ReviewStatisticUiState = ReviewStatisticUiState(),
+    val reviews: List<ReviewUiState> = listOf()
+)
+
+fun Reviews.toReviews(): ReviewDetailsUiState {
+    return ReviewDetailsUiState(
+        reviewStatisticUiState = reviewStatistic.toReviewStatisticUiState(),
+        reviews = reviews.map { it.toReviewUiState() })
+}
+
+data class ReviewStatisticUiState(
+    val averageRating: Double = 0.0,
+    val fiveStarsCount: Int = 0,
+    val fourStarsCount: Int = 0,
+    val oneStarCount: Int = 0,
+    val reviewsCount: Int = 0,
+    val threeStarsCount: Int = 0,
+    val twoStarsCount: Int = 0
+)
+
+fun ReviewStatistic.toReviewStatisticUiState(): ReviewStatisticUiState {
+    return ReviewStatisticUiState(
+        averageRating = averageRating,
+        reviewsCount = reviewsCount,
+        oneStarCount = oneStarCount,
+        twoStarsCount = twoStarsCount,
+        threeStarsCount = threeStarsCount,
+        fourStarsCount = fourStarsCount,
+        fiveStarsCount = fiveStarsCount
+    )
+}
+
+data class ReviewUiState(
+    val reviewId: Long,
+    val content: String,
+    val rating: Int,
+    val reviewDate: Long,
+    val fullName: String?,
+)
+
+fun Review.toReviewUiState(): ReviewUiState {
+    return ReviewUiState(
+        reviewId = reviewId,
+        content = content,
+        rating = rating,
+        reviewDate = reviewDate,
+        fullName = user.fullName
+    )
+}
