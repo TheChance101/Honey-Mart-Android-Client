@@ -28,7 +28,6 @@ fun RatingBar(
     activeColor: Color = primary100,
     inactiveColor: Color = lightGrey
 ) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center

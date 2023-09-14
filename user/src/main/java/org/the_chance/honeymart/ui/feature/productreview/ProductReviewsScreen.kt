@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +29,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.feature.productreview.ProductReviewsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honymart.ui.composables.AverageRating
+import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.ReviewsProgressBar
 import org.the_chance.honymart.ui.theme.Typography
@@ -37,15 +42,21 @@ fun ProductReviewsScreen(
     viewModel: ProductReviewsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    ProductReviewsContent(state = state, listener = viewModel)
+    ProductReviewsContent(
+        state = state,
+        listener = viewModel,
+        onChangeReviews = viewModel::onChangeReviews
+    )
 }
 
 @Composable
 fun ProductReviewsContent(
     state: ProductReviewsUiState,
-    listener: ProductReviewsInteractionsListener
+    listener: ProductReviewsInteractionsListener,
+    onChangeReviews: (Int) -> Unit
 ) {
-//    val reviews = state.reviews.collectAsLazyPagingItems()
+    val reviews = state.reviews
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -108,29 +119,32 @@ fun ProductReviewsContent(
                     rating = (state.reviews.reviewStatisticUiState.oneStarCount / state.reviews.reviewStatisticUiState.reviewCount).toFloat()
                 )
             }
-//
-//            LazyColumn(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .background(color = MaterialTheme.colorScheme.background)
-//                    .padding(
-//                        top = MaterialTheme.dimens.space8,
-//                        start = MaterialTheme.dimens.space8,
-//                        end = MaterialTheme.dimens.space16
-//                    )
-//            ) {
-//                items(reviews.itemCount) { position ->
-//                    val review = reviews[position]
-//                    if (review != null) {
-//                        CardReviews(
-//                            userName = review.fullName ?: "",
-//                            rating = review.rating.toFloat(),
-//                            reviews = "",
-//                            data = review.reviewDate.toString()
-//                        )
-//                    }
-//                }
-//            }
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colors.background)
+                    .padding(
+                        top = 8.dp,
+                        start = 8.dp,
+                        end = 16.dp
+                    )
+            ) {
+                items(reviews.reviews.size) { position ->
+                    onChangeReviews(position)
+                    if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
+                    val review = reviews.reviews[position]
+                    CardReviews(
+                        userName = review.fullName ?: "",
+                        rating = review.rating.toFloat(),
+                        reviews = "",
+                        data = review.reviewDate.toString()
+                    )
+
+                }
+            }
         }
     }
 }
