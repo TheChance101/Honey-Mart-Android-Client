@@ -2,12 +2,15 @@ package org.the_chance.honeymart.ui.feature.product_details
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserWishListManagerUseCase
@@ -28,14 +31,16 @@ class ProductDetailsViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private val args = ProductDetailsArgs(savedStateHandle)
+    private val page = state.value.page
+
 
     init {
         getData()
     }
 
-     fun getData() {
+    fun getData() {
         getProductDetails(args.productId.toLong())
-         getAllRatingForProduct()
+        getAllRatingForProduct()
     }
 
     override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
@@ -85,7 +90,10 @@ class ProductDetailsViewModel @Inject constructor(
     private fun onGetProductSuccess(product: Product) {
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product.toProductUiState(), isLoading = false
+                error = null,
+                isConnectionError = false,
+                product = product.toProductUiState(),
+                isLoading = false
             )
         }
         _state.update {
@@ -106,31 +114,16 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun getAllRatingForProduct() {
-
-        tryToExecutePaging(
-            { productsOperations.getAllRatingForProduct(state.value.product.productId) },
-            ::onGetAllRatingForProductSuccess,
-            ::onGetAllRatingForProductError
-        )
-
-    }
-
-    private fun onGetAllRatingForProductSuccess(reviewStatistic: PagingData<ReviewStatistic>) {
-        Log.d("TagAlgohry","$reviewStatistic")
-        val mappedRating = reviewStatistic.map { it.toRatingUiState() }
-        _state.update {
-            it.copy(
-                reviews = flowOf(mappedRating),
+        _state.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+          val reviews =   productsOperations.getAllRatingForProduct(
+                productId = state.value.product.productId,
+                page = page,
             )
+           val mappedReviews = reviews.map { it.to }
+            _state.update { it.copy(reviews= reviews). }
         }
-     }
 
-    private fun onGetAllRatingForProductError(error: ErrorHandler) {
-        Log.d("TagAlgohry","$error")
-        _state.update { it.copy(error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isConnectionError  = true) }
-        }
     }
 
 
@@ -178,7 +171,7 @@ class ProductDetailsViewModel @Inject constructor(
                 isConnectionError = false,
             )
         }
-       tryToExecute(
+        tryToExecute(
             { cartOperations.cartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
