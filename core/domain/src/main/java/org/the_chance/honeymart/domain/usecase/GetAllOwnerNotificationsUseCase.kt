@@ -7,7 +7,13 @@ import javax.inject.Inject
 class GetAllOwnerNotificationsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(): List<Notification> {
-        return honeyMartRepository.getAllOwnerNotifications()
+    suspend operator fun invoke(notificationState: Int): List<Notification> {
+        val notificationList = honeyMartRepository.getAllOwnerNotifications()
+
+        return when (notificationState) {
+            0 -> notificationList // Return all notifications
+            1 -> notificationList.filter { it.title == "New Order received!" }
+            else -> notificationList.filterNot { it.title == "New Order received!" }
+        }
     }
 }

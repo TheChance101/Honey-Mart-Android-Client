@@ -18,14 +18,15 @@ class NotificationsViewModel @Inject constructor(
     ):BaseViewModel<NotificationsUiState,NotificationsUiEffect>
     (NotificationsUiState()),NotificationsInteractionListener{
 
+
     override val TAG: String = this ::class.simpleName.toString()
     init {
-        getAllNotifications()
+        getAllNotifications(NotificationStates.ALL.state)
     }
-    override fun getAllNotifications(){
+    override fun getAllNotifications(notificationStates: Int){
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            {ownerNotifications.getNotifications()},
+            {ownerNotifications.getNotifications(notificationStates)},
             ::onGetNotificationSuccess ,
             ::onGetNotificationsError
         )
@@ -41,19 +42,6 @@ class NotificationsViewModel @Inject constructor(
                 updatedNotifications = updateNotification)
         }
         getOrderDetails(_state.value.notifications.first().orderId)
-    }
-    override fun onGetAllNotifications(notificationStates: NotificationStates) {
-        val allNotifications = _state.value.notifications
-        val updatedNotification = when (notificationStates){
-            NotificationStates.ALL -> allNotifications
-            NotificationStates.NEW -> allNotifications.filter { it.title == "New Order received!" }
-            NotificationStates.CANCELLED -> allNotifications.filter { it.title != "New Order received!" }
-        }
-        _state.update {
-            it.copy(notificationState = notificationStates,
-                updatedNotifications = updatedNotification,
-            )
-        }
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {
