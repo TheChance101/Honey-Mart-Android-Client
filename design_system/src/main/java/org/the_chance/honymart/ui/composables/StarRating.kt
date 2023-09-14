@@ -35,7 +35,7 @@ fun RatingBar(
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Start
     ) {
         for (i in 1..totalStars) {
             Box(modifier = modifier

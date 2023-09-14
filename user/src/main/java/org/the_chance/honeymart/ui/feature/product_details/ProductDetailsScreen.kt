@@ -39,12 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
+import org.the_chance.honeymart.ui.feature.product_details.composeable.ReviewsList
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -125,7 +125,7 @@ private fun ProductDetailsContent(
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
 
-    val reviews = state.reviews.collectAsLazyPagingItems()
+    val reviews = state.reviews
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
@@ -305,45 +305,34 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
-                    if (reviews.itemCount != 0) {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(color = MaterialTheme.colorScheme.secondary)
-                                .padding(
-                                    top = MaterialTheme.dimens.space24,
-                                    start = MaterialTheme.dimens.space16,
-                                    end = MaterialTheme.dimens.space16
+                    if (reviews.reviews.isNotEmpty()) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.user_reviews),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Row {
+                                Text(
+                                    text = reviews.reviewStatisticUiState.averageRating.toString(),
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
-                        ) {
-                            item {
-                                val review = reviews[0]
-                                if (review != null) {
-                                    Column {
-                                        Text(
-                                            text = stringResource(R.string.user_reviews),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onBackground
-                                        )
-                                        Row {
-                                            Text(
-                                                text = review.averageRating.toString(),
-                                                style = MaterialTheme.typography.headlineMedium,
-                                                color = MaterialTheme.colorScheme.onBackground
-                                            )
-                                        }
-                                    }
-                                    Column {
-                                        RatingBar(rating = review.averageRating.toFloat())
-                                        Text(
-                                            text = stringResource(R.string.ratings,review.reviewsCount),
-                                            style = MaterialTheme.typography.displaySmall,
-                                            color = MaterialTheme.colorScheme.onBackground
-                                        )
-                                    }
-                                }
                             }
                         }
+                        Column {
+                            RatingBar(rating = reviews.reviewStatisticUiState.averageRating.toFloat())
+                            Text(
+                                text = stringResource(
+                                    R.string.ratings,
+                                    reviews.reviewStatisticUiState.reviewsCount
+                                ),
+                                style = MaterialTheme.typography.displaySmall,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            ReviewsList(reviews = state.reviews.reviews)
+                        }
+
                     }
                 }
                 SmallProductImages(
