@@ -41,8 +41,7 @@ fun NotificationsContent(
     ) {
         HoneyMartTitle()
         Loading(
-            state = state.isLoading
-        )
+            state = state.isLoading && state.notifications.isEmpty())
         ContentVisibility(state = state.notifications.isEmpty()) {
             Column(
                 modifier = Modifier

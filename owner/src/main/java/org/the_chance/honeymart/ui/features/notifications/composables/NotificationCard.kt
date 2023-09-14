@@ -77,7 +77,7 @@ fun NotificationCard(
             Column(
                 modifier = Modifier
                     .padding(
-                        horizontal = MaterialTheme.dimens.space24,
+                        horizontal = MaterialTheme.dimens.space16,
                         vertical = MaterialTheme.dimens.space8
                     ),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
@@ -89,18 +89,18 @@ fun NotificationCard(
                 ) {
                     Text(
                         text = "# $orderId",
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.onSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
                         text =orderState ,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Text(
                     text = notificationTitle,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     style = MaterialTheme.typography.bodyMedium)
 
                 Text(

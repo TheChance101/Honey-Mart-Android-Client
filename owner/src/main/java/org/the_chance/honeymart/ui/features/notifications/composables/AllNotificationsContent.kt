@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.features.notifications.NotificationStates
 import org.the_chance.honeymart.ui.features.notifications.NotificationsInteractionListener
 import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
 import org.the_chance.honeymart.ui.features.notifications.all
@@ -46,21 +47,21 @@ fun AllNotificationsContent(
                 CustomChip(
                     state = state.all(),
                     text = stringResource(R.string.all),
-                    onClick = { listener.getAllNotifications() }
+                    onClick = { listener.onGetAllNotifications(NotificationStates.ALL) }
                 )
             }
             item {
                 CustomChip(
                     state = state.new(),
                     text = "New",
-                    onClick = { }
+                    onClick = {listener.onGetAllNotifications(NotificationStates.NEW)  }
                 )
             }
             item {
                 CustomChip(
                     state = state.cancelled(),
                     text = "Cancelled",
-                    onClick = { }
+                    onClick = {listener.onGetAllNotifications(NotificationStates.CANCELLED)  }
                 )
             }
 
@@ -69,10 +70,8 @@ fun AllNotificationsContent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
         ) {
-            items(
-                items = state.notifications,
-                key = { it.orderId }
-            ) { notification ->
+            items(state.updatedNotifications.size) {
+                val notification = state.updatedNotifications[it]
                 NotificationCard(
                     onClickCard = {
                         listener.onCLickNotificationCard(

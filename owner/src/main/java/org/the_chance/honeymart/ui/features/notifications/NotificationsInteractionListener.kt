@@ -6,4 +6,5 @@ import org.the_chance.honeymart.ui.features.orders.OrderUiState
 interface NotificationsInteractionListener {
     fun getAllNotifications()
     fun onCLickNotificationCard(orderDetails: OrderUiState,notification: NotificationUiState)
+    fun onGetAllNotifications(notificationStates: NotificationStates)
 }

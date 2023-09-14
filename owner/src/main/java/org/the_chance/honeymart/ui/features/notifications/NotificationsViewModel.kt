@@ -33,15 +33,27 @@ class NotificationsViewModel @Inject constructor(
     private fun onGetNotificationSuccess(notifications : List<Notification>) {
         val notificationUiState = notifications.toNotificationUiState()
         val updateNotification = if(notifications.isEmpty())notificationUiState
-        else updateSelectedOrder(notificationUiState,
-            notificationUiState.first().notificationId)
+        else updateSelectedOrder(notificationUiState, notificationUiState.first().notificationId)
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
-                notifications = updateNotification,)
+                notifications = updateNotification,
+                updatedNotifications = updateNotification)
         }
-        log(_state.value.notifications.toString())
         getOrderDetails(_state.value.notifications.first().orderId)
+    }
+    override fun onGetAllNotifications(notificationStates: NotificationStates) {
+        val allNotifications = _state.value.notifications
+        val updatedNotification = when (notificationStates){
+            NotificationStates.ALL -> allNotifications
+            NotificationStates.NEW -> allNotifications.filter { it.title == "New Order received!" }
+            NotificationStates.CANCELLED -> allNotifications.filter { it.title != "New Order received!" }
+        }
+        _state.update {
+            it.copy(notificationState = notificationStates,
+                updatedNotifications = updatedNotification,
+            )
+        }
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {
@@ -79,6 +91,9 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun getOrderProductDetails(orderId: Long) {
+        _state.update { it.copy(isLoading = true ,
+            notification = it.notification.copy(orderId =orderId )
+        ) }
         tryToExecute(
             { ownerNotifications.getOrderProductDetailsUseCase(orderId) },
             ::onGetOrderProductDetailsSuccess,
@@ -90,7 +105,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                products = products.toOrderDetailsProductUiState()
+                products = products.toOrderDetailsProductUiState(),
             )
         }
     }
@@ -118,6 +133,7 @@ class NotificationsViewModel @Inject constructor(
             val newOrderDetails = it.orderDetails.copy(orderId = notification.orderId)
             it.copy(
                 notifications = updateNotification,
+                updatedNotifications =updateNotification ,
                 orderDetails = newOrderDetails,
             )
         }
