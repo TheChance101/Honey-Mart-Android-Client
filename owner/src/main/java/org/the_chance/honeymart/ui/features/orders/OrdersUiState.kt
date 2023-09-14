@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.orders
 
 import android.icu.text.DecimalFormat
+import arrow.optics.optics
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -9,6 +10,7 @@ import java.util.Date
 import java.util.Locale
 
 //region Ui State
+@optics
 data class OrdersUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
@@ -21,15 +23,19 @@ data class OrdersUiState(
     val product: OrderDetailsProductUiState = OrderDetailsProductUiState(),
     val showState: ShowState = ShowState(),
     val orderId: Long = 0,
-)
+) {
+    companion object
+}
 
+@optics
 data class ShowState(
     val showProductDetails: Boolean = false,
     val showOrderDetails: Boolean = false,
-)
+) {
+    companion object
+}
 
-
-
+@optics
 data class OrderUiState(
     val orderId: Long = 1,
     val totalPrice: String = "",
@@ -39,8 +45,11 @@ data class OrderUiState(
     val state: Int = 0,
     val isSelected: Boolean = false,
     val buttonsState: ButtonsState = ButtonsState()
-)
+) {
+    companion object
+}
 
+@optics
 data class OrderDetailsProductUiState(
     val id: Long = 0L,
     val name: String = "",
@@ -48,6 +57,8 @@ data class OrderDetailsProductUiState(
     val price: Double = 0.0,
     val images: List<String> = emptyList(),
 ) {
+    companion object
+
     val productImageUrl = images.takeIf { it.isNotEmpty() }?.first() ?: ""
 }
 
@@ -59,12 +70,15 @@ enum class OrderStates(val state: Int) {
     CANCELED(5)
 }
 
+@optics
 data class ButtonsState(
     val confirmText: String = "",
     val cancelText: String = "",
     val onClickConfirm: () -> Unit = {},
     val onClickCancel: () -> Unit = {}
-)
+) {
+    companion object
+}
 
 // endregion
 
@@ -120,7 +134,7 @@ fun OrdersUiState.showClickOrderPlaceHolder() =
 
 fun OrdersUiState.loadingScreen() =
     isLoading && !cancel() && !pending()
-            && !processing() && orders.isNotEmpty() &&!all() &&!done()
+            && !processing() && orders.isNotEmpty() && !all() && !done()
 
 fun OrdersUiState.emptyPlaceHolder() =
     orders.isEmpty() && all() && !isLoading
@@ -149,5 +163,5 @@ fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !is
 fun OrdersUiState.showOrderDetails() = products.isNotEmpty() && showState.showProductDetails
 fun OrdersUiState.showButtonState() = products.isNotEmpty() && !showState.showProductDetails
         && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELED.state
-        &&!isLoading
+        && !isLoading
 // endregion
