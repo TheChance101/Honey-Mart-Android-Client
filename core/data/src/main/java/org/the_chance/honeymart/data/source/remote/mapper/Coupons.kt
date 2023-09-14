@@ -18,7 +18,7 @@ internal fun CouponDto.toCoupon() = Coupon(
         productDescription = "",
         productPrice = 0.0,
         productImages = emptyList(),
-        reviewStatistic = reviewStatistic?.toReviewStatistic() ?: ReviewStatistic(
+        reviewStatistic =  ReviewStatistic(
             0.0,
             0,
             0,
@@ -27,7 +27,7 @@ internal fun CouponDto.toCoupon() = Coupon(
             0,
             0
         ),
-        reviews = reviews?.map { it.toReview() } ?: emptyList()
+        reviews =  emptyList()
     ),
     isClipped = isClipped ?: false,
     isUsed = isUsed ?: false

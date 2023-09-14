@@ -34,7 +34,6 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun getData() {
         getProductDetails(args.productId.toLong())
-        getAllRatingForProduct()
     }
 
     override fun confirmDeleteLastCartAndAddProductToNewCart(productId: Long, count: Int) {
@@ -82,11 +81,15 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(product: Product) {
+        val reviewStatistic = product.reviewStatistic.toReviewStatisticUiState()
+        val reviewsList = product.reviews.map { it.toReviewUiState() }
         _state.update {
             it.copy(
                 error = null,
                 isConnectionError = false,
                 product = product.toProductUiState(),
+                reviews = reviewsList,
+                reviewStatisticUiState  = reviewStatistic,
                 isLoading = false
             )
         }
@@ -107,17 +110,6 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getAllRatingForProduct() {
-        _state.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            val product = productsOperations.getProductDetailsUseCase(
-                productId = state.value.product.productId,
-            )
-            val reviewStatistic = product.reviewStatistic.toReviewStatisticUiState()
-            val reviewsList = product.reviews.map { it.toReviewUiState() }
-            _state.update { it.copy(reviews = reviewsList, reviewStatisticUiState = reviewStatistic) }
-        }
-    }
     override fun onClickSmallImage(url: String) {
         val newList = mutableListOf<String>()
         newList.addAll(_state.value.smallImages.filter { it != url })
