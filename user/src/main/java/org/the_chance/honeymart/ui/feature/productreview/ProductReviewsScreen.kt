@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.feature.productreview.ProductReviewsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.util.defaultTo1IfZero
 import org.the_chance.honymart.ui.composables.AverageRating
@@ -42,11 +42,22 @@ fun ProductReviewsScreen(
     viewModel: ProductReviewsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val navController = LocalNavigationProvider.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                ProductReviewsUiEffect.OnBackClickEffect -> navController.navigateUp()
+            }
+        }
+    }
+
     ProductReviewsContent(
         state = state,
         listener = viewModel,
         onChangeReviews = viewModel::onChangeReviews
     )
+
 }
 
 @Composable
@@ -77,7 +88,10 @@ fun ProductReviewsContent(
                 modifier = Modifier.clickable(onClick = listener::onClickBack)
             )
 
-            Text(text = stringResource(R.string.customers_reviews), style = Typography.bodyMedium)
+            Text(
+                text = stringResource(R.string.customers_reviews),
+                style = Typography.bodyMedium
+            )
         }
 
         AnimatedVisibility(
@@ -134,7 +148,6 @@ fun ProductReviewsContent(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.background)
                     .padding(
                         top = 8.dp,
                         start = 8.dp,
