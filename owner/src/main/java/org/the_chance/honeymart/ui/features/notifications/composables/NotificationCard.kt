@@ -1,19 +1,15 @@
 package org.the_chance.honeymart.ui.features.notifications.composables
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -25,24 +21,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
-import org.the_chance.honymart.ui.composables.ImageNetwork
+import org.the_chance.honeymart.ui.features.notifications.all
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun NotificationCard(
     modifier: Modifier = Modifier,
-    notificationTitle  : String ,
-    notificationBody : String,
-    date :String ,
-    orderId : String,
-    orderState : String,
-    onClickCard: ()-> Unit = {},
-    isSelected: Boolean = false
+    notificationTitle: String,
+    notificationBody: String,
+    date: String,
+    orderId: String,
+    state: NotificationsUiState,
+    onClickCard: () -> Unit = {},
+    isSelected: Boolean = false,
 ) {
     val selectedColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary
@@ -92,11 +87,14 @@ fun NotificationCard(
                         color = MaterialTheme.colorScheme.onSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Text(
-                        text =orderState ,
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    ContentVisibility(state = state.all()) {
+                        Text(
+                            text = if (notificationTitle == "New Order received!") "New" else "Cancelled",
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                    }
                 }
                 Text(
                     text = notificationTitle,

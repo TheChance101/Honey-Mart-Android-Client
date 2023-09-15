@@ -73,7 +73,11 @@ fun NotificationsContent(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                OrderDetails(state)
+                ContentVisibility(state = !state.isLoading) {
+                    OrderDetails(state)
+                }
+                Loading(state = state.isLoading &&state.notifications.isNotEmpty())
+
 
             }
         }

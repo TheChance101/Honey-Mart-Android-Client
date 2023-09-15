@@ -11,8 +11,8 @@ class GetAllOwnerNotificationsUseCase @Inject constructor(
         val notificationList = honeyMartRepository.getAllOwnerNotifications()
 
         return when (notificationState) {
-            0 -> notificationList // Return all notifications
-            1 -> notificationList.filter { it.title == "New Order received!" }
+            1 -> notificationList
+            2 -> notificationList.filter { it.title == "New Order received!" }
             else -> notificationList.filterNot { it.title == "New Order received!" }
         }
     }

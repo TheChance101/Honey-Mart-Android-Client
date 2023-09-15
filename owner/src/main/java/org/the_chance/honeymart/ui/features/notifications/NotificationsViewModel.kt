@@ -21,12 +21,12 @@ class NotificationsViewModel @Inject constructor(
 
     override val TAG: String = this ::class.simpleName.toString()
     init {
-        getAllNotifications(NotificationStates.ALL.state)
+        getAllNotifications(NotificationStates.ALL.state,NotificationStates.ALL)
     }
-    override fun getAllNotifications(notificationStates: Int){
-        _state.update { it.copy(isLoading = true) }
+    override fun getAllNotifications(state: Int,notificationStates: NotificationStates){
+        _state.update { it.copy(isLoading = true,notificationState =notificationStates) }
         tryToExecute(
-            {ownerNotifications.getNotifications(notificationStates)},
+            {ownerNotifications.getNotifications(state)},
             ::onGetNotificationSuccess ,
             ::onGetNotificationsError
         )
@@ -39,7 +39,7 @@ class NotificationsViewModel @Inject constructor(
             notificationsUiState.copy(
                 isLoading = false,
                 notifications = updateNotification,
-                updatedNotifications = updateNotification)
+            )
         }
         getOrderDetails(_state.value.notifications.first().orderId)
     }
@@ -121,7 +121,6 @@ class NotificationsViewModel @Inject constructor(
             val newOrderDetails = it.orderDetails.copy(orderId = notification.orderId)
             it.copy(
                 notifications = updateNotification,
-                updatedNotifications =updateNotification ,
                 orderDetails = newOrderDetails,
             )
         }

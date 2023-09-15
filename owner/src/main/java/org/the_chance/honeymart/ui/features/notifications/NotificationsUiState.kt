@@ -13,7 +13,6 @@ data class NotificationsUiState(
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.ALL,
-    val updatedNotifications: List<NotificationUiState> = emptyList(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
     val orderDetails: OrderUiState = OrderUiState(),
     val orders: List<OrderUiState> = emptyList(),
