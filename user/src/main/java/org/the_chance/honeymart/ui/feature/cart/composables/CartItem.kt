@@ -46,7 +46,7 @@ fun CartItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(MaterialTheme.dimens.space100),
+            .height(MaterialTheme.dimens.cardHeight),
         colors =
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
         shape = MaterialTheme.shapes.medium
@@ -57,7 +57,7 @@ fun CartItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ImageNetwork(
-                imageUrl =  product.productImageUrl,
+                imageUrl = product.productImageUrl,
                 contentDescription = "",
                 modifier = Modifier
                     .wrapContentSize()
