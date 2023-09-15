@@ -253,6 +253,13 @@ class ProductDetailsViewModel @Inject constructor(
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
+    override fun onClickSeeAllReviews() {
+        effectActionExecutor(
+            _effect,
+            ProductDetailsUiEffect.NavigateToReviewsScreen(state.value.product.productId)
+        )
+    }
+
     override fun showSnackBar(massage: String) {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, massage = massage)) }
     }

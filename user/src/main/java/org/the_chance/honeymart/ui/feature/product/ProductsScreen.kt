@@ -62,7 +62,6 @@ fun ProductsScreen(
                     effect.productId
                 )
 
-
                 ProductUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
             }
         }

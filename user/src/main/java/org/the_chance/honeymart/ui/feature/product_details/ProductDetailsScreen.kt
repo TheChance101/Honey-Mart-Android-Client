@@ -2,7 +2,6 @@
 
 package org.the_chance.honeymart.ui.feature.product_details
 
-
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -21,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,6 +44,7 @@ import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honeymart.ui.feature.productreview.navigateToProductReviewsScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -76,6 +77,9 @@ fun ProductDetailsScreen(
                 }
 
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
+                is ProductDetailsUiEffect.NavigateToReviewsScreen -> navController.navigateToProductReviewsScreen(
+                    effect.productId
+                )
             }
         })
 
@@ -344,6 +348,9 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         listener.onClickSmallImage(state.smallImages[index])
                     }
                 )
+                Button(onClick = { listener.onClickSeeAllReviews() }) {
+                    Text(text = "See All Reviews")
+                }
             }
         }
     }
