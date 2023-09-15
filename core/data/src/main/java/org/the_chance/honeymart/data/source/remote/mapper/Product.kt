@@ -13,7 +13,7 @@ fun ProductDto.toProduct() = Product(
     productDescription = description ?: "",
     productPrice = price ?: 0.0,
     productImages = images ?: emptyList(),
-    reviewStatistic = reviewStatistic?.toReviewStatistic() ?: ReviewStatistic(
+    reviewStatistic = reviewInfo?.reviewStatistic?.toReviewStatistic() ?: ReviewStatistic(
         0.0,
         0,
         0,
@@ -22,7 +22,7 @@ fun ProductDto.toProduct() = Product(
         0,
         0
     ),
-    reviews = reviews?.map { it.toReview() } ?: emptyList()
+    reviews = reviewInfo?.reviews?.map { it.toReview() } ?: emptyList()
 )
 
 fun ReviewStatisticDto.toReviewStatistic(): ReviewStatistic {
