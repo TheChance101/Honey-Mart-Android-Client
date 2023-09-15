@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
 import org.the_chance.honymart.ui.theme.lightGrey
@@ -55,7 +56,9 @@ fun ReviewsProgressBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(horizontal = 8.dp)
     ) {
-        Text(text = starNumber, style = Typography.displaySmall)
+        Text(
+            text = starNumber, style = Typography.displaySmall, fontSize = 12.sp
+        )
 
         Icon(
             painter = painterResource(id = R.drawable.star_7),
@@ -86,6 +89,7 @@ fun ReviewsProgressBar(
         Text(
             text = countReview,
             style = Typography.displaySmall,
+            fontSize = 12.sp
         )
     }
 
@@ -97,6 +101,6 @@ fun ReviewsProgressBar(
 @Preview
 @Composable
 fun jjj() {
-    ReviewsProgressBar(starNumber = "5", countReview = "13", rating = 0f)
+    ReviewsProgressBar(starNumber = "5", countReview = "13", rating = 0.5f)
 }
 
