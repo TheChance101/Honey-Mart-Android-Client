@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
@@ -56,15 +55,11 @@ fun UpdateCategoryContent(
             iconPainter = painterResource(id = R.drawable.icon_update_category)
         )
         FormTextField(
-            text = state.newCategory.newCategoryName,
+            text = state.newCategory.categoryState.name,
             hint = stringResource(R.string.new_category_name),
             keyboardType = KeyboardType.Text,
             onValueChange = listener::onNewCategoryNameChanged,
-            errorMessage = when (state.newCategory.categoryNameState) {
-                ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.category_name_can_t_be_blank)
-                ValidationState.SHORT_LENGTH_TEXT -> stringResource(R.string.category_name_is_too_short)
-                else -> ""
-            }
+            errorMessage = state.newCategory.categoryState.errorState
         )
         Text(
             modifier = Modifier.padding(

@@ -6,7 +6,7 @@ interface CouponsInteractionListener : ProductSearchInteractionListener,
     override fun onProductSearchItemClick(productId: Long)
     override fun onProductSearchTextChange(text: String)
     override fun onAddCouponClick()
-    override fun onDiscountPercentageChange(discountPercentage: String)
+    override fun onDiscountPercentageChange(discountPercentage: CharSequence)
     override fun onCouponCountChange(couponCount: String)
     override fun onClickShowDatePicker()
     override fun onDatePickerDoneClick(date: Long)
@@ -20,7 +20,7 @@ interface ProductSearchInteractionListener {
 
 interface AddCouponInteractionListener {
     fun onAddCouponClick()
-    fun onDiscountPercentageChange(discountPercentage: String)
+    fun onDiscountPercentageChange(discountPercentage: CharSequence)
     fun onCouponCountChange(couponCount: String)
     fun onClickShowDatePicker()
     fun onDatePickerDoneClick(date: Long)
