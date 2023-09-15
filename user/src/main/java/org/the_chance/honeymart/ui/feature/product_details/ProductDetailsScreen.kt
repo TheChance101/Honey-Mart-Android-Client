@@ -15,12 +15,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,8 +46,9 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
-import org.the_chance.honeymart.ui.feature.product_details.composeable.ReviewsList
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honymart.ui.composables.AverageRating
+import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -305,35 +308,31 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
+                    Text(
+                        text = stringResource(R.string.user_reviews),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                     if (reviews.isNotEmpty()) {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.user_reviews),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            Row {
-                                Text(
-                                    text = state.reviewStatisticUiState.averageRating.toString(),
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
+                        AverageRating(
+                            averageRating = state.reviewStatisticUiState.averageRating.toString(),
+                            rating = state.reviewStatisticUiState.averageRating.toFloat(),
+                            reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
+                        )
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            items(reviews) { review ->
+                                CardReviews(
+                                    userName = review.fullName ?: " ",
+                                    reviews = review.content,
+                                    data = review.reviewDate.toString(),
+                                    rating = review.rating.toFloat()
                                 )
                             }
                         }
-                        Column {
-                            RatingBar(rating = state.reviewStatisticUiState.averageRating.toFloat())
-                            Text(
-                                text = stringResource(
-                                    R.string.ratings,
-                                   state.reviewStatisticUiState.reviewsCount
-                                ),
-                                style = MaterialTheme.typography.displaySmall,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            ReviewsList(reviews = state.reviews)
-                        }
-
-                    }
+                     }
                 }
                 SmallProductImages(
                     state = state.smallImages,

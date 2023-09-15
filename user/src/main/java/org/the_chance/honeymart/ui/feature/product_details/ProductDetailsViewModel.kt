@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
