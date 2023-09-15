@@ -2,6 +2,7 @@
 
 package org.the_chance.honeymart.ui.feature.product_details
 
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -14,13 +15,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,7 +47,8 @@ import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
-import org.the_chance.honeymart.ui.feature.productreview.navigateToProductReviewsScreen
+import org.the_chance.honymart.ui.composables.AverageRating
+import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -52,6 +56,7 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
+import org.the_chance.honymart.ui.composables.RatingBar
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -77,9 +82,6 @@ fun ProductDetailsScreen(
                 }
 
                 ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
-                is ProductDetailsUiEffect.NavigateToReviewsScreen -> navController.navigateToProductReviewsScreen(
-                    effect.productId
-                )
             }
         })
 
@@ -126,7 +128,7 @@ private fun ProductDetailsContent(
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
 
-//    val reviews = state.reviews
+    val reviews = state.reviews
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
@@ -306,35 +308,31 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         ),
                         maxLines = 3,
                     )
-//                    if (reviews.reviews.isNotEmpty()) {
-//                        Column {
-//                            Text(
-//                                text = stringResource(R.string.user_reviews),
-//                                style = MaterialTheme.typography.bodySmall,
-//                                color = MaterialTheme.colorScheme.onBackground
-//                            )
-//                            Row {
-//                                Text(
-//                                    text = reviews.reviewStatisticUiState.averageRating.toString(),
-//                                    style = MaterialTheme.typography.headlineMedium,
-//                                    color = MaterialTheme.colorScheme.onBackground
-//                                )
-//                            }
-//                        }
-//                        Column {
-//                            RatingBar(rating = reviews.reviewStatisticUiState.averageRating.toFloat())
-//                            Text(
-//                                text = stringResource(
-//                                    R.string.ratings,
-//                                    reviews.reviewStatisticUiState.reviewsCount
-//                                ),
-//                                style = MaterialTheme.typography.displaySmall,
-//                                color = MaterialTheme.colorScheme.onBackground
-//                            )
-////                            ReviewsList(reviews = state.reviews.reviews)
-//                        }
-//
-//                    }
+                    Text(
+                        text = stringResource(R.string.user_reviews),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    if (reviews.isNotEmpty()) {
+                        AverageRating(
+                            averageRating = state.reviewStatisticUiState.averageRating.toString(),
+                            rating = state.reviewStatisticUiState.averageRating.toFloat(),
+                            reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
+                        )
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            items(reviews) { review ->
+                                CardReviews(
+                                    userName = review.fullName ?: " ",
+                                    reviews = review.content,
+                                    data = review.reviewDate.toString(),
+                                    rating = review.rating.toFloat()
+                                )
+                            }
+                        }
+                     }
                 }
                 SmallProductImages(
                     state = state.smallImages,
@@ -348,9 +346,6 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         listener.onClickSmallImage(state.smallImages[index])
                     }
                 )
-                Button(onClick = { listener.onClickSeeAllReviews() }) {
-                    Text(text = "See All Reviews")
-                }
             }
         }
     }

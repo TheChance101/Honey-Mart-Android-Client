@@ -27,8 +27,6 @@ import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
 interface HoneyMartService {
 
-//suspend fun getAllProductReviewsPaging(page: Int?, productId: Long): BaseResponse<List<ProductReviewStatisticDto>>
-
     suspend fun checkAdminApprove(): BaseResponse<MarketApprovalDto>
 
     suspend fun addOwner(
@@ -61,7 +59,6 @@ interface HoneyMartService {
     suspend fun updateMarketStatus(status: Int): BaseResponse<Boolean>
 
     //endregion Market
-
 
     //region Category
     suspend fun getCategoriesInMarket(marketId: Long): BaseResponse<List<CategoryDto>>
@@ -211,8 +208,6 @@ interface HoneyMartService {
     suspend fun getProductDetails(
         productId: Long,
     ): BaseResponse<ProductDto>
-
-
     // endregion
 
 
@@ -288,6 +283,7 @@ interface HoneyMartService {
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
 
+    //region rating
     suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long

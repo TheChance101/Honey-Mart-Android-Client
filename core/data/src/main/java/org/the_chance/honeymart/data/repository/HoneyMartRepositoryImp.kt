@@ -51,7 +51,6 @@ class HoneyMartRepositoryImp @Inject constructor(
     private val honeyMartService: HoneyMartService,
 ) : BaseRepository(), HoneyMartRepository {
 
-
     override suspend fun checkout(): String {
         return wrap { honeyMartService.checkout() }.value ?: throw NotFoundException()
     }
@@ -383,6 +382,7 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 //endregion admin
+
 
     //region rating
 

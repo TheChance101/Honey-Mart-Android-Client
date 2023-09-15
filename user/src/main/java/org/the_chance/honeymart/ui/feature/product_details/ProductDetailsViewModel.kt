@@ -1,8 +1,11 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
@@ -79,11 +82,15 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(product: Product) {
+        val reviewStatistic = product.reviewStatistic.toReviewStatisticUiState()
+        val reviewsList = product.reviews.map { it.toReviewUiState() }
         _state.update {
             it.copy(
                 error = null,
                 isConnectionError = false,
                 product = product.toProductUiState(),
+                reviews = reviewsList,
+                reviewStatisticUiState  = reviewStatistic,
                 isLoading = false
             )
         }
@@ -103,7 +110,6 @@ class ProductDetailsViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, isConnectionError = true) }
         }
     }
-
 
     override fun onClickSmallImage(url: String) {
         val newList = mutableListOf<String>()
@@ -251,13 +257,6 @@ class ProductDetailsViewModel @Inject constructor(
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
-    }
-
-    override fun onClickSeeAllReviews() {
-        effectActionExecutor(
-            _effect,
-            ProductDetailsUiEffect.NavigateToReviewsScreen(state.value.product.productId)
-        )
     }
 
     override fun showSnackBar(massage: String) {
