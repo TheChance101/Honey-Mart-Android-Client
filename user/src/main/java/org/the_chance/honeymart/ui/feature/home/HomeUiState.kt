@@ -3,13 +3,14 @@ package org.the_chance.honeymart.ui.feature.home
 import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
-import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.new_products.RecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class HomeUiState(
+    val isCategoryLoading: Boolean = false,
     val isLoading: Boolean = true,
     val isConnectionError: Boolean = false,
     val error: ErrorHandler? = null,
@@ -25,7 +26,7 @@ data class HomeUiState(
 }
 
 
-fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError && discoverProducts.isNotEmpty() && recentProducts.isNotEmpty() && categories.isNotEmpty()
+fun HomeUiState.showHome() = markets.isNotEmpty() && !isConnectionError
 
 
 fun Double.formatCurrencyWithNearestFraction(): String {
