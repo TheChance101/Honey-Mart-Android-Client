@@ -2,9 +2,7 @@ package org.the_chance.honeymart.data.source.remote.network
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -16,9 +14,10 @@ import org.the_chance.honeymart.data.R
 import javax.inject.Inject
 
 class FireBaseMsgServiceImpl @Inject constructor(
-    private val notificationListener: FCMNotificationClickListener
 ) : FirebaseMessagingService(), FireBaseMessageService {
     private val firebaseMessaging = FirebaseMessaging.getInstance()
+    private val clickPendingIntent = ServiceLocator.getFCMNotification().getClickPendingIntent()
+
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")
     }
@@ -39,8 +38,10 @@ class FireBaseMsgServiceImpl @Inject constructor(
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .addAction(0,"Show",clickPendingIntent)
 
-//        notificationBuilder.setContentIntent(notificationListener.onNotificationClicked())
+        notificationBuilder.setContentIntent(clickPendingIntent)
+
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
