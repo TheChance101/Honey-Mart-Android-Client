@@ -9,7 +9,7 @@ interface ProductDetailsInteraction {
 
     fun addProductToCart(productId: Long, count: Int)
     fun resetSnackBarState()
-    fun onClickSeeAllReviews()
+    fun onClickSeeAllReviews(productId: Long)
     fun onclickTryAgain()
     fun showSnackBar(massage: String)
     fun resetDialogState()

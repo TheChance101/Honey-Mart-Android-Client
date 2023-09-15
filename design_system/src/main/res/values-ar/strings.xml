@@ -275,6 +275,7 @@
     <string name="profile">حسابي </string>
     <string name="all_markets">جميع المتاجر</string>
     <string name="there_are_no_market_requests">ليس هنالك اي طلب فتح متجر</string>
+    <string name="customers_reviews">تقيمات المستخدمين</string>
     <string name="user_reviews">تقيمات المستخدمين</string>
     <string name="ratings">%1$s التقييمات</string>
 

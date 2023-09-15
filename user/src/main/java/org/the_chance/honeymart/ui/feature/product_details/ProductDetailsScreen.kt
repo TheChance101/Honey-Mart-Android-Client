@@ -45,8 +45,10 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
+import org.the_chance.honeymart.ui.feature.home.composables.ItemLabel
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honeymart.ui.feature.productreview.navigateToProductReviewsScreen
 import org.the_chance.honymart.ui.composables.AverageRating
 import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
@@ -56,7 +58,6 @@ import org.the_chance.honymart.ui.composables.HoneyIconButton
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.composables.Loading
-import org.the_chance.honymart.ui.composables.RatingBar
 import org.the_chance.honymart.ui.composables.SnackBarWithDuration
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -81,7 +82,11 @@ fun ProductDetailsScreen(
                     viewModel.showDialog(effect.productId, effect.count)
                 }
 
-                ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
+                ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController
+                    .navigateToAuthScreen()
+
+                is ProductDetailsUiEffect.NavigateToReviewsScreen ->
+                    navController.navigateToProductReviewsScreen(productId = effect.productId)
             }
         })
 
@@ -332,7 +337,20 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                 )
                             }
                         }
-                     }
+                    }
+
+                    ItemLabel(
+                        label = "See All",
+                        iconPainter = painterResource(id = R.drawable.ic_seall),
+                        onClick = {
+                            state.product.productId.let {
+                                listener.onClickSeeAllReviews(
+                                    it,
+                                )
+                            }
+                        }
+                    )
+
                 }
                 SmallProductImages(
                     state = state.smallImages,

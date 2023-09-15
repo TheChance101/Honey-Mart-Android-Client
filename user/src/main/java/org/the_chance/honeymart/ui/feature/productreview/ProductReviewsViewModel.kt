@@ -59,10 +59,6 @@ class ProductReviewsViewModel @Inject constructor(
     }
 
 
-    private fun resetPageReviews() {
-        page = 1
-        onChangeReviews(0)
-    }
 
     fun onChangeReviews(position: Int) {
         reviewScrollPosition = position

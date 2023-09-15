@@ -1,11 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.CartProductsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserProductManagerUseCase
@@ -90,7 +87,7 @@ class ProductDetailsViewModel @Inject constructor(
                 isConnectionError = false,
                 product = product.toProductUiState(),
                 reviews = reviewsList,
-                reviewStatisticUiState  = reviewStatistic,
+                reviewStatisticUiState = reviewStatistic,
                 isLoading = false
             )
         }
@@ -257,6 +254,13 @@ class ProductDetailsViewModel @Inject constructor(
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun onClickSeeAllReviews(productId: Long) {
+        effectActionExecutor(
+            _effect,
+            ProductDetailsUiEffect.NavigateToReviewsScreen(productId = productId)
+        )
     }
 
     override fun showSnackBar(massage: String) {
