@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class ReviewsDto(
     @SerializedName("reviewStatistic")
-    val reviewStatistic: ReviewStatisticDto?,
+    val reviewStatistic: ProductRatingDto?,
     @SerializedName("reviews")
     val reviews: List<ReviewDto>?
 )
 
-data class ReviewStatisticDto(
+data class ProductRatingDto(
     @SerializedName("averageRating")
     val averageRating: Double?,
     @SerializedName("reviewsCount")
@@ -26,7 +26,7 @@ data class ReviewStatisticDto(
     val fiveStarsCount: Int?,
 )
 
-data class ReviewDto(
+data class ProductReviewDto(
     @SerializedName("reviewId")
     val reviewId: Long?,
     @SerializedName("content")

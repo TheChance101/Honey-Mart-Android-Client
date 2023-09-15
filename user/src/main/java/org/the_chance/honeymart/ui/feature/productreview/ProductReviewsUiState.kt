@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
+import org.the_chance.honeymart.domain.model.ProductRating
 import org.the_chance.honeymart.domain.model.Review
-import org.the_chance.honeymart.domain.model.ReviewStatistic
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -11,19 +11,17 @@ data class ProductReviewsUiState(
     val error: ErrorHandler? = null,
     val page: Int = 1,
     val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
-
-//    val reviews: ProductReviewUiState = ProductReviewUiState(),
 )
 
 data class ReviewDetailsUiState(
     val reviewStatisticUiState: ProductRatingUiState = ProductRatingUiState(),
-    val reviews: List<ReviewUiState> = listOf()
+    val reviews: List<ProductReviewUiState> = listOf()
 )
 
 fun Reviews.toReviews(): ReviewDetailsUiState {
     return ReviewDetailsUiState(
         reviewStatisticUiState = reviewStatistic.toReviewStatisticUiState(),
-        reviews = reviews.map { it.toReviewUiState() })
+        reviews = reviews.map { it.toProductReviewUiState() })
 }
 
 data class ProductRatingUiState(
@@ -36,7 +34,7 @@ data class ProductRatingUiState(
     val fiveStarsCount: Int = 0,
 )
 
-fun ReviewStatistic.toReviewStatisticUiState(): ProductRatingUiState {
+fun ProductRating.toReviewStatisticUiState(): ProductRatingUiState {
     return ProductRatingUiState(
         averageRating = averageRating,
         reviewCount = reviewsCount,
@@ -48,7 +46,7 @@ fun ReviewStatistic.toReviewStatisticUiState(): ProductRatingUiState {
     )
 }
 
-data class ReviewUiState(
+data class ProductReviewUiState(
     val reviewId: Long,
     val content: String,
     val rating: Int,
@@ -56,8 +54,8 @@ data class ReviewUiState(
     val fullName: String?,
 )
 
-fun Review.toReviewUiState(): ReviewUiState {
-    return ReviewUiState(
+fun Review.toProductReviewUiState(): ProductReviewUiState {
+    return ProductReviewUiState(
         reviewId = reviewId,
         content = content,
         rating = rating,
@@ -65,27 +63,3 @@ fun Review.toReviewUiState(): ReviewUiState {
         fullName = user.fullName
     )
 }
-
-//
-//fun ProductReviewStatistic.toProductReviewsUiState(): ProductReviewUiState {
-//    return ProductReviewUiState(
-//        averageRating = averageRating,
-//        reviewCount = reviewsCount,
-//        oneStarCount = oneStarCount,
-//        twoStarsCount = twoStarsCount,
-//        threeStarsCount = threeStarsCount,
-//        fourStarsCount = fourStarsCount,
-//        fiveStarsCount = fiveStarsCount,
-//    )
-//}
-
-//
-//data class ReviewStatisticUiState(
-//    val averageRating: Double = 0.0,
-//    val fiveStarsCount: Int = 0,
-//    val fourStarsCount: Int = 0,
-//    val oneStarCount: Int = 0,
-//    val reviewsCount: Int = 0,
-//    val threeStarsCount: Int = 0,
-//    val twoStarsCount: Int = 0
-//)

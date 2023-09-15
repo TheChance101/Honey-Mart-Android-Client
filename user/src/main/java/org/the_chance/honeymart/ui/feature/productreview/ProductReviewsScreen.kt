@@ -171,6 +171,3 @@ fun ProductReviewsContent(
         }
     }
 }
-
-
-

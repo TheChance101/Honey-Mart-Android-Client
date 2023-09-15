@@ -42,7 +42,6 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerLoginDto
 import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
-import org.the_chance.honeymart.data.source.remote.models.ReviewStatisticDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
