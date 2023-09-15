@@ -119,6 +119,8 @@ interface HoneyMartRepository {
         expirationDate: String,
     ): Boolean
 
+    suspend fun addReview(productId: Long, orderId: Long, rating: Int, review: String): Boolean
+
     //region admin
     suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest>
     suspend fun updateMarketRequest(id: Long?, isApproved: Boolean): Boolean

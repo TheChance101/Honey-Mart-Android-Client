@@ -370,6 +370,22 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value ?: throw NotFoundException()
     }
 
+    override suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        rating: Int,
+        review: String
+    ): Boolean {
+        return wrap {
+            honeyMartService.addReview(
+                productId = productId,
+                orderId = orderId,
+                rating = rating,
+                review = review
+            )
+        }.value ?: throw NotFoundException()
+    }
+
     //region admin
 
     override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {

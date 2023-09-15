@@ -482,6 +482,20 @@ class HoneyMartServiceImp @Inject constructor(
             append("expirationDate", expirationDate)
         }))
     }
+
+    override suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        review: String,
+        rating: Int
+    ): BaseResponse<Boolean> {
+        return wrap(client.submitForm(url = "/reviews", formParameters = Parameters.build {
+            append("productId", productId.toString())
+            append("orderId", orderId.toString())
+            append("content", review)
+            append("rating", rating.toString())
+        }))
+    }
     // endregion Coupon
 
     //region admin
