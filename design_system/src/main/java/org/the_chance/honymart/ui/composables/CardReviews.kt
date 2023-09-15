@@ -25,7 +25,7 @@ fun CardReviews(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(horizontal = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
     ) {
         Text(text = userName, style = Typography.displaySmall)
         RatingBar(rating = rating)
