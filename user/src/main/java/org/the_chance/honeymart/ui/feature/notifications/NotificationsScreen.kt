@@ -42,6 +42,7 @@ fun NotificationsScreen(
             when (it) {
                 NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
                 NotificationsUiEffect.OnClickDiscoverMarket -> navController.navigateToHomeScreen()
+                NotificationsUiEffect.OnClickNotification -> navController.navigateToNotificationsScreen()
             }
         }
     }

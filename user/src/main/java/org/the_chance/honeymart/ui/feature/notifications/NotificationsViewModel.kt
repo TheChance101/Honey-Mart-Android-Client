@@ -78,4 +78,6 @@ class NotificationsViewModel @Inject constructor(
     override fun onClickDiscoverMarket() {
         effectActionExecutor(_effect, NotificationsUiEffect.OnClickDiscoverMarket)
     }
+
+
 }

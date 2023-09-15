@@ -2,7 +2,9 @@ package org.the_chance.honeymart.data.source.remote.network
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -13,14 +15,13 @@ import kotlinx.coroutines.tasks.await
 import org.the_chance.honeymart.data.R
 import javax.inject.Inject
 
-class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
-    FireBaseMessageService {
+class FireBaseMsgServiceImpl @Inject constructor(
+    private val notificationListener: FCMNotificationClickListener
+) : FirebaseMessagingService(), FireBaseMessageService {
     private val firebaseMessaging = FirebaseMessaging.getInstance()
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")
-
     }
-
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         val notification = remoteMessage.notification
@@ -31,7 +32,6 @@ class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
         }
     }
 
-
     private fun showNotification(title: String?, message: String?) {
         val channelId = "default_channel"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
@@ -40,6 +40,7 @@ class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
+//        notificationBuilder.setContentIntent(notificationListener.onNotificationClicked())
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -61,4 +62,5 @@ class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
     override suspend fun getDeviceToken(): String {
         return firebaseMessaging.token.await()
     }
+
 }

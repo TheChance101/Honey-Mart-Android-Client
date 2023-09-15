@@ -38,6 +38,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
+import org.the_chance.honeymart.ui.feature.notifications.navigateToNotificationsScreen
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
 import org.the_chance.honymart.ui.composables.PermissionDialog
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
+                handleNotificationIntent(intent)
                 HoneyMartTheme {
                     val bottomNavState = checkBottomBarState()
                     CheckNotificationPermission()
@@ -138,5 +140,13 @@ class MainActivity : AppCompatActivity() {
         val uri: Uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivity(intent)
+    }
+
+    @Composable
+    private fun handleNotificationIntent(intent: Intent?) {
+        if (intent?.action == "OPEN_NOTIFICATIONS_SCREEN") {
+            val navController = LocalNavigationProvider.current
+            navController.navigateToNotificationsScreen()
+        }
     }
 }
