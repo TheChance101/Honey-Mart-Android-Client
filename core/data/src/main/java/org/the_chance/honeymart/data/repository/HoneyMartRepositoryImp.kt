@@ -386,11 +386,6 @@ class HoneyMartRepositoryImp @Inject constructor(
 
     //region rating
 
-    override suspend fun getAllProductReviews(productId: Long): Reviews {
-        return wrap { honeyMartService.getProductRating(productId) }.value?.toReviews()
-            ?: throw NotFoundException()
-    }
-
     override suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long

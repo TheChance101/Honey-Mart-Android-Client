@@ -48,7 +48,7 @@ fun ReviewsProgressBar(
             durationMillis = 1000,
             delayMillis = 200,
             easing = LinearOutSlowInEasing
-        )
+        ), label = ""
     )
 
     Row(

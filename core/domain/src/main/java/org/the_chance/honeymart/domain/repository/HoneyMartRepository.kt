@@ -126,8 +126,6 @@ interface HoneyMartRepository {
 
     //region rating
 
-    suspend fun getAllProductReviews(productId: Long): Reviews
-
     suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long

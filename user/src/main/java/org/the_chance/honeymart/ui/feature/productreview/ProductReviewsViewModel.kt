@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.usecase.GetAllProductReviewsUseCase
-import org.the_chance.honeymart.domain.usecase.GetProductRatingUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.product_details.ProductDetailsArgs
@@ -15,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductReviewsViewModel @Inject constructor(
-    private val productRatingUseCase: GetProductRatingUseCase,
     private val productReviewsUseCase: GetAllProductReviewsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductReviewsUiState, ProductReviewsUiEffect>(ProductReviewsUiState()),
@@ -53,6 +51,14 @@ class ProductReviewsViewModel @Inject constructor(
         }
     }
 
+    private fun onGetProductReviewsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+
     private fun resetPageReviews() {
         page = 1
         onChangeReviews(0)
@@ -82,28 +88,18 @@ class ProductReviewsViewModel @Inject constructor(
         }
     }
 
-    private fun appendReviews(reviewss: ReviewDetailsUiState) {
+    private fun appendReviews(reviews: ReviewDetailsUiState) {
         val current = ArrayList(state.value.reviews.reviews)
-        current.addAll(reviewss.reviews)
-        _state.update { it.copy(reviews = reviewss.copy(reviewss.reviewStatisticUiState, current)) }
-    }
-
-    private fun onGetProductReviewsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
-        if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+        current.addAll(reviews.reviews)
+        _state.update {
+            it.copy(
+                reviews = reviews.copy(
+                    reviewStatisticUiState = reviews.reviewStatisticUiState,
+                    reviews = current
+                )
+            )
         }
     }
-
-//    private fun getAllRatingForProduct(productId: PagingData<Reviews>) {
-//        val mappedReviews = productId.map { it.toReviews() }
-//        _state.update {
-//            it.copy(
-//                isLoading = false,
-//                reviews = flowOf(mappedReviews)
-//            )
-//        }
-//    }
 
     override fun onClickBack() {
         effectActionExecutor(_effect, ProductReviewsUiEffect.OnBackClickEffect)
@@ -114,15 +110,3 @@ class ProductReviewsViewModel @Inject constructor(
     }
 
 }
-
-//    private fun getAllRatingForProduct() {
-//        _state.update { it.copy(isLoading = true) }
-//        viewModelScope.launch {
-//            val reviews = productsOperations.getAllRatingForProduct(
-//                productId = state.value.product.productId,
-//                page = page,
-//            )
-//            _state.update { it.copy(reviews = reviews.toReviews()) }
-//        }
-//    }
-

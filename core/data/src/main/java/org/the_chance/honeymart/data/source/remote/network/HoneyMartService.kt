@@ -288,9 +288,6 @@ interface HoneyMartService {
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
 
-    //region rating
-    suspend fun getProductRating(productId: Long): BaseResponse<ReviewsDto>
-
     suspend fun getReviewsForProduct(
         page: Int?,
         productId: Long
