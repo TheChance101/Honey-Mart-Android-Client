@@ -7,7 +7,6 @@ import org.the_chance.design_system.R
  * Created by Aziza Helmy on 6/16/2023.
  */
 
-
 internal fun handleValidation(validationStat: ValidationState): Int {
 
     return when (validationStat) {
@@ -44,6 +43,30 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
         ValidationState.INVALID_COUPON_COUNT -> TODO()
         ValidationState.INVALID_PASSWORD_LENGTH_LONG -> TODO()
+        ValidationState.BLANK_CATEGORY_NAME -> TODO()
+        ValidationState.INVALID_CATEGORY_NAME -> TODO()
+        ValidationState.VALID_CATEGORY_NAME -> TODO()
+        ValidationState.SHORT_CATEGORY_NAME -> TODO()
+        ValidationState.LONG_CATEGORY_NAME -> TODO()
+        ValidationState.BLANK_PRODUCT_NAME -> TODO()
+        ValidationState.INVALID_PRODUCT_NAME -> TODO()
+        ValidationState.VALID_PRODUCT_NAME -> TODO()
+        ValidationState.SHORT_PRODUCT_NAME -> TODO()
+        ValidationState.LONG_PRODUCT_NAME -> TODO()
+        ValidationState.BLANK_PRODUCT_PRICE -> TODO()
+        ValidationState.INVALID_PRODUCT_PRICE -> TODO()
+        ValidationState.VALID_PRODUCT_PRICE -> TODO()
+        ValidationState.BLANK_PRODUCT_DESCRIPTION -> TODO()
+        ValidationState.SHORT_PRODUCT_DESCRIPTION -> TODO()
+        ValidationState.LONG_PRODUCT_DESCRIPTION -> TODO()
+        ValidationState.VALID_PRODUCT_DESCRIPTION -> TODO()
+        ValidationState.INVALID_TEXT_FIELD -> TODO()
+        ValidationState.LONG_LENGTH_TEXT -> TODO()
+        ValidationState.BLANK_COUPON_DISCOUNT_PERCENTAGE -> TODO()
+        ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE -> TODO()
+        ValidationState.BLANK_COUPON_COUNT -> TODO()
+        ValidationState.LONG_COUPON_COUNT -> TODO()
+        ValidationState.VALID_COUPON_COUNT -> TODO()
     }
 
 }
