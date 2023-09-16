@@ -3,7 +3,7 @@ package org.the_chance.honeymart.domain.usecase
 import org.the_chance.honeymart.domain.util.ValidationState
 import javax.inject.Inject
 
-class ValidateSignupFieldsUseCase @Inject constructor() {
+class ValidateAuthenticationFieldsUseCase @Inject constructor() {
     fun validateEmail(email: String): ValidationState {
         if (email.isBlank()) {
             return ValidationState.BLANK_EMAIL
@@ -40,6 +40,7 @@ class ValidateSignupFieldsUseCase @Inject constructor() {
             password.length < 8 -> {
                 ValidationState.INVALID_PASSWORD_LENGTH_SHORT
             }
+
             password.length > 14 -> {
                 ValidationState.INVALID_PASSWORD_LENGTH_LONG
             }
@@ -67,5 +68,12 @@ class ValidateSignupFieldsUseCase @Inject constructor() {
         } else {
             ValidationState.CONFIRM_PASSWORD_DOES_NOT_MATCH
         }
+    }
+
+    fun isFieldBlank(text: String): ValidationState {
+        return if (text.isBlank())
+            ValidationState.BLANK_TEXT_FIELD
+        else
+            ValidationState.VALID_TEXT_FIELD
     }
 }

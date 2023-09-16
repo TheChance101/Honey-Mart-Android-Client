@@ -17,6 +17,7 @@ import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerCoupons
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.util.StringDictionary
 import java.util.Date
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CouponsViewModel @Inject constructor(
     private val ownerCoupons: OwnerCouponsManagerUseCase,
+    private val stringResource: StringDictionary,
 ) : BaseViewModel<CouponsUiState, CouponsUiEffect>(CouponsUiState()), CouponsInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -146,7 +148,7 @@ class CouponsViewModel @Inject constructor(
             {
                 ownerCoupons.addCoupon(
                     productId = _state.value.addCoupon.coupon.product.id,
-                    discountPercentage = _state.value.addCoupon.discountPercentage.toDouble(),
+                    discountPercentage = _state.value.addCoupon.discountPercentageState.name.toDouble(),
                     count = _state.value.addCoupon.coupon.count.toInt(),
                     expirationDate = _state.value.addCoupon.expirationDate!!
                 )
@@ -173,35 +175,59 @@ class CouponsViewModel @Inject constructor(
         }
     }
 
-    override fun onDiscountPercentageChange(discountPercentage: String) {
-        val discountPercentageState = getDiscountPercentageState(discountPercentage)
+    override fun onDiscountPercentageChange(discountPercentage: CharSequence) {
+        val discountPercentageState =
+            ownerCoupons.validationUseCase.validateCouponsDiscountPercentage(
+                discountPercentage.toString().trim()
+            )
         _state.update { state ->
-            state.copy {
-                CouponsUiState.addCoupon.discountPercentage set discountPercentage
-                CouponsUiState.addCoupon.discountPercentageState set discountPercentageState
-                CouponsUiState.addCoupon.coupon.offerPrice set if (discountPercentageState == ValidationState.VALID_TEXT_FIELD) {
-                    state.addCoupon.coupon.product.price
-                        .toOfferPrice(discountPercentage.toDouble())
-                        .toCouponPriceFormat()
-                } else {
-                    state.addCoupon.coupon.offerPrice
-                }
-            }
+            state.copy(
+                addCoupon = state.addCoupon.copy(
+                    discountPercentageState = FieldState(
+                        errorState = stringResource.validationString.getOrDefault(
+                            discountPercentageState,
+                            ""
+                        ),
+                        isValid = discountPercentageState == ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE,
+                        name = discountPercentage.toString()
+                    ),
+                    coupon = state.addCoupon.coupon.copy(
+                        offerPrice = if (state.addCoupon.discountPercentageState.isValid && discountPercentage.isNotBlank()) {
+                            state.addCoupon.coupon.product.price
+                                .toOfferPrice(discountPercentage.toString().toDouble())
+                                .toCouponPriceFormat()
+                        } else {
+                            state.addCoupon.coupon.offerPrice
+                        }
+                    )
+                )
+            )
         }
     }
 
     override fun onCouponCountChange(couponCount: String) {
-        val couponCountState = getCouponCountState(couponCount)
+        val couponCountState =
+            ownerCoupons.validationUseCase.validateCouponCount(couponCount)
         _state.update { state ->
-            state.copy {
-                CouponsUiState.addCoupon.couponCount set couponCount
-                CouponsUiState.addCoupon.couponCountState set couponCountState
-                CouponsUiState.addCoupon.coupon.count set if (couponCountState == ValidationState.VALID_TEXT_FIELD) {
-                    couponCount
-                } else {
-                    state.addCoupon.coupon.count
-                }
-            }
+            state.copy(
+                addCoupon = state.addCoupon.copy(
+                    couponCountState = FieldState(
+                        errorState = stringResource.validationString.getOrDefault(
+                            couponCountState,
+                            ""
+                        ),
+                        isValid = couponCountState == ValidationState.VALID_COUPON_COUNT,
+                        name = couponCount
+                    ),
+                    coupon = state.addCoupon.coupon.copy(
+                        count = if (state.addCoupon.couponCountState.isValid) {
+                            couponCount
+                        } else {
+                            state.addCoupon.coupon.count
+                        }
+                    )
+                )
+            )
         }
     }
 
@@ -225,25 +251,5 @@ class CouponsViewModel @Inject constructor(
         _state.update { state ->
             state.copy { CouponsUiState.isDatePickerVisible set false }
         }
-    }
-
-    private fun getDiscountPercentageState(discountPercentage: String): ValidationState {
-        val percentageRegex = Regex("^(100(\\.0{1,2})?|\\d{1,2}(\\.\\d{1,2})?)$")
-        val state: ValidationState = when {
-            discountPercentage.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            !discountPercentage.matches(percentageRegex) -> ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return state
-    }
-
-    private fun getCouponCountState(couponCount: String): ValidationState {
-        val numberRegex = Regex("^[1-9]\\d*$")
-        val state: ValidationState = when {
-            couponCount.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            !couponCount.matches(numberRegex) -> ValidationState.INVALID_COUPON_COUNT
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return state
     }
 }

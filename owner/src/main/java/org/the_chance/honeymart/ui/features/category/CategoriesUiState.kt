@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.util.toPriceFormat
 
 /**
@@ -41,9 +40,6 @@ data class CategoriesUiState(
 data class NewProductsUiState(
     val id: Long = 0L,
     val categoryId: Long = 0L,
-    val name: String = "",
-    val price: String = "",
-    val description: String = "",
     val images: List<ByteArray> = emptyList(),
     val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
     val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
@@ -51,6 +47,11 @@ data class NewProductsUiState(
 ) {
     companion object
 }
+
+val productNameState: FieldState = FieldState(),
+val productPriceState: FieldState = FieldState(),
+val productDescriptionState: FieldState = FieldState()
+)
 
 @optics
 data class ShowScreenState(
@@ -76,6 +77,15 @@ data class SnackBarState(
 }
 
 @optics
+data class FieldState(
+    val name: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isEmpty()
+) {
+    companion object
+}
+
+@optics
 data class CategoryUiState(
     val categoryId: Long = 0L,
     val categoryName: String = "",
@@ -88,8 +98,7 @@ data class CategoryUiState(
 @optics
 data class NewCategoryUiState(
     val categoryId: Long = 0L,
-    val newCategoryName: String = "",
-    val categoryNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val categoryState: FieldState = FieldState(),
     val newIconId: Int = 0,
     val newIcon: Int = 0,
 ) {
@@ -108,10 +117,10 @@ data class CategoryIconUIState(
 @optics
 data class ProductUiState(
     val productId: Long = 0L,
-    val productName: String = "",
+    val productNameState: FieldState = FieldState(),
     val productImage: List<String> = emptyList(),
-    val productPrice: String = "",
-    val productDescription: String = "",
+    val productPriceState: FieldState = FieldState(),
+    val productDescriptionState: FieldState = FieldState(),
 ) {
     companion object
 }
@@ -135,9 +144,9 @@ fun List<Category>.toCategoryUiState(): List<CategoryUiState> {
 fun Product.toProductUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
-        productName = productName,
-        productDescription = productDescription,
-        productPrice = productPrice.toPriceFormat(),
+        productNameState = FieldState(name = productName),
+        productDescriptionState = FieldState(name = productDescription),
+        productPriceState = FieldState(name = productPrice.toPriceFormat()),
         productImage = productImages.ifEmpty { listOf("", "") }
     )
 }
@@ -145,10 +154,10 @@ fun Product.toProductUiState(): ProductUiState {
 fun Product.toProductDetailsUiState(): ProductUiState {
     return ProductUiState(
         productId = productId,
-        productName = productName,
+        productNameState = FieldState(name = productName),
+        productDescriptionState = FieldState(name = productDescription),
+        productPriceState = FieldState(name = productPrice.toPriceFormat()),
         productImage = productImages.ifEmpty { listOf("", "") },
-        productPrice = productPrice.toPriceFormat(),
-        productDescription = productDescription,
     )
 }
 
@@ -166,34 +175,27 @@ fun Map<Int, Int>.toCategoryImageUIState(): List<CategoryIconUIState> {
 // region Extension
 
 fun CategoriesUiState.showAddUpdateCategoryButton(): Boolean {
-    return newCategory.newCategoryName.isNotBlank()
-            && categoryIcons.any { categoryIcons ->
-        categoryIcons.isSelected
-    }
+    return newCategory.categoryState.name.isNotBlank()
+            && categoryIcons.any { categoryIcons -> categoryIcons.isSelected }
             && !isLoading
-            && newCategory.categoryNameState == ValidationState.VALID_TEXT_FIELD
+            && newCategory.categoryState.isValid
 }
 
 fun NewProductsUiState.showButton(): Boolean {
-    return name.isNotBlank() && price.isNotBlank()
-            && description.isNotBlank() &&
-            productNameState == ValidationState.VALID_TEXT_FIELD
-            && productPriceState == ValidationState.VALID_TEXT_FIELD
-            && productDescriptionState == ValidationState.VALID_TEXT_FIELD
-            && images.isNotEmpty()
+    return productNameState.isValid && productPriceState.isValid
+            && productDescriptionState.isValid && images.isNotEmpty()
 }
 
 fun CategoriesUiState.showSaveUpdateButton(): Boolean {
-    return productDetails.productName.isNotBlank() &&
-            productDetails.productPrice.isNotBlank() &&
-            productDetails.productDescription.isNotBlank() &&
-            newProducts.productNameState == ValidationState.VALID_TEXT_FIELD
-            && newProducts.productPriceState == ValidationState.VALID_TEXT_FIELD
-            && newProducts.productDescriptionState == ValidationState.VALID_TEXT_FIELD
-            && newProducts.images.isNotEmpty()
+    return productDetails.productNameState.isValid &&
+            productDetails.productPriceState.isValid &&
+            productDetails.productDescriptionState.isValid &&
+            newProducts.productNameState.isValid &&
+            newProducts.productPriceState.isValid &&
+            newProducts.productDescriptionState.isValid &&
+            newProducts.images.isNotEmpty()
 
 }
-
 
 fun String.removeDollarSign(): String {
     return this.replace("$", "").trim()

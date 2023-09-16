@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
+import org.the_chance.honeymart.domain.usecase.AddReviewUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserOrderDetailsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
@@ -12,6 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     private val orderDetails: UserOrderDetailsManagerUseCase,
+    private val addReview: AddReviewUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
     OrderDetailsInteractionListener {
@@ -78,5 +80,104 @@ class OrderDetailsViewModel @Inject constructor(
     override fun onClickOrder(productId: Long) {
         effectActionExecutor(_effect, OrderDetailsUiEffect.ClickProductEffect(productId))
 
+    }
+
+    override fun onClickSubmitReview() {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
+                    isLoading = true
+                )
+            )
+        }
+
+        log(
+            "productId: ${_state.value.addReviewBottomSheetUiState.productId}\n " +
+                    "orderId: ${orderArgs.orderId.toLong()}\n " +
+                    "rating: ${_state.value.addReviewBottomSheetUiState.rating}\n " +
+                    "review: ${_state.value.addReviewBottomSheetUiState.review}"
+        )
+
+        tryToExecute(
+            {
+                addReview(
+                    productId = _state.value.addReviewBottomSheetUiState.productId,
+                    orderId = orderArgs.orderId.toLong(),
+                    rating = _state.value.addReviewBottomSheetUiState.rating,
+                    review = _state.value.addReviewBottomSheetUiState.review
+                )
+            },
+            { onAddReviewSuccess() },
+            ::onAddReviewError
+        )
+    }
+
+    private fun onAddReviewSuccess() {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = AddReviewBottomSheetUiState()
+            )
+        }
+        effectActionExecutor(
+            _effect,
+            OrderDetailsUiEffect.ShowToastEffect("Review added successfully")
+        )
+    }
+
+    private fun onAddReviewError(errorHandler: ErrorHandler) {
+        _state.update {
+            it.copy(
+                isError = errorHandler is ErrorHandler.NoConnection,
+                addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
+                    isLoading = false,
+                )
+            )
+        }
+        effectActionExecutor(
+            _effect,
+            OrderDetailsUiEffect.ShowToastEffect("Error while adding review")
+        )
+        log(errorHandler.toString())
+    }
+
+    override fun onClickAddReview(productId: Long) {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = AddReviewBottomSheetUiState(
+                    isVisible = true,
+                    productId = productId
+                )
+            )
+        }
+    }
+
+    override fun onDismissAddReviewSheet() {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
+                    isVisible = false
+                )
+            )
+        }
+    }
+
+    override fun onRatingChange(rating: Float) {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
+                    rating = rating
+                )
+            )
+        }
+    }
+
+    override fun onReviewChange(review: String) {
+        _state.update {
+            it.copy(
+                addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
+                    review = review
+                )
+            )
+        }
     }
 }

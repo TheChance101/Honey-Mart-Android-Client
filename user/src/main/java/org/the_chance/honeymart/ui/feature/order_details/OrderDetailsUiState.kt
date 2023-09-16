@@ -12,6 +12,7 @@ data class OrderDetailsUiState(
     val isDetailsLoading: Boolean = false,
     val error: ErrorHandler? = null,
     val isError: Boolean = false,
+    val addReviewBottomSheetUiState: AddReviewBottomSheetUiState = AddReviewBottomSheetUiState(),
     val orderDetails: OrderParentDetailsUiState = OrderParentDetailsUiState(),
     val products: List<OrderDetailsProductUiState> = emptyList(),
 )
@@ -29,6 +30,7 @@ data class OrderParentDetailsUiState(
         else -> "Declined"
     }
     val totalPriceCurrency = formatCurrencyWithNearestFraction(totalPrice)
+    val isAddReviewVisible = state == 3
 }
 
 data class OrderDetailsProductUiState(
@@ -40,6 +42,16 @@ data class OrderDetailsProductUiState(
 ) {
     val imageUrl = images.takeIf { it.isNotEmpty() }?.firstOrNull() ?: ""
     val priceCurrency = formatCurrencyWithNearestFraction(price)
+}
+
+data class AddReviewBottomSheetUiState(
+    val isLoading: Boolean = false,
+    val isVisible: Boolean = false,
+    val productId: Long = 0L,
+    val rating: Float = 0f,
+    val review: String = "",
+) {
+    val isSubmitEnabled = rating > 0f && review.isNotBlank() && review.length > 6
 }
 
 fun OrderDetails.ProductDetails.toOrderDetailsProductUiState(): OrderDetailsProductUiState {

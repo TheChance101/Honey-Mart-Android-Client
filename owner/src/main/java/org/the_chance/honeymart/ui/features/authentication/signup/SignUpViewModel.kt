@@ -4,6 +4,7 @@ import arrow.optics.copy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateAuthenticationFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val ownerAuthentication: OwnerAuthenticationManagerUseCase,
     private val ownerMarkets: OwnerMarketsManagerUseCase,
-    private val validateSignupFields: ValidateSignupFieldsUseCase,
+    private val validateSignupFields: ValidateAuthenticationFieldsUseCase,
     private val validateMarketFieldsUseCase: ValidateMarketFieldsUseCase,
     private val stringResourceImpl: StringDictionary,
 ) : BaseViewModel<SignupUiState, SignupUiEffect>(SignupUiState()),
@@ -81,7 +82,6 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCreateOwnerAccountSuccess(isSignUp: Boolean) {
         loginOwner(email = state.value.emailState.value, password = state.value.passwordState.value)
-        _state.update { it.copy(isOwnerAccountCreated = isSignUp) }
         _state.update { it.copy { SignupUiState.isOwnerAccountCreated set isSignUp } }
     }
 

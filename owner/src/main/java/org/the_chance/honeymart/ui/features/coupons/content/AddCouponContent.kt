@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import org.the_chance.design_system.R
-import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
@@ -54,27 +53,19 @@ fun AddCouponContent(
         )
 
         FormTextField(
-            text = state.discountPercentage,
+            text = state.discountPercentageState.name,
             hint = stringResource(R.string.offer_percentage),
             keyboardType = KeyboardType.Number,
-            onValueChange = { listener.onDiscountPercentageChange(it) },
-            errorMessage = when (state.discountPercentageState) {
-                ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.discount_percentage_can_t_be_blank)
-                ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE -> stringResource(R.string.invalid_coupon_discount_percentage)
-                else -> ""
-            }
+            onValueChange = listener::onDiscountPercentageChange,
+            errorMessage = state.discountPercentageState.errorState
         )
 
         FormTextField(
-            text = state.couponCount,
+            text = state.couponCountState.name,
             hint = stringResource(R.string.coupon_count),
             keyboardType = KeyboardType.Number,
-            onValueChange = { listener.onCouponCountChange(it) },
-            errorMessage = when (state.couponCountState) {
-                ValidationState.BLANK_TEXT_FIELD -> stringResource(R.string.coupon_count_can_t_be_blank)
-                ValidationState.INVALID_COUPON_COUNT -> stringResource(R.string.invalid_coupon_count)
-                else -> ""
-            }
+            onValueChange = listener::onCouponCountChange,
+            errorMessage = state.couponCountState.errorState
         )
 
         DateField(

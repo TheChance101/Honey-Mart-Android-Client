@@ -16,6 +16,7 @@ import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerProduct
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.util.StringDictionary
 import org.the_chance.honymart.ui.composables.categoryIcons
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class CategoriesViewModel @Inject constructor(
     private val ownerCategories: OwnerCategoriesManagerUseCase,
     private val ownerProducts: OwnerProductsManagerUseCase,
     private val ownerMarkets: OwnerMarketsManagerUseCase,
+    private val stringResource: StringDictionary,
 ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
@@ -95,7 +97,7 @@ class CategoriesViewModel @Inject constructor(
                     position set updatedPosition
                     isLoading set false
                     newCategory.categoryId set categoryId
-                    newCategory.newCategoryName set ""
+                    newCategory.categoryState set FieldState()
                     categoryIcons.every(Every.list()).isSelected set false
                     showScreenState.showAddCategory set false
                     showScreenState.showUpdateCategory set false
@@ -154,11 +156,15 @@ class CategoriesViewModel @Inject constructor(
     // region Add Category
     override fun onClickAddCategory(name: String, categoryIconID: Int) {
         _state.update { it.copy(isLoading = true) }
-        tryToExecute(
-            { ownerCategories.addCategoryUseCase(name, categoryIconID) },
-            ::addCategorySuccess,
-            ::onError
-        )
+        val categoryNameValidationState =
+            ownerCategories.validationUseCase.validateCategoryNameField(name)
+        if (categoryNameValidationState == ValidationState.VALID_CATEGORY_NAME) {
+            tryToExecute(
+                { ownerCategories.addCategoryUseCase(name, categoryIconID) },
+                ::addCategorySuccess,
+                ::onError
+            )
+        }
     }
 
     private fun addCategorySuccess(success: String) {
@@ -166,7 +172,7 @@ class CategoriesViewModel @Inject constructor(
             state.copy {
                 CategoriesUiState.apply {
                     isLoading set false
-                    newCategory.newCategoryName set ""
+                    newCategory.categoryState set FieldState()
                     categoryIcons.every(Every.list()).isSelected set false
                     inside(snackBar) {
                         SnackBarState.isShow set true
@@ -217,7 +223,7 @@ class CategoriesViewModel @Inject constructor(
             {
                 ownerCategories.updateCategoryUseCase(
                     imageId = category.newCategory.newIconId,
-                    name = category.newCategory.newCategoryName,
+                    name = category.newCategory.categoryState.name,
                     id = category.newCategory.categoryId,
                     marketId = ownerMarkets.getOwnerMarketId.getOwnerMarketId()
                 )
@@ -232,7 +238,7 @@ class CategoriesViewModel @Inject constructor(
             state.copy {
                 CategoriesUiState.apply {
                     isLoading set false
-                    newCategory.newCategoryName set ""
+                    newCategory.categoryState set FieldState()
                     categoryIcons.every(Every.list()).isSelected set false
                     showScreenState.showFab set true
                 }
@@ -285,9 +291,9 @@ class CategoriesViewModel @Inject constructor(
         tryToExecute(
             {
                 ownerProducts.addProductUseCase(
-                    product.newProducts.name,
-                    product.newProducts.price.toDouble(),
-                    product.newProducts.description,
+                    product.newProducts.productNameState.name,
+                    product.newProducts.productPriceState.name.toDouble(),
+                    product.newProducts.productDescriptionState.name,
                     product.newCategory.categoryId
                 )
             },
@@ -328,51 +334,15 @@ class CategoriesViewModel @Inject constructor(
             state.copy {
                 CategoriesUiState.apply {
                     isLoading set false
-                    newProducts.name set ""
-                    newProducts.description set ""
-                    newProducts.price set ""
+                    newProducts.productNameState set FieldState()
+                    newProducts.productDescriptionState set FieldState()
+                    newProducts.productPriceState set FieldState()
                     newProducts.images set emptyList()
                 }
             }
         }
         val categoryId = _state.value.newCategory.categoryId
         getProductsByCategoryId(categoryId = categoryId)
-    }
-
-    override fun onProductNameChanged(name: String) {
-        val productNameState = getNameState(name)
-        _state.update { state ->
-            state.copy {
-                inside(CategoriesUiState.newProducts) {
-                    NewProductsUiState.name set name
-                    NewProductsUiState.productNameState set productNameState
-                }
-            }
-        }
-    }
-
-    override fun onProductPriceChanged(price: String) {
-        val priceState = getPriceState(price)
-        _state.update { state ->
-            state.copy {
-                inside(CategoriesUiState.newProducts) {
-                    NewProductsUiState.productPriceState set priceState
-                    NewProductsUiState.price set price
-                }
-            }
-        }
-    }
-
-    override fun onProductDescriptionChanged(description: String) {
-        val productDescriptionState = getDescriptionState(description)
-        _state.update { state ->
-            state.copy {
-                inside(CategoriesUiState.newProducts) {
-                    NewProductsUiState.productDescriptionState set productDescriptionState
-                    NewProductsUiState.description set description
-                }
-            }
-        }
     }
 
     override fun onImagesSelected(uris: List<ByteArray>) {
@@ -391,9 +361,9 @@ class CategoriesViewModel @Inject constructor(
                 CategoriesUiState.showScreenState.showFab set false
                 CategoriesUiState.showScreenState.showAddProduct set true
                 inside(CategoriesUiState.newProducts){
-                    NewProductsUiState.name set ""
-                    NewProductsUiState.description set ""
-                    NewProductsUiState.price set ""
+                    NewProductsUiState.productNameState set FieldState()
+                    NewProductsUiState.productDescriptionState set FieldState()
+                    NewProductsUiState.productPriceState set FieldState()
                     NewProductsUiState.images set emptyList()
                 }
             }
@@ -429,9 +399,9 @@ class CategoriesViewModel @Inject constructor(
             {
                 ownerProducts.updateProductDetailsUseCase(
                     id = product.productDetails.productId,
-                    name = product.productDetails.productName,
-                    price = product.productDetails.productPrice.toDouble(),
-                    description = product.productDetails.productDescription,
+                    name = product.productDetails.productNameState.name,
+                    price = product.productDetails.productPriceState.name.toDouble(),
+                    description = product.productDetails.productDescriptionState.name,
                 )
             },
             { onUpdateProductDetailsSuccess() },
@@ -453,32 +423,59 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onUpdateProductName(productName: String) {
-        val productNameState = getNameState(productName)
-        _state.update { state ->
-            state.copy {
-                CategoriesUiState.newProducts.productNameState set productNameState
-                CategoriesUiState.productDetails.productName set productName
-            }
+        val productNameStateValidation =
+            ownerProducts.validationUseCase.validateProductNameField(productName)
+        val productNameState = FieldState(
+            errorState = stringResource.validationString.getOrDefault(
+                productNameStateValidation,
+                ""
+            ),
+            name = productName,
+            isValid = productNameStateValidation == ValidationState.VALID_PRODUCT_NAME
+        )
+        _state.update {
+            it.copy(
+                newProducts = it.newProducts.copy(productNameState = productNameState),
+                productDetails = it.productDetails.copy(productNameState = productNameState)
+            )
         }
     }
 
     override fun onUpdateProductPrice(productPrice: String) {
-        val productPriceState = getPriceState(productPrice)
-        _state.update { state ->
-            state.copy {
-                CategoriesUiState.newProducts.productPriceState set productPriceState
-                CategoriesUiState.productDetails.productPrice set productPrice
-            }
+        val productPriceStateValidation =
+            ownerProducts.validationUseCase.validateProductPrice(productPrice)
+        val productPriceState = FieldState(
+            errorState = stringResource.validationString.getOrDefault(
+                productPriceStateValidation,
+                ""
+            ),
+            name = productPrice,
+            isValid = productPriceStateValidation == ValidationState.VALID_PRODUCT_PRICE
+        )
+        _state.update {
+            it.copy(
+                newProducts = it.newProducts.copy(productPriceState = productPriceState),
+                productDetails = it.productDetails.copy(productPriceState = productPriceState)
+            )
         }
     }
 
     override fun onUpdateProductDescription(productDescription: String) {
-        val descriptionState = getDescriptionState(productDescription)
-        _state.update { state ->
-            state.copy {
-                CategoriesUiState.newProducts.productDescriptionState set descriptionState
-                CategoriesUiState.productDetails.productDescription set productDescription
-            }
+        val productDescriptionStateValidation =
+            ownerProducts.validationUseCase.validateProductDescription(productDescription)
+        val productDescriptionState = FieldState(
+            errorState = stringResource.validationString.getOrDefault(
+                productDescriptionStateValidation,
+                ""
+            ),
+            name = productDescription,
+            isValid = productDescriptionStateValidation == ValidationState.VALID_PRODUCT_DESCRIPTION
+        )
+        _state.update {
+            it.copy(
+                newProducts = it.newProducts.copy(productDescriptionState = productDescriptionState),
+                productDetails = it.productDetails.copy(productDescriptionState = productDescriptionState)
+            )
         }
     }
 
@@ -502,16 +499,20 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onClickUpdateProductDetails() {
-        _state.update { state ->
-            state.copy {
-                inside(CategoriesUiState.showScreenState) {
-                    ShowScreenState.showAddProduct set false
-                    ShowScreenState.showFab set false
-                    ShowScreenState.showProductDetails set false
-                    ShowScreenState.showProductUpdate set true
-                }
-                CategoriesUiState.productDetails.productPrice set state.productDetails.productPrice.removeDollarSign()
-            }
+        _state.update {
+            it.copy(
+                showScreenState = it.showScreenState.copy(
+                    showAddProduct = false,
+                    showFab = false,
+                    showProductDetails = false,
+                    showProductUpdate = true
+                ),
+                productDetails = it.productDetails.copy(
+                    productPriceState = it.productDetails.productPriceState.copy(
+                        name = it.productDetails.productPriceState.name.removeDollarSign()
+                    )
+                ),
+            )
         }
     }
 
@@ -553,6 +554,7 @@ class CategoriesViewModel @Inject constructor(
                         ShowScreenState.showProductUpdate set false
                     }
                 }
+                productDetails set ProductUiState()
             }
         }
         getProductsByCategoryId(_state.value.newCategory.categoryId)
@@ -566,15 +568,23 @@ class CategoriesViewModel @Inject constructor(
     }
 
     override fun onNewCategoryNameChanged(categoryName: String) {
-        val categoryNameState: ValidationState = getNameState(categoryName)
+        val categoryNameState =
+            ownerCategories.validationUseCase.validateCategoryNameField(categoryName)
 
-        _state.update { state ->
-            state.copy {
-                CategoriesUiState.newCategory.newCategoryName set categoryName
-                CategoriesUiState.newCategory.categoryNameState set categoryNameState
-            }
+        _state.update {
+            it.copy(
+                newCategory = it.newCategory.copy(
+                    categoryState = FieldState(
+                        errorState = stringResource.validationString.getOrDefault(
+                            categoryNameState,
+                            ""
+                        ),
+                        name = categoryName,
+                        isValid = categoryNameState == ValidationState.VALID_CATEGORY_NAME
+                    ),
+                )
+            )
         }
-
     }
 
     override fun onClickNewCategoryIcon(categoryIconId: Int) {
@@ -589,33 +599,6 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    private fun getNameState(name: String): ValidationState {
-        val productNameState: ValidationState = when {
-            name.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            name.length <= 2 -> ValidationState.SHORT_LENGTH_TEXT
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return productNameState
-    }
-
-    private fun getDescriptionState(description: String): ValidationState {
-        val descriptionState: ValidationState = when {
-            description.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            description.length < 6 -> ValidationState.SHORT_LENGTH_TEXT
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return descriptionState
-    }
-
-    private fun getPriceState(priceState: String): ValidationState {
-        val priceRegex = Regex("^[0-9]{1,6}(\\.[0-9]{1,2})?$")
-        val state: ValidationState = when {
-            priceState.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            !priceState.matches(priceRegex) -> ValidationState.INVALID_PRICE
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return state
-    }
     //endregion
 
     private fun onError(errorHandler: ErrorHandler) {

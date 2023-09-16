@@ -5,7 +5,6 @@ import android.icu.text.DecimalFormat
 import arrow.optics.optics
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.domain.util.ValidationState
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -50,17 +49,24 @@ data class ProductUiState(
 @optics
 data class AddCouponUiState(
     val isLoading: Boolean = false,
-    val discountPercentage: String = "",
-    val couponCount: String = "",
+    val discountPercentageState: FieldState = FieldState(),
     val expirationDate: Date? = null,
     val coupon: CouponUiState = CouponUiState(),
-    val discountPercentageState: ValidationState = ValidationState.VALID_TEXT_FIELD,
-    val couponCountState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val couponCountState: FieldState = FieldState(),
 ) {
     companion object
 
     val expirationDateFormatted: String =
         expirationDate?.toCouponExpirationDateFormat() ?: "Expiration Date"
+}
+
+@optics
+data class FieldState(
+    val name: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isEmpty()
+) {
+    companion object
 }
 
 @optics
@@ -119,11 +125,7 @@ fun CouponsUiState.showConnectionError(): Boolean {
 }
 
 fun AddCouponUiState.showButton(): Boolean {
-    return discountPercentage.isNotBlank()
-            && couponCount.isNotBlank()
-            && expirationDate != null
-            && discountPercentageState == ValidationState.VALID_TEXT_FIELD
-            && couponCountState == ValidationState.VALID_TEXT_FIELD
+    return discountPercentageState.isValid && couponCountState.isValid && expirationDate != null
 }
 
 fun AddCouponUiState.showCoupon(): Boolean {

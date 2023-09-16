@@ -164,6 +164,11 @@ object Dependencies {
         "io.arrow-kt:arrow-optics-ksp-plugin:${DependencyVersions.ARROW}"
     }
 
+    //Rating bar
+    val ratingBar by lazy {
+        "com.github.a914-gowtham:compose-ratingbar:${DependencyVersions.RATING_BAR}"
+    }
+
     object Classpath {
 
         val navigationClasspath by lazy {
