@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -197,6 +199,8 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             }
         }
     ) { padding ->
+        val density = LocalDensity.current
+        val offsetY = with(density) { (-40).dp.toPx().toInt() }
         LazyColumn(Modifier.fillMaxSize()) {
             item {
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -290,7 +294,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                             style = MaterialTheme.typography.bodySmall.copy(
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             ),
-                            maxLines = 1,
+                            maxLines = 3,
                         )
                     }
                     SmallProductImages(
@@ -307,28 +311,28 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                     )
                 }
             }
-            if (reviews.isNotEmpty()) {
-                item {
-                    Text(
-                        text = stringResource(R.string.user_reviews),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-                item {
-                    ItemLabel(
-                        label = "See All",
-                        iconPainter = painterResource(id = R.drawable.ic_seall),
-                        onClick = {
-                            state.product.productId.let {
-                                listener.onClickSeeAllReviews(
-                                    it,
-                                )
+            item {
+                Box {
+                    AnimatedVisibility(
+                        visible = reviews.isNotEmpty(),
+                        enter = slideInVertically(initialOffsetY = { offsetY }),
+                        exit = slideOutVertically(targetOffsetY = { offsetY }),
+                    ) {
+                        ItemLabel(
+                            modifier = Modifier.padding(MaterialTheme.dimens.space16),
+                            label = "User Reviews",
+                            iconPainter = painterResource(id = R.drawable.ic_seall),
+                            onClick = {
+                                state.product.productId.let {
+                                    listener.onClickSeeAllReviews(it)
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
+            }
                 items(reviews) { review ->
+
                     AverageRating(
                         averageRating = state.reviewStatisticUiState.averageRating.toString(),
                         rating = state.reviewStatisticUiState.averageRating.toFloat(),
@@ -341,10 +345,11 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         rating = review.rating.toFloat()
                     )
                 }
+
             }
         }
     }
-}
+
 
 @Preview(showSystemUi = true)
 @Composable
