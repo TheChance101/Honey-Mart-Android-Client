@@ -1,6 +1,9 @@
 package org.the_chance.honeymart.ui.features.coupons
 
 import androidx.lifecycle.viewModelScope
+import arrow.optics.Every
+import arrow.optics.copy
+import arrow.optics.dsl.every
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -37,13 +40,10 @@ class CouponsViewModel @Inject constructor(
     //region Search Product
     override fun getMarketProducts() {
         _state.update { state ->
-            state.copy(
-                isConnectionError = false,
-                error = null,
-                productSearch = state.productSearch.copy(
-                    isLoading = true
-                )
-            )
+            state.copy {
+                CouponsUiState.isConnectionError set false
+                CouponsUiState.productSearch.isLoading set true
+            }
         }
         tryToExecute(
             { ownerCoupons.getNoCouponMarketProducts() },
@@ -54,27 +54,22 @@ class CouponsViewModel @Inject constructor(
 
     private fun onGetMarketProductsSuccess(products: List<Product>) {
         _state.update { state ->
-            state.copy(
-                productSearch = state.productSearch.copy(
-                    isLoading = false,
-                    products = products.toProductUiState().map {
-                        it.copy(isSelected = state.addCoupon.coupon.product.id == it.id)
-                    }
-                ),
-
-                )
+            state.copy {
+                CouponsUiState.productSearch.isLoading set false
+                CouponsUiState.productSearch.products set products.toProductUiState().map {
+                    it.copy { ProductUiState.isSelected set (state.addCoupon.coupon.product.id == it.id) }
+                }
+            }
         }
     }
 
     private fun onGetMarketProductsError(errorHandler: ErrorHandler) {
         _state.update { state ->
-            state.copy(
-                isConnectionError = errorHandler is ErrorHandler.NoConnection,
-                productSearch = state.productSearch.copy(
-                    isLoading = false
-                ),
-                error = errorHandler
-            )
+            state.copy {
+                CouponsUiState.isConnectionError set (errorHandler is ErrorHandler.NoConnection)
+                CouponsUiState.productSearch.isLoading set false
+                CouponsUiState.error set errorHandler
+            }
         }
     }
 
@@ -88,52 +83,41 @@ class CouponsViewModel @Inject constructor(
 
     private fun onSearchMarketProductsSuccess(products: List<Product>) {
         _state.update { state ->
-            state.copy(
-                productSearch = state.productSearch.copy(
-                    isLoading = false,
-                    products = products.toProductUiState().map {
-                        it.copy(isSelected = state.addCoupon.coupon.product.id == it.id)
-                    }
-                )
-            )
+            state.copy {
+                CouponsUiState.productSearch.isLoading set false
+                CouponsUiState.productSearch.products set products.toProductUiState().map {
+                    it.copy { ProductUiState.isSelected set (state.addCoupon.coupon.product.id == it.id) }
+                }
+            }
         }
     }
 
     private fun onSearchMarketProductsError(errorHandler: ErrorHandler) {
         _state.update { state ->
-            state.copy(
-                isConnectionError = errorHandler is ErrorHandler.NoConnection,
-                productSearch = state.productSearch.copy(
-                    isLoading = false
-                ),
-                error = errorHandler
-            )
+            state.copy {
+                CouponsUiState.isConnectionError set (errorHandler is ErrorHandler.NoConnection)
+                CouponsUiState.productSearch.isLoading set false
+                CouponsUiState.error set errorHandler
+            }
         }
     }
 
     override fun onProductSearchItemClick(productId: Long) {
         _state.update { state ->
-            state.copy(
-                productSearch = state.productSearch.copy(
-                    products = state.productSearch.products.map {
-                        it.copy(isSelected = it.id == productId)
-                    }
-                ),
-                addCoupon = AddCouponUiState(
-                    coupon = CouponUiState(
-                        product = state.productSearch.products.first { it.id == productId })
+            state.copy {
+                CouponsUiState.productSearch.products set state.productSearch.products.map {
+                    it.copy { ProductUiState.isSelected set (it.id == productId) }
+                }
+                CouponsUiState.addCoupon.coupon set CouponUiState(
+                    product = state.productSearch.products.first { it.id == productId }
                 )
-            )
+            }
         }
     }
 
     override fun onProductSearchTextChange(text: String) {
         _state.update { state ->
-            state.copy(
-                productSearch = state.productSearch.copy(
-                    searchText = text
-                )
-            )
+            state.copy { CouponsUiState.productSearch.searchText set text }
         }
         viewModelScope.launch { actionStream.emit(text) }
     }
@@ -155,13 +139,10 @@ class CouponsViewModel @Inject constructor(
     //region Add Coupon
     override fun onAddCouponClick() {
         _state.update { state ->
-            state.copy(
-                isConnectionError = false,
-                error = null,
-                addCoupon = state.addCoupon.copy(
-                    isLoading = true
-                )
-            )
+            state.copy {
+                CouponsUiState.isConnectionError set false
+                CouponsUiState.addCoupon.isLoading set true
+            }
         }
         tryToExecute(
             {
@@ -179,22 +160,18 @@ class CouponsViewModel @Inject constructor(
 
     private fun onAddCouponSuccess() {
         _state.update { state ->
-            state.copy(
-                addCoupon = AddCouponUiState(),
-            )
+            state.copy { CouponsUiState.addCoupon set AddCouponUiState() }
         }
         getMarketProducts()
     }
 
     private fun onAddCouponError(errorHandler: ErrorHandler) {
         _state.update { state ->
-            state.copy(
-                isConnectionError = errorHandler is ErrorHandler.NoConnection,
-                addCoupon = state.addCoupon.copy(
-                    isLoading = false
-                ),
-                error = errorHandler
-            )
+            state.copy {
+                CouponsUiState.isConnectionError set (errorHandler is ErrorHandler.NoConnection)
+                CouponsUiState.addCoupon.isLoading set false
+                CouponsUiState.error set errorHandler
+            }
         }
     }
 
@@ -204,27 +181,23 @@ class CouponsViewModel @Inject constructor(
                 discountPercentage.toString().trim()
             )
         _state.update { state ->
-            state.copy(
-                addCoupon = state.addCoupon.copy(
-                    discountPercentageState = FieldState(
-                        errorState = stringResource.validationString.getOrDefault(
-                            discountPercentageState,
-                            ""
-                        ),
-                        isValid = discountPercentageState == ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE,
-                        name = discountPercentage.toString()
+            state.copy {
+                CouponsUiState.addCoupon.discountPercentageState set FieldState(
+                    errorState = stringResource.validationString.getOrDefault(
+                        discountPercentageState,
+                        ""
                     ),
-                    coupon = state.addCoupon.coupon.copy(
-                        offerPrice = if (state.addCoupon.discountPercentageState.isValid && discountPercentage.isNotBlank()) {
-                            state.addCoupon.coupon.product.price
-                                .toOfferPrice(discountPercentage.toString().toDouble())
-                                .toCouponPriceFormat()
-                        } else {
-                            state.addCoupon.coupon.offerPrice
-                        }
-                    )
+                    isValid = discountPercentageState == ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE,
+                    name = discountPercentage.toString()
                 )
-            )
+                CouponsUiState.addCoupon.coupon.offerPrice set if (state.addCoupon.discountPercentageState.isValid && discountPercentage.isNotBlank()) {
+                    state.addCoupon.coupon.product.price
+                        .toOfferPrice(discountPercentage.toString().toDouble())
+                        .toCouponPriceFormat()
+                } else {
+                    state.addCoupon.coupon.offerPrice
+                }
+            }
         }
     }
 
@@ -232,55 +205,43 @@ class CouponsViewModel @Inject constructor(
         val couponCountState =
             ownerCoupons.validationUseCase.validateCouponCount(couponCount)
         _state.update { state ->
-            state.copy(
-                addCoupon = state.addCoupon.copy(
-                    couponCountState = FieldState(
-                        errorState = stringResource.validationString.getOrDefault(
-                            couponCountState,
-                            ""
-                        ),
-                        isValid = couponCountState == ValidationState.VALID_COUPON_COUNT,
-                        name = couponCount
+            state.copy {
+                CouponsUiState.addCoupon.couponCountState set FieldState(
+                    errorState = stringResource.validationString.getOrDefault(
+                        couponCountState,
+                        ""
                     ),
-                    coupon = state.addCoupon.coupon.copy(
-                        count = if (state.addCoupon.couponCountState.isValid) {
-                            couponCount
-                        } else {
-                            state.addCoupon.coupon.count
-                        }
-                    )
+                    isValid = couponCountState == ValidationState.VALID_COUPON_COUNT,
+                    name = couponCount
                 )
-            )
+                CouponsUiState.addCoupon.coupon.count set if (state.addCoupon.couponCountState.isValid) {
+                    couponCount
+                } else {
+                    state.addCoupon.coupon.count
+                }
+            }
         }
     }
 
     override fun onClickShowDatePicker() {
         _state.update { state ->
-            state.copy(
-                isDatePickerVisible = true
-            )
+            state.copy { CouponsUiState.isDatePickerVisible set true }
         }
     }
 
     override fun onDatePickerDoneClick(date: Long) {
         _state.update { state ->
-            state.copy(
-                isDatePickerVisible = false,
-                addCoupon = state.addCoupon.copy(
-                    expirationDate = Date(date),
-                    coupon = state.addCoupon.coupon.copy(
-                        expirationDate = Date(date).toCouponExpirationDateFormat()
-                    )
-                )
-            )
+            state.copy {
+                CouponsUiState.isDatePickerVisible set false
+                CouponsUiState.addCoupon.expirationDate set Date(date)
+                CouponsUiState.addCoupon.coupon.expirationDate set Date(date).toCouponExpirationDateFormat()
+            }
         }
     }
 
     override fun onDatePickerDismiss() {
         _state.update { state ->
-            state.copy(
-                isDatePickerVisible = false
-            )
+            state.copy { CouponsUiState.isDatePickerVisible set false }
         }
     }
 }

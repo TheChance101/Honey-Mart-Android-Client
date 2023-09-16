@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.ui.features.profile
 
+import arrow.optics.copy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.MarketInfo
@@ -32,20 +33,19 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetPersonalInfoSuccess(ownerProfile: OwnerProfile) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                isError = false,
-                personalInfo = ownerProfile.toPersonalInfoUiState()
-            )
+        _state.update { state ->
+            state.copy {
+                ProfileUiState.isLoading set false
+                ProfileUiState.isError set false
+                ProfileUiState.personalInfo set ownerProfile.toPersonalInfoUiState()
+            }
         }
     }
 
     private fun onGetPersonalInfoError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+            _state.update { it.copy { ProfileUiState.isError set true } }
         }
     }
 
@@ -63,20 +63,19 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onGetMarketInfoSuccess(marketInfo: MarketInfo) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                error = null,
-                isError = false,
-                marketInfo = marketInfo.toMarketInfoUiState()
-            )
+        _state.update { state ->
+            state.copy {
+                ProfileUiState.isLoading set false
+                ProfileUiState.isError set false
+                ProfileUiState.marketInfo set marketInfo.toMarketInfoUiState()
+            }
         }
     }
 
     private fun onGetMarketInfoError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+            _state.update { it.copy { ProfileUiState.isError set true } }
         }
     }
 
@@ -92,11 +91,11 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun dismessStatusDialog() {
-        _state.update { it.copy(showMarketStatusDialog = false) }
+        _state.update { it.copy { ProfileUiState.showMarketStatusDialog set false } }
     }
 
     override fun showStatusDialog() {
-        _state.update { it.copy(showMarketStatusDialog = true) }
+        _state.update { it.copy { ProfileUiState.showMarketStatusDialog set true } }
     }
 
     private fun onUpdateMarketInfoSuccess(status: Boolean) {
@@ -106,7 +105,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun onUpdateMarketInfoError(errorHandler: ErrorHandler) {
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+            _state.update { it.copy { ProfileUiState.isError set true } }
         }
     }
 
@@ -114,7 +113,7 @@ class ProfileViewModel @Inject constructor(
         _state.update {
             val newStatus =
                 if (it.marketInfo.status == MarketStatus.ONLINE) MarketStatus.OFFLINE else MarketStatus.ONLINE
-            it.copy(marketInfo = it.marketInfo.copy(status = newStatus))
+            it.copy { ProfileUiState.marketInfo.status set newStatus }
         }
     }
     // endregion

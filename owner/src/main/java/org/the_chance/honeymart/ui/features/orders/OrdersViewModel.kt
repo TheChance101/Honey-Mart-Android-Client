@@ -1,11 +1,14 @@
 package org.the_chance.honeymart.ui.features.orders
 
+import arrow.optics.copy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerOrdersManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.features.profile.ProfileUiState
+import org.the_chance.honeymart.ui.features.profile.isError
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +23,13 @@ class OrdersViewModel @Inject constructor(
     }
 
     override fun getAllMarketOrder(orderState: OrderStates) {
-        _state.update {
-            it.copy(isLoading = true, isError = false, states = orderState ,
-            showState = it.showState.copy(showOrderDetails = false))
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.isLoading set true
+                OrdersUiState.isError set false
+                OrdersUiState.states set orderState
+                OrdersUiState.showState.showOrderDetails set false
+            }
         }
         tryToExecute(
             { ownerOrders.getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
@@ -38,7 +45,7 @@ class OrdersViewModel @Inject constructor(
     private fun onError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
+            _state.update { it.copy { OrdersUiState.isError set true } }
         }
     }
 
@@ -54,12 +61,12 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun onGetOrderDetailsSuccess(orderDetails: OrderDetails) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                orderDetails = orderDetails.toOrderParentDetailsUiState(),
-                orderStates = orderDetails.state
-            )
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.isLoading set false
+                OrdersUiState.orderDetails set orderDetails.toOrderParentDetailsUiState()
+                OrdersUiState.orderStates set orderDetails.state
+            }
         }
         updateButtonsState()
     }
@@ -67,7 +74,7 @@ class OrdersViewModel @Inject constructor(
     private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy { OrdersUiState.isError set true } }
         }
     }
 
@@ -80,40 +87,40 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
-        _state.update {
-            it.copy(
-                isLoading = false,
-                products = products.toOrderDetailsProductUiState()
-            )
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.isLoading set false
+                OrdersUiState.products set products.toOrderDetailsProductUiState()
+            }
         }
     }
 
     private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy { OrdersUiState.isLoading set true } }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy { OrdersUiState.isError set true } }
         }
     }
 
     override fun onClickProduct(product: OrderDetailsProductUiState) {
-        _state.update {
-            it.copy(
-                product = product,
-                showState = it.showState.copy(showProductDetails = true,
-                showOrderDetails = false)
-            )
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.product set product
+                OrdersUiState.showState.showProductDetails set true
+                OrdersUiState.showState.showOrderDetails set false
+            }
         }
     }
 
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
-        _state.update {
-            it.copy(
-                orders = updatedOrders,
-                orderId = id,
-                showState = it.showState.copy(showOrderDetails = true)
-            )
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.orders set updatedOrders
+                OrdersUiState.orderId set id
+                OrdersUiState.showState.showOrderDetails set true
+            }
         }
         getOrderDetails(id)
     }
@@ -137,16 +144,14 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun onUpdateStateOrderSuccess(success: Boolean) {
-        _state.update {
-            it.copy(isLoading = false)
-        }
+        _state.update { it.copy { OrdersUiState.isLoading set false } }
         getAllMarketOrder(_state.value.states)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy { OrdersUiState.isLoading set true } }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy { OrdersUiState.isError set true } }
         }
     }
 
@@ -193,18 +198,15 @@ class OrdersViewModel @Inject constructor(
 
             else -> return
         }
-        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
+        _state.update { it.copy { OrdersUiState.orderDetails.buttonsState set newButtonsState } }
     }
 
     fun resetStateScreen() {
-        _state.update {
-            it.copy(
-                showState = it.showState.copy(
-                    showProductDetails = false,
-                    showOrderDetails = false
-                )
-            )
+        _state.update { state ->
+            state.copy {
+                OrdersUiState.showState.showProductDetails set false
+                OrdersUiState.showState.showOrderDetails set false
+            }
         }
     }
-
 }

@@ -1,10 +1,12 @@
 package org.the_chance.honeymart.ui.features.profile
 
+import arrow.optics.optics
 import org.the_chance.honeymart.domain.model.MarketInfo
 import org.the_chance.honeymart.domain.model.OwnerProfile
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 // region Ui State
+@optics
 data class ProfileUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
@@ -12,15 +14,21 @@ data class ProfileUiState(
     val personalInfo: PersonalInfoUiState = PersonalInfoUiState(),
     val marketInfo: MarketInfoUiState = MarketInfoUiState(),
     val showMarketStatusDialog: Boolean = false,
-)
+) {
+    companion object
+}
 
+@optics
 data class PersonalInfoUiState(
     val id: Long = 0L,
     val icon: Char = 'H',
     val name: String = "",
     val email: String = ""
-)
+) {
+    companion object
+}
 
+@optics
 data class MarketInfoUiState(
     val id: Long = 0L,
     val status: MarketStatus = MarketStatus.OFFLINE,
@@ -28,7 +36,9 @@ data class MarketInfoUiState(
     val name: String = "",
     val address: String = "",
     val description: String = ""
-)
+) {
+    companion object
+}
 
 enum class MarketStatus(val state: Int) {
     ONLINE(1),

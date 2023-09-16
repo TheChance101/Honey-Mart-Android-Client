@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id(Plugins.ANDROID_APPLICATION)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.HILT_LIBRARY)
+    id(Plugins.KSP)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -21,6 +20,13 @@ android {
         versionName = ConfigData.VERSION_NAME
 
         testInstrumentationRunner = ConfigData.TEST_INSTRUMENTATION_RUNNER
+    }
+
+    androidComponents.onVariants { variant ->
+        val name = variant.name
+        sourceSets {
+            getByName(name).kotlin.srcDir("${buildDir.absolutePath}/generated/ksp/${name}/kotlin")
+        }
     }
 
     buildTypes {
@@ -81,4 +87,9 @@ dependencies {
     debugImplementation(Dependencies.composeUiDependency)
     //Permission
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+    //Arrow
+    implementation(Dependencies.arrowCore)
+    implementation(Dependencies.arrowFxCoroutines)
+    implementation(Dependencies.arrowOptics)
+    ksp(Dependencies.arrowOpticsKSP)
 }

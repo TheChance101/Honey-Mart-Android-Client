@@ -150,6 +150,20 @@ object Dependencies {
         "androidx.paging:paging-common:${DependencyVersions.PagingRuntimeVersion}"
     }
 
+    //Arrow
+    val arrowCore by lazy {
+        "io.arrow-kt:arrow-core:${DependencyVersions.ARROW}"
+    }
+    val arrowFxCoroutines by lazy {
+        "io.arrow-kt:arrow-fx-coroutines:${DependencyVersions.ARROW}"
+    }
+    val arrowOptics by lazy {
+        "io.arrow-kt:arrow-optics:${DependencyVersions.ARROW}"
+    }
+    val arrowOpticsKSP by lazy {
+        "io.arrow-kt:arrow-optics-ksp-plugin:${DependencyVersions.ARROW}"
+    }
+
     //Rating bar
     val ratingBar by lazy {
         "com.github.a914-gowtham:compose-ratingbar:${DependencyVersions.RATING_BAR}"
