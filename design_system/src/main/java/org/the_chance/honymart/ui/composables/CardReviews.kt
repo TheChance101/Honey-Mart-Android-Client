@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +34,7 @@ fun CardReviews(
             Text(text = reviews, style = Typography.displaySmall, color = black60)
             Text(text = data, style = Typography.displaySmall, color = black37)
         }
-        Divider(color = black8)
+        Divider(color = MaterialTheme.colorScheme.onTertiaryContainer)
     }
 }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -68,93 +69,89 @@ fun ProductReviewsContent(
 ) {
 
     val reviews = state.reviews
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-
-            Icon(
-                painter = painterResource(R.drawable.icon_arrow_back),
-                contentDescription = "icon back",
-                tint = blackOn87,
-                modifier = Modifier.clickable(onClick = listener::onClickBack)
-            )
-
-            Text(
-                text = stringResource(R.string.customers_reviews),
-                style = Typography.bodyMedium,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-
-        AnimatedVisibility(
-            visible = !state.isLoading,
-            enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
-            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
-        ) {
-            Column {
-                AverageRating(
-                    averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
-                    reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
-                    rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
-                )
-
-                ReviewsProgressBar(
-                    starNumber = "5",
-                    countReview = state.reviews.reviewStatisticUiState.fiveStarsCount.toString(),
-                    rating =
-                    (state.reviews.reviewStatisticUiState.fiveStarsCount /
-                            state.reviews.reviewStatisticUiState.reviewCount
-                                .defaultTo1IfZero()).toFloat()
-                )
-                ReviewsProgressBar(
-                    starNumber = "4",
-                    countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
-                    rating =
-                    (state.reviews.reviewStatisticUiState.fiveStarsCount /
-                            state.reviews.reviewStatisticUiState.reviewCount
-                                .defaultTo1IfZero()).toFloat()
-                )
-                ReviewsProgressBar(
-                    starNumber = "3",
-                    countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
-                    rating = (state.reviews.reviewStatisticUiState.threeStarsCount /
-                            state.reviews.reviewStatisticUiState.reviewCount
-                                .defaultTo1IfZero()).toFloat()
-                )
-                ReviewsProgressBar(
-                    starNumber = "2",
-                    countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
-                    rating = (state.reviews.reviewStatisticUiState.twoStarsCount /
-                            state.reviews.reviewStatisticUiState.reviewCount
-                                .defaultTo1IfZero()).toFloat()
-                )
-                ReviewsProgressBar(
-                    starNumber = "1",
-                    countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
-                    rating = (state.reviews.reviewStatisticUiState.oneStarCount /
-                            state.reviews.reviewStatisticUiState.reviewCount
-                                .defaultTo1IfZero()).toFloat()
-                )
-            }
-
-            LazyColumn(
+        item {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        top = 8.dp,
-                        start = 8.dp,
-                        end = 16.dp
-                    )
+                    .height(56.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+
+                Icon(
+                    painter = painterResource(R.drawable.icon_arrow_back),
+                    contentDescription = "icon back",
+                    tint = blackOn87,
+                    modifier = Modifier.clickable(onClick = listener::onClickBack)
+                )
+
+                Text(
+                    text = stringResource(R.string.customers_reviews),
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+        }
+        item {
+            AnimatedVisibility(
+                visible = !state.isLoading,
+                enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+                exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+            ) {
+                Column {
+                    AverageRating(
+                        averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
+                        reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
+                        rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
+                    )
+
+                    ReviewsProgressBar(
+                        starNumber = "5",
+                        countReview = state.reviews.reviewStatisticUiState.fiveStarsCount.toString(),
+                        rating =
+                        (state.reviews.reviewStatisticUiState.fiveStarsCount /
+                                state.reviews.reviewStatisticUiState.reviewCount
+                                    .defaultTo1IfZero()).toFloat()
+                    )
+                    ReviewsProgressBar(
+                        starNumber = "4",
+                        countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
+                        rating =
+                        (state.reviews.reviewStatisticUiState.fiveStarsCount /
+                                state.reviews.reviewStatisticUiState.reviewCount
+                                    .defaultTo1IfZero()).toFloat()
+                    )
+                    ReviewsProgressBar(
+                        starNumber = "3",
+                        countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
+                        rating = (state.reviews.reviewStatisticUiState.threeStarsCount /
+                                state.reviews.reviewStatisticUiState.reviewCount
+                                    .defaultTo1IfZero()).toFloat()
+                    )
+                    ReviewsProgressBar(
+                        starNumber = "2",
+                        countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
+                        rating = (state.reviews.reviewStatisticUiState.twoStarsCount /
+                                state.reviews.reviewStatisticUiState.reviewCount
+                                    .defaultTo1IfZero()).toFloat()
+                    )
+                    ReviewsProgressBar(
+                        starNumber = "1",
+                        countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
+                        rating = (state.reviews.reviewStatisticUiState.oneStarCount /
+                                state.reviews.reviewStatisticUiState.reviewCount
+                                    .defaultTo1IfZero()).toFloat()
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
                 items(reviews.reviews.size) { position ->
                     onChangeReviews(position)
                     if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
@@ -170,5 +167,3 @@ fun ProductReviewsContent(
                 }
             }
         }
-    }
-}

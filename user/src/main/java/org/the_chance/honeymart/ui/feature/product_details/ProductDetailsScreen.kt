@@ -2,6 +2,7 @@
 
 package org.the_chance.honeymart.ui.feature.product_details
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -16,9 +17,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -128,8 +131,7 @@ private fun ProductDetailsContent(
 
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
-    val reviews = state.reviews
-    Scaffold(
+     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -199,9 +201,11 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             }
         }
     ) { padding ->
-        val density = LocalDensity.current
-        val offsetY = with(density) { (-40).dp.toPx().toInt() }
-        LazyColumn(Modifier.fillMaxSize()) {
+         LazyColumn(
+             Modifier
+                 .fillMaxSize()
+                 .background(color = MaterialTheme.colorScheme.secondary)
+        ) {
             item {
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                     val (imageProduct, smallImageProduct, info) = createRefs()
@@ -226,8 +230,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                     }
                     Column(modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.secondary)
-                        .fillMaxHeight(0.5F)
+                        .fillMaxHeight()
                         .padding(
                             top = MaterialTheme.dimens.space24,
                             start = MaterialTheme.dimens.space16,
@@ -241,11 +244,16 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         }
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = MaterialTheme.dimens.space32,
+                                ),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
+
                                 text = state.product.productName,
                                 style = MaterialTheme.typography.displayMedium.copy(
                                     color = MaterialTheme.colorScheme.onSecondary
@@ -301,7 +309,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         state = state.smallImages,
                         modifier = Modifier.constrainAs(smallImageProduct) {
                             top.linkTo(imageProduct.bottom)
-                            bottom.linkTo(info.top)
+                            bottom.linkTo(imageProduct.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         },
@@ -314,9 +322,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             item {
                 Box {
                     AnimatedVisibility(
-                        visible = reviews.isNotEmpty(),
-                        enter = slideInVertically(initialOffsetY = { offsetY }),
-                        exit = slideOutVertically(targetOffsetY = { offsetY }),
+                        visible = state.reviews.isNotEmpty(),
                     ) {
                         ItemLabel(
                             modifier = Modifier.padding(MaterialTheme.dimens.space16),
@@ -331,24 +337,29 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                     }
                 }
             }
-                items(reviews) { review ->
-
-                    AverageRating(
-                        averageRating = state.reviewStatisticUiState.averageRating.toString(),
-                        rating = state.reviewStatisticUiState.averageRating.toFloat(),
-                        reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
-                    )
-                    CardReviews(
-                        userName = review.fullName ?: " ",
-                        reviews = review.content,
-                        data = review.reviewDate.toString(),
-                        rating = review.rating.toFloat()
-                    )
-                }
-
+            item {
+                AverageRating(
+                    averageRating = state.reviewStatisticUiState.averageRating.toString(),
+                    rating = state.reviewStatisticUiState.averageRating.toFloat(),
+                    reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
+                )
             }
+            items(state.reviews.size) { index ->
+                val review = state.reviews[index]
+                Log.d("helllo","${state.reviews.size}")
+                CardReviews(
+                    userName = review.fullName,
+                    reviews = review.content,
+                    data = review.reviewDate,
+                    rating = review.rating.toFloat()
+                )
+            }
+             item(){
+                 Spacer(modifier = Modifier.padding(bottom = padding.calculateBottomPadding()))
+             }
         }
     }
+}
 
 
 @Preview(showSystemUi = true)

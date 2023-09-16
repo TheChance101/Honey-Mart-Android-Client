@@ -3,9 +3,11 @@ package org.the_chance.honeymart.data.source.remote.mapper
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewStatisticDto
+import org.the_chance.honeymart.data.source.remote.util.convertTimestampToDate
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.ReviewStatistic
+import java.util.Date
 
 fun ProductDto.toProduct() = Product(
     productId = id ?: 0L,
@@ -43,7 +45,7 @@ fun ReviewDto.toReview(): Review {
         reviewId = reviewId ?: 0L,
         content = content ?: "",
         rating = rating ?: 0,
-        reviewDate = reviewDate ?: 0L,
+        reviewDate = reviewDate?.convertTimestampToDate()?: Date(),
         user = user?.toUserReview() ?: Review.UserReview(0L, "", "", "")
     )
 }
