@@ -1,7 +1,7 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
 import org.the_chance.honeymart.domain.model.ProductRating
-import org.the_chance.honeymart.domain.model.Review
+import org.the_chance.honeymart.domain.model.ProductReview
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
@@ -21,7 +21,8 @@ data class ReviewDetailsUiState(
 fun Reviews.toReviews(): ReviewDetailsUiState {
     return ReviewDetailsUiState(
         reviewStatisticUiState = reviewStatistic.toReviewStatisticUiState(),
-        reviews = reviews.map { it.toProductReviewUiState() })
+        reviews = reviews.map { it.toProductReviewUiState() }
+    )
 }
 
 data class ProductRatingUiState(
@@ -54,7 +55,7 @@ data class ProductReviewUiState(
     val fullName: String?,
 )
 
-fun Review.toProductReviewUiState(): ProductReviewUiState {
+fun ProductReview.toProductReviewUiState(): ProductReviewUiState {
     return ProductReviewUiState(
         reviewId = reviewId,
         content = content,

@@ -3,7 +3,7 @@ package org.the_chance.honeymart.domain.model
 
 data class Reviews(
     val reviewStatistic: ProductRating,
-    val reviews: List<Review>
+    val reviews: List<ProductReview>
 )
 
 data class ProductRating(
