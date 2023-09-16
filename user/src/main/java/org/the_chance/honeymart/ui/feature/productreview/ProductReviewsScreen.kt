@@ -90,7 +90,8 @@ fun ProductReviewsContent(
 
             Text(
                 text = stringResource(R.string.customers_reviews),
-                style = Typography.bodyMedium
+                style = Typography.bodyMedium,
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
 
