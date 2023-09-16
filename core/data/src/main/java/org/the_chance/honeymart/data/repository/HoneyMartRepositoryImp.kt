@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -406,6 +407,9 @@ class HoneyMartRepositoryImp @Inject constructor(
         page: Int?,
         productId: Long
     ): Reviews {
+        Log.d("repo reviews",
+            honeyMartService.getReviewsForProduct(page, productId).value.toString()
+        )
         return wrap {
             honeyMartService.getReviewsForProduct(page, productId)
         }.value?.toReviews()

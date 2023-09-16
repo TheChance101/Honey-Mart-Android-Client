@@ -315,19 +315,6 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
-                items(reviews) { review ->
-                    AverageRating(
-                        averageRating = state.reviewStatisticUiState.averageRating.toString(),
-                        rating = state.reviewStatisticUiState.averageRating.toFloat(),
-                        reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
-                    )
-                    CardReviews(
-                        userName = review.fullName ?: " ",
-                        reviews = review.content,
-                        data = review.reviewDate.toString(),
-                        rating = review.rating.toFloat()
-                    )
-                }
                 item {
                     ItemLabel(
                         label = "See All",
@@ -339,6 +326,19 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                 )
                             }
                         }
+                    )
+                }
+                items(reviews) { review ->
+                    AverageRating(
+                        averageRating = state.reviewStatisticUiState.averageRating.toString(),
+                        rating = state.reviewStatisticUiState.averageRating.toFloat(),
+                        reviewCount = "${state.reviewStatisticUiState.reviewsCount} Ratings"
+                    )
+                    CardReviews(
+                        userName = review.fullName ?: " ",
+                        reviews = review.content,
+                        data = review.reviewDate.toString(),
+                        rating = review.rating.toFloat()
                     )
                 }
             }

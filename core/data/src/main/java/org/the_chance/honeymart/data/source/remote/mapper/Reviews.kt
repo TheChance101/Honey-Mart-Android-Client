@@ -4,6 +4,7 @@ import org.the_chance.honeymart.data.source.remote.models.ProductRatingDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.domain.model.ProductRating
+import org.the_chance.honeymart.domain.model.ProductReview
 import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.Reviews
 
@@ -34,12 +35,21 @@ fun ReviewsDto.toReviews(): Reviews {
     )
 }
 
-fun ReviewDto.toProductReview(): Review {
-    return Review(
+fun ReviewDto.toProductReview(): ProductReview {
+    return ProductReview(
         reviewId = reviewId ?: 0L,
         content = content ?: "",
         rating = rating ?: 0,
         reviewDate = reviewDate ?: 0L,
-        user = user?.toUserReview() ?: Review.UserReview(0L, "", "", "")
+        user = user?.toUserReviews() ?: ProductReview.UserReview(0L, "", "", "")
+    )
+}
+
+fun ReviewDto.UserReviewDto.toUserReviews(): ProductReview.UserReview {
+    return ProductReview.UserReview(
+        userId = userId ?: 0L,
+        fullName = fullName ?: "",
+        email = email ?: "",
+        profileImage = profileImage ?: ""
     )
 }
