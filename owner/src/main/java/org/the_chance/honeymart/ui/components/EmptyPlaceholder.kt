@@ -18,7 +18,11 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
-fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
+fun EmptyPlaceholder(
+    state: Boolean,
+    emptyObjectName: String,
+    notificationState: Boolean =false ,
+    notificationText : String =stringResource(R.string.recieve_notification)) {
     ContentVisibility(state = state) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -39,7 +43,9 @@ fun EmptyPlaceholder(state: Boolean, emptyObjectName: String) {
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-                text = "Adding a $emptyObjectName will increase your chances \n of attracting interested buyers. " +
+                text = if(notificationState) notificationText
+                    else "Adding a $emptyObjectName will increase your chances \n" +
+                        " of attracting interested buyers. " +
                         "What $emptyObjectName \n fits your item? ",
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,

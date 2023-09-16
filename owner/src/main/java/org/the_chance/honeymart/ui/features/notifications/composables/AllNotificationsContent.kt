@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.notifications.NotificationStates
 import org.the_chance.honeymart.ui.features.notifications.NotificationsInteractionListener
 import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
@@ -38,9 +39,9 @@ fun AllNotificationsContent(
                     vertical = MaterialTheme.dimens.space16
                 ),
             contentPadding = PaddingValues(
-                end = MaterialTheme.dimens.space16
+                end = MaterialTheme.dimens.space16,
             ),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
             item {
                 CustomChip(
@@ -77,22 +78,23 @@ fun AllNotificationsContent(
                     }
                 )
             }
-
         }
-//        Loading(state = state.isLoading)
-
+        EmptyPlaceholder(
+            state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
+            emptyObjectName = stringResource(id = R.string.notifications_label),
+            notificationText = stringResource(R.string.receive_notification_cancels)
+        )
         LazyColumn(
+
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space8)
         ) {
             items(state.notifications.size) {
                 val notification = state.notifications[it]
                 NotificationCard(
                     onClickCard = {
-                        listener.onCLickNotificationCard(
-                            state.orderDetails, notification
-                        )
-                    },
+                        listener.onCLickNotificationCard(state.orderDetails, notification)
+                                  },
                     isSelected = notification.isNotificationSelected,
                     date = notification.date,
                     state = state,

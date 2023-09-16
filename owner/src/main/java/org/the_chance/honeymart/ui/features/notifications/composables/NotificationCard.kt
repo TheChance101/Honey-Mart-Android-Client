@@ -59,6 +59,7 @@ fun NotificationCard(
         Row(
             modifier = modifier
                 .fillMaxWidth(),
+
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
@@ -96,23 +97,32 @@ fun NotificationCard(
 
                     }
                 }
-                Text(
-                    text = notificationTitle,
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    style = MaterialTheme.typography.bodyMedium)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = notificationTitle,
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Text(
+                        text = date,
+                        style = MaterialTheme.typography.bodyMedium
+                            .copy(color = MaterialTheme.colorScheme.onBackground),
+                    )
+                }
 
                 Text(
                     text = notificationBody,
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.bodyMedium)
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
             }
 
-                Text(
-                    text = date ,
-                    style = MaterialTheme.typography.bodyMedium
-                        .copy(color = MaterialTheme.colorScheme.onBackground),
-                )
 
         }
     }
@@ -121,8 +131,11 @@ fun NotificationCard(
 @Preview
 @Composable
 fun PreviewNotificationCard() {
-//    NotificationCard(state = NotificationsUiState(),
-//        imageUrl = "https://i.pinimg.com/originals/0a/0b/9a/0a0b9a4b5b5b3b0b5b5b5b5b5b5b5b5b.jpg",
-//        userName ="Sara Salah ", date ="12:00", orderState = "Cancel the order",)
-
+    NotificationCard(
+        notificationTitle = "Order is Cancelled",
+        notificationBody = "gffggggggggggggggggggggggggggggggggggggg",
+        date = "22/kjk8",
+        orderId = "343",
+        state = NotificationsUiState()
+    )
 }

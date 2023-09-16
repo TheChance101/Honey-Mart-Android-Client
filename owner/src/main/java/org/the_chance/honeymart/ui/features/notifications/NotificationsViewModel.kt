@@ -41,7 +41,8 @@ class NotificationsViewModel @Inject constructor(
                 notifications = updateNotification,
             )
         }
-        getOrderDetails(_state.value.notifications.first().orderId)
+        if(notificationUiState.isNotEmpty())
+            getOrderDetails(_state.value.notifications.first().orderId)
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {

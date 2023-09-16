@@ -264,6 +264,10 @@
     <string name="category_label">الفئات</string>
     <string name="coupons_label">الكوبونات</string>
     <string name="notifications_label">الاشعارات</string>
+    <string name="recieve_notification"> سوف تتلقى الاشعارات بعد  \n  بعدما يقوم العميل باضافة طلب</string>
+    <string name="receive_notification_cancels">" سوف تتلقى الاشعارات عندما \n يقوم العميل بالغاء الطلب "</string>
+
+
 
 
 
