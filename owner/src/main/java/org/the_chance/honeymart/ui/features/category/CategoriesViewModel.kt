@@ -360,7 +360,7 @@ class CategoriesViewModel @Inject constructor(
             state.copy {
                 CategoriesUiState.showScreenState.showFab set false
                 CategoriesUiState.showScreenState.showAddProduct set true
-                inside(CategoriesUiState.newProducts){
+                inside(CategoriesUiState.newProducts) {
                     NewProductsUiState.productNameState set FieldState()
                     NewProductsUiState.productDescriptionState set FieldState()
                     NewProductsUiState.productPriceState set FieldState()
@@ -433,11 +433,11 @@ class CategoriesViewModel @Inject constructor(
             name = productName,
             isValid = productNameStateValidation == ValidationState.VALID_PRODUCT_NAME
         )
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productNameState = productNameState),
-                productDetails = it.productDetails.copy(productNameState = productNameState)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productNameState set productNameState
+                CategoriesUiState.productDetails.productNameState set productNameState
+            }
         }
     }
 
@@ -452,11 +452,11 @@ class CategoriesViewModel @Inject constructor(
             name = productPrice,
             isValid = productPriceStateValidation == ValidationState.VALID_PRODUCT_PRICE
         )
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productPriceState = productPriceState),
-                productDetails = it.productDetails.copy(productPriceState = productPriceState)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productPriceState set productPriceState
+                CategoriesUiState.productDetails.productPriceState set productPriceState
+            }
         }
     }
 
@@ -471,11 +471,11 @@ class CategoriesViewModel @Inject constructor(
             name = productDescription,
             isValid = productDescriptionStateValidation == ValidationState.VALID_PRODUCT_DESCRIPTION
         )
-        _state.update {
-            it.copy(
-                newProducts = it.newProducts.copy(productDescriptionState = productDescriptionState),
-                productDetails = it.productDetails.copy(productDescriptionState = productDescriptionState)
-            )
+        _state.update { state ->
+            state.copy {
+                CategoriesUiState.newProducts.productDescriptionState set productDescriptionState
+                CategoriesUiState.productDetails.productDescriptionState set productDescriptionState
+            }
         }
     }
 
@@ -500,19 +500,13 @@ class CategoriesViewModel @Inject constructor(
 
     override fun onClickUpdateProductDetails() {
         _state.update {
-            it.copy(
-                showScreenState = it.showScreenState.copy(
-                    showAddProduct = false,
-                    showFab = false,
-                    showProductDetails = false,
-                    showProductUpdate = true
-                ),
-                productDetails = it.productDetails.copy(
-                    productPriceState = it.productDetails.productPriceState.copy(
-                        name = it.productDetails.productPriceState.name.removeDollarSign()
-                    )
-                ),
-            )
+            it.copy {
+                CategoriesUiState.showScreenState.showAddProduct set false
+                CategoriesUiState.showScreenState.showFab set false
+                CategoriesUiState.showScreenState.showProductDetails set false
+                CategoriesUiState.showScreenState.showProductUpdate set true
+                CategoriesUiState.productDetails.productPriceState.name set it.productDetails.productPriceState.name.removeDollarSign()
+            }
         }
     }
 
@@ -553,8 +547,8 @@ class CategoriesViewModel @Inject constructor(
                         ShowScreenState.showProductDetails set false
                         ShowScreenState.showProductUpdate set false
                     }
+                    productDetails set ProductUiState()
                 }
-                productDetails set ProductUiState()
             }
         }
         getProductsByCategoryId(_state.value.newCategory.categoryId)
@@ -572,18 +566,16 @@ class CategoriesViewModel @Inject constructor(
             ownerCategories.validationUseCase.validateCategoryNameField(categoryName)
 
         _state.update {
-            it.copy(
-                newCategory = it.newCategory.copy(
-                    categoryState = FieldState(
-                        errorState = stringResource.validationString.getOrDefault(
-                            categoryNameState,
-                            ""
-                        ),
-                        name = categoryName,
-                        isValid = categoryNameState == ValidationState.VALID_CATEGORY_NAME
+            it.copy {
+                CategoriesUiState.newCategory.categoryState set FieldState(
+                    errorState = stringResource.validationString.getOrDefault(
+                        categoryNameState,
+                        ""
                     ),
+                    name = categoryName,
+                    isValid = categoryNameState == ValidationState.VALID_CATEGORY_NAME
                 )
-            )
+            }
         }
     }
 

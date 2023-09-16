@@ -41,17 +41,12 @@ data class NewProductsUiState(
     val id: Long = 0L,
     val categoryId: Long = 0L,
     val images: List<ByteArray> = emptyList(),
-    val productNameState: ValidationState = ValidationState.VALID_TEXT_FIELD,
-    val productPriceState: ValidationState = ValidationState.VALID_TEXT_FIELD,
-    val productDescriptionState: ValidationState = ValidationState.VALID_TEXT_FIELD,
+    val productNameState: FieldState = FieldState(),
+    val productPriceState: FieldState = FieldState(),
+    val productDescriptionState: FieldState = FieldState()
 ) {
     companion object
 }
-
-val productNameState: FieldState = FieldState(),
-val productPriceState: FieldState = FieldState(),
-val productDescriptionState: FieldState = FieldState()
-)
 
 @optics
 data class ShowScreenState(

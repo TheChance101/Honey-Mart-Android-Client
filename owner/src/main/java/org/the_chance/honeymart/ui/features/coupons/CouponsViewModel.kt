@@ -181,27 +181,23 @@ class CouponsViewModel @Inject constructor(
                 discountPercentage.toString().trim()
             )
         _state.update { state ->
-            state.copy(
-                addCoupon = state.addCoupon.copy(
-                    discountPercentageState = FieldState(
-                        errorState = stringResource.validationString.getOrDefault(
-                            discountPercentageState,
-                            ""
-                        ),
-                        isValid = discountPercentageState == ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE,
-                        name = discountPercentage.toString()
+            state.copy {
+                CouponsUiState.addCoupon.discountPercentageState set FieldState(
+                    errorState = stringResource.validationString.getOrDefault(
+                        discountPercentageState,
+                        ""
                     ),
-                    coupon = state.addCoupon.coupon.copy(
-                        offerPrice = if (state.addCoupon.discountPercentageState.isValid && discountPercentage.isNotBlank()) {
-                            state.addCoupon.coupon.product.price
-                                .toOfferPrice(discountPercentage.toString().toDouble())
-                                .toCouponPriceFormat()
-                        } else {
-                            state.addCoupon.coupon.offerPrice
-                        }
-                    )
+                    isValid = discountPercentageState == ValidationState.VALID_COUPON_DISCOUNT_PERCENTAGE,
+                    name = discountPercentage.toString()
                 )
-            )
+                CouponsUiState.addCoupon.coupon.offerPrice set if (state.addCoupon.discountPercentageState.isValid && discountPercentage.isNotBlank()) {
+                    state.addCoupon.coupon.product.price
+                        .toOfferPrice(discountPercentage.toString().toDouble())
+                        .toCouponPriceFormat()
+                } else {
+                    state.addCoupon.coupon.offerPrice
+                }
+            }
         }
     }
 
@@ -209,25 +205,21 @@ class CouponsViewModel @Inject constructor(
         val couponCountState =
             ownerCoupons.validationUseCase.validateCouponCount(couponCount)
         _state.update { state ->
-            state.copy(
-                addCoupon = state.addCoupon.copy(
-                    couponCountState = FieldState(
-                        errorState = stringResource.validationString.getOrDefault(
-                            couponCountState,
-                            ""
-                        ),
-                        isValid = couponCountState == ValidationState.VALID_COUPON_COUNT,
-                        name = couponCount
+            state.copy {
+                CouponsUiState.addCoupon.couponCountState set FieldState(
+                    errorState = stringResource.validationString.getOrDefault(
+                        couponCountState,
+                        ""
                     ),
-                    coupon = state.addCoupon.coupon.copy(
-                        count = if (state.addCoupon.couponCountState.isValid) {
-                            couponCount
-                        } else {
-                            state.addCoupon.coupon.count
-                        }
-                    )
+                    isValid = couponCountState == ValidationState.VALID_COUPON_COUNT,
+                    name = couponCount
                 )
-            )
+                CouponsUiState.addCoupon.coupon.count set if (state.addCoupon.couponCountState.isValid) {
+                    couponCount
+                } else {
+                    state.addCoupon.coupon.count
+                }
+            }
         }
     }
 

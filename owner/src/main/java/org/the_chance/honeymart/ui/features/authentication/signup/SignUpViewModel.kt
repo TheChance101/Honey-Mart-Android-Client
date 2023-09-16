@@ -5,7 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.usecase.ValidateMarketFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.ValidateAuthenticationFieldsUseCase
-import org.the_chance.honeymart.domain.usecase.ValidateSignupFieldsUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerAuthenticationManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
