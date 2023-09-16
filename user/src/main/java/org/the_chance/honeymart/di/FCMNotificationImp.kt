@@ -14,14 +14,13 @@ class FCMNotificationImp (
 ) : FCMNotification {
     private val flag = PendingIntent.FLAG_IMMUTABLE
 
-    private val clickIntent =
-        Intent(Intent.ACTION_VIEW, USER_NOTIFICATION_URI.toUri(), context, MainActivity::class.java)
-    private val clickPendingIntent = TaskStackBuilder.create(context).run {
-        addNextIntentWithParentStack(clickIntent)
-        getPendingIntent(1,flag)
-    }
-
     override fun getClickPendingIntent(): PendingIntent {
+        val clickIntent =
+            Intent(Intent.ACTION_VIEW, USER_NOTIFICATION_URI.toUri(), context, MainActivity::class.java)
+        val clickPendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(clickIntent)
+            getPendingIntent(1,flag)
+        }
         return clickPendingIntent
     }
 }

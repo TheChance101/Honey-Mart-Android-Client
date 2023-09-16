@@ -33,6 +33,10 @@ class FireBaseMsgServiceImpl @Inject constructor(
 
     private fun showNotification(title: String?, message: String?) {
         val channelId = "default_channel"
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationId = 1
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.icon_order_nav)
             .setContentTitle(title)
@@ -41,10 +45,6 @@ class FireBaseMsgServiceImpl @Inject constructor(
             .addAction(0,"Show",clickPendingIntent)
 
         notificationBuilder.setContentIntent(clickPendingIntent)
-
-
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val channel = NotificationChannel(
             channelId,
@@ -55,13 +55,10 @@ class FireBaseMsgServiceImpl @Inject constructor(
         channel.lightColor = Color.RED
         channel.enableVibration(true)
         notificationManager.createNotificationChannel(channel)
-
-        val notificationId = 1
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
     override suspend fun getDeviceToken(): String {
         return firebaseMessaging.token.await()
     }
-
 }

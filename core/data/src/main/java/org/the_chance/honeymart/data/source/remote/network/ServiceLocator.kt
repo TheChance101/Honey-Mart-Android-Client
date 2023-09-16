@@ -1,13 +1,13 @@
 package org.the_chance.honeymart.data.source.remote.network
 
 object ServiceLocator {
-    private var notificationListener: FCMNotification? = null
+    private var fcmNotification: FCMNotification? = null
 
     fun initialize(notificationListener: FCMNotification) {
-        this.notificationListener = notificationListener
+        this.fcmNotification = notificationListener
     }
 
     fun getFCMNotification(): FCMNotification {
-        return notificationListener ?: throw IllegalStateException("ServiceLocator not initialized")
+        return fcmNotification ?: throw IllegalStateException("ServiceLocator not initialized")
     }
 }
