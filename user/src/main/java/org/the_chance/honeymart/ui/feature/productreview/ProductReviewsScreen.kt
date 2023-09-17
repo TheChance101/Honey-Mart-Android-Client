@@ -114,38 +114,38 @@ fun ProductReviewsContent(
                         starNumber = "5",
                         countReview = state.reviews.reviewStatisticUiState.fiveStarsCount.toString(),
                         rating =
-                        (state.reviews.reviewStatisticUiState.fiveStarsCount /
-                                state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()).toFloat()
+                        (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
+                                state.reviews.reviewStatisticUiState.reviewCount.defaultTo1IfZero()
+                                ) * 100
                     )
                     ReviewsProgressBar(
                         starNumber = "4",
                         countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
                         rating =
-                        (state.reviews.reviewStatisticUiState.fiveStarsCount /
+                        (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()).toFloat()
+                                    .defaultTo1IfZero()) * 100
                     )
                     ReviewsProgressBar(
                         starNumber = "3",
                         countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
-                        rating = (state.reviews.reviewStatisticUiState.threeStarsCount /
+                        rating = (state.reviews.reviewStatisticUiState.threeStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()).toFloat()
+                                    .defaultTo1IfZero()) * 100
                     )
                     ReviewsProgressBar(
                         starNumber = "2",
                         countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
-                        rating = (state.reviews.reviewStatisticUiState.twoStarsCount /
+                        rating = (state.reviews.reviewStatisticUiState.twoStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()).toFloat()
+                                    .defaultTo1IfZero()) * 100
                     )
                     ReviewsProgressBar(
                         starNumber = "1",
                         countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
-                        rating = (state.reviews.reviewStatisticUiState.oneStarCount /
+                        rating = (state.reviews.reviewStatisticUiState.oneStarCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()).toFloat()
+                                    .defaultTo1IfZero()) * 100
                     )
                 }
             }
