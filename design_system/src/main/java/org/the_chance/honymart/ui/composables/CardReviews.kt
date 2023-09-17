@@ -22,7 +22,6 @@ fun CardReviews(
     rating: Float,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
@@ -30,14 +29,20 @@ fun CardReviews(
         Text(
             text = userName,
             style = Typography.displaySmall,
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
         RatingBar(rating = rating)
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
                 text = reviews,
                 style = Typography.displaySmall,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
                 text = data,

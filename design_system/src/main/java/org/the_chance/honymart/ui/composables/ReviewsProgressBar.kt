@@ -62,7 +62,8 @@ fun ReviewsProgressBar(
         Text(
             modifier = Modifier.weight(1f),
             text = starNumber, style = Typography.displaySmall, fontSize = 12.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSecondary
         )
         Icon(
             painter = painterResource(id = R.drawable.star_7),
@@ -92,7 +93,8 @@ fun ReviewsProgressBar(
         Text(
             text = countReview,
             style = Typography.displaySmall,
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSecondary
         )
     }
 
