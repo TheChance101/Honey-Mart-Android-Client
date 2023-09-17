@@ -65,17 +65,17 @@ fun ReviewsProgressBar(
             modifier = Modifier.weight(1f),
             text = starNumber,
             style = Typography.displaySmall,
-//            fontSize = 12.sp,
+            fontSize = 12.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSecondary
         )
+
         Icon(
             painter = painterResource(id = R.drawable.star_7),
             contentDescription = "icon star",
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(16.dp)
-                .weight(0f)
         )
         Box(
             modifier = Modifier
@@ -86,7 +86,8 @@ fun ReviewsProgressBar(
                     lightGrey
                 )
         ) {
-            Box(
+
+        Box(
                 modifier = Modifier
                     .fillMaxWidth(size)
                     .fillMaxHeight()
