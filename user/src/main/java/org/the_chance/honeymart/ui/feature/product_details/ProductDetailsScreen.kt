@@ -336,7 +336,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             item {
                 AverageRating(
                     averageRating = state.reviewStatisticUiState.averageRating.toFloat(),
-                    reviewCount = "${state.reviewStatisticUiState.reviewsCount}"
+                    reviewCount = state.reviewStatisticUiState.reviewsCount.toString()
                 )
             }
              items(state.reviews.size) { index ->
@@ -345,7 +345,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                  CardReviews(
                      userName = review.fullName,
                      reviews = review.content,
-                     data = review.reviewDate,
+                     date = review.reviewDate,
                      rating = review.rating.toFloat()
                  )
              }

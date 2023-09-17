@@ -17,7 +17,7 @@ fun AverageRating(
     averageRating: Float,
     reviewCount: String,
 ) {
-    val formattedRating = String.format("%.2f", averageRating)
+    val formattedRating = String.format("%.1f", averageRating)
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),

@@ -74,12 +74,13 @@ fun ProductReviewsContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
     ) {
         item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
                     .height(56.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -91,6 +92,7 @@ fun ProductReviewsContent(
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .clickable(onClick = listener::onClickBack)
+                        .padding(top = 4.dp)
                 )
 
                 Text(
@@ -109,7 +111,7 @@ fun ProductReviewsContent(
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AverageRating(
                         averageRating = state.reviews.reviewStatisticUiState.averageRating.toFloat(),
-                        reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount}",
+                        reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
                     )
 
                     ReviewsProgressBar(
@@ -125,7 +127,7 @@ fun ProductReviewsContent(
                         starNumber = "4",
                         countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
                         rating =
-                        (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
+                        (state.reviews.reviewStatisticUiState.fourStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
                                     .defaultTo1IfZero())
                     )
@@ -164,7 +166,7 @@ fun ProductReviewsContent(
                 userName = review.fullName,
                 rating = review.rating.toFloat(),
                 reviews = review.content,
-                data = review.reviewDate
+                date = review.reviewDate
             )
         }
     }
