@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.productreview.ProductReviewsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.util.defaultTo1IfZero
 import org.the_chance.honymart.ui.composables.AverageRating
 import org.the_chance.honymart.ui.composables.CardReviews
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.ReviewsProgressBar
 import org.the_chance.honymart.ui.theme.Typography
 
