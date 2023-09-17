@@ -1,12 +1,13 @@
 package org.the_chance.honeymart.data.source.remote.mapper
 
 import org.the_chance.honeymart.data.source.remote.models.ProductRatingDto
-import org.the_chance.honeymart.data.source.remote.models.ReviewDto
+import org.the_chance.honeymart.data.source.remote.models.ProductReviewDto
 import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
+import org.the_chance.honeymart.data.source.remote.util.convertTimestampToDate
 import org.the_chance.honeymart.domain.model.ProductRating
 import org.the_chance.honeymart.domain.model.ProductReview
-import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.Reviews
+import java.util.Date
 
 fun ProductRatingDto.toReviewStatistic(): ProductRating {
     return ProductRating(
@@ -35,17 +36,17 @@ fun ReviewsDto.toReviews(): Reviews {
     )
 }
 
-fun ReviewDto.toProductReview(): ProductReview {
+fun ProductReviewDto.toProductReview(): ProductReview {
     return ProductReview(
         reviewId = reviewId ?: 0L,
         content = content ?: "",
         rating = rating ?: 0,
-        reviewDate = reviewDate ?: 0L,
+        reviewDate = reviewDate?.convertTimestampToDate() ?: Date(),
         user = user?.toUserReviews() ?: ProductReview.UserReview(0L, "", "", "")
     )
 }
 
-fun ReviewDto.UserReviewDto.toUserReviews(): ProductReview.UserReview {
+fun ProductReviewDto.UserReviewDto.toUserReviews(): ProductReview.UserReview {
     return ProductReview.UserReview(
         userId = userId ?: 0L,
         fullName = fullName ?: "",

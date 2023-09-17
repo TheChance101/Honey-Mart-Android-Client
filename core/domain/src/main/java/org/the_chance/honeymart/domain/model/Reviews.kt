@@ -1,5 +1,7 @@
 package org.the_chance.honeymart.domain.model
 
+import java.util.Date
+
 
 data class Reviews(
     val reviewStatistic: ProductRating,
@@ -20,7 +22,7 @@ data class ProductReview(
     val reviewId: Long,
     val content: String,
     val rating: Int,
-    val reviewDate: Long,
+    val reviewDate: Date,
     val user: UserReview
 ) {
     data class UserReview(

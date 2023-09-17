@@ -6,7 +6,7 @@ data class ReviewsDto(
     @SerializedName("reviewStatistic")
     val reviewStatistic: ProductRatingDto?,
     @SerializedName("reviews")
-    val reviews: List<ReviewDto>?
+    val reviews: List<ProductReviewDto>?
 )
 
 data class ProductRatingDto(
