@@ -106,7 +106,7 @@ fun ProductReviewsContent(
                 Column {
                     AverageRating(
                         averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
-                        reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
+                        reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount} Ratings",
                         rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
                     )
 
@@ -151,19 +151,18 @@ fun ProductReviewsContent(
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
-
-                items(reviews.reviews.size) { position ->
-                    onChangeReviews(position)
-                    if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
-                        listener.onScrollDown()
-                    }
-                    val review = reviews.reviews[position]
-                    CardReviews(
-                        userName = review.fullName ?: "",
-                        rating = review.rating.toFloat(),
-                        reviews = "",
-                        data = review.reviewDate.toString()
-                    )
+        items(state.reviews.reviews.size) { position ->
+            onChangeReviews(position)
+            if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                listener.onScrollDown()
+            }
+            val review = reviews.reviews[position]
+            CardReviews(
+                userName = review.fullName,
+                rating = review.rating.toFloat(),
+                reviews = review.content,
+                data = review.reviewDate
+            )
                 }
             }
         }

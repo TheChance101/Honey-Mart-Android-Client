@@ -26,9 +26,9 @@ data class ProductReview(
     val user: UserReview
 ) {
     data class UserReview(
-        val userId: Long?,
-        val fullName: String?,
-        val email: String?,
-        val profileImage: String?
+        val userId: Long,
+        val fullName: String,
+        val email: String,
+        val profileImage: String
     )
 }

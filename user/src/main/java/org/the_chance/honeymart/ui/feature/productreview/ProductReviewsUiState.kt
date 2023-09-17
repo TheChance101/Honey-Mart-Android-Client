@@ -53,7 +53,7 @@ data class ProductReviewUiState(
     val content: String,
     val rating: Int,
     val reviewDate: String,
-    val fullName: String?,
+    val fullName: String,
 )
 
 fun ProductReview.toProductReviewUiState(): ProductReviewUiState {
