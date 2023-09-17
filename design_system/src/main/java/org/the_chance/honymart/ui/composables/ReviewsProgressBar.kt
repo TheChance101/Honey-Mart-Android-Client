@@ -63,7 +63,9 @@ fun ReviewsProgressBar(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = starNumber, style = Typography.displaySmall, fontSize = 12.sp,
+            text = starNumber,
+            style = Typography.displaySmall,
+//            fontSize = 12.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSecondary
         )
@@ -73,6 +75,7 @@ fun ReviewsProgressBar(
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(16.dp)
+                .weight(0f)
         )
         Box(
             modifier = Modifier
