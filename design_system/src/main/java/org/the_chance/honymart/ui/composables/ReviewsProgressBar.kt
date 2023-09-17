@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,9 +60,10 @@ fun ReviewsProgressBar(
         modifier = Modifier.padding(horizontal = 8.dp)
     ) {
         Text(
-            text = starNumber, style = Typography.displaySmall, fontSize = 12.sp
+            modifier = Modifier.weight(1f),
+            text = starNumber, style = Typography.displaySmall, fontSize = 12.sp,
+            textAlign = TextAlign.Center
         )
-
         Icon(
             painter = painterResource(id = R.drawable.star_7),
             contentDescription = "icon star",
@@ -68,7 +71,6 @@ fun ReviewsProgressBar(
             modifier = Modifier
                 .size(16.dp)
         )
-
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -102,6 +104,12 @@ fun ReviewsProgressBar(
 @Preview
 @Composable
 fun jjj() {
-    ReviewsProgressBar(starNumber = "5", countReview = "13", rating = 0.5f)
+    Column {
+        ReviewsProgressBar(starNumber = "5", countReview = "13", rating = 0.5f)
+        ReviewsProgressBar(starNumber = "4", countReview = "13", rating = 0.5f)
+        ReviewsProgressBar(starNumber = "3", countReview = "13", rating = 0.5f)
+        ReviewsProgressBar(starNumber = "2", countReview = "13", rating = 0.5f)
+        ReviewsProgressBar(starNumber = "1", countReview = "13", rating = 0.5f)
+    }
 }
 
