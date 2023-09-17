@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,7 +37,6 @@ import org.the_chance.honymart.ui.composables.AverageRating
 import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.ReviewsProgressBar
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.blackOn87
 
 @Composable
 fun ProductReviewsScreen(
@@ -82,18 +82,18 @@ fun ProductReviewsContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-
                 Icon(
                     painter = painterResource(R.drawable.icon_arrow_back),
                     contentDescription = "icon back",
-                    tint = blackOn87,
+                    tint = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.clickable(onClick = listener::onClickBack)
                 )
 
                 Text(
                     text = stringResource(R.string.customers_reviews),
                     style = Typography.bodyMedium,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp),
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
         }

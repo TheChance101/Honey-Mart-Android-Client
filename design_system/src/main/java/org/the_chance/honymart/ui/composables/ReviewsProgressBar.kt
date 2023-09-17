@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,7 +64,7 @@ fun ReviewsProgressBar(
         Icon(
             painter = painterResource(id = R.drawable.star_7),
             contentDescription = "icon star",
-            tint = primary100,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(16.dp)
         )

@@ -13,9 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.the_chance.honymart.ui.theme.Typography
-import org.the_chance.honymart.ui.theme.black37
-import org.the_chance.honymart.ui.theme.black60
-import org.the_chance.honymart.ui.theme.black8
 
 @Composable
 fun CardReviews(
@@ -26,13 +23,27 @@ fun CardReviews(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     ) {
-        Text(text = userName, style = Typography.displaySmall)
+        Text(
+            text = userName,
+            style = Typography.displaySmall,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
         RatingBar(rating = rating)
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = reviews, style = Typography.displaySmall, color = black60)
-            Text(text = data, style = Typography.displaySmall, color = black37)
+            Text(
+                text = reviews,
+                style = Typography.displaySmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = data,
+                style = Typography.displaySmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
         }
         Divider(color = MaterialTheme.colorScheme.onTertiaryContainer)
     }
