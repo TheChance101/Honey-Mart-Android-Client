@@ -52,12 +52,14 @@ fun ProductReviewsScreen(
             }
         }
     }
-
-    ProductReviewsContent(
-        state = state,
-        listener = viewModel,
-        onChangeReviews = viewModel::onChangeReviews
-    )
+    Loading(state = state.isLoading)
+    ContentVisibility(state = !state.isLoading) {
+        ProductReviewsContent(
+            state = state,
+            listener = viewModel,
+            onChangeReviews = viewModel::onChangeReviews
+        )
+    }
 }
 
 @Composable
@@ -84,7 +86,9 @@ fun ProductReviewsContent(
                     painter = painterResource(R.drawable.icon_arrow_back),
                     contentDescription = "icon back",
                     tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier.clickable(onClick = listener::onClickBack)
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .clickable(onClick = listener::onClickBack)
                 )
 
                 Text(
@@ -112,7 +116,7 @@ fun ProductReviewsContent(
                         rating =
                         (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount.defaultTo1IfZero()
-                                ) * 100
+                                )
                     )
 
                     ReviewsProgressBar(
@@ -121,29 +125,28 @@ fun ProductReviewsContent(
                         rating =
                         (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero() * 100
-                                )
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "3",
                         countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.threeStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "2",
                         countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.twoStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "1",
                         countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.oneStarCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                 }
             }

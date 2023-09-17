@@ -1,10 +1,12 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
+import android.annotation.SuppressLint
 import org.the_chance.honeymart.domain.model.ProductRating
 import org.the_chance.honeymart.domain.model.ProductReview
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.notifications.toNotificationDateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 
 data class ProductReviewsUiState(
     val isLoading: Boolean = true,
@@ -61,7 +63,13 @@ fun ProductReview.toProductReviewUiState(): ProductReviewUiState {
         reviewId = reviewId,
         content = content,
         rating = rating,
-        reviewDate = reviewDate.toNotificationDateFormat(),
+        reviewDate = reviewDate.toDateFormat(),
         fullName = user.fullName
     )
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Date.toDateFormat(): String {
+    val dateFormat = SimpleDateFormat("dd MMM  HH:mm")
+    return dateFormat.format(this)
 }

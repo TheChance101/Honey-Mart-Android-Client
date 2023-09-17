@@ -55,9 +55,11 @@ fun ReviewsProgressBar(
     )
 
     Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 8.dp)
     ) {
         Text(
             modifier = Modifier.weight(1f),
