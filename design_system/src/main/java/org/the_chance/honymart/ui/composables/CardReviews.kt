@@ -24,11 +24,11 @@ fun CardReviews(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
             text = userName,
-            style = Typography.displaySmall,
+            style = Typography.displayLarge,
             color = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -41,7 +41,7 @@ fun CardReviews(
         ) {
             Text(
                 text = reviews,
-                style = Typography.displaySmall,
+                style = Typography.displayLarge,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Text(

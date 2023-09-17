@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
+import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.feature.productreview.ProductReviewsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.util.defaultTo1IfZero
 import org.the_chance.honymart.ui.composables.AverageRating
 import org.the_chance.honymart.ui.composables.CardReviews
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.ReviewsProgressBar
 import org.the_chance.honymart.ui.theme.Typography
 
@@ -52,12 +54,14 @@ fun ProductReviewsScreen(
             }
         }
     }
-
-    ProductReviewsContent(
-        state = state,
-        listener = viewModel,
-        onChangeReviews = viewModel::onChangeReviews
-    )
+    Loading(state = state.isLoading)
+    ContentVisibility(state = !state.isLoading) {
+        ProductReviewsContent(
+            state = state,
+            listener = viewModel,
+            onChangeReviews = viewModel::onChangeReviews
+        )
+    }
 }
 
 @Composable
@@ -84,7 +88,9 @@ fun ProductReviewsContent(
                     painter = painterResource(R.drawable.icon_arrow_back),
                     contentDescription = "icon back",
                     tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier.clickable(onClick = listener::onClickBack)
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .clickable(onClick = listener::onClickBack)
                 )
 
                 Text(
@@ -103,7 +109,7 @@ fun ProductReviewsContent(
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AverageRating(
                         averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
-                        reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount}",
+                        reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
                         rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
                     )
 
@@ -113,7 +119,7 @@ fun ProductReviewsContent(
                         rating =
                         (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount.defaultTo1IfZero()
-                                ) * 100
+                                )
                     )
                     ReviewsProgressBar(
                         starNumber = "4",
@@ -121,28 +127,28 @@ fun ProductReviewsContent(
                         rating =
                         (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "3",
                         countReview = state.reviews.reviewStatisticUiState.threeStarsCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.threeStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "2",
                         countReview = state.reviews.reviewStatisticUiState.twoStarsCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.twoStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                     ReviewsProgressBar(
                         starNumber = "1",
                         countReview = state.reviews.reviewStatisticUiState.oneStarCount.toString(),
                         rating = (state.reviews.reviewStatisticUiState.oneStarCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero())
                     )
                 }
             }

@@ -4,8 +4,8 @@ import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.Review
 import org.the_chance.honeymart.domain.model.ReviewStatistic
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.notifications.toNotificationDateFormat
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
+import org.the_chance.honeymart.ui.feature.productreview.toDateFormat
 
 data class ProductDetailsUiState(
     val isLoading: Boolean = false,
@@ -79,7 +79,7 @@ fun Review.toReviewUiState(): ReviewUiState {
         reviewId = reviewId,
         content = content,
         rating = rating,
-        reviewDate = reviewDate.toNotificationDateFormat(),
+        reviewDate = reviewDate.toDateFormat(),
         fullName = user.fullName
     )
 }
