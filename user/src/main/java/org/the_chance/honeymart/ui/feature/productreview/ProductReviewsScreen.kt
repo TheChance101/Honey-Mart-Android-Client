@@ -58,7 +58,6 @@ fun ProductReviewsScreen(
         listener = viewModel,
         onChangeReviews = viewModel::onChangeReviews
     )
-
 }
 
 @Composable
@@ -67,7 +66,6 @@ fun ProductReviewsContent(
     listener: ProductReviewsInteractionsListener,
     onChangeReviews: (Int) -> Unit
 ) {
-
     val reviews = state.reviews
     LazyColumn(
         modifier = Modifier
@@ -92,7 +90,6 @@ fun ProductReviewsContent(
                 Text(
                     text = stringResource(R.string.customers_reviews),
                     style = Typography.bodyMedium,
-                    modifier = Modifier.padding(start = 16.dp),
                     color = MaterialTheme.colorScheme.onSecondary
                 )
             }
@@ -103,10 +100,10 @@ fun ProductReviewsContent(
                 enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                 exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
             ) {
-                Column {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AverageRating(
                         averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
-                        reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount} Ratings",
+                        reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount}",
                         rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
                     )
 
@@ -163,6 +160,6 @@ fun ProductReviewsContent(
                 reviews = review.content,
                 data = review.reviewDate
             )
-                }
-            }
         }
+    }
+}
