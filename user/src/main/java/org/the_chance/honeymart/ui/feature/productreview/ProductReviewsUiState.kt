@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.model.ProductRating
 import org.the_chance.honeymart.domain.model.ProductReview
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.ui.feature.notifications.toNotificationDateFormat
 
 data class ProductReviewsUiState(
     val isLoading: Boolean = true,
@@ -51,7 +52,7 @@ data class ProductReviewUiState(
     val reviewId: Long,
     val content: String,
     val rating: Int,
-    val reviewDate: Long,
+    val reviewDate: String,
     val fullName: String?,
 )
 
@@ -60,7 +61,7 @@ fun ProductReview.toProductReviewUiState(): ProductReviewUiState {
         reviewId = reviewId,
         content = content,
         rating = rating,
-        reviewDate = reviewDate,
+        reviewDate = reviewDate.toNotificationDateFormat(),
         fullName = user.fullName
     )
 }
