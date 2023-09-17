@@ -103,7 +103,7 @@ fun AppNavRailItem(
                     text = stringResource(id = screen.label),
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.displayLarge
+                    style = MaterialTheme.typography.displaySmall
                 )
             }
         }
