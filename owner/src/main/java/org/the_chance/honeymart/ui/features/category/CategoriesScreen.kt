@@ -39,7 +39,6 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
     CategoriesContent(
         state,
         categoriesViewModel,
-        categoriesViewModel::onChangeProductScrollPosition
     )
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
@@ -51,7 +50,6 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
 fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
-    onChangeProductScrollPosition: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -102,7 +100,6 @@ fun CategoriesContent(
                         CategoryProductsContent(
                             state = state,
                             listener = listener,
-                            onChangeProductScrollPosition
                         )
                     }
                 }
@@ -122,7 +119,6 @@ fun CategoriesContent(
                         CategoryProductsContent(
                             state = state,
                             listener = listener,
-                            onChangeProductScrollPosition
                         )
                     }
 

@@ -1,12 +1,8 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerCategoriesManagerUseCase
@@ -27,8 +23,7 @@ class CategoriesViewModel @Inject constructor(
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
-    private var page = _state.value.page
-    private var productListScrollPosition = 0
+    private var page = MutableStateFlow(_state.value.page)
 
     init {
         getCategoryImages()
@@ -266,32 +261,23 @@ class CategoriesViewModel @Inject constructor(
 
     // region Category Products
     private fun getProductsByCategoryId(categoryId: Long) {
+        _state.update { it.copy(isLoading = true) }
         resetSearchState()
-        _state.update { it.copy(isLoading = true, isError = false) }
-        viewModelScope.launch {
-            val products = ownerProducts.getAllProducts(categoryId, page)
-            val mappedProducts = products!!.map { it.toProductUiState() }
-            _state.update { it.copy(products = mappedProducts, isLoading = false) }
+        getProducts(page.value,categoryId)
+    }
+
+    override fun onChangeProductScrollPosition(position: Int) {
+        _state.update { it.copy(productsScrollPosition = position) }
+        if ((_state.value.productsScrollPosition + 1) >= (page.value * MAX_PAGE_SIZE)) {
+            _state.update { it.copy(page = it.page + 1) }
+            page.update { it + 1 }
+            getProducts(page.value)
         }
-    }
-
-    private fun appendProducts(products: List<ProductUiState>) {
-        val current = ArrayList(state.value.products)
-        current.addAll(products)
-        _state.update { it.copy(products = current) }
-    }
-
-    private fun incrementPage() {
-        page += 1
-    }
-
-    fun onChangeProductScrollPosition(position: Int) {
-        productListScrollPosition = position
     }
 
     private fun resetSearchState() {
         _state.update { it.copy(products = listOf()) }
-        page = 1
+        page.update { 1 }
         onChangeProductScrollPosition(0)
     }
 
@@ -613,20 +599,31 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    override fun onScrollDown() {
-        viewModelScope.launch {
-            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
-                _state.update { it.copy(isLoading = true) }
-                incrementPage()
-                if (page > 1) {
-                    val result = ownerProducts.getAllProducts(
-                        state.value.newCategory.categoryId, page
-                    )!!.map { it.toProductUiState() }
-                    appendProducts(result)
-                }
-                _state.update { it.copy(isLoading = false) }
+    private fun getProducts(page: Int,categoriesId: Long? = null) {
+        _state.update { it.copy(isLoadingPaging = true, isErrorPaging = false, error = null) }
+        tryToExecute(
+            {ownerProducts.getAllProducts(
+                categoriesId ?:state.value.newCategory.categoryId, page
+            ).map { it.toProductUiState() }},
+            ::onGetProductsSuccess,
+            ::onGetProductsError
+        )
+    }
+
+    private fun onGetProductsSuccess(data: List<ProductUiState>) {
+        _state.update {
+            if (page.value > 1) {
+                val current = state.value.products.toMutableList()
+                current.addAll(data)
+                it.copy(products = current, isLoadingPaging = false, isLoading = false)
+            } else {
+              it.copy(products = data, isLoadingPaging = false, isLoading = false)
             }
         }
+    }
+
+    private fun onGetProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingPaging = false, isLoading = false, isErrorPaging = true, error = error) }
     }
 
     private fun getNameState(name: String): ValidationState {

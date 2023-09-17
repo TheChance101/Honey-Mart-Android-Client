@@ -1,7 +1,5 @@
 package org.the_chance.honeymart.domain.repository
 
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
 import org.the_chance.honeymart.domain.model.Cart
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Coupon
@@ -17,7 +15,6 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
-import java.io.ObjectInputFilter.Status
 
 
 interface HoneyMartRepository {
@@ -38,7 +35,7 @@ interface HoneyMartRepository {
     suspend fun getCategoriesInMarket(marketId: Long): List<Category>?
     suspend fun getMarketInfo(): MarketInfo
     suspend fun updateMarketStatus(status: Int): Boolean
-    suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): List<Product>?
+    suspend fun getAllProductsByCategory(page: Int?, categoryId: Long): List<Product>
     suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category>?
     suspend fun addToWishList(productId: Long): String
     suspend fun deleteFromWishList(productId: Long): String

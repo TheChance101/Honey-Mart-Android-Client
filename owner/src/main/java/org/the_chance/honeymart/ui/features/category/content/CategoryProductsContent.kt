@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,19 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
-import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
-import org.the_chance.honeymart.ui.features.category.composable.PagingStateVisibility
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
+import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.composables.categoryIcons
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -39,7 +37,6 @@ import org.the_chance.honymart.ui.theme.dimens
 fun CategoryProductsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
-    onChangeProductScrollPosition: (Int) -> Unit,
 ) {
     val products = state.products
 
@@ -112,10 +109,7 @@ fun CategoryProductsContent(
                 contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space24)
             ) {
                 items(products.size) { index ->
-                    onChangeProductScrollPosition(index)
-                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
-                        listener.onScrollDown()
-                    }
+                    listener.onChangeProductScrollPosition(index)
                     products[index].let {
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
@@ -125,6 +119,10 @@ fun CategoryProductsContent(
                             description = it.productDescription
                         )
                     }
+                }
+                item{
+                    Spacer(modifier = Modifier.padding(MaterialTheme.dimens.space8))
+                    Loading(state = state.isLoadingPaging)
                 }
             }
             EmptyPlaceholder(

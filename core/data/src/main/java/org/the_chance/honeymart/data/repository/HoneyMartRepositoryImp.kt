@@ -123,10 +123,10 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getAllProductsByCategory(
         page: Int?,
         categoryId: Long
-    ): List<Product>? {
+    ): List<Product> {
         return wrap {
             honeyMartService.getAllProductsByCategory(page = page, categoryId = categoryId)
-        }.value?.map { it.toProduct() }
+        }.value?.map { it.toProduct() } ?: throw NotFoundException()
     }
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category> =
