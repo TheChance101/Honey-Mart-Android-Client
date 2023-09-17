@@ -102,9 +102,8 @@ fun ProductReviewsContent(
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AverageRating(
-                        averageRating = state.reviews.reviewStatisticUiState.averageRating.toString(),
+                        averageRating = state.reviews.reviewStatisticUiState.averageRating.toFloat(),
                         reviewCount = "${state.reviews.reviewStatisticUiState.reviewCount}",
-                        rating = state.reviews.reviewStatisticUiState.averageRating.toFloat()
                     )
 
                     ReviewsProgressBar(
@@ -115,13 +114,15 @@ fun ProductReviewsContent(
                                 state.reviews.reviewStatisticUiState.reviewCount.defaultTo1IfZero()
                                 ) * 100
                     )
+
                     ReviewsProgressBar(
                         starNumber = "4",
                         countReview = state.reviews.reviewStatisticUiState.fourStarsCount.toString(),
                         rating =
                         (state.reviews.reviewStatisticUiState.fiveStarsCount.toFloat() /
                                 state.reviews.reviewStatisticUiState.reviewCount
-                                    .defaultTo1IfZero()) * 100
+                                    .defaultTo1IfZero() * 100
+                                )
                     )
                     ReviewsProgressBar(
                         starNumber = "3",

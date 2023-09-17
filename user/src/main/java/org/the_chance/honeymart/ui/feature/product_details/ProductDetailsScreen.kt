@@ -335,8 +335,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             }
             item {
                 AverageRating(
-                    averageRating = state.reviewStatisticUiState.averageRating.toString(),
-                    rating = state.reviewStatisticUiState.averageRating.toFloat(),
+                    averageRating = state.reviewStatisticUiState.averageRating.toFloat(),
                     reviewCount = "${state.reviewStatisticUiState.reviewsCount}"
                 )
             }
