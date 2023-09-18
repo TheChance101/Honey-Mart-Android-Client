@@ -30,7 +30,7 @@ fun AverageRating(
             color = MaterialTheme.colorScheme.onBackground
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            RatingBar(rating = averageRating, totalStars = 5)
+            RatingBar(rating = averageRating, totalStars = 5, size = 20.dp)
             Text(
                 text = "$reviewCount Ratings",
                 style = Typography.displaySmall,

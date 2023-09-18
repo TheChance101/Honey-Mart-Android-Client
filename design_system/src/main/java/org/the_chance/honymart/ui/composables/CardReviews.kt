@@ -34,7 +34,7 @@ fun CardReviews(
             color = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier.padding(bottom = 4.dp)
         )
-        RatingBar(rating = rating)
+        RatingBar(rating = rating, size = 16.dp)
         Row(
             modifier = Modifier
                 .fillMaxWidth()

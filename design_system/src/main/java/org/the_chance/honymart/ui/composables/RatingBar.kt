@@ -16,29 +16,30 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.lightGrey
 
 @Composable
 fun RatingBar(
-    modifier: Modifier = Modifier,
     rating: Float,
     totalStars: Int = 5,
     activeColor: Color = MaterialTheme.colorScheme.primary,
-    inactiveColor: Color = lightGrey
+    inactiveColor: Color = lightGrey,
+    size: Dp
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         for (i in 1..totalStars) {
-            Box(modifier = modifier.size(24.dp)) {
+            Box {
                 Icon(
                     painter = painterResource(id = R.drawable.star_7),
                     contentDescription = "star",
-                    modifier = Modifier.matchParentSize(),
-                    tint = inactiveColor
+                    modifier = Modifier.size(size),
+                    tint = inactiveColor,
                 )
                 val clipFraction = when {
                     i <= rating -> 1f
@@ -50,7 +51,7 @@ fun RatingBar(
                         painter = painterResource(id = R.drawable.star_7),
                         contentDescription = "star",
                         modifier = Modifier
-                            .matchParentSize()
+                            .size(size)
                             .clipFraction(clipFraction),
                         tint = activeColor
                     )
@@ -81,5 +82,5 @@ fun Modifier.clipFraction(fraction: Float): Modifier = composed {
 @Preview()
 @Composable
 fun RatingBarPreview() {
-    RatingBar(rating = 4.4f, totalStars = 5)
+    RatingBar(rating = 4.4f, totalStars = 5, size = 16.dp)
 }
