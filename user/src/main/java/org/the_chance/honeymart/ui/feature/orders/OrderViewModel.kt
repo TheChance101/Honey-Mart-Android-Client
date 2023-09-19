@@ -16,6 +16,8 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
+
+
     private var initialLoad = true
     override fun getAllPendingOrders() {
         if (!initialLoad && state.value.orderStates == OrderStates.PENDING) {
@@ -23,7 +25,10 @@ class OrderViewModel @Inject constructor(
         }
         initialLoad = false
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PENDING)
+            it.copy(
+                isLoading = true, isError = false, orderStates = OrderStates.PENDING,
+                orders = emptyList()
+            )
         }
         tryToExecute(
             { getAllOrders(OrderStates.PENDING.state) },
@@ -33,7 +38,11 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun onGetPendingOrdersSuccess(orders: List<Order>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+        _state.update { ordersUiState ->
+            ordersUiState.copy(
+                isLoading = false,
+                orders = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetPendingOrdersError(error: ErrorHandler) {
@@ -48,7 +57,12 @@ class OrderViewModel @Inject constructor(
             return
         }
         _state.update {
-            it.copy(isLoading = true, isError = false, orderStates = OrderStates.PROCESSING)
+            it.copy(
+                isLoading = true,
+                isError = false,
+                orderStates = OrderStates.PROCESSING,
+                orders = emptyList()
+            )
         }
         tryToExecute(
             { getAllOrders(OrderStates.PROCESSING.state) },
@@ -59,7 +73,11 @@ class OrderViewModel @Inject constructor(
 
 
     private fun onGetProcessingOrdersSuccess(orders: List<Order>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+        _state.update { ordersUiState ->
+            ordersUiState.copy(
+                isLoading = false,
+                orders = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetProcessingOrdersError(error: ErrorHandler) {
@@ -74,7 +92,12 @@ class OrderViewModel @Inject constructor(
             return
         }
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.DONE, isError = false)
+            it.copy(
+                isLoading = true,
+                orderStates = OrderStates.DONE,
+                isError = false,
+                orders = emptyList()
+            )
         }
         tryToExecute(
             { getAllOrders(OrderStates.DONE.state) },
@@ -84,7 +107,11 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun onGetDoneOrdersSuccess(orders: List<Order>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+        _state.update { ordersUiState ->
+            ordersUiState.copy(
+                isLoading = false,
+                orders = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetDoneOrdersError(error: ErrorHandler) {
@@ -99,7 +126,12 @@ class OrderViewModel @Inject constructor(
             return
         }
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_USER, isError = false)
+            it.copy(
+                isLoading = true,
+                orderStates = OrderStates.CANCELLED_BY_USER,
+                isError = false,
+                orders = emptyList()
+            )
         }
         tryToExecute(
             { getAllOrders(OrderStates.CANCELLED_BY_USER.state) },
@@ -109,7 +141,11 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun onGetCancelledOrdersByUserSuccess(orders: List<Order>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+        _state.update { ordersUiState ->
+            ordersUiState.copy(
+                isLoading = false,
+                orders = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetCancelledOrdersByUserError(error: ErrorHandler) {
@@ -124,7 +160,12 @@ class OrderViewModel @Inject constructor(
             return
         }
         _state.update {
-            it.copy(isLoading = true, orderStates = OrderStates.CANCELLED_BY_OWNER, isError = false)
+            it.copy(
+                isLoading = true,
+                orderStates = OrderStates.CANCELLED_BY_OWNER,
+                isError = false,
+                orders = emptyList()
+            )
         }
         tryToExecute(
             { getAllOrders(OrderStates.CANCELLED_BY_OWNER.state) },
@@ -134,7 +175,11 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun onGetCancelledOrdersByOwnerSuccess(orders: List<Order>) {
-        _state.update { it.copy(isLoading = false, orders = orders.map { it.toOrderUiState() }) }
+        _state.update { ordersUiState ->
+            ordersUiState.copy(
+                isLoading = false,
+                orders = orders.map { it.toOrderUiState() })
+        }
     }
 
     private fun onGetCancelledOrdersByOwnerError(error: ErrorHandler) {
@@ -155,7 +200,7 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun updateOrdersSuccess(state: Boolean) {
-        _state.update { it.copy( state = state) }
+        _state.update { it.copy(state = state) }
         when (_state.value.orderStates) {
             OrderStates.PENDING -> getAllPendingOrders()
             OrderStates.PROCESSING -> getAllProcessingOrders()
