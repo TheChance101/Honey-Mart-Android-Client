@@ -43,6 +43,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 import org.the_chance.honeymart.domain.util.ForbiddenException
@@ -534,4 +535,12 @@ class HoneyMartServiceImp @Inject constructor(
             append("password", password)
         }))
 //end region admin
+
+    //region rating
+    override suspend fun getReviewsForProduct(
+        page: Int?,
+        productId: Long
+    ): BaseResponse<ReviewsDto> =
+        wrap(client.get("/reviews/$productId?page=$page"))
+    //end region rating
 }

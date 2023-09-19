@@ -2,17 +2,13 @@ package org.the_chance.honeymart.domain.model
 
 import java.util.Date
 
-data class Product(
-    val productId: Long,
-    val productName: String,
-    val productDescription: String,
-    val productPrice: Double,
-    val productImages:List<String>,
-    val reviewStatistic: ReviewStatistic,
-    val reviews: List<Review>
+
+data class Reviews(
+    val reviewStatistic: ProductRating,
+    val reviews: List<ProductReview>
 )
 
-data class ReviewStatistic(
+data class ProductRating(
     val averageRating: Double,
     val fiveStarsCount: Int,
     val fourStarsCount: Int,
@@ -22,7 +18,7 @@ data class ReviewStatistic(
     val twoStarsCount: Int
 )
 
-data class Review(
+data class ProductReview(
     val reviewId: Long,
     val content: String,
     val rating: Int,

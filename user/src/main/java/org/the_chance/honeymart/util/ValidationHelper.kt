@@ -8,7 +8,6 @@ import org.the_chance.honeymart.domain.util.ValidationState.*
  * Created by Aziza Helmy on 6/16/2023.
  */
 
-
 internal fun handleValidation(validationStat: ValidationState): Int {
 
     return when (validationStat) {

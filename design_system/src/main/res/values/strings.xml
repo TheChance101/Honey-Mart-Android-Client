@@ -144,7 +144,6 @@
     <!--Update Category Region-->
     <string name="category_name_can_t_be_blank">Category name can\'t be blank</string>
     <string name="category_name_is_too_short">Category name is too short, at least 4 letters</string>
-    <string name="category_name_is_too_long">Category name is too long, at most 16 letters</string>
     <string name="invalid_category_name">Category name should contain only characters</string>
     <string name="update_category">Update category</string>
     <string name="new_category_name">New category name</string>
@@ -288,5 +287,9 @@
      <string name="recieve_notification">You’ll receive a notification after \n customer place an order</string>
     <string name="receive_notification_cancels">" You will receive a notification \n when a customer cancels an order"</string>
 
+    <string name="customers_reviews">Customers Reviews</string>
+    <string name="user_reviews">User_Reviews</string>
+    <string name="ratings">Ratings</string>
+    <string name="category_name_is_too_long">Category name is too long</string>
     <string name="blank_field">"This filed should not be empty</string>
 </resources>

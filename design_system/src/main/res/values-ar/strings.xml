@@ -282,5 +282,13 @@
     <string name="profile">حسابي </string>
     <string name="all_markets">جميع المتاجر</string>
     <string name="there_are_no_market_requests">ليس هنالك اي طلب فتح متجر</string>
+    <string name="customers_reviews">تقيمات المستخدمين</string>
+    <string name="user_reviews">تقيمات المستخدمين</string>
+    <string name="ratings">%1$s التقييمات</string>
+    <string name="category_name_is_too_long">اسم الفئة طويل للغاية</string>
 
+    <string name="blank_field">ينبغي ان لا يكون هذا الحقل فارغا</string>
+    <string name="product_description_is_too_long">اسم المنتج طويل جدا، 500 حرف كحد أقصي</string>
+    <string name="product_name_is_too_long">اسم المنتج طويل جدا، 20 كلمة كحد أقص</string>
+    <string name="invalid_product_name">اسم منتج غير صالح</string>
 </resources>

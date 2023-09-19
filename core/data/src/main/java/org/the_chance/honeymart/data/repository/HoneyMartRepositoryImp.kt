@@ -1,5 +1,6 @@
 package org.the_chance.honeymart.data.repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -22,6 +23,7 @@ import org.the_chance.honeymart.data.source.remote.mapper.toOrder
 import org.the_chance.honeymart.data.source.remote.mapper.toOrderDetails
 import org.the_chance.honeymart.data.source.remote.mapper.toProduct
 import org.the_chance.honeymart.data.source.remote.mapper.toRecentProduct
+import org.the_chance.honeymart.data.source.remote.mapper.toReviews
 import org.the_chance.honeymart.data.source.remote.mapper.toUserProfile
 import org.the_chance.honeymart.data.source.remote.mapper.toWishList
 import org.the_chance.honeymart.data.source.remote.network.HoneyMartService
@@ -38,6 +40,7 @@ import org.the_chance.honeymart.domain.model.Order
 import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.RecentProduct
+import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.model.UserProfile
 import org.the_chance.honeymart.domain.model.WishList
 import org.the_chance.honeymart.domain.repository.HoneyMartRepository
@@ -390,7 +393,7 @@ class HoneyMartRepositoryImp @Inject constructor(
     }
 
     //region admin
-    //region admin
+
     override suspend fun getMarketsRequests(isApproved: Boolean?): List<MarketRequest> {
         return wrap { honeyMartService.getMarketsRequests(isApproved) }.value?.map { it.toMarketRequest() }
             ?: throw NotFoundException()
@@ -401,5 +404,21 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 //endregion admin
-//endregion admin
+
+
+    //region rating
+
+    override suspend fun getReviewsForProduct(
+        page: Int?,
+        productId: Long
+    ): Reviews {
+        Log.d("repo reviews",
+            honeyMartService.getReviewsForProduct(page, productId).value.toString()
+        )
+        return wrap {
+            honeyMartService.getReviewsForProduct(page, productId)
+        }.value?.toReviews()
+            ?: throw NotFoundException()
+    }
+    //end region rating
 }

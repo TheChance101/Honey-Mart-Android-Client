@@ -10,4 +10,5 @@ sealed interface ProductDetailsUiEffect : BaseUiEffect {
     data class AddProductToWishListEffectError(val error: Exception) : ProductDetailsUiEffect
     data class ProductNotInSameCartMarketExceptionEffect(val productId: Long, val count: Int) :
         ProductDetailsUiEffect
+    data class NavigateToReviewsScreen(val productId: Long) : ProductDetailsUiEffect
 }

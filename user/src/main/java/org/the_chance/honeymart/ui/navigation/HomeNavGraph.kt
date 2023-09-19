@@ -8,6 +8,7 @@ import org.the_chance.honeymart.ui.feature.SeeAllmarkets.marketsRoute
 import org.the_chance.honeymart.ui.feature.new_products.newProductsRoute
 import org.the_chance.honeymart.ui.feature.product.productRoute
 import org.the_chance.honeymart.ui.feature.product_details.productDetailsRoute
+import org.the_chance.honeymart.ui.feature.productreview.productReviewsRoute
 import org.the_chance.honeymart.ui.feature.search.searchRoute
 
 fun NavGraphBuilder.homeNavGraph() {
@@ -16,6 +17,7 @@ fun NavGraphBuilder.homeNavGraph() {
         route = Graph.HOME
     ) {
         productRoute()
+        productReviewsRoute()
         productDetailsRoute()
         categoryRoute()
         homeRoute()
