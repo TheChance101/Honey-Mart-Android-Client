@@ -3,7 +3,8 @@ package org.the_chance.honeymart.ui.feature.order_details.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -15,15 +16,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.gowtham.ratingbar.RatingBar
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.feature.order_details.AddReviewBottomSheetUiState
+import org.the_chance.honeymart.ui.feature.order_details.isButtonEnabled
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
@@ -38,13 +42,20 @@ fun AddReviewBottomSheet(
     onRatingChange: (Float) -> Unit,
     onReviewChange: (String) -> Unit,
 ) {
+
+    val sheetState = rememberModalBottomSheetState(
+        confirmValueChange = { it != SheetValue.Expanded },
+        skipPartiallyExpanded = true
+    )
+
     AnimatedVisibility(
+        modifier = Modifier.navigationBarsPadding(),
         visible = state.isVisible,
         enter = slideInVertically { it },
         exit = slideOutVertically { -it },
     ) {
         ModalBottomSheet(
-            modifier = Modifier.navigationBarsPadding(),
+            sheetState = sheetState,
             onDismissRequest = onDismiss,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             dragHandle = {
@@ -55,20 +66,18 @@ fun AddReviewBottomSheet(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "Add your rate",
+                text = stringResource(R.string.add_your_rate),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSecondary
             )
 
             RatingBar(
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
                     .padding(top = MaterialTheme.dimens.space8),
-                value = state.rating,
-                painterEmpty = painterResource(id = R.drawable.ic_star),
-                painterFilled = painterResource(id = R.drawable.ic_star_filled),
-                onValueChange = { onRatingChange(it) },
-                onRatingChanged = { },
+                rating = state.rating,
+                onRatingChanged = { onRatingChange(it) },
+                size = MaterialTheme.dimens.space32,
             )
 
             Text(
@@ -77,7 +86,7 @@ fun AddReviewBottomSheet(
                         top = MaterialTheme.dimens.space16,
                         start = MaterialTheme.dimens.space16
                     ),
-                text = "Add your review",
+                text = stringResource(R.string.add_your_review),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSecondary
             )
@@ -90,7 +99,7 @@ fun AddReviewBottomSheet(
                         start = MaterialTheme.dimens.space16,
                         end = MaterialTheme.dimens.space16,
                     ),
-                value = state.review,
+                value = state.reviewState.value,
                 onValueChange = { onReviewChange(it) },
                 shape = Shapes.medium,
                 textStyle = MaterialTheme.typography.displayLarge,
@@ -98,11 +107,34 @@ fun AddReviewBottomSheet(
                 minLines = 10,
                 placeholder = {
                     Text(
-                        text = "What did you like or dislike? How did you use the product? What should others know before buying?",
+                        text = stringResource(R.string.what_did_you_like_or_dislike_how_did_you_use_the_product_what_should_others_know_before_buying),
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.displayLarge,
                     )
                 },
+                supportingText = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = state.reviewState.errorState,
+                            textAlign = TextAlign.End,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.displayLarge,
+                        )
+
+                        Text(
+                            text = state.limit,
+                            textAlign = TextAlign.End,
+                            color = if (state.reviewState.isValid)
+                                MaterialTheme.colorScheme.onTertiaryContainer
+                            else MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.displayLarge,
+                        )
+                    }
+                },
+                isError = !state.reviewState.isValid,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedSupportingTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     focusedContainerColor = Color.Transparent,
@@ -119,13 +151,11 @@ fun AddReviewBottomSheet(
                         vertical = MaterialTheme.dimens.space16,
                     )
                     .wrapContentSize(),
-                label = "Submit Review",
+                label = stringResource(R.string.submit_review),
                 onClick = onClickSubmit,
                 isLoading = state.isLoading,
-                isButtonEnabled = state.isSubmitEnabled,
+                isButtonEnabled = state.isButtonEnabled(),
             )
-
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

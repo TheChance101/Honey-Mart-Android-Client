@@ -150,11 +150,6 @@ object Dependencies {
         "androidx.paging:paging-common:${DependencyVersions.PagingRuntimeVersion}"
     }
 
-    //Rating bar
-    val ratingBar by lazy {
-        "com.github.a914-gowtham:compose-ratingbar:${DependencyVersions.RATING_BAR}"
-    }
-
     object Classpath {
 
         val navigationClasspath by lazy {

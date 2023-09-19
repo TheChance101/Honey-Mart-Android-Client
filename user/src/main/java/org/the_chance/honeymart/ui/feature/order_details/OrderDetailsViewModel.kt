@@ -7,13 +7,16 @@ import org.the_chance.honeymart.domain.model.OrderDetails
 import org.the_chance.honeymart.domain.usecase.AddReviewUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserOrderDetailsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
+import org.the_chance.honeymart.domain.util.ValidationState
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.util.StringDictionary
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     private val orderDetails: UserOrderDetailsManagerUseCase,
     private val addReview: AddReviewUseCase,
+    private val stringResource: StringDictionary,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<OrderDetailsUiState, OrderDetailsUiEffect>(OrderDetailsUiState()),
     OrderDetailsInteractionListener {
@@ -90,21 +93,13 @@ class OrderDetailsViewModel @Inject constructor(
                 )
             )
         }
-
-        log(
-            "productId: ${_state.value.addReviewBottomSheetUiState.productId}\n " +
-                    "orderId: ${orderArgs.orderId.toLong()}\n " +
-                    "rating: ${_state.value.addReviewBottomSheetUiState.rating}\n " +
-                    "review: ${_state.value.addReviewBottomSheetUiState.review}"
-        )
-
         tryToExecute(
             {
                 addReview(
                     productId = _state.value.addReviewBottomSheetUiState.productId,
                     orderId = orderArgs.orderId.toLong(),
                     rating = _state.value.addReviewBottomSheetUiState.rating,
-                    review = _state.value.addReviewBottomSheetUiState.review
+                    review = _state.value.addReviewBottomSheetUiState.reviewState.value
                 )
             },
             { onAddReviewSuccess() },
@@ -120,7 +115,7 @@ class OrderDetailsViewModel @Inject constructor(
         }
         effectActionExecutor(
             _effect,
-            OrderDetailsUiEffect.ShowToastEffect("Review added successfully")
+            OrderDetailsUiEffect.ShowToastEffect(stringResource.addReviewSuccessString)
         )
     }
 
@@ -135,9 +130,13 @@ class OrderDetailsViewModel @Inject constructor(
         }
         effectActionExecutor(
             _effect,
-            OrderDetailsUiEffect.ShowToastEffect("Error while adding review")
+            OrderDetailsUiEffect.ShowToastEffect(
+                stringResource.errorString.getOrDefault(
+                    errorHandler,
+                    ""
+                )
+            )
         )
-        log(errorHandler.toString())
     }
 
     override fun onClickAddReview(productId: Long) {
@@ -172,10 +171,21 @@ class OrderDetailsViewModel @Inject constructor(
     }
 
     override fun onReviewChange(review: String) {
+        val reviewStateValidation =
+            orderDetails.validationUseCase.validateReview(review)
+
+        val reviewState = FieldState(
+            errorState = stringResource.validationString.getOrDefault(
+                reviewStateValidation,
+                ""
+            ),
+            value = review,
+            isValid = reviewStateValidation == ValidationState.VALID_REVIEW
+        )
         _state.update {
             it.copy(
                 addReviewBottomSheetUiState = it.addReviewBottomSheetUiState.copy(
-                    review = review
+                    reviewState = reviewState
                 )
             )
         }
