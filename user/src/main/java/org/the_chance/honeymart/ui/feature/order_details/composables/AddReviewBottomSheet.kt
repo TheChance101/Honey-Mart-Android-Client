@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.feature.order_details.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -50,7 +50,6 @@ fun AddReviewBottomSheet(
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             },
-            windowInsets = WindowInsets(0, 0, 0, 0),
         ) {
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -123,6 +122,8 @@ fun AddReviewBottomSheet(
                 isLoading = state.isLoading,
                 isButtonEnabled = state.isSubmitEnabled,
             )
+
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
