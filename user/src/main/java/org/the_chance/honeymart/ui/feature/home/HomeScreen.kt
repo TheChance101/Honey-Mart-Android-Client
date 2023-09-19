@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.navigateToMarketsScreen
+import org.the_chance.honeymart.ui.feature.see_all_markets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen

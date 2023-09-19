@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.SeeAllmarkets.compoaseable
+package org.the_chance.honeymart.ui.feature.see_all_markets.compoaseable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

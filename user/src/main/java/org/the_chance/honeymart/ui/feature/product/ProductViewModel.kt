@@ -2,22 +2,17 @@ package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
-import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
+import org.the_chance.honeymart.ui.feature.see_all_markets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
@@ -114,7 +109,7 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(isLoadingProduct = true) }
         viewModelScope.launch {
             val products = getAllProducts(state.value.categoryId, page)
-            val mappedProducts = products!!.map { it.toProductUiState() }
+            val mappedProducts = products.map { it.toProductUiState() }
             _state.update { it.copy(products = mappedProducts, isLoadingProduct = false) }
         }
     }

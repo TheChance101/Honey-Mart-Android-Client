@@ -35,7 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketUiState
+import org.the_chance.honeymart.ui.feature.see_all_markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
 import org.the_chance.honeymart.ui.feature.home.HomeInteractionListener
 import org.the_chance.honeymart.ui.feature.home.HomeUiState
