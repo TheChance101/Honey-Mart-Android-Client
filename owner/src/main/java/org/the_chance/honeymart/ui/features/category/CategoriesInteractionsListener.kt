@@ -28,4 +28,5 @@ interface CategoriesInteractionsListener {
     fun onClickCancel()
     fun deleteProductById(productId: Long)
     fun onUpdateProductImage(productId: Long, images: List<ByteArray>)
+    fun onChangeProductScrollPosition(position: Int)
 }

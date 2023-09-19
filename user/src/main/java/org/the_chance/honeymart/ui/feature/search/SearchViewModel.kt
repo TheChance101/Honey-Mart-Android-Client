@@ -1,8 +1,6 @@
 package org.the_chance.honeymart.ui.feature.search
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -10,13 +8,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.SearchForProductUseCase
-import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -25,51 +21,57 @@ class SearchViewModel @Inject constructor(
     private val searchForProductUseCase: SearchForProductUseCase
 ) : BaseViewModel<SearchUiState, SearchUiEffect>(SearchUiState()), SearchInteraction {
     override val TAG: String = this::class.simpleName.toString()
-
+    private var page = _state.value.page
     private val actionStream = MutableSharedFlow<String>()
+    private val sortOrder = _state.value.searchStates.state
+    private var productListScrollPosition = 0
 
     init {
         observeKeyword()
     }
 
     private fun searchForProducts() {
-        _state.update { it.copy(isSearching = true, isError = false) }
-        val query = _state.value.searchQuery
-        val sortOrder = _state.value.searchStates.state
-        tryToExecutePaging(
-            { searchForProductUseCase(query, sortOrder) },
-            ::onSearchForProductsSuccess,
-            ::onSearchForProductsError
-        )
-    }
-
-    private fun onSearchForProductsSuccess(products: PagingData<Product>) {
-        _state.update { searchUiState ->
-            searchUiState.copy(
-                products = flowOf(products.map { it.toProductUiState() }),
-            )
+        resetSearchState()
+        _state.update { it.copy(loading = true) }
+        viewModelScope.launch {
+            val products = searchForProductUseCase(_state.value.searchQuery, page, sortOrder)
+            val mappedProducts = products!!.map { it.toSearchProductUiState() }
+            _state.update { it.copy(products = mappedProducts, loading = false) }
         }
     }
 
-    private fun onSearchForProductsError(error: ErrorHandler) {
-        _state.update { it.copy(error = error) }
-        if (error is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isError = true) }
-        }
+    private fun appendProducts(products: List<SearchProductUiState>) {
+        val current = ArrayList(state.value.products)
+        current.addAll(products)
+        _state.update { it.copy(products = current) }
+    }
+
+    private fun incrementPage() {
+        page += 1
+    }
+
+    fun onChangeProductScrollPosition(position: Int) {
+        productListScrollPosition = position
+    }
+
+    private fun resetSearchState() {
+        _state.update { it.copy(products = listOf()) }
+        page = 1
+        onChangeProductScrollPosition(0)
     }
 
     fun onSearchTextChange(text: String) {
-        _state.update { it.copy(isSearching = true, searchQuery = text) }
+        _state.update { it.copy(loading = true, searchQuery = text) }
         viewModelScope.launch { actionStream.emit(text) }
     }
 
     private fun observeKeyword() {
         viewModelScope.launch(Dispatchers.Unconfined) {
             actionStream.debounce(700).distinctUntilChanged().filter { keyword ->
-                keyword.isNotBlank() }.collect { searchForProducts() }
+                keyword.isNotBlank()
+            }.collect { searchForProducts() }
         }
     }
-
 
     override fun onClickFilter() {
         val newState = !state.value.filtering
@@ -108,5 +110,22 @@ class SearchViewModel @Inject constructor(
     override fun onclickTryAgain() {
         searchForProducts()
     }
-}
 
+    override fun onScrollDown() {
+        viewModelScope.launch {
+            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
+                _state.update { it.copy(loading = true) }
+                incrementPage()
+                if (page > 1) {
+                    val result = searchForProductUseCase(
+                        _state.value.searchQuery,
+                        page,
+                        sortOrder
+                    )!!.map { it.toSearchProductUiState() }
+                    appendProducts(result)
+                }
+                _state.update { it.copy(loading = false) }
+            }
+        }
+    }
+}

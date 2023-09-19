@@ -85,25 +85,6 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
         }
     }
 
-    fun <T : Any> tryToExecutePaging(
-        flowFactory: suspend () -> Flow<PagingData<T>>,
-        onSuccess: suspend (PagingData<T>) -> Unit,
-        onError: (t: ErrorHandler) -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
-    ) {
-        viewModelScope.launch(dispatcher) {
-            handleException(
-                onError
-            ) {
-                val request = flowFactory().cachedIn(viewModelScope)
-                request.collect { result ->
-                    onSuccess(result)
-                }
-            }
-        }
-    }
-
-
     private suspend fun <T> handleException(
         onError: (t: ErrorHandler) -> Unit,
         action: suspend () -> T
@@ -131,6 +112,4 @@ abstract class BaseViewModel<T, E>(initialState: T) : ViewModel() {
             }
         }
     }
-
 }
-

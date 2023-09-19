@@ -36,7 +36,10 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by categoriesViewModel.state.collectAsState()
 
-    CategoriesContent(state, categoriesViewModel)
+    CategoriesContent(
+        state,
+        categoriesViewModel,
+    )
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
         categoriesViewModel.resetStateScreen()
@@ -67,8 +70,6 @@ fun CategoriesContent(
             }
         }
         ContentVisibility(state = !state.isError) {
-
-
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -96,7 +97,10 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showCategoryProductsInCategory()) {
-                        CategoryProductsContent(state = state, listener = listener)
+                        CategoryProductsContent(
+                            state = state,
+                            listener = listener,
+                        )
                     }
                 }
                 Column(
@@ -112,7 +116,10 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showCategoryProductsInProduct()) {
-                        CategoryProductsContent(state = state, listener = listener)
+                        CategoryProductsContent(
+                            state = state,
+                            listener = listener,
+                        )
                     }
 
                     ContentVisibility(state = state.showScreenState.showUpdateCategory) {

@@ -4,4 +4,5 @@ interface MarketInteractionListener {
     fun getAllMarkets()
     fun onClickMarket(marketId: Long)
     fun onclickTryAgainMarkets()
+    fun onScrollDown()
 }

@@ -1,8 +1,5 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -15,15 +12,19 @@ import org.the_chance.honeymart.ui.util.toPriceFormat
 // region Ui State
 data class CategoriesUiState(
     val isLoading: Boolean = true,
+    val isLoadingPaging: Boolean = false,
     val isError: Boolean = false,
+    val isErrorPaging: Boolean = false,
     val isEmptyProducts: Boolean = false,
     val error: ErrorHandler? = null,
     val message: String = "",
     val productsQuantity: String = "",
     val position: Int = 0,
+    val page: Int = 1,
+    val productsScrollPosition: Int = 0,
     val snackBar: SnackBarState = SnackBarState(),
     val category: CategoryUiState = CategoryUiState(),
-    val products: Flow<PagingData<ProductUiState>> = flow {},
+    val products: List<ProductUiState> = emptyList(),
     val productDetails: ProductUiState = ProductUiState(),
     val categories: List<CategoryUiState> = emptyList(),
     val categoryIcons: List<CategoryIconUIState> = emptyList(),

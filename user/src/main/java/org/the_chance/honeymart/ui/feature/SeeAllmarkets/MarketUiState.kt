@@ -12,14 +12,15 @@ data class MarketsUiState(
     val isMarketsLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val markets: Flow<PagingData<MarketUiState>>  = flow{},
+    val page: Int = 1,
+    val markets: List<MarketUiState> = ArrayList(),
 )
 
 data class MarketUiState(
     val marketId: Long = 0L,
     val marketName: String = "",
     val marketImage: String = "",
-    val isClicked : Boolean = false
+    val isClicked: Boolean = false
 )
 
 
