@@ -88,14 +88,13 @@ fun RequestsContent(
                             onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
                         )
                     }
-                    Loading(state = state.isLoading &&state.markets.isNotEmpty())
                     LazyColumn(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                        itemsIndexed(state.markets) { index, item ->
+                        itemsIndexed(state.marketsUpdated) { index, item ->
                             ItemMarketRequest(
                                 onClickCard = { listener.onClickMarket(index) },
                                 ownerName = item.ownerName,
@@ -126,7 +125,7 @@ fun RequestsContent(
             }
         }
     }
-    Loading(state = state.isLoading &&state.markets.isEmpty())
+    Loading(state = state.isLoading)
     ConnectionErrorPlaceholder(
         state = state.isError,
         onClickTryAgain = { listener.onClickTryAgain() })

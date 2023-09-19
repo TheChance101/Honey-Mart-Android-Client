@@ -7,5 +7,4 @@ interface MarketsInteractionListener {
     fun onClickApprove(marketId: Int)
     fun updateMarket(marketId: Int, isApproved: Boolean)
     fun onClickMarketsState(state: MarketsState)
-    fun getMarkets(marketsState: Int)
 }
