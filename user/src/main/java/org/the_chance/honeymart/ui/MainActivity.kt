@@ -37,6 +37,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.data.source.remote.network.ServiceLocator
+import org.the_chance.honeymart.di.FCMNotificationImp
 import org.the_chance.honeymart.ui.feature.bottom_navigation.BottomBarUi
 import org.the_chance.honeymart.ui.navigation.MainNavGraph
 import org.the_chance.honeymart.ui.navigation.Screen
@@ -48,10 +50,12 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ServiceLocator.initialize(FCMNotificationImp(applicationContext))
         installSplashScreen()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
+                handleNotificationIntent(intent)
                 HoneyMartTheme {
                     val bottomNavState = checkBottomBarState()
                     CheckNotificationPermission()
@@ -138,5 +142,12 @@ class MainActivity : AppCompatActivity() {
         val uri: Uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivity(intent)
+    }
+
+    private fun handleNotificationIntent(intent: Intent?) {
+        if (intent?.action == "OPEN_NOTIFICATIONS_SCREEN") {
+//            val navController = LocalNavigationProvider.current
+//            navController.navigateToNotificationsScreen()
+        }
     }
 }
