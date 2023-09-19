@@ -18,12 +18,7 @@ class OrderViewModel @Inject constructor(
 
 
 
-    private var initialLoad = true
     override fun getAllPendingOrders() {
-        if (!initialLoad && state.value.orderStates == OrderStates.PENDING) {
-            return
-        }
-        initialLoad = false
         _state.update {
             it.copy(
                 isLoading = true, isError = false, orderStates = OrderStates.PENDING,
@@ -53,9 +48,6 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllProcessingOrders() {
-        if (state.value.orderStates == OrderStates.PROCESSING) {
-            return
-        }
         _state.update {
             it.copy(
                 isLoading = true,
@@ -88,9 +80,6 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllDoneOrders() {
-        if (state.value.orderStates == OrderStates.DONE) {
-            return
-        }
         _state.update {
             it.copy(
                 isLoading = true,
@@ -122,9 +111,6 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllCancelledOrdersByUser() {
-        if (state.value.orderStates == OrderStates.CANCELLED_BY_USER) {
-            return
-        }
         _state.update {
             it.copy(
                 isLoading = true,
@@ -156,9 +142,6 @@ class OrderViewModel @Inject constructor(
     }
 
     override fun getAllCancelledOrdersByOwner() {
-        if (state.value.orderStates == OrderStates.CANCELLED_BY_OWNER) {
-            return
-        }
         _state.update {
             it.copy(
                 isLoading = true,
