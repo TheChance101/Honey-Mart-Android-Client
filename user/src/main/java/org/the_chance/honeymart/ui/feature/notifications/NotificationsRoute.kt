@@ -7,7 +7,7 @@ import androidx.navigation.navDeepLink
 import org.the_chance.honeymart.ui.navigation.Screen
 
 private val ROUTE = Screen.NotificationsScreen.route
-const val USER_NOTIFICATION_URI = "https://honeymart.ui.feature.notifications"
+const val USER_NOTIFICATION_URI = "https://honeymart.user.ui.feature.notifications"
 
 fun NavController.navigateToNotificationsScreen() {
     navigate(route = ROUTE)
