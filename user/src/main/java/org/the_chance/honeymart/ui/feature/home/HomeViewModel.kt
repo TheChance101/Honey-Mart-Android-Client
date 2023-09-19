@@ -17,8 +17,8 @@ import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserCouponsMa
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
-import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.coupons.toCouponUiState
+import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
@@ -96,6 +96,7 @@ class HomeViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
+                isCategoryLoading = false,
                 categories = categories.map { category -> category.toCategoryUiState() }
             )
         }
@@ -308,7 +309,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onClickChipCategory(marketId: Long) {
-        _state.update { it.copy(selectedMarketId = marketId, isLoading = true) }
+        _state.update { it.copy(selectedMarketId = marketId, isCategoryLoading = true) }
         getMarketCategories(marketId)
     }
 

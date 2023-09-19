@@ -275,7 +275,7 @@ class HoneyMartServiceImp @Inject constructor(
         page: Int?,
         sortOrder: String
     ): BaseResponse<List<ProductDto>> =
-        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder"){
+        wrap(client.get("product/search?query=$query&page=$page&sort=$sortOrder") {
 
         })
 
@@ -412,9 +412,9 @@ class HoneyMartServiceImp @Inject constructor(
                 HttpStatusCode.BadGateway.value -> throw NoConnectionException()
                 HttpStatusCode.BadRequest.value -> throw InvalidDataException()
                 HttpStatusCode.Unauthorized.value -> throw UnAuthorizedException()
-                HttpStatusCode.Forbidden.value ->throw ForbiddenException()
-                HttpStatusCode.NotFound.value ->throw NotFoundException()
-                HttpStatusCode.InternalServerError.value ->throw  InternalServerException()
+                HttpStatusCode.Forbidden.value -> throw ForbiddenException()
+                HttpStatusCode.NotFound.value -> throw NotFoundException()
+                HttpStatusCode.InternalServerError.value -> throw InternalServerException()
                 else -> throw Exception(response.status.description)
             }
         }
@@ -422,7 +422,11 @@ class HoneyMartServiceImp @Inject constructor(
 
     // region Owner
     //region Auth
-    override suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto> {
+    override suspend fun loginOwner(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<OwnerLoginDto> {
         return wrap(client.submitForm(url = "/owner/login", formParameters = Parameters.build {
             append("email", email)
             append("password", password)
@@ -477,7 +481,25 @@ class HoneyMartServiceImp @Inject constructor(
             append("expirationDate", expirationDate)
         }))
     }
+
+    override suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        review: String,
+        rating: Int
+    ): BaseResponse<Boolean> {
+        return wrap(client.submitForm(url = "/reviews", formParameters = Parameters.build {
+            append("productId", productId.toString())
+            append("orderId", orderId.toString())
+            append("content", review)
+            append("rating", rating.toString())
+        }))
+    }
     // endregion Coupon
+    // region Notifications
+    override suspend fun getAllOwnerNotifications(): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/ownerNotifications") {})
+    // endregion Notifications
 
     //region admin
     override suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>> {

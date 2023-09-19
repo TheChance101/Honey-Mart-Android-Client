@@ -238,6 +238,14 @@ interface HoneyMartService {
 
     // endregion Coupon
 
+    //region reviews
+    suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        review: String,
+        rating: Int,
+    ): BaseResponse<Boolean>
+
     //region notifications
 
     suspend fun getAllNotifications(
@@ -277,4 +285,6 @@ interface HoneyMartService {
 
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
+    suspend fun getAllOwnerNotifications():
+        BaseResponse<List<NotificationDto>>
 }
