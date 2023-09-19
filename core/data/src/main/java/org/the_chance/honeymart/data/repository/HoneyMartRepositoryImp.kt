@@ -342,6 +342,7 @@ class HoneyMartRepositoryImp @Inject constructor(
         }.value ?: throw NotFoundException()
     }
 
+
     override suspend fun getNoCouponMarketProducts(): List<Product> {
         return wrap { honeyMartService.getNoCouponMarketProducts() }.value?.map { it.toProduct() }
             ?: throw NotFoundException()
@@ -351,6 +352,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         return wrap { honeyMartService.searchNoCouponMarketProducts(query) }.value?.map { it.toProduct() }
             ?: throw NotFoundException()
     }
+    override suspend fun getAllOwnerNotifications(): List<Notification> =
+        wrap { honeyMartService.getAllOwnerNotifications() }.value?.map { it.toNotification() }
+            ?: throw NotFoundException()
+
 
     override suspend fun addCoupon(
         productId: Long,

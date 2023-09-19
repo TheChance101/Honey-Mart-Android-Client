@@ -284,6 +284,9 @@
     <string name="to_refresh_orders">to refresh orders</string>
     <string name="there_are_no_orders_in_your_market">There are no orders in your \n market!!</string>
     <string name="click_on_order_to_show_it_s_details">Click on order to show it’s details</string>
+    <string name="notifications_label">Notifications</string>
+     <string name="recieve_notification">You’ll receive a notification after \n customer place an order</string>
+    <string name="receive_notification_cancels">" You will receive a notification \n when a customer cancels an order"</string>
 
     <string name="blank_field">"This filed should not be empty</string>
 </resources>

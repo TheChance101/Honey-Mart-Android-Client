@@ -117,6 +117,7 @@ interface HoneyMartRepository {
         discountPercentage: Double,
         expirationDate: String,
     ): Boolean
+    suspend fun getAllOwnerNotifications(): List<Notification>
 
     suspend fun addReview(productId: Long, orderId: Long, rating: Int, review: String): Boolean
 

@@ -496,6 +496,10 @@ class HoneyMartServiceImp @Inject constructor(
         }))
     }
     // endregion Coupon
+    // region Notifications
+    override suspend fun getAllOwnerNotifications(): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/ownerNotifications") {})
+    // endregion Notifications
 
     //region admin
     override suspend fun getMarketsRequests(isApproved: Boolean?): BaseResponse<List<MarketRequestDto>> {

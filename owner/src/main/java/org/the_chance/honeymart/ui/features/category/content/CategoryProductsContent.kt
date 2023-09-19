@@ -125,7 +125,8 @@ fun CategoryProductsContent(
             }
             EmptyPlaceholder(
                 state = products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading,
-                emptyObjectName = "Product"
+                emptyObjectName = "Product",
+                notificationState = false
             )
         }
     }

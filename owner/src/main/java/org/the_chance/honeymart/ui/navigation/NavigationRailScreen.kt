@@ -24,4 +24,9 @@ sealed class NavigationRailScreen(
         label = R.string.coupons_label,
         selectedIcon = R.drawable.ic_coupon,
     )
+    object Notifications : NavigationRailScreen(
+        route = Screen.Notifications.route ,
+        label = R.string.notifications_label ,
+        selectedIcon = R.drawable.ic_notification
+    )
 }
