@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.SeeAllmarkets
+package org.the_chance.honeymart.ui.feature.see_all_markets
 
 import org.the_chance.honeymart.ui.base.BaseUiEffect
 

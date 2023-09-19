@@ -1,12 +1,10 @@
-package org.the_chance.honeymart.ui.feature.SeeAllmarkets
+package org.the_chance.honeymart.ui.feature.see_all_markets
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsPagingUseCase
-import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 

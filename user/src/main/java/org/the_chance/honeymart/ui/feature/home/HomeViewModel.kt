@@ -16,7 +16,7 @@ import org.the_chance.honeymart.domain.usecase.GetRecentProductsUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.user.UserCouponsManagerUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.toMarketUiState
+import org.the_chance.honeymart.ui.feature.see_all_markets.toMarketUiState
 import org.the_chance.honeymart.ui.feature.coupons.toCouponUiState
 import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState

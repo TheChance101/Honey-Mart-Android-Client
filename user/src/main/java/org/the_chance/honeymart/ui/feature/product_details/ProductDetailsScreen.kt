@@ -2,7 +2,6 @@
 
 package org.the_chance.honeymart.ui.feature.product_details
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -127,7 +126,7 @@ private fun ProductDetailsContent(
 
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
-     Scaffold(
+    Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -197,10 +196,10 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
             }
         }
     ) { padding ->
-         LazyColumn(
-             Modifier
-                 .fillMaxSize()
-                 .background(color = MaterialTheme.colorScheme.secondary)
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.secondary)
         ) {
             item {
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -339,19 +338,18 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                     reviewCount = state.reviewStatisticUiState.reviewsCount.toString()
                 )
             }
-             items(state.reviews.size) { index ->
-                 val review = state.reviews[index]
-                 Log.d("helllo", "${state.reviews.size}")
-                 CardReviews(
-                     userName = review.fullName,
-                     reviews = review.content,
-                     date = review.reviewDate,
-                     rating = review.rating.toFloat()
-                 )
-             }
-             item {
-                 Spacer(modifier = Modifier.padding(bottom = padding.calculateBottomPadding()))
-             }
+            items(state.reviews.size) { index ->
+                val review = state.reviews[index]
+                CardReviews(
+                    userName = review.fullName,
+                    reviews = review.content,
+                    date = review.reviewDate,
+                    rating = review.rating.toFloat()
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.padding(bottom = padding.calculateBottomPadding()))
+            }
         }
     }
 }

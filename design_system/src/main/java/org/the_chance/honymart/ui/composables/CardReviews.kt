@@ -69,7 +69,7 @@ fun CardReviews(
 
 @Preview
 @Composable
-fun kkk() {
+fun CardReviewsPreview() {
     CardReviews(
         userName = "hhh",
         reviews = "lkkdfdfdfnjkdshfjkdhfjhdskjnbvcmnxbvxnmxcbvhfvgdfhjgjfkgjvncxbmbreui",
