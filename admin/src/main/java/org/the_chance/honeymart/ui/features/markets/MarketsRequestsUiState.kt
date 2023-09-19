@@ -7,7 +7,6 @@ data class MarketsRequestUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val marketsUpdated: List<MarketRequestUiState> = emptyList(),
     val markets: List<MarketRequestUiState> = emptyList(),
     val selectedMarket: MarketRequestUiState? = null,
     val marketsState: MarketsState = MarketsState.ALL,
@@ -43,9 +42,13 @@ fun MarketRequest.toMarketRequestUiState(): MarketRequestUiState {
         imageUrl = imageUrl
     )
 }
-enum class MarketsState { UNAPPROVED, APPROVED, ALL }
+enum class MarketsState(val state: Int) {
+    ALL(1),
+    APPROVED(2),
+    UNAPPROVED(3),
+}
 
 fun MarketsRequestUiState.emptyRequestsPlaceHolder() =
-    this.marketsUpdated.isEmpty() && !this.isError && !this.isLoading
+    this.markets.isEmpty() && !this.isError && !this.isLoading
 
-fun MarketsRequestUiState.isContentScreenVisible() = !this.isLoading && !this.isError
+fun MarketsRequestUiState.isContentScreenVisible() =  !this.isError

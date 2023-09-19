@@ -16,13 +16,15 @@ class MarketsViewModel @Inject constructor(
     override val TAG: String = this::class.java.simpleName
 
     init {
-        getMarkets()
+        getMarkets(MarketsState.ALL.state)
     }
 
-    private fun getMarkets() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+    override fun getMarkets(marketsState: Int) {
+        _state.update { it.copy(isLoading = true, isError = false,
+//                marketsUpdated = getMarketsOnState(state),
+            selectedMarket = null) }
         tryToExecute(
-            { adminMarketsManager.getMarkets() },
+            { adminMarketsManager.getMarkets(marketState = marketsState) },
             ::onMarketRequestSuccess,
             ::onMarketRequestError
         )
@@ -32,7 +34,6 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
-                marketsUpdated = markets.map { it.toMarketRequestUiState() },
                 markets = markets.map { it.toMarketRequestUiState() }
             )
         }
@@ -65,7 +66,7 @@ class MarketsViewModel @Inject constructor(
 
     private fun onUpdateMarketSuccess(isApproved: Boolean) {
         _state.update { it.copy(isLoading = false) }
-        getMarkets()
+        getMarkets(MarketsState.ALL.state)
     }
 
     private fun onUpdateMarketError(error: ErrorHandler) {
@@ -80,35 +81,25 @@ class MarketsViewModel @Inject constructor(
         _state.update { uiState ->
             uiState.copy(
                 marketsState = requestState, selectedMarket = null,
-                marketsUpdated = getMarketsOnState(requestState)
             )
         }
     }
-
-    private fun getMarketsOnState(state: MarketsState): List<MarketRequestUiState> {
-        return when (state) {
-            MarketsState.APPROVED -> _state.value.markets.filter { it.isApproved }
-            MarketsState.UNAPPROVED -> _state.value.markets.filter { !it.isApproved }
-            MarketsState.ALL -> _state.value.markets
-        }
-    }
-
     override fun onClickMarketsState(state: MarketsState) {
         _state.update {
             it.copy(
                 marketsState = state,
-                marketsUpdated = getMarketsOnState(state),
                 selectedMarket = null
             )
         }
+        getMarkets(state.state)
     }
 
     override fun onClickTryAgain() {
-        getMarkets()
+        getMarkets(MarketsState.ALL.state)
     }
 
     override fun onClickMarket(position: Int) {
-        val updatedRequests = _state.value.marketsUpdated.mapIndexed { index, market ->
+        val updatedRequests = _state.value.markets.mapIndexed { index, market ->
             market.copy(
                 isSelected = index == position,
                 state = if (market.isApproved) MarketsState.APPROVED else MarketsState.UNAPPROVED
@@ -116,7 +107,7 @@ class MarketsViewModel @Inject constructor(
         }
         _state.update {
             it.copy(
-                marketsUpdated = updatedRequests,
+                markets = updatedRequests,
                 selectedMarket = updatedRequests[position]
             )
         }
