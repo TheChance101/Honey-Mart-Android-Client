@@ -12,7 +12,7 @@ data class NotificationsUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val notificationState: NotificationStates = NotificationStates.ALL,
+    val notificationState: NotificationStates = NotificationStates.NEW,
     val products: List<OrderDetailsProductUiState> = emptyList(),
     val orderDetails: OrderUiState = OrderUiState(),
     val orders: List<OrderUiState> = emptyList(),

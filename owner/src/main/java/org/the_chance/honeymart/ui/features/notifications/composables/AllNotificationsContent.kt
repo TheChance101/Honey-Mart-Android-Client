@@ -45,17 +45,6 @@ fun AllNotificationsContent(
         ) {
             item {
                 CustomChip(
-                    state = state.all(),
-                    text = stringResource(R.string.all),
-                    onClick = {
-                        listener.getAllNotifications(
-                            NotificationStates.ALL.state, NotificationStates.ALL
-                        )
-                    }
-                )
-            }
-            item {
-                CustomChip(
                     state = state.new(),
                     text = "New",
                     onClick = {
@@ -66,6 +55,19 @@ fun AllNotificationsContent(
                     }
                 )
             }
+
+            item {
+                CustomChip(
+                    state = state.all(),
+                    text = stringResource(R.string.all),
+                    onClick = {
+                        listener.getAllNotifications(
+                            NotificationStates.ALL.state, NotificationStates.ALL
+                        )
+                    }
+                )
+            }
+
             item {
                 CustomChip(
                     state = state.cancelled(),
