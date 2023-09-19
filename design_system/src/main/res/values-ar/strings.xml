@@ -291,4 +291,5 @@
     <string name="product_description_is_too_long">اسم المنتج طويل جدا، 500 حرف كحد أقصي</string>
     <string name="product_name_is_too_long">اسم المنتج طويل جدا، 20 كلمة كحد أقص</string>
     <string name="invalid_product_name">اسم منتج غير صالح</string>
+    <string name="no_categories_available">لا توجد فئات</string>
 </resources>
