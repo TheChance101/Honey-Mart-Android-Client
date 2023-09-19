@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
@@ -44,6 +45,7 @@ fun HomeCategoriesItem(
     label: String,
     modifier: Modifier = Modifier,
     painter: Painter? = null,
+    width: Dp = MaterialTheme.dimens.widthItemMarketCard,
     backgroundColor: Color = MaterialTheme.colorScheme.onTertiary,
 ) {
     val colors = MaterialTheme.colorScheme
@@ -54,7 +56,7 @@ fun HomeCategoriesItem(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() }
             )
-            .size(MaterialTheme.dimens.widthItemMarketCard)
+            .size(width)
             .drawBehind {
                 drawIntoCanvas {
                     val path = hexagonPath(size, center)

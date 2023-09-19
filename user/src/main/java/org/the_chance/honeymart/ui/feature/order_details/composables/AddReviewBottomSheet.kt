@@ -5,6 +5,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Text
@@ -43,6 +44,7 @@ fun AddReviewBottomSheet(
         exit = slideOutVertically { -it },
     ) {
         ModalBottomSheet(
+            modifier = Modifier.navigationBarsPadding(),
             onDismissRequest = onDismiss,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             dragHandle = {
