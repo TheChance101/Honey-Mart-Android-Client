@@ -113,9 +113,9 @@ fun CategoryProductsContent(
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
                             imageUrl = it.productImage.firstOrNull() ?: "",
-                            productName = it.productName,
-                            productPrice = it.productPrice,
-                            description = it.productDescription
+                            productName = it.productNameState.name,
+                            productPrice = it.productPriceState.name,
+                            description = it.productDescriptionState.name
                         )
                     }
                 }

@@ -238,6 +238,14 @@ interface HoneyMartService {
 
     // endregion Coupon
 
+    //region reviews
+    suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        review: String,
+        rating: Int,
+    ): BaseResponse<Boolean>
+
     //region notifications
 
     suspend fun getAllNotifications(
