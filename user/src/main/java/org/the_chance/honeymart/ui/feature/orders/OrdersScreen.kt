@@ -60,11 +60,6 @@ fun OrdersScreen(
                 )
             }
         })
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getAllPendingOrders()
-    }
-
     OrdersContent(
         state = state,
         listener = viewModel,

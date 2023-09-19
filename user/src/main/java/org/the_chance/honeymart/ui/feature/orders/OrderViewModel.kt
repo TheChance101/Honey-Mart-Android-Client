@@ -16,7 +16,9 @@ class OrderViewModel @Inject constructor(
 ) : BaseViewModel<OrdersUiState, OrderUiEffect>(OrdersUiState()), OrdersInteractionsListener {
     override val TAG: String = this::class.simpleName.toString()
 
-
+    init {
+        getAllPendingOrders()
+    }
 
     override fun getAllPendingOrders() {
         _state.update {
