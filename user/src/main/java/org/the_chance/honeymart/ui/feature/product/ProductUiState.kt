@@ -28,7 +28,6 @@ data class SnackBarState(
     val message: String = ""
 )
 
-
 data class ProductUiState(
     val productId: Long = 0L,
     val productName: String = "",

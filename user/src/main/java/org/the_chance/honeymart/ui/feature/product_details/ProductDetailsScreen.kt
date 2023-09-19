@@ -2,7 +2,7 @@
 
 package org.the_chance.honeymart.ui.feature.product_details
 
-
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,8 +44,12 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
+import org.the_chance.honeymart.ui.feature.home.composables.ItemLabel
 import org.the_chance.honeymart.ui.feature.product_details.composeable.ProductAppBar
 import org.the_chance.honeymart.ui.feature.product_details.composeable.SmallProductImages
+import org.the_chance.honeymart.ui.feature.productreview.navigateToProductReviewsScreen
+import org.the_chance.honymart.ui.composables.AverageRating
+import org.the_chance.honymart.ui.composables.CardReviews
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
 import org.the_chance.honymart.ui.composables.HoneyFilledButton
@@ -75,10 +81,13 @@ fun ProductDetailsScreen(
                     viewModel.showDialog(effect.productId, effect.count)
                 }
 
-                ProductDetailsUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
+                ProductDetailsUiEffect.UnAuthorizedUserEffect ->
+                    navController.navigateToAuthScreen()
+
+                is ProductDetailsUiEffect.NavigateToReviewsScreen ->
+                    navController.navigateToProductReviewsScreen(productId = effect.productId)
             }
         })
-
     ConnectionErrorPlaceholder(
         state = state.isConnectionError,
         onClickTryAgain = viewModel::getData
@@ -87,8 +96,6 @@ fun ProductDetailsScreen(
     ContentVisibility(state = !state.isLoading && !state.isConnectionError) {
         ProductDetailsContent(state = state, listener = viewModel)
     }
-
-
 }
 
 
@@ -97,9 +104,8 @@ private fun ProductDetailsContent(
     state: ProductDetailsUiState,
     listener: ProductDetailsInteraction
 ) {
-
+    ProductDetailsMainContent(state, listener)
     Box(modifier = Modifier.fillMaxSize()) {
-        ProductDetailsMainContent(state, listener)
         if (state.dialogState.showDialog) {
             CustomAlertDialog(
                 message = stringResource(R.string.add_from_different_cart_message),
@@ -121,15 +127,10 @@ private fun ProductDetailsContent(
 
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
-
-    Scaffold(
+     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         bottomBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -145,19 +146,16 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                                 top = MaterialTheme.dimens.space16,
                                 start = MaterialTheme.dimens.space16,
                                 end = MaterialTheme.dimens.space16,
-                            ).align(Alignment.BottomCenter),
+                            )
+                            .align(Alignment.BottomCenter),
                         onClick = {
                             state.product.productId.let {
-                                listener.addProductToCart(
-                                    it,
-                                    state.quantity
-                                )
+                                listener.addProductToCart(it, state.quantity)
                             }
                         },
                         icon = R.drawable.icon_cart,
                         isLoading = state.isAddToCartLoading
                     )
-
                 }
                 Box(
                     modifier = Modifier
@@ -195,127 +193,165 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
                             onDismissRequest = { listener.resetDialogState() }
                         )
                     }
-
                 }
             }
         }
     ) { padding ->
-        Column(Modifier.fillMaxSize()) {
-            ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-                val (imageProduct, smallImageProduct, info) = createRefs()
-                Box(modifier = Modifier
-                    .fillMaxHeight(0.5F)
-                    .constrainAs(imageProduct) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }) {
+         LazyColumn(
+             Modifier
+                 .fillMaxSize()
+                 .background(color = MaterialTheme.colorScheme.secondary)
+        ) {
+            item {
+                ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+                    val (imageProduct, smallImageProduct, info) = createRefs()
+                    Box(modifier = Modifier
+                        .fillMaxHeight(0.5F)
+                        .constrainAs(imageProduct) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }) {
 
-                    ImageNetwork(
-                        imageUrl = state.image, modifier = Modifier.fillMaxSize()
-                    )
-
-                    ProductAppBar(
-                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
-                        state = state,
-                        onBackClick = listener::onClickBack,
-                        onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
-                    )
-                }
-
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondary)
-                    .fillMaxHeight(0.5F)
-                    .padding(top = MaterialTheme.dimens.space48)
-                    .padding(
-                        top = MaterialTheme.dimens.space24,
-                        start = MaterialTheme.dimens.space16,
-                        end = MaterialTheme.dimens.space16,
-                    )
-                    .constrainAs(info) {
-                        top.linkTo(imageProduct.bottom)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = state.product.productName,
-                            style = MaterialTheme.typography.displayMedium.copy(
-                                color = MaterialTheme.colorScheme.onSecondary
-                            ),
+                        ImageNetwork(
+                            imageUrl = state.image, modifier = Modifier.fillMaxSize()
                         )
 
-                        Row {
-                            HoneyIconButton(
-                                iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
-                                background = Color.Transparent,
-                                isLoading = state.isAddToCartLoading,
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .border(
-                                        1.dp,
-                                        MaterialTheme.colorScheme.primary,
-                                        CircleShape
-                                    ),
-                                onClick = listener::decreaseProductCount,
-                            )
-
-                            Text(
-                                text = state.quantity.toString(),
-                                style = MaterialTheme.typography.displayMedium.copy(
-                                    color = MaterialTheme.colorScheme.onBackground
-                                ),
-                                modifier = Modifier
-                                    .padding(horizontal = MaterialTheme.dimens.space12)
-                            )
-
-                            HoneyIconButton(
-                                iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
-                                background = MaterialTheme.colorScheme.primary,
-                                isLoading = state.isAddToCartLoading,
-                                onClick = listener::increaseProductCount,
-                            )
+                        ProductAppBar(
+                            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
+                            state = state,
+                            onBackClick = listener::onClickBack,
+                            onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
+                        )
+                    }
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(
+                            top = MaterialTheme.dimens.space24,
+                            start = MaterialTheme.dimens.space16,
+                            end = MaterialTheme.dimens.space16,
+                        )
+                        .constrainAs(info) {
+                            top.linkTo(imageProduct.bottom)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
                         }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = MaterialTheme.dimens.space32,
+                                ),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+
+                                text = state.product.productName,
+                                style = MaterialTheme.typography.displayMedium.copy(
+                                    color = MaterialTheme.colorScheme.onSecondary
+                                ),
+                            )
+                            Row {
+                                HoneyIconButton(
+                                    iconPainter = painterResource(id = R.drawable.icon_remove_from_cart),
+                                    background = Color.Transparent,
+                                    isLoading = state.isAddToCartLoading,
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(
+                                            1.dp,
+                                            MaterialTheme.colorScheme.primary,
+                                            CircleShape
+                                        ),
+                                    onClick = listener::decreaseProductCount,
+                                )
+
+                                Text(
+                                    text = state.quantity.toString(),
+                                    style = MaterialTheme.typography.displayMedium.copy(
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    ),
+                                    modifier = Modifier
+                                        .padding(horizontal = MaterialTheme.dimens.space12)
+                                )
+                                HoneyIconButton(
+                                    iconPainter = painterResource(id = R.drawable.icon_add_to_cart),
+                                    background = MaterialTheme.colorScheme.primary,
+                                    isLoading = state.isAddToCartLoading,
+                                    onClick = listener::increaseProductCount,
+                                )
+                            }
+                        }
+                        HoneyOutlineText(
+                            modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
+                            text = state.totalPriceInCurrency,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = MaterialTheme.dimens.space16),
+                            text = state.product.productDescription,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            ),
+                            maxLines = 3,
+                        )
                     }
-
-                    HoneyOutlineText(
-                        modifier = Modifier.padding(vertical = MaterialTheme.dimens.space8),
-                        text = state.totalPriceInCurrency,
+                    SmallProductImages(
+                        state = state.smallImages,
+                        modifier = Modifier.constrainAs(smallImageProduct) {
+                            top.linkTo(imageProduct.bottom)
+                            bottom.linkTo(imageProduct.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                        onClickImage = { index ->
+                            listener.onClickSmallImage(state.smallImages[index])
+                        }
                     )
-
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = MaterialTheme.dimens.space24),
-                        text = state.product.productDescription,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        maxLines = 3,
-                    )
-
                 }
-
-                SmallProductImages(
-                    state = state.smallImages,
-                    modifier = Modifier.constrainAs(smallImageProduct) {
-                        top.linkTo(imageProduct.bottom)
-                        bottom.linkTo(info.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                    onClickImage = { index ->
-                        listener.onClickSmallImage(state.smallImages[index])
+            }
+            item {
+                Box {
+                    AnimatedVisibility(
+                        visible = state.reviews.isNotEmpty(),
+                    ) {
+                        ItemLabel(
+                            modifier = Modifier.padding(MaterialTheme.dimens.space16),
+                            label = "User Reviews",
+                            iconPainter = painterResource(id = R.drawable.ic_seall),
+                            onClick = {
+                                state.product.productId.let {
+                                    listener.onClickSeeAllReviews(it)
+                                }
+                            }
+                        )
                     }
+                }
+            }
+            item {
+                AverageRating(
+                    averageRating = state.reviewStatisticUiState.averageRating.toFloat(),
+                    reviewCount = state.reviewStatisticUiState.reviewsCount.toString()
                 )
             }
+             items(state.reviews.size) { index ->
+                 val review = state.reviews[index]
+                 Log.d("helllo", "${state.reviews.size}")
+                 CardReviews(
+                     userName = review.fullName,
+                     reviews = review.content,
+                     date = review.reviewDate,
+                     rating = review.rating.toFloat()
+                 )
+             }
+             item {
+                 Spacer(modifier = Modifier.padding(bottom = padding.calculateBottomPadding()))
+             }
         }
     }
 }

@@ -8,13 +8,10 @@ import org.the_chance.honeymart.data.source.remote.network.FireBaseMessageServic
 import org.the_chance.honeymart.data.source.remote.network.FireBaseMsgServiceImpl
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class FirebaseModule {
     @Singleton
     @Binds
-    abstract fun bindsFireBaseMsgService(firebaseMessaging: FireBaseMsgServiceImpl): FireBaseMessageService
-
-
+    abstract fun bindFireBaseMsgService(fireBaseMsgService: FireBaseMsgServiceImpl): FireBaseMessageService
 }

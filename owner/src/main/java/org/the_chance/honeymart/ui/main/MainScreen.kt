@@ -68,6 +68,7 @@ fun MainContent(
         NavigationRailScreen.Orders.route,
         NavigationRailScreen.Category.route,
         NavigationRailScreen.Coupons.route,
+        NavigationRailScreen.Notifications.route,
         Screen.Profile.route
     )
     val showNavigationRail = currentDestination?.route in screenRouts

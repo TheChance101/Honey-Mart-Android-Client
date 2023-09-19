@@ -10,7 +10,12 @@ class ProductsPagingSource @Inject constructor(
     val id: Long,
 ) : BasePagingSource<Product>(honeyMartService) {
     override suspend fun fetchData(page: Int): List<Product> {
-        return wrap { honeyMartService.getAllProductsByCategory(page = page, categoryId = id) }.value?.map { it.toProduct() }
+        return wrap {
+            honeyMartService.getAllProductsByCategory(
+                page = page,
+                categoryId = id
+            )
+        }.value?.map { it.toProduct() }
             ?: throw Throwable("paging error")
     }
 

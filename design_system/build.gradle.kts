@@ -47,5 +47,7 @@ dependencies {
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
     implementation("com.airbnb.android:lottie-compose:6.0.1")
+    //coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
 }

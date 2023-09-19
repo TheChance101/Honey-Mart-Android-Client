@@ -122,13 +122,19 @@
     <!--Add New Product Region-->
     <string name="add_new_product">Add New Product</string>
     <string name="product_name_can_t_be_blank">Product name can\'t be blank</string>
-    <string name="product_name_is_too_short">Product name is too short</string>
+    <string name="product_name_is_too_short">Product name is too short, at least 4 letters</string>
+    <string name="product_name_is_too_long">Product name is too long, at most 20 letters</string>
+    <string name="invalid_product_name">Invalid product name</string>
+
     <string name="price">Price</string>
     <string name="product_price_can_t_be_blank">Product price can\'t be blank</string>
     <string name="invalid_product_price">Invalid product price</string>
+
     <string name="description">Description</string>
     <string name="product_description_can_t_be_blank">Product description can\'t be blank</string>
-    <string name="product_description_is_too_short">Product description is too short</string>
+    <string name="product_description_is_too_short">Product description is too short, at least 6 letters</string>
+    <string name="product_description_is_too_long">Product description is too long, at most 500 letters</string>
+
     <string name="add_product_image">Add product image</string>
     <string name="add">Add</string>
     <string name="icon_cart">Icon Cart</string>
@@ -137,7 +143,8 @@
 
     <!--Update Category Region-->
     <string name="category_name_can_t_be_blank">Category name can\'t be blank</string>
-    <string name="category_name_is_too_short">Category name is too short</string>
+    <string name="category_name_is_too_short">Category name is too short, at least 4 letters</string>
+    <string name="invalid_category_name">Category name should contain only characters</string>
     <string name="update_category">Update category</string>
     <string name="new_category_name">New category name</string>
     <string name="category_icon">Category Icon</string>
@@ -212,6 +219,7 @@
     <string name="coupon_count">Coupon Count</string>
     <string name="coupon_count_can_t_be_blank">Coupon Count can\'t be blank</string>
     <string name="invalid_coupon_count">Invalid Coupon Count</string>
+    <string name="coupon_count_is_too_long">Coupon Count is too long , at most 9 digit</string>
     <string name="select_product_to_start_adding_your_coupon">Select Product to start adding your coupon</string>
     <string name="offer_percentage">Offer Percentage</string>
     <string name="dismiss">Dismiss</string>
@@ -275,5 +283,13 @@
     <string name="to_refresh_orders">to refresh orders</string>
     <string name="there_are_no_orders_in_your_market">There are no orders in your \n market!!</string>
     <string name="click_on_order_to_show_it_s_details">Click on order to show it’s details</string>
+    <string name="notifications_label">Notifications</string>
+     <string name="recieve_notification">You’ll receive a notification after \n customer place an order</string>
+    <string name="receive_notification_cancels">" You will receive a notification \n when a customer cancels an order"</string>
 
+    <string name="customers_reviews">Customers Reviews</string>
+    <string name="user_reviews">User_Reviews</string>
+    <string name="ratings">Ratings</string>
+    <string name="category_name_is_too_long">Category name is too long</string>
+    <string name="blank_field">"This filed should not be empty</string>
 </resources>

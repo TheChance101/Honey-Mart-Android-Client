@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,6 +44,7 @@ fun ItemOrder(
         modifier = modifier
             .fillMaxWidth()
             .height(105.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable { onClickCard(orderId) },
         colors = CardDefaults.cardColors(
             containerColor = (MaterialTheme.colorScheme.onTertiary)

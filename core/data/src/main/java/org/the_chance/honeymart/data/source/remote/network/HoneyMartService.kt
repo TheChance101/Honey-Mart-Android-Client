@@ -20,6 +20,7 @@ import org.the_chance.honeymart.data.source.remote.models.OwnerProfileDto
 import org.the_chance.honeymart.data.source.remote.models.ProductDto
 import org.the_chance.honeymart.data.source.remote.models.ProfileUserDto
 import org.the_chance.honeymart.data.source.remote.models.RecentProductDto
+import org.the_chance.honeymart.data.source.remote.models.ReviewsDto
 import org.the_chance.honeymart.data.source.remote.models.UserLoginDto
 import org.the_chance.honeymart.data.source.remote.models.WishListDto
 
@@ -238,6 +239,14 @@ interface HoneyMartService {
 
     // endregion Coupon
 
+    //region reviews
+    suspend fun addReview(
+        productId: Long,
+        orderId: Long,
+        review: String,
+        rating: Int,
+    ): BaseResponse<Boolean>
+
     //region notifications
 
     suspend fun getAllNotifications(
@@ -257,7 +266,11 @@ interface HoneyMartService {
 
 
     // region Auth
-    suspend fun loginOwner(email: String, password: String,deviceToken: String): BaseResponse<OwnerLoginDto>
+    suspend fun loginOwner(
+        email: String,
+        password: String,
+        deviceToken: String
+    ): BaseResponse<OwnerLoginDto>
     //endregion
 
     //endregion
@@ -277,4 +290,14 @@ interface HoneyMartService {
 
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
 //endregion admin
+    suspend fun getAllOwnerNotifications():
+        BaseResponse<List<NotificationDto>>
+
+    //region rating
+    suspend fun getReviewsForProduct(
+        page: Int?,
+        productId: Long
+    ): BaseResponse<ReviewsDto>
+
+    //end region rating
 }

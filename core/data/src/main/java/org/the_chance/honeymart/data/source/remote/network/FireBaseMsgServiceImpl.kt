@@ -13,14 +13,14 @@ import kotlinx.coroutines.tasks.await
 import org.the_chance.honeymart.data.R
 import javax.inject.Inject
 
-class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
-    FireBaseMessageService {
+class FireBaseMsgServiceImpl @Inject constructor(
+) : FirebaseMessagingService(), FireBaseMessageService {
     private val firebaseMessaging = FirebaseMessaging.getInstance()
+    private val clickPendingIntent = ServiceLocator.getFCMNotification().getClickPendingIntent()
+
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")
-
     }
-
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         val notification = remoteMessage.notification
@@ -31,18 +31,20 @@ class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
         }
     }
 
-
     private fun showNotification(title: String?, message: String?) {
         val channelId = "default_channel"
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationId = 1
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.icon_order_nav)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .addAction(0,"Show",clickPendingIntent)
 
-
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationBuilder.setContentIntent(clickPendingIntent)
 
         val channel = NotificationChannel(
             channelId,
@@ -53,8 +55,6 @@ class FireBaseMsgServiceImpl @Inject constructor() : FirebaseMessagingService(),
         channel.lightColor = Color.RED
         channel.enableVibration(true)
         notificationManager.createNotificationChannel(channel)
-
-        val notificationId = 1
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 

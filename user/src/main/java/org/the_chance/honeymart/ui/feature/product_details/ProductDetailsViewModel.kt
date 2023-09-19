@@ -25,11 +25,12 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val args = ProductDetailsArgs(savedStateHandle)
 
+
     init {
         getData()
     }
 
-     fun getData() {
+    fun getData() {
         getProductDetails(args.productId.toLong())
     }
 
@@ -78,9 +79,16 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onGetProductSuccess(product: Product) {
+        val reviewStatistic = product.reviewStatistic.toReviewStatisticUiState()
+        val reviewsList = product.reviews.map { it.toReviewUiState() }
         _state.update {
             it.copy(
-                error = null, isConnectionError = false, product = product.toProductUiState(), isLoading = false
+                error = null,
+                isConnectionError = false,
+                product = product.toProductUiState(),
+                reviews = reviewsList,
+                reviewStatisticUiState = reviewStatistic,
+                isLoading = false
             )
         }
         _state.update {
@@ -144,7 +152,7 @@ class ProductDetailsViewModel @Inject constructor(
                 isConnectionError = false,
             )
         }
-       tryToExecute(
+        tryToExecute(
             { cartOperations.cartUseCase.addToCart(productId, count) },
             ::onAddProductToCartSuccess,
             { onAddProductToCartError(it, productId, count) }
@@ -246,6 +254,13 @@ class ProductDetailsViewModel @Inject constructor(
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
+    }
+
+    override fun onClickSeeAllReviews(productId: Long) {
+        effectActionExecutor(
+            _effect,
+            ProductDetailsUiEffect.NavigateToReviewsScreen(productId = productId)
+        )
     }
 
     override fun showSnackBar(massage: String) {

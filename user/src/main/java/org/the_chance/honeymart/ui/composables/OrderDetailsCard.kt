@@ -1,13 +1,20 @@
 package org.the_chance.honeymart.ui.composables
 
-import androidx.compose.foundation.background
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,16 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
-import org.the_chance.honymart.ui.theme.blackOn87
+import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.white
 
@@ -36,85 +42,117 @@ fun OrderDetailsCard(
     orderPrice: String,
     orderCount: String,
     onClickCard: (orderId: Long) -> Unit,
+    onClickAddReview: () -> Unit,
+    isAddReviewVisible: Boolean,
     orderId: Long,
 ) {
-    Box(
+    Card(
         modifier = modifier
-            .size(width = 160.dp, MaterialTheme.dimens.heightItem)
+            .fillMaxWidth()
+            .height(MaterialTheme.dimens.cardHeight)
             .clip(MaterialTheme.shapes.medium)
-            .clickable { onClickCard(orderId) }
+            .clickable { onClickCard(orderId) },
+        colors =
+        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary),
+        shape = MaterialTheme.shapes.medium
     ) {
-        ImageNetwork(
-            modifier = Modifier.fillMaxSize(),
-            imageUrl = imageUrl,
-        )
-
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            blackOn87,
-                        ),
-                        startY = 50f,
-                    )
-                )
-        )
-
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(
-                    start = MaterialTheme.dimens.space8,
-                    bottom = MaterialTheme.dimens.space8,
-                    end = MaterialTheme.dimens.space8
-                )
-        ) {
-            Text(
-                text = orderName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = orderPrice,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+        Row {
+            ImageNetwork(
+                modifier = Modifier
+                    .weight(0.3f),
+                imageUrl = imageUrl,
+                contentScale = ContentScale.Crop,
             )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_cart_details),
-                    contentDescription = stringResource(R.string.cart_check_icon),
-                    tint = white,
-                    modifier = Modifier.padding(end = MaterialTheme.dimens.space4)
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.7f)
+                    .padding(MaterialTheme.dimens.space8),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = orderName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "x$orderCount",
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    text = orderPrice,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_cart_details),
+                        contentDescription = stringResource(R.string.cart_check_icon),
+                        tint = MaterialTheme.colorScheme.onSecondary,
+                        modifier = Modifier.size(MaterialTheme.dimens.icon16)
+                    )
+                    Text(
+                        text = "x$orderCount",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    if (isAddReviewVisible) {
+                        Button(
+                            modifier = Modifier
+                                .height(
+                                    MaterialTheme.dimens.space32
+                                ),
+                            onClick = onClickAddReview,
+                            contentPadding = PaddingValues(
+                                horizontal = MaterialTheme.dimens.space8,
+                            ),
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(MaterialTheme.dimens.icon16),
+                                tint = white,
+                                painter = painterResource(id = R.drawable.ic_pen),
+                                contentDescription = "Write a review",
+                            )
+                            Text(
+                                modifier = Modifier.padding(start = MaterialTheme.dimens.space4),
+                                text = "Write a review",
+                                style = MaterialTheme.typography.displaySmall.copy(
+                                    baselineShift = BaselineShift(0.2f)
+                                ),
+                                color = white,
+                            )
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-@Preview
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun OrderDetailsCardPreview() {
-    OrderDetailsCard(
-        imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
-        orderName = "To Kill a Mockingbird",
-        orderPrice = "30,000",
-        orderCount = "3",
-        orderId = 0,
-        onClickCard = {}
-    )
+    HoneyMartTheme {
+        OrderDetailsCard(
+            imageUrl = "https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129804.jpg",
+            orderName = "To Kill a Mockingbird",
+            orderPrice = "30,000$",
+            orderCount = "3",
+            orderId = 0,
+            onClickCard = {},
+            onClickAddReview = {},
+            isAddReviewVisible = true
+        )
+    }
 }

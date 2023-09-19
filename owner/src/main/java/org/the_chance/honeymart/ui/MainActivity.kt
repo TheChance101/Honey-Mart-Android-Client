@@ -24,6 +24,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import org.the_chance.honeymart.data.source.remote.network.ServiceLocator
+import org.the_chance.honeymart.di.FCMNotificationImp
 import org.the_chance.honeymart.ui.main.MainScreen
 import org.the_chance.honeymart.ui.navigation.LocalNavigationProvider
 import org.the_chance.honymart.ui.composables.PermissionDialog
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ServiceLocator.initialize(FCMNotificationImp(applicationContext))
         installSplashScreen()
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {

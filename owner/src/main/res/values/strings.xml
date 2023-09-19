@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">owner</string>
     <string name="category_icon">category icon</string>
+    <string name="category_name_is_too_long">Category_name_is too long</string>
 </resources>

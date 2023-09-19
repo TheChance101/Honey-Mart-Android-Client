@@ -160,14 +160,12 @@ class OrdersViewModel @Inject constructor(
                         id = state.value.orderId,
                         updateState = OrderStates.PROCESSING
                     )
-                    getAllMarketOrder(OrderStates.PENDING)
                 },
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
                         updateState = OrderStates.CANCELED
                     )
-                    getAllMarketOrder(OrderStates.PENDING)
                 }
             )
 
@@ -180,14 +178,12 @@ class OrdersViewModel @Inject constructor(
                         updateState = OrderStates.DONE
                     )
 
-                    getAllMarketOrder(OrderStates.PROCESSING)
                 },
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
                         updateState = OrderStates.CANCELED
                     )
-                    getAllMarketOrder(OrderStates.PROCESSING)
                 }
             )
 
