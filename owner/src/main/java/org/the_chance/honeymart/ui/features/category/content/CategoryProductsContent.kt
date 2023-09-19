@@ -126,7 +126,7 @@ fun CategoryProductsContent(
                 }
             }
             EmptyPlaceholder(
-                state = products.itemCount <= 0 && products.loadState.refresh != LoadState.Loading,
+                state = products.isEmpty(),
                 emptyObjectName = "Product",
                 notificationState = false
             )

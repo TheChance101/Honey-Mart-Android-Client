@@ -283,24 +283,4 @@ class CouponsViewModel @Inject constructor(
             )
         }
     }
-
-    private fun getDiscountPercentageState(discountPercentage: String): ValidationState {
-        val percentageRegex = Regex("^(100(\\.0{1,2})?|\\d{1,2}(\\.\\d{1,2})?)$")
-        val state: ValidationState = when {
-            discountPercentage.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            !discountPercentage.matches(percentageRegex) -> ValidationState.INVALID_COUPON_DISCOUNT_PERCENTAGE
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return state
-    }
-
-    private fun getCouponCountState(couponCount: String): ValidationState {
-        val numberRegex = Regex("^[1-9]\\d*$")
-        val state: ValidationState = when {
-            couponCount.isBlank() -> ValidationState.BLANK_TEXT_FIELD
-            !couponCount.matches(numberRegex) -> ValidationState.INVALID_COUPON_COUNT
-            else -> ValidationState.VALID_TEXT_FIELD
-        }
-        return state
-    }
 }
