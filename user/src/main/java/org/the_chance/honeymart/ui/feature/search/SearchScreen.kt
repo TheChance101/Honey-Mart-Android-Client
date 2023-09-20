@@ -5,8 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,13 +33,13 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
-import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
+import org.the_chance.honeymart.ui.feature.search.composeable.SearchBar
 import org.the_chance.honymart.ui.composables.CustomChip
-import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -93,21 +91,16 @@ fun SearchContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        end = MaterialTheme.dimens.space16,
-                        bottom = MaterialTheme.dimens.space16
-                    ),
+                    .padding(MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HoneyTextField(
+                SearchBar(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = state.searchQuery,
-                    hint = stringResource(R.string.search),
-                    iconPainter = painterResource(id = R.drawable.search),
-                    onValueChange = onSearchTextChange,
-                    oneLineOnly = true
+                    query = state.searchQuery,
+                    onValueChange = onSearchTextChange
                 )
+
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
                     onClick = listener::onClickFilter,
@@ -130,8 +123,8 @@ fun SearchContent(
             }
             AnimatedVisibility(
                 visible = state.filtering,
-                enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically(),
-                exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically()
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 200))
             ) {
                 Column {
                     Text(
