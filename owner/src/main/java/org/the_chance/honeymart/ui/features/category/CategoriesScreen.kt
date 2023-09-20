@@ -24,7 +24,6 @@ import org.the_chance.honeymart.ui.features.category.content.AddProductContent
 import org.the_chance.honeymart.ui.features.category.content.CategoryItemsContent
 import org.the_chance.honeymart.ui.features.category.content.CategoryProductsContent
 import org.the_chance.honeymart.ui.features.category.content.ProductDetailsContent
-import org.the_chance.honeymart.ui.features.category.content.ProductReviewContent
 import org.the_chance.honeymart.ui.features.category.content.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -140,7 +139,6 @@ fun CategoriesContent(
                             listener = listener,
                             onClickConfirm = { listener.onClickUpdateProductDetails() },
                             onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
-                            productReviewContent = ProductReviewContent(state = state)
                         )
                     }
                     ContentVisibility(state = state.showProductUpdateContent()) {

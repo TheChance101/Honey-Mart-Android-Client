@@ -33,7 +33,6 @@ import org.the_chance.honymart.ui.theme.Typography
 fun ProductReviewContent(
     state: CategoriesUiState,
 ) {
-
     LazyColumn {
         item {
             Row(

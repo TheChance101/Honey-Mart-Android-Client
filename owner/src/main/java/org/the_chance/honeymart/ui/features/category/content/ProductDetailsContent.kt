@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,7 +52,6 @@ fun ProductDetailsContent(
     onClickConfirm: () -> Unit,
     onClickCancel: () -> Unit,
     modifier: Modifier = Modifier,
-    productReviewContent: Unit = ProductReviewContent(CategoriesUiState())
 ) {
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -64,6 +65,7 @@ fun ProductDetailsContent(
                 color = MaterialTheme.colorScheme.onTertiary,
                 shape = MaterialTheme.shapes.medium
             )
+            .verticalScroll(rememberScrollState())
     ) {
 
         FormHeader(
@@ -144,6 +146,9 @@ fun ProductDetailsContent(
                 }
             }
         }
+
+        ProductReviewContent(state = state)
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
