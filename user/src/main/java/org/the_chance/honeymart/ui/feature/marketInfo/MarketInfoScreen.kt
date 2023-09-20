@@ -99,7 +99,9 @@ fun CategoryContent(
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp
         val checkWidth = screenWidth < 600.dp // Adjust this threshold as needed
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(
                 bottom = MaterialTheme.dimens.heightItemMarketCard / 2,
@@ -171,7 +173,7 @@ fun CategoryContent(
                 ContentVisibility(state = state.categories.isNotEmpty()) {
                     if (checkWidth) {
                         BottomHalfHexagonCanvas(
-                          //  modifier = Modifier.size(60.dp),
+                            modifier = Modifier.size(60.dp),
                             width = 60.dp
                         )
                     } else {
@@ -182,42 +184,25 @@ fun CategoryContent(
                 }
             }
             itemsIndexed(state.categories) { index, item ->
-                if (checkWidth) {
-                    HomeCategoriesItem(
-                        modifier = Modifier.offset(
+                HomeCategoriesItem(
+                    modifier = Modifier
+                        .offset(
                             x = 0.dp,
                             y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
-                        ).padding(bottom = 48.dp),
-                        label = item.categoryName,
-                        onClick = { listener.onClickCategory(item.categoryId, index) },
-                        backgroundColor = if (index / 3 % 2 == 0) {
-                            MaterialTheme.colorScheme.onTertiary
-                        } else {
-                            primary100.copy(alpha = 0.16f)
-                        },
-                        width = 100.dp,
-                        painter = painterResource(
-                            id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
                         )
+                        .padding(bottom = 48.dp),
+                    label = item.categoryName,
+                    onClick = { listener.onClickCategory(item.categoryId, index) },
+                    backgroundColor = if (index / 3 % 2 == 0) {
+                        MaterialTheme.colorScheme.onTertiary
+                    } else {
+                        primary100.copy(alpha = 0.16f)
+                    },
+                    width = if (checkWidth) 100.dp else MaterialTheme.dimens.widthItemMarketCard,
+                    painter = painterResource(
+                        id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
                     )
-                } else {
-                    HomeCategoriesItem(
-                        modifier = Modifier.offset(
-                            x = 0.dp,
-                            y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
-                        ),
-                        label = item.categoryName,
-                        onClick = { listener.onClickCategory(item.categoryId, index) },
-                        backgroundColor = if (index / 3 % 2 == 0) {
-                            MaterialTheme.colorScheme.onTertiary
-                        } else {
-                            primary100.copy(alpha = 0.16f)
-                        },
-                        painter = painterResource(
-                            id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
-                        )
-                    )
-                }
+                )
             }
             item(span = { GridItemSpan(3) }) {
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
