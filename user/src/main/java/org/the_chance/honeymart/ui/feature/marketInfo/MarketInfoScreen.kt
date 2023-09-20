@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -39,7 +36,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -47,9 +43,9 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyCategoriesPlaceholder
 import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
 import org.the_chance.honeymart.ui.feature.marketInfo.composables.CardChip
 import org.the_chance.honeymart.ui.feature.marketInfo.composables.CategoriesAppBarScaffold
-import org.the_chance.honeymart.ui.feature.home.composables.HomeCategoriesItem
 import org.the_chance.honeymart.ui.feature.product.navigateToProductScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -68,7 +64,7 @@ fun MarketInfoScreen(
     val navController = LocalNavigationProvider.current
 
     CategoriesAppBarScaffold(navController) {
-        CategoryContent(state, listener = viewModel)
+        MarketInfoContent(state, listener = viewModel)
     }
 
     EventHandler(
@@ -87,7 +83,7 @@ fun MarketInfoScreen(
 }
 
 @Composable
-fun CategoryContent(
+fun MarketInfoContent(
     state: MarketDetailsUiState,
     listener: MarketInteractionListener,
 ) {
@@ -97,7 +93,7 @@ fun CategoryContent(
 
     ContentVisibility(state.showLazyCondition()) {
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val checkWidth = screenWidth < 600.dp // Adjust this threshold as needed
+        val checkWidth = screenWidth < 600.dp
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,30 +163,18 @@ fun CategoryContent(
                 }
             }
 
-            item(
-                span = { GridItemSpan(3) },
-            ) {
-                ContentVisibility(state = state.categories.isNotEmpty()) {
-                    if (checkWidth) {
-                        BottomHalfHexagonCanvas(
-                            modifier = Modifier.size(60.dp),
-                            width = 60.dp
-                        )
-                    } else {
-                        BottomHalfHexagonCanvas(
-                            modifier = Modifier.wrapContentSize()
-                        )
-                    }
-                }
-            }
             itemsIndexed(state.categories) { index, item ->
+                if (index == 1) {
+                    BottomHalfHexagonCanvas()
+                }
+
                 HomeCategoriesItem(
                     modifier = Modifier
                         .offset(
                             x = 0.dp,
-                            y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
+                            y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 1.8f else 0.dp
                         )
-                        .padding(bottom = 48.dp),
+                        .padding(bottom = 48.dp, top = 8.dp),
                     label = item.categoryName,
                     onClick = { listener.onClickCategory(item.categoryId, index) },
                     backgroundColor = if (index / 3 % 2 == 0) {
@@ -221,14 +205,13 @@ fun PreviewCategoryScreen() {
 @Composable
 fun BottomHalfHexagonCanvas(
     modifier: Modifier = Modifier,
-    width: Dp = MaterialTheme.dimens.widthItemMarketCard,
 ) {
-    Canvas(modifier = modifier.size(width)) {
-        val hexagonSize = size.maxDimension / 1.7f
+    Canvas(modifier = modifier) {
+        val hexagonSize = size.maxDimension
 
         val path = Path().apply {
             val angleRadians = Math.toRadians(60.0).toFloat()
-            val radius = hexagonSize / 2
+            val radius = hexagonSize / 1.7f
 
             (0..3).forEach { i ->
                 val currentAngle = angleRadians * i
