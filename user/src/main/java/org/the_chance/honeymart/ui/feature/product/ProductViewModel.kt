@@ -87,8 +87,7 @@ class ProductViewModel @Inject constructor(
                 categories = updatedCategories,
                 products = listOf(),
                 position = position.inc(),
-                categoryId = categoryId,
-                isEmptyProducts = false
+                categoryId = categoryId
             )
         }
         resetProducts()
@@ -105,15 +104,21 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onChangeProductScrollPosition(position: Int) {
-        _state.update { it.copy(productListScrollPosition = position) }
-        if ((state.value.productListScrollPosition + 1) >= (state.value.page * MAX_PAGE_SIZE)) {
+        if ((position + 1) >= (state.value.page * MAX_PAGE_SIZE)) {
             _state.update { it.copy(page = it.page + 1) }
             getAllProducts()
         }
     }
 
     private fun getAllProducts() {
-        _state.update { it.copy(isLoadingProduct = true, error = null, isError = false) }
+        _state.update {
+            it.copy(
+                isLoadingProduct = true,
+                isEmptyProducts = it.products.isEmpty(),
+                error = null,
+                isError = false
+            )
+        }
         viewModelScope.launch(Dispatchers.IO) {
             tryToExecute(
                 { getAllProducts(state.value.categoryId, state.value.page) },
@@ -127,6 +132,8 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoadingProduct = false,
+                isEmptyProducts = false,
+                error = null,
                 products = it.products.toMutableList().apply {
                     this.addAll(products.map { it.toProductUiState() })
                 }
@@ -136,12 +143,9 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun allProductsError(error: ErrorHandler) {
-        _state.update {
-            it.copy(
-                isLoadingProduct = false,
-                error = error,
-                isError = true
-            )
+        _state.update { it.copy(isLoadingProduct = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
         }
     }
 

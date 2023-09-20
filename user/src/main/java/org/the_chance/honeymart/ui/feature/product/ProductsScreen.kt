@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,8 +29,8 @@ import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.composables.ProductCard
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -83,82 +82,80 @@ private fun ProductsContent(
         Loading(state.isLoadingCategory)
         ConnectionErrorPlaceholder(state.isError, productInteractionListener::onclickTryAgain)
         ContentVisibility(state = state.contentScreen()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                        .padding(
-                            start = MaterialTheme.dimens.space16,
-                            end = MaterialTheme.dimens.space16
-                        ),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = MaterialTheme.dimens.space16,
+                        end = MaterialTheme.dimens.space16
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space12)
+            ) {
+                LazyColumn(
+                    state = listState,
+                    contentPadding = PaddingValues(
+                        top = MaterialTheme.dimens.space24,
+                        bottom = MaterialTheme.dimens.space24,
+                        end = MaterialTheme.dimens.space12,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
                 ) {
+                    itemsIndexed(
+                        state.categories,
+                        key = { _, category -> category.categoryId }) { _, category ->
+                        CategoryItem(
+                            iconPainter = painterResource(
+                                id = categoryIcons[category.categoryImageId]
+                                    ?: R.drawable.ic_cup_paper
+                            ),
+                            categoryName = category.categoryName,
+                            isSelected = category.isCategorySelected,
+                            enable = !state.snackBar.isShow,
+                            onClick = { productInteractionListener.onClickCategory(category.categoryId) }
+                        )
+                    }
+                }
+                AnimatedVisibility(
+                    visible = state.contentScreen(),
+                    enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
+                    exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
+                ) {
+                    EmptyProductPlaceholder(state.emptyPlaceHolder() && products.isEmpty())
                     LazyColumn(
-                        state = listState,
+                        modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(
                             top = MaterialTheme.dimens.space24,
-                            bottom = MaterialTheme.dimens.space24,
-                            end = MaterialTheme.dimens.space12,
+                            bottom = MaterialTheme.dimens.space8,
                         ),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     ) {
-                        itemsIndexed(
-                            state.categories,
-                            key = { _, category -> category.categoryId }) { _, category ->
-                            CategoryItem(
-                                iconPainter = painterResource(
-                                    id = categoryIcons[category.categoryImageId]
-                                        ?: R.drawable.ic_cup_paper
-                                ),
-                                categoryName = category.categoryName,
-                                isSelected = category.isCategorySelected,
-                                enable = !state.snackBar.isShow,
-                                onClick = {
-                                    productInteractionListener.onClickCategory(category.categoryId)
-                                },
-
-                                )
+                        item {
+                            Loading(state = state.isLoadingProduct && state.isEmptyProducts)
                         }
-                    }
-                    AnimatedVisibility(
-                        visible = !state.isEmptyProducts,
-                        enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
-                        exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
-                    ) {
-                        EmptyProductPlaceholder(state.emptyPlaceHolder() && products.isEmpty())
-                        LazyColumn(
-                            contentPadding = PaddingValues(
-                                top = MaterialTheme.dimens.space24,
-                                bottom = MaterialTheme.dimens.space8,
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-                        ) {
-                            items(products.size)
-                            { index ->
-                                if ((index + 1) >= (state.page * MarketViewModel.MAX_PAGE_SIZE)) {
-                                    productInteractionListener.onChangeProductScrollPosition(index)
+                        items(products.size) { index ->
+                            productInteractionListener.onChangeProductScrollPosition(index)
+                            val product = products[index]
+                            ProductCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                imageUrl = product.productImages.firstOrNull() ?: "",
+                                productName = product.productName,
+                                productPrice = product.productPrice.toString(),
+                                secondaryText = product.productDescription,
+                                isFavoriteIconClicked = product.isFavorite,
+                                onClickCard = {
+                                    productInteractionListener.onClickProduct(
+                                        product.productId
+                                    )
+                                },
+                                onClickFavorite = {
+                                    productInteractionListener.onClickFavIcon(
+                                        product.productId
+                                    )
                                 }
-                                val product = products[index]
-                                ProductCard(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    imageUrl = product.productImages.firstOrNull() ?: "",
-                                    productName = product.productName,
-                                    productPrice = product.productPrice.toString(),
-                                    secondaryText = product.productDescription,
-                                    isFavoriteIconClicked = product.isFavorite,
-                                    onClickCard = {
-                                        productInteractionListener.onClickProduct(
-                                            product.productId
-                                        )
-                                    },
-                                    onClickFavorite = {
-                                        productInteractionListener.onClickFavIcon(
-                                            product.productId
-                                        )
-                                    }
-                                )
-                            }
+                            )
+                        }
+                        item {
+                            PagingLoading(state = state.isLoadingProduct && !state.isEmptyProducts)
                         }
                     }
                 }
@@ -175,6 +172,5 @@ private fun ProductsContent(
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
                 })
         }
-        Loading(state = state.isLoadingProduct)
     }
 }
