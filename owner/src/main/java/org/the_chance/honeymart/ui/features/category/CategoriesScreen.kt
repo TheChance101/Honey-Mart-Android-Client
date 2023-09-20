@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +26,7 @@ import org.the_chance.honeymart.ui.features.category.content.AddProductContent
 import org.the_chance.honeymart.ui.features.category.content.CategoryItemsContent
 import org.the_chance.honeymart.ui.features.category.content.CategoryProductsContent
 import org.the_chance.honeymart.ui.features.category.content.ProductDetailsContent
+import org.the_chance.honeymart.ui.features.category.content.ProductReviewContent
 import org.the_chance.honeymart.ui.features.category.content.UpdateCategoryContent
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.CustomAlertDialog
@@ -131,15 +134,18 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showProductDetailsContent()) {
-                        ProductDetailsContent(
-                            titleScreen = stringResource(id = R.string.product_details),
-                            confirmButton = stringResource(id = R.string.update),
-                            cancelButton = stringResource(id = R.string.delete),
-                            state = state,
-                            listener = listener,
-                            onClickConfirm = { listener.onClickUpdateProductDetails() },
-                            onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
-                        )
+                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                            ProductDetailsContent(
+                                titleScreen = stringResource(id = R.string.product_details),
+                                confirmButton = stringResource(id = R.string.update),
+                                cancelButton = stringResource(id = R.string.delete),
+                                state = state,
+                                listener = listener,
+                                onClickConfirm = { listener.onClickUpdateProductDetails() },
+                                onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
+                            )
+                            ProductReviewContent(state = state)
+                        }
                     }
                     ContentVisibility(state = state.showProductUpdateContent()) {
                         ProductDetailsContent(
