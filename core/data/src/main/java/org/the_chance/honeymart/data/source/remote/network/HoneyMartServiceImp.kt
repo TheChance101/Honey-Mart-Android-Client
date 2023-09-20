@@ -398,10 +398,8 @@ class HoneyMartServiceImp @Inject constructor(
         return wrap(response)
     }
 
-    override suspend fun getAllNotifications(notificationState: Int): BaseResponse<List<NotificationDto>> =
-        wrap(client.get("notification/userNotifications") {
-            parameter("notificationState", notificationState)
-        })
+    override suspend fun getAllNotifications(): BaseResponse<List<NotificationDto>> =
+        wrap(client.get("notification/userNotifications"))
 
     private suspend inline fun <reified T> wrap(response: HttpResponse): T {
         if (response.status.isSuccess()) {

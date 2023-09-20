@@ -10,9 +10,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
-    private val getAllNotifications: GetAllNotificationsUseCase,
+    private val getNotifications: GetAllNotificationsUseCase,
 ) : BaseViewModel<NotificationsUiState, NotificationsUiEffect>(NotificationsUiState()),
     NotificationsInteractionListener {
+
     override val TAG: String = this::class.simpleName.toString()
 
     init {
@@ -22,7 +23,7 @@ class NotificationsViewModel @Inject constructor(
     override fun getAllNotifications() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            { getAllNotifications(NotificationStates.ALL.state) },
+            { getNotifications() },
             ::onGetAllNotificationsSuccess,
             ::onError
         )
@@ -36,19 +37,19 @@ class NotificationsViewModel @Inject constructor(
         }
     }
 
-    override fun onGetOrderNotifications() {
+    override fun onGetProcessingNotifications() {
         _state.update {
-            it.copy(notificationState = NotificationStates.ORDER,
-                updatedNotifications = it.notifications.filter { it.title != "Order Is Complete!" },
+            it.copy(notificationState = NotificationStates.PROCESSING,
+                updatedNotifications = it.notifications.filter { it.title == "Order in progress!" },
             )
         }
     }
 
-    override fun onGetDeliveryNotifications() {
+    override fun onGetCompletedNotifications() {
         _state.update {
             it.copy(
-                notificationState = NotificationStates.DELIVERY,
-                updatedNotifications = it.notifications.filter { it.title == "Order Is Complete!" },
+                notificationState = NotificationStates.COMPLETED,
+                updatedNotifications = it.notifications.filter { it.title != "Order in progress!" },
             )
         }
     }

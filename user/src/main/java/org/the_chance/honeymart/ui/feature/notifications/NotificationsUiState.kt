@@ -3,7 +3,6 @@ package org.the_chance.honeymart.ui.feature.notifications
 import android.annotation.SuppressLint
 import org.the_chance.honeymart.domain.model.Notification
 import org.the_chance.honeymart.domain.util.ErrorHandler
-import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -18,8 +17,8 @@ data class NotificationsUiState(
 
 enum class NotificationStates(val state: Int){
     ALL(1),
-    ORDER(2),
-    DELIVERY(3)
+    PROCESSING(2),
+    COMPLETED(3)
 }
 
 data class NotificationUiState(
@@ -44,8 +43,8 @@ fun Notification.toNotificationUiState(): NotificationUiState{
 fun NotificationUiState.columnIcon() = this.title == "Order in progress!"
 
 fun NotificationsUiState.all() = this.notificationState == NotificationStates.ALL
-fun NotificationsUiState.order() = this.notificationState == NotificationStates.ORDER
-fun NotificationsUiState.delivery() = this.notificationState == NotificationStates.DELIVERY
+fun NotificationsUiState.processing() = this.notificationState == NotificationStates.PROCESSING
+fun NotificationsUiState.completed() = this.notificationState == NotificationStates.COMPLETED
 
 fun NotificationsUiState.emptyNotificationsPlaceHolder() =
     this.updatedNotifications.isEmpty() && !this.isError && !this.isLoading

@@ -87,23 +87,23 @@ fun NotificationsContent(
                 )
                 StateItem(
                     painter = painterResource(R.drawable.icon_order_nav),
-                    color = if (state.order()) {
+                    color = if (state.processing()) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.onSecondaryContainer
                     },
-                    text = stringResource(R.string.order_title),
-                    onClickState = listener::onGetOrderNotifications
+                    text = stringResource(R.string.processing),
+                    onClickState = listener::onGetProcessingNotifications
                 )
                 StateItem(
                     painter = painterResource(R.drawable.ic_delivery),
-                    color = if (state.delivery()) {
+                    color = if (state.completed()) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.onSecondaryContainer
                     },
                     text = stringResource(R.string.delivery),
-                    onClickState = listener::onGetDeliveryNotifications
+                    onClickState = listener::onGetCompletedNotifications
                 )
             }
             EmptyOrdersPlaceholder(

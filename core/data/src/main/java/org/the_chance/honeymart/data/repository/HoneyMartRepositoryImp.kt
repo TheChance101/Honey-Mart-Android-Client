@@ -205,8 +205,8 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getProfileUser() }.value?.toUserProfile()
             ?: throw NotFoundException()
 
-    override suspend fun getAllNotifications(notificationsState: Int): List<Notification> =
-        wrap { honeyMartService.getAllNotifications(notificationsState) }.value?.map { it.toNotification() }
+    override suspend fun getAllNotifications(): List<Notification> =
+        wrap { honeyMartService.getAllNotifications() }.value?.map { it.toNotification() }
             ?: throw NotFoundException()
 
 
