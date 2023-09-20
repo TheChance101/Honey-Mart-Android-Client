@@ -37,6 +37,7 @@ data class CategoriesUiState(
     val showScreenState: ShowScreenState = ShowScreenState(),
     val newCategory: NewCategoryUiState = NewCategoryUiState(),
     val newProducts: NewProductsUiState = NewProductsUiState(),
+    val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
 )
 
 data class NewProductsUiState(
@@ -216,13 +217,6 @@ fun CategoriesUiState.showLoadingWhenCategoriesIsEmpty() = isLoading && categori
 
 // endregion
 
-data class ProductReviewsUiState(
-    val isLoading: Boolean = true,
-    val isError: Boolean = false,
-    val error: ErrorHandler? = null,
-    val page: Int = 1,
-    val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
-)
 
 data class ReviewDetailsUiState(
     val reviewStatisticUiState: ProductRatingUiState = ProductRatingUiState(),
