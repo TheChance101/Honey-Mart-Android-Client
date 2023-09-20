@@ -50,6 +50,7 @@ fun ProductDetailsContent(
     onClickConfirm: () -> Unit,
     onClickCancel: () -> Unit,
     modifier: Modifier = Modifier,
+    productReviewContent: Unit = ProductReviewContent(CategoriesUiState())
 ) {
     val context = LocalContext.current
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(

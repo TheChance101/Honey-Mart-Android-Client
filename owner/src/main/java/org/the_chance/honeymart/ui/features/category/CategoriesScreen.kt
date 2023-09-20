@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -134,18 +132,16 @@ fun CategoriesContent(
                     }
 
                     ContentVisibility(state = state.showProductDetailsContent()) {
-                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                            ProductDetailsContent(
-                                titleScreen = stringResource(id = R.string.product_details),
-                                confirmButton = stringResource(id = R.string.update),
-                                cancelButton = stringResource(id = R.string.delete),
-                                state = state,
-                                listener = listener,
-                                onClickConfirm = { listener.onClickUpdateProductDetails() },
-                                onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) }
-                            )
-                            ProductReviewContent(state = state)
-                        }
+                        ProductDetailsContent(
+                            titleScreen = stringResource(id = R.string.product_details),
+                            confirmButton = stringResource(id = R.string.update),
+                            cancelButton = stringResource(id = R.string.delete),
+                            state = state,
+                            listener = listener,
+                            onClickConfirm = { listener.onClickUpdateProductDetails() },
+                            onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
+                            productReviewContent = ProductReviewContent(state = state)
+                        )
                     }
                     ContentVisibility(state = state.showProductUpdateContent()) {
                         ProductDetailsContent(
