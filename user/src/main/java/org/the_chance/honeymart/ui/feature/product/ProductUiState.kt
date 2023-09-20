@@ -16,9 +16,10 @@ data class ProductsUiState(
     val isError: Boolean = false,
     val position: Int = 0,
     val page: Int = 1,
-    val products: List<ProductUiState> = ArrayList(),
+    val productListScrollPosition: Int = 0,
+    val products: List<ProductUiState> = listOf(),
     val isEmptyProducts: Boolean = false,
-    val categories: List<CategoryUiState> = emptyList(),
+    val categories: List<CategoryUiState> = listOf(),
     val categoryId: Long = 0L,
 )
 

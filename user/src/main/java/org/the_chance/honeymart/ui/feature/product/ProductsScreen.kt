@@ -25,16 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EmptyProductPlaceholder
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.PagingStateVisibility
 import org.the_chance.honeymart.ui.composables.ProductCard
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
 import org.the_chance.honeymart.ui.feature.product.composable.CategoryItem
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -69,16 +66,15 @@ fun ProductsScreen(
         }
     }
     ProductsContent(
-        state = state, productInteractionListener = viewModel,
-        viewModel::onChangeProductScrollPosition,
+        state = state,
+        productInteractionListener = viewModel
     )
 }
 
 @Composable
 private fun ProductsContent(
     state: ProductsUiState,
-    productInteractionListener: ProductInteractionListener,
-    onChangeProductScrollPosition: (Int) -> Unit,
+    productInteractionListener: ProductInteractionListener
 ) {
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = state.position)
 
@@ -138,13 +134,10 @@ private fun ProductsContent(
                             ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                         ) {
-                            items(
-                                products.size // key = { products.items[it].productId })
-                            )
+                            items(products.size)
                             { index ->
-                                onChangeProductScrollPosition(index)
-                                if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
-                                    productInteractionListener.onScrollDown()
+                                if ((index + 1) >= (state.page * MarketViewModel.MAX_PAGE_SIZE)) {
+                                    productInteractionListener.onChangeProductScrollPosition(index)
                                 }
                                 val product = products[index]
                                 ProductCard(
@@ -155,10 +148,14 @@ private fun ProductsContent(
                                     secondaryText = product.productDescription,
                                     isFavoriteIconClicked = product.isFavorite,
                                     onClickCard = {
-                                        productInteractionListener.onClickProduct(product.productId)
+                                        productInteractionListener.onClickProduct(
+                                            product.productId
+                                        )
                                     },
                                     onClickFavorite = {
-                                        productInteractionListener.onClickFavIcon(product.productId)
+                                        productInteractionListener.onClickFavIcon(
+                                            product.productId
+                                        )
                                     }
                                 )
                             }
@@ -178,6 +175,6 @@ private fun ProductsContent(
                     productInteractionListener.onClickFavIcon(state.snackBar.productId)
                 })
         }
-        Loading(state = state.loading())
+        Loading(state = state.isLoadingProduct)
     }
 }
