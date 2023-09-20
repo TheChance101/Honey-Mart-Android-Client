@@ -54,7 +54,6 @@ data class ShowScreenState(
     val showUpdateCategory: Boolean = false,
     val showAddProduct: Boolean = false,
     val showProductDetails: Boolean = false,
-    val showProductReviews: Boolean = false,
     val showProductUpdate: Boolean = false,
     val showCategoryProducts: Boolean = false,
     val showDialog: Boolean = false,
@@ -195,7 +194,8 @@ fun CategoriesUiState.showAddProductContent() =
 fun CategoriesUiState.showProductDetailsContent() =
     !isLoading && !showScreenState.showFab && !showScreenState.showAddProduct &&
             !showScreenState.showAddCategory && !showScreenState.showUpdateCategory
-            && showScreenState.showProductDetails && showScreenState.showProductReviews
+            && showScreenState.showProductDetails
+
 
 fun CategoriesUiState.showProductUpdateContent() =
     !isLoading && !showScreenState.showFab && !showScreenState.showAddProduct

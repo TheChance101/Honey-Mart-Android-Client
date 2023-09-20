@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.components.ContentVisibility
 import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
@@ -147,7 +148,9 @@ fun ProductDetailsContent(
             }
         }
 
-        ProductReviewContent(state = state)
+        ContentVisibility(state = state.showScreenState.showProductDetails) {
+            ProductReviewContent(state = state)
+        }
 
         Row(
             modifier = Modifier
