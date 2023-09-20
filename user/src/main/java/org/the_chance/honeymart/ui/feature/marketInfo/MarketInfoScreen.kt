@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,10 +34,12 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -67,6 +70,7 @@ fun MarketInfoScreen(
     CategoriesAppBarScaffold(navController) {
         CategoryContent(state, listener = viewModel)
     }
+
     EventHandler(
         effects = viewModel.effect,
         handleEffect = { effect, navControllers ->
@@ -92,8 +96,12 @@ fun CategoryContent(
     ConnectionErrorPlaceholder(state.isError, listener::onGetData)
 
     ContentVisibility(state.showLazyCondition()) {
+        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+        val checkWidth = screenWidth < 600.dp // Adjust this threshold as needed
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(
                 bottom = MaterialTheme.dimens.heightItemMarketCard / 2,
@@ -163,17 +171,26 @@ fun CategoryContent(
                 span = { GridItemSpan(3) },
             ) {
                 ContentVisibility(state = state.categories.isNotEmpty()) {
-                    BottomHalfHexagonCanvas(
-                        modifier = Modifier.wrapContentSize()
-                    )
+                    if (checkWidth) {
+                        BottomHalfHexagonCanvas(
+                            modifier = Modifier.size(60.dp),
+                            width = 60.dp
+                        )
+                    } else {
+                        BottomHalfHexagonCanvas(
+                            modifier = Modifier.wrapContentSize()
+                        )
+                    }
                 }
             }
             itemsIndexed(state.categories) { index, item ->
                 HomeCategoriesItem(
-                    modifier = Modifier.offset(
-                        x = 0.dp,
-                        y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
-                    ),
+                    modifier = Modifier
+                        .offset(
+                            x = 0.dp,
+                            y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 2 else 0.dp
+                        )
+                        .padding(bottom = 48.dp),
                     label = item.categoryName,
                     onClick = { listener.onClickCategory(item.categoryId, index) },
                     backgroundColor = if (index / 3 % 2 == 0) {
@@ -181,7 +198,10 @@ fun CategoryContent(
                     } else {
                         primary100.copy(alpha = 0.16f)
                     },
-                    painter = painterResource(id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper)
+                    width = if (checkWidth) 100.dp else MaterialTheme.dimens.widthItemMarketCard,
+                    painter = painterResource(
+                        id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
+                    )
                 )
             }
             item(span = { GridItemSpan(3) }) {
@@ -189,10 +209,8 @@ fun CategoryContent(
                 EmptyCategoriesPlaceholder(state.categories.isEmpty())
             }
         }
-
     }
 }
-
 
 @Composable
 @Preview
@@ -203,16 +221,14 @@ fun PreviewCategoryScreen() {
 @Composable
 fun BottomHalfHexagonCanvas(
     modifier: Modifier = Modifier,
+    width: Dp = MaterialTheme.dimens.widthItemMarketCard,
 ) {
-    Canvas(
-        modifier = modifier
-            .width(MaterialTheme.dimens.widthItemMarketCard)
-    ) {
-        val hexagonSize = size.maxDimension
+    Canvas(modifier = modifier.size(width)) {
+        val hexagonSize = size.maxDimension / 1.7f
 
         val path = Path().apply {
             val angleRadians = Math.toRadians(60.0).toFloat()
-            val radius = hexagonSize / 1.7f
+            val radius = hexagonSize / 2
 
             (0..3).forEach { i ->
                 val currentAngle = angleRadians * i
@@ -222,7 +238,6 @@ fun BottomHalfHexagonCanvas(
             }
             close()
         }
-
         drawIntoCanvas {
             it.drawOutline(
                 outline = Outline.Generic(path),
