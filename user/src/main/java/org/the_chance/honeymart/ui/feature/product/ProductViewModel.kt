@@ -114,7 +114,6 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoadingProduct = true,
-                isEmptyProducts = it.products.isEmpty(),
                 error = null,
                 isError = false
             )
@@ -132,14 +131,12 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoadingProduct = false,
-                isEmptyProducts = false,
                 error = null,
                 products = it.products.toMutableList().apply {
                     this.addAll(products.map { it.toProductUiState() })
                 }
             )
         }
-        _state.update { it.copy(isEmptyProducts = it.products.isEmpty()) }
     }
 
     private fun allProductsError(error: ErrorHandler) {
