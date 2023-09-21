@@ -16,7 +16,7 @@ import javax.inject.Inject
 class FireBaseMsgServiceImpl @Inject constructor(
 ) : FirebaseMessagingService(), FireBaseMessageService {
     private val firebaseMessaging = FirebaseMessaging.getInstance()
-    private val clickPendingIntent = ServiceLocator.getFCMNotification().getClickPendingIntent()
+    private val clickPendingIntent = ServiceLocator.getFCMNotification()?.getClickPendingIntent()
 
     override fun onNewToken(token: String) {
         Log.d("TAG", "Refreshed token: $token")
@@ -44,7 +44,9 @@ class FireBaseMsgServiceImpl @Inject constructor(
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .addAction(0,"Show",clickPendingIntent)
 
-        notificationBuilder.setContentIntent(clickPendingIntent)
+        clickPendingIntent.let {
+            notificationBuilder.setContentIntent(it)
+        }
 
         val channel = NotificationChannel(
             channelId,

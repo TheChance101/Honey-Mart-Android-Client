@@ -7,16 +7,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.the_chance.honeymart.LocalNavigationProvider
-import org.the_chance.honeymart.data.source.remote.network.ServiceLocator
-import org.the_chance.honeymart.di.FCMNotificationImp
-import org.the_chance.honeymart.ui.main.MainScreen
+ import org.the_chance.honeymart.ui.main.MainScreen
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ServiceLocator.initialize(FCMNotificationImp(applicationContext))
         setContent {
             CompositionLocalProvider(LocalNavigationProvider provides rememberNavController()) {
                 HoneyMartTheme {
