@@ -31,7 +31,7 @@ fun NotificationsScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(lifecycleOwner) {
-        viewModel.getAllNotifications(NotificationStates.ALL.state, NotificationStates.ALL)
+        viewModel.getAllNotifications(NotificationStates.NEW.state, NotificationStates.NEW)
     }
     NotificationsContent(state, viewModel)
 }

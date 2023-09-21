@@ -21,7 +21,7 @@ class NotificationsViewModel @Inject constructor(
 
     override val TAG: String = this ::class.simpleName.toString()
     init {
-        getAllNotifications(NotificationStates.ALL.state,NotificationStates.ALL)
+        getAllNotifications(NotificationStates.NEW.state,NotificationStates.NEW)
     }
     override fun getAllNotifications(state: Int,notificationStates: NotificationStates){
         _state.update { it.copy(isLoading = true,notificationState =notificationStates) }
