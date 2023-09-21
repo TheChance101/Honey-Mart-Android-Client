@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -86,16 +88,18 @@ fun ProductReviewsContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .clip(RoundedCornerShape(50.dp))
+                        .clickable(onClick = listener::onClickBack)
+                        .padding(4.dp),
                     painter = painterResource(R.drawable.icon_arrow_back),
                     contentDescription = "icon back",
                     tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable(onClick = listener::onClickBack)
-                        .padding(top = 4.dp)
                 )
 
                 Text(
+                    modifier = Modifier.padding(bottom = 4.dp),
                     text = stringResource(R.string.customers_reviews),
                     style = Typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondary

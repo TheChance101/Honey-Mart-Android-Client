@@ -1,13 +1,11 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -16,6 +14,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
+import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
@@ -47,7 +46,7 @@ class ProductViewModel @Inject constructor(
 
     private fun getData() {
         _state.update { it.copy(error = null, isError = false) }
-        getProductsByCategoryId()
+        getAllProducts()
         getCategoriesByMarketId()
     }
 
@@ -86,13 +85,13 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 categories = updatedCategories,
-                products = flow { },
+                products = listOf(),
                 position = position.inc(),
-                categoryId = categoryId,
-                isEmptyProducts = false
+                categoryId = categoryId
             )
         }
-        getProductsByCategoryId()
+        resetProducts()
+        getAllProducts()
     }
 
     private fun updateCategorySelection(
@@ -104,36 +103,56 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun getProductsByCategoryId() {
-        _state.update { it.copy(isError = false) }
-        tryToExecutePaging(
-            { getAllProducts(state.value.categoryId) },
-            ::onGetProductSuccess,
-            ::onGetProductError
-        )
-
+    override fun onChangeProductScrollPosition(position: Int) {
+        if ((position + 1) >= (state.value.page * MAX_PAGE_SIZE)) {
+            _state.update { it.copy(page = it.page + 1) }
+            getAllProducts()
+        }
     }
 
-    private fun onGetProductSuccess(products: PagingData<Product>) {
-        val mappedProducts = products.map { it.toProductUiState() }
+    private fun getAllProducts() {
         _state.update {
             it.copy(
-                isEmptyProducts = false,
-                products = flowOf(mappedProducts),
+                isLoadingProduct = true,
+                error = null,
+                isError = false
             )
         }
-        getWishListProducts(mappedProducts)
+        viewModelScope.launch(Dispatchers.IO) {
+            tryToExecute(
+                { getAllProducts(state.value.categoryId, state.value.page) },
+                ::allProductsSuccess,
+                ::allProductsError
+            )
+        }
     }
 
-    private fun onGetProductError(error: ErrorHandler) {
-        _state.update { it.copy(error = error, isEmptyProducts = true) }
+    private fun allProductsSuccess(products: List<Product>) {
+        _state.update {
+            it.copy(
+                isLoadingProduct = false,
+                error = null,
+                products = it.products.toMutableList().apply {
+                    this.addAll(products.map { it.toProductUiState() })
+                }
+            )
+        }
+    }
+
+    private fun allProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingProduct = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
 
+    private fun resetProducts() {
+        _state.update { it.copy(products = listOf(), page = 1) }
+        onChangeProductScrollPosition(0)
+    }
+
     private fun updateProducts(
-        products: PagingData<ProductUiState>,
+        products: List<ProductUiState>,
         wishListProducts: List<WishListProductUiState>,
     ) = products.map { product ->
         product.copy(isFavorite = product.productId in wishListProducts.map { it.productId })
@@ -148,7 +167,7 @@ class ProductViewModel @Inject constructor(
     }
 
 
-    private fun getWishListProducts(products: PagingData<ProductUiState>) {
+    private fun getWishListProducts(products: List<ProductUiState>) {
         _state.update { it.copy(isError = false) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
@@ -159,19 +178,19 @@ class ProductViewModel @Inject constructor(
 
 
     private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>, products: PagingData<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
     ) {
         _state.update { productsUiState ->
-            productsUiState.copy(products = flowOf(updateProducts(products, wishListProducts)))
+            productsUiState.copy(products = updateProducts(products, wishListProducts))
         }
     }
 
     private fun onGetWishListProductError(
         error: ErrorHandler,
-        products: PagingData<ProductUiState>
+        products: List<ProductUiState>
     ) {
         _state.update {
-            it.copy(error = error, products = flowOf(products))
+            it.copy(error = error, products = products)
         }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -181,14 +200,12 @@ class ProductViewModel @Inject constructor(
     override fun onClickFavIcon(productId: Long) {
         var isFavorite = false
         val currentProducts = _state.value.products
-        val updatedProducts = currentProducts.map { pagingData ->
-            pagingData.map { product ->
-                if (product.productId == productId) {
-                    isFavorite = product.isFavorite
-                    product.copy(isFavorite = !isFavorite)
-                } else {
-                    product
-                }
+        val updatedProducts = currentProducts.map { product ->
+            if (product.productId == productId) {
+                isFavorite = product.isFavorite
+                product.copy(isFavorite = !isFavorite)
+            } else {
+                product
             }
         }
         _state.update { it.copy(products = updatedProducts, isLoadingProduct = true) }
@@ -230,17 +247,15 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun showSnackBar(message: String) {
-
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = "Success")) }
     }
-
 
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
     private fun onAddToWishListError(error: ErrorHandler) {
-        _state.update { it.copy( isLoadingProduct = false) }
+        _state.update { it.copy(isLoadingProduct = false) }
         if (error is ErrorHandler.UnAuthorized)
             effectActionExecutor(_effect, ProductUiEffect.UnAuthorizedUserEffect)
     }
@@ -250,6 +265,6 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onclickTryAgainProducts() {
-        getProductsByCategoryId()
+        getAllProducts()
     }
 }

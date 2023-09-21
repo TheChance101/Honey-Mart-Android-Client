@@ -9,8 +9,7 @@ import javax.inject.Inject
 class GetAllMarketsPagingUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository,
 ) {
-    suspend operator fun invoke(): Flow<PagingData<Market>> {
-        return honeyMartRepository.getAllMarketsPaging(null)
+    suspend operator fun invoke(page:Int): List<Market>? {
+        return honeyMartRepository.getAllMarketsPaging(page)
     }
-
 }

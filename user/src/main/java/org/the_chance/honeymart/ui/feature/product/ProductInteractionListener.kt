@@ -1,7 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product
 
-interface ProductInteractionListener  {
+interface ProductInteractionListener {
     fun onClickProduct(productId: Long)
+    fun onChangeProductScrollPosition(position: Int)
     fun onClickFavIcon(productId: Long)
     fun onClickCategory(categoryId: Long)
     fun onclickTryAgain()

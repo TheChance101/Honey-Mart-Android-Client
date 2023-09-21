@@ -10,13 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
-import org.the_chance.honeymart.ui.composables.PagingStateVisibility
-import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.feature.SeeAllmarkets.compoaseable.MarketItem
+import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -44,8 +43,9 @@ fun MarketContent(
     listener: MarketInteractionListener,
 ) {
     HoneyAppBarScaffold {
-        val markets = state.markets.collectAsLazyPagingItems()
-        ContentVisibility(state = markets.itemCount > 0) {
+        val markets = state.markets
+        Loading(state = state.isLoading && state.markets.isEmpty())
+        ContentVisibility(state = state.contentScreen()) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
                 state = rememberLazyListState(),
@@ -55,19 +55,18 @@ fun MarketContent(
                     vertical = MaterialTheme.dimens.space8
                 ),
             ) {
-                items(markets.itemCount) { position ->
-                    val market = markets[position]
-                    if (market != null) {
-                        MarketItem(
-                            onClickItem = listener::onClickMarket,
-                            marketId = market.marketId,
-                            marketImage = market.marketImage,
-                            marketName = market.marketName
-                        )
-                    }
+                items(markets.size) { index ->
+                    listener.onChangeMarketsScrollPosition(index)
+                    val market = markets[index]
+                    MarketItem(
+                        onClickItem = listener::onClickMarket,
+                        marketId = market.marketId,
+                        marketImage = market.marketImage,
+                        marketName = market.marketName
+                    )
                 }
                 item {
-                    PagingStateVisibility(markets)
+                    PagingLoading(state = state.isLoading && state.markets.isNotEmpty())
                 }
             }
         }
@@ -75,6 +74,5 @@ fun MarketContent(
             state = state.isError,
             onClickTryAgain = listener::getAllMarkets
         )
-        Loading(state.isLoading)
     }
 }

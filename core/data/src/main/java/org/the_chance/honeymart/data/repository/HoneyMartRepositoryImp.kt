@@ -6,9 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
-import org.the_chance.honeymart.data.repository.pagingSource.MarketsPagingSource
-import org.the_chance.honeymart.data.repository.pagingSource.ProductsPagingSource
-import org.the_chance.honeymart.data.repository.pagingSource.SearchProductsPagingSource
 import org.the_chance.honeymart.data.source.remote.mapper.toCart
 import org.the_chance.honeymart.data.source.remote.mapper.toCategory
 import org.the_chance.honeymart.data.source.remote.mapper.toCoupon
@@ -66,8 +63,8 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
-    override suspend fun getAllMarketsPaging(page: Int?): Flow<PagingData<Market>> {
-        return getAll(::MarketsPagingSource)
+    override suspend fun getAllMarketsPaging(page: Int?): List<Market>? {
+        return wrap { honeyMartService.getAllMarketsPaging(page = page) }.value?.map { it.toMarket() }
     }
 
     override suspend fun clipCoupon(couponId: Long): Boolean {
@@ -129,11 +126,11 @@ class HoneyMartRepositoryImp @Inject constructor(
     override suspend fun getAllProductsByCategory(
         page: Int?,
         categoryId: Long
-    ): Flow<PagingData<Product>> =
-        getAllWithParameter(
-            categoryId,
-            ::ProductsPagingSource
-        )
+    ): List<Product> {
+        return wrap {
+            honeyMartService.getAllProductsByCategory(page = page, categoryId = categoryId)
+        }.value?.map { it.toProduct() } ?: throw NotFoundException()
+    }
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): List<Category> =
         wrap { honeyMartService.getCategoriesForSpecificProduct(productId) }.value?.map { it.toCategory() }
@@ -162,17 +159,10 @@ class HoneyMartRepositoryImp @Inject constructor(
         wrap { honeyMartService.getOrderDetails(orderId) }.value?.toOrderDetails()
             ?: throw NotFoundException()
 
-    override suspend fun searchForProducts(
-        query: String,
-        page: Int?,
-        sortOrder: String
-    ): Flow<PagingData<Product>> =
-        search(
-            query,
-            sortOrder,
-            ::SearchProductsPagingSource,
-            page
-        )
+    override suspend fun searchForProducts(query: String, page: Int?, sortOrder: String): List<Product>? {
+        return honeyMartService.searchForProducts(query, page, sortOrder)
+            .takeIf { it.isSuccess }?.value?.map { it.toProduct() }
+    }
 
     override suspend fun updateOrderState(id: Long?, state: Int): Boolean =
         wrap { honeyMartService.updateOrderState(id, state) }.value ?: throw NotFoundException()

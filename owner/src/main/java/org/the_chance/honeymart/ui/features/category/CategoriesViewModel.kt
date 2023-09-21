@@ -1,9 +1,7 @@
 package org.the_chance.honeymart.ui.features.category
 
-import androidx.paging.PagingData
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
@@ -27,6 +25,7 @@ class CategoriesViewModel @Inject constructor(
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
+    private var page = MutableStateFlow(_state.value.page)
 
     init {
         getCategoryImages()
@@ -268,20 +267,24 @@ class CategoriesViewModel @Inject constructor(
 
     // region Category Products
     private fun getProductsByCategoryId(categoryId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
-        tryToExecutePaging(
-            { ownerProducts.getAllProducts(categoryId) },
-            ::onGetProductsSuccess,
-            ::onError
-        )
+        _state.update { it.copy(isLoading = true) }
+        resetSearchState()
+        getProducts(page.value,categoryId)
     }
 
-    private fun onGetProductsSuccess(products: PagingData<Product>) {
-        val mappedProducts = products.map { it.toProductUiState() }
-
-        _state.update {
-            it.copy(isLoading = false, error = null, products = flowOf(mappedProducts))
+    override fun onChangeProductScrollPosition(position: Int) {
+        _state.update { it.copy(productsScrollPosition = position) }
+        if ((_state.value.productsScrollPosition + 1) >= (page.value * MAX_PAGE_SIZE)) {
+            _state.update { it.copy(page = it.page + 1) }
+            page.update { it + 1 }
+            getProducts(page.value)
         }
+    }
+
+    private fun resetSearchState() {
+        _state.update { it.copy(products = listOf()) }
+        page.update { 1 }
+        onChangeProductScrollPosition(0)
     }
 
     override fun onClickProduct(productId: Long) {
@@ -609,6 +612,33 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
+    private fun getProducts(page: Int,categoriesId: Long? = null) {
+        _state.update { it.copy(isLoadingPaging = true, isErrorPaging = false, error = null) }
+        tryToExecute(
+            {ownerProducts.getAllProducts(
+                categoriesId ?:state.value.newCategory.categoryId, page
+            ).map { it.toProductUiState() }},
+            ::onGetProductsSuccess,
+            ::onGetProductsError
+        )
+    }
+
+    private fun onGetProductsSuccess(data: List<ProductUiState>) {
+        _state.update {
+            if (page.value > 1) {
+                val current = state.value.products.toMutableList()
+                current.addAll(data)
+                it.copy(products = current, isLoadingPaging = false, isLoading = false)
+            } else {
+              it.copy(products = data, isLoadingPaging = false, isLoading = false)
+            }
+        }
+    }
+
+    private fun onGetProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingPaging = false, isLoading = false, isErrorPaging = true, error = error) }
+    }
+
     //endregion
 
     private fun onError(errorHandler: ErrorHandler) {
@@ -632,5 +662,9 @@ class CategoriesViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    companion object {
+        const val MAX_PAGE_SIZE = 10
     }
 }
