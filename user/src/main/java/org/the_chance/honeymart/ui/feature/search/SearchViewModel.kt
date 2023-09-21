@@ -14,7 +14,7 @@ import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.SearchForProductUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.MarketViewModel.Companion.MAX_PAGE_SIZE
+import org.the_chance.honeymart.ui.feature.see_all_markets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
