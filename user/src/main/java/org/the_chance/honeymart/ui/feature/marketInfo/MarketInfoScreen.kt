@@ -35,7 +35,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
@@ -92,20 +91,17 @@ fun MarketInfoContent(
     ConnectionErrorPlaceholder(state.isError, listener::onGetData)
 
     ContentVisibility(state.showLazyCondition()) {
-        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val checkWidth = screenWidth < 600.dp
         LazyVerticalGrid(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(
-                bottom = MaterialTheme.dimens.heightItemMarketCard / 2,
+                bottom = MaterialTheme.dimens.widthItemMarketCard / 2,
                 end = MaterialTheme.dimens.space16,
                 start = MaterialTheme.dimens.space16,
             ),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space2),
         ) {
             item(span = { GridItemSpan(3) }) {
                 Column(
@@ -164,6 +160,9 @@ fun MarketInfoContent(
             }
 
             itemsIndexed(state.categories) { index, item ->
+                val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+                val isNarrowScreen = screenWidth < 600.dp
+
                 if (index == 1) {
                     BottomHalfHexagonCanvas()
                 }
@@ -172,9 +171,14 @@ fun MarketInfoContent(
                     modifier = Modifier
                         .offset(
                             x = 0.dp,
-                            y = if (index % 3 == 1) MaterialTheme.dimens.widthItemMarketCard / 1.8f else 0.dp
+                            y = if (index % 3 == 1)
+                                MaterialTheme.dimens.widthItemMarketCard / 1.6f
+                            else 8.dp
                         )
-                        .padding(bottom = 48.dp, top = 8.dp),
+                        .padding(
+                            bottom = 24.dp,
+                            top = 8.dp
+                        ),
                     label = item.categoryName,
                     onClick = { listener.onClickCategory(item.categoryId, index) },
                     backgroundColor = if (index / 3 % 2 == 0) {
@@ -182,7 +186,7 @@ fun MarketInfoContent(
                     } else {
                         primary100.copy(alpha = 0.16f)
                     },
-                    width = if (checkWidth) 100.dp else MaterialTheme.dimens.widthItemMarketCard,
+                    width = if (isNarrowScreen) 100.dp else MaterialTheme.dimens.widthItemMarketCard,
                     painter = painterResource(
                         id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
                     )
@@ -194,12 +198,6 @@ fun MarketInfoContent(
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewCategoryScreen() {
-    MarketInfoScreen()
 }
 
 @Composable
