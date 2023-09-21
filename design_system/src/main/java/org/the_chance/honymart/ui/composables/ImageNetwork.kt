@@ -1,5 +1,7 @@
 package org.the_chance.honymart.ui.composables
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -25,11 +27,11 @@ fun ImageNetwork(
             .data(imageUrl)
             .crossfade(true)
             .build(),
-        error = painterResource(R.drawable.placeholder),
+        error = painterResource(R.drawable.no_img_2),
         colorFilter = colorFilter,
-        placeholder = painterResource(R.drawable.placeholder),
+        placeholder = painterResource(R.drawable.no_img_2),
         contentDescription = contentDescription,
         contentScale = contentScale,
-        modifier = modifier,
+        modifier = modifier.background(MaterialTheme.colorScheme.onTertiary),
     )
 }

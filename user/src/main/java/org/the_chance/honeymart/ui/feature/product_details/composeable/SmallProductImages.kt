@@ -1,15 +1,12 @@
 package org.the_chance.honeymart.ui.feature.product_details.composeable
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import org.the_chance.honymart.ui.theme.dimens
-
 
 @Composable
 fun SmallProductImages(
@@ -22,17 +19,13 @@ fun SmallProductImages(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        items(
-            count = state.size,
-        ) { index ->
-            ItemImageDetailsProduction(
-                state[index],
-                modifier = Modifier
-                    .clip(MaterialTheme.shapes.medium)
-                    .clickable(onClick = {
-                        onClickImage(index)
-                    })
-            )
+        repeat(3) { index ->
+            item {
+                ItemImageDetailsProduction(
+                    imageUrl = state.getOrNull(index) ?: "",
+                    onClick = { onClickImage(index) },
+                )
+            }
         }
     }
 }
