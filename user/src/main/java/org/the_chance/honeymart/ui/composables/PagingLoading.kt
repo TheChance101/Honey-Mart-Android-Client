@@ -8,10 +8,11 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -26,8 +27,9 @@ fun PagingLoading(state: Boolean) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.space32),
-            horizontalArrangement = Arrangement.Center
+                .padding(MaterialTheme.dimens.space16),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary

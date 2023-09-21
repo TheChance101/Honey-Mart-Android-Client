@@ -1,19 +1,16 @@
 package org.the_chance.honeymart.ui.feature.SeeAllmarkets
 
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 
 data class MarketsUiState(
-    val isLoading: Boolean = true,
-    val isMarketsLoading: Boolean = true,
+    val isLoading: Boolean = false,
+    val isMarketsEmpty: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val page: Int = 1,
-    val markets: List<MarketUiState> = ArrayList(),
+    val markets: List<MarketUiState> = listOf(),
 )
 
 data class MarketUiState(
@@ -31,3 +28,5 @@ fun Market.toMarketUiState(): MarketUiState {
         marketImage = imageUrl
     )
 }
+
+fun MarketsUiState.contentScreen() = !this.isError && !this.isMarketsEmpty

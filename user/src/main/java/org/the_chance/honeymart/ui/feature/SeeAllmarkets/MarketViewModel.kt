@@ -17,41 +17,51 @@ class MarketViewModel @Inject constructor(
     MarketInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
-    private var page = _state.value.page
-    private var marketListScrollPosition = 0
 
     init {
         getAllMarkets()
     }
 
     override fun getAllMarkets() {
-        resetSearchState()
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isMarketsEmpty = it.markets.isEmpty(),
+                isError = false,
+                error = null
+            )
+        }
         viewModelScope.launch {
-            val markets = getAllMarket(page)
-            val mappedMarkets = markets!!.map { it.toMarketUiState() }
-            _state.update { it.copy(markets = mappedMarkets, isLoading = false) }
+            tryToExecute(
+                { getAllMarket(state.value.page)!! },
+                ::allMarketsSuccess,
+                ::allMarketError
+            )
         }
     }
 
-    private fun appendMarkets(markets: List<MarketUiState>) {
-        val current = ArrayList(state.value.markets)
-        current.addAll(markets)
-        _state.update { it.copy(markets = current) }
+    private fun allMarketsSuccess(markets: List<Market>) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                error = null,
+                isMarketsEmpty = false,
+                markets = it.markets.toMutableList().apply {
+                    this.addAll(markets.map { it.toMarketUiState() })
+                }
+            )
+        }
     }
 
-    private fun incrementPage() {
-        page += 1
+    private fun allMarketError(error: ErrorHandler) {
+        _state.update { it.copy(isLoading = false, error = error, isError = true) }
     }
 
-    fun onChangeMarketsScrollPosition(position: Int) {
-        marketListScrollPosition = position
-    }
-
-    private fun resetSearchState() {
-        _state.update { it.copy(markets = listOf()) }
-        page = 1
-        onChangeMarketsScrollPosition(0)
+    override fun onChangeMarketsScrollPosition(position: Int) {
+        if (position + 1 >= state.value.page * MAX_PAGE_SIZE) {
+            _state.update { it.copy(page = it.page + 1) }
+            getAllMarkets()
+        }
     }
 
     override fun onClickMarket(marketId: Long) {
@@ -60,20 +70,6 @@ class MarketViewModel @Inject constructor(
 
     override fun onclickTryAgainMarkets() {
         getAllMarkets()
-    }
-
-    override fun onScrollDown() {
-        viewModelScope.launch {
-            if ((marketListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
-                _state.update { it.copy(isLoading = true) }
-                incrementPage()
-                if (page > 1) {
-                    val result = getAllMarket(page)!!.map { it.toMarketUiState() }
-                    appendMarkets(result)
-                }
-                _state.update { it.copy(isLoading = false) }
-            }
-        }
     }
 
     companion object {
