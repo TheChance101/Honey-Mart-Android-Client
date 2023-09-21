@@ -70,8 +70,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun resetSearch() {
-        _state.update { it.copy(products = listOf()) }
-        onChangeProductScrollPosition(0)
+        _state.update { it.copy(products = listOf(), page = 1) }
     }
 
     fun onSearchTextChange(text: String) {
@@ -84,8 +83,8 @@ class SearchViewModel @Inject constructor(
             actionStream.debounce(700).distinctUntilChanged().filter { keyword ->
                 keyword.isNotBlank()
             }.collect {
-                searchForProducts()
                 resetSearch()
+                searchForProducts()
             }
         }
     }
