@@ -44,7 +44,7 @@ fun MarketContent(
 ) {
     HoneyAppBarScaffold {
         val markets = state.markets
-        Loading(state = state.isLoading && state.isMarketsEmpty)
+        Loading(state = state.isLoading && state.markets.isEmpty())
         ContentVisibility(state = state.contentScreen()) {
             LazyColumn(
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.secondary),
@@ -66,7 +66,7 @@ fun MarketContent(
                     )
                 }
                 item {
-                    PagingLoading(state = state.isLoading && !state.isMarketsEmpty)
+                    PagingLoading(state = state.isLoading && state.markets.isNotEmpty())
                 }
             }
         }

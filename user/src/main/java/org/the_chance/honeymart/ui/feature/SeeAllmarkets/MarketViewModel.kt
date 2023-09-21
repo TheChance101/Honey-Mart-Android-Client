@@ -26,7 +26,6 @@ class MarketViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = true,
-                isMarketsEmpty = it.markets.isEmpty(),
                 isError = false,
                 error = null
             )
@@ -45,7 +44,6 @@ class MarketViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 error = null,
-                isMarketsEmpty = false,
                 markets = it.markets.toMutableList().apply {
                     this.addAll(markets.map { it.toMarketUiState() })
                 }
