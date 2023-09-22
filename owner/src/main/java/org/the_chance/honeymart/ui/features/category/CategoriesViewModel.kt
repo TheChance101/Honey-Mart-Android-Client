@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
+import org.the_chance.honeymart.domain.model.Reviews
+import org.the_chance.honeymart.domain.usecase.GetAllProductReviewsUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerCategoriesManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerMarketsManagerUseCase
 import org.the_chance.honeymart.domain.usecase.usecaseManager.owner.OwnerProductsManagerUseCase
@@ -21,7 +23,9 @@ class CategoriesViewModel @Inject constructor(
     private val ownerProducts: OwnerProductsManagerUseCase,
     private val ownerMarkets: OwnerMarketsManagerUseCase,
     private val stringResource: StringDictionary,
-) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
+    private val productReviewsUseCase: GetAllProductReviewsUseCase,
+
+    ) : BaseViewModel<CategoriesUiState, CategoriesUiEffect>(CategoriesUiState()),
     CategoriesInteractionsListener {
 
     override val TAG: String = this::class.java.simpleName
@@ -303,6 +307,7 @@ class CategoriesViewModel @Inject constructor(
         }
         val productID = _state.value.newProducts.id
         getProductDetails(productID)
+        getProductReviews(productID)
     }
     // endregion
 
@@ -411,6 +416,34 @@ class CategoriesViewModel @Inject constructor(
     private fun onGetProductDetailsError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error) }
     }
+
+
+    private fun getProductReviews(productId: Long) {
+        _state.update { it.copy(isLoading = true, isError = false) }
+        tryToExecute(
+            { productReviewsUseCase(productId, page.value) },
+            ::onGetProductReviewsSuccess,
+            ::onGetProductReviewsError
+        )
+    }
+
+    private fun onGetProductReviewsSuccess(reviews: Reviews) {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                reviews = reviews.toReviews(),
+            )
+        }
+    }
+
+    private fun onGetProductReviewsError(errorHandler: ErrorHandler) {
+        _state.update { it.copy(isLoading = false) }
+        if (errorHandler is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isLoading = false, isError = true) }
+        }
+    }
+
+
     //endregion
 
     //region Update Product

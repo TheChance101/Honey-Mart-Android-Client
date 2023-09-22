@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -112,7 +111,10 @@ fun ProductReviewsContent(
                 enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                 exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                ) {
                     AverageRating(
                         averageRating = state.reviews.reviewStatisticUiState.averageRating.toFloat(),
                         reviewCount = state.reviews.reviewStatisticUiState.reviewCount.toString(),
@@ -158,7 +160,6 @@ fun ProductReviewsContent(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
         }
         items(state.reviews.reviews.size) { position ->
             onChangeReviews(position)
