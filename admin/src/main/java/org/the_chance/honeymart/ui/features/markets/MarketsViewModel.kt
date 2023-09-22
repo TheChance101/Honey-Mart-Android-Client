@@ -20,7 +20,7 @@ class MarketsViewModel @Inject constructor(
     }
 
     private fun getMarkets() {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = !it.isRefresh, isError = false, error = null) }
         tryToExecute(
             { adminMarketsManager.getMarkets() },
             ::onMarketRequestSuccess,
@@ -32,6 +32,7 @@ class MarketsViewModel @Inject constructor(
         _state.update { requestUiState ->
             requestUiState.copy(
                 isLoading = false,
+                isRefresh = false,
                 marketsUpdated = markets.map { it.toMarketRequestUiState() },
                 markets = markets.map { it.toMarketRequestUiState() }
             )
@@ -40,7 +41,14 @@ class MarketsViewModel @Inject constructor(
     }
 
     private fun onMarketRequestError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error, isError = true) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isRefresh = false,
+                error = error,
+                isError = true
+            )
+        }
         when (error) {
             is ErrorHandler.NoConnection -> {
                 _state.update { it.copy(isError = true) }
@@ -55,7 +63,7 @@ class MarketsViewModel @Inject constructor(
     }
 
     override fun updateMarket(marketId: Int, isApproved: Boolean) {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = !it.isRefresh, isError = false) }
         tryToExecute(
             { adminMarketsManager.updateMarket(marketId.toLong(), isApproved) },
             ::onUpdateMarketSuccess,
@@ -64,12 +72,12 @@ class MarketsViewModel @Inject constructor(
     }
 
     private fun onUpdateMarketSuccess(isApproved: Boolean) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false, isRefresh = false) }
         getMarkets()
     }
 
     private fun onUpdateMarketError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, isRefresh = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -101,6 +109,11 @@ class MarketsViewModel @Inject constructor(
                 selectedMarket = null
             )
         }
+    }
+
+    override fun onRefresh() {
+        _state.update { it.copy(isRefresh = true, isError = false, error = null) }
+        getMarkets()
     }
 
     override fun onClickTryAgain() {
