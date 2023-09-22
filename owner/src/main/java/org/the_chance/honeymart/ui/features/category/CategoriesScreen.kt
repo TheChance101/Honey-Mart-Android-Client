@@ -39,6 +39,7 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
     CategoriesContent(
         state,
         categoriesViewModel,
+        categoriesViewModel::onChangeReviews
     )
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
@@ -50,6 +51,7 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
 fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
+    onChangeReviews: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -151,7 +153,7 @@ fun CategoriesContent(
                             listener = listener,
                             onClickConfirm = { listener.updateProductDetails(state) },
                             onClickCancel = { listener.onClickCancel() },
-                            onChangeReviews = { listener.onScrollDown() },
+                            onChangeReviews = { onChangeReviews(it) },
                         )
                     }
                 }
