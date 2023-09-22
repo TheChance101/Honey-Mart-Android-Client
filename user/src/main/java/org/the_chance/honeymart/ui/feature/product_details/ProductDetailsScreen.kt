@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -103,7 +104,7 @@ fun ProductDetailsScreen(
 @Composable
 private fun ProductDetailsContent(
     state: ProductDetailsUiState,
-    listener: ProductDetailsInteraction
+    listener: ProductDetailsInteraction,
 ) {
     ProductDetailsMainContent(state, listener)
     Box(modifier = Modifier.fillMaxSize()) {
@@ -128,15 +129,19 @@ private fun ProductDetailsContent(
 
 @Composable
 fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDetailsInteraction) {
+    val scrollState = rememberLazyListState()
+    val isFirstItemScroll = scrollState.firstVisibleItemIndex == 0
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         topBar = {
-            ProductAppBar(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
-                state = state,
-                onBackClick = listener::onClickBack,
-                onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
-            )
+            AnimatedVisibility(visible = isFirstItemScroll, enter = fadeIn(), exit = fadeOut()) {
+                ProductAppBar(
+                    modifier = Modifier.padding(horizontal = MaterialTheme.dimens.space16),
+                    state = state,
+                    onBackClick = listener::onClickBack,
+                    onFavoriteClick = { listener.onClickFavorite(state.product.productId) },
+                )
+            }
         },
         bottomBar = {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -188,6 +193,7 @@ fun ProductDetailsMainContent(state: ProductDetailsUiState, listener: ProductDet
         }
     ) { padding ->
         LazyColumn(
+            state = scrollState,
             modifier = Modifier
                 .fillMaxSize(),
             contentPadding = PaddingValues(bottom = padding.calculateBottomPadding())
