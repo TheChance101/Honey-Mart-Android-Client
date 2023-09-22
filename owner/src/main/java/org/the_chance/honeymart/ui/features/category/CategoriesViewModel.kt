@@ -459,7 +459,10 @@ class CategoriesViewModel @Inject constructor(
 
 
     private fun getProductReviews(productId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = true, isError = false,
+            reviews = it.reviews.copy(reviews = emptyList())) }
+        onChangeReviews(0)
+        page.value = 1
         tryToExecute(
             { productReviewsUseCase(productId, page.value) },
             ::onGetProductReviewsSuccess,
