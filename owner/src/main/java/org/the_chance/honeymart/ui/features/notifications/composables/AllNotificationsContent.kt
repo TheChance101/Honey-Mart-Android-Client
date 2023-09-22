@@ -96,7 +96,7 @@ fun AllNotificationsContent(
             state = pullRefreshState,
             contentColor = MaterialTheme.colorScheme.primary
         )
-        Column(modifier = Modifier.pullRefresh(pullRefreshState)) {
+        Column(modifier = Modifier.fillMaxWidth().pullRefresh(pullRefreshState)) {
             EmptyPlaceholder(
                 state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
                 emptyObjectName = stringResource(id = R.string.notifications_label),

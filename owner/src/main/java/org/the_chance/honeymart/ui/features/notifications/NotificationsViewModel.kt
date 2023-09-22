@@ -41,6 +41,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
+                isRefresh = false,
                 notifications = updateNotification,
             )
         }
@@ -69,6 +70,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
+                isRefresh = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
             )
         }
