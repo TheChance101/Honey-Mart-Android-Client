@@ -20,7 +20,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun getAllNotifications() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = !it.isRefresh) }
         tryToExecute(
             { getAllNotifications(NotificationStates.ALL.state) },
             ::onGetAllNotificationsSuccess,
@@ -30,7 +30,8 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetAllNotifications() {
         _state.update {
-            it.copy(notificationState = NotificationStates.ALL,
+            it.copy(
+                notificationState = NotificationStates.ALL,
                 updatedNotifications = it.notifications,
             )
         }
@@ -38,7 +39,8 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetOrderNotifications() {
         _state.update {
-            it.copy(notificationState = NotificationStates.ORDER,
+            it.copy(
+                notificationState = NotificationStates.ORDER,
                 updatedNotifications = it.notifications.filter { it.title != "Order Is Complete!" },
             )
         }
@@ -54,17 +56,19 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun onClickTryAgain() {
-
-        effectActionExecutor(_effect, NotificationsUiEffect.OnClickTryAgain)
+        getAllNotifications()
     }
 
     private fun onGetAllNotificationsSuccess(notifications: List<Notification>) {
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
+                isRefresh = false,
+                isError = false,
+                error = null,
                 notifications = notifications.map { it.toNotificationUiState() },
                 updatedNotifications = notifications.map { it.toNotificationUiState() },
-               )
+            )
         }
     }
 
@@ -79,5 +83,9 @@ class NotificationsViewModel @Inject constructor(
         effectActionExecutor(_effect, NotificationsUiEffect.OnClickDiscoverMarket)
     }
 
+    override fun onRefresh() {
+        _state.update { it.copy(isRefresh = true, isError = false, error = null) }
+        getAllNotifications()
+    }
 
 }
