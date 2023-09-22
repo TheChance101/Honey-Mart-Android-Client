@@ -91,15 +91,19 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun onChangeReviews(position: Int) {
+   override fun onChangeReviews(position: Int) {
         reviewScrollPosition = position
+    }
+
+    private fun insert() {
+        page.value += 1
     }
 
     override fun onScrollDown() {
         viewModelScope.launch {
             if ((reviewScrollPosition + 1) >= (page.value * MAX_PAGE_SIZE)) {
                 _state.update { it.copy(isLoadingReviewsPaging = true) }
-                page.value += 1
+                insert()
                 if (page.value > 1) {
                     val result = productReviewsUseCase(
                         _state.value.newProducts.id, page.value

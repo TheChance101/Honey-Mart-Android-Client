@@ -38,8 +38,7 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
 
     CategoriesContent(
         state,
-        categoriesViewModel,
-        categoriesViewModel::onChangeReviews
+        categoriesViewModel
     )
     LaunchedEffect(lifecycleOwner) {
         categoriesViewModel.getAllCategory()
@@ -51,12 +50,8 @@ fun CategoriesScreen(categoriesViewModel: CategoriesViewModel = hiltViewModel())
 fun CategoriesContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
-    onChangeReviews: (Int) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         HoneyMartTitle()
         Loading(state = state.showLoadingWhenCategoriesIsEmpty())
         ContentVisibility(state = state.emptyCategoryPlaceHolder()) {
@@ -141,7 +136,7 @@ fun CategoriesContent(
                             listener = listener,
                             onClickConfirm = { listener.onClickUpdateProductDetails() },
                             onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
-                            onChangeReviews = { listener.onScrollDown() },
+                            onChangeReviews = { listener.onChangeReviews(it) },
                         )
                     }
                     ContentVisibility(state = state.showProductUpdateContent()) {
@@ -153,7 +148,7 @@ fun CategoriesContent(
                             listener = listener,
                             onClickConfirm = { listener.updateProductDetails(state) },
                             onClickCancel = { listener.onClickCancel() },
-                            onChangeReviews = { onChangeReviews(it) },
+                            onChangeReviews = {},
                         )
                     }
                 }
