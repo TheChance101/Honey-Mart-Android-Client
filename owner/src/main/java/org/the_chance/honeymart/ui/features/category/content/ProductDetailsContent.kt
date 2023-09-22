@@ -80,7 +80,7 @@ fun ProductDetailsContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.onTertiary)
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
             ) {
@@ -102,7 +102,7 @@ fun ProductDetailsContent(
             FormHeader(
                 title = titleScreen,
                 iconPainter = painterResource(id = R.drawable.icon_add_product),
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                modifier = Modifier.background(MaterialTheme.colorScheme.onTertiary)
             )
         }
     ) { PaddingValues ->
