@@ -4,12 +4,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.the_chance.honeymart.domain.model.Market
 import org.the_chance.honeymart.domain.usecase.GetAllMarketsPagingUseCase
+import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MarketViewModel @Inject constructor(
+class MarketsViewModel @Inject constructor(
     private val getAllMarket: GetAllMarketsPagingUseCase,
 ) : BaseViewModel<MarketsUiState, MarketUiEffect>(MarketsUiState()),
     MarketInteractionListener {

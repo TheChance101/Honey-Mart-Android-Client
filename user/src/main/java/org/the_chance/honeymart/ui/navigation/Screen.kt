@@ -11,8 +11,8 @@ sealed class Screen(val route: String) {
     object WishListScreen : Screen("wishListScreen")
     object ProfileScreen : Screen("profileScreen")
 
-    object CategoryScreen : Screen("categoryScreen")
-    object CategoryScreenWithArgs : Screen("categoryScreen/{marketId}")
+    object MarketInfoScreen : Screen("marketInfoScreen")
+    object MarketInfoScreenWithArgs : Screen("marketInfoScreen/{marketId}")
     object OrderDetailsScreen : Screen("orderDetailsScreen")
     object OrderDetailsScreenWithArgs : Screen("orderDetailsScreen/{orderId}")
     object ProductScreen : Screen("ProductScreen")

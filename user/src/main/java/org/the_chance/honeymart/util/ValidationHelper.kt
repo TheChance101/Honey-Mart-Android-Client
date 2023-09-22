@@ -68,6 +68,10 @@ internal fun handleValidation(validationStat: ValidationState): Int {
         BLANK_COUPON_COUNT -> TODO()
         LONG_COUPON_COUNT -> TODO()
         VALID_COUPON_COUNT -> TODO()
+        BLANK_REVIEW -> TODO()
+        SHORT_REVIEW -> TODO()
+        LONG_REVIEW -> TODO()
+        VALID_REVIEW -> TODO()
     }
 
 }
