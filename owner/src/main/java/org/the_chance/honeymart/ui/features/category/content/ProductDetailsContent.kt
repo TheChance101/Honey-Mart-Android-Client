@@ -260,11 +260,12 @@ fun ProductDetailsContent(
                 }
             }
             items(state.reviews.reviews.size) { position ->
-                onChangeReviews(position)
-                if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
-                    listener.onScrollDown()
-                }
+
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
+                    onChangeReviews(position)
+                    if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
                     val review = state.reviews.reviews[position]
                     CardReviews(
                         userName = review.fullName,
@@ -275,7 +276,9 @@ fun ProductDetailsContent(
                 }
             }
             item {
-                PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
+                ContentVisibility(state = state.showScreenState.showProductDetails) {
+                    PagingLoading(state = state.isLoadingPaging && state.reviews.reviews.isNotEmpty())
+                }
             }
         }
     }
