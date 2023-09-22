@@ -132,7 +132,6 @@ fun CategoryProductsContent(
                 item {
                     PagingLoading(state = state.isLoadingPaging && state.reviews.reviews.isNotEmpty())
                 }
-
             }
             EmptyPlaceholder(
                 state = products.isEmpty(),
