@@ -10,6 +10,7 @@ import java.util.Date
 
 data class NotificationsUiState(
     val isLoading: Boolean = false,
+    val isRefresh: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val notificationState: NotificationStates = NotificationStates.NEW,

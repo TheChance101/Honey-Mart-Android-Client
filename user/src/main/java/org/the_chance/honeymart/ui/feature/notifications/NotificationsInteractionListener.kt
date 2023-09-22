@@ -7,4 +7,5 @@ interface NotificationsInteractionListener {
     fun onGetDeliveryNotifications()
     fun onClickTryAgain()
     fun onClickDiscoverMarket()
+    fun onRefresh()
 }

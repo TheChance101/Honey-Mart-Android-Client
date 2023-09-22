@@ -15,45 +15,49 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
     private val ownerNotifications: OwnerNotificationsManagerUseCase
-    ):BaseViewModel<NotificationsUiState,NotificationsUiEffect>
-    (NotificationsUiState()),NotificationsInteractionListener{
+) : BaseViewModel<NotificationsUiState, NotificationsUiEffect>
+    (NotificationsUiState()), NotificationsInteractionListener {
 
 
-    override val TAG: String = this ::class.simpleName.toString()
+    override val TAG: String = this::class.simpleName.toString()
+
     init {
-        getAllNotifications(NotificationStates.NEW.state,NotificationStates.NEW)
+        getAllNotifications(NotificationStates.NEW.state, NotificationStates.NEW)
     }
-    override fun getAllNotifications(state: Int,notificationStates: NotificationStates){
-        _state.update { it.copy(isLoading = true,notificationState =notificationStates) }
+
+    override fun getAllNotifications(state: Int, notificationStates: NotificationStates) {
+        _state.update { it.copy(isLoading = !it.isRefresh, notificationState = notificationStates) }
         tryToExecute(
-            {ownerNotifications.getNotifications(state)},
-            ::onGetNotificationSuccess ,
+            { ownerNotifications.getNotifications(state) },
+            ::onGetNotificationSuccess,
             ::onGetNotificationsError
         )
     }
-    private fun onGetNotificationSuccess(notifications : List<Notification>) {
+
+    private fun onGetNotificationSuccess(notifications: List<Notification>) {
         val notificationUiState = notifications.toNotificationUiState()
-        val updateNotification = if(notifications.isEmpty())notificationUiState
+        val updateNotification = if (notifications.isEmpty()) notificationUiState
         else updateSelectedOrder(notificationUiState, notificationUiState.first().notificationId)
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
+                isRefresh = false,
                 notifications = updateNotification,
             )
         }
-        if(notificationUiState.isNotEmpty())
+        if (notificationUiState.isNotEmpty())
             getOrderDetails(_state.value.notifications.first().orderId)
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, isRefresh = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
 
     private fun getOrderDetails(orderId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = !it.isRefresh, isError = false) }
         tryToExecute(
             { ownerNotifications.getOrderDetailsUseCase(orderId) },
             ::onGetOrderDetailsSuccess,
@@ -66,6 +70,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
+                isRefresh = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
             )
         }
@@ -73,16 +78,19 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = errorHandler) }
+        _state.update { it.copy(isLoading = false, isRefresh = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
     }
 
     private fun getOrderProductDetails(orderId: Long) {
-        _state.update { it.copy(isLoading = true ,
-            notification = it.notification.copy(orderId =orderId )
-        ) }
+        _state.update {
+            it.copy(
+                isLoading = !it.isRefresh,
+                notification = it.notification.copy(orderId = orderId)
+            )
+        }
         tryToExecute(
             { ownerNotifications.getOrderProductDetailsUseCase(orderId) },
             ::onGetOrderProductDetailsSuccess,
@@ -94,30 +102,38 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
+                isRefresh = false,
                 products = products.toOrderDetailsProductUiState(),
             )
         }
     }
 
     private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false, isRefresh = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isError = true) }
         }
     }
 
-    private fun updateSelectedOrder(notifications: List<NotificationUiState>,
+    private fun updateSelectedOrder(
+        notifications: List<NotificationUiState>,
         selectedNotificationId: Long,
     ): List<NotificationUiState> {
         return notifications.map { notification ->
             notification.copy(
-                isNotificationSelected = notification.notificationId == selectedNotificationId)
+                isNotificationSelected = notification.notificationId == selectedNotificationId
+            )
         }
     }
 
-    override fun onCLickNotificationCard(orderDetails: OrderUiState, notification :NotificationUiState) {
-        val updateNotification = updateSelectedOrder(_state.value.notifications,
-            notification.notificationId)
+    override fun onCLickNotificationCard(
+        orderDetails: OrderUiState,
+        notification: NotificationUiState
+    ) {
+        val updateNotification = updateSelectedOrder(
+            _state.value.notifications,
+            notification.notificationId
+        )
         _state.update {
             val newOrderDetails = it.orderDetails.copy(orderId = notification.orderId)
             it.copy(
@@ -126,6 +142,12 @@ class NotificationsViewModel @Inject constructor(
             )
         }
         getOrderDetails(notification.orderId)
+    }
+
+    override fun onRefresh() {
+        val value = state.value
+        _state.update { it.copy(isRefresh = true, error = null, isError = false) }
+        getAllNotifications(value.notificationState.state, value.notificationState)
     }
 
 

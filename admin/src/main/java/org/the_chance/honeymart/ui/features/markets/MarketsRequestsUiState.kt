@@ -4,7 +4,8 @@ import org.the_chance.honeymart.domain.model.MarketRequest
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
 data class MarketsRequestUiState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
+    val isRefresh: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val marketsUpdated: List<MarketRequestUiState> = emptyList(),

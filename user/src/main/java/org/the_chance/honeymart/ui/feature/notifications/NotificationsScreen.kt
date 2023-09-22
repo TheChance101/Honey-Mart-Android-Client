@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
@@ -40,7 +43,6 @@ fun NotificationsScreen(
     LaunchedEffect(true) {
         viewModel.effect.collect {
             when (it) {
-                NotificationsUiEffect.OnClickTryAgain -> navController.navigateToNotificationsScreen()
                 NotificationsUiEffect.OnClickDiscoverMarket -> navController.navigateToHomeScreen()
                 NotificationsUiEffect.OnClickNotification -> navController.navigateToNotificationsScreen()
             }
@@ -51,6 +53,7 @@ fun NotificationsScreen(
     NotificationsContent(state = state, listener = viewModel)
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NotificationsContent(
     state: NotificationsUiState,
@@ -106,43 +109,49 @@ fun NotificationsContent(
                     onClickState = listener::onGetDeliveryNotifications
                 )
             }
-            EmptyOrdersPlaceholder(
-                state = state.emptyNotificationsPlaceHolder(),
-                image = R.drawable.placeholder_wish_list,
-                title = stringResource(R.string.your_notifications_is_empty),
-                subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
-                onClickDiscoverMarkets = listener::onClickDiscoverMarket,
+            val pullRefreshState = rememberPullRefreshState(
+                refreshing = state.isRefresh,
+                onRefresh = listener::onRefresh
             )
-            LazyColumn(
-                modifier = Modifier
-                    .padding(vertical = MaterialTheme.dimens.space16)
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
-            ) {
-                items(state.updatedNotifications.size) {
-                    val notification = state.updatedNotifications[it]
-                    NotificationCard(
-                        painter = if (notification.columnIcon()) {
-                            painterResource(R.drawable.icon_order_nav)
-                        } else {
-                            painterResource(R.drawable.ic_delivery)
-                        },
-                        title = notification.title,
-                        date = notification.date,
-                        message = notification.body,
-                        index = it
-                    )
-                }
-
+            if (state.isRefresh){
+                PullRefreshIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    refreshing = state.isRefresh,
+                    state = pullRefreshState,
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             }
+            Column(modifier = Modifier.pullRefresh(state = pullRefreshState)) {
+                EmptyOrdersPlaceholder(
+                    state = state.emptyNotificationsPlaceHolder(),
+                    image = R.drawable.placeholder_wish_list,
+                    title = stringResource(R.string.your_notifications_is_empty),
+                    subtitle = stringResource(R.string.you_ll_receive_a_notification_after_placing_your_order),
+                    onClickDiscoverMarkets = listener::onClickDiscoverMarket,
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(vertical = MaterialTheme.dimens.space16)
+                        .background(MaterialTheme.colorScheme.secondary)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
+                ) {
+                    items(state.updatedNotifications.size) {
+                        val notification = state.updatedNotifications[it]
+                        NotificationCard(
+                            painter = if (notification.columnIcon()) {
+                                painterResource(R.drawable.icon_order_nav)
+                            } else {
+                                painterResource(R.drawable.ic_delivery)
+                            },
+                            title = notification.title,
+                            date = notification.date,
+                            message = notification.body,
+                            index = it
+                        )
+                    }
 
+                }
+            }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun NotificationsPreview() {
-    NotificationsScreen()
 }
