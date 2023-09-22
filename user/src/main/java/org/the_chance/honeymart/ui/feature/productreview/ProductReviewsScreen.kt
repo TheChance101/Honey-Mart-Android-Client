@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.LocalNavigationProvider
 import org.the_chance.honeymart.ui.composables.ContentVisibility
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.feature.productreview.ProductReviewsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.util.defaultTo1IfZero
 import org.the_chance.honymart.ui.composables.AverageRating
@@ -173,6 +174,9 @@ fun ProductReviewsContent(
                 reviews = review.content,
                 date = review.reviewDate
             )
+        }
+        item {
+            PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
         }
     }
 }
