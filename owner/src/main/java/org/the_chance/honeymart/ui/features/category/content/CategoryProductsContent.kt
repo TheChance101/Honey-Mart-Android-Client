@@ -115,7 +115,6 @@ fun CategoryProductsContent(
                     if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
                         listener.onScrollDown()
                     }
-                    // listener.onChangeProductScrollPosition(index)
                     products[index].let {
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
