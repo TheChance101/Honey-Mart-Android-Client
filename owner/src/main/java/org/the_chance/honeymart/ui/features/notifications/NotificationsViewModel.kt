@@ -50,14 +50,14 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+        _state.update { it.copy(isLoading = false, isRefresh = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
     }
 
     private fun getOrderDetails(orderId: Long) {
-        _state.update { it.copy(isLoading = true, isError = false) }
+        _state.update { it.copy(isLoading = !it.isRefresh, isError = false) }
         tryToExecute(
             { ownerNotifications.getOrderDetailsUseCase(orderId) },
             ::onGetOrderDetailsSuccess,
@@ -78,7 +78,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = errorHandler) }
+        _state.update { it.copy(isLoading = false, isRefresh = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -108,9 +108,9 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false) }
+        _state.update { it.copy(isLoading = false, isRefresh = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
-            _state.update { it.copy(isLoading = false, isError = true) }
+            _state.update { it.copy(isError = true) }
         }
     }
 
