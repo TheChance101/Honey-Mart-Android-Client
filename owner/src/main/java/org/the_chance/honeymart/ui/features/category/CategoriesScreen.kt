@@ -139,6 +139,7 @@ fun CategoriesContent(
                             listener = listener,
                             onClickConfirm = { listener.onClickUpdateProductDetails() },
                             onClickCancel = { listener.resetShowState(Visibility.DELETE_PRODUCT) },
+                            onChangeReviews = { listener.onScrollDown() },
                         )
                     }
                     ContentVisibility(state = state.showProductUpdateContent()) {
@@ -149,7 +150,8 @@ fun CategoriesContent(
                             state = state,
                             listener = listener,
                             onClickConfirm = { listener.updateProductDetails(state) },
-                            onClickCancel = { listener.onClickCancel() }
+                            onClickCancel = { listener.onClickCancel() },
+                            onChangeReviews = { listener.onScrollDown() },
                         )
                     }
                 }

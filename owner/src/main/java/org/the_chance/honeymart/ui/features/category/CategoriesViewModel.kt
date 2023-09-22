@@ -1,8 +1,10 @@
 package org.the_chance.honeymart.ui.features.category
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.model.Reviews
@@ -30,6 +32,7 @@ class CategoriesViewModel @Inject constructor(
 
     override val TAG: String = this::class.java.simpleName
     private var page = MutableStateFlow(_state.value.page)
+    private var reviewScrollPosition = 0
 
     init {
         getCategoryImages()
@@ -85,6 +88,35 @@ class CategoriesViewModel @Inject constructor(
     private fun getCategoryImages() {
         _state.update {
             it.copy(isLoading = false, categoryIcons = categoryIcons.toCategoryImageUIState())
+        }
+    }
+
+    override fun onScrollDown() {
+        viewModelScope.launch {
+            if ((reviewScrollPosition + 1) >= (page.value * MAX_PAGE_SIZE)) {
+                _state.update { it.copy(isLoadingPaging = true) }
+                page.value += 1
+                if (page.value > 1) {
+                    val result = productReviewsUseCase(
+                        _state.value.newProducts.id, page.value
+                    ).toReviews()
+                    appendReviews(result)
+                }
+                _state.update { it.copy(isLoadingPaging = false) }
+            }
+        }
+    }
+
+    private fun appendReviews(reviews: ReviewDetailsUiState) {
+        val current = ArrayList(state.value.reviews.reviews)
+        current.addAll(reviews.reviews)
+        _state.update {
+            it.copy(
+                reviews = reviews.copy(
+                    reviewStatisticUiState = reviews.reviewStatisticUiState,
+                    reviews = current
+                )
+            )
         }
     }
 
@@ -273,7 +305,7 @@ class CategoriesViewModel @Inject constructor(
     private fun getProductsByCategoryId(categoryId: Long) {
         _state.update { it.copy(isLoading = true) }
         resetSearchState()
-        getProducts(page.value,categoryId)
+        getProducts(page.value, categoryId)
     }
 
     override fun onChangeProductScrollPosition(position: Int) {
@@ -645,12 +677,14 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(page: Int,categoriesId: Long? = null) {
+    private fun getProducts(page: Int, categoriesId: Long? = null) {
         _state.update { it.copy(isLoadingPaging = true, isErrorPaging = false, error = null) }
         tryToExecute(
-            {ownerProducts.getAllProducts(
-                categoriesId ?:state.value.newCategory.categoryId, page
-            ).map { it.toProductUiState() }},
+            {
+                ownerProducts.getAllProducts(
+                    categoriesId ?: state.value.newCategory.categoryId, page
+                ).map { it.toProductUiState() }
+            },
             ::onGetProductsSuccess,
             ::onGetProductsError
         )
@@ -663,13 +697,20 @@ class CategoriesViewModel @Inject constructor(
                 current.addAll(data)
                 it.copy(products = current, isLoadingPaging = false, isLoading = false)
             } else {
-              it.copy(products = data, isLoadingPaging = false, isLoading = false)
+                it.copy(products = data, isLoadingPaging = false, isLoading = false)
             }
         }
     }
 
     private fun onGetProductsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoadingPaging = false, isLoading = false, isErrorPaging = true, error = error) }
+        _state.update {
+            it.copy(
+                isLoadingPaging = false,
+                isLoading = false,
+                isErrorPaging = true,
+                error = error
+            )
+        }
     }
 
     //endregion

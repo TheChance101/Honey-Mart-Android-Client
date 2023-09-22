@@ -27,6 +27,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
+import org.the_chance.honeymart.ui.features.category.composable.PagingLoading
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.Loading
@@ -120,10 +121,14 @@ fun CategoryProductsContent(
                         )
                     }
                 }
-                item{
+                item {
                     Spacer(modifier = Modifier.padding(MaterialTheme.dimens.space8))
-                    Loading(state = state.isLoadingPaging)
+                    Loading(state = state.isLoading)
                 }
+                item {
+                    PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
+                }
+
             }
             EmptyPlaceholder(
                 state = products.isEmpty(),

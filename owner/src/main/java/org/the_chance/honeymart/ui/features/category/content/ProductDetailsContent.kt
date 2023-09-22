@@ -40,6 +40,7 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
@@ -65,6 +66,7 @@ fun ProductDetailsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
     onClickConfirm: () -> Unit,
+    onChangeReviews: (Int) -> Unit,
     onClickCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -258,10 +260,10 @@ fun ProductDetailsContent(
                 }
             }
             items(state.reviews.reviews.size) { position ->
-//            onChangeReviews(position)
-//            if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
-//                listener.onScrollDown()
-//            }
+                onChangeReviews(position)
+                if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                    listener.onScrollDown()
+                }
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
                     val review = state.reviews.reviews[position]
                     CardReviews(
