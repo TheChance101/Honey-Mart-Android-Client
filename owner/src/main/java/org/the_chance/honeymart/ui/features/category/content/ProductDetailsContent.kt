@@ -260,7 +260,6 @@ fun ProductDetailsContent(
                 }
             }
             items(state.reviews.reviews.size) { position ->
-
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
                     onChangeReviews(position)
                     if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {

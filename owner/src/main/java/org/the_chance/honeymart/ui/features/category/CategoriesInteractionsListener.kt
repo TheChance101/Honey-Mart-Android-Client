@@ -30,4 +30,5 @@ interface CategoriesInteractionsListener {
     fun deleteProductById(productId: Long)
     fun onUpdateProductImage(productId: Long, images: List<ByteArray>)
     fun onChangeProductScrollPosition(position: Int)
+    fun onChangeReviews(position: Int)
 }
