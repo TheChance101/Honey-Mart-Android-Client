@@ -177,7 +177,7 @@
     <string name="map_pointer">Map Pointer</string>
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
-    <string name="shop_details">shop details</string>
+    <string name="shop_details">Market Details</string>
     <string name="your_notifications_is_empty">Your Notifications is empty!!</string>
     <string name="you_ll_receive_a_notification_after_placing_your_order">You’ll receive a notification after placing your order</string>
     <string name="order_title">Order</string>
@@ -284,7 +284,7 @@
     <string name="there_are_no_orders_in_your_market">There are no orders in your \n market!!</string>
     <string name="click_on_order_to_show_it_s_details">Click on order to show it’s details</string>
     <string name="notifications_label">Notifications</string>
-     <string name="recieve_notification">You’ll receive a notification after \n customer place an order</string>
+    <string name="recieve_notification">You’ll receive a notification after \n customer place an order</string>
     <string name="receive_notification_cancels">" You will receive a notification \n when a customer cancels an order"</string>
 
     <string name="customers_reviews">Customers Reviews</string>
@@ -292,4 +292,16 @@
     <string name="ratings">Ratings</string>
     <string name="category_name_is_too_long">Category name is too long</string>
     <string name="blank_field">"This filed should not be empty</string>
+    <string name="no_categories_available">No categories available</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="what_did_you_like_or_dislike_how_did_you_use_the_product_what_should_others_know_before_buying">What did you like or dislike? How did you use the product? What should others know before buying?</string>
+    <string name="add_your_review">Add your review</string>
+    <string name="add_your_rate">Add your rate</string>
+
+    <string name="review_added_successfully"> Review added successfully</string>
+
+    <string name="review_cannot_be_blank">Review cannot be blank</string>
+    <string name="review_cannot_be_more_than_500_characters">Review cannot be more than 500 characters</string>
+    <string name="review_cannot_be_less_than_6_characters">Review cannot be less than 6 characters</string>
+
 </resources>

@@ -3,7 +3,7 @@ package org.the_chance.honeymart.ui.feature.marketInfo
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.util.ErrorHandler
 
-data class MarketDetailsUiState(
+data class MarketInfoUiState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
@@ -33,5 +33,5 @@ fun Category.toCategoryUiState(): CategoryUiState {
     )
 }
 
-fun MarketDetailsUiState.showLazyCondition() = !this.isLoading && !this.isError
+fun MarketInfoUiState.showLazyCondition() = !this.isLoading && !this.isError
 

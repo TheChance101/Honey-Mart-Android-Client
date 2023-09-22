@@ -33,8 +33,12 @@ class StringResources @Inject constructor(
             ValidationState.BLANK_MARKET_ADDRESS to getStringFromFile(R.string.market_address_should_not_be_empty),
             ValidationState.INVALID_MARKET_ADDRESS to getStringFromFile(R.string.invalid_market_address),
             ValidationState.SHORT_MARKET_DESCRIPTION to getStringFromFile(R.string.market_description_should_be_20_letter_at_least),
-            ValidationState.BLANK_MARKET_DESCRIPTION to getStringFromFile(R.string.market_description_should_not_be_empty)
+            ValidationState.BLANK_MARKET_DESCRIPTION to getStringFromFile(R.string.market_description_should_not_be_empty),
+            ValidationState.BLANK_REVIEW to getStringFromFile(R.string.review_cannot_be_blank),
+            ValidationState.SHORT_REVIEW to getStringFromFile(R.string.review_cannot_be_less_than_6_characters),
+            ValidationState.LONG_REVIEW to getStringFromFile(R.string.review_cannot_be_more_than_500_characters),
         )
+
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
             ErrorHandler.EmailAlreadyExist to getStringFromFile(R.string.account_already_exist),
@@ -45,4 +49,7 @@ class StringResources @Inject constructor(
         )
     override val requiredFieldsMessageString: String
         get() = getStringFromFile(R.string.please_fill_required_fields)
+
+    override val addReviewSuccessString: String
+        get() = getStringFromFile(R.string.review_added_successfully)
 }

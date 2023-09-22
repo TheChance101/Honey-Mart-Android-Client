@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -24,8 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ContentVisibility
-import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.OrderDetailsCard
 import org.the_chance.honeymart.ui.feature.order_details.composables.AddReviewBottomSheet
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
@@ -61,44 +60,14 @@ private fun OrderDetailsContent(
     listener: OrderDetailsInteractionListener,
     state: OrderDetailsUiState,
 ) {
-    HoneyAppBarScaffold(
-        bottomBar = {
-            Box(modifier = Modifier.shadow(elevation = MaterialTheme.dimens.space8)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.onTertiary)
-                        .padding(
-                            horizontal = MaterialTheme.dimens.space16,
-                            vertical = MaterialTheme.dimens.space8
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Column {
-                        Text(
-                            text = state.orderDetails.totalPriceCurrency,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                        Text(
-                            text = stringResource(id = R.string.total_price),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.displaySmall,
-                        )
-                    }
-                    HoneyOutlineText(text = state.orderDetails.stateText)
-                }
-            }
-        },
-    ) {
+    HoneyAppBarScaffold {
         Loading(state = state.isProductsLoading)
         ContentVisibility(state = !state.isProductsLoading) {
             Column(modifier = Modifier.fillMaxSize()) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .weight(1f),
                     contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     content = {
@@ -116,15 +85,43 @@ private fun OrderDetailsContent(
                         }
                     }
                 )
+
+                Box(modifier = Modifier.shadow(elevation = MaterialTheme.dimens.space8)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = MaterialTheme.colorScheme.onTertiary)
+                            .padding(
+                                horizontal = MaterialTheme.dimens.space16,
+                                vertical = MaterialTheme.dimens.space8
+                            ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column {
+                            Text(
+                                text = state.orderDetails.totalPriceCurrency,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                            Text(
+                                text = stringResource(id = R.string.total_price),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = MaterialTheme.typography.displaySmall,
+                            )
+                        }
+                        HoneyOutlineText(text = state.orderDetails.stateText)
+                    }
+                }
             }
-            AddReviewBottomSheet(
-                state = state.addReviewBottomSheetUiState,
-                onClickSubmit = listener::onClickSubmitReview,
-                onDismiss = listener::onDismissAddReviewSheet,
-                onRatingChange = listener::onRatingChange,
-                onReviewChange = listener::onReviewChange,
-            )
         }
+        AddReviewBottomSheet(
+            state = state.addReviewBottomSheetUiState,
+            onClickSubmit = listener::onClickSubmitReview,
+            onDismiss = listener::onDismissAddReviewSheet,
+            onRatingChange = listener::onRatingChange,
+            onReviewChange = listener::onReviewChange,
+        )
     }
 }
 

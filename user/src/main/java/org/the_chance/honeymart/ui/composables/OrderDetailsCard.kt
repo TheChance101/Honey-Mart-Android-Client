@@ -69,7 +69,7 @@ fun OrderDetailsCard(
                     .fillMaxHeight()
                     .weight(0.7f)
                     .padding(MaterialTheme.dimens.space8),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4),
             ) {
                 Text(
                     text = orderName,
@@ -87,7 +87,7 @@ fun OrderDetailsCard(
                 )
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space4)
                 ) {
                     Icon(

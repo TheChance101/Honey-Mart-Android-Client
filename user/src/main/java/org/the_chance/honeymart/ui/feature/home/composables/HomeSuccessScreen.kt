@@ -33,6 +33,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.see_all_markets.MarketUiState
@@ -58,8 +60,6 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
-
-
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -311,18 +311,23 @@ private fun Categories(
                 }
             }
             Box {
-
-                Loading(state = isCategoryLoading)
-                this@Column.AnimatedVisibility(visible = !isCategoryLoading,
+                Loading(
+                    state = isCategoryLoading,
+                    modifier = Modifier.height(MaterialTheme.dimens.widthItemMarketCard)
+                )
+                this@Column.AnimatedVisibility(
+                    visible = !isCategoryLoading,
                     enter = fadeIn(),
-                    exit = fadeOut()) {
+                    exit = fadeOut()
+                ) {
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     ) {
                         itemsIndexed(
                             categories,
-                            key = { _, category -> category.categoryId }) { index, category ->
+                            key = { _, category -> category.categoryId }
+                        ) { index, category ->
                             HomeCategoriesItem(
                                 modifier = Modifier
                                     .padding(horizontal = MaterialTheme.dimens.space8)
@@ -336,6 +341,19 @@ private fun Categories(
                             )
                         }
                     }
+                }
+                this@Column.AnimatedVisibility(
+                    visible = categories.isEmpty() && isCategoryLoading.not(),
+                    enter = fadeIn(), exit = fadeOut(),
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_categories),
+                        modifier = Modifier
+                            .height(66.dp)
+                            .fillMaxWidth().padding(top = MaterialTheme.dimens.space16)
+                            .padding(MaterialTheme.dimens.space16),
+                        textAlign = TextAlign.Center,
+                    )
                 }
             }
         }

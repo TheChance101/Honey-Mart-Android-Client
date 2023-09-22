@@ -1,4 +1,4 @@
-package org.the_chance.honeymart.ui.feature.SeeAllmarkets
+package org.the_chance.honeymart.ui.feature.see_all_markets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +14,15 @@ import org.the_chance.honeymart.ui.composables.ContentVisibility
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.PagingLoading
-import org.the_chance.honeymart.ui.feature.SeeAllmarkets.compoaseable.MarketItem
-import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.feature.see_all_markets.compoaseable.MarketItem
+import org.the_chance.honeymart.ui.feature.marketInfo.navigateToMarketInfoScreen
 import org.the_chance.honymart.ui.composables.ConnectionErrorPlaceholder
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
 
 @Composable
 fun MarketsScreen(
-    viewModel: MarketViewModel = hiltViewModel(),
+    viewModel: MarketsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
 
@@ -30,7 +30,7 @@ fun MarketsScreen(
         effects = viewModel.effect,
         handleEffect = { effect, navController ->
             when (effect) {
-                is MarketUiEffect.ClickMarketEffect -> navController.navigateToCategoryScreen(effect.marketId)
+                is MarketUiEffect.ClickMarketEffect -> navController.navigateToMarketInfoScreen(effect.marketId)
             }
         })
 

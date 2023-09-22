@@ -4,6 +4,7 @@ import org.the_chance.honeymart.domain.usecase.GetAllMarketOrdersUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.GetOrderProductsDetailsUseCase
 import org.the_chance.honeymart.domain.usecase.UpdateOrderStateUseCase
+import org.the_chance.honeymart.domain.usecase.ValidateUserFieldsUseCase
 import javax.inject.Inject
 
 data class UserOrderDetailsManagerUseCase @Inject constructor(
@@ -11,4 +12,5 @@ data class UserOrderDetailsManagerUseCase @Inject constructor(
     val getOrderDetailsUseCase: GetOrderDetailsUseCase,
     val getOrderProductDetailsUseCase: GetOrderProductsDetailsUseCase,
     val updateOrderStateUseCase: UpdateOrderStateUseCase,
+    val validationUseCase: ValidateUserFieldsUseCase,
 )
