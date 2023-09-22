@@ -14,6 +14,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
@@ -92,6 +93,7 @@ fun AllNotificationsContent(
             onRefresh = listener::onRefresh
         )
         PullRefreshIndicator(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             refreshing = state.isRefresh,
             state = pullRefreshState,
             contentColor = MaterialTheme.colorScheme.primary

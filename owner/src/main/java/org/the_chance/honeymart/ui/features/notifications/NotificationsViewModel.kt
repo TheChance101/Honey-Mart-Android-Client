@@ -41,7 +41,6 @@ class NotificationsViewModel @Inject constructor(
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
-                isRefresh = false,
                 notifications = updateNotification,
             )
         }
@@ -50,7 +49,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetNotificationsError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, isRefresh = false, error = error) }
+        _state.update { it.copy(isLoading = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -70,7 +69,6 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                isRefresh = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
             )
         }
@@ -78,7 +76,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetOrderDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, isRefresh = false, error = errorHandler) }
+        _state.update { it.copy(isLoading = false, error = errorHandler) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -108,7 +106,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     private fun onGetOrderProductDetailsError(errorHandler: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, isRefresh = false) }
+        _state.update { it.copy(isLoading = false) }
         if (errorHandler is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
