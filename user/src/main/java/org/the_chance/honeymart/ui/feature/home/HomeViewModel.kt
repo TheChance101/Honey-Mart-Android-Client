@@ -95,7 +95,6 @@ class HomeViewModel @Inject constructor(
     private fun onGetAllCategoriesInMarketSuccess(categories: List<Category>) {
         _state.update {
             it.copy(
-                isLoading = false,
                 isCategoryLoading = false,
                 categories = categories.map { category -> category.toCategoryUiState() }
             )
@@ -232,6 +231,7 @@ class HomeViewModel @Inject constructor(
     private fun onGetDiscoverProductsSuccess(products: List<Product>) {
         _state.update {
             it.copy(
+                isLoading = false,
                 discoverProducts = products.map { product -> product.toProductUiState() }
             )
         }

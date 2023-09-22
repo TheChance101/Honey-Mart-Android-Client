@@ -268,9 +268,6 @@
     <string name="receive_notification_cancels">" سوف تتلقى الاشعارات عندما \n يقوم العميل بالغاء الطلب "</string>
 
 
-
-
-
     <string name="add_new_category_success">تم اضافة فئة جديدة بنجاح </string>
     <string name="click_on_order_to_show_it_s_details">اضغط ع الطلب لعرض تفاصيه </string>
     <string name="to_refresh_orders">لتحديث الطلبات </string>
@@ -291,4 +288,15 @@
     <string name="product_description_is_too_long">اسم المنتج طويل جدا، 500 حرف كحد أقصي</string>
     <string name="product_name_is_too_long">اسم المنتج طويل جدا، 20 كلمة كحد أقص</string>
     <string name="invalid_product_name">اسم منتج غير صالح</string>
+    <string name="no_categories_available">لا توجد فئات</string>
+    <string name="submit_review">إرسال التقييم</string>
+    <string name="what_did_you_like_or_dislike_how_did_you_use_the_product_what_should_others_know_before_buying">ماذا يعجبك او لا يعجبك؟ كيف استخدمت المنتج؟ ما الذي يجب أن يعرفه الآخرون قبل الشراء؟</string>
+    <string name="add_your_review">أضف تقييمك</string>
+    <string name="add_your_rate">أضف تقييمك</string>
+
+    <string name="review_added_successfully">تم إضافة التييم بنجاح</string>
+
+    <string name="review_cannot_be_blank"> التقييم لا يمكن أن يكون فارغًا</string>
+    <string name="review_cannot_be_more_than_500_characters">لا يمكن أن يكون التقييم أكثر من ٥٠٠ حرف</string>
+    <string name="review_cannot_be_less_than_6_characters">لا يمكن أن يكون التقييم أقل من ٦ أحرف</string>
 </resources>

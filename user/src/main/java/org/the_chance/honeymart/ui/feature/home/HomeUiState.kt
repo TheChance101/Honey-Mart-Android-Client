@@ -10,7 +10,7 @@ import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class HomeUiState(
-    val isCategoryLoading: Boolean = false,
+    val isCategoryLoading: Boolean = true,
     val isLoading: Boolean = true,
     val isConnectionError: Boolean = false,
     val error: ErrorHandler? = null,

@@ -49,10 +49,16 @@ data class AddReviewBottomSheetUiState(
     val isVisible: Boolean = false,
     val productId: Long = 0L,
     val rating: Float = 0f,
-    val review: String = "",
+    val reviewState: FieldState = FieldState(),
 ) {
-    val isSubmitEnabled = rating > 0f && review.isNotBlank() && review.length > 6
+    val limit = "${reviewState.value.length}/500"
 }
+
+data class FieldState(
+    val value: String = "",
+    val errorState: String = "",
+    val isValid: Boolean = errorState.isNotEmpty() || value.isEmpty(),
+)
 
 fun OrderDetails.ProductDetails.toOrderDetailsProductUiState(): OrderDetailsProductUiState {
     return OrderDetailsProductUiState(
@@ -81,4 +87,8 @@ fun Date.toDateFormat(): String {
 fun formatCurrencyWithNearestFraction(amount: Double): String {
     val decimalFormat = DecimalFormat("#,##0.0'$'")
     return decimalFormat.format(amount)
+}
+
+fun AddReviewBottomSheetUiState.isButtonEnabled(): Boolean {
+    return !isLoading && rating > 0f && reviewState.isValid && reviewState.value.isNotEmpty()
 }

@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.home.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -21,7 +20,6 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.Shapes
-import org.the_chance.honymart.ui.theme.black16
 import org.the_chance.honymart.ui.theme.black37
 import org.the_chance.honymart.ui.theme.dimens
 
@@ -43,7 +41,6 @@ fun HomeMarketItem(
             contentDescription = stringResource(R.string.market_image),
             modifier = Modifier
                 .clip(shape = Shapes.medium)
-                .background(black16)
                 .height(MaterialTheme.dimens.card),
             colorFilter = ColorFilter.tint(black37, blendMode = BlendMode.Multiply),
         )

@@ -7,7 +7,7 @@ data class SearchUiState(
     val isSearching: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
-    val loading: Boolean = true,
+    val isLoading: Boolean = false,
     val page: Int = 1,
     val products: List<SearchProductUiState> = ArrayList(),
     val searchStates: SearchStates = SearchStates.RANDOM,

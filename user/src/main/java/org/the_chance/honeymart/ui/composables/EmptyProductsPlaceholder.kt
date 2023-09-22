@@ -1,14 +1,9 @@
 package org.the_chance.honeymart.ui.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,19 +23,20 @@ import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.HoneyMartTheme
 import org.the_chance.honymart.ui.theme.dimens
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EmptyProductsPlaceholder(
     state: Boolean,
     text: String = stringResource(R.string.there_is_no_product_here)
-){
+) {
     HoneyMartTheme {
         AnimatedVisibility(
             visible = state,
             enter = fadeIn(
-                animationSpec = tween(durationMillis = 500)) + slideInVertically() + scaleIn(),
+                animationSpec = tween(durationMillis = 500)
+            ),
             exit = fadeOut(
-                animationSpec = tween(durationMillis = 500)) + slideOutVertically() + scaleOut()
+                animationSpec = tween(durationMillis = 500)
+            )
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -67,6 +63,6 @@ fun EmptyProductsPlaceholder(
 
 @Preview
 @Composable
-fun PreviewEmptyProductsScaffold(){
+fun PreviewEmptyProductsScaffold() {
     EmptyProductsPlaceholder(true)
 }

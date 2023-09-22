@@ -7,7 +7,7 @@ object ServiceLocator {
         this.fcmNotification = notificationListener
     }
 
-    fun getFCMNotification(): FCMNotification {
-        return fcmNotification ?: throw IllegalStateException("ServiceLocator not initialized")
+    fun getFCMNotification(): FCMNotification? {
+        return fcmNotification
     }
 }

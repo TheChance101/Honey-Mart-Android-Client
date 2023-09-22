@@ -97,6 +97,4 @@ dependencies {
     //Permission
     implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 
-    //Rating bar
-    implementation(Dependencies.ratingBar)
 }
