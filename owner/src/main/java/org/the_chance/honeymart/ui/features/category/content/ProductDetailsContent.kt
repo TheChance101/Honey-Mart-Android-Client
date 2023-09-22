@@ -277,7 +277,7 @@ fun ProductDetailsContent(
             }
             item {
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
-                    PagingLoading(state = state.isLoadingPaging && state.reviews.reviews.isNotEmpty())
+                    PagingLoading(state = state.isLoadingReviewsPaging && state.reviews.reviews.isNotEmpty())
                 }
             }
         }
