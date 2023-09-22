@@ -126,7 +126,7 @@ fun CategoryProductsContent(
                     Loading(state = state.isLoading)
                 }
                 item {
-                    PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
+                    PagingLoading(state = state.isLoadingPaging && state.reviews.reviews.isNotEmpty())
                 }
 
             }
