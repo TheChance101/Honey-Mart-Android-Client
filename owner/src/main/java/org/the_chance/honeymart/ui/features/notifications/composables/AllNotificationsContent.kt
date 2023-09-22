@@ -92,12 +92,14 @@ fun AllNotificationsContent(
             refreshing = state.isRefresh,
             onRefresh = listener::onRefresh
         )
-        PullRefreshIndicator(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            refreshing = state.isRefresh,
-            state = pullRefreshState,
-            contentColor = MaterialTheme.colorScheme.primary
-        )
+        if (state.isRefresh){
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                refreshing = state.isRefresh,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colorScheme.primary
+            )
+        }
         Column(modifier = Modifier.fillMaxWidth().pullRefresh(pullRefreshState)) {
             EmptyPlaceholder(
                 state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
@@ -106,7 +108,7 @@ fun AllNotificationsContent(
             )
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space8)
+                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
             ) {
                 items(state.notifications.size) {
                     val notification = state.notifications[it]

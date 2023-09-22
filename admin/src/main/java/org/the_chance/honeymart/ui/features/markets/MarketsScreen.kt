@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -99,12 +98,14 @@ fun RequestsContent(
                         refreshing = state.isRefresh,
                         onRefresh = listener::onRefresh
                     )
-                    PullRefreshIndicator(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        refreshing = state.isRefresh,
-                        state = pullRefreshState,
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
+                    if (state.isRefresh){
+                        PullRefreshIndicator(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            refreshing = state.isRefresh,
+                            state = pullRefreshState,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     Column(modifier = Modifier.pullRefresh(pullRefreshState)) {
                         LazyColumn(
                             modifier = Modifier.fillMaxHeight(),
