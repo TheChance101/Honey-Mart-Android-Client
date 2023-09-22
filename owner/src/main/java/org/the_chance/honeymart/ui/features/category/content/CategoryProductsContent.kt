@@ -24,6 +24,7 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
@@ -111,6 +112,10 @@ fun CategoryProductsContent(
             ) {
                 items(products.size) { index ->
                     listener.onChangeProductScrollPosition(index)
+                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
+                    // listener.onChangeProductScrollPosition(index)
                     products[index].let {
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
