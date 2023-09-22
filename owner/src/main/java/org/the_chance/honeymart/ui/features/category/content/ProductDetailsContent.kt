@@ -43,6 +43,7 @@ import org.the_chance.honeymart.ui.features.category.CategoriesUiState
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
+import org.the_chance.honeymart.ui.features.category.composable.PagingLoading
 import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
 import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.defaultTo1IfZero
@@ -261,7 +262,6 @@ fun ProductDetailsContent(
 //            if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
 //                listener.onScrollDown()
 //            }
-
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
                     val review = state.reviews.reviews[position]
                     CardReviews(
@@ -272,11 +272,9 @@ fun ProductDetailsContent(
                     )
                 }
             }
-
+            item {
+                PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
+            }
         }
     }
 }
-
-
-
-
