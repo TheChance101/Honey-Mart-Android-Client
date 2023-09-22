@@ -176,7 +176,7 @@ fun ProductReviewsContent(
             )
         }
         item {
-            PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
+            PagingLoading(state = state.isPagingLoading && state.reviews.reviews.isNotEmpty())
         }
     }
 }
