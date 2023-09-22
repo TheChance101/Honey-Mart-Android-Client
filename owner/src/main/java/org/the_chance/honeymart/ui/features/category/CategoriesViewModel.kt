@@ -91,6 +91,10 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
+    fun onChangeReviews(position: Int) {
+        reviewScrollPosition = position
+    }
+
     override fun onScrollDown() {
         viewModelScope.launch {
             if ((reviewScrollPosition + 1) >= (page.value * MAX_PAGE_SIZE)) {
