@@ -37,6 +37,7 @@ data class CategoriesUiState(
     val showScreenState: ShowScreenState = ShowScreenState(),
     val newCategory: NewCategoryUiState = NewCategoryUiState(),
     val newProducts: NewProductsUiState = NewProductsUiState(),
+    val isLoadingReviewsPaging: Boolean = false,
     val reviews: ReviewDetailsUiState = ReviewDetailsUiState(),
 )
 

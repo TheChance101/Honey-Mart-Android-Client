@@ -40,9 +40,11 @@ import org.the_chance.honeymart.ui.components.FormHeader
 import org.the_chance.honeymart.ui.components.FormTextField
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.composable.AddImageButton
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProduct
 import org.the_chance.honeymart.ui.features.category.composable.ItemImageProductDetails
+import org.the_chance.honeymart.ui.features.category.composable.PagingLoading
 import org.the_chance.honeymart.ui.features.category.showProductUpdateContent
 import org.the_chance.honeymart.ui.features.category.showSaveUpdateButton
 import org.the_chance.honeymart.ui.util.defaultTo1IfZero
@@ -64,6 +66,7 @@ fun ProductDetailsContent(
     state: CategoriesUiState,
     listener: CategoriesInteractionsListener,
     onClickConfirm: () -> Unit,
+    onChangeReviews: (Int) -> Unit,
     onClickCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -77,7 +80,7 @@ fun ProductDetailsContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.onTertiary)
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
             ) {
@@ -99,7 +102,7 @@ fun ProductDetailsContent(
             FormHeader(
                 title = titleScreen,
                 iconPainter = painterResource(id = R.drawable.icon_add_product),
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                modifier = Modifier.background(MaterialTheme.colorScheme.onTertiary)
             )
         }
     ) { PaddingValues ->
@@ -257,12 +260,11 @@ fun ProductDetailsContent(
                 }
             }
             items(state.reviews.reviews.size) { position ->
-//            onChangeReviews(position)
-//            if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
-//                listener.onScrollDown()
-//            }
-
                 ContentVisibility(state = state.showScreenState.showProductDetails) {
+                    onChangeReviews(position)
+                    if ((position + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
                     val review = state.reviews.reviews[position]
                     CardReviews(
                         userName = review.fullName,
@@ -272,11 +274,11 @@ fun ProductDetailsContent(
                     )
                 }
             }
-
+            item {
+                ContentVisibility(state = state.showScreenState.showProductDetails) {
+                    PagingLoading(state = state.isLoadingReviewsPaging && state.reviews.reviews.isNotEmpty())
+                }
+            }
         }
     }
 }
-
-
-
-
