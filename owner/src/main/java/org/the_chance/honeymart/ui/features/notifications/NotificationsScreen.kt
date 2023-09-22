@@ -83,8 +83,6 @@ fun NotificationsContent(
                     OrderDetails(state)
                 }
                 Loading(state = state.isLoading && state.notifications.isNotEmpty())
-
-
             }
         }
     }
