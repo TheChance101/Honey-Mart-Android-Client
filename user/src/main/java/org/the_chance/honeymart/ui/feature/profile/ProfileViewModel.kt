@@ -26,6 +26,7 @@ class ProfileViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 isError = false,
+                isConnectionError = false,
                 accountInfo = it.accountInfo.copy(profileImage = "")
             )
         }
