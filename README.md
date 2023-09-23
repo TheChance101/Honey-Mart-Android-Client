@@ -39,7 +39,8 @@
 ### Admin App:
 - **Market Approvals**: Admins can review and approve new markets wishing to join the platform.
 - **Market Removal**: Admins can remove markets that do not meet platform standards or are no longer active.
-## Screenshots
+## Design
+- Discover [Honey Mart](https://www.figma.com/file/UkemPY1rHxH4yqTtVjzoMH/Honey-Mart-App?type=design&node-id=585%3A2254&mode=design&t=IYR9zX2jiKUAn1fR-1) Project on Figma.
 ## :rocket: Tech stack
 - [Recommended Architecture](https://developer.android.com/topic/architecture)
 - [Jetpack Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAiAzKqdBhAnEiwAePEjktk3ROIIxTqejhHWkDEwSaQqoE6GgrNHM8iYKw8xHx5SPPDu0oJ_DxoC8LYQAvD_BwE&gclsrc=aw.ds)
