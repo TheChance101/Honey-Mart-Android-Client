@@ -68,6 +68,9 @@ fun ProductsScreen(
         state = state,
         productInteractionListener = viewModel
     )
+    LaunchedEffect(true){
+        viewModel.getData()
+    }
 }
 
 @Composable
