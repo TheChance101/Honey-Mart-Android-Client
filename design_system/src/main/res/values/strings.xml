@@ -212,6 +212,7 @@
     <string name="new_requests">2 new requests</string>
     <string name="approve">Approve</string>
     <string name="product">Product</string>
+    <string name="products">Products</string>
     <string name="add_new_coupon">Add New Coupon</string>
     <string name="discount_percentage_can_t_be_blank">Discount Percentage can\'t be blank</string>
     <string name="invalid_coupon_discount_percentage">Invalid  Coupon Discount Percentage</string>
