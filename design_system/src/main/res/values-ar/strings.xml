@@ -177,7 +177,7 @@
     <string name="order_title">الطلب</string>
     <string name="delivery">التوصيل</string>
     <string name="shop_detail">تفاصيل المتجر</string>
-    <string name="no_deal">لا صفقة</string>
+    <string name="no_deal">العدد المتاج</string>
     <string name="offer_price">سعر العرض</string>
     <string name="expiration_date">تاريخ الانتهاء</string>
     <string name="get_coupon">احصل على قسيمة شراء</string>
