@@ -88,6 +88,7 @@
     <string name="no_categories">لا توجد فئات هنا!!</string>
     <string name="order">الطلب #%1$s </string>
     <string name="items">%1$s عنصر</string>
+    <string name="market_info_items">عناصر</string>
     <string name="placeholder_title">ليس لديك أي طلبات!!</string>
     <string name="placeholder_subtitle">سلتك فارغة ! دعنا نملؤها بإضافة المنتجات التي تجذب انتباهك!</string>
     <string name="discover_market_now">اكتشف المتجر الآن</string>
@@ -168,6 +169,7 @@
     <string name="market_name">اسم المتجر</string>
     <string name="markets">المتاجر</string>
     <string name="categories">الفئات</string>
+    <string name="market_info_categories">الفئات</string>
     <string name="map_pointer">ايقونة الخريطة</string>
     <string name="chip_icon">ايقونة الشريحة</string>
     <string name="back_button">زر العودة</string>

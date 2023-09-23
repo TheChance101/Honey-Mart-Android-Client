@@ -87,6 +87,7 @@
     <string name="order">Order #%1$s </string>
     <string name="item">%1$s Product</string>
     <string name="items">%1$s Products</string>
+    <string name="market_info_items">Items</string>
     <string name="placeholder_title">You Don\'t have any orders!!</string>
     <string name="placeholder_subtitle">It\'s a catastrophe! Let\'s fix it by adding items that catch your eye!</string>
     <string name="discover_market_now">Discover Market Now</string>
@@ -173,6 +174,7 @@
     <string name="market_name">Market Name</string>
     <string name="markets">Markets</string>
     <string name="categories">Categories By market</string>
+    <string name="market_info_categories">Categories</string>
     <string name="map_pointer">Map Pointer</string>
     <string name="chip_icon">chip icon</string>
     <string name="back_button">back button</string>
