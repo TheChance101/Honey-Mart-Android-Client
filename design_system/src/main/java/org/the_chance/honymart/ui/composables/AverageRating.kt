@@ -52,5 +52,5 @@ fun AverageRating(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AverageRatingPreview() {
-    AverageRating(averageRating = 3.5F, reviewCount = "23 Rating")
+    AverageRating(averageRating = 3.5F, reviewCount = "23")
 }
