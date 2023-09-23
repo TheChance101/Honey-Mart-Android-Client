@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.notifications.composables
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,13 @@ fun AllNotificationsContent(
     state: NotificationsUiState,
     listener: NotificationsInteractionListener,
 ) {
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefresh,
+        onRefresh = listener::onRefresh
+    )
+    Box(
+        modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState),
+        contentAlignment = Alignment.TopCenter) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,47 +96,37 @@ fun AllNotificationsContent(
                 )
             }
         }
-        val pullRefreshState = rememberPullRefreshState(
-            refreshing = state.isRefresh,
-            onRefresh = listener::onRefresh
+        EmptyPlaceholder(
+            state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
+            emptyObjectName = stringResource(id = R.string.notifications_label),
+            notificationText = stringResource(R.string.receive_notification_cancels)
         )
-        if (state.isRefresh) {
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                refreshing = state.isRefresh,
-                state = pullRefreshState,
-                contentColor = MaterialTheme.colorScheme.primary
-            )
-        }
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .pullRefresh(pullRefreshState)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
         ) {
-            EmptyPlaceholder(
-                state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
-                emptyObjectName = stringResource(id = R.string.notifications_label),
-                notificationText = stringResource(R.string.receive_notification_cancels)
-            )
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
-            ) {
-                items(state.notifications.size) {
-                    val notification = state.notifications[it]
-                    NotificationCard(
-                        onClickCard = {
-                            listener.onCLickNotificationCard(state.orderDetails, notification)
-                        },
-                        isSelected = notification.isNotificationSelected,
-                        date = notification.date,
-                        state = state,
-                        orderId = notification.orderId.toString(),
-                        notificationBody = notification.body,
-                        notificationTitle = notification.title
-                    )
-                }
+            items(state.notifications.size) {
+                val notification = state.notifications[it]
+                NotificationCard(
+                    onClickCard = {
+                        listener.onCLickNotificationCard(state.orderDetails, notification)
+                    },
+                    isSelected = notification.isNotificationSelected,
+                    date = notification.date,
+                    state = state,
+                    orderId = notification.orderId.toString(),
+                    notificationBody = notification.body,
+                    notificationTitle = notification.title
+                )
             }
         }
+    }
+        PullRefreshIndicator(
+            refreshing = state.isRefresh,
+            state = pullRefreshState,
+            contentColor = MaterialTheme.colorScheme.primary
+        )
     }
 }

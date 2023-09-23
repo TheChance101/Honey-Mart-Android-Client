@@ -2,7 +2,9 @@ package org.the_chance.honeymart.ui.feature.notifications
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -60,68 +62,59 @@ fun NotificationsContent(
     listener: NotificationsInteractionListener,
 ) {
     HoneyAppBarScaffold {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space24)
-        ) {
-            Loading(state = state.isLoading)
-            ConnectionErrorPlaceholder(
-                state = state.isError,
-                onClickTryAgain = listener::onClickTryAgain,
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
+        val pullRefreshState = rememberPullRefreshState(
+            refreshing = state.isRefresh,
+            onRefresh = listener::onRefresh
+        )
+        Box(contentAlignment = Alignment.TopCenter) {
+            Column(
                 modifier = Modifier
-                    .padding(top = MaterialTheme.dimens.space24)
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                StateItem(
-                    painter = painterResource(R.drawable.ic_notification),
-                    color = if (state.all()) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSecondaryContainer
-                    },
-                    text = stringResource(R.string.all),
-                    onClickState = listener::onGetAllNotifications
+                Loading(state = state.isLoading)
+                ConnectionErrorPlaceholder(
+                    state = state.isError,
+                    onClickTryAgain = listener::onClickTryAgain,
                 )
-                StateItem(
-                    painter = painterResource(R.drawable.icon_order_nav),
-                    color = if (state.order()) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSecondaryContainer
-                    },
-                    text = stringResource(R.string.order_title),
-                    onClickState = listener::onGetOrderNotifications
-                )
-                StateItem(
-                    painter = painterResource(R.drawable.ic_delivery),
-                    color = if (state.delivery()) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSecondaryContainer
-                    },
-                    text = stringResource(R.string.delivery),
-                    onClickState = listener::onGetDeliveryNotifications
-                )
-            }
-            val pullRefreshState = rememberPullRefreshState(
-                refreshing = state.isRefresh,
-                onRefresh = listener::onRefresh
-            )
-            if (state.isRefresh){
-                PullRefreshIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    refreshing = state.isRefresh,
-                    state = pullRefreshState,
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
-            }
-            Column(modifier = Modifier.pullRefresh(state = pullRefreshState)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space32),
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.dimens.space24)
+                ) {
+                    StateItem(
+                        painter = painterResource(R.drawable.ic_notification),
+                        color = if (state.all()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.all),
+                        onClickState = listener::onGetAllNotifications
+                    )
+                    StateItem(
+                        painter = painterResource(R.drawable.icon_order_nav),
+                        color = if (state.order()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.order_title),
+                        onClickState = listener::onGetOrderNotifications
+                    )
+                    StateItem(
+                        painter = painterResource(R.drawable.ic_delivery),
+                        color = if (state.delivery()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        },
+                        text = stringResource(R.string.delivery),
+                        onClickState = listener::onGetDeliveryNotifications
+                    )
+                }
                 EmptyOrdersPlaceholder(
                     state = state.emptyNotificationsPlaceHolder(),
                     image = R.drawable.placeholder_wish_list,
@@ -131,9 +124,14 @@ fun NotificationsContent(
                 )
                 LazyColumn(
                     modifier = Modifier
-                        .padding(vertical = MaterialTheme.dimens.space16)
+                        .weight(1f)
+                        .padding(
+                            top = MaterialTheme.dimens.space24,
+                            bottom = MaterialTheme.dimens.space16
+                        )
                         .background(MaterialTheme.colorScheme.secondary)
-                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24)),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
                 ) {
                     items(state.updatedNotifications.size) {
                         val notification = state.updatedNotifications[it]
@@ -152,6 +150,11 @@ fun NotificationsContent(
 
                 }
             }
+            PullRefreshIndicator(
+                refreshing = state.isRefresh,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
