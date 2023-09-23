@@ -206,6 +206,8 @@
     <string name="new_requests">2 طلب جديد</string>
     <string name="approve">الموافقة</string>
     <string name="product">منتج</string>
+    <string name="products">منتجات</string>
+
     <string name="add_new_coupon">إضافة قسيمة شراء جديدة</string>
     <string name="discount_percentage_can_t_be_blank">نسبة الخصم لا يمكن أن تكون فارغة</string>
     <string name="invalid_coupon_discount_percentage">نسبة خصم قسيمة الشراء غير صالحة</string>

@@ -141,7 +141,11 @@ fun HomeContentSuccessScreen(
         }
 
         item(span = { GridItemSpan(2) }) {
-            AnimatedVisibility(visible = state.discoverProducts.isNotEmpty()) {
+            AnimatedVisibility(
+                visible = state.discoverProducts.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 Text(
                     text = stringResource(R.string.discover_products),
                     style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
@@ -183,7 +187,11 @@ private fun LastPurchases(
     onClickSeeAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AnimatedVisibility(visible = lastPurchases.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = lastPurchases.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
@@ -221,7 +229,11 @@ private fun RecentProducts(
     onClickRecentProduct: (Long) -> Unit,
     onClickSeeAll: () -> Unit
 ) {
-    AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = recentProducts.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
@@ -287,7 +299,11 @@ private fun Categories(
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(visible = markets.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = markets.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
@@ -350,7 +366,8 @@ private fun Categories(
                         text = stringResource(R.string.no_categories),
                         modifier = Modifier
                             .height(66.dp)
-                            .fillMaxWidth().padding(top = MaterialTheme.dimens.space16)
+                            .fillMaxWidth()
+                            .padding(top = MaterialTheme.dimens.space16)
                             .padding(MaterialTheme.dimens.space16),
                         textAlign = TextAlign.Center,
                     )

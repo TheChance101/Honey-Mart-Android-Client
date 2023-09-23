@@ -68,6 +68,9 @@ fun ProductsScreen(
         state = state,
         productInteractionListener = viewModel
     )
+    LaunchedEffect(true){
+        viewModel.getData()
+    }
 }
 
 @Composable
@@ -111,7 +114,8 @@ private fun ProductsContent(
                             categoryName = category.categoryName,
                             isSelected = category.isCategorySelected,
                             enable = !state.snackBar.isShow,
-                            onClick = { productInteractionListener.onClickCategory(category.categoryId) }
+                            onClick = {if (!category.isCategorySelected)
+                                productInteractionListener.onClickCategory(category.categoryId)}
                         )
                     }
                 }
@@ -129,9 +133,6 @@ private fun ProductsContent(
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     ) {
-                        item {
-                            Loading(state = state.isLoadingProduct && state.products.isEmpty())
-                        }
                         items(products.size) { index ->
                             productInteractionListener.onChangeProductScrollPosition(index)
                             val product = products[index]
@@ -153,6 +154,9 @@ private fun ProductsContent(
                                     )
                                 }
                             )
+                        }
+                        item {
+                            Loading(state = state.isLoadingProduct && state.products.isEmpty())
                         }
                         item {
                             PagingLoading(state = state.isLoadingProduct && state.products.isNotEmpty())

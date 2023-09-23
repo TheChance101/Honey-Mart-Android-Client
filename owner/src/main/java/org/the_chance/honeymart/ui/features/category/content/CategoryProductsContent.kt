@@ -141,3 +141,9 @@ fun CategoryProductsContent(
         }
     }
 }
+
+//@Composable
+//fun Int.toProductItem(): String {
+//    return if (this == 1) stringResource(id = R.string.product)
+//    else return stringResource(id = R.string.products)
+//}
