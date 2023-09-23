@@ -164,7 +164,9 @@ fun MarketInfoContent(
                 val isNarrowScreen = screenWidth < 600.dp
 
                 if (index == 1) {
-                    BottomHalfHexagonCanvas()
+                    BottomHalfHexagonCanvas(
+                        factor = if (isNarrowScreen) 1.6f else 1.7f,
+                    )
                 }
 
                 HomeCategoriesItem(
@@ -173,7 +175,7 @@ fun MarketInfoContent(
                             x = 0.dp,
                             y = if (index % 3 == 1)
                                 MaterialTheme.dimens.widthItemMarketCard / 1.6f
-                            else 8.dp
+                            else 0.dp
                         )
                         .padding(
                             bottom = 24.dp,
@@ -186,7 +188,7 @@ fun MarketInfoContent(
                     } else {
                         primary100.copy(alpha = 0.16f)
                     },
-                    width = if (isNarrowScreen) 120.dp else MaterialTheme.dimens.widthItemMarketCard,
+                    width = if (isNarrowScreen) 115.dp else MaterialTheme.dimens.widthItemMarketCard,
                     painter = painterResource(
                         id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
                     )
@@ -202,6 +204,7 @@ fun MarketInfoContent(
 
 @Composable
 fun BottomHalfHexagonCanvas(
+    factor: Float,
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier = modifier) {
@@ -209,7 +212,7 @@ fun BottomHalfHexagonCanvas(
 
         val path = Path().apply {
             val angleRadians = Math.toRadians(60.0).toFloat()
-            val radius = hexagonSize / 1.7f
+            val radius = hexagonSize / factor
 
             (0..3).forEach { i ->
                 val currentAngle = angleRadians * i
