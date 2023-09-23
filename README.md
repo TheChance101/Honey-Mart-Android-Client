@@ -15,7 +15,9 @@
 - [License](#license)
 ## Project Components
 - **User Mobile App**: The front-facing application designed for customers and shoppers. It offers a user-friendly interface to explore products, add them to the cart, place orders, manage wishlists, and enjoy a seamless shopping experience. Users can create accounts, log in, and access their profiles. They also receive real-time notifications about their orders, making it convenient and engaging for customers.
+
 - **Owner Tablet App**: The Owner App is tailored for market owners and administrators. It empowers them to manage their respective markets efficiently. Owners can add and update product listings, categorize products, and oversee orders placed within their markets. They also have control over coupon management, and other market-specific tasks. The Owner App streamlines market management and ensures a smooth operation for market owners.
+
 - **Admin Tablet  App**: The Admin App is responsible for market approval management. Administrators use this app to review and approve exciting new markets joining the platform and, if necessary, remove markets that no longer meet the platform's standards. This app streamlines market approval processes and ensures a curated marketplace for users.
 ## Features
 
@@ -40,8 +42,9 @@
 - **Market Approvals**: Admins can review and approve new markets wishing to join the platform.
 - **Market Removal**: Admins can remove markets that do not meet platform standards or are no longer active.
 ## Design
-- Discover [Honey Mart](https://www.figma.com/file/UkemPY1rHxH4yqTtVjzoMH/Honey-Mart-App?type=design&node-id=585%3A2254&mode=design&t=IYR9zX2jiKUAn1fR-1) Project on Figma.
-![honey-mart-figma](https://github.com/TheChance101/Honey-Mart-Android-Client/assets/63457278/1583d76a-d704-43d6-bbd7-1f318b6c0909)
+- Discover [Honey Mart](https://www.figma.com/file/UkemPY1rHxH4yqTtVjzoMH/Honey-Mart-App?type=design&node-id=585%3A2254&mode=design&t=IYR9zX2jiKUAn1fR-1) Design on Figma.
+
+![honey-mart-figma](https://github.com/TheChance101/Honey-Mart-Android-Client/assets/63457278/7e6884ab-c0bc-414e-bb36-7fa751b32c72)
 
 ## :rocket: Tech stack
 - [Recommended Architecture](https://developer.android.com/topic/architecture)
@@ -89,4 +92,5 @@ cd honey-mart-client2. Add Firebase Json file for User, Owner and admin apps.
 </a>  
 
 ## License
-Copyright (c) 2023 The Chance- This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/TheChance101/Honey-Mart-Android-Client/blob/main/LICENSE) file for details.
+    Copyright (c) 2023 The Chance
+- This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/TheChance101/Honey-Mart-Android-Client/blob/main/LICENSE) file for details.
