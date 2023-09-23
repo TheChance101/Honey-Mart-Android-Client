@@ -289,7 +289,7 @@
 
     <string name="customers_reviews">Customers Reviews</string>
     <string name="user_reviews">User_Reviews</string>
-    <string name="ratings">Ratings %1$s</string>
+    <string name="ratings">%1$s Ratings</string>
     <string name="category_name_is_too_long">Category name is too long</string>
     <string name="blank_field">"This filed should not be empty</string>
     <string name="no_categories_available">No categories available</string>
