@@ -163,9 +163,6 @@ fun SearchContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             ) {
-                item(span = { GridItemSpan(2) }) {
-                    Loading(state.products.isEmpty() && state.isLoading)
-                }
                 items(state.products.size) { index ->
                     listener.onChangeProductScrollPosition(index)
                     val product = state.products[index]
@@ -175,6 +172,9 @@ fun SearchContent(
                         productPrice = product.productPrice.toString(),
                         onClickCard = { listener.onClickProduct(product.productId) }
                     )
+                }
+                item(span = { GridItemSpan(2) }) {
+                    Loading(state.products.isEmpty() && state.isLoading)
                 }
                 item(span = { GridItemSpan(2) }) {
                     PagingLoading(state = state.products.isNotEmpty() && state.isLoading)
