@@ -168,7 +168,7 @@ fun HomeContentSuccessScreen(
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
             )
         }
-        item {
+        item(span = { GridItemSpan(2) }) {
             PagingLoading(state = state.isPagingLoading && state.discoverProducts.isNotEmpty())
         }
     }
