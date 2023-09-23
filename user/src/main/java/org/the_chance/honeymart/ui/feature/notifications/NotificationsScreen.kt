@@ -113,14 +113,12 @@ fun NotificationsContent(
                 refreshing = state.isRefresh,
                 onRefresh = listener::onRefresh
             )
-            if (state.isRefresh){
-                PullRefreshIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    refreshing = state.isRefresh,
-                    state = pullRefreshState,
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
-            }
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                refreshing = state.isRefresh,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colorScheme.primary
+            )
             Column(modifier = Modifier.pullRefresh(state = pullRefreshState)) {
                 EmptyOrdersPlaceholder(
                     state = state.emptyNotificationsPlaceHolder(),
