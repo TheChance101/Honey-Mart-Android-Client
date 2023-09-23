@@ -66,7 +66,7 @@ fun CategoryProductsContent(
                                     .categoryIconUIState.categoryIconId]
                                     ?: R.drawable.icon_category
                             ),
-                            contentDescription = stringResource(org.the_chance.owner.R.string.category_icon),
+                            contentDescription = stringResource(R.string.category_icon),
                             tint = MaterialTheme.colorScheme.primary
                         )
 
@@ -82,7 +82,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HoneyOutlineText(text = "${products.size} Products")
+                    HoneyOutlineText(text = stringResource(R.string.product_count, products.size))
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
                         onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
@@ -141,3 +141,9 @@ fun CategoryProductsContent(
         }
     }
 }
+
+//@Composable
+//fun Int.toProductItem(): String {
+//    return if (this == 1) stringResource(id = R.string.product)
+//    else return stringResource(id = R.string.products)
+//}

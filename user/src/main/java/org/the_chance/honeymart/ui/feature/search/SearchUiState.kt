@@ -9,7 +9,7 @@ data class SearchUiState(
     val error: ErrorHandler? = null,
     val isLoading: Boolean = false,
     val page: Int = 1,
-    val products: List<SearchProductUiState> = ArrayList(),
+    val products: List<SearchProductUiState> = emptyList(),
     val searchStates: SearchStates = SearchStates.RANDOM,
     val filtering: Boolean = false,
     val searchQuery: String = "",

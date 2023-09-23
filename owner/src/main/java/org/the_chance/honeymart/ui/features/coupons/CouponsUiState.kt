@@ -42,10 +42,7 @@ data class AddCouponUiState(
     val expirationDate: Date? = null,
     val coupon: CouponUiState = CouponUiState(),
     val couponCountState: FieldState = FieldState(),
-) {
-    val expirationDateFormatted: String =
-        expirationDate?.toCouponExpirationDateFormat() ?: "Expiration Date"
-}
+)
 
 data class FieldState(
     val name: String = "",

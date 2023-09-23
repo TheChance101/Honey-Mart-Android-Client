@@ -107,6 +107,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun filterSearch(sortOrder: String) {
+        _state.update { it.copy(products = emptyList()) }
         when (sortOrder) {
             SearchStates.ASCENDING.state -> _state.update { it.copy(searchStates = SearchStates.ASCENDING) }
             SearchStates.DESCENDING.state -> _state.update { it.copy(searchStates = SearchStates.DESCENDING) }

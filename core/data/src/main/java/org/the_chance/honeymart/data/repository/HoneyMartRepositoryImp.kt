@@ -195,8 +195,8 @@ class HoneyMartRepositoryImp @Inject constructor(
             ?: throw NotFoundException()
     }
 
-    override suspend fun getAllProducts(): List<Product> {
-        return wrap { honeyMartService.getAllProducts() }.value?.map { it.toProduct() }
+    override suspend fun getAllProducts(page: Int?): List<Product> {
+        return wrap { honeyMartService.getAllProducts(page) }.value?.map { it.toProduct() }
             ?: throw NotFoundException()
     }
 

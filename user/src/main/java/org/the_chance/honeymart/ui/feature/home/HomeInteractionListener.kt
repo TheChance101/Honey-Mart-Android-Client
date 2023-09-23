@@ -25,4 +25,5 @@ interface HomeInteractionListener {
 
     fun onClickLastPurchasesSeeAll()
 
+    fun onChangeProductsScrollPosition(position: Int)
 }

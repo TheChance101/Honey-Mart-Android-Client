@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.see_all_markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
@@ -157,6 +158,7 @@ fun HomeContentSuccessScreen(
         itemsIndexed(
             items = state.discoverProducts,
             key = { _, item -> item.productId }) { index, discoverProduct ->
+            listener.onChangeProductsScrollPosition(index)
             ProductItem(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
@@ -166,16 +168,10 @@ fun HomeContentSuccessScreen(
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
             )
         }
+        item(span = { GridItemSpan(2) }) {
+            PagingLoading(state = state.isPagingLoading && state.discoverProducts.isNotEmpty())
+        }
     }
-//
-//    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
-//        ScrollToTopButton {
-//            scope.launch {
-//                listState.animateScrollToItem(0)
-//            }
-//        }
-//    }
-
 }
 
 
