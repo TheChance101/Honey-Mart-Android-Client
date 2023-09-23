@@ -307,4 +307,9 @@
     <string name="notification">Notification</string>
     <string name="logout">Logout</string>
 
+    <string name="empty_wishlist_message">Your %1$s is empty!!</string>
+    <string name="empty_wishlist_notification">Adding a %1$s will increase your chances of attracting interested buyers. What %1$s fits your item?</string>
+    <string name="selected_color">Selected color</string>
+    <string name="new_">New</string>
+
 </resources>
