@@ -311,6 +311,8 @@
     <string name="empty_wishlist_notification">إضافة %1$s ستزيد من فرصك في جذب المشترين المهتمين. ما اللون %1$s الذي يتناسب مع منتجك؟</string>
     <string name="selected_color">اللون المحدد</string>
     <string name="new_">الجديد</string>
+    <string name="product_count">"%d منتج"</string>
+    <string name="personal_info">المعلومات شخصية</string>
 
 
 </resources>

@@ -61,7 +61,7 @@ fun PersonalInfoContent(
             )
         }
         Text(
-            text = "Personal Info",
+            text = stringResource(R.string.personal_info),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondary,
             textAlign = TextAlign.Center,

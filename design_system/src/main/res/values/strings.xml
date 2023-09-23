@@ -311,5 +311,8 @@
     <string name="empty_wishlist_notification">Adding a %1$s will increase your chances of attracting interested buyers. What %1$s fits your item?</string>
     <string name="selected_color">Selected color</string>
     <string name="new_">New</string>
+    <string name="product_count">"%d Products"</string>
+    <string name="personal_info">Personal Info</string>
+
 
 </resources>
