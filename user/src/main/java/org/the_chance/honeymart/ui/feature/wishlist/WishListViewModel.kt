@@ -9,19 +9,27 @@ import org.the_chance.honeymart.ui.base.BaseViewModel
 @HiltViewModel
 class WishListViewModel @javax.inject.Inject constructor(
     private val wishListOperationsUseCase: UserWishListManagerUseCase,
-    ) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
+) : BaseViewModel<WishListUiState, WishListUiEffect>(WishListUiState()),
     WishListInteractionListener {
 
     override val TAG: String = this::class.java.simpleName
 
 
-    override fun onShowSnackBar(message:String){
-        _state.update { it.copy(snackBar = it.snackBar.copy(message = "Item Removed", isShow = true)) }
+    override fun onShowSnackBar(message: String) {
+        _state.update {
+            it.copy(
+                snackBar = it.snackBar.copy(
+                    message = "Item Removed",
+                    isShow = true
+                )
+            )
+        }
     }
+
     private fun deleteProductFromWishList(productId: Long) {
         _state.update {
             it.copy(
-                products = updateProductFavoriteState(false,productId),
+                products = updateProductFavoriteState(false, productId),
                 isLoading = true,
                 isError = false,
             )
@@ -31,15 +39,19 @@ class WishListViewModel @javax.inject.Inject constructor(
             ::onDeleteProductSuccess,
             { onDeleteProductError(it, productId) }
         )
-        _state.update { it.copy(snackBar = it.snackBar.copy(productId =productId)) }
+        _state.update { it.copy(snackBar = it.snackBar.copy(productId = productId)) }
     }
 
     private fun onDeleteProductSuccess(successMessage: String) {
-        effectActionExecutor(_effect, WishListUiEffect.DeleteProductFromWishListEffect(successMessage))
+        effectActionExecutor(
+            _effect,
+            WishListUiEffect.DeleteProductFromWishListEffect(successMessage)
+        )
         getWishListProducts()
     }
-    override fun resetSnackBarState(){
-        _state.update { it.copy(snackBar =it.snackBar.copy(isShow = false)) }
+
+    override fun resetSnackBarState() {
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
 
     private fun updateProductFavoriteState(
@@ -55,23 +67,26 @@ class WishListViewModel @javax.inject.Inject constructor(
         }
         return updatedProducts
     }
-     override fun addProductToWishList(productId: Long) {
-         _state.update {
-             it.copy(
-                 isLoading = true,
-                 isError = false,
-             )
-         }
+
+    override fun addProductToWishList(productId: Long) {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isError = false,
+            )
+        }
         tryToExecute(
             { wishListOperationsUseCase.operationWishListUseCase.addToWishList(productId) },
-            {onAddToWishListSuccess()},
+            { onAddToWishListSuccess() },
             { onAddToWishListError(it, productId) }
         )
     }
+
     private fun onAddToWishListSuccess() {
         getWishListProducts()
 
     }
+
     private fun onAddToWishListError(error: ErrorHandler, productId: Long) {
         if (error is ErrorHandler.UnAuthorized) {
             updateFavoriteState(productId)
@@ -90,11 +105,13 @@ class WishListViewModel @javax.inject.Inject constructor(
     }
 
 
-
-
     private fun onDeleteProductError(error: ErrorHandler, productId: Long) {
         _state.update {
-            it.copy(products = updateProductFavoriteState(true ,productId), error = error)
+            it.copy(
+                products = updateProductFavoriteState(true, productId),
+                error = error,
+                isLoading = false
+            )
         }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
@@ -104,7 +121,10 @@ class WishListViewModel @javax.inject.Inject constructor(
     override fun getWishListProducts() {
         _state.update { it.copy(isLoading = true, isError = false) }
         tryToExecute(
-            {wishListOperationsUseCase.getAllWishListUseCase().map { it.toWishListProductUiState() }},
+            {
+                wishListOperationsUseCase.getAllWishListUseCase()
+                    .map { it.toWishListProductUiState() }
+            },
             ::onGetProductSuccess,
             ::onGetProductError
         )
