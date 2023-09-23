@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.markets
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -68,10 +69,16 @@ fun RequestsContent(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
             )
             {
+                val pullRefreshState = rememberPullRefreshState(
+                    refreshing = state.isRefresh,
+                    onRefresh = listener::onRefresh
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(1f).pullRefresh(pullRefreshState),
+                    contentAlignment = Alignment.TopCenter) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20),
                 ) {
                     Row(
@@ -94,20 +101,8 @@ fun RequestsContent(
                             onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
                         )
                     }
-                    val pullRefreshState = rememberPullRefreshState(
-                        refreshing = state.isRefresh,
-                        onRefresh = listener::onRefresh
-                    )
-                    if (state.isRefresh){
-                        PullRefreshIndicator(
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            refreshing = state.isRefresh,
-                            state = pullRefreshState,
-                            contentColor = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Column(modifier = Modifier.pullRefresh(pullRefreshState)) {
-                        LazyColumn(
+                    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
+                    LazyColumn(
                             modifier = Modifier.fillMaxHeight(),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -128,6 +123,11 @@ fun RequestsContent(
                             }
                         }
                     }
+                    PullRefreshIndicator(
+                        refreshing = state.isRefresh,
+                        state = pullRefreshState,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -149,5 +149,4 @@ fun RequestsContent(
     ConnectionErrorPlaceholder(
         state = state.isError,
         onClickTryAgain = { listener.onClickTryAgain() })
-    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }
