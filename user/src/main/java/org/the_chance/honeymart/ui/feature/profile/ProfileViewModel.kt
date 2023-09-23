@@ -124,7 +124,7 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = { onLogoutError() }
+            onError = {  }
         )
     }
 
@@ -132,6 +132,4 @@ class ProfileViewModel @Inject constructor(
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
-
-    private fun onLogoutError() {}
 }
