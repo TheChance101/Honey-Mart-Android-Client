@@ -183,8 +183,8 @@ class HoneyMartServiceImp @Inject constructor(
     ): BaseResponse<List<ProductDto>> =
         wrap(client.get("/category/$categoryId/allProduct?page=$page"))
 
-    override suspend fun getAllProducts(): BaseResponse<List<ProductDto>> =
-        wrap(client.get("/product"))
+    override suspend fun getAllProducts(page: Int?): BaseResponse<List<ProductDto>> =
+        wrap(client.get("/product?page=$page"))
 
     override suspend fun getCategoriesForSpecificProduct(productId: Long): BaseResponse<List<CategoryDto>> =
         wrap(client.get("/product/$productId"))
@@ -496,6 +496,7 @@ class HoneyMartServiceImp @Inject constructor(
             append("rating", rating.toString())
         }))
     }
+
     // endregion Coupon
     // region Notifications
     override suspend fun getAllOwnerNotifications(): BaseResponse<List<NotificationDto>> =
