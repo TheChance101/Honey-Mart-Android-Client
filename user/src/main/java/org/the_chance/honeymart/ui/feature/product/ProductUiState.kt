@@ -4,6 +4,7 @@ import android.icu.text.DecimalFormat
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
+import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 
 data class ProductsUiState(
     val isLoadingCategory: Boolean = false,
@@ -16,6 +17,7 @@ data class ProductsUiState(
     val products: List<ProductUiState> = listOf(),
     val categories: List<CategoryUiState> = listOf(),
     val categoryId: Long = 0L,
+    val wishListProducts: List<WishListProductUiState> = listOf()
 )
 
 data class SnackBarState(
