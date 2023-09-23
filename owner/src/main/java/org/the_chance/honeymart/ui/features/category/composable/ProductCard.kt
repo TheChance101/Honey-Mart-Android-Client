@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.composables.ImageNetwork
@@ -49,48 +50,46 @@ fun ProductCard(
                 .clip(CircleShape),
             imageUrl = imageUrl
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = MaterialTheme.dimens.space12,
-                        bottom = MaterialTheme.dimens.space12
-                    )
-            ) {
-                Text(
-                    text = productName,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(
+                    top = MaterialTheme.dimens.space12,
+                    bottom = MaterialTheme.dimens.space12
                 )
-
-                Row(
-                    modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
-
-                ) {
-                    Icon(
-                        modifier = Modifier.size(MaterialTheme.dimens.icon24),
-                        painter = painterResource(id = R.drawable.icon_cart),
-                        contentDescription = stringResource(id = R.string.icon_cart),
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.onSecondaryContainer)
-                    )
-                }
-            }
+        ) {
             Text(
-                text = productPrice,
+                text = productName,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
+
+            Row(
+                modifier = Modifier.padding(top = MaterialTheme.dimens.space8),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
+
+            ) {
+                Icon(
+                    modifier = Modifier.size(MaterialTheme.dimens.icon24),
+                    painter = painterResource(id = R.drawable.icon_cart),
+                    contentDescription = stringResource(id = R.string.icon_cart),
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.onSecondaryContainer),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
+        Text(
+            text = productPrice,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
