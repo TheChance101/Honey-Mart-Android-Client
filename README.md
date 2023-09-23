@@ -14,9 +14,9 @@
 - [Contributors](#contributors)
 - [License](#license)
 ## Project Components
-- **User App**: The front-facing application designed for customers and shoppers. It offers a user-friendly interface to explore products, add them to the cart, place orders, manage wishlists, and enjoy a seamless shopping experience. Users can create accounts, log in, and access their profiles. They also receive real-time notifications about their orders, making it convenient and engaging for customers.
-- **Owner App**: The Owner App is tailored for market owners and administrators. It empowers them to manage their respective markets efficiently. Owners can add and update product listings, categorize products, and oversee orders placed within their markets. They also have control over coupon management, and other market-specific tasks. The Owner App streamlines market management and ensures a smooth operation for market owners.
-- **Admin App**: The Admin App is responsible for market approval management. Administrators use this app to review and approve exciting new markets joining the platform and, if necessary, remove markets that no longer meet the platform's standards. This app streamlines market approval processes and ensures a curated marketplace for users.
+- **User Mobile App**: The front-facing application designed for customers and shoppers. It offers a user-friendly interface to explore products, add them to the cart, place orders, manage wishlists, and enjoy a seamless shopping experience. Users can create accounts, log in, and access their profiles. They also receive real-time notifications about their orders, making it convenient and engaging for customers.
+- **Owner Tablet App**: The Owner App is tailored for market owners and administrators. It empowers them to manage their respective markets efficiently. Owners can add and update product listings, categorize products, and oversee orders placed within their markets. They also have control over coupon management, and other market-specific tasks. The Owner App streamlines market management and ensures a smooth operation for market owners.
+- **Admin Tablet  App**: The Admin App is responsible for market approval management. Administrators use this app to review and approve exciting new markets joining the platform and, if necessary, remove markets that no longer meet the platform's standards. This app streamlines market approval processes and ensures a curated marketplace for users.
 ## Features
 
 ### User App:
@@ -52,7 +52,7 @@
 - [Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 - [App Modularization](https://developer.android.com/topic/modularization)
 ## Architecture
-This project uses **MVVM (Model View View-Model)**  with the recommended architecture and contains multi modules as shown.
+This project uses **MVVM (Model View View-Model)** with the recommended architecture and contains multi modules as shown.
 
 ![image](https://github.com/TheChance101/Honey-Mart-Android-Client/assets/93276124/40b2f7da-408d-49ac-a112-6ebe48c33848)
 ## Requirements
@@ -71,21 +71,19 @@ Before you begin, ensure you have met the following requirements:
 ## Installation
 
 1. Clone the repository:
-   ```shell
-   git clone https://github.com/yourusername/honey-mart-client.git
-   cd honey-mart-client
-2. Add Firebase Json file for User, Owner and admin apps.
+   ```shell  
+git clone https://github.com/yourusername/honey-mart-client.git  
+cd honey-mart-client2. Add Firebase Json file for User, Owner and admin apps.
 3. Add Api-Key named as "apiKey" to the local.properties file.
 
 ## Usage
--   To test the APPs, there is an APKs build  [here](https://github.com/TheChance101/Honey-Mart-Android-Client/tree/main/user/src/main/res/raw)  that you can directly download and install.
+- To test the APPs, there is an APKs build  [here](https://github.com/TheChance101/Honey-Mart-Android-Client/tree/main/user/src/main/res/raw)  that you can directly download and install.
 
 
 ## Contributors
-<a href="https://github.com/TheChance101/Honey-Mart-Server/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=TheChance101/Honey-Mart-Android-Client" />
-</a>
+<a href="https://github.com/TheChance101/Honey-Mart-Server/graphs/contributors">  
+  <img src="https://contrib.rocks/image?repo=TheChance101/Honey-Mart-Android-Client" />  
+</a>  
 
 ## License
-	Copyright (c) 2023 The Chance
-- This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/TheChance101/Honey-Mart-Server/blob/develop/LICENSE) file for details.
+Copyright (c) 2023 The Chance- This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/TheChance101/Honey-Mart-Android-Client/blob/main/LICENSE) file for details.
