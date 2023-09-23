@@ -3,12 +3,15 @@
 > Honey Mart is a versatile platform built with Kotlin and Jetpack Compose, where various markets can easily display and sell their products. It provides a user-friendly and engaging online shopping experience.
 
 ## Table of Contents
+- [Project Components](#project-components)
 - [Features](#features)
-- [Prerequisites](#prerequisites)
+- [Screenshots](#screenshots)
+- [Tech Stack](#rocket-tech-stack)
+- [Architecture](#architecture)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
+- [Contributors](#contributors)
 - [License](#license)
 ## Project Components
 - **User App**: The front-facing application designed for customers and shoppers. It offers a user-friendly interface to explore products, add them to the cart, place orders, manage wishlists, and enjoy a seamless shopping experience. Users can create accounts, log in, and access their profiles. They also receive real-time notifications about their orders, making it convenient and engaging for customers.
@@ -75,4 +78,14 @@ Before you begin, ensure you have met the following requirements:
 3. Add Api-Key named as "apiKey" to the local.properties file.
 
 ## Usage
--   To test the app, there is an APKs build  [here]()  that you can directly download and install.
+-   To test the APPs, there is an APKs build  [here](https://github.com/TheChance101/Honey-Mart-Android-Client/tree/main/user/src/main/res/raw)  that you can directly download and install.
+
+
+## Contributors
+<a href="https://github.com/TheChance101/Honey-Mart-Server/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=TheChance101/Honey-Mart-Android-Client" />
+</a>
+
+## License
+	Copyright (c) 2023 The Chance
+- This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/TheChance101/Honey-Mart-Server/blob/develop/LICENSE) file for details.
