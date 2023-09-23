@@ -1,4 +1,4 @@
-# Honey Mart Client App
+# Honey Mart Client
 
 > Honey Mart is a versatile platform built with Kotlin and Jetpack Compose, where various markets can easily display and sell their products. It provides a user-friendly and engaging online shopping experience.
 
