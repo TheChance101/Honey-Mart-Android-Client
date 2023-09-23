@@ -5,7 +5,7 @@
 ## Table of Contents
 - [Project Components](#project-components)
 - [Features](#features)
-- [Screenshots](#screenshots)
+- [Design](#design)
 - [Tech Stack](#rocket-tech-stack)
 - [Architecture](#architecture)
 - [Requirements](#requirements)
@@ -41,6 +41,8 @@
 - **Market Removal**: Admins can remove markets that do not meet platform standards or are no longer active.
 ## Design
 - Discover [Honey Mart](https://www.figma.com/file/UkemPY1rHxH4yqTtVjzoMH/Honey-Mart-App?type=design&node-id=585%3A2254&mode=design&t=IYR9zX2jiKUAn1fR-1) Project on Figma.
+![honey-mart-figma](https://github.com/TheChance101/Honey-Mart-Android-Client/assets/63457278/1583d76a-d704-43d6-bbd7-1f318b6c0909)
+
 ## :rocket: Tech stack
 - [Recommended Architecture](https://developer.android.com/topic/architecture)
 - [Jetpack Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAiAzKqdBhAnEiwAePEjktk3ROIIxTqejhHWkDEwSaQqoE6GgrNHM8iYKw8xHx5SPPDu0oJ_DxoC8LYQAvD_BwE&gclsrc=aw.ds)
