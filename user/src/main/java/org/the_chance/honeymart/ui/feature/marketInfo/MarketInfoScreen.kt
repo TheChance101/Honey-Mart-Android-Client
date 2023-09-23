@@ -186,7 +186,7 @@ fun MarketInfoContent(
                     } else {
                         primary100.copy(alpha = 0.16f)
                     },
-                    width = if (isNarrowScreen) 110.dp else MaterialTheme.dimens.widthItemMarketCard,
+                    width = if (isNarrowScreen) 120.dp else MaterialTheme.dimens.widthItemMarketCard,
                     painter = painterResource(
                         id = categoryIcons[item.categoryImageId] ?: R.drawable.ic_cup_paper
                     )
