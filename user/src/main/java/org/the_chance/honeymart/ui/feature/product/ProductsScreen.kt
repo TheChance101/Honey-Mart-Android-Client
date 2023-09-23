@@ -129,9 +129,6 @@ private fun ProductsContent(
                         ),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     ) {
-                        item {
-                            Loading(state = state.isLoadingProduct && state.products.isEmpty())
-                        }
                         items(products.size) { index ->
                             productInteractionListener.onChangeProductScrollPosition(index)
                             val product = products[index]
@@ -153,6 +150,9 @@ private fun ProductsContent(
                                     )
                                 }
                             )
+                        }
+                        item {
+                            Loading(state = state.isLoadingProduct && state.products.isEmpty())
                         }
                         item {
                             PagingLoading(state = state.isLoadingProduct && state.products.isNotEmpty())

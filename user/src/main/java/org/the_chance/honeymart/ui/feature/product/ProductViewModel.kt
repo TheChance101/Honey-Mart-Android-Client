@@ -1,11 +1,8 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
 import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
@@ -46,7 +43,7 @@ class ProductViewModel @Inject constructor(
 
     private fun getData() {
         _state.update { it.copy(error = null, isError = false) }
-        getAllProducts()
+        getWishListProducts()
         getCategoriesByMarketId()
     }
 
@@ -91,7 +88,7 @@ class ProductViewModel @Inject constructor(
             )
         }
         resetProducts()
-        getAllProducts()
+        getWishListProducts()
     }
 
     private fun updateCategorySelection(
@@ -118,23 +115,25 @@ class ProductViewModel @Inject constructor(
                 isError = false
             )
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            tryToExecute(
-                { getAllProducts(state.value.categoryId, state.value.page) },
-                ::allProductsSuccess,
-                ::allProductsError
-            )
-        }
+        tryToExecute(
+            { getAllProducts(state.value.categoryId, state.value.page) },
+            ::allProductsSuccess,
+            ::allProductsError
+        )
     }
 
     private fun allProductsSuccess(products: List<Product>) {
+        val updatedProducts = state.value.products.toMutableList().apply {
+            this.addAll(products.map { it.toProductUiState() })
+        }
         _state.update {
             it.copy(
                 isLoadingProduct = false,
                 error = null,
-                products = it.products.toMutableList().apply {
-                    this.addAll(products.map { it.toProductUiState() })
-                }
+                products = updateProducts(
+                    updatedProducts,
+                    state.value.wishListProducts
+                )
             )
         }
     }
@@ -167,31 +166,32 @@ class ProductViewModel @Inject constructor(
     }
 
 
-    private fun getWishListProducts(products: List<ProductUiState>) {
-        _state.update { it.copy(isError = false) }
+    private fun getWishListProducts() {
+        _state.update { it.copy(isError = false, isLoadingProduct = true) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
-            { onGetWishListProductSuccess(it, products) },
-            { onGetWishListProductError(it, products) }
+            { onGetWishListProductSuccess(it) },
+            { onGetWishListProductError(it) }
         )
     }
 
 
     private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
     ) {
-        _state.update { productsUiState ->
-            productsUiState.copy(products = updateProducts(products, wishListProducts))
+        _state.update {
+            it.copy(wishListProducts = wishListProducts)
         }
+        getAllProducts()
     }
 
     private fun onGetWishListProductError(
-        error: ErrorHandler,
-        products: List<ProductUiState>
+        error: ErrorHandler
     ) {
         _state.update {
-            it.copy(error = error, products = products)
+            it.copy(error = error)
         }
+        getAllProducts()
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
