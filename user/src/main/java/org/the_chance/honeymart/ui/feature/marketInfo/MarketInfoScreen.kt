@@ -139,13 +139,14 @@ fun MarketInfoContent(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8)
                     ) {
                         CardChip(
-                            text = state.categoriesCountState,
+                            text = "${state.categoriesCountState} " + stringResource(R.string.categories),
                             icon = painterResource(id = R.drawable.boxes)
                         )
                         CardChip(
-                            text = state.productsCountState,
+                            text = "${state.productsCountState} " + stringResource(R.string.items),
                             icon = painterResource(id = R.drawable.box_minimalistic)
                         )
+
                     }
                     ImageNetwork(
                         imageUrl = state.imageUrl,
