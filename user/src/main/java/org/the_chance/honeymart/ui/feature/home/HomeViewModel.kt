@@ -23,6 +23,7 @@ import org.the_chance.honeymart.ui.feature.new_products.toRecentProductUiState
 import org.the_chance.honeymart.ui.feature.orders.OrderStates
 import org.the_chance.honeymart.ui.feature.orders.toOrderUiState
 import org.the_chance.honeymart.ui.feature.product.toProductUiState
+import org.the_chance.honeymart.ui.feature.see_all_markets.MarketsViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +42,7 @@ class HomeViewModel @Inject constructor(
     init {
         getData()
     }
+
     override fun getData() {
         _state.update {
             it.copy(isLoading = true, error = null, isConnectionError = false)
@@ -221,8 +223,11 @@ class HomeViewModel @Inject constructor(
     /// region Discover Products
 
     private fun getDiscoverProducts() {
+        _state.update {
+            it.copy(isPagingLoading = true, isConnectionError = false, error = null)
+        }
         tryToExecute(
-            getAllDiscoverProducts::invoke,
+            { getAllDiscoverProducts(state.value.page) },
             ::onGetDiscoverProductsSuccess,
             ::onGetDiscoverProductsError,
         )
@@ -231,9 +236,18 @@ class HomeViewModel @Inject constructor(
     private fun onGetDiscoverProductsSuccess(products: List<Product>) {
         _state.update {
             it.copy(
-                isLoading = false,
-                discoverProducts = products.map { product -> product.toProductUiState() }
+                isPagingLoading = false,
+                discoverProducts = it.discoverProducts.toMutableList().apply {
+                    this.addAll(products.map { product -> product.toProductUiState() })
+                }
             )
+        }
+    }
+
+    override fun onChangeProductsScrollPosition(position: Int) {
+        if (position + 1 >= state.value.page * MAX_PAGE_SIZE) {
+            _state.update { it.copy(page = it.page + 1) }
+            getDiscoverProducts()
         }
     }
 
@@ -249,7 +263,6 @@ class HomeViewModel @Inject constructor(
     /// endregion
 
 
-  
     /// region Interactions
 
     override fun onClickCategory(categoryId: Long, position: Int) {
@@ -304,6 +317,7 @@ class HomeViewModel @Inject constructor(
     override fun onClickLastPurchases(orderId: Long) {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderDetailsScreenEffect(orderId))
     }
+
     override fun onClickSearchBar() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToSearchScreenEffect)
     }
@@ -319,6 +333,10 @@ class HomeViewModel @Inject constructor(
 
     override fun onClickLastPurchasesSeeAll() {
         effectActionExecutor(_effect, HomeUiEffect.NavigateToOrderScreenEffect)
+    }
+
+    companion object {
+        const val MAX_PAGE_SIZE = 10
     }
 
     /// endregion
