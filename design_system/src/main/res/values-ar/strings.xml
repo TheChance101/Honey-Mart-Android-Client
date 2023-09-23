@@ -309,6 +309,10 @@
     <string name="coupons">قسائم الشراء</string>
     <string name="notification">الإشعارات</string>
     <string name="logout">تسجيل الخروج</string>
+    <string name="empty_wishlist_message">%1$s الخاص بك فارغ!!</string>
+    <string name="empty_wishlist_notification">إضافة %1$s ستزيد من فرصك في جذب المشترين المهتمين. ما اللون %1$s الذي يتناسب مع منتجك؟</string>
+    <string name="selected_color">اللون المحدد</string>
+    <string name="new_">الجديد</string>
 
 
 </resources>
