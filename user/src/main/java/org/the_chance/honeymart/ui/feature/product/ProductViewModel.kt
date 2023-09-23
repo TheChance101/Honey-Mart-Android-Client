@@ -38,11 +38,10 @@ class ProductViewModel @Inject constructor(
                 position = args.position.toInt()
             )
         }
-        getData()
     }
 
-    private fun getData() {
-        _state.update { it.copy(error = null, isError = false) }
+    override fun getData() {
+        _state.update { it.copy(error = null, isError = false, products = emptyList()) }
         getWishListProducts()
         getCategoriesByMarketId()
     }
@@ -57,9 +56,10 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetCategorySuccess(categories: List<Category>) {
-        _state.update {
-            it.copy(
-                error = null, isLoadingCategory = false,
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                error = null,
+                isLoadingCategory = false,
                 categories = updateCategorySelection(
                     categories.map { it.toCategoryUiState() },
                     state.value.categoryId
