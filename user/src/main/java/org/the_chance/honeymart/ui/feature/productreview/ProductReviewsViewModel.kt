@@ -1,10 +1,8 @@
 package org.the_chance.honeymart.ui.feature.productreview
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Reviews
 import org.the_chance.honeymart.domain.usecase.GetAllProductReviewsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
@@ -43,10 +41,10 @@ class ProductReviewsViewModel @Inject constructor(
     }
 
     private fun onGetProductReviewsSuccess(reviews: Reviews) {
+        appendReviews(reviews.toReviews())
         _state.update {
             it.copy(
                 isLoading = false,
-                reviews = reviews.toReviews(),
             )
         }
     }
@@ -67,17 +65,10 @@ class ProductReviewsViewModel @Inject constructor(
     }
 
     override fun onScrollDown() {
-        viewModelScope.launch {
-            if ((reviewScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
-                _state.update { it.copy(isPagingLoading = true) }
-                insert()
-                if (page > 1) {
-                    val result = productReviewsUseCase(
-                        args.productId.toLong(), page
-                    ).toReviews()
-                    appendReviews(result)
-                }
-                _state.update { it.copy(isPagingLoading = false) }
+        if ((reviewScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
+            insert()
+            if (page > 1) {
+                getProductReviews(args.productId.toLong())
             }
         }
     }

@@ -10,7 +10,6 @@ import java.util.Date
 
 data class ProductReviewsUiState(
     val isLoading: Boolean = true,
-    val isPagingLoading: Boolean = true,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val page: Int = 1,
