@@ -302,5 +302,9 @@
     <string name="review_cannot_be_blank">Review cannot be blank</string>
     <string name="review_cannot_be_more_than_500_characters">Review cannot be more than 500 characters</string>
     <string name="review_cannot_be_less_than_6_characters">Review cannot be less than 6 characters</string>
+    <string name="my_orders">My Orders</string>
+    <string name="coupons">Coupons</string>
+    <string name="notification">Notification</string>
+    <string name="logout">Logout</string>
 
 </resources>

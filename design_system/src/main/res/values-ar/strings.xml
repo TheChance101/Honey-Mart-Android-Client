@@ -6,7 +6,7 @@
     <string name="product_description">وصف المنتج</string>
     <string name="product_name">اسم المنتج</string>
     <string name="product_price">3000 دولار</string>
-    <string name="empty_wishlist">قائمة الرغبات الخاصة بك فارغة!!</string>
+    <string name="empty_wishlist">قائمة المفضلات الخاصة بك فارغة!!</string>
     <string name="placeholder_description">استمتع بالمفضلات وانغمس في عالم التسوق الشخصي.</string>
     <string name="discover_new_markets">اكتشف المتاجر جديدة</string>
     <string name="welcome_to_honey_mart">مرحبًا بك في هوني مارت</string>
@@ -33,7 +33,7 @@
     <string name="the_passwords_don_t_match">كلمات المرور غير متطابقة</string>
     <string name="the_username_can_t_be_blank">لا يمكن ترك اسم المستخدم فارغًا</string>
     <string name="that_s_not_a_valid_username">اسم مستخدم غير صالح، يجب أن يكون مثل  عزيزة حلمي </string>
-    <string name="the_password_needs_to_consist_of_at_least_6_characters">يجب أن تتألف كلمة المرور من 6 أحرف على الأقل</string>
+    <string name="the_password_needs_to_consist_of_at_least_6_characters">يجب أن تتكون كلمة المرور من 6 أحرف على الأقل</string>
     <string name="valid_email">بريد إلكتروني صالح</string>
     <string name="valid_password">كلمة مرور صالحة</string>
     <string name="valid_full_name">اسم كامل صالح</string>
@@ -54,12 +54,12 @@
     <string name="Done">تم</string>
     <string name="cancel">إلغاء</string>
     <string name="canceled">تم الغاؤها</string>
-    <string name="order_placeholder_description">هذا فوضى في السلة! دعونا نصلحها بإضافة العناصر التي تجذب انتباهك!</string>
+    <string name="order_placeholder_description">سلتك فارغة ! دعنا نملؤها بإضافة المنتجات التي تجذب انتباهك!</string>
     <string name="you_dont_have_any_orders">ليس لديك أي طلبات!!</string>
     <string name="order_dialog_Cancel_Text">أوه لا!!! أنت على وشك إلغاء هذا الطلب..... هل أنت متأكد؟</string>
     <string name="order_dialog_Delete_Text">أنت على وشك حذف هذا الطلب.... هل أنت متأكد؟</string>
     <string name="yes_i_m_sure">نعم، أنا متأكد</string>
-    <string name="you_dont_have_any_completed_orders">ليس لديك أي طلبات منجزة!!</string>
+    <string name="you_dont_have_any_completed_orders">ليس لديك أي طلبات!!</string>
     <string name="you_don_t_have_any_canceled_orders">ليس لديك أي طلبات ملغاة!!</string>
     <string name="plus">+</string>
     <string name="number_of_items">1</string>
@@ -80,16 +80,16 @@
     <string name="connection_restored">تم استعادة الاتصال</string>
     <string name="show_my_order_details">عرض تفاصيل طلبي</string>
     <string name="your_cart_list_is_empty">قائمة السلة الخاصة بك فارغة!!</string>
-    <string name="it_s_a_carttastrophe_let_s_fix_it_by_adding_items_that_catch_your_eye">هذه فوضى في السلة! دعونا نصلحها بإضافة العناصر التي تجذب انتباهك!</string>
+    <string name="it_s_a_carttastrophe_let_s_fix_it_by_adding_items_that_catch_your_eye">سلتك فارغة ! دعنا نملؤها بإضافة المنتجات التي تجذب انتباهك!</string>
     <string name="no_connection_text">عذرًا، لا يوجد اتصال بالانترنت!!!</string>
     <string name="try_again_text">حاول مرة أخرى</string>
     <string name="error_loading_data">خطأ في تحميل البيانات!</string>
-    <string name="no_market">لا يوجد سوق هنا!!</string>
+    <string name="no_market">لا يوجد متجر هنا!!</string>
     <string name="no_categories">لا توجد فئات هنا!!</string>
     <string name="order">الطلب #%1$s </string>
     <string name="items">%1$s عنصر</string>
     <string name="placeholder_title">ليس لديك أي طلبات!!</string>
-    <string name="placeholder_subtitle">هذا فوضى! دعونا نصلحها بإضافة العناصر التي تجذب انتباهك!</string>
+    <string name="placeholder_subtitle">سلتك فارغة ! دعنا نملؤها بإضافة المنتجات التي تجذب انتباهك!</string>
     <string name="discover_market_now">اكتشف المتجر الآن</string>
     <string name="subtitle_placeholder_wishList">استفد من قوة المفضلات وانغمس في عالم التسوق الشخصي.</string>
     <string name="your_wish_list_is_empty">قائمة الرغبات الخاصة بك فارغة!!</string>
@@ -265,9 +265,9 @@
 
     <string name="orders_label">الطلبات</string>
     <string name="category_label">الفئات</string>
-    <string name="coupons_label">الكوبونات</string>
+    <string name="coupons_label">قسائم الشراء</string>
     <string name="notifications_label">الاشعارات</string>
-    <string name="recieve_notification"> سوف تتلقى الاشعارات بعد  \n  بعدما يقوم العميل باضافة طلب</string>
+    <string name="recieve_notification"> سوف تتلقى الاشعارات \n  بعدما يقوم العميل باضافة طلب</string>
     <string name="receive_notification_cancels">" سوف تتلقى الاشعارات عندما \n يقوم العميل بالغاء الطلب "</string>
 
 
@@ -279,7 +279,7 @@
     <string name="home">الرئيسية</string>
     <string name="cart">عربة التسوق</string>
     <string name="wishlist"> المفضلة </string>
-    <string name="profile">حسابي </string>
+    <string name="profile"> حسابي </string>
     <string name="all_markets">جميع المتاجر</string>
     <string name="there_are_no_market_requests">ليس هنالك اي طلب فتح متجر</string>
     <string name="customers_reviews">تقيمات المستخدمين</string>
@@ -287,20 +287,26 @@
     <string name="ratings">%1$s التقييمات</string>
     <string name="category_name_is_too_long">اسم الفئة طويل للغاية</string>
 
-    <string name="blank_field">ينبغي ان لا يكون هذا الحقل فارغا</string>
-    <string name="product_description_is_too_long">اسم المنتج طويل جدا، 500 حرف كحد أقصي</string>
+    <string name="blank_field">يجب الا يكون هذاالحقل فارغا</string>
+    <string name="product_description_is_too_long">وصف المنتج طويل جدا، 500 حرف كحد أقصي</string>
     <string name="product_name_is_too_long">اسم المنتج طويل جدا، 20 كلمة كحد أقص</string>
-    <string name="invalid_product_name">اسم منتج غير صالح</string>
+    <string name="invalid_product_name">اسم المنتج غير صالح</string>
     <string name="no_categories_available">لا توجد فئات</string>
     <string name="submit_review">إرسال التقييم</string>
     <string name="what_did_you_like_or_dislike_how_did_you_use_the_product_what_should_others_know_before_buying">ماذا يعجبك او لا يعجبك؟ كيف استخدمت المنتج؟ ما الذي يجب أن يعرفه الآخرون قبل الشراء؟</string>
     <string name="add_your_review">أضف تقييمك</string>
-    <string name="add_your_rate">أضف تقييمك</string>
+    <string name="add_your_rate">أضف درجة تقييمك</string>
 
-    <string name="review_added_successfully">تم إضافة التييم بنجاح</string>
+    <string name="review_added_successfully">تم إضافة التقييم بنجاح</string>
 
     <string name="review_cannot_be_blank"> التقييم لا يمكن أن يكون فارغًا</string>
     <string name="review_cannot_be_more_than_500_characters">لا يمكن أن يكون التقييم أكثر من ٥٠٠ حرف</string>
     <string name="review_cannot_be_less_than_6_characters">لا يمكن أن يكون التقييم أقل من ٦ أحرف</string>
+
+    <string name="my_orders">طلباتي</string>
+    <string name="coupons">قسائم الشراء</string>
+    <string name="notification">الإشعارات</string>
+    <string name="logout">تسجيل الخروج</string>
+
 
 </resources>
