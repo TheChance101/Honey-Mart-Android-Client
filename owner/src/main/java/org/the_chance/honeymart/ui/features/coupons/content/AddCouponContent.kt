@@ -25,6 +25,7 @@ import org.the_chance.honeymart.ui.features.coupons.composables.coupon.CouponIte
 import org.the_chance.honeymart.ui.features.coupons.showButton
 import org.the_chance.honeymart.ui.features.coupons.showCoupon
 import org.the_chance.honeymart.ui.features.coupons.showEmptyPlaceHolder
+import org.the_chance.honeymart.ui.features.coupons.toCouponExpirationDateFormat
 import org.the_chance.honymart.ui.composables.HoneyFilledIconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.dimens
@@ -74,7 +75,8 @@ fun AddCouponContent(
                     horizontal = MaterialTheme.dimens.space16,
                     vertical = MaterialTheme.dimens.space8
                 ),
-            text = state.expirationDateFormatted,
+            text = state.expirationDate?.toCouponExpirationDateFormat()
+                ?: stringResource(id = R.string.expiration_date),
             onClick = listener::onClickShowDatePicker
         )
 

@@ -65,7 +65,7 @@ fun AllNotificationsContent(
             item {
                 CustomChip(
                     state = state.new(),
-                    text = "New",
+                    text = stringResource(R.string.new_),
                     onClick = {
                         listener.getAllNotifications(
                             NotificationStates.NEW.state,
@@ -78,7 +78,7 @@ fun AllNotificationsContent(
             item {
                 CustomChip(
                     state = state.cancelled(),
-                    text = "Cancelled",
+                    text = stringResource(id = R.string.cancelled),
                     onClick = {
                         listener.getAllNotifications(
                             NotificationStates.CANCELLED.state,
@@ -92,7 +92,7 @@ fun AllNotificationsContent(
             refreshing = state.isRefresh,
             onRefresh = listener::onRefresh
         )
-        if (state.isRefresh){
+        if (state.isRefresh) {
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 refreshing = state.isRefresh,
@@ -100,7 +100,11 @@ fun AllNotificationsContent(
                 contentColor = MaterialTheme.colorScheme.primary
             )
         }
-        Column(modifier = Modifier.fillMaxWidth().pullRefresh(pullRefreshState)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .pullRefresh(pullRefreshState)
+        ) {
             EmptyPlaceholder(
                 state = state.notifications.isEmpty() && (state.new() || state.cancelled()),
                 emptyObjectName = stringResource(id = R.string.notifications_label),

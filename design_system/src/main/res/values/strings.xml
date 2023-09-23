@@ -162,7 +162,6 @@
     <string name="send">Send</string>
     <string name="market_images">Market Images</string>
     <string name="continue_word">Continue</string>
-
     <string name="declined">Declined</string>
     <string name="the_search_result_is_empty">The search result is empty!!</string>
     <string name="discover_markets_now">Discover Markets Now</string>
@@ -183,7 +182,7 @@
     <string name="order_title">Order</string>
     <string name="delivery">Delivery</string>
     <string name="shop_detail">Shop details</string>
-    <string name="no_deal">No. Deal</string>
+    <string name="no_deal">Count</string>
     <string name="offer_price">Offer Price</string>
     <string name="expiration_date">Expiration Date</string>
     <string name="get_coupon">Get coupon</string>
@@ -213,6 +212,7 @@
     <string name="new_requests">2 new requests</string>
     <string name="approve">Approve</string>
     <string name="product">Product</string>
+    <string name="products">Products</string>
     <string name="add_new_coupon">Add New Coupon</string>
     <string name="discount_percentage_can_t_be_blank">Discount Percentage can\'t be blank</string>
     <string name="invalid_coupon_discount_percentage">Invalid  Coupon Discount Percentage</string>
@@ -303,5 +303,16 @@
     <string name="review_cannot_be_blank">Review cannot be blank</string>
     <string name="review_cannot_be_more_than_500_characters">Review cannot be more than 500 characters</string>
     <string name="review_cannot_be_less_than_6_characters">Review cannot be less than 6 characters</string>
+    <string name="my_orders">My Orders</string>
+    <string name="coupons">Coupons</string>
+    <string name="notification">Notification</string>
+    <string name="logout">Logout</string>
+
+    <string name="empty_wishlist_message">Your %1$s is empty!!</string>
+    <string name="empty_wishlist_notification">Adding a %1$s will increase your chances of attracting interested buyers. What %1$s fits your item?</string>
+    <string name="selected_color">Selected color</string>
+    <string name="new_">New</string>
+    <string name="product_count">"%d Products"</string>
+    <string name="personal_info">Personal Info</string>
 
 </resources>

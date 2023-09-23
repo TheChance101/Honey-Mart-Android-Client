@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.features.notifications.NotificationsUiState
-import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.util.toCountProductFormat
 import org.the_chance.honymart.ui.theme.dimens
 import org.the_chance.honymart.ui.theme.primary100
@@ -41,7 +40,7 @@ fun OrdersHeader(
 ) {
     val selectedColor by animateColorAsState(
         targetValue = if (isSelected) primary100 else Color.Transparent,
-        label = "Selected color"
+        label = stringResource(R.string.selected_color)
     )
 
     Card(

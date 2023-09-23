@@ -36,17 +36,15 @@ fun EmptyPlaceholder(
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
-                text = "Your $emptyObjectName is empty!!",
+                text = stringResource(id = R.string.empty_wishlist_message, emptyObjectName),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-                text = if(notificationState) notificationText
-                    else "Adding a $emptyObjectName will increase your chances \n" +
-                        " of attracting interested buyers. " +
-                        "What $emptyObjectName \n fits your item? ",
+                text = if (notificationState) notificationText
+                else stringResource(id = R.string.empty_wishlist_notification, emptyObjectName),
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center

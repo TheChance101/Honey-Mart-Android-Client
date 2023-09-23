@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -127,7 +128,7 @@ fun ProfileSuccessScreen(
 
         NavCard(
             iconId = R.drawable.ic_bill_list,
-            title = "My Order",
+            title = stringResource(R.string.my_orders),
             onClick = listener::onClickMyOrder
         )
 
@@ -135,14 +136,14 @@ fun ProfileSuccessScreen(
 
         NavCard(
             iconId = R.drawable.ic_coupons,
-            title = "Coupons",
+            title = stringResource(R.string.coupons),
             onClick = listener::onClickCoupons
         )
         Spacer(modifier = Modifier.height(MaterialTheme.dimens.space16))
 
         NavCard(
             iconId = R.drawable.ic_notification,
-            title = "Notification",
+            title = stringResource(R.string.notification),
             onClick = listener::onClickNotification
         )
 
@@ -150,7 +151,7 @@ fun ProfileSuccessScreen(
 
         NavCard(
             iconId = R.drawable.ic_logout,
-            title = "Logout",
+            title = stringResource(R.string.logout),
             onClick = listener::showDialog,
             color = MaterialTheme.colorScheme.error
         )
