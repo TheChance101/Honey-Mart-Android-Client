@@ -77,10 +77,11 @@ Before you begin, ensure you have met the following requirements:
 ## Installation
 
 1. Clone the repository:
-   ```shell  
-git clone https://github.com/yourusername/honey-mart-client.git  
-cd honey-mart-client2. Add Firebase Json file for User, Owner and admin apps.
-3. Add Api-Key named as "apiKey" to the local.properties file.
+    ```shell
+       git clone https://github.com/yourusername/honey-mart-android-client.git
+       cd honey-mart-android-client
+3. Add Firebase Json file for User, Owner and admin apps.
+4. Add Api-Key named as "apiKey" to the local.properties file.
 
 ## Usage
 - To test the APPs, there is an APKs build  [here](https://github.com/TheChance101/Honey-Mart-Android-Client/tree/main/user/src/main/res/raw)  that you can directly download and install.
