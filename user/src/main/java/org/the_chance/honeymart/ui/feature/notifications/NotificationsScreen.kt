@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -96,23 +95,23 @@ fun NotificationsContent(
                     )
                     StateItem(
                         painter = painterResource(R.drawable.icon_order_nav),
-                        color = if (state.order()) {
+                        color = if (state.processing()) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onSecondaryContainer
                         },
-                        text = stringResource(R.string.order_title),
-                        onClickState = listener::onGetOrderNotifications
+                        text = stringResource(R.string.processing),
+                        onClickState = listener::onGetProcessingNotifications
                     )
                     StateItem(
                         painter = painterResource(R.drawable.ic_delivery),
-                        color = if (state.delivery()) {
+                        color = if (state.completed()) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onSecondaryContainer
                         },
                         text = stringResource(R.string.delivery),
-                        onClickState = listener::onGetDeliveryNotifications
+                        onClickState = listener::onGetCompletedNotifications
                     )
                 }
                 EmptyOrdersPlaceholder(
@@ -129,9 +128,8 @@ fun NotificationsContent(
                             top = MaterialTheme.dimens.space24,
                             bottom = MaterialTheme.dimens.space16
                         )
-                        .background(MaterialTheme.colorScheme.secondary)
-                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24)),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.space24))
+                        .background(MaterialTheme.colorScheme.onTertiary),
                 ) {
                     items(state.updatedNotifications.size) {
                         val notification = state.updatedNotifications[it]

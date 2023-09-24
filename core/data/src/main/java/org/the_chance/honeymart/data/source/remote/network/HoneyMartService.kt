@@ -249,9 +249,7 @@ interface HoneyMartService {
 
     //region notifications
 
-    suspend fun getAllNotifications(
-        notificationState: Int,
-    ): BaseResponse<List<NotificationDto>>
+    suspend fun getAllNotifications(): BaseResponse<List<NotificationDto>>
 
     //endregion notifications
 

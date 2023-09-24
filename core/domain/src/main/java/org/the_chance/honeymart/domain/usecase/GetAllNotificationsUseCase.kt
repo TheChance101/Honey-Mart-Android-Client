@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetAllNotificationsUseCase @Inject constructor(
     private val honeyMartRepository: HoneyMartRepository
 ) {
-    suspend operator fun invoke(notificationState: Int): List<Notification> {
-        return honeyMartRepository.getAllNotifications(notificationState)
+    suspend operator fun invoke(): List<Notification> {
+        return honeyMartRepository.getAllNotifications()
     }
 }
