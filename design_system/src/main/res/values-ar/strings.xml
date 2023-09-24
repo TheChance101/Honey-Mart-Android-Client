@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">هوني مارت</string>
+    <string name="admin_app_name">مشرف</string>
+    <string name="owner_app_name">مالك</string>
     <string name="table">طاولة</string>
     <string name="product_description">وصف المنتج</string>
     <string name="product_name">اسم المنتج</string>

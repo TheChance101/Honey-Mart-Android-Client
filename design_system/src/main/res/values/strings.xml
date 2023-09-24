@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">HoneyMart</string>
+    <string name="admin_app_name">Admin</string>
+    <string name="owner_app_name">Owner</string>
     <string name="table">table</string>
     <string name="product_description">Product Description</string>
     <string name="product_name">Product Name</string>
