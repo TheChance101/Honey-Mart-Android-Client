@@ -24,9 +24,11 @@ import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.EmptyPlaceholder
 import org.the_chance.honeymart.ui.features.category.CategoriesInteractionsListener
 import org.the_chance.honeymart.ui.features.category.CategoriesUiState
+import org.the_chance.honeymart.ui.features.category.CategoriesViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.features.category.Visibility
 import org.the_chance.honeymart.ui.features.category.composable.AddProductButton
 import org.the_chance.honeymart.ui.features.category.composable.DropDownMenuList
+import org.the_chance.honeymart.ui.features.category.composable.PagingLoading
 import org.the_chance.honeymart.ui.features.category.composable.ProductCard
 import org.the_chance.honymart.ui.composables.HoneyOutlineText
 import org.the_chance.honymart.ui.composables.Loading
@@ -64,7 +66,7 @@ fun CategoryProductsContent(
                                     .categoryIconUIState.categoryIconId]
                                     ?: R.drawable.icon_category
                             ),
-                            contentDescription = stringResource(org.the_chance.owner.R.string.category_icon),
+                            contentDescription = stringResource(R.string.category_icon),
                             tint = MaterialTheme.colorScheme.primary
                         )
 
@@ -80,7 +82,7 @@ fun CategoryProductsContent(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HoneyOutlineText(text = "${products.size} Products")
+                    HoneyOutlineText(text = stringResource(R.string.product_count, products.size))
                     DropDownMenuList(
                         onClickUpdate = { listener.resetShowState(Visibility.UPDATE_CATEGORY) },
                         onClickDelete = { listener.resetShowState(Visibility.DELETE_CATEGORY) }
@@ -110,6 +112,9 @@ fun CategoryProductsContent(
             ) {
                 items(products.size) { index ->
                     listener.onChangeProductScrollPosition(index)
+                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
+                        listener.onScrollDown()
+                    }
                     products[index].let {
                         ProductCard(
                             onClick = { listener.onClickProduct(it.productId) },
@@ -120,9 +125,12 @@ fun CategoryProductsContent(
                         )
                     }
                 }
-                item{
+                item {
                     Spacer(modifier = Modifier.padding(MaterialTheme.dimens.space8))
-                    Loading(state = state.isLoadingPaging)
+                    Loading(state = state.isLoading)
+                }
+                item {
+                    PagingLoading(state = state.isLoadingPaging && state.reviews.reviews.isNotEmpty())
                 }
             }
             EmptyPlaceholder(
@@ -133,3 +141,9 @@ fun CategoryProductsContent(
         }
     }
 }
+
+//@Composable
+//fun Int.toProductItem(): String {
+//    return if (this == 1) stringResource(id = R.string.product)
+//    else return stringResource(id = R.string.products)
+//}

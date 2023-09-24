@@ -5,12 +5,11 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 
 
 data class MarketsUiState(
-    val isLoading: Boolean = true,
-    val isMarketsLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val page: Int = 1,
-    val markets: List<MarketUiState> = ArrayList(),
+    val markets: List<MarketUiState> = listOf(),
 )
 
 data class MarketUiState(
@@ -28,3 +27,5 @@ fun Market.toMarketUiState(): MarketUiState {
         marketImage = imageUrl
     )
 }
+
+fun MarketsUiState.contentScreen() = !this.isError && this.markets.isNotEmpty()

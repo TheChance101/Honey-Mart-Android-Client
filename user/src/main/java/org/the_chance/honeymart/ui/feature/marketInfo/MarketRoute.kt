@@ -8,13 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.the_chance.honeymart.ui.navigation.Screen
 
-private val ROUTE = Screen.CategoryScreen.route
+private val ROUTE = Screen.MarketInfoScreen.route
 
-fun NavController.navigateToCategoryScreen(marketId: Long) {
+fun NavController.navigateToMarketInfoScreen(marketId: Long) {
     navigate("${ROUTE}/${marketId}")
 }
 
-fun NavGraphBuilder.categoryRoute() {
+fun NavGraphBuilder.marketInfoRoute() {
     composable(
         "${ROUTE}/{${CategoryArgs.MARKET_ID}}",
         arguments = listOf(

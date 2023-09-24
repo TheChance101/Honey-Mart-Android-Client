@@ -81,7 +81,7 @@ interface HoneyMartService {
         categoryId: Long
     ): BaseResponse<List<ProductDto>>
 
-    suspend fun getAllProducts(): BaseResponse<List<ProductDto>>
+    suspend fun getAllProducts(page: Int?): BaseResponse<List<ProductDto>>
 
     suspend fun getCategoriesForSpecificProduct(
         productId: Long,
@@ -287,9 +287,10 @@ interface HoneyMartService {
     ): BaseResponse<Boolean>
 
     suspend fun loginAdmin(email: String, password: String): BaseResponse<AdminLoginDto>
-//endregion admin
+
+    //endregion admin
     suspend fun getAllOwnerNotifications():
-        BaseResponse<List<NotificationDto>>
+            BaseResponse<List<NotificationDto>>
 
     //region rating
     suspend fun getReviewsForProduct(

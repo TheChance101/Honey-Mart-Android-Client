@@ -15,7 +15,7 @@ import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
 import org.the_chance.honeymart.ui.feature.see_all_markets.navigateToMarketsScreen
 import org.the_chance.honeymart.ui.feature.authentication.signup.authentication.navigateToAuthScreen
-import org.the_chance.honeymart.ui.feature.marketInfo.navigateToCategoryScreen
+import org.the_chance.honeymart.ui.feature.marketInfo.navigateToMarketInfoScreen
 import org.the_chance.honeymart.ui.feature.home.composables.HomeContentSuccessScreen
 import org.the_chance.honeymart.ui.feature.new_products.navigateToNewProductsScreen
 import org.the_chance.honeymart.ui.feature.order_details.navigateToOrderDetailsScreen
@@ -41,7 +41,7 @@ fun HomeScreen(
                 HomeUiEffect.UnAuthorizedUserEffect -> navController.navigateToAuthScreen()
                 HomeUiEffect.NavigateToSearchScreenEffect -> navController.navigateToSearchScreen()
                 HomeUiEffect.NavigateToNewProductsScreenEffect -> navController.navigateToNewProductsScreen()
-                is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToCategoryScreen(
+                is HomeUiEffect.NavigateToMarketScreenEffect -> navController.navigateToMarketInfoScreen(
                     effect.marketId
                 )
 

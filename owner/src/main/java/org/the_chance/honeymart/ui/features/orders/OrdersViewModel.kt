@@ -110,9 +110,9 @@ class OrdersViewModel @Inject constructor(
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
         _state.update {
             it.copy(
+                showState = it.showState.copy(showOrderDetails = true),
                 orders = updatedOrders,
                 orderId = id,
-                showState = it.showState.copy(showOrderDetails = true)
             )
         }
         getOrderDetails(id)

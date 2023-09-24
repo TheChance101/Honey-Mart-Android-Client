@@ -31,7 +31,7 @@ fun NotificationsScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(lifecycleOwner) {
-        viewModel.getAllNotifications(NotificationStates.ALL.state, NotificationStates.ALL)
+        viewModel.getAllNotifications(NotificationStates.NEW.state, NotificationStates.NEW)
     }
     NotificationsContent(state, viewModel)
 }
@@ -46,19 +46,18 @@ fun NotificationsContent(
             .fillMaxSize()
     ) {
         HoneyMartTitle()
-        Loading(
-            state = state.isLoading && state.notifications.isEmpty() && state.all())
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                EmptyPlaceholder(
-                    state = state.notifications.isEmpty() && state.all(),
-                    emptyObjectName = stringResource(id = R.string.notifications_label),
-                    notificationState = true
-                )
-            }
+        Loading(state = state.isLoading && state.notifications.isEmpty() && state.all())
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+        ) {
+            EmptyPlaceholder(
+                state = state.notifications.isEmpty() && state.all(),
+                emptyObjectName = stringResource(id = R.string.notifications_label),
+                notificationState = true
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -82,9 +81,7 @@ fun NotificationsContent(
                 ContentVisibility(state = !state.isLoading && state.notifications.isNotEmpty()) {
                     OrderDetails(state)
                 }
-                Loading(state = state.isLoading && state.notifications.isNotEmpty())
-
-
+                Loading(state = state.isLoading)
             }
         }
     }

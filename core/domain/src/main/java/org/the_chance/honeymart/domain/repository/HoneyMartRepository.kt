@@ -71,7 +71,7 @@ interface HoneyMartRepository {
 
     suspend fun getRecentProducts(): List<RecentProduct>
 
-    suspend fun getAllProducts(): List<Product>
+    suspend fun getAllProducts(page: Int?): List<Product>
 
     suspend fun getAllNotifications(): List<Notification>
 

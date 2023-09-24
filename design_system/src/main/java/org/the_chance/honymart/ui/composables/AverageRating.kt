@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.the_chance.design_system.R
 import org.the_chance.honymart.ui.theme.Typography
 
 @Composable
@@ -21,6 +23,7 @@ fun AverageRating(
     reviewCount: String,
 ) {
     val formattedRating = String.format("%.1f", averageRating)
+    val ratingText = stringResource(R.string.ratings, reviewCount)
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -38,7 +41,7 @@ fun AverageRating(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             RatingBar(rating = averageRating, totalStars = 5, size = 20.dp)
             Text(
-                text = "$reviewCount Ratings",
+                text = ratingText,
                 style = Typography.displaySmall,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
@@ -49,5 +52,5 @@ fun AverageRating(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AverageRatingPreview() {
-    AverageRating(averageRating = 3.5F, reviewCount = "23 Rating")
+    AverageRating(averageRating = 3.5F, reviewCount = "23")
 }

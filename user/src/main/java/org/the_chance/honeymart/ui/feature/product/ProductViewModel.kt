@@ -1,20 +1,19 @@
 package org.the_chance.honeymart.ui.feature.product
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.the_chance.honeymart.domain.model.Category
+import org.the_chance.honeymart.domain.model.Product
 import org.the_chance.honeymart.domain.usecase.GetAllCategoriesInMarketUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllProductsByCategoryUseCase
 import org.the_chance.honeymart.domain.usecase.GetAllWishListUseCase
 import org.the_chance.honeymart.domain.usecase.WishListOperationsUseCase
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.ui.base.BaseViewModel
-import org.the_chance.honeymart.ui.feature.see_all_markets.MarketViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
+import org.the_chance.honeymart.ui.feature.see_all_markets.MarketsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
 import javax.inject.Inject
@@ -31,8 +30,6 @@ class ProductViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     private val args = ProductArgs(savedStateHandle)
-    private var page = _state.value.page
-    private var productListScrollPosition = 0
 
     init {
         _state.update {
@@ -41,12 +38,11 @@ class ProductViewModel @Inject constructor(
                 position = args.position.toInt()
             )
         }
-        getData()
     }
 
-    private fun getData() {
-        _state.update { it.copy(error = null, isError = false) }
-        getProductsByCategoryId()
+    override fun getData() {
+        _state.update { it.copy(error = null, isError = false, products = emptyList()) }
+        getWishListProducts()
         getCategoriesByMarketId()
     }
 
@@ -60,9 +56,10 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun onGetCategorySuccess(categories: List<Category>) {
-        _state.update {
-            it.copy(
-                error = null, isLoadingCategory = false,
+        _state.update { productsUiState ->
+            productsUiState.copy(
+                error = null,
+                isLoadingCategory = false,
                 categories = updateCategorySelection(
                     categories.map { it.toCategoryUiState() },
                     state.value.categoryId
@@ -87,11 +84,11 @@ class ProductViewModel @Inject constructor(
                 categories = updatedCategories,
                 products = listOf(),
                 position = position.inc(),
-                categoryId = categoryId,
-                isEmptyProducts = false
+                categoryId = categoryId
             )
         }
-        getProductsByCategoryId()
+        resetProducts()
+        getWishListProducts()
     }
 
     private fun updateCategorySelection(
@@ -103,34 +100,53 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    private fun getProductsByCategoryId() {
-        _state.update { it.copy(isError = false) }
-        resetSearchState()
-        _state.update { it.copy(isLoadingProduct = true) }
-        viewModelScope.launch {
-            val products = getAllProducts(state.value.categoryId, page)
-            val mappedProducts = products.map { it.toProductUiState() }
-            _state.update { it.copy(products = mappedProducts, isLoadingProduct = false) }
+    override fun onChangeProductScrollPosition(position: Int) {
+        if ((position + 1) >= (state.value.page * MAX_PAGE_SIZE)) {
+            _state.update { it.copy(page = it.page + 1) }
+            getAllProducts()
         }
     }
 
-    private fun appendProducts(products: List<ProductUiState>) {
-        val current = ArrayList(state.value.products)
-        current.addAll(products)
-        _state.update { it.copy(products = current) }
+    private fun getAllProducts() {
+        _state.update {
+            it.copy(
+                isLoadingProduct = true,
+                error = null,
+                isError = false
+            )
+        }
+        tryToExecute(
+            { getAllProducts(state.value.categoryId, state.value.page) },
+            ::allProductsSuccess,
+            ::allProductsError
+        )
     }
 
-    private fun incrementPage() {
-        page += 1
+    private fun allProductsSuccess(products: List<Product>) {
+        val updatedProducts = state.value.products.toMutableList().apply {
+            this.addAll(products.map { it.toProductUiState() })
+        }
+        _state.update {
+            it.copy(
+                isLoadingProduct = false,
+                error = null,
+                products = updateProducts(
+                    updatedProducts,
+                    state.value.wishListProducts
+                )
+            )
+        }
     }
 
-    fun onChangeProductScrollPosition(position: Int) {
-        productListScrollPosition = position
+    private fun allProductsError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingProduct = false, error = error) }
+        if (error is ErrorHandler.NoConnection) {
+            _state.update { it.copy(isError = true) }
+        }
     }
 
-    private fun resetSearchState() {
-        _state.update { it.copy(products = listOf()) }
-        page = 1
+    private fun resetProducts() {
+        _state.update { it.copy(products = listOf(), page = 1) }
         onChangeProductScrollPosition(0)
     }
 
@@ -150,31 +166,32 @@ class ProductViewModel @Inject constructor(
     }
 
 
-    private fun getWishListProducts(products: List<ProductUiState>) {
-        _state.update { it.copy(isError = false) }
+    private fun getWishListProducts() {
+        _state.update { it.copy(isError = false, isLoadingProduct = true) }
         tryToExecute(
             { getWishListUseCase().map { it.toWishListProductUiState() } },
-            { onGetWishListProductSuccess(it, products) },
-            { onGetWishListProductError(it, products) }
+            { onGetWishListProductSuccess(it) },
+            { onGetWishListProductError(it) }
         )
     }
 
 
     private fun onGetWishListProductSuccess(
-        wishListProducts: List<WishListProductUiState>, products: List<ProductUiState>,
+        wishListProducts: List<WishListProductUiState>,
     ) {
-        _state.update { productsUiState ->
-            productsUiState.copy(products = updateProducts(products, wishListProducts))
+        _state.update {
+            it.copy(wishListProducts = wishListProducts)
         }
+        getAllProducts()
     }
 
     private fun onGetWishListProductError(
-        error: ErrorHandler,
-        products: List<ProductUiState>
+        error: ErrorHandler
     ) {
         _state.update {
-            it.copy(error = error, products = products)
+            it.copy(error = error)
         }
+        getAllProducts()
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -233,22 +250,6 @@ class ProductViewModel @Inject constructor(
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = "Success")) }
     }
 
-    override fun onScrollDown() {
-        viewModelScope.launch {
-            if ((productListScrollPosition + 1) >= (page * MAX_PAGE_SIZE)) {
-                _state.update { it.copy(isLoadingProduct = true) }
-                incrementPage()
-                if (page > 1) {
-                    val result = getAllProducts(
-                        state.value.categoryId, page
-                    )!!.map { it.toProductUiState() }
-                    appendProducts(result)
-                }
-                _state.update { it.copy(isLoadingProduct = false) }
-            }
-        }
-    }
-
     override fun resetSnackBarState() {
         _state.update { it.copy(snackBar = it.snackBar.copy(isShow = false)) }
     }
@@ -264,6 +265,6 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun onclickTryAgainProducts() {
-        getProductsByCategoryId()
+        getAllProducts()
     }
 }

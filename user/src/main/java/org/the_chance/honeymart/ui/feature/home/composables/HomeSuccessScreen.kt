@@ -33,7 +33,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.the_chance.design_system.R
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.composables.ProductItem
 import org.the_chance.honeymart.ui.feature.see_all_markets.MarketUiState
 import org.the_chance.honeymart.ui.feature.coupons.CouponUiState
@@ -58,8 +61,6 @@ fun HomeContentSuccessScreen(
     pagerState: PagerState,
     listener: HomeInteractionListener
 ) {
-
-
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
@@ -141,7 +142,11 @@ fun HomeContentSuccessScreen(
         }
 
         item(span = { GridItemSpan(2) }) {
-            AnimatedVisibility(visible = state.discoverProducts.isNotEmpty()) {
+            AnimatedVisibility(
+                visible = state.discoverProducts.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 Text(
                     text = stringResource(R.string.discover_products),
                     style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.onSecondary),
@@ -153,6 +158,7 @@ fun HomeContentSuccessScreen(
         itemsIndexed(
             items = state.discoverProducts,
             key = { _, item -> item.productId }) { index, discoverProduct ->
+            listener.onChangeProductsScrollPosition(index)
             ProductItem(
                 modifier = if (index % 2 == 0) Modifier.padding(start = MaterialTheme.dimens.space16)
                 else Modifier.padding(end = MaterialTheme.dimens.space16),
@@ -162,16 +168,10 @@ fun HomeContentSuccessScreen(
                 onClick = { listener.onClickProductItem(discoverProduct.productId) },
             )
         }
+        item(span = { GridItemSpan(2) }) {
+            PagingLoading(state = state.isPagingLoading && state.discoverProducts.isNotEmpty())
+        }
     }
-//
-//    AnimatedVisibility(visible = !listState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
-//        ScrollToTopButton {
-//            scope.launch {
-//                listState.animateScrollToItem(0)
-//            }
-//        }
-//    }
-
 }
 
 
@@ -183,7 +183,11 @@ private fun LastPurchases(
     onClickSeeAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AnimatedVisibility(visible = lastPurchases.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = lastPurchases.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
@@ -221,7 +225,11 @@ private fun RecentProducts(
     onClickRecentProduct: (Long) -> Unit,
     onClickSeeAll: () -> Unit
 ) {
-    AnimatedVisibility(visible = recentProducts.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = recentProducts.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
         ) {
@@ -287,7 +295,11 @@ private fun Categories(
     oncClickCategory: (Long, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(visible = markets.isNotEmpty()) {
+    AnimatedVisibility(
+        visible = markets.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
         ) {
@@ -311,18 +323,23 @@ private fun Categories(
                 }
             }
             Box {
-
-                Loading(state = isCategoryLoading)
-                this@Column.AnimatedVisibility(visible = !isCategoryLoading,
+                Loading(
+                    state = isCategoryLoading,
+                    modifier = Modifier.height(MaterialTheme.dimens.widthItemMarketCard)
+                )
+                this@Column.AnimatedVisibility(
+                    visible = !isCategoryLoading,
                     enter = fadeIn(),
-                    exit = fadeOut()) {
+                    exit = fadeOut()
+                ) {
                     LazyRow(
                         contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.space16),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                     ) {
                         itemsIndexed(
                             categories,
-                            key = { _, category -> category.categoryId }) { index, category ->
+                            key = { _, category -> category.categoryId }
+                        ) { index, category ->
                             HomeCategoriesItem(
                                 modifier = Modifier
                                     .padding(horizontal = MaterialTheme.dimens.space8)
@@ -336,6 +353,20 @@ private fun Categories(
                             )
                         }
                     }
+                }
+                this@Column.AnimatedVisibility(
+                    visible = categories.isEmpty() && isCategoryLoading.not(),
+                    enter = fadeIn(), exit = fadeOut(),
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_categories),
+                        modifier = Modifier
+                            .height(66.dp)
+                            .fillMaxWidth()
+                            .padding(top = MaterialTheme.dimens.space16)
+                            .padding(MaterialTheme.dimens.space16),
+                        textAlign = TextAlign.Center,
+                    )
                 }
             }
         }

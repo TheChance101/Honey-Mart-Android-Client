@@ -26,6 +26,7 @@ class ProfileViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 isError = false,
+                isConnectionError = false,
                 accountInfo = it.accountInfo.copy(profileImage = "")
             )
         }
@@ -123,7 +124,7 @@ class ProfileViewModel @Inject constructor(
         tryToExecute(
             function = { logoutUserUseCase() },
             onSuccess = { onLogoutSuccess() },
-            onError = { onLogoutError() }
+            onError = {  }
         )
     }
 
@@ -131,6 +132,4 @@ class ProfileViewModel @Inject constructor(
         resetDialogState()
         effectActionExecutor(_effect, ProfileUiEffect.ClickLogoutEffect)
     }
-
-    private fun onLogoutError() {}
 }

@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.notifications.composables
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,8 +9,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.the_chance.design_system.R
@@ -23,11 +29,19 @@ import org.the_chance.honeymart.ui.features.notifications.new
 import org.the_chance.honymart.ui.composables.CustomChip
 import org.the_chance.honymart.ui.theme.dimens
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AllNotificationsContent(
     state: NotificationsUiState,
     listener: NotificationsInteractionListener,
 ) {
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefresh,
+        onRefresh = listener::onRefresh
+    )
+    Box(
+        modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState),
+        contentAlignment = Alignment.TopCenter) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,6 +57,7 @@ fun AllNotificationsContent(
             ),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
         ) {
+
             item {
                 CustomChip(
                     state = state.all(),
@@ -54,10 +69,11 @@ fun AllNotificationsContent(
                     }
                 )
             }
+
             item {
                 CustomChip(
                     state = state.new(),
-                    text = "New",
+                    text = stringResource(R.string.new_),
                     onClick = {
                         listener.getAllNotifications(
                             NotificationStates.NEW.state,
@@ -66,10 +82,11 @@ fun AllNotificationsContent(
                     }
                 )
             }
+
             item {
                 CustomChip(
                     state = state.cancelled(),
-                    text = "Cancelled",
+                    text = stringResource(id = R.string.cancelled),
                     onClick = {
                         listener.getAllNotifications(
                             NotificationStates.CANCELLED.state,
@@ -85,16 +102,17 @@ fun AllNotificationsContent(
             notificationText = stringResource(R.string.receive_notification_cancels)
         )
         LazyColumn(
-
+            modifier = Modifier
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space8)
+            contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)
         ) {
             items(state.notifications.size) {
                 val notification = state.notifications[it]
                 NotificationCard(
                     onClickCard = {
                         listener.onCLickNotificationCard(state.orderDetails, notification)
-                                  },
+                    },
                     isSelected = notification.isNotificationSelected,
                     date = notification.date,
                     state = state,
@@ -104,5 +122,11 @@ fun AllNotificationsContent(
                 )
             }
         }
+    }
+        PullRefreshIndicator(
+            refreshing = state.isRefresh,
+            state = pullRefreshState,
+            contentColor = MaterialTheme.colorScheme.primary
+        )
     }
 }

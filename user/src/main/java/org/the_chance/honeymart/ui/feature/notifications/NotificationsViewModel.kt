@@ -21,7 +21,7 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun getAllNotifications() {
-        _state.update { it.copy(isLoading = true) }
+        _state.update { it.copy(isLoading = !it.isRefresh) }
         tryToExecute(
             { getNotifications() },
             ::onGetAllNotificationsSuccess,
@@ -31,7 +31,8 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetAllNotifications() {
         _state.update {
-            it.copy(notificationState = NotificationStates.ALL,
+            it.copy(
+                notificationState = NotificationStates.ALL,
                 updatedNotifications = it.notifications,
             )
         }
@@ -39,13 +40,16 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetProcessingNotifications() {
         _state.update {
+            it.copy(
+                notificationState = NotificationStates.ORDER,
+                updatedNotifications = it.notifications.filter { it.title != "Order Is Complete!" },
             it.copy(notificationState = NotificationStates.PROCESSING,
                 updatedNotifications = it.notifications.filter { it.title == "Order in progress!" },
             )
         }
     }
 
-    override fun onGetCompletedNotifications() {
+    override fun onGetDeliveryNotifications() {
         _state.update {
             it.copy(
                 notificationState = NotificationStates.COMPLETED,
@@ -55,17 +59,19 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun onClickTryAgain() {
-
-        effectActionExecutor(_effect, NotificationsUiEffect.OnClickTryAgain)
+        getAllNotifications()
     }
 
     private fun onGetAllNotificationsSuccess(notifications: List<Notification>) {
         _state.update { notificationsUiState ->
             notificationsUiState.copy(
                 isLoading = false,
+                isRefresh = false,
+                isError = false,
+                error = null,
                 notifications = notifications.map { it.toNotificationUiState() },
                 updatedNotifications = notifications.map { it.toNotificationUiState() },
-               )
+            )
         }
     }
 
@@ -80,5 +86,9 @@ class NotificationsViewModel @Inject constructor(
         effectActionExecutor(_effect, NotificationsUiEffect.OnClickDiscoverMarket)
     }
 
+    override fun onRefresh() {
+        _state.update { it.copy(isRefresh = true, isError = false, error = null) }
+        getAllNotifications()
+    }
 
 }

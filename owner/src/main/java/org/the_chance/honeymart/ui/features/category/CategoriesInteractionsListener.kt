@@ -6,6 +6,7 @@ package org.the_chance.honeymart.ui.features.category
 interface CategoriesInteractionsListener {
 
     fun onClickCategory(categoryId: Long)
+    fun onScrollDown()
     fun onNewCategoryNameChanged(categoryName: String)
     fun onClickAddCategory(name: String, categoryIconID: Int)
     fun resetShowState(visibility: Visibility)
@@ -29,4 +30,5 @@ interface CategoriesInteractionsListener {
     fun deleteProductById(productId: Long)
     fun onUpdateProductImage(productId: Long, images: List<ByteArray>)
     fun onChangeProductScrollPosition(position: Int)
+    fun onChangeReviews(position: Int)
 }

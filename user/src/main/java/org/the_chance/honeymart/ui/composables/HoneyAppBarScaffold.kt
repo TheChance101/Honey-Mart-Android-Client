@@ -25,7 +25,6 @@ import org.the_chance.honymart.ui.theme.primary100
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HoneyAppBarScaffold(
-    bottomBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -69,16 +68,12 @@ fun HoneyAppBarScaffold(
                 scrollBehavior = scrollBehavior
             )
         },
-        bottomBar = bottomBar,
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = innerPadding.calculateBottomPadding()
-                )
+                .padding(top = innerPadding.calculateTopPadding())
         ) {
             content()
         }

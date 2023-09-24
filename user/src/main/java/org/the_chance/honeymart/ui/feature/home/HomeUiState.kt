@@ -10,8 +10,10 @@ import org.the_chance.honeymart.ui.feature.orders.OrderUiState
 import org.the_chance.honeymart.ui.feature.product.ProductUiState
 
 data class HomeUiState(
-    val isCategoryLoading: Boolean = false,
+    val page: Int = 1,
+    val isCategoryLoading: Boolean = true,
     val isLoading: Boolean = true,
+    val isPagingLoading: Boolean = true,
     val isConnectionError: Boolean = false,
     val error: ErrorHandler? = null,
     val selectedMarketId: Long = 0L,
@@ -21,8 +23,8 @@ data class HomeUiState(
     val recentProducts: List<RecentProductUiState> = emptyList(),
     val lastPurchases: List<OrderUiState> = emptyList(),
     val discoverProducts: List<ProductUiState> = emptyList(),
-){
-    val shuffledMarket = if (markets.size > 3 ) markets.shuffled().take(3) else markets
+) {
+    val shuffledMarket = if (markets.size > 3) markets.shuffled().take(3) else markets
 }
 
 

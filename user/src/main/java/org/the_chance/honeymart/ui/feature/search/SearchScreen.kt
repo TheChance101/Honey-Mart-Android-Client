@@ -5,8 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,8 +12,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,18 +25,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.composables.EmptyProductsPlaceholder
-import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
 import org.the_chance.honeymart.ui.composables.EventHandler
-import org.the_chance.honeymart.ui.feature.see_all_markets.MarketViewModel.Companion.MAX_PAGE_SIZE
+import org.the_chance.honeymart.ui.composables.HoneyAppBarScaffold
+import org.the_chance.honeymart.ui.composables.PagingLoading
 import org.the_chance.honeymart.ui.feature.product_details.navigateToProductDetailsScreen
 import org.the_chance.honeymart.ui.feature.search.composeable.CardSearch
+import org.the_chance.honeymart.ui.feature.search.composeable.SearchBar
 import org.the_chance.honymart.ui.composables.CustomChip
-import org.the_chance.honymart.ui.composables.HoneyTextField
 import org.the_chance.honymart.ui.composables.IconButton
 import org.the_chance.honymart.ui.composables.Loading
 import org.the_chance.honymart.ui.theme.Typography
@@ -64,7 +61,6 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     SearchContent(
         state = state,
         onSearchTextChange = viewModel::onSearchTextChange,
-        viewModel::onChangeProductScrollPosition,
         listener = viewModel
     )
 }
@@ -74,34 +70,27 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 fun SearchContent(
     state: SearchUiState,
     onSearchTextChange: (String) -> Unit,
-    onChangeProductScrollPosition: (Int) -> Unit,
     listener: SearchInteraction
 ) {
     HoneyAppBarScaffold {
-        Loading(state.products.isNotEmpty() && state.loading && !state.isError)
         EmptyProductsPlaceholder(
-            state.products.isEmpty(),
+            state = !state.isLoading && state.products.isEmpty(),
             text = stringResource(R.string.searched_product_not_found)
         )
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        end = MaterialTheme.dimens.space16,
-                        bottom = MaterialTheme.dimens.space16
-                    ),
+                    .padding(MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HoneyTextField(
+                SearchBar(
                     modifier = Modifier.fillMaxWidth(3.4f / 4f),
-                    text = state.searchQuery,
-                    hint = stringResource(R.string.search),
-                    iconPainter = painterResource(id = R.drawable.search),
-                    onValueChange = onSearchTextChange,
-                    oneLineOnly = true
+                    query = state.searchQuery,
+                    onValueChange = onSearchTextChange
                 )
+
                 IconButton(
                     size = MaterialTheme.dimens.icon48,
                     onClick = listener::onClickFilter,
@@ -124,8 +113,8 @@ fun SearchContent(
             }
             AnimatedVisibility(
                 visible = state.filtering,
-                enter = fadeIn(animationSpec = tween(durationMillis = 500)) + slideInVertically(),
-                exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutVertically()
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 200))
             ) {
                 Column {
                     Text(
@@ -169,16 +158,13 @@ fun SearchContent(
                 columns = GridCells.Adaptive(minSize = 160.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight(),
+                    .weight(1f),
                 contentPadding = PaddingValues(MaterialTheme.dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             ) {
                 items(state.products.size) { index ->
-                    onChangeProductScrollPosition(index)
-                    if ((index + 1) >= (state.page * MAX_PAGE_SIZE)) {
-                        listener.onScrollDown()
-                    }
+                    listener.onChangeProductScrollPosition(index)
                     val product = state.products[index]
                     CardSearch(
                         imageUrl = product.productImages.firstOrNull() ?: "",
@@ -187,14 +173,13 @@ fun SearchContent(
                         onClickCard = { listener.onClickProduct(product.productId) }
                     )
                 }
+                item(span = { GridItemSpan(2) }) {
+                    Loading(state.products.isEmpty() && state.isLoading)
+                }
+                item(span = { GridItemSpan(2) }) {
+                    PagingLoading(state = state.products.isNotEmpty() && state.isLoading)
+                }
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun SearchPrev() {
-    SearchScreen()
 }

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +27,7 @@ fun EmptyPlaceholder(
     notificationText : String =stringResource(R.string.recieve_notification)) {
     ContentVisibility(state = state) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().verticalScroll(state = rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -36,17 +38,15 @@ fun EmptyPlaceholder(
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space32),
-                text = "Your $emptyObjectName is empty!!",
+                text = stringResource(id = R.string.empty_wishlist_message, emptyObjectName),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
             Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimens.space16),
-                text = if(notificationState) notificationText
-                    else "Adding a $emptyObjectName will increase your chances \n" +
-                        " of attracting interested buyers. " +
-                        "What $emptyObjectName \n fits your item? ",
+                text = if (notificationState) notificationText
+                else stringResource(id = R.string.empty_wishlist_notification, emptyObjectName),
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center

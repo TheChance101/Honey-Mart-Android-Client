@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val bottomBarScreens = listOf(
             Screen.HomeScreen.route,
             Screen.ProfileScreen.route,
-            Screen.CategoryScreenWithArgs.route,
+            Screen.MarketInfoScreenWithArgs.route,
             Screen.ProductScreenWithArgs.route,
             Screen.CartScreen.route,
             Screen.OrderScreen.route,

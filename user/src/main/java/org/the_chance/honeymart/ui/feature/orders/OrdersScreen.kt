@@ -60,11 +60,6 @@ fun OrdersScreen(
                 )
             }
         })
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getAllPendingOrders()
-    }
-
     OrdersContent(
         state = state,
         listener = viewModel,
@@ -75,6 +70,7 @@ fun OrdersScreen(
 @Composable
 fun OrdersContent(
     state: OrdersUiState,
+
     listener: OrdersInteractionsListener,
 ) {
     HoneyAppBarScaffold {
@@ -101,7 +97,7 @@ fun OrdersContent(
                             state = state.pending(),
                             text = stringResource(id = R.string.Pending),
                             style = MaterialTheme.typography.displayLarge,
-                            onClick = listener::getAllPendingOrders
+                            onClick = if (state.pending()) {{}} else listener::getAllPendingOrders
                         )
                     }
                     item {
@@ -109,7 +105,7 @@ fun OrdersContent(
                             state = state.processing(),
                             text = stringResource(id = R.string.processing),
                             style = MaterialTheme.typography.displayLarge,
-                            onClick = listener::getAllProcessingOrders
+                            onClick = if (state.processing()) {{}}  else listener::getAllProcessingOrders
                         )
                     }
                     item {
@@ -117,7 +113,7 @@ fun OrdersContent(
                             state = state.done(),
                             text = stringResource(id = R.string.done),
                             style = MaterialTheme.typography.displayLarge,
-                            onClick = listener::getAllDoneOrders
+                            onClick = if (state.done()) {{}} else listener::getAllDoneOrders
                         )
                     }
                     item {
@@ -125,7 +121,7 @@ fun OrdersContent(
                             state = state.cancelledByUser(),
                             text = stringResource(id = R.string.cancelled),
                             style = MaterialTheme.typography.displayLarge,
-                            onClick = listener::getAllCancelledOrdersByUser
+                            onClick =  if (state.cancelledByUser()) {{}} else listener::getAllCancelledOrdersByUser
                         )
                     }
                     item {
@@ -133,7 +129,7 @@ fun OrdersContent(
                             state = state.cancelledByOwner(),
                             text = stringResource(id = R.string.declined),
                             style = MaterialTheme.typography.displayLarge,
-                            onClick = listener::getAllCancelledOrdersByOwner
+                            onClick =  if (state.cancelledByOwner()) {{}} else listener::getAllCancelledOrdersByOwner
                         )
                     }
                 }

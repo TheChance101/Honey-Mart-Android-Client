@@ -1,6 +1,7 @@
 package org.the_chance.honeymart.ui.features.markets
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,6 +50,7 @@ fun MarketsScreen(viewModel: MarketsViewModel = hiltViewModel()) {
     RequestsContent(state, viewModel)
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RequestsContent(
     state: MarketsRequestUiState,
@@ -60,12 +66,19 @@ fun RequestsContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = MaterialTheme.dimens.space16),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16))
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16)
+            )
             {
+                val pullRefreshState = rememberPullRefreshState(
+                    refreshing = state.isRefresh,
+                    onRefresh = listener::onRefresh
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(1f).pullRefresh(pullRefreshState),
+                    contentAlignment = Alignment.TopCenter) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space20),
                 ) {
                     Row(
@@ -88,26 +101,33 @@ fun RequestsContent(
                             onClick = { listener.onClickMarketsState(MarketsState.APPROVED) }
                         )
                     }
+                    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
                     LazyColumn(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        contentPadding = PaddingValues(bottom = 16.dp)
-                    ) {
-                        itemsIndexed(state.marketsUpdated) { index, item ->
-                            ItemMarketRequest(
-                                onClickCard = { listener.onClickMarket(index) },
-                                ownerName = item.ownerName,
-                                marketName = item.marketName,
-                                ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
-                                onCardSelected = item.isSelected,
-                                marketStateText = item.marketStateText,
-                                state = item.isApproved,
-                                marketsState = state.marketsState,
-                                isLoading = state.isLoading
-                            )
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            contentPadding = PaddingValues(bottom = 16.dp)
+                        ) {
+                            itemsIndexed(state.marketsUpdated) { index, item ->
+                                ItemMarketRequest(
+                                    onClickCard = { listener.onClickMarket(index) },
+                                    ownerName = item.ownerName,
+                                    marketName = item.marketName,
+                                    ownerNameFirstCharacter = item.ownerNameFirstCharacter(),
+                                    onCardSelected = item.isSelected,
+                                    marketStateText = item.marketStateText,
+                                    state = item.isApproved,
+                                    marketsState = state.marketsState,
+                                    isLoading = state.isLoading
+                                )
+                            }
                         }
                     }
+                    PullRefreshIndicator(
+                        refreshing = state.isRefresh,
+                        state = pullRefreshState,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -129,5 +149,4 @@ fun RequestsContent(
     ConnectionErrorPlaceholder(
         state = state.isError,
         onClickTryAgain = { listener.onClickTryAgain() })
-    EmptyPlaceholder(state = state.emptyRequestsPlaceHolder())
 }
