@@ -1,6 +1,5 @@
 package org.the_chance.honeymart.ui.feature.notifications.composable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +31,6 @@ fun NotificationCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),

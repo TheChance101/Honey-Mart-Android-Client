@@ -40,16 +40,13 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetProcessingNotifications() {
         _state.update {
-            it.copy(
-                notificationState = NotificationStates.ORDER,
-                updatedNotifications = it.notifications.filter { it.title != "Order Is Complete!" },
             it.copy(notificationState = NotificationStates.PROCESSING,
                 updatedNotifications = it.notifications.filter { it.title == "Order in progress!" },
             )
         }
     }
 
-    override fun onGetDeliveryNotifications() {
+    override fun onGetCompletedNotifications() {
         _state.update {
             it.copy(
                 notificationState = NotificationStates.COMPLETED,
