@@ -58,8 +58,8 @@ fun ProductReviewsScreen(
             }
         }
     }
-    Loading(state = state.isLoading)
-    ContentVisibility(state = !state.isLoading) {
+    Loading(state = state.isLoading && state.reviews.reviews.isEmpty())
+    ContentVisibility(state = state.reviews.reviews.isNotEmpty()) {
         ProductReviewsContent(
             state = state,
             listener = viewModel,
@@ -114,7 +114,7 @@ fun ProductReviewsContent(
         ) {
             item {
                 AnimatedVisibility(
-                    visible = !state.isLoading,
+                    visible = state.reviews.reviews.isNotEmpty(),
                     enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                     exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                 ) {
@@ -182,7 +182,7 @@ fun ProductReviewsContent(
                 )
             }
             item {
-                PagingLoading(state = state.isPagingLoading && state.reviews.reviews.isNotEmpty())
+                PagingLoading(state = state.isLoading && state.reviews.reviews.isNotEmpty())
             }
         }
     }
