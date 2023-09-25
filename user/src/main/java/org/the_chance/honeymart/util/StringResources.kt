@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.util
 
 import android.content.Context
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.design_system.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -52,4 +52,6 @@ class StringResources @Inject constructor(
 
     override val addReviewSuccessString: String
         get() = getStringFromFile(R.string.review_added_successfully)
+    override val addToWishListSuccessString: String
+        get() = getStringFromFile(R.string.added_to_wishlist)
 }

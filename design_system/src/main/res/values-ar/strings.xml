@@ -322,6 +322,7 @@
     <string name="new_">الجديد</string>
     <string name="product_count">"%d منتج"</string>
     <string name="personal_info">المعلومات شخصية</string>
+    <string name="added_to_wishlist">تمت الأضافه الي قائمة الرغبات</string>
 
 
 </resources>

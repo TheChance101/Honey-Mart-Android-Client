@@ -320,5 +320,6 @@
     <string name="new_">New</string>
     <string name="product_count">"%d Products"</string>
     <string name="personal_info">Personal Info</string>
+    <string name="added_to_wishlist">Added to wishlist</string>
 
 </resources>
