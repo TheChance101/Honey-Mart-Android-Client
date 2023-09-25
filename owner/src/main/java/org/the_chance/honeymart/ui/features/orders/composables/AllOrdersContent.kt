@@ -21,7 +21,8 @@ import org.the_chance.honeymart.ui.features.orders.OrderStates
 import org.the_chance.honeymart.ui.features.orders.OrdersInteractionsListener
 import org.the_chance.honeymart.ui.features.orders.OrdersUiState
 import org.the_chance.honeymart.ui.features.orders.all
-import org.the_chance.honeymart.ui.features.orders.cancel
+import org.the_chance.honeymart.ui.features.orders.cancelByOwner
+import org.the_chance.honeymart.ui.features.orders.cancelByUser
 import org.the_chance.honeymart.ui.features.orders.done
 import org.the_chance.honeymart.ui.features.orders.emptyOrdersPlaceHolder
 import org.the_chance.honeymart.ui.features.orders.pending
@@ -80,9 +81,16 @@ fun AllOrdersContent(
             }
             item {
                 CustomChip(
-                    state = state.cancel(),
-                    text = stringResource(id = R.string.cancel),
-                    onClick = { listener.getAllMarketOrder(OrderStates.CANCELED) }
+                    state = state.cancelByOwner(),
+                    text = stringResource(id = R.string.declined),
+                    onClick = { listener.getAllMarketOrder(OrderStates.CANCELLED_BY_OWNER) }
+                )
+            }
+            item {
+                CustomChip(
+                    state = state.cancelByUser(),
+                    text = stringResource(id = R.string.cancelled),
+                    onClick = { listener.getAllMarketOrder(OrderStates.CANCELLED_BY_USER) }
                 )
             }
         }
