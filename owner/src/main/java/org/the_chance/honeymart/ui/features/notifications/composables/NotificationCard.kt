@@ -90,7 +90,7 @@ fun NotificationCard(
                     )
                     ContentVisibility(state = state.all()) {
                         Text(
-                            text = if (notificationTitle == "New Order received!") "New" else "Cancelled",
+                            text = if (notificationTitle.contains( "New Order received!")) "New" else "Cancelled",
                             color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.bodyMedium
                         )
