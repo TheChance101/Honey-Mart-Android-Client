@@ -2,12 +2,10 @@ package org.the_chance.honeymart.ui.feature.home.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -43,54 +41,18 @@ fun LastPurchasesItems(
             .clip(RoundedCornerShape(MaterialTheme.dimens.space16))
             .clickable { onClick() }
     ) {
-        Column {
-            Row(
-                modifier = Modifier.weight(1f)
-            ) {
-                ImageNetwork(
-                    imageUrl = image,
-                    contentDescription = stringResource(id = R.string.market_image),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.space16))
-                        .background(black16)
-                )
-                ImageNetwork(
-                    imageUrl = image,
-                    contentDescription = stringResource(id = R.string.market_image),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(topEnd = MaterialTheme.dimens.space16))
-                        .background(black16)
-                )
-            }
-            Row(
-                modifier = Modifier.weight(1f)
-            ) {
-                ImageNetwork(
-                    imageUrl = image,
-                    contentDescription = stringResource(id = R.string.market_image),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(bottomStart = MaterialTheme.dimens.space16))
-                        .background(black16)
-                )
-                ImageNetwork(
-                    imageUrl = image,
-                    contentDescription = stringResource(id = R.string.market_image),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(bottomEnd = MaterialTheme.dimens.space16))
-                        .background(black16)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.space8))
-
+        Column(
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space8),
+        ) {
+            ImageNetwork(
+                imageUrl = image,
+                contentDescription = stringResource(id = R.string.market_image),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.space16))
+                    .background(black16)
+            )
             Text(
                 text = label,
                 style = Typography.displayLarge.copy(black60),
