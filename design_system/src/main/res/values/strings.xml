@@ -251,6 +251,8 @@
 
     <string name="honey_image">honey image</string>
     <string name="address">Address</string>
+    <string name="user_name_already_exist">This user name already exist</string>
+    <string name="market_already_exist">This Market already exist</string>
     <string name="account_already_exist">This account already exist</string>
     <string name="something_went_wrong">Something went wrong,please try again</string>
     <string name="name_should_not_be_empty">name should not be empty</string>

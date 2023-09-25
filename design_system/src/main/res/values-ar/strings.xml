@@ -244,7 +244,10 @@
 
     <string name="honey_image">صورة الهوني</string>
     <string name="address">العنوان</string>
+
+    <string name="user_name_already_exist">اسم المستخدم هذا موجود بالفعل </string>
     <string name="account_already_exist">هذا الحساب موجود بالفعل</string>
+    <string name="market_already_exist">هذا المتجر موجود بالفعل</string>
     <string name="something_went_wrong">حدث خطأ ما، من فضلك حاول مرة أخرى</string>
     <string name="name_should_not_be_empty">الاسم يجب ألا يكون فارغًا</string>
     <string name="invalid_name">اسم غير صالح</string>
