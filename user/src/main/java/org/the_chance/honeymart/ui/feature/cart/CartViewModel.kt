@@ -15,7 +15,7 @@ class CartViewModel @Inject constructor(
 ) : BaseViewModel<CartUiState, CartUiEffect>(CartUiState()),
     CartInteractionListener {
     override val TAG: String = this::class.java.simpleName
-    private var isOrdering = false
+
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
@@ -34,20 +34,10 @@ class CartViewModel @Inject constructor(
                 total = cart.total,
             )
         }
-        if (isOrdering) {
-            _state.update { it.copy(isLoading = true) }
-            isOrdering = false
-            tryToExecute(
-                { cartProductsManagerUseCase.checkout() },
-                ::onCheckOutSuccess,
-                ::onCheckOutError
-            )
-        }
     }
 
     private fun onGetAllCartError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
-        isOrdering = false
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
@@ -57,9 +47,10 @@ class CartViewModel @Inject constructor(
 
     private fun updateProductCount(productId: Long, increment: Boolean) {
         val currentState = _state.value
-        val updatedProducts = utttpdate(currentState, productId, increment)
+        val updatedProducts = updatedProducts(currentState, productId, increment)
         val updatedTotal = updatedProducts.sumOf { it.totalPrice }
-        val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal, isLoading = true)
+        val updatedState =
+            currentState.copy(products = updatedProducts, total = updatedTotal, isLoading = true)
         _state.value = updatedState
         onUpdateProductInCart(
             productId,
@@ -67,7 +58,7 @@ class CartViewModel @Inject constructor(
         )
     }
 
-    private fun utttpdate(
+    private fun updatedProducts(
         currentState: CartUiState,
         productId: Long,
         increment: Boolean
@@ -101,7 +92,6 @@ class CartViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false, error = null)
         }
-//        getChosenCartProducts()
     }
 
     private fun onUpdateProductInCartError(error: ErrorHandler) {
@@ -123,10 +113,15 @@ class CartViewModel @Inject constructor(
         effectActionExecutor(_effect, CartUiEffect.ClickViewOrdersEffect)
     }
 
-    override fun onClickOrderNowButton() {
-        isOrdering = true
+    override fun onClickOrderNowButton() { checkOut() }
+
+    private fun checkOut() {
         _state.update { it.copy(isLoading = true) }
-        getChosenCartProducts()
+        tryToExecute(
+            { cartProductsManagerUseCase.checkout() },
+            ::onCheckOutSuccess,
+            ::onCheckOutError
+        )
     }
 
     private fun onCheckOutSuccess(message: String) {
@@ -141,7 +136,6 @@ class CartViewModel @Inject constructor(
 
     private fun onCheckOutError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false) }
-        isOrdering = false
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isLoading = false, isError = true) }
         }
