@@ -21,8 +21,10 @@ class OrdersViewModel @Inject constructor(
 
     override fun getAllMarketOrder(orderState: OrderStates) {
         _state.update {
-            it.copy(isLoading = true, isError = false, states = orderState ,
-            showState = it.showState.copy(showOrderDetails = false))
+            it.copy(
+                isLoading = true, isError = false, states = orderState,
+                showState = it.showState.copy(showOrderDetails = false)
+            )
         }
         tryToExecute(
             { ownerOrders.getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
@@ -99,8 +101,10 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(
                 product = product,
-                showState = it.showState.copy(showProductDetails = true,
-                showOrderDetails = false)
+                showState = it.showState.copy(
+                    showProductDetails = true,
+                    showOrderDetails = false
+                )
             )
         }
     }
@@ -189,7 +193,8 @@ class OrdersViewModel @Inject constructor(
 
             else -> return
         }
-        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
+//        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
+        state.value.orderDetails.buttonsState = newButtonsState
     }
 
     fun resetStateScreen() {

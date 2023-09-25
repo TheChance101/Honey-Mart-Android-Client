@@ -38,7 +38,7 @@ data class OrderUiState(
     val isOrderSelected: Boolean = false,
     val state: Int = 0,
     val isSelected: Boolean = false,
-    val buttonsState: ButtonsState = ButtonsState()
+    var buttonsState: ButtonsState = ButtonsState()
 )
 
 data class OrderDetailsProductUiState(
