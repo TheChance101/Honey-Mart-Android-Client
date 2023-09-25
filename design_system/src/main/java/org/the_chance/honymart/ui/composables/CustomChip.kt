@@ -31,10 +31,12 @@ fun CustomChip(
     text: String,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     onClick: () -> Unit,
+    enable: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
         modifier = modifier.clickable(
+            enabled = enable,
             interactionSource = interactionSource,
             indication = null
         ) {
