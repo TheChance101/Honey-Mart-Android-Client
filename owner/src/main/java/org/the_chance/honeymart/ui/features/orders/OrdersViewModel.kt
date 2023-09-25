@@ -108,6 +108,7 @@ class OrdersViewModel @Inject constructor(
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
+        getOrderDetails(id)
         _state.update {
             it.copy(
                 showState = it.showState.copy(showOrderDetails = true),
@@ -115,7 +116,6 @@ class OrdersViewModel @Inject constructor(
                 orderId = id,
             )
         }
-        getOrderDetails(id)
     }
 
     private fun updateSelectedOrder(
