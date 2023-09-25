@@ -124,7 +124,7 @@ private fun ProductsContent(
                     enter = fadeIn(animationSpec = tween(durationMillis = 2000)) + slideInVertically(),
                     exit = fadeOut(animationSpec = tween(durationMillis = 500)) + slideOutHorizontally()
                 ) {
-                    EmptyProductPlaceholder(state.emptyPlaceHolder() && products.isEmpty())
+                    EmptyProductPlaceholder(state.emptyPlaceHolder())
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(

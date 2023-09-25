@@ -7,8 +7,8 @@ import org.the_chance.honeymart.ui.feature.marketInfo.CategoryUiState
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 
 data class ProductsUiState(
-    val isLoadingCategory: Boolean = false,
-    val isLoadingProduct: Boolean = false,
+    val isLoadingCategory: Boolean = true,
+    val isLoadingProduct: Boolean = true,
     val error: ErrorHandler? = null,
     val snackBar: SnackBarState = SnackBarState(),
     val isError: Boolean = false,
