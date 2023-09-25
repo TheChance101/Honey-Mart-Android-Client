@@ -40,8 +40,9 @@ class NotificationsViewModel @Inject constructor(
 
     override fun onGetProcessingNotifications() {
         _state.update {
-            it.copy(notificationState = NotificationStates.PROCESSING,
-                updatedNotifications = it.notifications.filter { it.title == "Order in progress!" },
+            it.copy(
+                notificationState = NotificationStates.PROCESSING,
+                updatedNotifications = it.notifications.filter { it.title.contains("Order in progress!") },
             )
         }
     }
@@ -50,7 +51,7 @@ class NotificationsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 notificationState = NotificationStates.COMPLETED,
-                updatedNotifications = it.notifications.filter { it.title != "Order in progress!" },
+                updatedNotifications = it.notifications.filter { it.title.contains("Order Is Complete!") },
             )
         }
     }
@@ -68,6 +69,7 @@ class NotificationsViewModel @Inject constructor(
                 error = null,
                 notifications = notifications.map { it.toNotificationUiState() },
                 updatedNotifications = notifications.map { it.toNotificationUiState() },
+                notificationState = NotificationStates.ALL
             )
         }
     }
@@ -84,7 +86,14 @@ class NotificationsViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        _state.update { it.copy(isRefresh = true, isError = false, error = null) }
+        _state.update {
+            it.copy(
+                isRefresh = true,
+                isError = false,
+                error = null,
+
+            )
+        }
         getAllNotifications()
     }
 

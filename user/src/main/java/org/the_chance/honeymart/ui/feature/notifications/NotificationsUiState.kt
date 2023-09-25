@@ -41,7 +41,7 @@ fun Notification.toNotificationUiState(): NotificationUiState{
         date = date.toNotificationDateFormat()
     )
 }
-fun NotificationUiState.columnIcon() = this.title == "Order in progress!"
+fun NotificationUiState.iconForList() = this.title.contains("Order in progress!")
 
 fun NotificationsUiState.all() = this.notificationState == NotificationStates.ALL
 fun NotificationsUiState.processing() = this.notificationState == NotificationStates.PROCESSING

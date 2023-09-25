@@ -134,7 +134,7 @@ fun NotificationsContent(
                     items(state.updatedNotifications.size) {
                         val notification = state.updatedNotifications[it]
                         NotificationCard(
-                            painter = if (notification.columnIcon()) {
+                            painter = if (notification.iconForList()) {
                                 painterResource(R.drawable.icon_order_nav)
                             } else {
                                 painterResource(R.drawable.ic_delivery)
