@@ -113,7 +113,7 @@ private fun ProductsContent(
                             ),
                             categoryName = category.categoryName,
                             isSelected = category.isCategorySelected,
-                            enable = !state.snackBar.isShow,
+                            enable = !(state.snackBar.isShow || state.isLoadingProduct) ,
                             onClick = {if (!category.isCategorySelected)
                                 productInteractionListener.onClickCategory(category.categoryId)}
                         )

@@ -247,10 +247,14 @@
     <string name="go_to_settings">Go To Settings</string>
     <string name="searched_product_not_found">Searched product not found</string>
     <string name="market_has_been_deleted">" Market has been deleted !"</string>
+    <string name="market_not_approved">"This Market Not Approved"</string>
+    <string name="invalid_owner">"Invalid Owner"</string>
     <string name="add_new_category_success">Add new Category Success</string>
 
     <string name="honey_image">honey image</string>
     <string name="address">Address</string>
+    <string name="user_name_already_exist">This user name already exist</string>
+    <string name="market_already_exist">This Market already exist</string>
     <string name="account_already_exist">This account already exist</string>
     <string name="something_went_wrong">Something went wrong,please try again</string>
     <string name="name_should_not_be_empty">name should not be empty</string>
@@ -318,5 +322,6 @@
     <string name="new_">New</string>
     <string name="product_count">"%d Products"</string>
     <string name="personal_info">Personal Info</string>
+    <string name="added_to_wishlist">Added to wishlist</string>
 
 </resources>
