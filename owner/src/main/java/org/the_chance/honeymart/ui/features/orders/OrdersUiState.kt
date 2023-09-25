@@ -120,7 +120,7 @@ fun OrdersUiState.showClickOrderPlaceHolder() =
     showOrdersState() && orders.isNotEmpty() && !isLoading
 
 fun OrdersUiState.loadingScreen() =
-    isLoading && !cancelByOwner() && !pending()
+    isLoading && !cancelByOwner() && !pending()&& !cancelByUser()
             && !processing() && orders.isNotEmpty() &&!all() &&!done()
 
 fun OrdersUiState.emptyPlaceHolder() =
