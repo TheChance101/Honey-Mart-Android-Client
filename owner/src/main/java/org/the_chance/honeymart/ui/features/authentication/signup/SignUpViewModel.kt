@@ -77,14 +77,6 @@ class SignUpViewModel @Inject constructor(
 
     private fun onCreateOwnerAccountError(error: ErrorHandler) {
         _state.update { it.copy(isLoading = false, error = error, isButtonEnabled = true) }
-        if (error == ErrorHandler.EmailAlreadyExist) {
-            showValidationToast(
-                message = stringResourceImpl.errorString.getOrDefault(
-                    error,
-                    ""
-                )
-            )
-        }
         showValidationToast(
             message = stringResourceImpl.errorString.getOrDefault(
                 error,
