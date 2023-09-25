@@ -19,7 +19,7 @@ class CartViewModel @Inject constructor(
     override fun getChosenCartProducts() {
         _state.update { it.copy(isLoading = true, isError = false, bottomSheetIsDisplayed = false) }
         tryToExecute(
-            {cartProductsManagerUseCase.cartUseCase.getCart()},
+            { cartProductsManagerUseCase.cartUseCase.getCart() },
             ::onGetAllCartSuccess,
             ::onGetAllCartError
         )
@@ -57,7 +57,21 @@ class CartViewModel @Inject constructor(
 
     private fun updateProductCount(productId: Long, increment: Boolean) {
         val currentState = _state.value
+        val updatedProducts = utttpdate(currentState, productId, increment)
+        val updatedTotal = updatedProducts.sumOf { it.totalPrice }
+        val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal, isLoading = true)
+        _state.value = updatedState
+        onUpdateProductInCart(
+            productId,
+            updatedProducts.find { it.productId == productId }?.productCount ?: 0
+        )
+    }
 
+    private fun utttpdate(
+        currentState: CartUiState,
+        productId: Long,
+        increment: Boolean
+    ): List<CartListProductUiState> {
         val updatedProducts = currentState.products.map { product ->
             if (product.productId == productId) {
                 val currentCount = product.productCount
@@ -72,12 +86,7 @@ class CartViewModel @Inject constructor(
                 product
             }
         }
-
-        val updatedTotal = updatedProducts.sumOf { it.totalPrice }
-
-        val updatedState = currentState.copy(products = updatedProducts, total = updatedTotal)
-        _state.value = updatedState
-        onUpdateProductInCart(productId, updatedProducts.find { it.productId == productId }?.productCount ?: 0)
+        return updatedProducts
     }
 
     private fun onUpdateProductInCart(productId: Long, count: Int) {
