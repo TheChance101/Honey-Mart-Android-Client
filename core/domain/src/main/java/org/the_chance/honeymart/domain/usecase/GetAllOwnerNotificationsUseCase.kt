@@ -12,8 +12,8 @@ class GetAllOwnerNotificationsUseCase @Inject constructor(
 
         return when (notificationState) {
             1 -> notificationList
-            2 -> notificationList.filter { it.title == "New Order received!" }
-            else -> notificationList.filterNot { it.title == "New Order received!" }
+            2 -> notificationList.filter { it.title.contains( "New Order received!" )}
+            else -> notificationList.filterNot { it.title.contains( "New Order received!" ) }
         }
     }
 }
