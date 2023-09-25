@@ -60,8 +60,9 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
-                orderStates = orderDetails.state
-            )
+                orderStates = orderDetails.state,
+                showState = it.showState.copy(showOrderDetails = true),
+                )
         }
         updateButtonsState()
     }
@@ -115,7 +116,6 @@ class OrdersViewModel @Inject constructor(
         getOrderDetails(id)
         _state.update {
             it.copy(
-                showState = it.showState.copy(showOrderDetails = true),
                 orders = updatedOrders,
                 orderId = id,
             )
