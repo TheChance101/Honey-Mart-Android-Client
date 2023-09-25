@@ -241,6 +241,9 @@
     <string name="go_to_settings">الانتقال إلى الإعدادات</string>
     <string name="searched_product_not_found">المنتج الذي تبحث عنه غير موجود</string>
     <string name="market_has_been_deleted">تم حذف المتجر!</string>
+    <string name="market_not_approved">"لم يتم قبول متجرك"</string>
+    <string name="invalid_owner">"مالك غير صالح"</string>
+
 
     <string name="honey_image">صورة الهوني</string>
     <string name="address">العنوان</string>
