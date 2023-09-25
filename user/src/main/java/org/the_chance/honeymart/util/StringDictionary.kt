@@ -4,8 +4,9 @@ import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
 
 interface StringDictionary {
-    val validationString : Map<ValidationState,String>
-    val errorString: Map<ErrorHandler,String>
+    val validationString: Map<ValidationState, String>
+    val errorString: Map<ErrorHandler, String>
     val requiredFieldsMessageString: String
     val addReviewSuccessString: String
+    val addToWishListSuccessString: String
 }

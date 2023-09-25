@@ -247,6 +247,8 @@
     <string name="go_to_settings">Go To Settings</string>
     <string name="searched_product_not_found">Searched product not found</string>
     <string name="market_has_been_deleted">" Market has been deleted !"</string>
+    <string name="market_not_approved">"This Market Not Approved"</string>
+    <string name="invalid_owner">"Invalid Owner"</string>
     <string name="add_new_category_success">Add new Category Success</string>
 
     <string name="honey_image">honey image</string>
@@ -320,5 +322,6 @@
     <string name="new_">New</string>
     <string name="product_count">"%d Products"</string>
     <string name="personal_info">Personal Info</string>
+    <string name="added_to_wishlist">Added to wishlist</string>
 
 </resources>
