@@ -56,7 +56,8 @@ enum class OrderStates(val state: Int) {
     PENDING(1),
     PROCESSING(2),
     DONE(3),
-    CANCELED(5)
+    CANCELLED_BY_USER(4),
+    CANCELLED_BY_OWNER(5)
 }
 
 data class ButtonsState(
@@ -119,7 +120,7 @@ fun OrdersUiState.showClickOrderPlaceHolder() =
     showOrdersState() && orders.isNotEmpty() && !isLoading
 
 fun OrdersUiState.loadingScreen() =
-    isLoading && !cancel() && !pending()
+    isLoading && !cancelByOwner() && !pending()
             && !processing() && orders.isNotEmpty() &&!all() &&!done()
 
 fun OrdersUiState.emptyPlaceHolder() =
@@ -142,12 +143,16 @@ fun OrdersUiState.processing() = states == OrderStates.PROCESSING
 
 fun OrdersUiState.done() = states == OrderStates.DONE
 
-fun OrdersUiState.cancel() = states == OrderStates.CANCELED
+fun OrdersUiState.cancelByOwner() = states == OrderStates.CANCELLED_BY_OWNER
+fun OrdersUiState.cancelByUser() = states == OrderStates.CANCELLED_BY_USER
+
 
 fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoading
 
 fun OrdersUiState.showOrderDetails() = products.isNotEmpty() && showState.showProductDetails
-fun OrdersUiState.showButtonState() = products.isNotEmpty() && !showState.showProductDetails
-        && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELED.state
+fun OrdersUiState.showButtonState() =
+    products.isNotEmpty() && !showState.showProductDetails
+        && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELLED_BY_OWNER.state
+            && orderStates != OrderStates.CANCELLED_BY_USER.state
         &&!isLoading
 // endregion

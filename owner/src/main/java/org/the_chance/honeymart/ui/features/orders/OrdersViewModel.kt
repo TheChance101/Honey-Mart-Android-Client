@@ -164,7 +164,7 @@ class OrdersViewModel @Inject constructor(
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
-                        updateState = OrderStates.CANCELED
+                        updateState = OrderStates.CANCELLED_BY_OWNER
                     )
                 }
             )
@@ -182,7 +182,7 @@ class OrdersViewModel @Inject constructor(
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
-                        updateState = OrderStates.CANCELED
+                        updateState = OrderStates.CANCELLED_BY_OWNER
                     )
                 }
             )
