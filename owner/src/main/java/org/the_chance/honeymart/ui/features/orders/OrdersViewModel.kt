@@ -62,7 +62,7 @@ class OrdersViewModel @Inject constructor(
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
                 orderStates = orderDetails.state,
                 showState = it.showState.copy(showOrderDetails = true),
-                )
+            )
         }
         updateButtonsState()
     }
@@ -83,10 +83,10 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
-        _state.update {
+        _state.update { it ->
             it.copy(
                 isLoading = false,
-                products = products.toOrderDetailsProductUiState()
+                products = products.toOrderDetailsProductUiState().distinctBy { it.id }
             )
         }
     }
@@ -193,7 +193,6 @@ class OrdersViewModel @Inject constructor(
 
             else -> return
         }
-//        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
         state.value.orderDetails.buttonsState = newButtonsState
     }
 
@@ -207,5 +206,4 @@ class OrdersViewModel @Inject constructor(
             )
         }
     }
-
 }
