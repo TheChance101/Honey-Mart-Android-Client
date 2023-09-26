@@ -241,10 +241,16 @@
     <string name="go_to_settings">الانتقال إلى الإعدادات</string>
     <string name="searched_product_not_found">المنتج الذي تبحث عنه غير موجود</string>
     <string name="market_has_been_deleted">تم حذف المتجر!</string>
+    <string name="market_not_approved">"لم يتم قبول متجرك"</string>
+    <string name="invalid_owner">"مالك غير صالح"</string>
+
 
     <string name="honey_image">صورة الهوني</string>
     <string name="address">العنوان</string>
+
+    <string name="user_name_already_exist">اسم المستخدم هذا موجود بالفعل </string>
     <string name="account_already_exist">هذا الحساب موجود بالفعل</string>
+    <string name="market_already_exist">هذا المتجر موجود بالفعل</string>
     <string name="something_went_wrong">حدث خطأ ما، من فضلك حاول مرة أخرى</string>
     <string name="name_should_not_be_empty">الاسم يجب ألا يكون فارغًا</string>
     <string name="invalid_name">اسم غير صالح</string>
@@ -319,6 +325,7 @@
     <string name="new_">الجديد</string>
     <string name="product_count">"%d منتج"</string>
     <string name="personal_info">المعلومات شخصية</string>
+    <string name="added_to_wishlist">تمت الأضافه الي قائمة الرغبات</string>
 
 
 </resources>

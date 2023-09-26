@@ -15,28 +15,41 @@ class OrdersViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getAllMarketOrder(OrderStates.ALL)
+        getAllMarketOrders(OrderStates.ALL)
         resetStateScreen()
     }
 
-    override fun getAllMarketOrder(orderState: OrderStates) {
+    override fun getAllMarketOrders(orderState: OrderStates) {
         _state.update {
-            it.copy(isLoading = true, isError = false, states = orderState ,
-            showState = it.showState.copy(showOrderDetails = false))
+            it.copy(
+                isLoadingOrders = true, isError = false, states = orderState,
+                showState = it.showState.copy(showOrderDetails = false)
+            )
         }
         tryToExecute(
             { ownerOrders.getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
-            ::onSuccess,
-            ::onError
+            ::onGetAllMarketOrdersSuccess,
+            ::onGetAllMarketOrdersError
         )
     }
 
-    private fun onSuccess(orders: List<OrderUiState>) {
-        _state.update { it.copy(isLoading = false, orders = orders) }
+    private fun onGetAllMarketOrdersSuccess(orders: List<OrderUiState>) {
+        val updatedOrders = if (orders.isEmpty()) orders
+        else updateSelectedOrder(orders, orders.first().orderId)
+        _state.update {
+            it.copy(
+                isLoadingOrders = false,
+                orders = updatedOrders,
+                orderId = updatedOrders.ifEmpty { listOf(OrderUiState()) }
+                    .first().orderId
+            )
+        }
+        if (orders.isNotEmpty())
+            getOrderDetails(_state.value.orders.first().orderId)
     }
 
-    private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+    private fun onGetAllMarketOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingOrders = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -58,7 +71,8 @@ class OrdersViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 orderDetails = orderDetails.toOrderParentDetailsUiState(),
-                orderStates = orderDetails.state
+                orderStates = orderDetails.state,
+                showState = it.showState.copy(showOrderDetails = true),
             )
         }
         updateButtonsState()
@@ -80,10 +94,10 @@ class OrdersViewModel @Inject constructor(
     }
 
     private fun onGetOrderProductDetailsSuccess(products: List<OrderDetails.ProductDetails>) {
-        _state.update {
+        _state.update { it ->
             it.copy(
                 isLoading = false,
-                products = products.toOrderDetailsProductUiState()
+                products = products.toOrderDetailsProductUiState().distinctBy { it.id }
             )
         }
     }
@@ -99,8 +113,10 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(
                 product = product,
-                showState = it.showState.copy(showProductDetails = true,
-                showOrderDetails = false)
+                showState = it.showState.copy(
+                    showProductDetails = true,
+                    showOrderDetails = false
+                )
             )
         }
     }
@@ -108,14 +124,13 @@ class OrdersViewModel @Inject constructor(
     override fun onClickOrder(orderDetails: OrderUiState, id: Long) {
         effectActionExecutor(_effect, OrderUiEffect.ClickOrderEffect(id))
         val updatedOrders = updateSelectedOrder(_state.value.orders, id)
+        getOrderDetails(id)
         _state.update {
             it.copy(
-                showState = it.showState.copy(showOrderDetails = true),
                 orders = updatedOrders,
                 orderId = id,
             )
         }
-        getOrderDetails(id)
     }
 
     private fun updateSelectedOrder(
@@ -140,7 +155,7 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        getAllMarketOrder(_state.value.states)
+        getAllMarketOrders(_state.value.states)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {
@@ -164,7 +179,7 @@ class OrdersViewModel @Inject constructor(
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
-                        updateState = OrderStates.CANCELED
+                        updateState = OrderStates.CANCELLED_BY_OWNER
                     )
                 }
             )
@@ -182,14 +197,14 @@ class OrdersViewModel @Inject constructor(
                 onClickCancel = {
                     updateStateOrder(
                         state.value.orderId,
-                        updateState = OrderStates.CANCELED
+                        updateState = OrderStates.CANCELLED_BY_OWNER
                     )
                 }
             )
 
             else -> return
         }
-        _state.update { it.copy(orderDetails = it.orderDetails.copy(buttonsState = newButtonsState)) }
+        state.value.orderDetails.buttonsState = newButtonsState
     }
 
     fun resetStateScreen() {
@@ -202,5 +217,4 @@ class OrdersViewModel @Inject constructor(
             )
         }
     }
-
 }

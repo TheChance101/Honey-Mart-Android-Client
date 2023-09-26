@@ -11,6 +11,7 @@ import java.util.Locale
 //region Ui State
 data class OrdersUiState(
     val isLoading: Boolean = false,
+    val isLoadingOrders:Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val orders: List<OrderUiState> = emptyList(),
@@ -38,7 +39,7 @@ data class OrderUiState(
     val isOrderSelected: Boolean = false,
     val state: Int = 0,
     val isSelected: Boolean = false,
-    val buttonsState: ButtonsState = ButtonsState()
+    var buttonsState: ButtonsState = ButtonsState()
 )
 
 data class OrderDetailsProductUiState(
@@ -56,7 +57,8 @@ enum class OrderStates(val state: Int) {
     PENDING(1),
     PROCESSING(2),
     DONE(3),
-    CANCELED(5)
+    CANCELLED_BY_USER(4),
+    CANCELLED_BY_OWNER(5)
 }
 
 data class ButtonsState(
@@ -111,24 +113,25 @@ fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<Order
 }
 
 fun OrdersUiState.errorPlaceHolderCondition() = isError
-fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
+fun OrdersUiState.contentScreen() = !this.isLoadingOrders && !this.isError
 fun OrdersUiState.showOrdersState() =
     !showState.showProductDetails && !isError
 
-fun OrdersUiState.showClickOrderPlaceHolder() =
-    showOrdersState() && orders.isNotEmpty() && !isLoading
+fun OrdersUiState.showClickOrderLoading() =
+    showOrdersState() && orders.isNotEmpty() && isLoading
 
 fun OrdersUiState.loadingScreen() =
-    isLoading && !cancel() && !pending()
+    isLoadingOrders && !cancelByOwner() && !pending()&& !cancelByUser()
             && !processing() && orders.isNotEmpty() &&!all() &&!done()
 
 fun OrdersUiState.emptyPlaceHolder() =
-    orders.isEmpty() && all() && !isLoading
+    orders.isEmpty() && all() && !isLoadingOrders
 
 fun OrdersUiState.showOrderDetailsInRight() = orders.isNotEmpty()
         && products.isNotEmpty()
         && !showState.showProductDetails
         && showState.showOrderDetails
+        && ! isLoading
 
 
 // endregion
@@ -142,12 +145,16 @@ fun OrdersUiState.processing() = states == OrderStates.PROCESSING
 
 fun OrdersUiState.done() = states == OrderStates.DONE
 
-fun OrdersUiState.cancel() = states == OrderStates.CANCELED
+fun OrdersUiState.cancelByOwner() = states == OrderStates.CANCELLED_BY_OWNER
+fun OrdersUiState.cancelByUser() = states == OrderStates.CANCELLED_BY_USER
 
-fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoading
+
+fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoadingOrders
 
 fun OrdersUiState.showOrderDetails() = products.isNotEmpty() && showState.showProductDetails
-fun OrdersUiState.showButtonState() = products.isNotEmpty() && !showState.showProductDetails
-        && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELED.state
+fun OrdersUiState.showButtonState() =
+    products.isNotEmpty() && !showState.showProductDetails
+        && orderStates != OrderStates.DONE.state && orderStates != OrderStates.CANCELLED_BY_OWNER.state
+            && orderStates != OrderStates.CANCELLED_BY_USER.state
         &&!isLoading
 // endregion

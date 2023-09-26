@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.the_chance.design_system.R
 import org.the_chance.honeymart.ui.components.ContentVisibility
-import org.the_chance.honeymart.ui.components.Placeholder
 import org.the_chance.honeymart.ui.features.category.composable.HoneyMartTitle
 import org.the_chance.honeymart.ui.features.orders.composables.AllOrdersContent
 import org.the_chance.honeymart.ui.features.orders.composables.OrderDetailsContent
@@ -36,7 +35,7 @@ fun OrdersScreen(
 
     LaunchedEffect(lifecycleOwner) {
         viewModel.resetStateScreen()
-        viewModel.getAllMarketOrder(OrderStates.ALL)
+        viewModel.getAllMarketOrders(OrderStates.ALL)
     }
 
     OrdersContent(state, viewModel)
@@ -49,15 +48,14 @@ fun OrdersContent(
 ) {
     ConnectionErrorPlaceholder(
         state = state.errorPlaceHolderCondition(),
-        onClickTryAgain = { listener.getAllMarketOrder(OrderStates.ALL) }
+        onClickTryAgain = { listener.getAllMarketOrders(OrderStates.ALL) }
     )
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         HoneyMartTitle()
-        Loading(
-            state = state.loadingScreen())
+        Loading(state = state.loadingScreen())
         ContentVisibility(state = state.emptyPlaceHolder()) {
             Column(
                 modifier = Modifier
@@ -66,7 +64,7 @@ fun OrdersContent(
             ) {
                 OrderPlaceHolder(painter = painterResource(id = R.drawable.owner_empty_order),
                     text = stringResource(R.string.there_are_no_orders_in_your_market),
-                    onClick = { listener.getAllMarketOrder(OrderStates.ALL) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.ALL) }
                 )
             }
         }
@@ -114,14 +112,7 @@ fun OrdersContent(
                         stringResource(id = R.string.product_details), state = state
                     )
                 }
-                ContentVisibility(state = state.showClickOrderPlaceHolder()) {
-                    Placeholder(
-                        painter = painterResource(id = R.drawable.owner_empty_order),
-                        text = stringResource(R.string.click_on_order_to_show_it_s_details),
-                    )
-                }
-                Loading(state = state.isLoading && state.showState.showOrderDetails)
-
+                Loading(state = state.showClickOrderLoading())
             }
         }
     }

@@ -1,9 +1,9 @@
 package org.the_chance.honeymart.util
 
 import android.content.Context
+import org.the_chance.design_system.R
 import org.the_chance.honeymart.domain.util.ErrorHandler
 import org.the_chance.honeymart.domain.util.ValidationState
-import org.the_chance.design_system.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,10 +41,13 @@ class StringResources @Inject constructor(
 
     override val errorString: Map<ErrorHandler, String>
         get() = mapOf(
+            ErrorHandler.MarketAlreadyExist to getStringFromFile(R.string.market_already_exist),
+            ErrorHandler.AccountAlreadyExist to getStringFromFile(R.string.account_already_exist),
             ErrorHandler.EmailAlreadyExist to getStringFromFile(R.string.account_already_exist),
             ErrorHandler.UnKnownUser to getStringFromFile(R.string.something_went_wrong_please_try_again),
-            ErrorHandler.InvalidUserNameOrPassword to getStringFromFile(R.string.Invalid_username_or_password),
+            ErrorHandler.UnAuthorized to getStringFromFile(R.string.Invalid_username_or_password),
             ErrorHandler.NoConnection to getStringFromFile(R.string.something_went_wrong_please_try_again),
+            ErrorHandler.InvalidUserNameOrPassword to getStringFromFile(R.string.Invalid_username_or_password),
             ErrorHandler.MarketDeleted to getStringFromFile(R.string.market_has_been_deleted)
         )
     override val requiredFieldsMessageString: String
@@ -52,4 +55,6 @@ class StringResources @Inject constructor(
 
     override val addReviewSuccessString: String
         get() = getStringFromFile(R.string.review_added_successfully)
+    override val addToWishListSuccessString: String
+        get() = getStringFromFile(R.string.added_to_wishlist)
 }

@@ -16,6 +16,7 @@ import org.the_chance.honeymart.ui.feature.marketInfo.toCategoryUiState
 import org.the_chance.honeymart.ui.feature.see_all_markets.MarketsViewModel.Companion.MAX_PAGE_SIZE
 import org.the_chance.honeymart.ui.feature.wishlist.WishListProductUiState
 import org.the_chance.honeymart.ui.feature.wishlist.toWishListProductUiState
+import org.the_chance.honeymart.util.StringDictionary
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +25,7 @@ class ProductViewModel @Inject constructor(
     private val getWishListUseCase: GetAllWishListUseCase,
     private val wishListOperationsUseCase: WishListOperationsUseCase,
     private val getMarketAllCategories: GetAllCategoriesInMarketUseCase,
+    private val stringResources: StringDictionary,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProductsUiState, ProductUiEffect>(ProductsUiState()), ProductInteractionListener {
 
@@ -82,7 +84,7 @@ class ProductViewModel @Inject constructor(
         _state.update {
             it.copy(
                 categories = updatedCategories,
-                products = listOf(),
+                products = emptyList(),
                 position = position.inc(),
                 categoryId = categoryId
             )
@@ -146,7 +148,7 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun resetProducts() {
-        _state.update { it.copy(products = listOf(), page = 1) }
+        _state.update { it.copy(products = emptyList(), page = 1) }
         onChangeProductScrollPosition(0)
     }
 
@@ -247,7 +249,7 @@ class ProductViewModel @Inject constructor(
     }
 
     override fun showSnackBar(message: String) {
-        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = "Success")) }
+        _state.update { it.copy(snackBar = it.snackBar.copy(isShow = true, message = stringResources.addToWishListSuccessString)) }
     }
 
     override fun resetSnackBarState() {

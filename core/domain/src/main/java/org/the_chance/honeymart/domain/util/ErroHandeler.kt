@@ -116,7 +116,7 @@ sealed interface ErrorHandler {
 
     //region User
     object InvalidInput : ErrorHandler
-    object UsernameAlreadyExist : ErrorHandler
+    object AccountAlreadyExist : ErrorHandler
     object InvalidUserId : ErrorHandler
     object InvalidUserNameOrPassword : ErrorHandler
     object InvalidEmail : ErrorHandler
@@ -221,7 +221,7 @@ fun handelUserException(
 ) {
     when (exception) {
         is InvalidInputException -> onError(ErrorHandler.InvalidInput)
-        is UsernameAlreadyExistException -> onError(ErrorHandler.UsernameAlreadyExist)
+        is UsernameAlreadyExistException -> onError(ErrorHandler.AccountAlreadyExist)
         is InvalidUserIdException -> onError(ErrorHandler.InvalidUserId)
         is InvalidUserNameOrPasswordException -> onError(ErrorHandler.InvalidUserNameOrPassword)
         is InvalidEmailException -> onError(ErrorHandler.InvalidEmail)
