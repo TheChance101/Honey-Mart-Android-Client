@@ -55,52 +55,54 @@ fun AllOrdersContent(
                 CustomChip(
                     state = state.all(),
                     text = stringResource(R.string.all),
-                    onClick = { listener.getAllMarketOrder(OrderStates.ALL) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.ALL) }
                 )
             }
             item {
                 CustomChip(
                     state = state.pending(),
                     text = stringResource(R.string.new_order),
-                    onClick = { listener.getAllMarketOrder(OrderStates.PENDING) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.PENDING) }
                 )
             }
             item {
                 CustomChip(
                     state = state.processing(),
                     text = stringResource(id = R.string.processing),
-                    onClick = { listener.getAllMarketOrder(OrderStates.PROCESSING) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.PROCESSING) }
                 )
             }
             item {
                 CustomChip(
                     state = state.done(),
                     text = stringResource(id = R.string.done),
-                    onClick = { listener.getAllMarketOrder(OrderStates.DONE) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.DONE) }
                 )
             }
             item {
                 CustomChip(
                     state = state.cancelByOwner(),
                     text = stringResource(id = R.string.declined),
-                    onClick = { listener.getAllMarketOrder(OrderStates.CANCELLED_BY_OWNER) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.CANCELLED_BY_OWNER) }
                 )
             }
             item {
                 CustomChip(
                     state = state.cancelByUser(),
                     text = stringResource(id = R.string.cancelled),
-                    onClick = { listener.getAllMarketOrder(OrderStates.CANCELLED_BY_USER) }
+                    onClick = { listener.getAllMarketOrders(OrderStates.CANCELLED_BY_USER) }
                 )
             }
         }
-        ContentVisibility(state = state.emptyOrdersPlaceHolder() ) {
+        ContentVisibility(state = state.emptyOrdersPlaceHolder()) {
             Placeholder(
                 painter = painterResource(id = R.drawable.owner_empty_order),
                 text = stringResource(R.string.there_are_no_order_for_this_day),
             )
         }
-        Loading(state = state.isLoading && !state.showState.showOrderDetails)
+        Loading(
+            state = state.isLoadingOrders && !state.emptyOrdersPlaceHolder()
+        )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.space16),
             contentPadding = PaddingValues(vertical = MaterialTheme.dimens.space16)

@@ -15,30 +15,41 @@ class OrdersViewModel @Inject constructor(
     override val TAG: String = this::class.simpleName.toString()
 
     init {
-        getAllMarketOrder(OrderStates.ALL)
+        getAllMarketOrders(OrderStates.ALL)
         resetStateScreen()
     }
 
-    override fun getAllMarketOrder(orderState: OrderStates) {
+    override fun getAllMarketOrders(orderState: OrderStates) {
         _state.update {
             it.copy(
-                isLoading = true, isError = false, states = orderState,
+                isLoadingOrders = true, isError = false, states = orderState,
                 showState = it.showState.copy(showOrderDetails = false)
             )
         }
         tryToExecute(
             { ownerOrders.getAllMarketOrders(orderState.state).map { it.toOrderUiState() } },
-            ::onSuccess,
-            ::onError
+            ::onGetAllMarketOrdersSuccess,
+            ::onGetAllMarketOrdersError
         )
     }
 
-    private fun onSuccess(orders: List<OrderUiState>) {
-        _state.update { it.copy(isLoading = false, orders = orders) }
+    private fun onGetAllMarketOrdersSuccess(orders: List<OrderUiState>) {
+        val updatedOrders = if (orders.isEmpty()) orders
+        else updateSelectedOrder(orders, orders.first().orderId)
+        _state.update {
+            it.copy(
+                isLoadingOrders = false,
+                orders = updatedOrders,
+                orderId = updatedOrders.ifEmpty { listOf(OrderUiState()) }
+                    .first().orderId
+            )
+        }
+        if (orders.isNotEmpty())
+            getOrderDetails(_state.value.orders.first().orderId)
     }
 
-    private fun onError(error: ErrorHandler) {
-        _state.update { it.copy(isLoading = false, error = error) }
+    private fun onGetAllMarketOrdersError(error: ErrorHandler) {
+        _state.update { it.copy(isLoadingOrders = false, error = error) }
         if (error is ErrorHandler.NoConnection) {
             _state.update { it.copy(isError = true) }
         }
@@ -144,7 +155,7 @@ class OrdersViewModel @Inject constructor(
         _state.update {
             it.copy(isLoading = false)
         }
-        getAllMarketOrder(_state.value.states)
+        getAllMarketOrders(_state.value.states)
     }
 
     private fun onUpdateStateOrderError(errorHandler: ErrorHandler) {

@@ -11,6 +11,7 @@ import java.util.Locale
 //region Ui State
 data class OrdersUiState(
     val isLoading: Boolean = false,
+    val isLoadingOrders:Boolean = false,
     val isError: Boolean = false,
     val error: ErrorHandler? = null,
     val orders: List<OrderUiState> = emptyList(),
@@ -112,24 +113,25 @@ fun List<OrderDetails.ProductDetails>.toOrderDetailsProductUiState(): List<Order
 }
 
 fun OrdersUiState.errorPlaceHolderCondition() = isError
-fun OrdersUiState.contentScreen() = !this.isLoading && !this.isError
+fun OrdersUiState.contentScreen() = !this.isLoadingOrders && !this.isError
 fun OrdersUiState.showOrdersState() =
     !showState.showProductDetails && !isError
 
-fun OrdersUiState.showClickOrderPlaceHolder() =
-    showOrdersState() && orders.isNotEmpty() && !isLoading
+fun OrdersUiState.showClickOrderLoading() =
+    showOrdersState() && orders.isNotEmpty() && isLoading
 
 fun OrdersUiState.loadingScreen() =
-    isLoading && !cancelByOwner() && !pending()&& !cancelByUser()
+    isLoadingOrders && !cancelByOwner() && !pending()&& !cancelByUser()
             && !processing() && orders.isNotEmpty() &&!all() &&!done()
 
 fun OrdersUiState.emptyPlaceHolder() =
-    orders.isEmpty() && all() && !isLoading
+    orders.isEmpty() && all() && !isLoadingOrders
 
 fun OrdersUiState.showOrderDetailsInRight() = orders.isNotEmpty()
         && products.isNotEmpty()
         && !showState.showProductDetails
         && showState.showOrderDetails
+        && ! isLoading
 
 
 // endregion
@@ -147,7 +149,7 @@ fun OrdersUiState.cancelByOwner() = states == OrderStates.CANCELLED_BY_OWNER
 fun OrdersUiState.cancelByUser() = states == OrderStates.CANCELLED_BY_USER
 
 
-fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoading
+fun OrdersUiState.emptyOrdersPlaceHolder() = orders.isEmpty() && !isError && !isLoadingOrders
 
 fun OrdersUiState.showOrderDetails() = products.isNotEmpty() && showState.showProductDetails
 fun OrdersUiState.showButtonState() =
