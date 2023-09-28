@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_100">#FEBC33</color>
+    <color name="primary_200">#E79C00</color>
+
+    <color name="success">#00E82D</color>
+    <color name="error">#FF4E33</color>
+
+    <color name="black">#121212</color>
+    <color name="black_8">#14121212</color>
+    <color name="black_16">#29121212</color>
+    <color name="black_37">#5E121212</color>
+    <color name="black_55">#8C121212</color>
+    <color name="black_60">#99121212</color>
+    <color name="black_87">#DE121212</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_100">#5EECECEC</color>
+    <color name="white_200">#E1E1E1</color>
+    <color name="white_300">#FAFAFA</color>
+ <color name="white_30">#FAFAFA</color>
+    <color name="gray">#A7A7A7</color>
+
+    <!--Dark Theme Colors-->
+
+    <!--Primary-->
+    <color name="dark_primary_100">#FEBC33</color>
+    <!--Success-->
+    <color name="dark_success">#00E82D</color>
+    <!--Error-->
+    <color name="dark_error">#CF6679</color>
+    <!--Background-->
+    <color name="dark_background_200">#252525</color>
+    <color name="dark_background_300">#333333</color>
+    <color name="dark_background_400">#484848</color>
+    <!--Text-->
+    <color name="dark_text_87">#E2E2E2</color>
+    <color name="dark_text_60">#A7A7A7</color>
+    <color name="dark_text_37">#8C8C8C</color>
+
+</resources>
