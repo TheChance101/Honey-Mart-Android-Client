@@ -88,7 +88,7 @@ Before you begin, ensure you have met the following requirements:
 
 
 ## Contributors
-<a href="https://github.com/TheChance101/Honey-Mart-Server/graphs/contributors">  
+<a href="https://github.com/TheChance101/Honey-Mart-Android-Client/graphs/contributors">  
   <img src="https://contrib.rocks/image?repo=TheChance101/Honey-Mart-Android-Client" />  
 </a>  
 
